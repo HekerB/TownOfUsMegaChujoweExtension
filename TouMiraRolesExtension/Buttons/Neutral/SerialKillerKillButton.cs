@@ -100,8 +100,8 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
             {
                 if (ventTarget != null && !ventTarget.HasDied() && ventTarget.inVent)
                 {
-                    int? targetVentId = GetPlayerVentId(ventTarget);
-                    if (targetVentId.HasValue && targetVentId.Value == Vent.currentVent.Id)
+                    int targetVentId = GetPlayerVentId(ventTarget);
+                    if (targetVentId >= 0 && targetVentId == Vent.currentVent.Id)
                     {
                         return ventTarget;
                     }
@@ -144,8 +144,8 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
                 continue;
             }
 
-            int? playerVentId = GetPlayerVentId(player);
-            if (playerVentId.HasValue && playerVentId.Value == vent.Id && IsValidVentKillTarget(player, options.VentKillTargets))
+            int playerVentId = GetPlayerVentId(player);
+            if (playerVentId >= 0 && playerVentId == vent.Id && IsValidVentKillTarget(player, options.VentKillTargets))
             {
                 target = player;
                 break;
@@ -331,8 +331,8 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
                     continue;
                 }
 
-                int? playerVentId = GetPlayerVentId(otherPlayer);
-                if (playerVentId.HasValue && playerVentId.Value == vent.Id && IsValidVentKillTarget(otherPlayer, options.VentKillTargets))
+                int playerVentId = GetPlayerVentId(otherPlayer);
+                if (playerVentId >= 0 && playerVentId == vent.Id && IsValidVentKillTarget(otherPlayer, options.VentKillTargets))
                 {
                     hasValidTarget = true;
                     break;
@@ -365,7 +365,7 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
         }
     }
 
-    private static int? GetPlayerVentId(PlayerControl player)
+    private static int GetPlayerVentId(PlayerControl player)
     {
         if (player.AmOwner && Vent.currentVent != null)
         {
@@ -374,7 +374,7 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
 
         if (!player.inVent)
         {
-            return null;
+            return -1;
         }
 
         foreach (var vent in ShipStatus.Instance.AllVents)
@@ -405,7 +405,7 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
             }
         }
 
-        return null;
+        return -1;
     }
 
     private static bool IsValidVentKillTarget(PlayerControl target, VentKillTargets ventKillTargets)

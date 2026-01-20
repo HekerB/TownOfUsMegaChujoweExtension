@@ -53,12 +53,13 @@ public static class VentOccupancySystem
         }
     }
 
-    public static PlayerControl? GetOccupantPlayer(int ventId)
+    public static PlayerControl GetOccupantPlayer(int ventId)
     {
         if (TryGetOccupant(ventId, out var playerId))
         {
-            return MiscUtils.PlayerById(playerId);
+            var player = MiscUtils.PlayerById(playerId);
+            return player != null ? player : null!;
         }
-        return null;
+        return null!;
     }
 }

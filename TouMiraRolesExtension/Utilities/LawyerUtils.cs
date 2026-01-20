@@ -3,6 +3,8 @@ using TouMiraRolesExtension.Modifiers;
 using TouMiraRolesExtension.Roles.Neutral;
 using TownOfUs.Utilities;
 
+using Il2CppInterop.Runtime.Attributes;
+
 namespace TouMiraRolesExtension.Utilities;
 
 /// <summary>
@@ -16,6 +18,7 @@ public static class LawyerUtils
     /// </summary>
     /// <param name="lawyerId">The lawyer's PlayerId</param>
     /// <returns>The client player if found, null otherwise</returns>
+    [HideFromIl2Cpp]
     public static PlayerControl? FindClientForLawyer(byte lawyerId)
     {
         foreach (var pc in PlayerControl.AllPlayerControls)
@@ -40,6 +43,7 @@ public static class LawyerUtils
     /// <param name="client">The client player</param>
     /// <param name="lawyerId">The specific lawyer's PlayerId to check for</param>
     /// <returns>The lawyer role if found, null otherwise</returns>
+    [HideFromIl2Cpp]
     public static LawyerRole? GetLawyerForClient(PlayerControl client, byte lawyerId)
     {
         if (client == null || !client.HasModifier<LawyerTargetModifier>(x => x.OwnerId == lawyerId))
@@ -98,6 +102,7 @@ public static class LawyerUtils
     /// </summary>
     /// <param name="lawyer">The lawyer player</param>
     /// <returns>The client player if found, null otherwise</returns>
+    [HideFromIl2Cpp]
     public static PlayerControl? GetClientForLawyer(PlayerControl lawyer)
     {
         if (lawyer == null)

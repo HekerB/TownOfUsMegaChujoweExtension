@@ -166,12 +166,18 @@ public sealed class HackerDeviceButton : TownOfUsRoleButton<HackerRole>
                 IsPortableDeviceOpen = true;
                 break;
             case HackerInfoSource.Cameras:
-                OpenConsoleMinigame(HackerSystem.FindCameraConsole());
-                IsPortableDeviceOpen = _minigame != null;
+                if (HackerSystem.TryFindCameraConsole(out var cameraConsole) && cameraConsole != null)
+                {
+                    OpenConsoleMinigame(cameraConsole);
+                    IsPortableDeviceOpen = _minigame != null;
+                }
                 break;
             case HackerInfoSource.DoorLog:
-                OpenConsoleMinigame(HackerSystem.FindDoorLogConsole());
-                IsPortableDeviceOpen = _minigame != null;
+                if (HackerSystem.TryFindDoorLogConsole(out var doorLogConsole) && doorLogConsole != null)
+                {
+                    OpenConsoleMinigame(doorLogConsole);
+                    IsPortableDeviceOpen = _minigame != null;
+                }
                 break;
             case HackerInfoSource.Vitals:
                 OpenPortableVitals();
@@ -180,7 +186,7 @@ public sealed class HackerDeviceButton : TownOfUsRoleButton<HackerRole>
         }
     }
 
-    private void OpenConsoleMinigame(SystemConsole? console)
+    private void OpenConsoleMinigame(SystemConsole console)
     {
         if (console == null || console.MinigamePrefab == null)
         {

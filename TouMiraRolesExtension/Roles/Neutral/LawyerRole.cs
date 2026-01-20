@@ -53,17 +53,23 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     private static readonly Regex SecondsRegex = new(@"(\d+)\s*s", RegexOptions.IgnoreCase);
     private static readonly Regex LastNumberRegex = new(@"(\d+)(?!.*\d)");
 
+    [HideFromIl2Cpp]
     public PlayerControl? Client { get; set; }
     public bool ClientVoted { get; set; }
     public bool AboutToWin { get; set; }
 
-    [HideFromIl2Cpp] public List<byte> Voters { get; set; } = [];
-    [HideFromIl2Cpp] public int ObjectionsUsed { get; set; }
-    [HideFromIl2Cpp] public int ObjectionsUsedThisMeeting { get; set; }
-    [HideFromIl2Cpp] public bool HasObjected { get; set; }
-    [HideFromIl2Cpp] public List<byte> ObjectedVoters { get; set; } = [];
+    [HideFromIl2Cpp] 
+    public List<byte> Voters { get; set; } = [];
+    [HideFromIl2Cpp] 
+    public int ObjectionsUsed { get; set; }
+    [HideFromIl2Cpp] 
+    public int ObjectionsUsedThisMeeting { get; set; }
+    [HideFromIl2Cpp] 
+    public bool HasObjected { get; set; }
+    [HideFromIl2Cpp] 
+    public List<byte> ObjectedVoters { get; set; } = [];
 
-    private MeetingMenu? meetingMenu;
+    private MeetingMenu meetingMenu = null!;
 
     public int Priority { get; set; } = 2;
 
@@ -344,7 +350,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     public void Dispose()
     {
         meetingMenu?.Dispose();
-        meetingMenu = null;
+        meetingMenu = null!;
     }
 
     public override void OnMeetingStart()
@@ -567,15 +573,16 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
 
         var remaining = TryGetVotingSecondsRemainingFromUi(meeting);
-        return remaining.HasValue && remaining.Value <= seconds;
+        return remaining >= 0f && remaining <= seconds;
     }
 
-    private static float? TryGetVotingSecondsRemainingFromUi(MeetingHud meeting)
+    [HideFromIl2Cpp]
+    private static float TryGetVotingSecondsRemainingFromUi(MeetingHud meeting)
     {
         var text = meeting.TimerText != null ? meeting.TimerText.text : null;
         if (string.IsNullOrWhiteSpace(text))
         {
-            return null;
+            return -1f;
         }
 
 
@@ -595,7 +602,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             return sec2;
         }
 
-        return null;
+        return -1f;
     }
 
     [MethodRpc((uint)ExtensionRpc.LawyerObject)]
