@@ -16,8 +16,8 @@ public static class MirageDecoySystem
         bool IsVisible);
 
     private static readonly Dictionary<byte, ActiveDecoy> ActiveByMirage = new();
-    private static CosmeticsLayer? LocalOutlinedCosmetics;
-    private static SpriteRenderer? LocalOutlinedBody;
+    private static CosmeticsLayer LocalOutlinedCosmetics = null!;
+    private static SpriteRenderer LocalOutlinedBody = null!;
 
     /// <summary>Decoy exists (primed-hidden or revealed-visible).</summary>
     public static bool HasAny(byte mirageId) => ActiveByMirage.ContainsKey(mirageId);
@@ -41,7 +41,10 @@ public static class MirageDecoySystem
 
                 try
                 {
-                    LocalOutlinedCosmetics.currentBodySprite?.BodySprite?.SetOutline(null);
+                    if (LocalOutlinedCosmetics.currentBodySprite != null && LocalOutlinedCosmetics.currentBodySprite.BodySprite != null)
+                    {
+                        LocalOutlinedCosmetics.currentBodySprite.BodySprite.SetOutline(null);
+                    }
                 }
                 catch
                 {
@@ -58,8 +61,8 @@ public static class MirageDecoySystem
             // ignore
         }
 
-        LocalOutlinedCosmetics = null;
-        LocalOutlinedBody = null;
+        LocalOutlinedCosmetics = null!;
+        LocalOutlinedBody = null!;
     }
 
     public static void UpdateLocalOutline(Vector2 from, float maxDistance, Color color)
@@ -71,8 +74,8 @@ public static class MirageDecoySystem
         }
 
         var bestDist = float.MaxValue;
-        CosmeticsLayer? bestCosmetics = null;
-        SpriteRenderer? bestBody = null;
+        CosmeticsLayer bestCosmetics = null!;
+        SpriteRenderer bestBody = null!;
 
         foreach (var decoy in ActiveByMirage.Values.Where(d => d.IsVisible))
         {
@@ -91,7 +94,12 @@ public static class MirageDecoySystem
             }
 
             var cosmetics = fake.body.GetComponentInChildren<CosmeticsLayer>(true);
-            var body = cosmetics?.currentBodySprite?.BodySprite;
+            if (cosmetics == null)
+            {
+                continue;
+            }
+
+            var body = cosmetics.currentBodySprite != null ? cosmetics.currentBodySprite.BodySprite : null;
             if (body == null)
             {
                 continue;
@@ -126,7 +134,7 @@ public static class MirageDecoySystem
         try
         {
             LocalOutlinedCosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(color));
-            LocalOutlinedBody.SetOutline((Color?)color);
+            LocalOutlinedBody.SetOutline(color);
         }
         catch
         {

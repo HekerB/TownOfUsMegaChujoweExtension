@@ -76,8 +76,8 @@ public static class SerialKillerVentPatches
             return;
         }
 
-        int? serialKillerVentId = GetPlayerVentId(localPlayer);
-        if (serialKillerVentId.HasValue && serialKillerVentId.Value == vent.Id)
+        int serialKillerVentId = GetPlayerVentId(localPlayer);
+        if (serialKillerVentId >= 0 && serialKillerVentId == vent.Id)
         {
             var options = OptionGroupSingleton<SerialKillerOptions>.Instance;
             if (IsValidVentKillTarget(enteringPlayer, options.VentKillTargets))
@@ -96,10 +96,10 @@ public static class SerialKillerVentPatches
             return;
         }
 
-        int? serialKillerVentId = GetPlayerVentId(localPlayer);
-        if (serialKillerVentId.HasValue && serialKillerVentId.Value == ventId)
+        int serialKillerVentId = GetPlayerVentId(localPlayer);
+        if (serialKillerVentId >= 0 && serialKillerVentId == ventId)
         {
-            Vent? vent = null;
+            Vent vent = null!;
             foreach (var v in ShipStatus.Instance.AllVents)
             {
                 if (v != null && v.Id == ventId)
@@ -133,8 +133,8 @@ public static class SerialKillerVentPatches
                 continue;
             }
 
-            int? playerVentId = GetPlayerVentId(player);
-            if (playerVentId.HasValue && playerVentId.Value == vent.Id && IsValidVentKillTarget(player, options.VentKillTargets))
+            int playerVentId = GetPlayerVentId(player);
+            if (playerVentId >= 0 && playerVentId == vent.Id && IsValidVentKillTarget(player, options.VentKillTargets))
             {
                 target = player;
                 break;
@@ -151,7 +151,7 @@ public static class SerialKillerVentPatches
         }
     }
 
-    private static int? GetPlayerVentId(PlayerControl player)
+    private static int GetPlayerVentId(PlayerControl player)
     {
         if (player.AmOwner && Vent.currentVent != null)
         {
@@ -160,7 +160,7 @@ public static class SerialKillerVentPatches
 
         if (!player.inVent)
         {
-            return null;
+            return -1;
         }
 
         foreach (var vent in ShipStatus.Instance.AllVents)
@@ -191,7 +191,7 @@ public static class SerialKillerVentPatches
             }
         }
 
-        return null;
+        return -1;
     }
 
     private static bool IsValidVentKillTarget(PlayerControl target, VentKillTargets ventKillTargets)
