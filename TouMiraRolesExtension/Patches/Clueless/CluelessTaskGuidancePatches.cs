@@ -203,6 +203,22 @@ public static class CluelessTaskGuidancePatches
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowSabotageMap))]
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowCountOverlay))]
+    [HarmonyPrefix]
+    [HarmonyPriority(Priority.First)]
+    public static void MapBehaviourShowPrefix(MapBehaviour __instance)
+    {
+        if (!LocalIsClueless() || __instance == null)
+        {
+            return;
+        }
+
+        // Hide task overlay before it can be shown to prevent 1-frame flash
+        __instance.taskOverlay?.Hide();
+    }
+
+    [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
+    [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowSabotageMap))]
+    [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowCountOverlay))]
     [HarmonyPostfix]
     [HarmonyPriority(Priority.Last)]
     public static void MapBehaviourShowPostfix(MapBehaviour __instance)
@@ -212,6 +228,7 @@ public static class CluelessTaskGuidancePatches
             return;
         }
 
+        // Ensure task overlay stays hidden after map methods complete
         __instance.taskOverlay?.Hide();
     }
 
@@ -224,10 +241,10 @@ public static class CluelessTaskGuidancePatches
             return;
         }
 
+        // Continuously hide task overlay as a safety net
         if (__instance.taskOverlay != null && __instance.taskOverlay.isActiveAndEnabled)
         {
             __instance.taskOverlay.Hide();
         }
     }
-
 }
