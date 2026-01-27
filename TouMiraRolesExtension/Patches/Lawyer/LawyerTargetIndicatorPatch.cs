@@ -39,6 +39,7 @@ public static class LawyerTargetIndicatorPatch
         var lawyerColor = TownOfUsColors.Lawyer.ToHtmlStringRGBA();
 
 
+        // Show symbol if local player is a lawyer and this player is their client
         if (localPlayer.IsRole<LawyerRole>() &&
             LawyerUtils.IsClientOfLawyer(player, localPlayer.PlayerId))
         {
@@ -46,7 +47,7 @@ public static class LawyerTargetIndicatorPatch
             return;
         }
 
-
+        // Show symbol if local player is a client and this player is their lawyer
         if (LawyerUtils.IsClientOfAnyLawyer(localPlayer))
         {
             var lawyers = LawyerUtils.GetAllLawyersForClient(localPlayer);
@@ -59,15 +60,16 @@ public static class LawyerTargetIndicatorPatch
             }
         }
 
-
+        // Dead players should see ALL lawyer/client relationships
         if (localPlayer.HasDied() && genOpt != null && genOpt.TheDeadKnow && !hidden)
         {
+            // Check if the player being displayed is a lawyer (has a client)
+            var isLawyer = player.IsRole<LawyerRole>();
+            
+            // Check if the player being displayed is a client (has a lawyer)
+            var isClient = LawyerUtils.IsClientOfAnyLawyer(player);
 
-            var wasLawyerOfThisClient = LawyerUtils.HasLawyerClientRelationship(localPlayer, player);
-
-            var wasClientOfThisLawyer = LawyerUtils.IsClientOfLawyer(localPlayer, player.PlayerId);
-
-            if (wasLawyerOfThisClient || wasClientOfThisLawyer)
+            if (isLawyer || isClient)
             {
                 __result += $"<color=#{lawyerColor}> {Symbol}</color>";
             }

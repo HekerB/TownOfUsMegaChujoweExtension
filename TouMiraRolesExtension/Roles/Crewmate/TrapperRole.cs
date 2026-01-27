@@ -4,9 +4,11 @@ using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using MiraAPI.Utilities.Assets;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using System.Collections;
+using TouMiraRolesExtension.Assets;
 using TouMiraRolesExtension.Modifiers;
 using TouMiraRolesExtension.Modules;
 using TouMiraRolesExtension.Networking;
@@ -60,7 +62,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        Icon = TouRoleIcons.Trapper,
+        Icon = TouExtensionAssets.TrapperRoleIcon,
         IntroSound = TouAudio.EngineerIntroSound
     };
 

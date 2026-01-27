@@ -40,6 +40,9 @@ public sealed class LawyerOptions : AbstractOptionGroup<LawyerRole>
 
     [ModdedNumberOption("ExtensionOptionLawyerMaxObjectionsPerMeeting", 0f, 10f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxObjectionsPerMeeting { get; set; } = 1f;
+
+    [ModdedToggleOption("ExtensionOptionLawyerObjectionPreventsSameVote")]
+    public bool ObjectionPreventsSameVote { get; set; } = true;
 }
 
 public enum LawyerWinMode

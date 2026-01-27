@@ -164,7 +164,37 @@ public static class MirageDecoyTownOfUsTargetButtonPatches
     {
         [HarmonyPostfix]
         [HarmonyPriority(Priority.Last)]
-        public static void Postfix(object __instance) => PlayerTargetFixedUpdateHandlerPatch.Postfix(__instance);
+        public static void Postfix(object __instance)
+        {
+            if (MeetingHud.Instance)
+            {
+                MirageDecoySystem.ClearLocalOutline();
+                return;
+            }
+
+            var local = PlayerControl.LocalPlayer;
+            if (local == null || (local.Data?.IsDead ?? false))
+            {
+                MirageDecoySystem.ClearLocalOutline();
+                return;
+            }
+
+            var actionButton = GetActionButton(__instance);
+            if (actionButton == null || !actionButton.isActiveAndEnabled)
+            {
+                MirageDecoySystem.ClearLocalOutline();
+                return;
+            }
+
+            var distance = GetDistance(__instance);
+            if (MirageDecoySystem.TryGetClosestDecoy(local.GetTruePosition(), distance, out _, out _))
+            {
+                // Disable the button when a decoy is nearby - dead body buttons should not light up for decoys
+                actionButton.SetDisabled();
+            }
+
+            MirageDecoySystem.ClearLocalOutline();
+        }
     }
 
     [HarmonyPatch(typeof(TownOfUsTargetButton<Vent>), nameof(TownOfUsTargetButton<Vent>.ClickHandler))]
@@ -194,7 +224,10 @@ public static class MirageDecoyTownOfUsTargetButtonPatches
     {
         [HarmonyPostfix]
         [HarmonyPriority(Priority.Last)]
-        public static void Postfix(object __instance) => PlayerTargetFixedUpdateHandlerPatch.Postfix(__instance);
+        public static void Postfix(object __instance)
+        {
+            MirageDecoySystem.ClearLocalOutline();
+        }
     }
 
     private static bool TryTriggerFromLocalPlayer(float maxDistance)

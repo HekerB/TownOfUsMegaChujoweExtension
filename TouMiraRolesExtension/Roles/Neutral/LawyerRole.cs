@@ -17,11 +17,13 @@ using Reactor.Utilities.Extensions;
 using System.Collections;
 using System.Text.RegularExpressions;
 using TouMiraRolesExtension.Assets;
+using TouMiraRolesExtension.Events.Neutral;
 using TouMiraRolesExtension.GameOver;
 using TouMiraRolesExtension.Modifiers;
 using TouMiraRolesExtension.Modules;
 using TouMiraRolesExtension.Networking;
 using TouMiraRolesExtension.Options.Roles.Neutral;
+using TouMiraRolesExtension.Patches.Lawyer;
 using TouMiraRolesExtension.Utilities;
 using TownOfUs;
 using TownOfUs.Assets;
@@ -68,6 +70,8 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     public bool HasObjected { get; set; }
     [HideFromIl2Cpp] 
     public List<byte> ObjectedVoters { get; set; } = [];
+    [HideFromIl2Cpp] 
+    public Dictionary<byte, byte> ObjectedVoterOriginalVotes { get; set; } = [];
 
     private MeetingMenu meetingMenu = null!;
 
@@ -99,13 +103,13 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         var lawyerOptions = OptionGroupSingleton<LawyerOptions>.Instance;
         var killerChance = (int)lawyerOptions.KillerClientChance;
         Random rnd = new();
-        var chance = rnd.Next(1, 101);
 
         foreach (var lawyer in lawyers)
         {
             PlayerControl? target = null;
+            var chance = rnd.Next(1, 101);
 
-            if (chance <= killerChance)
+            if (chance <= killerChance && killerChance > 0)
             {
                 var killers = new List<PlayerControl>();
                 foreach (var pc in PlayerControl.AllPlayerControls)
@@ -143,6 +147,12 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                         pc.HasModifier<LoverModifier>() ||
                         SpectatorRole.TrackedSpectators.Contains(pc.Data.PlayerName) ||
                         assignedClients.Contains(pc.PlayerId))
+                    {
+                        continue;
+                    }
+
+                    // If killerChance is 0, exclude killers from the fallback pool
+                    if (killerChance == 0 && (pc.IsImpostorAligned() || pc.Is(RoleAlignment.NeutralKilling)))
                     {
                         continue;
                     }
@@ -284,7 +294,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             {
                 Player.AddModifier<LawyerRevealModifier>(lawyerRole);
             }
-
+            
             if (!Client.HasModifier<ClientRevealModifier>())
             {
                 var clientRole = Client.Data?.Role;
@@ -358,6 +368,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         RoleBehaviourStubs.OnMeetingStart(this);
         ObjectionsUsedThisMeeting = 0; HasObjected = false;
         ObjectedVoters.Clear();
+        ObjectedVoterOriginalVotes.Clear();
 
         if (Player.AmOwner && meetingMenu != null && Client != null)
         {
@@ -654,6 +665,29 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             return;
         }
 
+        var lawyerOptions = OptionGroupSingleton<LawyerOptions>.Instance;
+        bool settingEnabled = false;
+        if (lawyerOptions != null)
+        {
+            try
+            {
+                settingEnabled = lawyerOptions.ObjectionPreventsSameVote;
+                Error($"[Lawyer] RpcObjectVotes - Successfully read option value: {settingEnabled}");
+            }
+            catch (Exception ex)
+            {
+                Error($"[Lawyer] RpcObjectVotes - Failed to read option: {ex.Message}");
+            }
+        }
+        else
+        {
+            Error($"[Lawyer] RpcObjectVotes - Options instance is null!");
+        }
+        
+        var localPlayerId = PlayerControl.LocalPlayer?.PlayerId ?? 0;
+        var localPlayerVote = LawyerVoteBlockPatch.GetCurrentVote(localPlayerId);
+        Error($"[Lawyer] RpcObjectVotes called - Options instance: {lawyerOptions != null}, Setting enabled: {settingEnabled}, Local player ID: {localPlayerId}, Local player tracked vote: {localPlayerVote.ToString() ?? "None"}");
+
         foreach (var voteArea in meeting.playerStates)
         {
             if (voteArea.VotedFor != 255 && !voteArea.AmDead)
@@ -664,6 +698,8 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                     continue;
                 }
 
+                var originalVote = voteArea.VotedFor;
+                Error($"[Lawyer] Processing vote area - Voter: {voteArea.TargetPlayerId}, VotedFor: {originalVote}, IsLocalPlayer: {voter.AmOwner}");
                 voteArea.UnsetVote();
 
                 var voteData = voter.GetVoteData();
@@ -674,6 +710,39 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                 if (!lawyerRole.ObjectedVoters.Contains(voteArea.TargetPlayerId))
                 {
                     lawyerRole.ObjectedVoters.Add(voteArea.TargetPlayerId);
+                }
+
+                var options = OptionGroupSingleton<LawyerOptions>.Instance;
+                if (options != null && options.ObjectionPreventsSameVote)
+                {
+                    byte voteToStore = originalVote;
+                    
+                    if (voter.AmOwner)
+                    {
+                        var trackedVote = LawyerVoteBlockPatch.GetCurrentVote(voteArea.TargetPlayerId);
+                        if (trackedVote.HasValue && trackedVote.Value != 255)
+                        {
+                            voteToStore = trackedVote.Value;
+                            Error($"[Lawyer] Objection - Local player {voteArea.TargetPlayerId} - Using tracked vote: {voteToStore}");
+                        }
+                        else
+                        {
+                            Error($"[Lawyer] Objection - Local player {voteArea.TargetPlayerId} - Tracked vote not available, using originalVote: {originalVote}");
+                        }
+                    }
+                    
+                    if (voteToStore != 255)
+                    {
+                        Error($"[Lawyer] Objection - Voter: {voteArea.TargetPlayerId}, Storing vote: {voteToStore}");
+                        
+                        LawyerEvents.AddObjectedVoter(voteArea.TargetPlayerId, voteToStore);
+                        
+                        Error($"[Lawyer] After adding - Dictionary count: {LawyerEvents.ObjectedVoterOriginalVotes.Count}");
+                    }
+                    else
+                    {
+                        Error($"[Lawyer] Objection - Voter: {voteArea.TargetPlayerId} has invalid vote (255), skipping");
+                    }
                 }
 
                 if (voter.AmOwner)

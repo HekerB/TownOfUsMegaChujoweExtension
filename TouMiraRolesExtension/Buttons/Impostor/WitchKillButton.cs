@@ -61,6 +61,27 @@ public sealed class WitchKillButton : TownOfUsKillRoleButton<WitchRole, PlayerCo
         Timer = Cooldown;
     }
 
+    public override bool IsTargetValid(PlayerControl? target)
+    {
+        if (!base.IsTargetValid(target) || target == null)
+        {
+            return false;
+        }
+
+        var player = PlayerControl.LocalPlayer;
+        if (player == null)
+        {
+            return false;
+        }
+
+        if (player.IsImpostorAligned() && target.IsImpostorAligned())
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public override PlayerControl? GetTarget()
     {
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);

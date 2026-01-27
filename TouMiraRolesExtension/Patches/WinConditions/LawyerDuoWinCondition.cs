@@ -49,11 +49,6 @@ public sealed class LawyerDuoWinCondition : IWinCondition, IWinConditionWithBloc
             return false;
         }
 
-        if (OptionGroupSingleton<LawyerOptions>.Instance.WinMode != LawyerWinMode.StealWin)
-        {
-            return false;
-        }
-
         if (LawyerWinConditionState.Triggered)
         {
             return false;
@@ -98,11 +93,6 @@ public sealed class LawyerDuoWinCondition : IWinCondition, IWinConditionWithBloc
     public void TriggerGameOver(LogicGameFlowNormal gameFlow)
     {
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
-        {
-            return;
-        }
-
-        if (OptionGroupSingleton<LawyerOptions>.Instance.WinMode != LawyerWinMode.StealWin)
         {
             return;
         }

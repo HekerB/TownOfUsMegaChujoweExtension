@@ -66,6 +66,7 @@
   <string name="ExtensionOptionLawyerGetVotedOutWithClient">Lawyer Gets Voted Out With Client</string>
   <string name="ExtensionOptionLawyerCanSeeClientRole">Lawyer Knows Client's Role</string>
   <string name="ExtensionOptionLawyerKillerClientChance">Killer Client Chance</string>
+  <string name="ExtensionOptionLawyerObjectionPreventsSameVote">Prevent Same Votes On Objection</string>
   
   <!-- Lawyer Win -->
   <string name="ExtensionLawyerWin">Wins</string>
@@ -86,6 +87,7 @@
   <string name="ExtensionOptionLawyerMaxObjections">Max Objections (Per Game)</string>
   <string name="ExtensionOptionLawyerMaxObjectionsPerMeeting">Max Objections Per Meeting</string>
   <string name="ExtensionLawyerObjectionNotification">Objection! A lawyer has objected to the current votes! All votes have been cleared - please vote again.</string>
+  <string name="ExtensionLawyerCannotVoteSamePerson">You cannot vote for the same person after an objection!</string>
   
   <!-- Serial Killer Role -->
   <string name="ExtensionRoleSerialKiller">Serial Killer</string>
