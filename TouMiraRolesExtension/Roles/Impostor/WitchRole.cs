@@ -278,4 +278,28 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
             player.RemoveModifier<WitchSpellboundModifier>();
         }
     }
+
+    /// <summary>
+    /// Clears spellbound modifiers only from players hexed by a specific Witch.
+    /// This is used when a Witch is exiled or dies, so only their hexed players are freed.
+    /// </summary>
+    [MethodRpc((uint)ExtensionRpc.WitchClearSpellboundByWitch)]
+    public static void RpcWitchClearSpellboundByWitch(PlayerControl sender, byte witchId)
+    {
+        var clearedCount = 0;
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || !player.HasModifier<WitchSpellboundModifier>())
+            {
+                continue;
+            }
+
+            var modifier = player.GetModifier<WitchSpellboundModifier>();
+            if (modifier != null && modifier.WitchId == witchId)
+            {
+                player.RemoveModifier<WitchSpellboundModifier>();
+                clearedCount++;
+            }
+        }
+    }
 }

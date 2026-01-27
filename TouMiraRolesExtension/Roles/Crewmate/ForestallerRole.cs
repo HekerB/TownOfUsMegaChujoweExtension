@@ -1,6 +1,7 @@
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
+using TouMiraRolesExtension.Assets;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
@@ -32,7 +33,7 @@ public sealed class ForestallerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        Icon = TownOfUs.Assets.TouRoleIcons.Engineer,
+        Icon = TouExtensionAssets.ForestallerRoleIcon,
         IntroSound = TownOfUs.Assets.TouAudio.EngineerIntroSound
     };
 

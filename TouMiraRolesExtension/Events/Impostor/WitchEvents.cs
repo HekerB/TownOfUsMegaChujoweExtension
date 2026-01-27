@@ -26,6 +26,32 @@ public static class WitchEvents
 
     public static int GetCurrentMeetingCount() => _meetingCount;
 
+    private static bool HasAnyWitch()
+    {
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player != null && player.IsRole<WitchRole>())
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool HasAnyHexedPlayers()
+    {
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player != null && player.HasModifier<WitchSpellboundModifier>())
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     [RegisterEvent]
     public static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
@@ -64,6 +90,11 @@ public static class WitchEvents
             yield return new WaitForSeconds(0.1f);
         }
 
+        if (!HasAnyWitch() || !HasAnyHexedPlayers())
+        {
+            yield break;
+        }
+
         Logger.LogWarning($"[Witch] CoMonitorMeetingEnd: Meeting ended, processing spell deaths");
 
         if (!_processingDeaths)
@@ -86,8 +117,20 @@ public static class WitchEvents
             return;
         }
 
+        if (exiled.IsRole<WitchRole>())
+        {
+            Logger.LogWarning($"[Witch] EjectionEventHandler: Witch {exiled.Data.PlayerName} (ID: {exiled.PlayerId}) was voted out, clearing their spellbound modifiers");
+            if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
+            {
+                WitchRole.RpcWitchClearSpellboundByWitch(PlayerControl.LocalPlayer, exiled.PlayerId);
+            }
+            return;
+        }
 
-
+        if (!HasAnyWitch() || !HasAnyHexedPlayers())
+        {
+            return;
+        }
 
         Logger.LogWarning($"[Witch] EjectionEventHandler: Starting spell death processing. Meeting count: {_meetingCount}");
         _processingDeaths = true;
@@ -98,8 +141,6 @@ public static class WitchEvents
     {
         try
         {
-            Logger.LogWarning($"[Witch] CoProcessSpellDeaths: Starting coroutine. Meeting count: {_meetingCount}");
-
             while (MeetingHud.Instance != null)
             {
                 yield return new WaitForSeconds(0.05f);
@@ -113,6 +154,12 @@ public static class WitchEvents
                 yield break;
             }
 
+            if (!HasAnyWitch() || !HasAnyHexedPlayers())
+            {
+                yield break;
+            }
+
+            Logger.LogWarning($"[Witch] CoProcessSpellDeaths: Starting coroutine. Meeting count: {_meetingCount}");
             Logger.LogWarning($"[Witch] CoProcessSpellDeaths: Meeting ended, checking witch status");
 
             var witchAlive = false;
@@ -134,7 +181,7 @@ public static class WitchEvents
 
             if (!witchAlive)
             {
-                Logger.LogWarning($"[Witch] CoProcessSpellDeaths: Witch is dead, clearing all spellbound modifiers");
+                Logger.LogWarning($"[Witch] CoProcessSpellDeaths: All Witches are dead, clearing all spellbound modifiers");
                 WitchRole.RpcWitchClearAllSpellbound(PlayerControl.LocalPlayer);
                 PendingSpellDeaths.Clear();
                 yield break;
@@ -172,6 +219,15 @@ public static class WitchEvents
                     continue;
                 }
 
+                var hexingWitch = MiscUtils.PlayerById(modifier.WitchId);
+                if (hexingWitch == null || hexingWitch.HasDied() || !hexingWitch.IsRole<WitchRole>())
+                {
+                    Logger.LogWarning(
+                        $"[Witch] CoProcessSpellDeaths: Witch {modifier.WitchId} who hexed {player.Data.PlayerName} is dead, clearing modifier");
+                    WitchRole.RpcWitchClearSpellboundPlayer(PlayerControl.LocalPlayer, player.PlayerId);
+                    continue;
+                }
+
                 var meetingsSinceSpell = _meetingCount - modifier.SpellCastMeeting;
                 var meetingsSinceSpellFloat = (float)meetingsSinceSpell;
                 Logger.LogWarning(
@@ -199,23 +255,13 @@ public static class WitchEvents
 
                 if (shouldDie)
                 {
-                    PlayerControl? witch = null;
-                    foreach (var pc in PlayerControl.AllPlayerControls)
-                    {
-                        if (pc != null && pc.IsRole<WitchRole>())
-                        {
-                            witch = pc;
-                            break;
-                        }
-                    }
-
                     Logger.LogWarning(
-                        $"[Witch] CoProcessSpellDeaths: Attempting to kill {player.Data.PlayerName}, witch found: {witch != null}");
+                        $"[Witch] CoProcessSpellDeaths: Attempting to kill {player.Data.PlayerName}, witch found: {hexingWitch != null}");
 
-                    if (witch != null)
+                    if (hexingWitch != null)
                     {
                         Logger.LogWarning($"[Witch] CoProcessSpellDeaths: Calling RpcSpecialMurder on {player.Data.PlayerName}");
-                        witch.RpcSpecialMurder(
+                        hexingWitch.RpcSpecialMurder(
                             player,
                             isIndirect: true,
                             ignoreShield: false,
@@ -263,9 +309,14 @@ public static class WitchEvents
 
         if (victim.IsRole<WitchRole>())
         {
-
+            // If a Witch dies during a meeting, wait for the meeting to end before processing
             if (MeetingHud.Instance != null)
             {
+                if (!HasAnyHexedPlayers())
+                {
+                    return;
+                }
+
                 if (!_processingDeaths)
                 {
                     _processingDeaths = true;
@@ -275,10 +326,11 @@ public static class WitchEvents
                 return;
             }
 
+            // If a Witch dies outside a meeting, clear only their spellbound modifiers immediately
+            Logger.LogWarning($"[Witch] PlayerDeathEventHandler: Witch {victim.Data.PlayerName} (ID: {victim.PlayerId}) died, clearing their spellbound modifiers");
             if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
             {
-                WitchRole.RpcWitchClearAllSpellbound(PlayerControl.LocalPlayer);
-                PendingSpellDeaths.Clear();
+                WitchRole.RpcWitchClearSpellboundByWitch(PlayerControl.LocalPlayer, victim.PlayerId);
             }
         }
     }

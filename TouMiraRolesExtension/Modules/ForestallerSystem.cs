@@ -2,6 +2,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
+using TouMiraRolesExtension.Assets;
 using TouMiraRolesExtension.Modifiers;
 using TouMiraRolesExtension.Networking;
 using TouMiraRolesExtension.Options.Roles.Crewmate;
@@ -200,7 +201,7 @@ public static class ForestallerSystem
             $"<b>{Color.white.ToTextColor()}{msg}</color></b>",
             Color.white,
             new Vector3(0f, 1f, -20f),
-            spr: TownOfUs.Assets.TouRoleIcons.Engineer.LoadAsset());
+            spr: TouExtensionAssets.ForestallerRoleIcon.LoadAsset());
         notif.AdjustNotification();
     }
 

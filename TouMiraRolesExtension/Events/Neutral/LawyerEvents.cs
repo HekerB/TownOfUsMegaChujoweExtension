@@ -3,17 +3,48 @@ using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
+using MiraAPI.Utilities;
 using TouMiraRolesExtension.Options.Roles.Neutral;
+using TouMiraRolesExtension.Patches.Lawyer;
 using TouMiraRolesExtension.Roles.Neutral;
 using TownOfUs.Events;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TouMiraRolesExtension.Events.Neutral;
 
 public static class LawyerEvents
 {
+    public static readonly Dictionary<byte, byte> ObjectedVoterOriginalVotes = [];
+
+    public static void ClearObjectedVoters()
+    {
+        ObjectedVoterOriginalVotes.Clear();
+    }
+
+    public static void AddObjectedVoter(byte voterId, byte originalVote)
+    {
+        ObjectedVoterOriginalVotes[voterId] = originalVote;
+    }
+
+    public static bool IsObjectedVoter(byte voterId)
+    {
+        return ObjectedVoterOriginalVotes.ContainsKey(voterId);
+    }
+
+    public static bool TryGetOriginalVote(byte voterId, out byte originalVote)
+    {
+        return ObjectedVoterOriginalVotes.TryGetValue(voterId, out originalVote);
+    }
+    [RegisterEvent]
+    public static void StartMeetingEventHandler(StartMeetingEvent @event)
+    {
+        ClearObjectedVoters();
+        LawyerVoteBlockPatch.ClearVotes();
+    }
+
     [RegisterEvent]
     public static void EjectionEventHandler(EjectionEvent @event)
     {
@@ -82,27 +113,5 @@ public static class LawyerEvents
                 lawyer.CheckClientDeath(victim);
             }
         }
-    }
-
-    [RegisterEvent(1000)]
-    public static void BeforeLocalVoteEvent(BeforeVoteEvent @event)
-    {
-        var voteArea = @event.VoteArea;
-        var votedPlayer = MiscUtils.PlayerById(voteArea.TargetPlayerId);
-        if (PlayerControl.LocalPlayer.HasDied() || (votedPlayer != null && votedPlayer.HasDied()))
-        {
-            return;
-        }
-
-        if (PlayerControl.LocalPlayer.Data.Role is not LawyerRole)
-        {
-            return;
-        }
-
-        if (voteArea.Parent.state is MeetingHud.VoteStates.Proceeding or MeetingHud.VoteStates.Results)
-        {
-            return;
-        }
-
     }
 }

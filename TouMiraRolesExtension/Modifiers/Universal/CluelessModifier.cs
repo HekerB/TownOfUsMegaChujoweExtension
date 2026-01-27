@@ -1,12 +1,14 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
+using TouMiraRolesExtension.Assets;
 using TouMiraRolesExtension.Options.Modifiers;
+using TouMiraRolesExtension.Roles.Crewmate;
+using TownOfUs.Assets;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
-using TouMiraRolesExtension.Roles.Crewmate;
 using UnityEngine;
 
 namespace TouMiraRolesExtension.Modifiers.Universal;
@@ -20,6 +22,7 @@ public sealed class CluelessModifier : UniversalGameModifier, IWikiDiscoverable
     public override string LocaleKey => "Clueless";
     public override string ModifierName => TouLocale.Get($"ExtensionModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{LocaleKey}IntroBlurb");
+    public override LoadableAsset<Sprite> ModifierIcon => TouExtensionAssets.CluelessModifierIcon;
 
     public override string GetDescription()
     {
@@ -32,7 +35,6 @@ public sealed class CluelessModifier : UniversalGameModifier, IWikiDiscoverable
                + MiscUtils.AppendOptionsText(GetType());
     }
 
-    public override LoadableAsset<Sprite>? ModifierIcon => null;
     public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;

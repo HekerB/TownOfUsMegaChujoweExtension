@@ -54,11 +54,6 @@ public sealed class LawyerParityWinCondition : IWinCondition, IWinConditionWithB
             return false;
         }
 
-        if (OptionGroupSingleton<LawyerOptions>.Instance.WinMode != LawyerWinMode.StealWin)
-        {
-            return false;
-        }
-
         if (LawyerWinConditionState.Triggered)
         {
             return false;
@@ -70,13 +65,10 @@ public sealed class LawyerParityWinCondition : IWinCondition, IWinConditionWithB
             return false;
         }
 
-
-
-        if (MiscUtils.ImpAliveCount <= 0)
+        if (MiscUtils.ImpAliveCount != 1)
         {
             return false;
         }
-
 
         if (MiscUtils.NKillersAliveCount > 0)
         {
@@ -88,12 +80,10 @@ public sealed class LawyerParityWinCondition : IWinCondition, IWinConditionWithB
             return false;
         }
 
-
         if (MiscUtils.CrewKillersAliveCount > 0)
         {
             return false;
         }
-
 
         foreach (var lawyerPc in PlayerControl.AllPlayerControls)
         {
@@ -104,11 +94,6 @@ public sealed class LawyerParityWinCondition : IWinCondition, IWinConditionWithB
 
             var client = LawyerUtils.FindClientForLawyer(lawyerPc.PlayerId);
             if (client == null || client.HasDied())
-            {
-                continue;
-            }
-
-            if (!IsKillerClient(client))
             {
                 continue;
             }
@@ -124,7 +109,13 @@ public sealed class LawyerParityWinCondition : IWinCondition, IWinConditionWithB
                 continue;
             }
 
-            return true;
+            var isKillerClient = IsKillerClient(client);
+            var isCrewClient = !isKillerClient && client.IsCrewmate();
+            
+            if (isKillerClient || isCrewClient)
+            {
+                return true;
+            }
         }
 
         return false;
@@ -138,18 +129,32 @@ public sealed class LawyerParityWinCondition : IWinCondition, IWinConditionWithB
             return;
         }
 
-
-        if (OptionGroupSingleton<LawyerOptions>.Instance.WinMode != LawyerWinMode.StealWin)
-        {
-            return;
-        }
-
         if (LawyerWinConditionState.Triggered)
         {
             return;
         }
 
         var alivePlayers = Helpers.GetAlivePlayers();
+
+        if (MiscUtils.ImpAliveCount != 1)
+        {
+            return;
+        }
+
+        if (MiscUtils.NKillersAliveCount > 0)
+        {
+            return;
+        }
+
+        if (MiscUtils.GameHaltersAliveCount > 0)
+        {
+            return;
+        }
+
+        if (MiscUtils.CrewKillersAliveCount > 0)
+        {
+            return;
+        }
 
         var winners = new HashSet<NetworkedPlayerInfo>();
         foreach (var lawyerPc in PlayerControl.AllPlayerControls)
@@ -165,11 +170,6 @@ public sealed class LawyerParityWinCondition : IWinCondition, IWinConditionWithB
                 continue;
             }
 
-            if (!IsKillerClient(client))
-            {
-                continue;
-            }
-
             if (lawyerPc.Data == null || client.Data == null)
             {
                 continue;
@@ -177,6 +177,14 @@ public sealed class LawyerParityWinCondition : IWinCondition, IWinConditionWithB
 
             var alivePlayerIds = alivePlayers.Select(ap => ap.PlayerId).ToHashSet();
             if (!alivePlayerIds.Contains(lawyerPc.PlayerId) || !alivePlayerIds.Contains(client.PlayerId))
+            {
+                continue;
+            }
+
+            var isKillerClient = IsKillerClient(client);
+            var isCrewClient = !isKillerClient && client.IsCrewmate();
+            
+            if (!isKillerClient && !isCrewClient)
             {
                 continue;
             }
