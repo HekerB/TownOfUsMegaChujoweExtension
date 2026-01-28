@@ -1,6 +1,7 @@
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameEnd;
 using MiraAPI.Modifiers.Types;
+using TownOfUs.Modules.Wiki;
 using TouMiraRolesExtension.GameOver;
 
 namespace TouMiraRolesExtension.Modifiers;
@@ -8,7 +9,7 @@ namespace TouMiraRolesExtension.Modifiers;
 /// <summary>
 /// Modifier that marks a player as a Lawyer's client (defendant).
 /// </summary>
-public sealed class LawyerTargetModifier : GameModifier
+public sealed class LawyerTargetModifier : GameModifier, IWikiDiscoverable
 {
     public override string ModifierName => "Lawyer Client";
     public override bool HideOnUi => true;
