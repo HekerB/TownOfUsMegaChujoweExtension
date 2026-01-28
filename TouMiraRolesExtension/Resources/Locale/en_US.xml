@@ -219,4 +219,89 @@
   <!-- Mirage Notifications -->
   <string name="ExtensionRoleMirageInteractorTriggered">You interacted with a decoy!</string>
   <string name="ExtensionRoleMirageOwnerTriggered">Your decoy was triggered!</string>
+
+  <!-- Injector Role -->
+  <string name="ExtensionRoleInjector">Injector</string>
+  <string name="ExtensionRoleInjectorIntroBlurb">Inject players with negative effects.</string>
+  <string name="ExtensionRoleInjectorTabDescription">Inject players to give them random effects. </string>
+  <string name="ExtensionRoleInjectorWikiDescription">The Injector is an Impostor Support role that can inject players with various negative effects. Effects are randomly selected and can include inverted controls, reduced vision, slowness, or confusion.</string>
+  <string name="ExtensionRoleInjectorInject">Inject</string>
+  <string name="ExtensionRoleInjectorInjectWikiDescription">Inject a nearby player with a random negative effect. The effect will activate after a configurable delay.</string>
+
+  <!-- Injector Options -->
+  <string name="ExtensionOptionInjectorInjectCooldown">Inject Cooldown</string>
+  <string name="ExtensionOptionInjectorEffectDelay">Effect Activation Delay</string>
+  <string name="ExtensionOptionInjectorEffectDurationType">Effect Duration Type</string>
+  <string name="ExtensionOptionInjectorEffectDurationTypeEnumAllRound">All Round</string>
+  <string name="ExtensionOptionInjectorEffectDurationTypeEnumAllGame">All Game</string>
+  <string name="ExtensionOptionInjectorEffectDurationTypeEnumSetTime">Set Time</string>
+  <string name="ExtensionOptionInjectorEffectDuration">Effect Duration</string>
+  <string name="ExtensionOptionInjectorInitialUses">Initial Uses</string>
+  <string name="ExtensionOptionInjectorUsesPerKill">Uses Per Kill</string>
+  <string name="ExtensionOptionInjectorPositiveEffectsEnabled">Positive Effects Enabled</string>
+
+  <!-- Injector Effect Chances (Negative) -->
+  <string name="ExtensionOptionInjectorChanceInvertedControls">Inverted Controls Chance</string>
+  <string name="ExtensionOptionInjectorChanceLowVision">Low Vision Chance</string>
+  <string name="ExtensionOptionInjectorChanceSlowness">Slowness Chance</string>
+  <string name="ExtensionOptionInjectorChanceVeryLowVision">Very Low Vision Chance</string>
+  <string name="ExtensionOptionInjectorChanceConfused">Confused Chance</string>
+  <string name="ExtensionOptionInjectorChanceNoVent">No Vent Chance</string>
+  <string name="ExtensionOptionInjectorChanceNoUse">No Use Chance</string>
+  <string name="ExtensionOptionInjectorChanceNoReport">No Report Chance</string>
+  <string name="ExtensionOptionInjectorChanceNausea">Nausea Chance</string>
+  <string name="ExtensionOptionInjectorChanceWeakness">Weakness Chance</string>
+
+  <!-- Injector Effect Chances (Positive) -->
+  <string name="ExtensionOptionInjectorChanceSpeedBoost">Speed Boost Chance</string>
+  <string name="ExtensionOptionInjectorChanceVisionBoost">Vision Boost Chance</string>
+  <string name="ExtensionOptionInjectorChanceRegeneration">Regeneration Chance</string>
+
+  <!-- Extension Local Settings -->
+  <string name="ExtensionLocalSettingEnableNauseaCameraShake">Enable Nausea Camera Shake</string>
+
+  <!-- Injector Notifications -->
+  <string name="ExtensionInjectorNotificationInvertedControls">You start to feel lightheaded…</string>
+  <string name="ExtensionInjectorNotificationLowVision">Your vision narrows…</string>
+  <string name="ExtensionInjectorNotificationSlowness">Your legs start to feel heavy…</string>
+  <string name="ExtensionInjectorNotificationVeryLowVision">You feel your eyesight begin to fade...</string>
+  <string name="ExtensionInjectorNotificationConfused">You start to feel confused...</string>
+  <string name="ExtensionInjectorNotificationNoVent">You feel too weak to use vents…</string>
+  <string name="ExtensionInjectorNotificationNoUse">Your body feels paralyzed…</string>
+  <string name="ExtensionInjectorNotificationNoReport">Your mind goes blank when you see bodies…</string>
+  <string name="ExtensionInjectorNotificationNausea">You feel nauseous… (0.7x speed, 0.7x vision, camera shake)</string>
+  <string name="ExtensionInjectorNotificationWeakness">You feel extremely weak…</string>
+  <string name="ExtensionInjectorNotificationSpeedBoost">You feel energized and fast!</string>
+  <string name="ExtensionInjectorNotificationVisionBoost">Your vision becomes crystal clear!</string>
+  <string name="ExtensionInjectorNotificationRegeneration">You feel your body healing rapidly!</string>
+
+  <!-- Injector Effect Descriptions -->
+  <string name="ExtensionInjectorEffectDescriptionInvertedControls">Inverted controls</string>
+  <string name="ExtensionInjectorEffectDescriptionLowVision">0.5x vision</string>
+  <string name="ExtensionInjectorEffectDescriptionVeryLowVision">0.1x vision</string>
+  <string name="ExtensionInjectorEffectDescriptionSlowness">0.5x speed</string>
+  <string name="ExtensionInjectorEffectDescriptionConfused">Hallucinations, cannot report</string>
+  <string name="ExtensionInjectorEffectDescriptionNoVent">Cannot vent</string>
+  <string name="ExtensionInjectorEffectDescriptionNoUse">Cannot use abilities</string>
+  <string name="ExtensionInjectorEffectDescriptionNoReport">Cannot report bodies</string>
+  <string name="ExtensionInjectorEffectDescriptionNausea">0.7x speed, 0.7x vision, camera shake</string>
+  <string name="ExtensionInjectorEffectDescriptionWeakness">0.6x speed</string>
+  <string name="ExtensionInjectorEffectDescriptionSpeedBoost">1.5x speed</string>
+  <string name="ExtensionInjectorEffectDescriptionVisionBoost">1.5x vision</string>
+  <string name="ExtensionInjectorEffectDescriptionRegeneration">Reduced cooldowns</string>
+
+  <!-- Injector Effect Wore Off Notifications -->
+  <string name="ExtensionInjectorNotificationWoreOffInvertedControls">The lightheaded feeling has passed.</string>
+  <string name="ExtensionInjectorNotificationWoreOffLowVision">Your vision has returned to normal.</string>
+  <string name="ExtensionInjectorNotificationWoreOffVeryLowVision">Your eyesight has fully recovered.</string>
+  <string name="ExtensionInjectorNotificationWoreOffSlowness">Your legs feel normal again.</string>
+  <string name="ExtensionInjectorNotificationWoreOffConfused">The confusion has cleared.</string>
+  <string name="ExtensionInjectorNotificationWoreOffNoVent">You can use vents again.</string>
+  <string name="ExtensionInjectorNotificationWoreOffNoUse">You can use abilities again.</string>
+  <string name="ExtensionInjectorNotificationWoreOffNoReport">You can report bodies again.</string>
+  <string name="ExtensionInjectorNotificationWoreOffNausea">The nausea has subsided.</string>
+  <string name="ExtensionInjectorNotificationWoreOffWeakness">Your strength has returned.</string>
+  <string name="ExtensionInjectorNotificationWoreOffSpeedBoost">The speed boost has worn off.</string>
+  <string name="ExtensionInjectorNotificationWoreOffVisionBoost">Your vision has returned to normal.</string>
+  <string name="ExtensionInjectorNotificationWoreOffRegeneration">The regeneration effect has ended.</string>
 </resources>

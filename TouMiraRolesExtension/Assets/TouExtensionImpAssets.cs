@@ -24,4 +24,7 @@ public static class TouExtensionImpAssets
     public static LoadableAsset<Sprite> HackerCamerasSprite { get; } = new LoadableResourceAsset($"{HackerPath}.evilcamera.png");
     public static LoadableAsset<Sprite> HackerDoorLogSprite { get; } = new LoadableResourceAsset($"{HackerPath}.evildoorlog.png");
     public static LoadableAsset<Sprite> HackerVitalsSprite { get; } = new LoadableResourceAsset($"{HackerPath}.evilvitals.png");
+
+    public static LoadableAsset<Sprite> InjectorInjectButtonSprite { get; } = new LoadableResourceAsset("TouMiraRolesExtension.Resources.Buttons.Inject_Button.png");
+    public static LoadableAsset<Sprite> InjectorRole { get; } = new LoadableResourceAsset("TouMiraRolesExtension.Resources.Injector_Role_Icon.png", 200f);
 }

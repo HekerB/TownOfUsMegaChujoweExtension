@@ -24,5 +24,6 @@ public enum ExtensionRpc : uint
     HackerActivateJam,
     HackerStartJam,
     HackerSetJamCharges,
-    HackerResetRound
+    HackerResetRound,
+    InjectorInject
 }
