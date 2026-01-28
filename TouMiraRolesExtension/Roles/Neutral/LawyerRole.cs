@@ -683,10 +683,6 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         {
             Error($"[Lawyer] RpcObjectVotes - Options instance is null!");
         }
-        
-        var localPlayerId = PlayerControl.LocalPlayer?.PlayerId ?? 0;
-        var localPlayerVote = LawyerVoteBlockPatch.GetCurrentVote(localPlayerId);
-        Error($"[Lawyer] RpcObjectVotes called - Options instance: {lawyerOptions != null}, Setting enabled: {settingEnabled}, Local player ID: {localPlayerId}, Local player tracked vote: {localPlayerVote.ToString() ?? "None"}");
 
         foreach (var voteArea in meeting.playerStates)
         {
