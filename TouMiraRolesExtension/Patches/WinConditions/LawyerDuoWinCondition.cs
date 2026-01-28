@@ -54,6 +54,12 @@ public sealed class LawyerDuoWinCondition : IWinCondition, IWinConditionWithBloc
             return false;
         }
 
+        var winMode = OptionGroupSingleton<LawyerOptions>.Instance.WinMode;
+        if (winMode == LawyerWinMode.WinWithClient)
+        {
+            return false;
+        }
+
         var alivePlayers = Helpers.GetAlivePlayers();
         if (alivePlayers.Count != 2)
         {
@@ -103,6 +109,7 @@ public sealed class LawyerDuoWinCondition : IWinCondition, IWinConditionWithBloc
         }
 
         var alivePlayers = Helpers.GetAlivePlayers();
+        var winMode = OptionGroupSingleton<LawyerOptions>.Instance.WinMode;
 
         var winners = new HashSet<NetworkedPlayerInfo>();
 
@@ -134,6 +141,11 @@ public sealed class LawyerDuoWinCondition : IWinCondition, IWinConditionWithBloc
             if (lawyerRole != null)
             {
                 lawyerRole.AboutToWin = true;
+            }
+
+            if (winMode == LawyerWinMode.WinWithClient)
+            {
+                return;
             }
 
             winners.Add(lawyerPc.Data);

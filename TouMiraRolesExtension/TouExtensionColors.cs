@@ -12,4 +12,5 @@ public static class TouExtensionColors
     public static Color Wraith => Palette.ImpostorRed;
     public static Color Mirage => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(222, 168, 94, 255);
     public static Color Hacker => Palette.ImpostorRed;
+    public static Color Injector => Palette.ImpostorRed;
 }

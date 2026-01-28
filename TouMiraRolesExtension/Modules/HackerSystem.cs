@@ -355,7 +355,7 @@ public static class HackerSystem
             return false;
         }
 
-        SystemConsole result = default;
+        SystemConsole? result = default;
         if (mapId is ExpandedMapNames.Airship)
         {
             var found = consoles.FirstOrDefault(x => x != null && x.gameObject.name.Contains("task_cams"));
@@ -396,7 +396,7 @@ public static class HackerSystem
     }
 
     [HideFromIl2Cpp]
-    public static bool TryFindDoorLogConsole(out SystemConsole console)
+    public static bool TryFindDoorLogConsole(out SystemConsole? console)
     {
         console = default;
 

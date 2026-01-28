@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using MiraAPI.GameEnd;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
@@ -6,8 +8,10 @@ using TouMiraRolesExtension.Options.Roles.Neutral;
 using TouMiraRolesExtension.Roles.Neutral;
 using TouMiraRolesExtension.Utilities;
 using TownOfUs;
+using TownOfUs.Interfaces;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Localization;
+using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -27,7 +31,9 @@ public sealed class LawyerGameOver : CustomGameOver
         
         if (winMode == LawyerWinMode.WinWithClient)
         {
-            return false;
+            // When "Win with client", check if the player is in the winners list
+            // The winners list should include all players from the client's team (including the lawyer)
+            return winners.Any(w => w?.Object != null && w.Object.PlayerId == playerControl.PlayerId);
         }
 
         var winningLawyers = ExtractWinningLawyers(winners);

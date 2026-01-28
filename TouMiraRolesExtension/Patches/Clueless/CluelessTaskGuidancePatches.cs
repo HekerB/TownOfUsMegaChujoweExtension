@@ -212,7 +212,6 @@ public static class CluelessTaskGuidancePatches
             return;
         }
 
-        // Hide task overlay before it can be shown to prevent 1-frame flash
         __instance.taskOverlay?.Hide();
     }
 
@@ -228,7 +227,6 @@ public static class CluelessTaskGuidancePatches
             return;
         }
 
-        // Ensure task overlay stays hidden after map methods complete
         __instance.taskOverlay?.Hide();
     }
 
