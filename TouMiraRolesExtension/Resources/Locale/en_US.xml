@@ -239,23 +239,38 @@
   <string name="ExtensionOptionInjectorInitialUses">Initial Uses</string>
   <string name="ExtensionOptionInjectorUsesPerKill">Uses Per Kill</string>
   <string name="ExtensionOptionInjectorPositiveEffectsEnabled">Positive Effects Enabled</string>
+  <string name="ExtensionOptionInjectorSelectedEffectType">Effect Type To Configure</string>
+  <string name="ExtensionOptionInjectorEffectChance">Effect Chance</string>
 
-  <!-- Injector Effect Chances (Negative) -->
-  <string name="ExtensionOptionInjectorChanceInvertedControls">Inverted Controls Chance</string>
-  <string name="ExtensionOptionInjectorChanceLowVision">Low Vision Chance</string>
-  <string name="ExtensionOptionInjectorChanceSlowness">Slowness Chance</string>
-  <string name="ExtensionOptionInjectorChanceVeryLowVision">Very Low Vision Chance</string>
-  <string name="ExtensionOptionInjectorChanceConfused">Confused Chance</string>
-  <string name="ExtensionOptionInjectorChanceNoVent">No Vent Chance</string>
-  <string name="ExtensionOptionInjectorChanceNoUse">No Use Chance</string>
-  <string name="ExtensionOptionInjectorChanceNoReport">No Report Chance</string>
-  <string name="ExtensionOptionInjectorChanceNausea">Nausea Chance</string>
-  <string name="ExtensionOptionInjectorChanceWeakness">Weakness Chance</string>
+  <!-- Injector Effect Type Enum Values -->
+  <string name="ExtensionOptionInjectorEffectTypeEnumInvertedControls">Inverted Controls</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumLowVision">Low Vision</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumSlowness">Slowness</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumVeryLowVision">Very Low Vision</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumConfused">Confused</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumNoVent">No Vent</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumNoUse">No Use</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumNoReport">No Report</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumNausea">Nausea</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumWeakness">Weakness</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumSpeedBoost">Speed Boost</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumVisionBoost">Vision Boost</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumRegeneration">Regeneration</string>
 
-  <!-- Injector Effect Chances (Positive) -->
-  <string name="ExtensionOptionInjectorChanceSpeedBoost">Speed Boost Chance</string>
-  <string name="ExtensionOptionInjectorChanceVisionBoost">Vision Boost Chance</string>
-  <string name="ExtensionOptionInjectorChanceRegeneration">Regeneration Chance</string>
+  <!-- Injector Effect Chances (all use same display name, but different keys for serialization) -->
+  <string name="ExtensionOptionInjectorChanceInvertedControls">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceLowVision">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceSlowness">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceVeryLowVision">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceConfused">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceNoVent">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceNoUse">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceNoReport">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceNausea">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceWeakness">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceSpeedBoost">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceVisionBoost">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceRegeneration">Effect Chance</string>
 
   <!-- Extension Local Settings -->
   <string name="ExtensionLocalSettingEnableNauseaCameraShake">Enable Nausea Camera Shake</string>

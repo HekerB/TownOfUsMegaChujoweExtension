@@ -122,9 +122,9 @@ public static class InjectorEvents
         // Positive effects (only if enabled)
         if (options.PositiveEffectsEnabled)
         {
-            effects.Add((options.ChanceSpeedBoost.Value, () => new InjectedSpeedBoostModifier(duration, durationType), "ExtensionInjectorNotificationSpeedBoost"));
-            effects.Add((options.ChanceVisionBoost.Value, () => new InjectedVisionBoostModifier(duration, durationType), "ExtensionInjectorNotificationVisionBoost"));
-            effects.Add((options.ChanceRegeneration.Value, () => new InjectedRegenerationModifier(duration, durationType), "ExtensionInjectorNotificationRegeneration"));
+            effects.Add((options.ChanceSpeedBoost, () => new InjectedSpeedBoostModifier(duration, durationType), "ExtensionInjectorNotificationSpeedBoost"));
+            effects.Add((options.ChanceVisionBoost, () => new InjectedVisionBoostModifier(duration, durationType), "ExtensionInjectorNotificationVisionBoost"));
+            effects.Add((options.ChanceRegeneration, () => new InjectedRegenerationModifier(duration, durationType), "ExtensionInjectorNotificationRegeneration"));
         }
 
         // Calculate total weight
