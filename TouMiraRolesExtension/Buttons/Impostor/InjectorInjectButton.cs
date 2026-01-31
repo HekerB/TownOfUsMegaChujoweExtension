@@ -1,10 +1,12 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Keybinds;
+using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using TouMiraRolesExtension.Assets;
 using TouMiraRolesExtension.Options.Roles.Impostor;
 using TouMiraRolesExtension.Roles.Impostor;
 using TownOfUs.Buttons;
+using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -40,6 +42,12 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
         }
 
         if (target.IsImpostor())
+        {
+            return false;
+        }
+
+        // Cannot inject shielded players
+        if (target.HasModifier<BaseShieldModifier>() || target.HasModifier<FirstDeadShield>())
         {
             return false;
         }

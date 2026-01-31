@@ -175,6 +175,12 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
             return false;
         }
 
+        // Cannot kill shielded players
+        if (target.HasModifier<BaseShieldModifier>() || target.HasModifier<FirstDeadShield>())
+        {
+            return false;
+        }
+
         if (target.inVent)
         {
             if (player.inVent && Vent.currentVent != null && !player.HasModifier<SerialKillerNoVentModifier>() && SerialKillerVentKillSystem.TryGetVentKillTarget(player.PlayerId, out var ventTarget))

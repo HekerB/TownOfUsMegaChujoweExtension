@@ -1,10 +1,12 @@
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
+using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Utilities.Assets;
 using TouMiraRolesExtension.Roles.Impostor;
 using TownOfUs.Assets;
 using TownOfUs.Buttons;
+using TownOfUs.Modifiers;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -75,6 +77,12 @@ public sealed class WitchKillButton : TownOfUsKillRoleButton<WitchRole, PlayerCo
         }
 
         if (player.IsImpostorAligned() && target.IsImpostorAligned())
+        {
+            return false;
+        }
+
+        // Cannot kill shielded players
+        if (target.HasModifier<BaseShieldModifier>() || target.HasModifier<FirstDeadShield>())
         {
             return false;
         }
