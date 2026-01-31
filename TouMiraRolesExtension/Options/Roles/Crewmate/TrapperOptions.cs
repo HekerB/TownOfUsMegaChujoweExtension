@@ -15,16 +15,16 @@ public sealed class TrapperOptions : AbstractOptionGroup<TrapperRole>
     public float TrapCooldown { get; set; } = 25f;
 
     [ModdedNumberOption("ExtensionOptionTrapperTrappeduration", 0.5f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
-    public float Trappeduration { get; set; } = 4.5f;
+    public float Trappeduration { get; set; } = 4f;
 
     [ModdedNumberOption("ExtensionOptionTrapperArrowDuration", 0.5f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
-    public float ArrowDuration { get; set; } = 5f;
+    public float ArrowDuration { get; set; } = 4.5f;
 
     [ModdedNumberOption("ExtensionOptionTrapperMaxTraps", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
-    public float MaxTraps { get; set; } = 4f;
+    public float MaxTraps { get; set; } = 3f;
 
     [ModdedNumberOption("ExtensionOptionTrapperTrapRoundsLast", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
-    public float TrapRoundsLast { get; set; } = 0f;
+    public float TrapRoundsLast { get; set; } = 3f;
 
     [ModdedToggleOption("ExtensionOptionTrapperGetMoreFromTasks")]
     public bool GetMoreFromTasks { get; set; } = true;

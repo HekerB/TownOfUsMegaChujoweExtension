@@ -56,10 +56,10 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
         new("ExtensionOptionInjectorEffectDurationType", InjectorEffectDurationType.SetTime, EffectDurationTypeValues);
 
     [ModdedNumberOption("ExtensionOptionInjectorEffectDuration", 5f, 200f, 5f, MiraNumberSuffixes.Seconds)]
-    public float EffectDuration { get; set; } = 30f;
+    public float EffectDuration { get; set; } = 45f;
 
     [ModdedNumberOption("ExtensionOptionInjectorInitialUses", 0, 15)]
-    public float InitialUses { get; set; } = 3f;
+    public float InitialUses { get; set; } = 4f;
 
     [ModdedNumberOption("ExtensionOptionInjectorUsesPerKill", 0, 5)]
     public float UsesPerKill { get; set; } = 1f;
@@ -90,7 +90,7 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
 
     // Individual chance options for each effect type - only the selected one is visible
     public ModdedNumberOption ChanceInvertedControlsOption { get; } =
-        new("ExtensionOptionInjectorChanceInvertedControls", 20f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
+        new("ExtensionOptionInjectorChanceInvertedControls", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
         {
             Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.InvertedControls
         };
@@ -108,7 +108,7 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
         };
 
     public ModdedNumberOption ChanceVeryLowVisionOption { get; } =
-        new("ExtensionOptionInjectorChanceVeryLowVision", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
+        new("ExtensionOptionInjectorChanceVeryLowVision", 50f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
         {
             Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.VeryLowVision
         };
@@ -120,25 +120,25 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
         };
 
     public ModdedNumberOption ChanceNoVentOption { get; } =
-        new("ExtensionOptionInjectorChanceNoVent", 20f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
+        new("ExtensionOptionInjectorChanceNoVent", 60f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
         {
             Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.NoVent
         };
 
     public ModdedNumberOption ChanceNoUseOption { get; } =
-        new("ExtensionOptionInjectorChanceNoUse", 20f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
+        new("ExtensionOptionInjectorChanceNoUse", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
         {
             Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.NoUse
         };
 
     public ModdedNumberOption ChanceNoReportOption { get; } =
-        new("ExtensionOptionInjectorChanceNoReport", 20f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
+        new("ExtensionOptionInjectorChanceNoReport", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
         {
             Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.NoReport
         };
 
     public ModdedNumberOption ChanceNauseaOption { get; } =
-        new("ExtensionOptionInjectorChanceNausea", 40f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
+        new("ExtensionOptionInjectorChanceNausea", 50f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
         {
             Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.Nausea
         };

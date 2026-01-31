@@ -14,13 +14,13 @@ public sealed class LawyerOptions : AbstractOptionGroup<LawyerRole>
 
     [ModdedEnumOption("ExtensionOptionLawyerWinMode", typeof(LawyerWinMode),
         ["ExtensionOptionLawyerWinModeEnumWithClient", "ExtensionOptionLawyerWinModeEnumStealWin"])]
-    public LawyerWinMode WinMode { get; set; } = LawyerWinMode.StealWin;
+    public LawyerWinMode WinMode { get; set; } = LawyerWinMode.WinWithClient;
 
     [ModdedNumberOption("ExtensionOptionLawyerKillerClientChance", 0f, 100f, 10f, MiraNumberSuffixes.Percent)]
-    public float KillerClientChance { get; set; } = 80f;
+    public float KillerClientChance { get; set; } = 70f;
 
     public ModdedEnumOption OnClientDeath { get; } =
-    new("ExtensionOptionLawyerBecomesClientDeath", (int)BecomeOptions.Jester, typeof(BecomeOptions),
+    new("ExtensionOptionLawyerBecomesClientDeath", (int)BecomeOptions.Crew, typeof(BecomeOptions),
         ["CrewmateKeyword", "TouRoleAmnesiac", "TouRoleSurvivor", "TouRoleMercenary", "TouRoleJester"])
     {
         Visible = () => !OptionGroupSingleton<LawyerOptions>.Instance.DieOnClientDeath,

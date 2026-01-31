@@ -38,7 +38,7 @@ public sealed class UniversalModifierOptions : AbstractOptionGroup
     ];
 
     public ModdedEnumOption<CluelessCensorType> CluelessCensorType { get; } =
-        new("ExtensionModifierCluelessCensorType", CluelessCensorTypeEnum.QuestionMarks, CluelessCensorTypeValues)
+        new("ExtensionModifierCluelessCensorType", CluelessCensorTypeEnum.Asterisks, CluelessCensorTypeValues)
         {
             Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.CluelessAmount > 0
         };

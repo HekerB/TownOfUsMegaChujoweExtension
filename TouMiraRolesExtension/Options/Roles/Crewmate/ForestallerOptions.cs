@@ -19,7 +19,7 @@ public sealed class ForestallerOptions : AbstractOptionGroup<ForestallerRole>
 
     [ModdedEnumOption("ExtensionOptionForestallerRevealTiming", typeof(ForestallerRevealTiming),
         ["ExtensionOptionForestallerRevealTimingEnumNextMeeting", "ExtensionOptionForestallerRevealTimingEnumInstant"])]
-    public ForestallerRevealTiming RevealTiming { get; set; } = ForestallerRevealTiming.NextMeeting;
+    public ForestallerRevealTiming RevealTiming { get; set; } = ForestallerRevealTiming.Instant;
 }
 
 public enum ForestallerRevealTiming

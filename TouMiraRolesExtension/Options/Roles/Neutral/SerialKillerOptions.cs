@@ -19,17 +19,17 @@ public sealed class SerialKillerOptions : AbstractOptionGroup<SerialKillerRole>
          "ExtensionOptionSerialKillerVentKillTargetsEnumImpNK",
          "ExtensionOptionSerialKillerVentKillTargetsEnumImpNeutrals",
          "ExtensionOptionSerialKillerVentKillTargetsEnumAny"])]
-    public VentKillTargets VentKillTargets { get; set; } = VentKillTargets.ImpNK;
+    public VentKillTargets VentKillTargets { get; set; } = VentKillTargets.Any;
 
     [ModdedToggleOption("ExtensionOptionSerialKillerManiacMode")]
-    public bool ManiacMode { get; set; } = false;
+    public bool ManiacMode { get; set; } = true;
 
-    public ModdedNumberOption ManiacTimer { get; } = new("ExtensionOptionSerialKillerManiacTimer", 60f, 5f, 60f, 5f, MiraNumberSuffixes.Seconds, "0.0")
+    public ModdedNumberOption ManiacTimer { get; } = new("ExtensionOptionSerialKillerManiacTimer", 40f, 5f, 60f, 5f, MiraNumberSuffixes.Seconds, "0.0")
     {
         Visible = () => OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacMode
     };
 
-    public ModdedNumberOption ManiacCooldown { get; } = new("ExtensionOptionSerialKillerManiacCooldown", 15f, 0f, 30f, 0.5f, MiraNumberSuffixes.Seconds, "0.0")
+    public ModdedNumberOption ManiacCooldown { get; } = new("ExtensionOptionSerialKillerManiacCooldown", 19f, 0f, 30f, 0.5f, MiraNumberSuffixes.Seconds, "0.0")
     {
         Visible = () => OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacMode
     };

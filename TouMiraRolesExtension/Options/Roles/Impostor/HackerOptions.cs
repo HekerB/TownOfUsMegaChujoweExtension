@@ -27,19 +27,19 @@ public sealed class HackerOptions : AbstractOptionGroup<HackerRole>
     public bool MoveWithDevice { get; set; } = true;
 
     [ModdedNumberOption("ExtensionOptionHackerInitialJamCharges", 0f, 10f, 1f, MiraNumberSuffixes.None)]
-    public float InitialJamCharges { get; set; } = 0f;
+    public float InitialJamCharges { get; set; } = 3f;
 
     [ModdedNumberOption("ExtensionOptionHackerJamChargesPerKill", 0f, 5f, 1f, MiraNumberSuffixes.None)]
     public float JamChargesPerKill { get; set; } = 1f;
 
     [ModdedNumberOption("ExtensionOptionHackerJamMaxCharges", 1f, 10f, 1f, MiraNumberSuffixes.None)]
-    public float JamMaxCharges { get; set; } = 3f;
+    public float JamMaxCharges { get; set; } = 6f;
 
     [ModdedNumberOption("ExtensionOptionHackerJamCooldown", 10f, 35f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float JamCooldownSeconds { get; set; } = 20f;
+    public float JamCooldownSeconds { get; set; } = 25f;
 
     [ModdedNumberOption("ExtensionOptionHackerJamDuration", 5f, 20f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float JamDurationSeconds { get; set; } = 10f;
+    public float JamDurationSeconds { get; set; } = 15f;
 
     public bool JamEnabled =>
         JamMaxCharges > 0f && (SimpleModeJamOnly || JamChargesPerKill > 0f || InitialJamCharges > 0f);
