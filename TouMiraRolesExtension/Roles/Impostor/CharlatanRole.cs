@@ -62,6 +62,12 @@ public sealed class CharlatanRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         }
     }
 
+    public void LobbyStart()
+    {
+        CharlatanConcealSystem.ClearAll();
+        CharlatanDeceiveSystem.ClearAll();
+    }
+
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);

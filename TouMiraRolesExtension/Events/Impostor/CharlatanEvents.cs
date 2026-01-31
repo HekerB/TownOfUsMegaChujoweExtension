@@ -17,6 +17,25 @@ namespace TouMiraRolesExtension.Events.Impostor;
 public static class CharlatanEvents
 {
     [RegisterEvent]
+    public static void RoundStartEventHandler(RoundStartEvent @event)
+    {
+        if (!@event.TriggeredByIntro)
+        {
+            return;
+        }
+
+        CharlatanConcealSystem.ClearAll();
+        CharlatanDeceiveSystem.ClearAll();
+    }
+
+    [RegisterEvent]
+    public static void GameEndEventHandler(GameEndEvent @event)
+    {
+        CharlatanConcealSystem.ClearAll();
+        CharlatanDeceiveSystem.ClearAll();
+    }
+
+    [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         var source = @event.Source;
@@ -53,4 +72,3 @@ public static class CharlatanEvents
         }
     }
 }
-
