@@ -35,6 +35,10 @@ public sealed class TrapperOptions : AbstractOptionGroup<TrapperRole>
     [ModdedEnumOption("ExtensionOptionTrapperTrapTargets", typeof(VentTrapTargets),
         ["ExtensionOptionTrapperTrapTargetsEnumImpostors", "ExtensionOptionTrapperTrapTargetsEnumImpostorsAndNeutrals", "ExtensionOptionTrapperTrapTargetsEnumAll"])]
     public VentTrapTargets TrapTargets { get; set; } = VentTrapTargets.ImpostorsAndNeutrals;
+
+    [ModdedEnumOption("ExtensionOptionTrapperArrowTarget", typeof(TrapperArrowTarget),
+        ["ExtensionOptionTrapperArrowTargetEnumVent", "ExtensionOptionTrapperArrowTargetEnumPerson"])]
+    public TrapperArrowTarget ArrowTarget { get; set; } = TrapperArrowTarget.Vent;
 }
 
 public enum VentTrapTargets
@@ -42,4 +46,10 @@ public enum VentTrapTargets
     Impostors,
     ImpostorsAndNeutrals,
     All
+}
+
+public enum TrapperArrowTarget
+{
+    Vent,
+    Person
 }

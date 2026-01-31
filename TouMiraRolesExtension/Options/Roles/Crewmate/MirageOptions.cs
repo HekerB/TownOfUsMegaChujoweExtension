@@ -29,10 +29,20 @@ public sealed class MirageOptions : AbstractOptionGroup<MirageRole>
 
     [ModdedNumberOption("ExtensionOptionMirageArrowTime", 0f, 15f, 0.5f, MiraNumberSuffixes.Seconds, "0", true)]
     public float ArrowTime { get; set; } = 5f;
+
+    [ModdedEnumOption("ExtensionOptionMirageArrowTarget", typeof(MirageArrowTarget),
+        ["ExtensionOptionMirageArrowTargetEnumMirage", "ExtensionOptionMirageArrowTargetEnumInteractor"])]
+    public MirageArrowTarget ArrowTarget { get; set; } = MirageArrowTarget.Mirage;
 }
 
 public enum MirageDecoyType
 {
     Mirage,
     RandomPlayer
+}
+
+public enum MirageArrowTarget
+{
+    Mirage,
+    Interactor
 }

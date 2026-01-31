@@ -35,6 +35,9 @@
   <string name="ExtensionOptionTrapperTrapTargetsEnumImpostors">Impostors</string>
   <string name="ExtensionOptionTrapperTrapTargetsEnumImpostorsAndNeutrals">Impostors and Neutrals</string>
   <string name="ExtensionOptionTrapperTrapTargetsEnumAll">All</string>
+  <string name="ExtensionOptionTrapperArrowTarget">Arrow Target</string>
+  <string name="ExtensionOptionTrapperArrowTargetEnumVent">Vent</string>
+  <string name="ExtensionOptionTrapperArrowTargetEnumPerson">Person</string>
 
   <!-- Clueless Modifier -->
   <string name="ExtensionModifierClueless">Clueless</string>
@@ -215,6 +218,9 @@
   <string name="ExtensionOptionMirageDecoyTypeEnumMirage">Mirage</string>
   <string name="ExtensionOptionMirageDecoyTypeEnumRandomPlayer">Random Player</string>
   <string name="ExtensionOptionMirageArrowTime">Arrow Time</string>
+  <string name="ExtensionOptionMirageArrowTarget">Arrow Target</string>
+  <string name="ExtensionOptionMirageArrowTargetEnumMirage">Mirage</string>
+  <string name="ExtensionOptionMirageArrowTargetEnumInteractor">Interactor</string>
 
   <!-- Mirage Notifications -->
   <string name="ExtensionRoleMirageInteractorTriggered">You interacted with a decoy!</string>
