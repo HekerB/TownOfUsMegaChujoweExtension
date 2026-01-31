@@ -27,4 +27,7 @@ public static class TouExtensionImpAssets
 
     public static LoadableAsset<Sprite> InjectorInjectButtonSprite { get; } = new LoadableResourceAsset("TouMiraRolesExtension.Resources.Buttons.Inject_Button.png");
     public static LoadableAsset<Sprite> InjectorRole { get; } = new LoadableResourceAsset("TouMiraRolesExtension.Resources.Injector_Role_Icon.png", 200f);
+    public static LoadableAsset<Sprite> CharlatanRole { get; } = new LoadableResourceAsset("TouMiraRolesExtension.Resources.Charlatan_Role_Icon.png", 200f);
+    public static LoadableAsset<Sprite> DeceiveButtonSprite { get; } = new LoadableResourceAsset("TouMiraRolesExtension.Resources.Buttons.DecieveButton.png");
+    public static LoadableAsset<Sprite> ConcealButtonSprite { get; } = new LoadableResourceAsset("TouMiraRolesExtension.Resources.Buttons.ConcealButton.png");
 }

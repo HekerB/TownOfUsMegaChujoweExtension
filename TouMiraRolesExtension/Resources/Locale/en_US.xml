@@ -325,4 +325,22 @@
   <string name="ExtensionInjectorNotificationWoreOffSpeedBoost">The speed boost has worn off.</string>
   <string name="ExtensionInjectorNotificationWoreOffVisionBoost">Your vision has returned to normal.</string>
   <string name="ExtensionInjectorNotificationWoreOffRegeneration">The regeneration effect has ended.</string>
+
+  <!-- Charlatan Role -->
+  <string name="ExtensionRoleCharlatan">Charlatan</string>
+  <string name="ExtensionRoleCharlatanIntroBlurb">Manipulate body reports to your advantage.</string>
+  <string name="ExtensionRoleCharlatanTabDescription">Use Deceive to report bodies you've killed from any distance.\%nl\%Use Conceal to reduce the report range of nearby bodies.</string>
+  <string name="ExtensionRoleCharlatanWikiDescription">The Charlatan is an Impostor Support role that manipulates body reports. Deceive allows you to report bodies you've killed from any distance for a limited time after killing. Conceal reduces the report range of nearby bodies, but requires you to stay near the body for the duration.</string>
+  <string name="ExtensionRoleCharlatanDeceive">Deceive</string>
+  <string name="ExtensionRoleCharlatanDeceiveWikiDescription">Report the body you killed from any distance, regardless of range or line of sight. Available for a limited time after killing.</string>
+  <string name="ExtensionRoleCharlatanConceal">Conceal</string>
+  <string name="ExtensionRoleCharlatanConcealWikiDescription">Reduce the report range of nearby bodies. You must stay near the body for the duration to successfully conceal it.</string>
+
+  <!-- Charlatan Options -->
+  <string name="ExtensionOptionCharlatanDeceiveBaseDuration">Deceive Base Duration</string>
+  <string name="ExtensionOptionCharlatanDeceiveDurationIncreasePerKill">Deceive Duration Increase Per Kill</string>
+  <string name="ExtensionOptionCharlatanConcealUses">Conceal Uses</string>
+  <string name="ExtensionOptionCharlatanConcealChargesPerKill">Conceal Charges Per Kill</string>
+  <string name="ExtensionOptionCharlatanConcealReportRange">Conceal Report Range</string>
+  <string name="ExtensionOptionCharlatanConcealChannelDuration">Conceal Channel Duration</string>
 </resources>
