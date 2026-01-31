@@ -7,6 +7,7 @@ namespace TouMiraRolesExtension.Patches;
 public static class HackerJamPatches
 {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.AreCommsAffected))]
+    [HarmonyPrefix]
     [HarmonyPostfix]
     public static void PlayerControlAreCommsAffectedPostfix(ref bool __result)
     {

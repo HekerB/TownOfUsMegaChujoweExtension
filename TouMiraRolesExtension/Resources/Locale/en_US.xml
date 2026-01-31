@@ -342,5 +342,9 @@
   <string name="ExtensionOptionCharlatanConcealUses">Conceal Uses</string>
   <string name="ExtensionOptionCharlatanConcealChargesPerKill">Conceal Charges Per Kill</string>
   <string name="ExtensionOptionCharlatanConcealReportRange">Conceal Report Range</string>
+  <string name="ExtensionOptionCharlatanConcealReportRangeEnumExtremelyShort">Extremely Short</string>
+  <string name="ExtensionOptionCharlatanConcealReportRangeEnumVeryShort">Very Short</string>
+  <string name="ExtensionOptionCharlatanConcealReportRangeEnumShort">Short</string>
   <string name="ExtensionOptionCharlatanConcealChannelDuration">Conceal Channel Duration</string>
+  <string name="ExtensionOptionCharlatanConcealCooldown">Conceal Cooldown</string>
 </resources>

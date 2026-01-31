@@ -27,8 +27,7 @@ public static class CharlatanConcealSystem
         {
             var bodyId = kvp.Key;
             ConcealedBodies.Remove(bodyId);
-            
-            // Restore transparency when clearing
+
             if (BodyCache.TryGetValue(bodyId, out var body) && body != null)
             {
                 SetBodyAlpha(body, 1f);
@@ -39,9 +38,13 @@ public static class CharlatanConcealSystem
 
     public static void ConcealBody(byte charlatanId, byte bodyId, float channelDuration)
     {
+        if (IsBodyConcealed(bodyId))
+        {
+            return;
+        }
+
         ConcealedBodies[bodyId] = new ConcealedBody(bodyId, charlatanId, Time.time, channelDuration, false);
-        
-        // Cache the body reference
+
         var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == bodyId);
         if (body != null)
         {
@@ -64,22 +67,17 @@ public static class CharlatanConcealSystem
             return false;
         }
 
-        // Check if channeling is complete
         var elapsed = Time.time - concealed.ConcealedAt;
         if (!concealed.ChannelComplete)
         {
-            // Still channeling - check if channel duration has passed
             if (elapsed >= concealed.ChannelDuration)
             {
-                // Channel complete - mark it and keep concealed
                 ConcealedBodies[bodyId] = concealed with { ChannelComplete = true };
                 return true;
             }
-            // Still channeling
             return true;
         }
 
-        // Channel complete - body remains concealed indefinitely (until manually cleared)
         return true;
     }
 
@@ -91,29 +89,37 @@ public static class CharlatanConcealSystem
         }
 
         var options = OptionGroupSingleton<CharlatanOptions>.Instance;
-        // VeryShort: 0.5f (50% of normal distance), Short: 0.75f (75% of normal distance)
-        return options.ConcealReportRange == ReportRangeType.VeryShort ? 0.5f : 0.75f;
+        return options.ConcealReportRange switch
+        {
+            ReportRangeType.ExtremelyShort => 0.3f,
+            ReportRangeType.VeryShort => 0.5f,
+            ReportRangeType.Short => 0.75f,
+            _ => 0.5f
+        };
     }
 
     public static void UpdateBodyTransparency()
     {
         var allBodies = Object.FindObjectsOfType<DeadBody>();
         var options = OptionGroupSingleton<CharlatanOptions>.Instance;
-        
+
         foreach (var body in allBodies)
         {
             if (IsBodyConcealed(body.ParentId))
             {
-                // VeryShort: barely visible (0.1 alpha), Short: more visible (0.3 alpha)
-                var alpha = options.ConcealReportRange == ReportRangeType.VeryShort ? 0.1f : 0.3f;
+                var alpha = options.ConcealReportRange switch
+                {
+                    ReportRangeType.ExtremelyShort => 0.08f,
+                    ReportRangeType.VeryShort => 0.15f,
+                    ReportRangeType.Short => 0.4f,
+                    _ => 0.1f
+                };
                 SetBodyAlpha(body, alpha);
-                
-                // Update cache
+
                 BodyCache[body.ParentId] = body;
             }
             else if (BodyCache.ContainsKey(body.ParentId))
             {
-                // Restore transparency if no longer concealed
                 SetBodyAlpha(body, 1f);
                 BodyCache.Remove(body.ParentId);
             }
@@ -127,7 +133,6 @@ public static class CharlatanConcealSystem
             return;
         }
 
-        // Set alpha for all sprite renderers in the body
         foreach (var sr in body.GetComponentsInChildren<SpriteRenderer>(true))
         {
             if (sr == null)
@@ -140,7 +145,6 @@ public static class CharlatanConcealSystem
             sr.color = c;
         }
 
-        // Set alpha for all text components
         foreach (var tmp in body.GetComponentsInChildren<TMP_Text>(true))
         {
             if (tmp == null)
@@ -154,4 +158,3 @@ public static class CharlatanConcealSystem
         }
     }
 }
-

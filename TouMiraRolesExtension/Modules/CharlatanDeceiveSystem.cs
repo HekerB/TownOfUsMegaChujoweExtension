@@ -1,4 +1,3 @@
-using TouMiraRolesExtension.Options.Roles.Impostor;
 using UnityEngine;
 
 namespace TouMiraRolesExtension.Modules;
@@ -59,4 +58,3 @@ public static class CharlatanDeceiveSystem
         return Mathf.Max(0f, state.ExpiresAt - Time.time);
     }
 }
-

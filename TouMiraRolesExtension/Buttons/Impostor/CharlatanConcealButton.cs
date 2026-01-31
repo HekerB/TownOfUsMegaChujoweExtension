@@ -9,8 +9,6 @@ using TouMiraRolesExtension.Modules;
 using TouMiraRolesExtension.Options.Roles.Impostor;
 using TouMiraRolesExtension.Roles.Impostor;
 using TownOfUs.Buttons;
-using TownOfUs.Modifiers;
-using TownOfUs.Modules;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -25,7 +23,7 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
     public override string Name => TouLocale.GetParsed("ExtensionRoleCharlatanConceal", "Conceal");
     public override BaseKeybind Keybind => Keybinds.TertiaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Charlatan;
-    public override float Cooldown => 0.01f;
+    public override float Cooldown => Math.Clamp(OptionGroupSingleton<CharlatanOptions>.Instance.ConcealCooldown + MapCooldown, 5f, 120f);
     public override float EffectDuration => OptionGroupSingleton<CharlatanOptions>.Instance.ConcealChannelDuration;
     public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.ConcealButtonSprite;
     public override float Distance => 2f;
@@ -67,6 +65,11 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
         }
 
         if (UsesLeft <= 0 && LimitedUses)
+        {
+            return false;
+        }
+
+        if (CharlatanConcealSystem.IsBodyConcealed(target.ParentId))
         {
             return false;
         }
@@ -129,8 +132,7 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
         Timer = EffectDuration;
         Button?.SetDisabled();
 
-        CharlatanRole.RpcCharlatanConceal(player, Target.ParentId);
-
+        // Don't call RPC yet - wait for channeling to complete
         Coroutines.Start(CoChannelConceal(Target.ParentId));
     }
 
@@ -139,6 +141,8 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
         var player = PlayerControl.LocalPlayer;
         if (player == null)
         {
+            _isChanneling = false;
+            EffectActive = false;
             yield break;
         }
 
@@ -150,6 +154,7 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
         {
             if (player.HasDied() || MeetingHud.Instance != null)
             {
+                // Channel cancelled - don't conceal
                 _isChanneling = false;
                 EffectActive = false;
                 yield break;
@@ -158,6 +163,7 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
             var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == bodyId);
             if (body == null)
             {
+                // Body disappeared - don't conceal
                 _isChanneling = false;
                 EffectActive = false;
                 yield break;
@@ -166,6 +172,7 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
             var distance = Vector2.Distance(player.GetTruePosition(), body.TruePosition);
             if (distance > Distance)
             {
+                // Moved too far - cancel channel and don't conceal
                 _isChanneling = false;
                 EffectActive = false;
                 yield break;
@@ -175,17 +182,26 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
             yield return null;
         }
 
+        var finalBody = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == bodyId);
+        if (finalBody != null && player != null && !player.HasDied())
+        {
+            var finalDistance = Vector2.Distance(player.GetTruePosition(), finalBody.TruePosition);
+            if (finalDistance <= Distance)
+            {
+                CharlatanRole.RpcCharlatanConceal(player, bodyId);
+            }
+        }
+
         _isChanneling = false;
         EffectActive = false;
-
-        // Mark channel as complete - conceal will now persist
-        CharlatanConcealSystem.MarkChannelComplete(bodyId);
 
         if (UsesLeft > 0 && LimitedUses)
         {
             UsesLeft--;
             SetUses(UsesLeft);
         }
+
+        ResetCooldownAndOrEffect();
     }
 
     public override void OnEffectEnd()
@@ -194,4 +210,3 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
         _isChanneling = false;
     }
 }
-

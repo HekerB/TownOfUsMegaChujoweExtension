@@ -1,11 +1,13 @@
 using HarmonyLib;
 using TouMiraRolesExtension.Modules;
+using TouMiraRolesExtension.Options.Roles.Impostor;
 using TouMiraRolesExtension.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using System.Collections.Generic;
 using System.Linq;
+using MiraAPI.GameOptions;
 
 namespace TouMiraRolesExtension.Patches.Charlatan;
 
@@ -46,62 +48,138 @@ public static class CharlatanReportPatches
         return true;
     }
 
-    // Patch MaxReportDistance to reduce it when there are concealed bodies nearby
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MaxReportDistance), MethodType.Getter)]
-    [HarmonyPostfix]
-    public static void MaxReportDistanceGetterPostfix(PlayerControl __instance, ref float __result)
+    // Patch DeadBody.OnClick to check concealed distance
+    [HarmonyPatch(typeof(DeadBody), nameof(DeadBody.OnClick))]
+    [HarmonyPrefix]
+    public static bool DeadBodyOnClickPrefix(DeadBody __instance)
     {
-        // Check all nearby bodies to see if any are concealed
-        var allBodies = Object.FindObjectsOfType<DeadBody>();
-        var playerPos = (Vector2)__instance.transform.position;
-        var originalDistance = __result;
-        var minConcealedDistance = originalDistance;
-        var foundConcealed = false;
-
-        foreach (var body in allBodies)
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null || localPlayer.Data.IsDead)
         {
-            if (body == null || body.Reported)
+            return true;
+        }
+
+        if (__instance.Reported || !GameManager.Instance.CanReportBodies())
+        {
+            return false;
+        }
+
+        if (Minigame.Instance)
+        {
+            return false;
+        }
+
+        var localPosition = localPlayer.GetTruePosition();
+        var offset = new Vector2(-0.2f, -0.25f);
+        var bodyPosition = __instance.TruePosition + offset;
+        var distance = Vector2.Distance(bodyPosition, localPosition);
+        var reportable = false;
+
+        var concealed = CharlatanConcealSystem.IsBodyConcealed(__instance.ParentId);
+        var concealedRangeMultiplier = CharlatanConcealSystem.GetConcealedReportRange(__instance.ParentId);
+        var concealRange = concealedRangeMultiplier > 0f ? localPlayer.MaxReportDistance * concealedRangeMultiplier : localPlayer.MaxReportDistance;
+        var blocked = PhysicsHelpers.AnythingBetween(localPosition, __instance.TruePosition, Constants.ShipAndObjectsMask, false);
+
+        if (distance < 0.5f)
+        {
+            reportable = true;
+        }
+        else if (!blocked)
+        {
+            if (concealed && distance < concealRange)
+            {
+                reportable = true;
+            }
+
+            if (!concealed && distance < localPlayer.MaxReportDistance)
+            {
+                reportable = true;
+            }
+        }
+
+        if (reportable)
+        {
+            __instance.Reported = true;
+            var bodyPlayer = MiscUtils.PlayerById(__instance.ParentId);
+            if (bodyPlayer != null)
+            {
+                localPlayer.CmdReportDeadBody(bodyPlayer.Data);
+            }
+        }
+
+        return false; // Skip original method
+    }
+
+    // Patch HudManager.Update to update report button visibility
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    [HarmonyPostfix]
+    public static void HudManagerUpdatePostfix(HudManager __instance)
+    {
+        CharlatanConcealSystem.UpdateBodyTransparency();
+        UpdateReportButton(__instance);
+    }
+
+    private static void UpdateReportButton(HudManager __instance)
+    {
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null || localPlayer.Data.IsDead)
+        {
+            return;
+        }
+
+        var truePosition = localPlayer.GetTruePosition();
+        var offset = new Vector2(-0.2f, -0.25f);
+
+        if (Minigame.Instance)
+        {
+            __instance.ReportButton.SetActive(false);
+            return;
+        }
+
+        var reportable = false;
+
+        foreach (var collider2D in Physics2D.OverlapCircleAll(truePosition, localPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+        {
+            if (collider2D.tag != "DeadBody")
             {
                 continue;
             }
 
-            if (!CharlatanConcealSystem.IsBodyConcealed(body.ParentId))
+            if (!reportable)
             {
-                continue;
-            }
-
-            var bodyPos = (Vector2)body.transform.position;
-            var distance = Vector2.Distance(playerPos, bodyPos);
-
-            // If this concealed body is within normal report range, we need to reduce MaxReportDistance
-            // so that only bodies within the reduced distance can be reported
-            if (distance <= originalDistance)
-            {
-                foundConcealed = true;
-                var concealedRange = CharlatanConcealSystem.GetConcealedReportRange(body.ParentId);
-                var effectiveDistance = originalDistance * concealedRange;
-                
-                // Track the minimum effective distance - this ensures concealed bodies require closer proximity
-                if (effectiveDistance < minConcealedDistance)
+                var component = collider2D.GetComponent<DeadBody>();
+                if (component == null || component.Reported)
                 {
-                    minConcealedDistance = effectiveDistance;
+                    continue;
+                }
+
+                var pos = component.TruePosition + offset;
+                var distance = Vector2.Distance(pos, truePosition);
+                var concealed = CharlatanConcealSystem.IsBodyConcealed(component.ParentId);
+                var concealedRangeMultiplier = CharlatanConcealSystem.GetConcealedReportRange(component.ParentId);
+                var bodyConcealRange = concealedRangeMultiplier > 0f ? localPlayer.MaxReportDistance * concealedRangeMultiplier : localPlayer.MaxReportDistance;
+                var blocked = PhysicsHelpers.AnythingBetween(truePosition, component.TruePosition, Constants.ShipAndObjectsMask, false);
+
+                if (distance < 0.5f)
+                {
+                    reportable = true;
+                }
+                else if (!blocked)
+                {
+                    if (concealed && distance < bodyConcealRange)
+                    {
+                        reportable = true;
+                    }
+
+                    if (!concealed && distance < localPlayer.MaxReportDistance)
+                    {
+                        reportable = true;
+                    }
                 }
             }
         }
 
-        // If there are concealed bodies in range, reduce MaxReportDistance
-        // This makes it so you need to be closer to report any body when concealed bodies are nearby
-        if (foundConcealed)
-        {
-            __result = minConcealedDistance;
-        }
-    }
-
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    [HarmonyPostfix]
-    public static void HudManagerUpdatePostfix()
-    {
-        CharlatanConcealSystem.UpdateBodyTransparency();
+        __instance.ReportButton.SetActive(reportable);
     }
 }
 

@@ -7,7 +7,6 @@ using TouMiraRolesExtension.Assets;
 using TouMiraRolesExtension.Modules;
 using TouMiraRolesExtension.Networking;
 using TouMiraRolesExtension.Options.Roles.Impostor;
-using TownOfUs.Assets;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
@@ -93,4 +92,3 @@ public sealed class CharlatanRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         CharlatanConcealSystem.ConcealBody(charlatan.PlayerId, bodyId, options.ConcealChannelDuration);
     }
 }
-
