@@ -15,6 +15,9 @@ public sealed class ScavengerOptions : AbstractOptionGroup<ScavengerRole>
     [ModdedNumberOption("ExtensionOptionScavengerEatCooldown", 5f, 120f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float EatCooldown { get; set; } = 17.5f;
 
+    [ModdedNumberOption("ExtensionOptionScavengerEatDuration", 0.5f, 10f, 0.1f, MiraNumberSuffixes.Seconds)]
+    public float EatDuration { get; set; } = 1.5f;
+
     [ModdedNumberOption("ExtensionOptionScavengerBodiesToWin", 1f, 15f, 1f, MiraNumberSuffixes.None)]
     public float BodiesToWin { get; set; } = 3f;
 
