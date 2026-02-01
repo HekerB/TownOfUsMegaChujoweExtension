@@ -2,10 +2,12 @@ using HarmonyLib;
 using MiraAPI.Modifiers;
 using TouMiraRolesExtension.Modifiers.Universal;
 using TouMiraRolesExtension.Options.Modifiers;
+using UnityEngine;
 
 namespace TouMiraRolesExtension.Patches.Spiteful;
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
+[HarmonyPriority(Priority.Last)]
 public static class SpitefulVisionPatch
 {
     public static void Postfix(ShipStatus __instance, NetworkedPlayerInfo player, ref float __result)
@@ -20,7 +22,7 @@ public static class SpitefulVisionPatch
             var mod = player.Object.GetModifier<SpitefulEffectModifier>();
             if (mod != null && mod.EffectType == SpitefulEffectType.LowerVision)
             {
-                __result *= 0.75f;
+                __result *= mod.VisionPerc;
             }
         }
     }

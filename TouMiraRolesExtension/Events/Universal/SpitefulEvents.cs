@@ -1,15 +1,79 @@
+using System;
+using System.Collections;
+using System.Linq;
 using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.GameOptions;
+using MiraAPI.Hud;
 using MiraAPI.Modifiers;
+using MiraAPI.Utilities;
+using Reactor.Utilities;
+using Reactor.Utilities.Extensions;
 using TouMiraRolesExtension.Modifiers.Universal;
 using TouMiraRolesExtension.Options.Modifiers;
+using TownOfUs.Buttons;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
+using TownOfUs.Utilities.Appearances;
+using UnityEngine;
 
 namespace TouMiraRolesExtension.Events.Universal;
 
 public static class SpitefulEvents
 {
+    private static readonly Dictionary<byte, HashSet<byte>> SpitefulVoters = new();
+
+    [RegisterEvent]
+    public static void RoundStartEventHandler(RoundStartEvent @event)
+    {
+        SpitefulVoters.Clear();
+    }
+
+    [RegisterEvent]
+    public static void StartMeetingEventHandler(StartMeetingEvent @event)
+    {
+        // Handle round-based duration for Spiteful effects
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.HasDied() || !player.HasModifier<SpitefulEffectModifier>())
+            {
+                continue;
+            }
+
+            var mod = player.GetModifier<SpitefulEffectModifier>();
+            if (mod != null && mod.DurationType == SpitefulDurationType.NextRounds)
+            {
+                mod.DecrementRounds();
+                if (mod.RoundsRemaining <= 0)
+                {
+                    player.RemoveModifier(mod);
+                }
+            }
+        }
+    }
+
+    [RegisterEvent]
+    public static void HandleVoteEventHandler(HandleVoteEvent @event)
+    {
+        var votingPlayer = @event.Player;
+        var suspectPlayer = @event.TargetPlayerInfo;
+
+        if (suspectPlayer?.Object == null || !suspectPlayer.Object.HasModifier<SpitefulModifier>())
+        {
+            return;
+        }
+
+        if (!SpitefulVoters.TryGetValue(suspectPlayer.Object.PlayerId, out var voters))
+        {
+            voters = new HashSet<byte>();
+            SpitefulVoters[suspectPlayer.Object.PlayerId] = voters;
+        }
+
+        voters.Add(votingPlayer.PlayerId);
+    }
+
     [RegisterEvent]
     public static void EjectionEventHandler(EjectionEvent @event)
     {
@@ -19,35 +83,102 @@ public static class SpitefulEvents
             return;
         }
 
-        if (MeetingHud.Instance == null)
+        if (!SpitefulVoters.TryGetValue(exiled.PlayerId, out var voters) || voters.Count == 0)
         {
             return;
         }
 
-        var options = OptionGroupSingleton<UniversalModifierOptions>.Instance;
+        var options = OptionGroupSingleton<SpitefulModifierOptions>.Instance;
         var effectType = options.SpitefulEffectType.Value;
         var durationType = options.SpitefulDurationType.Value;
         var rounds = (int)options.SpitefulRoundCount.Value;
-        var impact = options.SpitefulImpact;
+        var impact = options.SpitefulImpact.Value;
 
-        foreach (var state in MeetingHud.Instance.playerStates)
+        var effectDescription = GetEffectDescription(effectType, impact);
+        var spitefulName = TouLocale.Get("ExtensionModifierSpiteful");
+        var spitefulColor = (Color)new Color32(255, 100, 0, 255);
+
+        var exiledName = exiled.Data.PlayerName;
+        foreach (var voterId in voters.ToList())
         {
-            // VotedFor is the byte ID of the player being voted for
-            if (state.AmDead || state.VotedFor != exiled.PlayerId)
-            {
-                continue;
-            }
-
-            var voter = MiscUtils.PlayerById(state.TargetPlayerId);
-            if (voter != null && !voter.HasDied())
-            {
-                voter.AddModifier(new SpitefulEffectModifier(
-                    effectType,
-                    durationType,
-                    rounds,
-                    impact
-                ));
-            }
+            Coroutines.Start(CoAddSpitefulModifier(voterId, effectType, durationType, rounds, impact, effectDescription, spitefulName, spitefulColor, exiledName));
         }
+
+        SpitefulVoters.Remove(exiled.PlayerId);
+    }
+
+    private static IEnumerator CoAddSpitefulModifier(byte voterId, SpitefulEffectType effectType, SpitefulDurationType durationType, int rounds, float impact, string effectDescription, string spitefulName, Color spitefulColor, string exiledPlayerName)
+    {
+        var voter = MiscUtils.PlayerById(voterId);
+        if (voter == null || voter.HasDied() || voter.Data == null)
+        {
+            yield break;
+        }
+
+        if (voter.HasModifier<SpitefulEffectModifier>())
+        {
+            yield break;
+        }
+
+        var modifier = new SpitefulEffectModifier(
+            effectType,
+            durationType,
+            rounds,
+            impact
+        );
+
+        voter.AddModifier(modifier);
+
+        while (MeetingHud.Instance != null || ExileController.Instance != null)
+        {
+            yield return null;
+        }
+
+        if (effectType == SpitefulEffectType.Slowness)
+        {
+            voter.RawSetAppearance(modifier);
+        }
+
+
+        if (voter.AmOwner)
+        {
+            var notificationText = TouLocale.GetParsed(
+                "ExtensionModifierSpitefulVoterNotification",
+                $"<b>The player you voted for was {spitefulColor.ToTextColor()}{spitefulName}</color>!</b>{Environment.NewLine}<color=#{spitefulColor.ToHtmlStringRGBA()}>{effectDescription}</color>",
+                new Dictionary<string, string>
+                {
+                    { "<spiteful>", $"{spitefulColor.ToTextColor()}{spitefulName}</color>" },
+                    { "<player>", exiledPlayerName },
+                    { "<effect>", effectDescription }
+                });
+
+            var notif = Helpers.CreateAndShowNotification(
+                notificationText,
+                Color.white,
+                new Vector3(0f, 1f, -20f));
+
+            notif.AdjustNotification();
+        }
+    }
+
+    private static string GetEffectDescription(SpitefulEffectType effectType, float impact)
+    {
+        var impactPercent = (int)impact;
+        return effectType switch
+        {
+            SpitefulEffectType.LowerVision => TouLocale.GetParsed(
+                "ExtensionModifierSpitefulEffectLowerVisionDescription",
+                $"Your vision is reduced by {impactPercent}%",
+                new Dictionary<string, string> { { "<impact>", impactPercent.ToString() } }),
+            SpitefulEffectType.Slowness => TouLocale.GetParsed(
+                "ExtensionModifierSpitefulEffectSlownessDescription",
+                $"Your speed is reduced by {impactPercent}%",
+                new Dictionary<string, string> { { "<impact>", impactPercent.ToString() } }),
+            SpitefulEffectType.IncreasedCooldowns => TouLocale.GetParsed(
+                "ExtensionModifierSpitefulEffectIncreasedCooldownsDescription",
+                $"Your ability cooldowns are increased by {impactPercent}%",
+                new Dictionary<string, string> { { "<impact>", impactPercent.ToString() } }),
+            _ => string.Empty
+        };
     }
 }

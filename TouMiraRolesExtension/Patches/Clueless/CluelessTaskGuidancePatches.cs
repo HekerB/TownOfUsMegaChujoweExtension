@@ -121,7 +121,7 @@ public static class CluelessTaskGuidancePatches
         }
         else
         {
-            var censorType = OptionGroupSingleton<UniversalModifierOptions>.Instance.CluelessCensorType.Value;
+            var censorType = OptionGroupSingleton<CluelessModifierOptions>.Instance.CluelessCensorType.Value;
 
             switch (censorType)
             {

@@ -44,12 +44,12 @@ public sealed class CluelessModifier : UniversalGameModifier, IWikiDiscoverable
 
     public override int GetAssignmentChance()
     {
-        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.CluelessChance;
+        return (int)OptionGroupSingleton<CluelessModifierOptions>.Instance.CluelessChance;
     }
 
     public override int GetAmountPerGame()
     {
-        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.CluelessAmount;
+        return (int)OptionGroupSingleton<CluelessModifierOptions>.Instance.CluelessAmount;
     }
 
     public override bool IsModifierValidOn(RoleBehaviour role)

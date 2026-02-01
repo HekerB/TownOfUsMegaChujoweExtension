@@ -1,5 +1,4 @@
 using MiraAPI.Modifiers;
-using MiraAPI.Modifiers.Types;
 using TouMiraRolesExtension.Options.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
@@ -8,11 +7,11 @@ using UnityEngine;
 
 namespace TouMiraRolesExtension.Modifiers.Universal;
 
-public sealed class SpitefulEffectModifier : TimedModifier, IVisualAppearance
+public sealed class SpitefulEffectModifier : BaseModifier, IVisualAppearance
 {
     public override string ModifierName => "Spiteful (Effect)";
-    public override bool HideOnUi => true;
-    public override bool AutoStart => true;
+    public override bool HideOnUi => false;
+    public override bool Unique => true; // Prevent duplicate modifiers
 
     private SpitefulEffectType _effectType;
     private SpitefulDurationType _durationType;
@@ -28,12 +27,31 @@ public sealed class SpitefulEffectModifier : TimedModifier, IVisualAppearance
     }
 
     public SpitefulEffectType EffectType => _effectType;
-    public float ImpactMultiplier => _impact / 100f;
+    public SpitefulDurationType DurationType => _durationType;
+    public int RoundsRemaining => _roundsRemaining;
+    public float ImpactPercent => _impact; // Impact as percentage (15-75%)
+    
+    // Vision multiplier: Honest scaling - 25% impact = 0.75x vision (25% reduction), 75% impact = 0.25x vision (75% reduction)
+    // Formula: 1 - (impact/100), clamped to minimum 0.1x
+    public float VisionPerc => Math.Max(0.1f, 1f - (_impact / 100f));
+    
+    // Speed multiplier: Same honest scaling as vision
+    public float SpeedMultiplier => Math.Max(0.1f, 1f - (_impact / 100f));
+    
+    // Cooldown multiplier: Honest scaling - 25% impact = 1.25x cooldown (25% increase), 75% impact = 1.75x cooldown (75% increase)
+    // Formula: 1 + (impact/100)
+    public float CooldownMultiplier => 1f + (_impact / 100f);
 
-    public override float Duration => -1f; // Managed by rounds or rest of game
+    public void DecrementRounds()
+    {
+        _roundsRemaining--;
+    }
 
     public override void OnActivate()
     {
+        base.OnActivate();
+        
+        // Set appearance for slowness effect
         if (_effectType == SpitefulEffectType.Slowness)
         {
             Player.RawSetAppearance(this);
@@ -46,18 +64,8 @@ public sealed class SpitefulEffectModifier : TimedModifier, IVisualAppearance
         {
             Player?.ResetAppearance(fullReset: true);
         }
-    }
-
-    public override void OnMeetingStart()
-    {
-        if (_durationType == SpitefulDurationType.NextRounds)
-        {
-            _roundsRemaining--;
-            if (_roundsRemaining <= 0)
-            {
-                Player.RemoveModifier(this);
-            }
-        }
+        
+        base.OnDeactivate();
     }
 
     public VisualAppearance GetVisualAppearance()
@@ -65,7 +73,7 @@ public sealed class SpitefulEffectModifier : TimedModifier, IVisualAppearance
         var appearance = Player.GetDefaultAppearance();
         if (_effectType == SpitefulEffectType.Slowness)
         {
-            appearance.Speed = 0.5f; // Configurable? User said "Slowness", I'll use 0.5f as default like other slowness effects
+            appearance.Speed = SpeedMultiplier;
         }
         return appearance;
     }
