@@ -2,6 +2,8 @@ using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
 using MiraAPI.Utilities.Assets;
+using Reactor.Utilities;
+using System.Collections;
 using TouMiraRolesExtension.Assets;
 using TouMiraRolesExtension.Modules;
 using TouMiraRolesExtension.Options.Roles.Neutral;
@@ -16,10 +18,13 @@ namespace TouMiraRolesExtension.Buttons.Neutral;
 
 public sealed class ScavengerEatButton : TownOfUsRoleButton<ScavengerRole, DeadBody>
 {
+    private bool _isChanneling;
+
     public override string Name => TouLocale.GetParsed("ExtensionRoleScavengerEat", "Eat");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Scavenger;
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<ScavengerOptions>.Instance.EatCooldown + MapCooldown, 5f, 120f);
+    public override float EffectDuration => OptionGroupSingleton<ScavengerOptions>.Instance.EatDuration;
     public override LoadableAsset<Sprite> Sprite => TouExtensionAssets.ScavengerEatButtonSprite;
     public override float Distance => 1.5f;
 
@@ -70,14 +75,130 @@ public sealed class ScavengerEatButton : TownOfUsRoleButton<ScavengerRole, DeadB
         return distance <= Distance;
     }
 
-    protected override void OnClick()
+    public override bool CanUse()
     {
-        if (Target == null || PlayerControl.LocalPlayer == null)
+        if (!base.CanUse())
+        {
+            return false;
+        }
+
+        if (_isChanneling)
+        {
+            return true;
+        }
+
+        return true;
+    }
+
+    public override void ClickHandler()
+    {
+        if (!CanClick())
         {
             return;
         }
 
-        ScavengerRole.RpcScavengerEat(PlayerControl.LocalPlayer, Target.ParentId);
+        if (Target == null)
+        {
+            return;
+        }
+
+        if (_isChanneling)
+        {
+            return;
+        }
+
+        OnClick();
+    }
+
+    protected override void OnClick()
+    {
+        var player = PlayerControl.LocalPlayer;
+        if (player == null || Target == null)
+        {
+            return;
+        }
+
+        _isChanneling = true;
+        EffectActive = true;
+        Timer = EffectDuration;
+        Button?.SetDisabled();
+
+        // Don't call RPC yet - wait for channeling to complete
+        Coroutines.Start(CoChannelEat(Target.ParentId));
+    }
+
+    private IEnumerator CoChannelEat(byte bodyId)
+    {
+        var player = PlayerControl.LocalPlayer;
+        if (player == null)
+        {
+            _isChanneling = false;
+            EffectActive = false;
+            yield break;
+        }
+
+        var options = OptionGroupSingleton<ScavengerOptions>.Instance;
+        var channelDuration = options.EatDuration;
+        var elapsed = 0f;
+
+        while (elapsed < channelDuration)
+        {
+            if (player.HasDied() || MeetingHud.Instance != null)
+            {
+                // Channel cancelled - don't eat
+                _isChanneling = false;
+                EffectActive = false;
+                yield break;
+            }
+
+            var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == bodyId);
+            if (body == null)
+            {
+                // Body disappeared - don't eat
+                _isChanneling = false;
+                EffectActive = false;
+                yield break;
+            }
+
+            if (ScavengerSystem.IsBodyEaten(bodyId))
+            {
+                // Body already eaten - cancel channel
+                _isChanneling = false;
+                EffectActive = false;
+                yield break;
+            }
+
+            var distance = Vector2.Distance(player.GetTruePosition(), body.TruePosition);
+            if (distance > Distance)
+            {
+                // Moved too far - cancel channel and don't eat
+                _isChanneling = false;
+                EffectActive = false;
+                yield break;
+            }
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        var finalBody = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == bodyId);
+        if (finalBody != null && player != null && !player.HasDied())
+        {
+            var finalDistance = Vector2.Distance(player.GetTruePosition(), finalBody.TruePosition);
+            if (finalDistance <= Distance && !ScavengerSystem.IsBodyEaten(bodyId))
+            {
+                ScavengerRole.RpcScavengerEat(player, bodyId);
+            }
+        }
+
+        _isChanneling = false;
+        EffectActive = false;
         ResetCooldownAndOrEffect();
+    }
+
+    public override void OnEffectEnd()
+    {
+        base.OnEffectEnd();
+        _isChanneling = false;
     }
 }

@@ -369,6 +369,7 @@
 
   <!-- Scavenger Options -->
   <string name="ExtensionOptionScavengerEatCooldown">Eat Cooldown</string>
+  <string name="ExtensionOptionScavengerEatDuration">Eat Duration</string>
   <string name="ExtensionOptionScavengerBodiesToWin">Number Of Bodies To Win</string>
   <string name="ExtensionOptionScavengerCanVent">Scavenger Can Vent</string>
   <string name="ExtensionOptionScavengerScavengeEnabled">Scavenge Enabled</string>
