@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Patches.Stubs;
@@ -18,7 +19,7 @@ using Object = UnityEngine.Object;
 
 namespace TouMiraRolesExtension.Roles.Impostor;
 
-public sealed class CharlatanRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ISpawnChange
+public sealed class CharlatanRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Trickster;
     public string LocaleKey => "Charlatan";
@@ -34,8 +35,6 @@ public sealed class CharlatanRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     public Color RoleColor => TouExtensionColors.Charlatan;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
-
-    public bool NoSpawn => MiscUtils.SpawnableRoles.Any(x => x is JanitorRole);
 
     public CustomRoleConfiguration Configuration => new(this)
     {
