@@ -6,21 +6,23 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
 
 This extension mod:
 1. **Renames** the existing Trapper role (ground traps that reveal roles) to **Revealer**
-2. **Adds** a new **Trapper** role (vent traps that immobilize players)
-3. **Adds** the **Forestaller** role (crewmate support role that disables sabotages)
-4. **Adds** the **Wraith** role (impostor power role with dash and lantern abilities)
-5. **Adds** the **Lawyer** role (neutral role that protects a client)
-6. **Adds** the **Witch** role (impostor power role that curses players)
-7. **Adds** the **Serial Killer** role (neutral killing role)
-8. **Adds** the **Mirage** role (crewmate support role that places decoys)
-9. **Adds** the **Hacker** role (impostor support role that downloads system information and jams comms)
-10. **Adds** the **Injector** role (impostor support role that injects players with random effects)
-11. **Adds** the **Charlatan** role (impostor support role that manipulates body reports)
-12. **Adds** the **Scavenger** role (neutral evil role that eats dead bodies to win)
-13. **Adds** the **Clueless** modifier
+2. **Renames** the existing Scavenger role (impostor killing role with targets) to **Bloodhound**
+3. **Adds** a new **Trapper** role (vent traps that immobilize players)
+4. **Adds** the **Forestaller** role (crewmate support role that disables sabotages)
+5. **Adds** the **Wraith** role (impostor power role with dash and lantern abilities)
+6. **Adds** the **Lawyer** role (neutral role that protects a client)
+7. **Adds** the **Witch** role (impostor power role that curses players)
+8. **Adds** the **Serial Killer** role (neutral killing role)
+9. **Adds** the **Mirage** role (crewmate support role that places decoys)
+10. **Adds** the **Hacker** role (impostor support role that downloads system information and jams comms)
+11. **Adds** the **Injector** role (impostor support role that injects players with random effects)
+12. **Adds** the **Charlatan** role (impostor support role that manipulates body reports)
+13. **Adds** the **Scavenger** role (neutral evil role that eats dead bodies to win)
+14. **Adds** the **Clueless** modifier
 
 ### Roles
 - **Revealer** (Crewmate, renamed from Trapper): Place traps around the map to reveal roles of players who stay in them long enough.
+- **Bloodhound** (Impostor Killing, renamed from Scavenger): Gets new targets after every kill and when the round starts. If they kill their target, they get a reduced kill cooldown, but if they don't, their cooldown is increased significantly.
 - **Trapper** (Crewmate, new): Place traps on vents that immobilize players who use them.
 - **Forestaller** (Crewmate Support): Complete all tasks to disable sabotages while alive. Revealed in meetings after completing all tasks.
 - **Wraith** (Impostor Power): Dash ability increases movement speed by 75% for a short time. Lantern ability lets you place a hidden marker only you can see; reactivate it to teleport back and briefly turn invisible. If the Lantern expires before returning, it breaks and leaves permanent evidence visible to all players.
