@@ -14,5 +14,8 @@ namespace TouMiraRolesExtension.Assets
         public static LoadableAsset<Sprite> TrapperRoleIcon { get; } = new LoadableResourceAsset("TouMiraRolesExtension.Resources.Trapper_Role_Icon.png", 200f);
         public static LoadableAsset<Sprite> ForestallerRoleIcon { get; } = new LoadableResourceAsset("TouMiraRolesExtension.Resources.Forestaller_Role_Icon.png", 200f);
         public static LoadableAsset<Sprite> CluelessModifierIcon { get; } = new LoadableResourceAsset("TouMiraRolesExtension.Resources.Clueless_Modifier_Icon.png", 200f);
+        public static LoadableAsset<Sprite> ScavengerRoleIcon { get; } = new LoadableResourceAsset("TouMiraRolesExtension.Resources.Scavenger_Icon.png", 200f);
+        public static LoadableAsset<Sprite> ScavengerEatButtonSprite { get; } = new LoadableResourceAsset("TouMiraRolesExtension.Resources.Buttons.Scavenger_Eat_Button.png");
+        public static LoadableAsset<Sprite> ScavengerScavengeButtonSprite { get; } = new LoadableResourceAsset("TouMiraRolesExtension.Resources.Buttons.Scavenger_FindBody_Button.png");
     }
 }

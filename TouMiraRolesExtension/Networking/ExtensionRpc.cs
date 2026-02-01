@@ -26,5 +26,7 @@ public enum ExtensionRpc : uint
     HackerSetJamCharges,
     HackerResetRound,
     InjectorInject,
-    CharlatanConceal
+    CharlatanConceal,
+    ScavengerEat,
+    ScavengerScavenge
 }

@@ -14,4 +14,5 @@ public static class TouExtensionColors
     public static Color Hacker => Palette.ImpostorRed;
     public static Color Injector => Palette.ImpostorRed;
     public static Color Charlatan => Palette.ImpostorRed;
+    public static Color Scavenger => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(139, 69, 19, 255);
 }

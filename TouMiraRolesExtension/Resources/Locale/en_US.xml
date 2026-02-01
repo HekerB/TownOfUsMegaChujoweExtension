@@ -347,4 +347,23 @@
   <string name="ExtensionOptionCharlatanConcealReportRangeEnumShort">Short</string>
   <string name="ExtensionOptionCharlatanConcealChannelDuration">Conceal Channel Duration</string>
   <string name="ExtensionOptionCharlatanConcealCooldown">Conceal Cooldown</string>
+
+  <!-- Scavenger Role -->
+  <string name="ExtensionRoleScavenger">Scavenger</string>
+  <string name="ExtensionRoleScavengerIntroBlurb">Eat dead bodies to win alone.</string>
+  <string name="ExtensionRoleScavengerTabDescription">Eat dead bodies to win alone.</string>
+  <string name="ExtensionRoleScavengerWikiDescription">The Scavenger is a Neutral Evil role whose goal is to eat a set amount of dead bodies. Optionally, the Scavenger can use Scavenge to get arrows pointing to corpses. If the Scavenger's win condition can no longer be met, they become the configured role.</string>
+  <string name="ExtensionRoleScavengerEat">Eat</string>
+  <string name="ExtensionRoleScavengerEatWikiDescription">Eat a nearby dead body. This counts toward your win condition.</string>
+  <string name="ExtensionRoleScavengerScavenge">Scavenge</string>
+  <string name="ExtensionRoleScavengerScavengeWikiDescription">Get arrows pointing to all corpses for a duration. If a corpse is on a different floor on Submerged, the arrow will point to the elevator.</string>
+
+  <!-- Scavenger Options -->
+  <string name="ExtensionOptionScavengerEatCooldown">Eat Cooldown</string>
+  <string name="ExtensionOptionScavengerBodiesToWin">Number Of Bodies To Win</string>
+  <string name="ExtensionOptionScavengerCanVent">Scavenger Can Vent</string>
+  <string name="ExtensionOptionScavengerScavengeEnabled">Scavenge Enabled</string>
+  <string name="ExtensionOptionScavengerScavengeCooldown">Scavenge Cooldown</string>
+  <string name="ExtensionOptionScavengerScavengeDuration">Scavenge Duration</string>
+  <string name="ExtensionOptionScavengerOnLoseBecomes">On Lose, Scavenger Becomes</string>
 </resources>

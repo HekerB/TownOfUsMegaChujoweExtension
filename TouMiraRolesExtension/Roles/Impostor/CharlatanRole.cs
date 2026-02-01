@@ -94,6 +94,12 @@ public sealed class CharlatanRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
             return;
         }
 
+        var bodyPlayer = MiscUtils.PlayerById(bodyId);
+        if (bodyPlayer != null)
+        {
+            MiscUtils.RemovePet(bodyPlayer);
+        }
+
         var options = OptionGroupSingleton<CharlatanOptions>.Instance;
         CharlatanConcealSystem.ConcealBody(charlatan.PlayerId, bodyId, options.ConcealChannelDuration);
     }
