@@ -18,7 +18,7 @@ public sealed class SpitefulModifier : UniversalGameModifier, IWikiDiscoverable
     public override string LocaleKey => "Spiteful";
     public override string ModifierName => TouLocale.Get($"ExtensionModifier{LocaleKey}");
     public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{LocaleKey}IntroBlurb");
-    //public override LoadableAsset<Sprite>? ModifierIcon => TouExtensionAssets.Spiteful;
+   public override LoadableAsset<Sprite>? ModifierIcon => TouExtensionAssets.SpitefulModifierIcon;
 
     public override string GetDescription()
     {
@@ -30,7 +30,6 @@ public sealed class SpitefulModifier : UniversalGameModifier, IWikiDiscoverable
         var options = OptionGroupSingleton<SpitefulModifierOptions>.Instance;
         var description = TouLocale.GetParsed($"ExtensionModifier{LocaleKey}WikiDescription");
         
-        // Always show the punishment effect option in wiki, even if other options are hidden
         var effectTypeName = TouLocale.Get("ExtensionModifierSpitefulEffectType");
         var effectTypeValue = options.SpitefulEffectType.Value switch
         {
@@ -71,7 +70,6 @@ public sealed class SpitefulModifier : UniversalGameModifier, IWikiDiscoverable
         }
         else
         {
-            // Already included, just append the options text
             description += optionsText;
         }
         

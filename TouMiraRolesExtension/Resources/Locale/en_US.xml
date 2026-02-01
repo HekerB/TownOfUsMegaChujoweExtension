@@ -399,7 +399,7 @@
   <string name="ExtensionModifierSpitefulEffectLowerVision">Lower Vision</string>
   <string name="ExtensionModifierSpitefulEffectSlowness">Slowness</string>
   <string name="ExtensionModifierSpitefulEffectIncreasedCooldowns">Increased Cooldowns</string>
-  <string name="ExtensionModifierSpitefulVoterNotification">The player you voted for was &lt;spiteful&gt;!\n&lt;effect&gt;</string>
+  <string name="ExtensionModifierSpitefulVoterNotification">The player you voted for was &lt;spiteful&gt;! &lt;effect&gt;</string>
   <string name="ExtensionModifierSpitefulEffectLowerVisionDescription">Your vision is reduced by &lt;impact&gt;%</string>
   <string name="ExtensionModifierSpitefulEffectSlownessDescription">Your speed is reduced by &lt;impact&gt;%</string>
   <string name="ExtensionModifierSpitefulEffectIncreasedCooldownsDescription">Your ability cooldowns are increased by &lt;impact&gt;%</string>

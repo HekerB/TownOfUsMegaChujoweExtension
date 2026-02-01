@@ -29,12 +29,72 @@ public static class SpitefulEvents
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         SpitefulVoters.Clear();
+
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null || localPlayer.HasDied() || !localPlayer.AmOwner)
+        {
+            return;
+        }
+
+        var mod = localPlayer.GetModifier<SpitefulEffectModifier>();
+        if (mod == null || mod.EffectType != SpitefulEffectType.IncreasedCooldowns)
+        {
+            return;
+        }
+
+        Coroutines.Start(CoFixSpitefulCooldowns(localPlayer, mod));
+    }
+
+    private static IEnumerator CoFixSpitefulCooldowns(PlayerControl player, SpitefulEffectModifier mod)
+    {
+        while (MeetingHud.Instance != null || ExileController.Instance != null)
+        {
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        if (player == null || player.HasDied() || !player.AmOwner)
+        {
+            yield break;
+        }
+
+        var currentMod = player.GetModifier<SpitefulEffectModifier>();
+        if (currentMod == null || currentMod.EffectType != SpitefulEffectType.IncreasedCooldowns)
+        {
+            yield break;
+        }
+
+        var role = player.Data?.Role;
+        if (role == null)
+        {
+            yield break;
+        }
+
+        foreach (var button in CustomButtonManager.Buttons)
+        {
+            if (button == null)
+            {
+                continue;
+            }
+
+            if (!button.Enabled(role))
+            {
+                continue;
+            }
+
+            button.EffectActive = false;
+            
+            float baseCooldown = button.Cooldown;
+            float multiplier = currentMod.CooldownMultiplier;
+            float multipliedCooldown = baseCooldown * multiplier;
+            button.Timer = multipliedCooldown;
+        }
     }
 
     [RegisterEvent]
     public static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
-        // Handle round-based duration for Spiteful effects
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player == null || player.HasDied() || !player.HasModifier<SpitefulEffectModifier>())
@@ -101,6 +161,11 @@ public static class SpitefulEvents
         var exiledName = exiled.Data.PlayerName;
         foreach (var voterId in voters.ToList())
         {
+            if (voterId == exiled.PlayerId)
+            {
+                continue;
+            }
+
             Coroutines.Start(CoAddSpitefulModifier(voterId, effectType, durationType, rounds, impact, effectDescription, spitefulName, spitefulColor, exiledName));
         }
 
