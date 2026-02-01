@@ -11,7 +11,7 @@
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
         <VersionPrefix>1.1.7</VersionPrefix>
-        <VersionSuffix>dev</VersionSuffix>
+        <VersionSuffix>hotfix</VersionSuffix>
 
         <Authors>TouMiraRolesExtension</Authors>
         <Company>Among Us Avengers</Company>
