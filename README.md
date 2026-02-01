@@ -15,7 +15,9 @@ This extension mod:
 8. **Adds** the **Mirage** role (crewmate support role that places decoys)
 9. **Adds** the **Hacker** role (impostor support role that downloads system information and jams comms)
 10. **Adds** the **Injector** role (impostor support role that injects players with random effects)
-11. **Adds** the **Clueless** modifier
+11. **Adds** the **Charlatan** role (impostor support role that manipulates body reports)
+12. **Adds** the **Scavenger** role (neutral evil role that eats dead bodies to win)
+13. **Adds** the **Clueless** modifier
 
 ### Roles
 - **Revealer** (Crewmate, renamed from Trapper): Place traps around the map to reveal roles of players who stay in them long enough.
@@ -28,6 +30,8 @@ This extension mod:
 - **Mirage** (Crewmate Support): Place a decoy with the appearance of a chosen target (yourself or a random player). If any player interacts with the decoy, it disappears instantly and both the Mirage and the toucher receive a notification. Cannot be guessed if the decoy has the appearance of yourself.
 - **Hacker** (Impostor Support): Download information from nearby equipment (Admin/Cams/Vitals/Door Log) to charge a portable device. Use the device anywhere to access the downloaded system. Jam disrupts information systems like comms being sabotaged, but emergency meetings can still be called. Gain jam charges from kills.
 - **Injector** (Impostor Support): Inject non-impostor players with a syringe that applies a random effect after a delay. Effects can be negative (inverted controls, low vision, slowness, confusion, inability to vent/use/report, nausea, weakness) or positive (speed boost, vision boost, regeneration). Effect duration can be set to a specific time, last the entire round, or persist for the whole game. Starts with a limited number of uses and gains additional uses from kills.
+- **Charlatan** (Impostor Support): Manipulate body reports to your advantage. Deceive allows you to report bodies you've killed from any distance for a limited time after killing. Conceal reduces the report range of nearby bodies, but requires you to stay near the body for the duration.
+- **Scavenger** (Neutral Evil): Eat dead bodies to win alone. Must eat a configured number of bodies to win. Optionally, can use Scavenge to get arrows pointing to all corpses for a duration. If the win condition becomes impossible, the Scavenger becomes a configured role.
 
 ### Modifiers
 - **Clueless** (Universal): Removes all task guidance (task list, task arrows/markers, and map task locations). Tasks still function normally and contribute to the task bar.

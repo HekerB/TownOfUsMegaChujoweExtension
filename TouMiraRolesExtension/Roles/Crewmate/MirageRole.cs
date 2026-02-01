@@ -182,9 +182,17 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             notif.AdjustNotification();
 
             var arrowDur = OptionGroupSingleton<MirageOptions>.Instance.ArrowTime;
+            var arrowTarget = OptionGroupSingleton<MirageOptions>.Instance.ArrowTarget;
             if (arrowDur > 0f && mirage.TryGetComponent<ModifierComponent>(out var modComp))
             {
-                modComp.AddModifier(new VentArrowModifier(pos, TouExtensionColors.Mirage, arrowDur));
+                if (arrowTarget == MirageArrowTarget.Interactor && interactor != null)
+                {
+                    modComp.AddModifier(new PlayerArrowModifier(interactor, TouExtensionColors.Mirage, arrowDur));
+                }
+                else
+                {
+                    modComp.AddModifier(new VentArrowModifier(pos, TouExtensionColors.Mirage, arrowDur));
+                }
             }
         }
     }

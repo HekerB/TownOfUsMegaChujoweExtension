@@ -35,6 +35,9 @@
   <string name="ExtensionOptionTrapperTrapTargetsEnumImpostors">Impostors</string>
   <string name="ExtensionOptionTrapperTrapTargetsEnumImpostorsAndNeutrals">Impostors and Neutrals</string>
   <string name="ExtensionOptionTrapperTrapTargetsEnumAll">All</string>
+  <string name="ExtensionOptionTrapperArrowTarget">Arrow Target</string>
+  <string name="ExtensionOptionTrapperArrowTargetEnumVent">Vent</string>
+  <string name="ExtensionOptionTrapperArrowTargetEnumPerson">Person</string>
 
   <!-- Clueless Modifier -->
   <string name="ExtensionModifierClueless">Clueless</string>
@@ -215,6 +218,9 @@
   <string name="ExtensionOptionMirageDecoyTypeEnumMirage">Mirage</string>
   <string name="ExtensionOptionMirageDecoyTypeEnumRandomPlayer">Random Player</string>
   <string name="ExtensionOptionMirageArrowTime">Arrow Time</string>
+  <string name="ExtensionOptionMirageArrowTarget">Arrow Target</string>
+  <string name="ExtensionOptionMirageArrowTargetEnumMirage">Mirage</string>
+  <string name="ExtensionOptionMirageArrowTargetEnumInteractor">Interactor</string>
 
   <!-- Mirage Notifications -->
   <string name="ExtensionRoleMirageInteractorTriggered">You interacted with a decoy!</string>
@@ -319,4 +325,45 @@
   <string name="ExtensionInjectorNotificationWoreOffSpeedBoost">The speed boost has worn off.</string>
   <string name="ExtensionInjectorNotificationWoreOffVisionBoost">Your vision has returned to normal.</string>
   <string name="ExtensionInjectorNotificationWoreOffRegeneration">The regeneration effect has ended.</string>
+
+  <!-- Charlatan Role -->
+  <string name="ExtensionRoleCharlatan">Charlatan</string>
+  <string name="ExtensionRoleCharlatanIntroBlurb">Manipulate body reports to your advantage.</string>
+  <string name="ExtensionRoleCharlatanTabDescription">Use Deceive to report bodies you've killed from any distance.\%nl\%Use Conceal to reduce the report range of nearby bodies.</string>
+  <string name="ExtensionRoleCharlatanWikiDescription">The Charlatan is an Impostor Support role that manipulates body reports. Deceive allows you to report bodies you've killed from any distance for a limited time after killing. Conceal reduces the report range of nearby bodies, but requires you to stay near the body for the duration.</string>
+  <string name="ExtensionRoleCharlatanDeceive">Deceive</string>
+  <string name="ExtensionRoleCharlatanDeceiveWikiDescription">Report the body you killed from any distance, regardless of range or line of sight. Available for a limited time after killing.</string>
+  <string name="ExtensionRoleCharlatanConceal">Conceal</string>
+  <string name="ExtensionRoleCharlatanConcealWikiDescription">Reduce the report range of nearby bodies. You must stay near the body for the duration to successfully conceal it.</string>
+
+  <!-- Charlatan Options -->
+  <string name="ExtensionOptionCharlatanDeceiveBaseDuration">Deceive Base Duration</string>
+  <string name="ExtensionOptionCharlatanDeceiveDurationIncreasePerKill">Deceive Duration Increase Per Kill</string>
+  <string name="ExtensionOptionCharlatanConcealUses">Conceal Uses</string>
+  <string name="ExtensionOptionCharlatanConcealChargesPerKill">Conceal Charges Per Kill</string>
+  <string name="ExtensionOptionCharlatanConcealReportRange">Conceal Report Range</string>
+  <string name="ExtensionOptionCharlatanConcealReportRangeEnumExtremelyShort">Extremely Short</string>
+  <string name="ExtensionOptionCharlatanConcealReportRangeEnumVeryShort">Very Short</string>
+  <string name="ExtensionOptionCharlatanConcealReportRangeEnumShort">Short</string>
+  <string name="ExtensionOptionCharlatanConcealChannelDuration">Conceal Channel Duration</string>
+  <string name="ExtensionOptionCharlatanConcealCooldown">Conceal Cooldown</string>
+
+  <!-- Scavenger Role -->
+  <string name="ExtensionRoleScavenger">Scavenger</string>
+  <string name="ExtensionRoleScavengerIntroBlurb">Eat dead bodies to win alone.</string>
+  <string name="ExtensionRoleScavengerTabDescription">Eat dead bodies to win alone.</string>
+  <string name="ExtensionRoleScavengerWikiDescription">The Scavenger is a Neutral Evil role whose goal is to eat a set amount of dead bodies. Optionally, the Scavenger can use Scavenge to get arrows pointing to corpses. If the Scavenger's win condition can no longer be met, they become the configured role.</string>
+  <string name="ExtensionRoleScavengerEat">Eat</string>
+  <string name="ExtensionRoleScavengerEatWikiDescription">Eat a nearby dead body. This counts toward your win condition.</string>
+  <string name="ExtensionRoleScavengerScavenge">Scavenge</string>
+  <string name="ExtensionRoleScavengerScavengeWikiDescription">Get arrows pointing to all corpses for a duration. If a corpse is on a different floor on Submerged, the arrow will point to the elevator.</string>
+
+  <!-- Scavenger Options -->
+  <string name="ExtensionOptionScavengerEatCooldown">Eat Cooldown</string>
+  <string name="ExtensionOptionScavengerBodiesToWin">Number Of Bodies To Win</string>
+  <string name="ExtensionOptionScavengerCanVent">Scavenger Can Vent</string>
+  <string name="ExtensionOptionScavengerScavengeEnabled">Scavenge Enabled</string>
+  <string name="ExtensionOptionScavengerScavengeCooldown">Scavenge Cooldown</string>
+  <string name="ExtensionOptionScavengerScavengeDuration">Scavenge Duration</string>
+  <string name="ExtensionOptionScavengerOnLoseBecomes">On Lose, Scavenger Becomes</string>
 </resources>

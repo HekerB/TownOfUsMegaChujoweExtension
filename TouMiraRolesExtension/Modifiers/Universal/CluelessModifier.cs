@@ -8,6 +8,7 @@ using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -53,7 +54,29 @@ public sealed class CluelessModifier : UniversalGameModifier, IWikiDiscoverable
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        return base.IsModifierValidOn(role) && role is not SnitchRole && role is not ForestallerRole;
+        if (!base.IsModifierValidOn(role) || role is SnitchRole || role is ForestallerRole)
+        {
+            return false;
+        }
+
+        // Prevent ghosts from being clueless
+        var player = role.Player;
+        if (player == null || player.Data == null)
+        {
+            return false;
+        }
+
+        if (player.Data.IsDead)
+        {
+            return false;
+        }
+
+        if (role is HaunterRole || role is SpectreRole)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public override void OnActivate()

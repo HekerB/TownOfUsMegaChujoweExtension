@@ -12,7 +12,7 @@ public sealed class MirageOptions : AbstractOptionGroup<MirageRole>
     public override string GroupName => TouLocale.Get("ExtensionRoleMirage", "Mirage");
 
     [ModdedNumberOption("ExtensionOptionMirageInitialUses", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
-    public float InitialUses { get; set; } = 3f;
+    public float InitialUses { get; set; } = 4f;
 
     public ModdedNumberOption UsesPerTasks { get; } =
         new("ExtensionOptionMirageUsesPerTasks", 0f, 0f, 15f, 1f, "Off", "#", MiraNumberSuffixes.None, "0");
@@ -21,18 +21,28 @@ public sealed class MirageOptions : AbstractOptionGroup<MirageRole>
     public float DecoyCooldown { get; set; } = 25f;
 
     public ModdedNumberOption DecoyDuration { get; } =
-        new("ExtensionOptionMirageDecoyDuration", 15f, 0f, 60f, 1f, "Off", "#", MiraNumberSuffixes.Seconds, "0");
+        new("ExtensionOptionMirageDecoyDuration", 0f, 0f, 60f, 1f, "Off", "#", MiraNumberSuffixes.Seconds, "0");
 
     [ModdedEnumOption("ExtensionOptionMirageDecoyType", typeof(MirageDecoyType),
         ["ExtensionOptionMirageDecoyTypeEnumMirage", "ExtensionOptionMirageDecoyTypeEnumRandomPlayer"])]
     public MirageDecoyType DecoyType { get; set; } = MirageDecoyType.RandomPlayer;
 
     [ModdedNumberOption("ExtensionOptionMirageArrowTime", 0f, 15f, 0.5f, MiraNumberSuffixes.Seconds, "0", true)]
-    public float ArrowTime { get; set; } = 5f;
+    public float ArrowTime { get; set; } = 6f;
+
+    [ModdedEnumOption("ExtensionOptionMirageArrowTarget", typeof(MirageArrowTarget),
+        ["ExtensionOptionMirageArrowTargetEnumMirage", "ExtensionOptionMirageArrowTargetEnumInteractor"])]
+    public MirageArrowTarget ArrowTarget { get; set; } = MirageArrowTarget.Interactor;
 }
 
 public enum MirageDecoyType
 {
     Mirage,
     RandomPlayer
+}
+
+public enum MirageArrowTarget
+{
+    Mirage,
+    Interactor
 }

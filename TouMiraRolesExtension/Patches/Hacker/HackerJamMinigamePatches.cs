@@ -288,6 +288,7 @@ public static class HackerJamMinigamePatches
     }
 
     [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Begin))]
+    [HarmonyPrefix]
     [HarmonyPostfix]
     public static void SurveillanceMinigameBeginPostfix(SurveillanceMinigame __instance)
     {
@@ -318,6 +319,7 @@ public static class HackerJamMinigamePatches
     }
 
     [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Begin))]
+    [HarmonyPrefix]
     [HarmonyPostfix]
     public static void PlanetSurveillanceMinigameBeginPostfix(PlanetSurveillanceMinigame __instance)
     {

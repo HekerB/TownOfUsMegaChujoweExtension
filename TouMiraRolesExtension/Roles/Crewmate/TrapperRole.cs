@@ -141,9 +141,17 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
             Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Trapper));
 
             var arrowDur = OptionGroupSingleton<TrapperOptions>.Instance.ArrowDuration;
-            if (trapper.TryGetComponent<ModifierComponent>(out var modifierComp))
+            var arrowTarget = OptionGroupSingleton<TrapperOptions>.Instance.ArrowTarget;
+            if (trapper.TryGetComponent<ModifierComponent>(out var modifierComp) && arrowDur > 0f)
             {
-                modifierComp.AddModifier(new VentArrowModifier(ventTopPos, TouExtensionColors.Trapper, arrowDur));
+                if (arrowTarget == TrapperArrowTarget.Person && victim != null)
+                {
+                    modifierComp.AddModifier(new PlayerArrowModifier(victim, TouExtensionColors.Trapper, arrowDur));
+                }
+                else
+                {
+                    modifierComp.AddModifier(new VentArrowModifier(ventTopPos, TouExtensionColors.Trapper, arrowDur));
+                }
             }
 
             var room = vent != null ? MiscUtils.GetRoomName(vent.transform.position) : TouLocale.Get("Unknown", "Unknown");
