@@ -376,4 +376,27 @@
   <string name="ExtensionOptionScavengerScavengeCooldown">Scavenge Cooldown</string>
   <string name="ExtensionOptionScavengerScavengeDuration">Scavenge Duration</string>
   <string name="ExtensionOptionScavengerOnLoseBecomes">On Lose, Scavenger Becomes</string>
+
+  <!-- Spiteful Modifier -->
+  <string name="ExtensionModifierSpiteful">Spiteful</string>
+  <string name="ExtensionModifierSpitefulIntroBlurb">Punish those who vote you out.</string>
+  <string name="ExtensionModifierSpitefulTabDescription">When you are voted out, everyone who voted for you receives a negative effect.</string>
+  <string name="ExtensionModifierSpitefulWikiDescription">The Spiteful is a Universal modifier. When a player with this modifier is voted out, every player who cast a vote for them (including those who split their vote if applicable) receives a configurable negative effect for a set duration.</string>
+  <string name="ExtensionModifierSpitefulAmount">Spiteful Amount</string>
+  <string name="ExtensionModifierSpitefulChance">Spiteful Chance</string>
+  <string name="ExtensionModifierSpitefulImpact">Spiteful Impact</string>
+  
+  <string name="ExtensionModifierSpitefulEffectType">Punishment Effect</string>
+  <string name="ExtensionModifierSpitefulEffectTypeEnumLowerVision">Lower Vision</string>
+  <string name="ExtensionModifierSpitefulEffectTypeEnumSlowness">Slowness</string>
+  <string name="ExtensionModifierSpitefulEffectTypeEnumIncreasedCooldowns">Increased Cooldowns</string>
+  
+  <string name="ExtensionModifierSpitefulDurationType">Punishment Duration</string>
+  <string name="ExtensionModifierSpitefulDurationTypeEnumNextRounds">Next Rounds</string>
+  <string name="ExtensionModifierSpitefulDurationTypeEnumRestOfGame">Rest of Game</string>
+  <string name="ExtensionModifierSpitefulRoundCount">Number of Rounds</string>
+
+  <string name="ExtensionModifierSpitefulEffectLowerVision">Lower Vision</string>
+  <string name="ExtensionModifierSpitefulEffectSlowness">Slowness</string>
+  <string name="ExtensionModifierSpitefulEffectIncreasedCooldowns">Increased Cooldowns</string>
 </resources>

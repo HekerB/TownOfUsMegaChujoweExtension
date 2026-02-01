@@ -10,8 +10,8 @@
 
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
-        <VersionPrefix>1.1.7</VersionPrefix>
-        <VersionSuffix>hotfix</VersionSuffix>
+        <VersionPrefix>1.1.8</VersionPrefix>
+        <VersionSuffix>dev</VersionSuffix>
 
         <Authors>TouMiraRolesExtension</Authors>
         <Company>Among Us Avengers</Company>
