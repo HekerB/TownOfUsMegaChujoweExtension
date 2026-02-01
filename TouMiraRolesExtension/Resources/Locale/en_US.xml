@@ -12,6 +12,15 @@
   <string name="TouRoleRevealerRolesCaught">Roles caught in traps:</string>
   <string name="TouRoleRevealerMessageTitle">Trap Report</string>
 
+  <!-- Renamed Scavenger to Bloodhound - these override the base mod's Scavenger strings -->
+  <string name="TouRoleScavenger">Bloodhound</string>
+  <string name="TouRoleScavengerIntroBlurb">Hunt down your prey</string>
+  <string name="TouRoleScavengerTabDescription">Kill your given targets for a reduced cooldown.\%nl\%If you fail to kill them, you will get penalized.</string>
+  <string name="TouRoleScavengerWikiDescription">The Bloodhound is an Impostor Killing role that gets new targets after every kill and when the round starts. If they kill their target, they get a reduced kill cooldown, but if they don't, their cooldown is increased significantly.</string>
+  <string name="TouRoleScavengerYourNextTarget">Is Your Next Target.</string>
+  <string name="TouRoleScavengerTabTimer">Scavenge Time: \%timeLeft\%</string>
+  <string name="TouRoleScavengerTabTarget">Current Target: \%player\%</string>
+
   <!-- Trapper Role -->
   <string name="ExtensionRoleTrapper">Trapper</string>
   <string name="ExtensionRoleTrapperIntroBlurb">Trap vents to catch venters.</string>
