@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <LangVersion>latest</LangVersion>
@@ -7,6 +7,8 @@
         <Description>Extension mod for Town of Us Mira that renames Trapper to Revealer and adds a new Trapper role with Clueless modifier.</Description>
         <NoWarn>$(NoWarn);1591</NoWarn>
         <Version>$(VersionPrefix)</Version>
+        <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+        <FileVersion>$(VersionPrefix)</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>

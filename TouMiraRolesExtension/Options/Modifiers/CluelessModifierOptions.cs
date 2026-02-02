@@ -14,9 +14,9 @@ public enum CluelessCensorType
     Remove
 }
 
-public sealed class UniversalModifierOptions : AbstractOptionGroup
+public sealed class CluelessModifierOptions : AbstractOptionGroup
 {
-    public override string GroupName => "Universal Modifiers (Extension)";
+    public override string GroupName => "Clueless (Extension)";
     public override bool ShowInModifiersMenu => true;
     public override uint GroupPriority => 1;
 
@@ -26,7 +26,7 @@ public sealed class UniversalModifierOptions : AbstractOptionGroup
     public ModdedNumberOption CluelessChance { get; } =
         new("ExtensionModifierCluelessChance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
         {
-            Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.CluelessAmount > 0
+            Visible = () => OptionGroupSingleton<CluelessModifierOptions>.Instance.CluelessAmount > 0
         };
 
     private static readonly string[] CluelessCensorTypeValues =
@@ -40,6 +40,6 @@ public sealed class UniversalModifierOptions : AbstractOptionGroup
     public ModdedEnumOption<CluelessCensorType> CluelessCensorType { get; } =
         new("ExtensionModifierCluelessCensorType", CluelessCensorTypeEnum.Asterisks, CluelessCensorTypeValues)
         {
-            Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.CluelessAmount > 0
+            Visible = () => OptionGroupSingleton<CluelessModifierOptions>.Instance.CluelessAmount > 0
         };
 }
