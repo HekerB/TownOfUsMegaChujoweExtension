@@ -50,7 +50,7 @@ public sealed class SpitefulModifierOptions : AbstractOptionGroup<SpitefulModifi
     ];
 
     public ModdedEnumOption<SpitefulEffectType> SpitefulEffectType { get; } =
-        new("ExtensionModifierSpitefulEffectType", SpitefulEffectTypeEnum.LowerVision, SpitefulEffectTypeValues)
+        new("ExtensionModifierSpitefulEffectType", SpitefulEffectTypeEnum.IncreasedCooldowns, SpitefulEffectTypeValues)
         {
             Visible = () => OptionGroupSingleton<SpitefulModifierOptions>.Instance.SpitefulAmount > 0
         };
@@ -62,7 +62,7 @@ public sealed class SpitefulModifierOptions : AbstractOptionGroup<SpitefulModifi
     ];
 
     public ModdedEnumOption<SpitefulDurationType> SpitefulDurationType { get; } =
-        new("ExtensionModifierSpitefulDurationType", SpitefulDurationTypeEnum.NextRounds, SpitefulDurationTypeValues)
+        new("ExtensionModifierSpitefulDurationType", SpitefulDurationTypeEnum.RestOfGame, SpitefulDurationTypeValues)
         {
             Visible = () => OptionGroupSingleton<SpitefulModifierOptions>.Instance.SpitefulAmount > 0
         };
