@@ -131,7 +131,7 @@ When you are voted out, everyone who voted for you receives a negative effect. T
 
 ## Art Credits
 
-- **Asterisken** - Art for Injector, Trapper, Clueless, Mirage, Charlatan, Scavenger, and Spiteful
+- **Asterisken** - Art for Injector, Trapper, Clueless, Mirage, Charlatan, Scavenger, Forestaller, and Spiteful
 - **Atony** - Art for Serial Killer, Lawyer, Witch, and Wraith
 - **Stellar Roles** - Role Ideas, some art (buttons)
 
