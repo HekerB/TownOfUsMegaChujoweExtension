@@ -6,7 +6,7 @@
         <RootNamespace>TouMiraRolesExtension</RootNamespace>
         <Description>Extension mod for Town of Us Mira that renames Trapper to Revealer and adds a new Trapper role with Clueless modifier.</Description>
         <NoWarn>$(NoWarn);1591</NoWarn>
-        <Version>$(VersionPrefix)-$(VersionSuffix)</Version>
+        <Version>$(VersionPrefix)</Version>
         <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
         <FileVersion>$(VersionPrefix)</FileVersion>
     </PropertyGroup>
