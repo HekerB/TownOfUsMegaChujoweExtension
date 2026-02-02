@@ -26,6 +26,25 @@ public static class SpitefulEvents
     private static readonly Dictionary<byte, HashSet<byte>> SpitefulVoters = new();
 
     [RegisterEvent]
+    public static void GameEndEventHandler(GameEndEvent @event)
+    {
+        SpitefulVoters.Clear();
+
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null)
+            {
+                continue;
+            }
+
+            if (player.TryGetModifier<SpitefulEffectModifier>(out var mod))
+            {
+                player.RemoveModifier(mod);
+            }
+        }
+    }
+
+    [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         SpitefulVoters.Clear();
