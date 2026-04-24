@@ -346,6 +346,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 - **Sidemen (YouTube)** - Kamikaze role icon (temporary, detonator icon); RC-XD Deploy & Detonate button icons
 - **TOHE** Shroud role icon
 - **Star Wars** - Bounty Hunter role icon
+- **Our friend's girlfriend** - Publicity modifier icon
 
 ## Sound Credits
 - **Radzik360** - Joker laugh (intro & in-game), Kamikaze explosion sound, Pelican swallow sound
@@ -365,6 +366,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 - **[Town of Us WYGON ](https://github.com/wygon/Town-Of-Us-WYGON)** - Falcon role concept; Kamikaze role concept
 - **Sidemen (YouTube)** - RC-XD role concept (recreated from their videos); Poisoner role concept
 - **Death Note (anime)** - Death Note modifier concept
+- **Our friend Weakpass** - Added Publicity modifier
 
 ## Wiki & Documentation
 - **dziabe** - Helped with shortening role descriptions for the wiki (minimal effort)
@@ -380,6 +382,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 - **Pozwo** for encouraging us to bring this project to Github!
 - **Arbuzia** for saying that im too young to program mods without putting in them viruses!
 - no offence lol
+- **Majusia** died during development of mod, born in 15.01.26 died in 23.01.2026 Rest in Pieces (absolutely serious)
 
 -----------------------
 
