@@ -36,7 +36,7 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
     /// <summary>
     ///     Determines if the current build is a dev build or not.
     /// </summary>
-    public static bool IsDevBuild => false;
+    public static bool IsDevBuild => true;
     /// <inheritdoc />
     public ConfigFile GetConfigFile() => Config;
 	
