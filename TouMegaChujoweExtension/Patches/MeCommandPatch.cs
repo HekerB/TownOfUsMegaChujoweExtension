@@ -16,6 +16,7 @@ using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using TMPro;
 using UnityEngine;
+using TouMegaChujoweExtension.Patches.Draft;
 
 namespace TouMegaChujoweExtension.Patches;
 
@@ -38,6 +39,19 @@ public static class MeCommandPatch
         if (string.IsNullOrEmpty(text)) return true;
 
         var spaceLess = text.Replace(" ", "").ToLower();
+        if (spaceLess.StartsWith("/draft"))
+        {
+            HandleDraftCommand(__instance, text);
+            return false;
+        }
+
+        if (spaceLess.StartsWith("/setname") && DraftLobbyPatch._draftInProgress)
+        {
+            DraftLobbyPatch.ShowSystemMessage("<color=#FF0000>Draft Mode</color>: You cannot change your name during the draft.");
+            ClearChat(__instance);
+            return false;
+        }
+
         if (!spaceLess.StartsWith("/me")) return true;
 
         var player = PlayerControl.LocalPlayer;
@@ -54,6 +68,47 @@ public static class MeCommandPatch
 
         ClearChat(__instance);
         return false;
+    }
+
+    private static void HandleDraftCommand(ChatController chat, string text)
+    {
+        string[] args = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (args.Length < 2)
+        {
+            DraftLobbyPatch.ShowSystemMessage("<color=#FF0000>Draft Mode</color>: Usage: /draft [start|cancel]");
+            ClearChat(chat);
+            return;
+        }
+
+        string sub = args[1].ToLower();
+        if (sub == "start")
+        {
+            if (AmongUsClient.Instance.AmHost)
+            {
+                DraftLobbyPatch.StartDraft();
+            }
+            else
+            {
+                DraftLobbyPatch.ShowSystemMessage("<color=#FF0000>Draft Mode</color>: Only the Host can start the draft.");
+            }
+        }
+        else if (sub == "cancel" || sub == "end")
+        {
+            if (AmongUsClient.Instance.AmHost)
+            {
+                DraftNetworking.SendDraftCancel();
+            }
+            else
+            {
+                DraftLobbyPatch.ShowSystemMessage("<color=#FF0000>Draft Mode</color>: Only the Host can cancel the draft.");
+            }
+        }
+        else
+        {
+            DraftLobbyPatch.ShowSystemMessage($"<color=#FF0000>Draft Mode</color>: Unknown command '{sub}'");
+        }
+
+        ClearChat(chat);
     }
 
     private static string BuildPlayerInfo(PlayerControl player, List<ModLinkInfo> modLinks)

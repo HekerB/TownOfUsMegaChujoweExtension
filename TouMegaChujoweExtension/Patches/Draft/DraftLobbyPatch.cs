@@ -37,12 +37,14 @@ public static class DraftLobbyPatch
         public SpriteRenderer RandomIcon;
     }
     private static readonly Dictionary<GameObject, ButtonRefs> _buttonRefs = new();
+    private static readonly Dictionary<GameObject, System.Collections.IEnumerator> _hoverCoroutines = new();
+    private static readonly Dictionary<GameObject, float> _targetScales = new();
 
     // === STATE ===
-    private static bool _draftInProgress;
+    public static bool _draftInProgress;
     private static float _pickTimer;
     private static bool _countdownWasActive;
-    private static bool _draftCompletedWaitingForStart;
+    public static bool _draftCompletedWaitingForStart;
     private static bool _alertPlayed;
     private static bool _isMusicMuted = false;
     private static GameObject _muteButtonObj;
@@ -471,10 +473,24 @@ public static class DraftLobbyPatch
         return true;
     }
 
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.BeginGame))]
+    [HarmonyPostfix]
+    public static void BeginGamePostfix(GameStartManager __instance)
+    {
+        if (DraftSystem.IsEnabled && _draftCompletedWaitingForStart)
+        {
+            // Inspired by DraftModeTOUM: Zero out the timer for an instant start
+            __instance.countDownTimer = 0f;
+            CleanupUI();
+        }
+    }
+
     // === START DRAFT (HOST) ===
 
-    private static void StartDraft(GameStartManager gsm)
+    public static void StartDraft(GameStartManager gsm = null)
     {
+        if (gsm == null) gsm = Object.FindObjectOfType<GameStartManager>();
+        if (gsm == null) return;
         _draftInProgress = true;
         _draftCompletedWaitingForStart = false;
         _alertPlayed = false;
@@ -986,6 +1002,7 @@ public static class DraftLobbyPatch
 
         var overlayRenderer = _overlayBackground.AddComponent<SpriteRenderer>();
         overlayRenderer.sprite = TouExtensionAssets.DraftBackground.LoadAsset();
+        overlayRenderer.color = Color.white; 
         overlayRenderer.sortingOrder = 5;
 
         var cam = Camera.main;
@@ -1149,52 +1166,58 @@ public static class DraftLobbyPatch
         sr.color = targetColor;
     }
 
-    private static System.Collections.IEnumerator CoFadeOutRoleButtons(float duration = 1.25f)
+    private static System.Collections.IEnumerator CoFadeOutRoleButtons(float duration = 1.0f)
     {
         float elapsed = 0f;
 
-        var renderers = new List<(SpriteRenderer sr, Color original)>();
-        var tmps = new List<(TextMeshPro tmp, Color original)>();
+        var buttonData = new List<(GameObject obj, Vector3 velocity, float rotSpeed, List<(SpriteRenderer sr, Color orig)> srs, List<(TextMeshPro tmp, Color orig)> tmps)>();
 
         foreach (var obj in _roleButtonObjects)
         {
             if (obj == null) continue;
-            foreach (var sr in obj.GetComponentsInChildren<SpriteRenderer>(true))
-                renderers.Add((sr, sr.color));
-            foreach (var tmp in obj.GetComponentsInChildren<TextMeshPro>(true))
-                tmps.Add((tmp, tmp.color));
+            
+            var srs = new List<(SpriteRenderer, Color)>();
+            foreach (var sr in obj.GetComponentsInChildren<SpriteRenderer>(true)) srs.Add((sr, sr.color));
+            
+            var tmps = new List<(TextMeshPro, Color)>();
+            foreach (var tmp in obj.GetComponentsInChildren<TextMeshPro>(true)) tmps.Add((tmp, tmp.color));
+
+            // Random velocity away from the right side center
+            Vector2 dir = (new Vector2(obj.transform.localPosition.x, obj.transform.localPosition.y) - new Vector2(2.2f, 0f)).normalized;
+            if (dir.magnitude < 0.1f) dir = Vector2.right;
+            Vector3 vel = (Vector3)dir * UnityEngine.Random.Range(2f, 4f);
+            float rot = UnityEngine.Random.Range(-90f, 90f);
+
+            buttonData.Add((obj, vel, rot, srs, tmps));
         }
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
-            float eased = t * t;
-            float alpha = 1f - eased;
+            float eased = 1f - Mathf.Pow(1f - t, 3f); // Out Cubic
+            float alpha = 1f - t;
 
-            foreach (var (sr, orig) in renderers)
+            foreach (var data in buttonData)
             {
-                if (sr == null) continue;
-                sr.color = new Color(orig.r, orig.g, orig.b, orig.a * alpha);
-            }
-            foreach (var (tmp, orig) in tmps)
-            {
-                if (tmp == null) continue;
-                tmp.color = new Color(orig.r, orig.g, orig.b, orig.a * alpha);
-            }
+                if (data.obj == null) continue;
+                
+                data.obj.transform.localPosition += data.velocity * Time.deltaTime;
+                data.obj.transform.localRotation *= Quaternion.Euler(0, 0, data.rotSpeed * Time.deltaTime);
+                data.obj.transform.localScale = Vector3.one * (1f - t * 0.3f);
 
-            float scale = Mathf.Lerp(1f, 0.85f, eased);
-            foreach (var obj in _roleButtonObjects)
-            {
-                if (obj == null) continue;
-                obj.transform.localScale = new Vector3(scale, scale, 1f);
+                foreach (var (sr, orig) in data.srs)
+                    if (sr != null) sr.color = new Color(orig.r, orig.g, orig.b, orig.a * alpha);
+                foreach (var (tmp, orig) in data.tmps)
+                    if (tmp != null) tmp.color = new Color(orig.r, orig.g, orig.b, orig.a * alpha);
             }
 
             yield return null;
         }
 
-        foreach (var obj in _roleButtonObjects)
-            if (obj != null) Object.Destroy(obj);
+        foreach (var data in buttonData)
+            if (data.obj != null) Object.Destroy(data.obj);
+            
         _roleButtonObjects.Clear();
         _buttonRefs.Clear();
         _pickLocked = false;
@@ -1206,7 +1229,7 @@ public static class DraftLobbyPatch
 
         _draftCompleteText.gameObject.SetActive(true);
 
-        float duration = 0.5f;
+        float duration = 0.6f;
         float elapsed = 0f;
 
         var origColor = _draftCompleteText.color;
@@ -1217,20 +1240,21 @@ public static class DraftLobbyPatch
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
 
+            // Smooth overshoot curve
             float eased;
-            if (t < 0.7f)
+            if (t < 0.5f)
             {
-                float t2 = t / 0.7f;
-                eased = t2 * t2 * (3f - 2f * t2);
+                float t2 = t / 0.5f;
+                eased = t2 * t2 * (3f - 2f * t2) * 1.15f;
             }
             else
             {
-                float t2 = (t - 0.7f) / 0.3f;
-                eased = 1f + Mathf.Sin(t2 * Mathf.PI) * 0.08f;
+                float t2 = (t - 0.5f) / 0.5f;
+                eased = Mathf.Lerp(1.15f, 1f, 1f - Mathf.Pow(1f - t2, 3f));
             }
 
-            float scale = Mathf.Lerp(1.6f, 1f, Mathf.Min(eased, 1f));
-            float alpha = Mathf.Clamp01(eased);
+            float scale = Mathf.Lerp(0.5f, 1f, eased); // Start from small
+            float alpha = Mathf.Clamp01(t * 2f);
 
             _draftCompleteText.transform.localScale = new Vector3(scale, scale, 1f);
             _draftCompleteText.color = new Color(origColor.r, origColor.g, origColor.b, alpha);
@@ -1246,7 +1270,7 @@ public static class DraftLobbyPatch
     {
         if (_timerText == null) yield break;
 
-        float duration = 0.3f;
+        float duration = 0.45f;
         float elapsed = 0f;
 
         var origColor = _timerText.color;
@@ -1256,13 +1280,14 @@ public static class DraftLobbyPatch
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
-            float eased = 1f - (1f - t) * (1f - t);
+            
+            // Overshoot bounce
+            float eased = t < 0.6f 
+                ? Mathf.Lerp(0f, 1.15f, 1f - Mathf.Pow(1f - (t / 0.6f), 3f))
+                : Mathf.Lerp(1.15f, 1f, (t - 0.6f) / 0.4f);
 
-            float scale = Mathf.Lerp(1.4f, 1f, eased);
-            float alpha = eased;
-
-            _timerText.transform.localScale = new Vector3(scale, scale, 1f);
-            _timerText.color = new Color(origColor.r, origColor.g, origColor.b, alpha);
+            _timerText.transform.localScale = new Vector3(eased, eased, 1f);
+            _timerText.color = new Color(origColor.r, origColor.g, origColor.b, Mathf.Clamp01(t * 3f));
 
             yield return null;
         }
@@ -1530,6 +1555,41 @@ public static class DraftLobbyPatch
         }
     }
 
+    public static void ShowSystemMessage(string text)
+    {
+        if (HudManager.Instance == null || HudManager.Instance.Chat == null) return;
+        var chat = HudManager.Instance.Chat;
+        
+        // Use a local player as base for cosmetics but we will override the name
+        var player = PlayerControl.LocalPlayer;
+        if (player == null) return;
+
+        var pooledBubble = chat.GetPooledBubble();
+        if (pooledBubble == null) return;
+
+        pooledBubble.transform.SetParent(chat.scroller.Inner);
+        pooledBubble.transform.localScale = Vector3.one;
+        pooledBubble.SetLeft();
+        pooledBubble.SetCosmetics(player.Data);
+        
+        pooledBubble.NameText.text = "<color=#FFD700>SYSTEM</color>";
+        pooledBubble.NameText.color = Color.white;
+        pooledBubble.votedMark.enabled = false;
+        pooledBubble.Xmark.enabled = false;
+        
+        pooledBubble.TextArea.text = text;
+        pooledBubble.TextArea.ForceMeshUpdate(true, true);
+        
+        float h = pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight() + 0.4f;
+        pooledBubble.Background.size = new Vector2(5.52f, h);
+        pooledBubble.MaskArea.size = new Vector2(5.52f, h - 0.05f);
+        pooledBubble.AlignChildren();
+        chat.AlignAllBubbles();
+
+        if (chat is { IsOpenOrOpening: false, notificationRoutine: null })
+            chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());
+    }
+
     private static TextMeshPro CreateTMP(string name, Transform parent, Vector3 pos, float fontSize, TextAlignmentOptions align, bool withOutline)
     {
         var obj = new GameObject(name);
@@ -1568,6 +1628,17 @@ public static class DraftLobbyPatch
         {
             if (gsm.StartButton != null) gsm.StartButton.gameObject.SetActive(!hide);
             if (gsm.GameStartText != null) gsm.GameStartText.gameObject.SetActive(!hide);
+        }
+
+        if (HudManager.Instance != null)
+        {
+            // Use transform.Find to avoid compilation errors with missing fields
+            var namesToHide = new[] { "GameSettings", "RoleListRegion", "SetRoleList", "PlayerCounter", "LobbyButtons" };
+            foreach (var name in namesToHide)
+            {
+                var t = HudManager.Instance.transform.Find(name);
+                if (t != null) t.gameObject.SetActive(!hide);
+            }
         }
     }
 
@@ -1636,38 +1707,118 @@ public static class DraftLobbyPatch
     }
 
     // === LOCK ROLE BUTTONS ===
-
     private static void LockRoleButtons(GameObject selected)
     {
         _pickLocked = true;
-
+        
+        // Immediate visual feedback: gray out all non-selected buttons instantly
         foreach (var obj in _roleButtonObjects)
         {
-            if (obj == null) continue;
-            if (!_buttonRefs.TryGetValue(obj, out var refs)) continue;
-
-            bool isSelected = obj == selected;
-
-            var btn = obj.GetComponent<PassiveButton>();
-            if (btn != null) btn.enabled = false;
-            var col = obj.GetComponent<BoxCollider2D>();
-            if (col != null) col.enabled = false;
-
-            if (refs.BG != null)
-                refs.BG.color = isSelected ? refs.BG.color : new Color(0.3f, 0.3f, 0.3f, 0.5f);
-            if (refs.Border != null)
-                refs.Border.color = isSelected ? new Color(1f, 0.9f, 0.2f, 1f) : new Color(0.2f, 0.2f, 0.2f, 0.5f);
-            if (refs.Label != null)
-                refs.Label.color = isSelected ? refs.Label.color : new Color(0.4f, 0.4f, 0.4f, 0.5f);
-            if (refs.Icon != null)
-                refs.Icon.color = isSelected ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.3f);
-            if (refs.RandomIcon != null)
-                refs.RandomIcon.color = isSelected ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.3f);
+            if (obj != selected && obj != null && _buttonRefs.TryGetValue(obj, out var refs))
+            {
+                if (refs.BG != null) refs.BG.color = new Color(0.4f, 0.4f, 0.4f, 0.7f);
+                if (refs.Border != null) refs.Border.color = new Color(0.2f, 0.2f, 0.2f, 0.5f);
+                if (refs.Label != null) refs.Label.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+                if (refs.Icon != null) refs.Icon.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+                if (refs.RandomIcon != null) refs.RandomIcon.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+            }
         }
 
+        Coroutines.Start(CoAnimateSelection(selected));
+        
         if (_tooltipText != null)
         {
             _tooltipText.text = "";
+        }
+    }
+
+    private static System.Collections.IEnumerator CoAnimateSelection(GameObject selected)
+    {
+        float duration = 0.5f;
+        float elapsed = 0f;
+
+        var others = new List<GameObject>();
+        foreach (var obj in _roleButtonObjects)
+        {
+            if (obj != selected && obj != null) others.Add(obj);
+        }
+
+        // Store original data for the selected button
+        ButtonRefs selectedRefs = null;
+        Color selectedOrigBG = Color.white;
+        if (selected != null && _buttonRefs.TryGetValue(selected, out selectedRefs))
+        {
+            selectedOrigBG = selectedRefs.BG.color;
+        }
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            float eased = t * t * (3f - 2f * t); // Smoothstep
+
+            // 1. Animate Selected Button (Punch + Glow)
+            if (selected != null && selectedRefs != null)
+            {
+                // Punch scale: 1.0 -> 1.2 -> 1.05
+                float punch;
+                if (t < 0.3f) punch = Mathf.Lerp(1.0f, 1.22f, t / 0.3f);
+                else punch = Mathf.Lerp(1.22f, 1.06f, (t - 0.3f) / 0.7f);
+                
+                selected.transform.localScale = new Vector3(punch, punch, 1f);
+
+                // Flash white at start
+                if (t < 0.2f)
+                {
+                    float flash = 1f - (t / 0.2f);
+                    selectedRefs.BG.color = Color.Lerp(selectedOrigBG, Color.white, flash);
+                }
+                else
+                {
+                    selectedRefs.BG.color = selectedOrigBG;
+                }
+                
+                // Border pulse
+                if (selectedRefs.Border != null)
+                {
+                    float pulse = 0.5f + Mathf.Sin(t * Mathf.PI * 4f) * 0.5f;
+                    selectedRefs.Border.color = Color.Lerp(new Color(1f, 0.9f, 0.2f, 1f), Color.white, pulse * (1f - t));
+                }
+            }
+
+            // 2. Animate Others (Fade + Retreat + Gray)
+            float otherAlpha = Mathf.Lerp(1f, 0.45f, t * 2f); // Fade to 45% alpha (was 20%)
+            float otherScale = Mathf.Lerp(1f, 0.92f, t);    // Shrink slightly less
+            
+            foreach (var obj in others)
+            {
+                if (obj == null) continue;
+                if (!_buttonRefs.TryGetValue(obj, out var refs)) continue;
+
+                obj.transform.localScale = new Vector3(otherScale, otherScale, 1f);
+                
+                // Gray out (but keep it more readable)
+                Color grayBase = new Color(0.25f, 0.25f, 0.25f, 1f);
+                if (refs.BG != null) 
+                {
+                    Color targetBG = Color.Lerp(refs.BG.color, grayBase, t * 1.5f);
+                    refs.BG.color = new Color(targetBG.r, targetBG.g, targetBG.b, otherAlpha);
+                }
+                
+                if (refs.Border != null) refs.Border.color = new Color(0.15f, 0.15f, 0.15f, otherAlpha * 0.6f);
+                if (refs.Label != null) refs.Label.color = new Color(0.4f, 0.4f, 0.4f, otherAlpha);
+                if (refs.Icon != null) refs.Icon.color = new Color(0.4f, 0.4f, 0.4f, otherAlpha);
+                if (refs.RandomIcon != null) refs.RandomIcon.color = new Color(0.4f, 0.4f, 0.4f, otherAlpha);
+            }
+
+            yield return null;
+        }
+
+        // Final state reinforcement
+        if (selected != null && selectedRefs != null)
+        {
+            selected.transform.localScale = new Vector3(1.06f, 1.06f, 1f);
+            if (selectedRefs.Border != null) selectedRefs.Border.color = new Color(1f, 0.9f, 0.2f, 1f);
         }
     }
 
@@ -1707,30 +1858,120 @@ public static class DraftLobbyPatch
 
     private static System.Collections.IEnumerator AnimateButtonsIn()
     {
-        float duration = 0.3f;
+        float staggerDelay = 0.07f;
+        
+        for (int i = 0; i < _roleButtonObjects.Count; i++)
+        {
+            var obj = _roleButtonObjects[i];
+            if (obj == null) continue;
+            
+            obj.transform.localScale = Vector3.zero;
+            Coroutines.Start(CoAnimateSingleButtonIn(obj, i * staggerDelay));
+        }
+        yield break;
+    }
+
+    private static System.Collections.IEnumerator CoAnimateSingleButtonIn(GameObject obj, float delay)
+    {
+        if (delay > 0) yield return new WaitForSeconds(delay);
+        if (obj == null) yield break;
+
+        float duration = 0.5f;
         float elapsed = 0f;
+
+        // Find initial colors for fading
+        var renderers = obj.GetComponentsInChildren<SpriteRenderer>(true);
+        var tmps = obj.GetComponentsInChildren<TextMeshPro>(true);
+        
+        var rendererOrigColors = new Color[renderers.Length];
+        for (int i = 0; i < renderers.Length; i++) rendererOrigColors[i] = renderers[i].color;
+        
+        var tmpOrigColors = new Color[tmps.Length];
+        for (int i = 0; i < tmps.Length; i++) tmpOrigColors[i] = tmps[i].color;
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
-            float eased = 1f - (1f - t) * (1f - t);
-            float scale = Mathf.Lerp(1.4f, 1.0f, eased);
-
-            for (int i = 0; i < _roleButtonObjects.Count; i++)
+            
+            // Elastic out / Overshoot curve
+            float eased;
+            if (t < 0.6f)
             {
-                if (_roleButtonObjects[i] == null) continue;
-                _roleButtonObjects[i].transform.localScale = new Vector3(scale, scale, 1f);
+                float t2 = t / 0.6f;
+                eased = 1.12f * (1f - Mathf.Pow(1f - t2, 3f));
             }
+            else
+            {
+                float t2 = (t - 0.6f) / 0.4f;
+                eased = Mathf.Lerp(1.12f, 1f, t2 * t2 * (3f - 2f * t2));
+            }
+
+            if (obj == null) yield break;
+            obj.transform.localScale = new Vector3(eased, eased, 1f);
+            
+            float alpha = Mathf.Clamp01(t * 2.5f);
+            for (int i = 0; i < renderers.Length; i++)
+                if (renderers[i] != null) renderers[i].color = new Color(rendererOrigColors[i].r, rendererOrigColors[i].g, rendererOrigColors[i].b, rendererOrigColors[i].a * alpha);
+            for (int i = 0; i < tmps.Length; i++)
+                if (tmps[i] != null) tmps[i].color = new Color(tmpOrigColors[i].r, tmpOrigColors[i].g, tmpOrigColors[i].b, tmpOrigColors[i].a * alpha);
 
             yield return null;
         }
 
-        for (int i = 0; i < _roleButtonObjects.Count; i++)
+        if (obj != null)
         {
-            if (_roleButtonObjects[i] == null) continue;
-            _roleButtonObjects[i].transform.localScale = Vector3.one;
+            obj.transform.localScale = Vector3.one;
+            for (int i = 0; i < renderers.Length; i++)
+                if (renderers[i] != null) renderers[i].color = rendererOrigColors[i];
+            for (int i = 0; i < tmps.Length; i++)
+                if (tmps[i] != null) tmps[i].color = tmpOrigColors[i];
         }
+    }
+
+    private static void StartHoverAnimation(GameObject obj, float targetScale, float duration)
+    {
+        if (obj == null) return;
+        
+        // Prevent restarting the same animation every frame if OnMouseOver is called continuously
+        if (_targetScales.TryGetValue(obj, out var currentTarget) && Mathf.Approximately(currentTarget, targetScale))
+            return;
+
+        _targetScales[obj] = targetScale;
+
+        if (_hoverCoroutines.TryGetValue(obj, out var active))
+        {
+            if (active != null) Coroutines.Stop(active);
+            _hoverCoroutines.Remove(obj);
+        }
+        _hoverCoroutines[obj] = Coroutines.Start(CoAnimateButtonHover(obj, targetScale, duration));
+    }
+
+    private static System.Collections.IEnumerator CoAnimateButtonHover(GameObject obj, float targetScale, float duration)
+    {
+        if (obj == null) yield break;
+        Vector3 startScale = obj.transform.localScale;
+        Vector3 endScale = new Vector3(targetScale, targetScale, 1f);
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            if (obj == null) yield break;
+            float t = Mathf.Clamp01(elapsed / duration);
+            float eased = t * t * (3f - 2f * t); // Smoothstep
+            obj.transform.localScale = Vector3.Lerp(startScale, endScale, eased);
+            yield return null;
+        }
+        if (obj != null) 
+        {
+            obj.transform.localScale = endScale;
+            // Only remove target scale if we are still the one who set it
+            if (_targetScales.TryGetValue(obj, out var ts) && Mathf.Approximately(ts, targetScale))
+            {
+                // We don't remove it here so that the 'at rest' state is also tracked
+            }
+        }
+        _hoverCoroutines.Remove(obj);
     }
 
     private static Texture2D _roundedButtonTex;
@@ -1937,6 +2178,7 @@ public static class DraftLobbyPatch
             if (_pickLocked) return;
             if (bgRenderer) bgRenderer.color = hoverColor;
             if (borderRenderer) borderRenderer.color = Color.white;
+            StartHoverAnimation(container, 1.08f, 0.12f);
             if (_tooltipText != null)
             {
                 if (isRandom)
@@ -1957,6 +2199,7 @@ public static class DraftLobbyPatch
             if (_pickLocked) return;
             if (bgRenderer) bgRenderer.color = normalColor;
             if (borderRenderer) borderRenderer.color = new Color(Mathf.Max(normalColor.r - 0.15f, 0f), Mathf.Max(normalColor.g - 0.15f, 0f), Mathf.Max(normalColor.b - 0.15f, 0f), 1f);
+            StartHoverAnimation(container, 1.0f, 0.15f);
             if (_tooltipText != null)
             {
                 _tooltipText.text = "";
@@ -2065,17 +2308,14 @@ public static class DraftLobbyPatch
 
     private static System.Collections.IEnumerator CoStartAfterDelay()
     {
-        yield return new WaitForSeconds(3f);
+        // Shorter delay for a snappier feel
+        yield return new WaitForSeconds(1.8f);
 
         var gsm = Object.FindObjectOfType<GameStartManager>();
         if (gsm != null)
         {
-            if (gsm.StartButton != null) gsm.StartButton.gameObject.SetActive(true);
-            if (gsm.GameStartText != null) gsm.GameStartText.gameObject.SetActive(true);
-
-            yield return null;
-
-            gsm.ReallyBegin(false);
+            // Trigger the start process - BeginGamePostfix will take care of the instant transition
+            gsm.BeginGame();
         }
     }
 
@@ -2191,6 +2431,7 @@ public static class DraftLobbyPatch
     {
         ClearRoleButtons();
         StopDraftMusic();
+        HideLobby(false); // Restore lobby UI
         if (_muteButtonObj != null) { Object.Destroy(_muteButtonObj); _muteButtonObj = null; }
         if (_cancelButtonObj != null) { Object.Destroy(_cancelButtonObj); _cancelButtonObj = null; }
         if (_forceStartButtonObj != null) { Object.Destroy(_forceStartButtonObj); _forceStartButtonObj = null; }
@@ -2332,6 +2573,19 @@ public static class DraftLobbyPatch
         _lastAlertedPicker = null;
         _disconnectedDuringDraft.Clear();
         _originalPickOrder.Clear();
+    }
+
+    [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
+    [HarmonyPrefix]
+    public static void ChatControllerUpdatePrefix(ChatController __instance)
+    {
+        if (_draftInProgress && Input.GetKeyDown(KeyCode.Return))
+        {
+            if (!__instance.IsOpenOrOpening)
+            {
+                __instance.SetVisible(true);
+            }
+        }
     }
 }
 
