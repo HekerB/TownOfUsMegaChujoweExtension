@@ -57,7 +57,7 @@ public class ExtensionModNews
 public static class ExtensionModNewsFetcher
 {
     private const string ModNewsUrl =
-        "https://raw.githubusercontent.com/marzecoo/ez/main/TouMegaChujoweExtension/Resources/Announcements/news.json";
+        "https://raw.githubusercontent.com/HekerB/TownOfUsMegaChujoweExtension/main/TouMegaChujoweExtension/Resources/Announcements/news.json";
 
     private static bool _downloaded;
 
