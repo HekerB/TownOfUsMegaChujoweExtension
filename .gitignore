@@ -1,13 +1,41 @@
+# Build output
 bin/
 obj/
+
+# NuGet
 /packages/
-riderModule.iml
-/_ReSharper.Caches/
-.idea/
 *.lock.json
+
+# IDE - Visual Studio
 .vs/
 *.user
-.qodo
-TownOfUs/Properties/
+*.suo
+*.cache
 
+# IDE - Rider
+.idea/
+_ReSharper.Caches/
+riderModule.iml
+*.sln.iml
+
+# IDE - VS Code
+.vscode/
+
+# AI/Tools
+.qodo
+.github/copilot*
+
+# FAKE build
 .fake
+
+# Game references (don't commit DLLs)
+*.dll
+!lib/**/*.dll
+
+# OS files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# TownOfUs properties (if present)
+TownOfUs/Properties/

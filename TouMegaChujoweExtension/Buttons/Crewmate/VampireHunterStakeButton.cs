@@ -1,0 +1,126 @@
+﻿using System.Collections.Generic;
+using MiraAPI.GameOptions;
+using MiraAPI.Keybinds;
+using MiraAPI.Networking;
+using MiraAPI.Utilities;
+using MiraAPI.Utilities.Assets;
+using Reactor.Utilities;
+using TouMegaChujoweExtension.Assets;
+using TouMegaChujoweExtension.Options.Roles.Crewmate;
+using TouMegaChujoweExtension.Roles.Crewmate;
+using TownOfUs.Buttons;
+using TownOfUs.Modules.Localization;
+using TownOfUs.Roles.Neutral;
+using TownOfUs.Utilities;
+using UnityEngine;
+
+namespace TouMegaChujoweExtension.Buttons.Crewmate;
+
+public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>
+{
+    private PlayerControl? _target;
+    private PlayerControl? _lastOutlined;
+    private static bool _firstRound = true;
+
+    public override string Name => TouLocale.Get("ExtensionRoleVampireHunterStake", "Stake");
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
+    public override Color TextOutlineColor => TouExtensionColors.VampireHunter;
+    public override LoadableAsset<Sprite> Sprite => TouExtensionCrewAssets.StakeButtonIcon;
+
+    public override float Cooldown =>
+        Math.Clamp(OptionGroupSingleton<VampireHunterOptions>.Instance.StakeCooldown + MapCooldown, 5f, 120f);
+
+    public override int MaxUses
+    {
+        get
+        {
+            var max = (int)OptionGroupSingleton<VampireHunterOptions>.Instance.MaxFailedStakes;
+            return max == 0 ? int.MaxValue : max;
+        }
+    }
+
+    public override bool CanUse()
+    {
+        if (!base.CanUse()) return false;
+        if (_firstRound && !OptionGroupSingleton<VampireHunterOptions>.Instance.CanStakeRoundOne) return false;
+        if (UsesLeft <= 0) return false;
+
+        return _target != null;
+    }
+
+    protected override void OnClick()
+    {
+        var player = PlayerControl.LocalPlayer;
+        if (player == null || _target == null) return;
+
+        var role = player.Data.Role as VampireHunterRole;
+        if (role == null) return;
+
+        var isVampire = _target.Data.Role is VampireRole;
+
+        if (isVampire)
+        {
+            player.RpcCustomMurder(_target);
+            role.SuccessfulStakes++;
+            UsesLeft++;
+        }
+        else
+        {
+            role.FailedStakes++;
+            Coroutines.Start(MiscUtils.CoFlash(new Color(1f, 0f, 0f, 0.3f)));
+
+            Coroutines.Start(CheckSelfKill(player, role));
+        }
+    }
+
+    private static System.Collections.IEnumerator CheckSelfKill(PlayerControl player, VampireHunterRole role)
+    {
+        yield return new WaitForSeconds(0.3f);
+        if (player == null || player.HasDied()) yield break;
+
+        if (!role.HasStakesLeft &&
+            role.SuccessfulStakes == 0 &&
+            OptionGroupSingleton<VampireHunterOptions>.Instance.SelfKillOnFailure)
+        {
+            player.RpcCustomMurder(player);
+        }
+    }
+
+    protected override void FixedUpdate(PlayerControl playerControl)
+    {
+        if (MeetingHud.Instance)
+        {
+            ClearOutline();
+            _target = null;
+            return;
+        }
+
+        Button?.gameObject.SetActive(
+            HudManager.Instance.UseButton.isActiveAndEnabled ||
+            HudManager.Instance.PetButton.isActiveAndEnabled);
+
+        if (Button == null) return;
+
+        ClearOutline();
+        _target = playerControl.GetClosestLivingPlayer(true, 1.5f, false);
+
+        if (_target != null && !_target.HasDied())
+        {
+            _target.cosmetics.SetOutline(true,
+                new Il2CppSystem.Nullable<Color>(TouExtensionColors.VampireHunter));
+            _lastOutlined = _target;
+        }
+    }
+
+    private void ClearOutline()
+    {
+        if (_lastOutlined != null)
+        {
+            _lastOutlined.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>());
+            _lastOutlined = null;
+        }
+    }
+
+    public static void ResetFirstRound() => _firstRound = true;
+    public static void EndFirstRound() => _firstRound = false;
+}

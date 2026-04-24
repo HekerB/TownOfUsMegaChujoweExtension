@@ -1,0 +1,53 @@
+{
+  "News": [
+    {
+      "Date": "2026-04-23T20:00:00Z",
+      "Number": "200001",
+      "ShortTitle": "TOUMCE v1.0.0",
+      "SubTitle": "First Public Release!",
+      "Title": "TOU Mega Chujowe Extension v1.0.0",
+      "Text": [
+        "\r★ <link=https://github.com/marzecoo/ez/releases>Download Latest Release</link> ★ <link=https://github.com/marzecoo/ez>GitHub Repository</link> ★",
+        "\n\n\r<b>Version 1.0.0 is finally here!</b>",
+        "\n\n\r<size=105%>Crewmate:</size>",
+        "\n- <b>Vanisher</b> - fixed bug where players were unable to use the Vanish button",
+        "\n- <b>Falcon</b> - replaced zoom in/out button icons with a single one",
+        "\n- <b>Bodyguard</b> - added sacrifice animation in meetings, fixed being able to kill the protected player, improved shield and <b>nameplate marker</b> rendering",
+        "\n- <b>Evoker</b> - fixed inability to click map/tasks/doors during blind and fixed global verification limit per game not being respected",
+        "\n- <b>Vampire Hunter</b> - fixed incorrectly granting crewmate power and protective",
+        "\n- <b>President</b> - definitive fix for vote bank system, added tutorial image, fixed banner visibility",
+        "\n\n\r<size=105%>Neutral:</size>",
+        "\n- <b>Pelican</b> - complete rework: added swallow counter, fixed Investigator footprints, fixed huge range, fixed anti-cheat kicks during digestion, restored UI refresh after death, fixed instant ghost bug",
+        "\n- <b>Doppelganger</b> - fixed kill button cooldown not decreasing while in vents",
+        "\n- <b>Shroud</b> - fixed marker visibility and placement logic",
+        "\n- <b>Lawyer</b> - reworked Objection: now shows your own character, added sound fade-out, fixed <b>client marker</b> visibility",
+        "\n- <b>Pirate</b> - added tutorial image, fixed ties counting as win, fixed button blocking during duel",
+        "\n- <b>Bounty Hunter</b> - added target counter, fixed <b>target marker</b> refresh and visibility bug",
+        "\n- <b>Pope</b> - fixed win condition, added Spellslinger death animation, fixed screen flashing during meetings, added <b>marker visibility</b>",
+        "\n- <b>Shifter</b> - fixed Assassin modifier exploit for Amnesiacs",
+        "\n\n\r<size=105%>Impostor:</size>",
+        "\n- <b>Kamikaze</b> - fixed kill detection, reworked explosion radius to use RC-XD light scaling, changed sphere color to orange, added round 1 suicide protection",
+        "\n- <b>Wraith</b> - fixed lantern visibility bug and added a small delay to ensure Swooper modifier applies before teleporting",
+        "\n- <b>Poisoner</b> - added poison body animation, fixed poisoned players not dying in meetings",
+        "\n- <b>Witch</b> - fixed <b>curse marker</b> rendering and visibility",
+        "\n- <b>Outlaw</b> - fixed kill button",
+        "\n- <b>RC-XD</b> - improved car rendering and sync, fixed body/shield/target marker persistence",
+        "\n\n\r<size=105%>Modifiers & Mechanics:</size>",
+        "\n- <b>Death Note</b> - fixed numerous bugs and improved overall stability",
+        "\n- <b>Guessing System</b> - Venomous and Death Note are now guessable based on their individual toggles",
+        "\n- <b>Lovers</b> - added toggle option for <b>Lover Chat during meetings</b>",
+        "\n\n\r<size=105%>Game Modes & UI:</size>",
+        "\n- <b>Draft Mode</b> - complete system overhaul with polished UI, added <b>Random Neutral</b> (70/15/15 logic), added <b>Legacy Mode</b> (picking from all classes) and <b>Respect Role Chances</b>, fixed spectators being included in pick order",
+        "\n- <b>Localization</b> - added <b>Full Polish Support</b> with Local Settings toggle",
+        "\n- <b>Lobby Options</b> - significant reorganization and rework of many option groups",
+        "\n\n\r<size=105%>Other:</size>",
+        "\n- <b>Wiki Overhaul</b> - added detailed terminology with new icons (<b>Lawyer</b>, <b>Medic</b>, <b>Jackal</b>, <b>Shield Flashes</b>)",
+        "\n- <b>Wiki Settings</b> - added <b>Hacker</b> icon and real-time display for <b>Draft Mode</b>",
+        "\n- Fixed Crewmate abilities (Evoker, Falcon, Mirage, etc.) not working during communications sabotage",
+        "\n- Cleaned up redundant RPC calls and improved Host-side synchronization",
+        "\n- Optimized mod size (<b>36MB -> 14MB</b>)",
+        "\n- <b>Most importantly:</b> fixed old bugs and added new ones!"
+      ]
+    }
+  ]
+}

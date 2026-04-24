@@ -1,0 +1,973 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--Doomsayer To Foreteller-->
+  <string name="ExtensionLocalSettingRenameDoomsayerToForeteller">Rename to Foreteller</string>
+
+  <!-- Classic cycling assassin guessing -->
+  <string name="ExtensionLocalSettingUseClassicAssassinGuessing">Classic Assassin Guessing (Cycling)</string>
+  
+  <!-- Legacy guess death animation -->
+  <string name="ExtensionLocalSettingUseLegacyGuessDeathAnimation">Legacy Guess Death Animation</string>
+  
+  <!-- Use Polish Language -->
+  <string name="ExtensionLocalSettingUsePolishLanguage">Use Polish Language</string>
+  
+  <!-- Joker PiP Local Settings  -->
+  <string name="JokerPiPLocation">Joker PiP Location</string>
+  <string name="JokerPiPSize">Joker PiP Size</string>
+
+  <!-- Joker PiP Location enum values -->
+  <string name="PiPLocationTopLeft">Top Left</string>
+  <string name="PiPLocationMiddleLeft">Middle Left</string>
+  <string name="PiPLocationBottomLeft">Bottom Left</string>
+  <string name="PiPLocationTopRight">Top Right</string>
+  <string name="PiPLocationMiddleRight">Middle Right</string>
+  <string name="PiPLocationBottomRight">Bottom Right</string>
+  <string name="PiPLocationDynamic">Dynamic</string>
+
+  <!-- Joker PiP Size enum values -->
+  <string name="PiPSizeNormal">Normal</string>
+  <string name="PiPSizeSmall">Small</string>
+  <string name="PiPSizeLarge">Large</string>
+  
+  <!-- Renamed Trapper to Revealer -->
+  <string name="TouRoleRevealer">Revealer</string>
+  <string name="TouRoleRevealerIntroBlurb">Place traps to reveal roles of players who stay in them.</string>
+  <string name="TouRoleRevealerTabDescription">Place traps around the map. Players who stay in traps long enough will have their roles revealed to you at the next meeting.</string>
+  <string name="TouRoleRevealerWikiDescription">The Revealer is a Crewmate role that can place traps around the map. \%nl\%When players stay in a trap for a certain amount of time, \%nl\%their roles are revealed to the Revealer at the next meeting.</string>
+  <string name="TouRoleRevealerTrap">Trap</string>
+  <string name="TouRoleRevealerTrapWikiDescription">Place a trap at your current location. Players who stay in the trap for the required duration will have their roles revealed to you.</string>
+  <string name="TouRoleRevealerNoPlayers">No players were caught in your traps.</string>
+  <string name="TouRoleRevealerNotEnoughPLayers">Not enough players were caught in your traps.</string>
+  <string name="TouRoleRevealerRolesCaught">Roles caught in traps:</string>
+  <string name="TouRoleRevealerMessageTitle">Trap Report</string>
+
+  <!-- Trapper Role -->
+  <string name="ExtensionRoleTrapper">Trapper</string>
+  <string name="ExtensionRoleTrapperIntroBlurb">Trap vents to catch venters.</string>
+  <string name="ExtensionRoleTrapperTabDescription">Place traps on vents. Players who use trapped vents will be immobilized for a duration.</string>
+  <string name="ExtensionRoleTrapperWikiDescription">The Trapper is a Crewmate role that can place traps on vents. When players use a trapped vent, they are immobilized for a duration and the Trapper is notified.</string>
+  <string name="ExtensionRoleTrapperTrap">Trap</string>
+  <string name="ExtensionRoleTrapperTrapWikiDescription">Place a trap on a vent. Players who use this vent will be caught and immobilized.</string>
+  <string name="ExtensionRoleTrapperPlaced">Trapped a vent in &lt;room&gt;!</string>
+  <string name="ExtensionRoleTrapperTriggered">Your trap was triggered in &lt;room&gt;!</string>
+  <string name="ExtensionRoleTrapperCaught">You were caught in a trap in &lt;room&gt;!</string>
+
+  <!-- Trapper Options -->
+  <string name="ExtensionOptionTrapperTrapCooldown">Trap Cooldown</string>
+  <string name="ExtensionOptionTrapperTrappeduration">Trap Duration</string>
+  <string name="ExtensionOptionTrapperArrowDuration">Arrow Duration</string>
+  <string name="ExtensionOptionTrapperMaxTraps">Max Number of Traps</string>
+  <string name="ExtensionOptionTrapperTrapRoundsLast">Trap Rounds Last</string>
+  <string name="ExtensionOptionTrapperGetMoreFromTasks">Get More Traps From Tasks</string>
+  <string name="ExtensionOptionTrapperTasksUntilMoreTraps">Tasks Until More Traps</string>
+  <string name="ExtensionOptionTrapperTrapTargets">Trap Targets</string>
+  <string name="ExtensionOptionTrapperTrapTargetsEnumImpostors">Impostors</string>
+  <string name="ExtensionOptionTrapperTrapTargetsEnumImpostorsAndNeutrals">Impostors and Neutrals</string>
+  <string name="ExtensionOptionTrapperTrapTargetsEnumAll">All</string>
+  <string name="ExtensionOptionTrapperArrowTarget">Arrow Target</string>
+  <string name="ExtensionOptionTrapperArrowTargetEnumVent">Vent</string>
+  <string name="ExtensionOptionTrapperArrowTargetEnumPerson">Person</string>
+  
+  <!-- President Role -->
+  <string name="ExtensionRolePresident">President</string>
+  <string name="ExtensionRolePresidentIntroBlurb">Your vote is your power.</string>
+  <string name="ExtensionRolePresidentTabDescription">You have a vote bank. Each meeting you can\%nl\%distribute your votes freely among players, or\%nl\%Abstain to save your votes for later meetings.</string>
+  <string name="ExtensionRolePresidentWikiDescription">You can Abstain form voting at a meeting, by doing so you are saving votes that you can then spend all at once, For example 10 votes at one meeting.</string>
+  <string name="ExtensionRolePresidentAbstain">Abstain</string>
+  <string name="ExtensionRolePresidentAbstainWiki">Abstain</string>
+  <string name="ExtensionRolePresidentAbstainWikiDescription">You save your votes for later meetings.</string>
+
+  <!-- President Options -->
+  <string name="ExtensionOptionPresidentStartingVoteBank">Starting Vote Bank</string>
+  <string name="ExtensionOptionPresidentMaxVoteBank">Max Vote Bank</string>
+  <string name="ExtensionOptionPresidentAbstainBonus">Votes Gained Per Abstain</string>
+  
+  <!-- Vanisher Role -->
+  <string name="ExtensionRoleVanisher">Vanisher</string>
+  <string name="ExtensionRoleVanisherIntroBlurb">Turn invisible to detect evil players nearby.</string>
+  <string name="ExtensionRoleVanisherTabDescription">Vanish to become invisible and detect impostors and neutrals in your radius.</string>
+  <string name="ExtensionRoleVanisherWikiDescription">You are crewmate Swooper. You can Vanish and observe neutrals/impostors.</string>
+  <string name="ExtensionRoleVanisherVanish">Vanish</string>
+  <string name="ExtensionRoleVanisherUnvanish">Unvanish</string>
+  <string name="ExtensionRoleVanisherVanishWikiDescription">Turn invisible for a set duration. While invisible, nearby Impostors and Neutrals receive a warning. You can end the effect early by pressing Unvanish.</string>
+
+  <!-- Vanisher Options -->
+  <string name="ExtensionOptionVanisherCooldown">Vanish Cooldown</string>
+  <string name="ExtensionOptionVanisherDuration">Vanish Duration</string>
+  <string name="ExtensionOptionVanisherMaxUses">Max Vanishes Per Round</string>
+  <string name="ExtensionOptionVanisherDetectionEnabled">Detection Enabled</string>
+  <string name="ExtensionOptionVanisherRadius">Detection Radius</string>
+  <string name="ExtensionOptionVanisherNotifCooldown">Notification Cooldown</string>
+
+  <!-- Clueless Modifier -->
+  <string name="ExtensionModifierClueless">Clueless</string>
+  <string name="ExtensionModifierCluelessIntroBlurb">No task guidance.</string>
+  <string name="ExtensionModifierCluelessTabDescription">You cannot see your task list, task markers, or task locations on the map.</string>
+  <string name="ExtensionModifierCluelessWikiDescription">You cannot see your task list, task markers, or task locations on the map. Tasks still spawn normally and count toward the task bar.</string>
+  <string name="ExtensionModifierCluelessAmount">Clueless Amount</string>
+  <string name="ExtensionModifierCluelessChance">Clueless Chance</string>
+  <string name="ExtensionModifierCluelessCensorType">Clueless Censor Type</string>
+  <string name="ExtensionModifierCluelessCensorTypeEnumWhiteBars">White Bars</string>
+  <string name="ExtensionModifierCluelessCensorTypeEnumAsterisks">Asterisks</string>
+  <string name="ExtensionModifierCluelessCensorTypeEnumQuestionMarks">Question Marks</string>
+  <string name="ExtensionModifierCluelessCensorTypeEnumRemove">Remove</string>
+  
+  <!-- Child Modifier -->
+  <string name="ExtensionModifierChild">Child</string>
+  <string name="ExtensionModifierChildIntroBlurb">You are a child! Grow up to lose your protection.</string>
+  <string name="ExtensionModifierChildTabDescription">You are a Child (Age: &lt;age&gt;/&lt;adultAge&gt;).\%nl\%While underage, you cannot be killed.\%nl\%You grow older every few seconds.\%nl\%Once you reach adulthood, you lose your protection.</string>
+  <string name="ExtensionModifierChildWikiDescription">When you are a child, you are protected from being killed. Once you reach adulthood, you lose your protection.</string>
+  <string name="ExtensionModifierChildChance">Child Chance</string>
+  <string name="ExtensionModifierChildAmount">Child Count</string>
+  <string name="ExtensionModifierChildStartAge">Starting Age</string>
+  <string name="ExtensionModifierChildAdultAge">Adult Age</string>
+  <string name="ExtensionModifierChildGrowthInterval">Growth Interval (seconds)</string>
+
+  <!-- Venomous Modifier -->
+  <string name="ExtensionModifierVenomous">Venomous</string>
+  <string name="ExtensionModifierVenomousIntroBlurb">Your kills dissolve the evidence</string>
+  <string name="ExtensionModifierVenomousTabDescription">When you kill someone, their body rots away.</string>
+  <string name="ExtensionModifierVenomousWikiDescription">Venomous is a modifier for Neutral Killing roles. When you kill a player, their body will rot away, preventing it from being reported.</string>
+  <string name="ExtensionModifierVenomousAmount">Venomous Amount</string>
+  <string name="ExtensionModifierVenomousChance">Venomous Chance</string>
+  <string name="ExtensionModifierVenomousRotDelay">Time Before Body Rots Away</string>
+  <string name="ExtensionModifierVenomousGuessable">Venomous Guessable</string>
+
+  <!-- Lawyer Role -->
+  <string name="ExtensionRoleLawyer">Lawyer</string>
+  <string name="ExtensionRoleLawyerIntroBlurb">Defend your client to win!</string>
+  <string name="ExtensionRoleLawyerTabDescription">Defend &lt;client&gt;. If they get voted out, you lose!</string>
+  <string name="ExtensionRoleLawyerWikiDescription">The Lawyer is a Neutral Benign role that wins by keeping their assigned client from being voted out. If their client gets voted out, the Lawyer loses.</string>
+  <string name="ExtensionRoleLawyerObject">Object</string>
+  <string name="ExtensionRoleLawyerObjectWikiDescription">During meetings, click the objection button on your client\'s vote area to object to all votes, clearing them and forcing players to vote again.</string>
+  
+  <!-- Lucky Modifier -->
+  <string name="ExtensionModifierLucky">Lucky</string>
+  <string name="ExtensionModifierLuckyIntroBlurb">Your kill cooldown is randomized!</string>
+  <string name="ExtensionModifierLuckyTabDescription">After each kill, your kill cooldown is set to\%nl\%a random value between the configured minimum\%nl\%and maximum.</string>
+  <string name="ExtensionModifierLuckyWikiDescription">After each kill, the kill cooldown is randomized between the configured minimum and maximum values. Cannot be assigned to Warlock, Outlaw, or Scavenger.</string>
+  <string name="ExtensionModifierLuckyAmount">Lucky Amount</string>
+  <string name="ExtensionModifierLuckyChance">Lucky Chance</string>
+  <string name="ExtensionModifierLuckyMinCooldown">Min Kill Cooldown</string>
+  <string name="ExtensionModifierLuckyMaxCooldown">Max Kill Cooldown</string>
+  
+  <!-- Lawyer Options -->
+  <string name="ExtensionOptionLawyerWinMode">Lawyer Win Mode</string>
+  <string name="ExtensionOptionLawyerWinModeEnumWithClient">Win With Client</string>
+  <string name="ExtensionOptionLawyerWinModeEnumStealWin">Steal Win</string>
+  <string name="ExtensionOptionLawyerDieOnClientDeath">Lawyer Dies When Client Dies</string>
+  <string name="ExtensionOptionLawyerBecomesClientDeath">On Client Death, Lawyer Becomes</string>
+  <string name="ExtensionOptionLawyerGetVotedOutWithClient">Lawyer Gets Voted Out With Client</string>
+  <string name="ExtensionOptionLawyerCanSeeClientRole">Lawyer Knows Client's Role</string>
+  <string name="ExtensionOptionLawyerKillerClientChance">Killer Client Chance</string>
+  <string name="ExtensionOptionLawyerObjectionPreventsSameVote">Prevent Same Votes On Objection</string>
+  
+  <!-- Shifter Role -->
+  <string name="ExtensionRoleShifter">Shifter</string>
+  <string name="ExtensionRoleShifterIntroBlurb">Steal other player's roles.</string>
+  <string name="ExtensionRoleShifterTabDescription">Select a player to steal their role at the next meeting.\%nl\%If you target a non-crewmate (unless allowed), you will die.</string>
+  <string name="ExtensionRoleShifterWikiDescription">You can steal a player's role, but if you try to steal an Impostor/Neutral role you will commit suicide instantly.</string>
+  <string name="ExtensionRoleShifterShift">Shift</string>
+  <string name="ExtensionRoleShifterShiftWikiDescription">Select a player to steal their role at the next meeting.</string>
+
+  <!-- Shifter Options -->
+  <string name="ExtensionOptionShifterCooldown">Shift Cooldown</string>
+  <string name="ExtensionOptionShifterCanShiftNeutralBenign">Can Shift Neutral Benign</string>
+  <string name="ExtensionOptionShifterShiftedBecomes">Shifted Player Becomes</string>
+  <string name="ExtensionOptionShifterBecomesAmnesiac">Amnesiac</string>
+  <string name="ExtensionOptionShifterBecomesJester">Jester</string>
+  <string name="ExtensionOptionShifterBecomesSurvivor">Survivor</string>
+  <string name="ExtensionOptionShifterBecomesMercenary">Mercenary</string>
+  <string name="ExtensionOptionShifterBecomesCrewmate">Crewmate</string>
+  <string name="ExtensionOptionShifterBecomesShifter">Shifter</string>
+  <string name="ExtensionOptionShifterStealModifiers">Steal Modifiers</string>
+  
+  <!-- Lawyer Win -->
+  <string name="ExtensionLawyerWin">Wins</string>
+  
+  <!-- Lawyer Client Info -->
+  <string name="ExtensionRoleLawyerClientDescription">Your lawyer is &lt;lawyer&gt;.</string>
+  <string name="ExtensionRoleLawyerClientTabDescription">Your lawyer is &lt;lawyer&gt;.</string>
+  
+  <!-- Lawyer Chat -->
+  <string name="ExtensionLawyerChatTitle">&lt;player&gt; (Lawyer)</string>
+  <string name="ExtensionLawyerClientChatTitle">&lt;player&gt; (Client)</string>
+  
+  <!-- Lawyer Death Messages -->
+  <string name="ExtensionLawyerDiedWithClient">Failed to Defend</string>
+  <string name="ExtensionLawyerDiedClientDeath">Case Closed</string>
+  
+  <!-- Lawyer Objection -->
+  <string name="ExtensionOptionLawyerMaxObjections">Max Objections (Per Game)</string>
+  <string name="ExtensionOptionLawyerMaxObjectionsPerMeeting">Max Objections Per Meeting</string>
+  <string name="ExtensionLawyerObjectionNotification">Objection! A lawyer has objected to the current votes! All votes have been cleared - please vote again.</string>
+  <string name="ExtensionLawyerCannotVoteSamePerson">You cannot vote for the same person after an objection!</string>
+  
+  <!-- Serial Killer Role -->
+  <string name="ExtensionRoleSerialKiller">Serial Killer</string>
+  <string name="ExtensionRoleSerialKillerIntroBlurb">Kill everyone, win alone.</string>
+  <string name="ExtensionRoleSerialKillerTabDescription">Kill everyone to win alone.\%nl\%You can kill players in vents, but you'll lose the ability to vent after doing so.</string>
+  <string name="ExtensionRoleSerialKillerWikiDescription">The Serial Killer is a Neutral Killing role whose only objective is to kill everyone and win alone. The Serial Killer can optionally kill players who are in vents with them, but loses the ability to vent for the rest of the game after doing so.</string>
+  
+  <!-- Serial Killer Options -->
+  <string name="ExtensionOptionSerialKillerCanReportBodies">Can Report Bodies</string>
+  <string name="ExtensionOptionSerialKillerVentKillTargets">Vent Kill Targets</string>
+  <string name="ExtensionOptionSerialKillerVentKillTargetsEnumImpostors">Impostors</string>
+  <string name="ExtensionOptionSerialKillerVentKillTargetsEnumImpNK">Impostors + Neutral Killers</string>
+  <string name="ExtensionOptionSerialKillerVentKillTargetsEnumImpNeutrals">Impostors + Neutrals</string>
+  <string name="ExtensionOptionSerialKillerVentKillTargetsEnumAny">Any</string>
+  <string name="ExtensionOptionSerialKillerManiacMode">Maniac Mode</string>
+  <string name="ExtensionOptionSerialKillerManiacTimer">Maniac Timer</string>
+  <string name="ExtensionOptionSerialKillerManiacCooldown">Kill Cooldown</string>
+  
+  <!-- Serial Killer Maniac Modifier -->
+  <string name="ExtensionModifierSerialKillerManiac">Maniac</string>
+
+  <!-- Serial Killer Death Message -->
+  <string name="DiedToSerialKiller">Murdered</string>
+  
+  <!-- Pelican Role -->
+  <string name="ExtensionRolePelican">Pelican</string>
+  <string name="ExtensionRolePelicanIntroBlurb">Swallow All Players To Win!</string>
+  <string name="ExtensionRolePelicanTabDescription">Swallow players to trap them in your stomach.\%nl\%They are digested when a meeting is called.\%nl\%If you die, they escape alive.</string>
+  <string name="ExtensionRolePelicanWikiDescription">You can eat people alive, eat everyone to win! The People in your stomach will die at the beginning of the meeting.</string>
+  <string name="ExtensionRolePelicanSwallow">Swallow</string>
+  <string name="ExtensionRolePelicanSwallowWikiDescription">Swallow players. They are in your stomach. Until the meeting is called or you die.</string>
+
+  <!-- Pelican Options -->
+  <string name="ExtensionOptionPelicanSwallowCooldown">Swallow Cooldown</string>
+  <string name="ExtensionOptionPelicanMaxSwallowed">Max Players In Stomach</string>
+  <string name="ExtensionOptionPelicanCanVent">Pelican Can Vent</string>
+
+  <!-- Pelican Notifications -->
+  <string name="ExtensionPelicanSwallowedNotification">You have been swallowed by Pelican!</string>
+  <string name="ExtensionPelicanReleasedNotification">You have been released from the Pelican!</string>
+  
+  <!-- Pelican Death Message -->
+  <string name="DiedToPelican">Digested</string>
+  
+  <!-- Pelican Win -->
+  <string name="ExtensionPelicanWins">Wins</string>
+  
+  <string name="DiedByStringPelican">Digested by &lt;player&gt;</string>
+  
+  <!-- Pirate Role -->
+  <string name="ExtensionRolePirate">Pirate</string>
+  <string name="ExtensionRolePirateIntroBlurb">Win duels to claim victory!</string>
+  <string name="ExtensionRolePirateTabDescription">Challenge players to Rock-Paper-Scissors duels during meetings.\%nl\%Win enough duels to win the game.</string>
+  <string name="ExtensionRolePirateWikiDescription">You can duel a player and make them play Rock, Paper, Scissors against you during the next meeting. If you win, they die. If you lose, nothing happens. Draws only count if the option is enabled.</string>
+  <string name="ExtensionRolePirateDuel">Duel</string>
+  <string name="ExtensionRolePirateDuelWiki">Duel</string>
+  <string name="ExtensionRolePirateDuelWikiDescription">Select a player to duel at the next meeting. During the meeting, you play Rock, Paper, or Scissors against them.</string>
+
+  <!-- Pirate Options -->
+  <string name="ExtensionOptionPirateDuelCooldown">Duel Cooldown</string>
+  <string name="ExtensionOptionPirateDuelsToWin">Duels Needed To Win</string>
+  <string name="ExtensionOptionPirateDrawCountsAsWin">Draw Counts As Duel Win</string>
+  <string name="ExtensionOptionPirateCantDuelSamePersonTwice">Can't Duel The Same Person Twice In A Row</string>
+
+  <!-- Pirate Win Mode Options -->
+  <string name="ExtensionOptionPirateWinMode">Win Mode</string>
+  <string name="ExtensionOptionPirateWinModePirateWins">Pirate Wins</string>
+  <string name="ExtensionOptionPirateWinModePirateWinsWithOthers">Pirate Wins With Others</string>
+
+  <!-- Pirate Victory -->
+  <string name="ExtensionPirateWins">Wins</string>
+  <string name="ExtensionPirateCompletedObjective">has completed their Pirate objective!</string>
+  <string name="ExtensionPirateWinsWithOthers">Pirate wins with others</string>
+  <string name="ExtensionPirateWinsSolo">Pirate wins</string>
+
+  <!-- Pirate Notifications -->
+  <string name="ExtensionPirateDuelNotification">You are being dueled by the Pirate!</string>
+  <string name="ExtensionPirateDuelJailedPirateNotif">You are jailed! Your duel has been cancelled.</string>
+  <string name="ExtensionPirateDuelJailedTargetNotif">Your duel target is jailed! Duel cancelled.</string>
+
+  <!-- Pirate Death Message -->
+  <string name="ExtensionDiedToPirate">Lost Duel</string>
+  <string name="ExtensionDiedByPirateDuel">Dueled by &lt;player&gt;</string>
+  
+  <!-- Joker Role -->
+  <string name="ExtensionRoleJoker">Joker</string>
+  <string name="ExtensionRoleJokerIntroBlurb">Trick killers into attacking your clones!</string>
+  <string name="ExtensionRoleJokerTabDescription">Place clones of other players on the map.%nl%If killing roles eliminate enough clones, you win!%nl%Clones block regular interactions.</string>
+  <string name="ExtensionRoleJokerWikiDescription">The Joker can place clones of chosen player around map. If killing roles eliminate enough clones, you win!</string>
+
+  <string name="ExtensionRoleJokerPlaceClone">Place Clone</string>
+  <string name="ExtensionRoleJokerPlaceCloneWiki">Place Clone</string>
+  <string name="ExtensionRoleJokerPlaceCloneWikiDescription">Open a menu to select a player, then place a clone with their appearance at your current location.</string>
+
+  <!-- Joker Options -->
+  <string name="ExtensionOptionJokerKillsToWin">Kills Needed to Win</string>
+  <string name="ExtensionOptionJokerCloneCooldown">Clone Cooldown</string>
+  <string name="ExtensionOptionJokerCloneSpeed">Clone Speed</string>
+
+  <string name="ExtensionOptionJokerWinMode">Win Condition</string>
+  <string name="JokerWinOptionsSoloWin">Ends Game (Solo)</string>
+  <string name="JokerWinOptionsWinWithWinners">Win With Winners</string>
+
+  <!-- Joker Notifications -->
+  <string name="ExtensionRoleJokerFooledNotif">You've been fooled!</string>
+  <string name="ExtensionRoleJokerCloneKilledNotif">Clone killed!</string>
+  <string name="ExtensionRoleJokerObjectiveCompleteNotif">Objective Complete! Survive to win.</string>
+
+  <!-- Joker Win -->
+  <string name="ExtensionRoleJokerWinText">Joker Wins!</string>
+  <string name="ExtensionJokerWins">Wins</string>
+  
+  <!-- Pope Role -->
+  <string name="ExtensionRolePope">Pope</string>
+  <string name="ExtensionRolePopeIntroBlurb">Canonize everyone and unleash Divine Judgement!</string>
+  <string name="ExtensionRolePopeTabDescription">Canonize all living players, then trigger Judgement to eliminate everyone.</string>
+  <string name="ExtensionRolePopeWikiDescription">U need to canonize everyone to start Judgement. The Pope wins if all players die to the Judgement.</string>
+  <string name="ExtensionRolePopeCanonize">Canonize</string>
+  <string name="ExtensionRolePopeCanonizeWikiDescription">Approach a player and canonize them. Canonized players have a golden outline visible only to the Pope. Once all living players are canonized, the Judgement button becomes available.</string>
+  <string name="ExtensionRolePopeJudgement">Judgement</string>
+  <string name="ExtensionRolePopeJudgementWikiDescription">After canonizing all players, trigger Divine Judgement. A golden countdown begins - if it reaches zero, all non-Pope players die and the Pope wins.</string>
+  <string name="ExtensionRolePopeGlobalWarning">The &lt;role&gt; has unleashed Divine Judgement! &lt;time&gt; seconds remain!</string>
+  <string name="ExtensionRolePopeMessageTitle">Divine Warning</string>
+  <string name="ExtensionRolePopeWarningNotif">The &lt;role&gt; has begun Divine Judgement! &lt;time&gt; seconds until the end!</string>
+  <string name="ExtensionRolePopeTabAllCanonized">All players have been canonized! Use Judgement!</string>
+  <string name="ExtensionRolePopeTabCanonizedInfo">Canonized Players:</string>
+  <string name="ExtensionRolePopeTabCounter">&lt;count&gt; player(s) remaining</string>
+  <string name="ExtensionDiedToPopeJudgement">Divine Judgement</string>
+  <string name="ExtensionDiedByStringBasic">Killed by &lt;player&gt;</string>
+
+  <!-- Pope Options -->
+  <string name="ExtensionOptionPopeCanonizeCooldown">Canonize Cooldown</string>
+  <string name="ExtensionOptionPopeMaxCanonizations">Max Canonizations</string>
+  <string name="ExtensionOptionPopeJudgementDuration">Judgement Countdown Duration</string>
+  <string name="ExtensionOptionPopeCanonizeInteractions">Use Interactions To Spread Canonization</string>
+  
+  <!-- Pope Win -->
+  <string name="ExtensionPopeWins">Wins</string>
+  
+  <!-- Outlaw Role -->
+  <string name="ExtensionRoleOutlaw">Outlaw</string>
+  <string name="ExtensionRoleOutlawIntroBlurb">Double the trouble</string>
+  <string name="ExtensionRoleOutlawTabDescription">After killing, you have a short window to kill a second player without cooldown.</string>
+  <string name="ExtensionRoleOutlawWikiDescription">You can perform multiple kills depending on options.</string>
+
+  <!-- Outlaw Options -->
+  <string name="ExtensionOptionOutlawKillCooldown">Kill Cooldown</string>
+  <string name="ExtensionOptionOutlawDoubleKillWindow">Bonus Kill Window</string>
+  <string name="ExtensionOptionOutlawBonusKills">Bonus Kills</string>
+
+  <!-- Witch Role -->
+  <string name="ExtensionRoleWitch">Witch</string>
+  <string name="ExtensionRoleWitchIntroBlurb">We love casting spells!</string>
+  <string name="ExtensionRoleWitchTabDescription">Cast spells on players.\%nl\%They'll be highlighted in the next meeting and die after the configured amount of meetings.</string>
+  <string name="ExtensionRoleWitchWikiDescription">The Witch is an Impostor Killing role that can cast spells on other players. Spellbound players are highlighted in the next meeting and die after the configured amount of meetings. If the Witch dies, gets exiled, or is guessed, all spellbound players survive.</string>
+  <string name="ExtensionRoleWitchSpell">Spell</string>
+  <string name="ExtensionRoleWitchSpellWikiDescription">Cast a spell on a player. They will be highlighted in the next meeting and die after the configured amount of meetings.</string>
+  
+  <!-- Witch Options -->
+  <string name="ExtensionOptionWitchSpellCooldown">Spell Cooldown</string>
+  <string name="ExtensionOptionWitchAdditionalCooldown">Witch Additional Cooldown</string>
+  <string name="ExtensionOptionWitchSpellCastingDuration">Witch Spell Casting Duration</string>
+  <string name="ExtensionOptionWitchMeetingsUntilDeath">Meetings Until Death</string>
+  
+  <!-- Witch Death Message -->
+  <string name="DiedToWitch">Cursed</string>
+  
+  <!-- Witch Notifications -->
+  <string name="ExtensionWitchSpellNotification">&lt;player&gt; has been cursed! They have &lt;meetings&gt; meeting(s) left. Vote out or kill the Witch to save them!</string>
+  <string name="ExtensionWitchSpellNotificationMultiple">Multiple players have been cursed:\n&lt;players&gt;\nVote out or kill the Witch to save them!</string>
+
+  <!-- Wraith Role -->
+  <string name="ExtensionRoleWraith">Wraith</string>
+  <string name="ExtensionRoleWraithIntroBlurb">Move fast and strike unpredictably.</string>
+  <string name="ExtensionRoleWraithTabDescription">Dash for speed. Place a Lantern to teleport back to it.</string>
+  <string name="ExtensionRoleWraithWikiDescription">The Wraith is an Impostor Power role focused on fast, unpredictable movement. Dash increases your movement speed by 75% for a short time. Lantern lets you place a hidden marker only you can see; reactivate it to teleport back and briefly swoop. If the Lantern expires before you return, it breaks and leaves permanent evidence visible to all players.</string>
+  <string name="ExtensionRoleWraithDash">Dash</string>
+  <string name="ExtensionRoleWraithDashWikiDescription">Temporarily increase your movement speed by 75%.</string>
+  <string name="ExtensionRoleWraithLantern">Lantern</string>
+  <string name="ExtensionRoleWraithLanternWikiDescription">Place a Lantern only you can see. Reactivate it to teleport back and briefly turn invisible. If it expires, it breaks and leaves evidence visible to everyone.</string>
+  <string name="ExtensionRoleWraithLanternPlace">Lantern</string>
+  <string name="ExtensionRoleWraithLanternReturn">Return</string>
+
+  <!-- Wraith Options -->
+  <string name="ExtensionOptionWraithDashCooldown">Dash Cooldown</string>
+  <string name="ExtensionOptionWraithDashDuration">Dash Duration</string>
+  <string name="ExtensionOptionWraithLantern">Lantern</string>
+  <string name="ExtensionOptionWraithLanternCooldown">Lantern Cooldown</string>
+  <string name="ExtensionOptionWraithLanternDuration">Lantern Duration</string>
+  <string name="ExtensionOptionWraithInvisibleDuration">Invisible Duration</string>
+  <string name="ExtensionOptionWraithCanVent">Wraith Can Vent</string>
+
+  <!-- Hacker Role -->
+  <string name="ExtensionRoleHacker">Hacker</string>
+  <string name="ExtensionRoleHackerIntroBlurb">Download system information and jam comms.</string>
+  <string name="ExtensionRoleHackerTabDescription">Download and jam equipment, kill for extra jam charges.</string>
+  <string name="ExtensionRoleHackerWikiDescription">The Hacker is an Impostor Support role that can download information from nearby equipment to charge a portable device. Once you start downloading, you\'re locked into that equipment type until the next round. Jam disrupts information systems as if comms were sabotaged, but emergency meetings can still be called.</string>
+  <string name="ExtensionRoleHackerDownload">Download</string>
+  <string name="ExtensionRoleHackerDownloadWikiDescription">While near a downloadable console (Admin/Cams/Vitals/Door Log), download to charge your battery. Every 1 second downloading grants 2 seconds of device battery (configurable). You cannot switch equipment type until the next round.</string>
+  <string name="ExtensionRoleHackerDevice">Device</string>
+  <string name="ExtensionRoleHackerDeviceWikiDescription">Use the downloaded system anywhere, consuming battery over time.</string>
+  <string name="ExtensionRoleHackerJam">Jam</string>
+  <string name="ExtensionRoleHackerJamWikiDescription">Spend a Jam charge to disrupt information systems for a duration. This behaves like comms being down, but does not prevent calling emergency meetings.</string>
+
+  <!-- Hacker Options -->
+  <string name="ExtensionOptionHackerMaxBatterySeconds">Maximum Battery Duration</string>
+  <string name="ExtensionOptionHackerBatteryPerDownloadSecond">Battery Gained Per Download Second</string>
+  <string name="ExtensionOptionHackerDownloadRange">Download Range</string>
+  <string name="ExtensionOptionHackerMoveWithDevice">Move While Using Device</string>
+  <string name="ExtensionOptionHackerSimpleModeJamOnly">Simple Mode (Jam Only)</string>
+  <string name="ExtensionOptionHackerInitialJamCharges">Initial Jam Charges</string>
+  <string name="ExtensionOptionHackerJamChargesPerKill">Jam Charges Per Kill</string>
+  <string name="ExtensionOptionHackerJamMaxCharges">Max Jam Charges</string>
+  <string name="ExtensionOptionHackerJamCooldown">Jam Cooldown</string>
+  <string name="ExtensionOptionHackerJamDuration">Jam Duration</string>
+  
+  <!-- RC-XD Role -->
+  <string name="ExtensionRoleRcXd">RC-XD</string>
+  <string name="ExtensionRoleRcXdIntroBlurb">Remote controlled explosive</string>
+  <string name="ExtensionRoleRcXdTabDescription">Deploy an RC car, steer it with arrow names, and detonate it near enemies.</string>
+  <string name="ExtensionRoleRcXdWikiDescription">As an RC-XD, you can launch a mini car from CALL OF DUTY. This car is a bomb you control, and you can detonate it at any moment.</string>
+  <string name="ExtensionRoleRcXdDeploy">Deploy</string>
+  <string name="ExtensionRoleRcXdDeployWikiDescription">Deploy remote controlled car, then you can drive it using arrows nearby enemies and detonate it!</string>
+  <string name="ExtensionRoleRcXdDetonate">Detonate</string>
+  <string name="ExtensionRoleRcXdDetonateWikiDescription">Detonate your RC car nearby players to kill them.</string>
+
+  <!-- RC-XD Options -->
+  <string name="ExtensionOptionRcXdDeployCooldown">Deploy Cooldown</string>
+  <string name="ExtensionOptionRcXdDriveTime">Drive Time</string>
+  <string name="ExtensionOptionRcXdMaxSpeed">Max Speed</string>
+  <string name="ExtensionOptionRcXdAcceleration">Acceleration</string>
+  <string name="ExtensionOptionRcXdDetonateRadius">Detonate Radius</string>
+  <string name="ExtensionOptionRcXdMaxKills">Max Kills per Detonation</string>
+  <string name="ExtensionOptionRcXdCanVent">Can Vent</string>
+  <string name="ExtensionOptionRcXdMaxDeploys">Max Deploys</string>
+
+  <!-- Forestaller Role -->
+  <string name="ExtensionRoleForestaller">Forestaller</string>
+  <string name="ExtensionRoleForestallerIntroBlurb">Complete all tasks to disable sabotages.</string>
+  <string name="ExtensionRoleForestallerTabDescription">Finish all of your tasks. Once you do, sabotages cannot be called while you are alive.</string>
+  <string name="ExtensionRoleForestallerWikiDescription">The Forestaller is a Crewmate Support role that can prevent sabotages before they happen. After completing all tasks, sabotages are disabled while the Forestaller is alive. The Forestaller is revealed after finishing their last task.</string>
+
+  <!-- Forestaller Options -->
+  <string name="ExtensionOptionForestallerExtraShortTasks">Extra Short Tasks</string>
+  <string name="ExtensionOptionForestallerExtraLongTasks">Extra Long Tasks</string>
+  <string name="ExtensionOptionForestallerRevealTiming">Reveal Timing</string>
+  <string name="ExtensionOptionForestallerRevealTimingEnumNextMeeting">Next Meeting</string>
+  <string name="ExtensionOptionForestallerRevealTimingEnumInstant">Instant</string>
+
+  <!-- Forestaller Announcement -->
+  <string name="ExtensionForestallerSabotagesDisabledAnnouncement">Forestaller has completed all tasks. Sabotages are now disabled.</string>
+  
+  <!-- Evoker Role -->
+  <string name="ExtensionRoleEvoker">Evoker</string>
+  <string name="ExtensionRoleEvokerIntroBlurb">Blind the killers and expose them!</string>
+  <string name="ExtensionRoleEvokerTabDescription">Activate Blind to flash all killing roles. Verify players to check if they are killers.</string>
+  <string name="ExtensionRoleEvokerWikiDescription">Your ability allows you to blind all killing roles making them unable to kill, and making everybody look the same. During Evoke you can may verify if a person is in fact a killer or not.</string>
+  <string name="ExtensionRoleEvokerBlind">Blind</string>
+  <string name="ExtensionRoleEvokerBlindWikiDescription">Activate to flash all killing roles. During the flash, all killing roles cannot kill or use abilities and they see themselves.</string>
+  <string name="ExtensionRoleEvokerVerify">Verify</string>
+  <string name="ExtensionRoleEvokerVerifyWikiDescription">While Flash is activated u may verify players. If your screen flashes red this person is killing role. </string>
+
+  <!-- Evoker Options -->
+  <string name="ExtensionOptionEvokerBlindCooldown">Blind Cooldown</string>
+  <string name="ExtensionOptionEvokerBlindDuration">Blindness Duration</string>
+  <string name="ExtensionOptionEvokerCrewKillersBlinded">Crewmate Killers Are Blinded</string>
+  <string name="ExtensionOptionEvokerVerifyCooldown">Verify Cooldown</string>
+  <string name="ExtensionOptionEvokerMaxVerifications">Max Number Of Verifications</string>
+  <string name="ExtensionOptionEvokerCantVerify">Evoker Can't Verify</string>
+  <string name="ExtensionOptionEvokerBlindType">Blind Type</string>
+  <string name="ExtensionOptionEvokerBlindTypeEnumNormal">Normal</string>
+  <string name="ExtensionOptionEvokerBlindTypeEnumShowOnlySelf">Show Only Yourself</string>
+
+  <!-- Mirage Role -->
+  <string name="ExtensionRoleMirage">Mirage</string>
+  <string name="ExtensionRoleMirageIntroBlurb">You got blam-boozled!</string>
+  <string name="ExtensionRoleMirageTabDescription">Prime a decoy, then place it. If anyone interacts with it, it vanishes and you are notified.</string>
+  <string name="ExtensionRoleMirageWikiDescription">The Mirage is a Crewmate Support role that can place a decoy with the appearance of a chosen target (yourself or a random player). If any player interacts with the decoy, it disappears instantly and both the Mirage and the toucher receive a notification. Note: Mirage cannot be guessed if the decoy has the appearance of yourself.</string>
+  <string name="ExtensionRoleMirageDecoy">Decoy</string>
+  <string name="ExtensionRoleMirageDecoyWikiDescription">Prime to prepare a decoy for placement. Press again to place the decoy. While active, the button becomes Destroy.</string>
+
+  <!-- Mirage Button -->
+  <string name="ExtensionRoleMirageDecoyPrime">Prime</string>
+  <string name="ExtensionRoleMirageDecoyPlace">Place</string>
+  <string name="ExtensionRoleMirageDecoyDestroy">Destroy</string>
+
+  <!-- Mirage Options -->
+  <string name="ExtensionOptionMirageInitialUses">Initial Uses</string>
+  <string name="ExtensionOptionMirageUsesPerTasks">Uses Per Tasks</string>
+  <string name="ExtensionOptionMirageDecoyCooldown">Decoy Cooldown</string>
+  <string name="ExtensionOptionMirageDecoyDuration">Auto Destroy Cooldown</string>
+  <string name="ExtensionOptionMirageDecoyType">Decoy Type</string>
+  <string name="ExtensionOptionMirageDecoyTypeEnumMirage">Mirage</string>
+  <string name="ExtensionOptionMirageDecoyTypeEnumRandomPlayer">Random Player</string>
+  <string name="ExtensionOptionMirageArrowTime">Arrow Time</string>
+  <string name="ExtensionOptionMirageArrowTarget">Arrow Target</string>
+  <string name="ExtensionOptionMirageArrowTargetEnumMirage">Mirage</string>
+  <string name="ExtensionOptionMirageArrowTargetEnumInteractor">Interactor</string>
+
+  <!-- Mirage Notifications -->
+  <string name="ExtensionRoleMirageInteractorTriggered">You interacted with a decoy!</string>
+  <string name="ExtensionRoleMirageOwnerTriggered">Your decoy was triggered!</string>
+
+  <!-- Injector Role -->
+  <string name="ExtensionRoleInjector">Injector</string>
+  <string name="ExtensionRoleInjectorIntroBlurb">Inject players with negative effects.</string>
+  <string name="ExtensionRoleInjectorTabDescription">Inject players to give them random effects.</string>
+  <string name="ExtensionRoleInjectorWikiDescription">The Injector is an Impostor Support role that can inject players with various negative effects. Effects are randomly selected and can include inverted controls, reduced vision, slowness, or confusion.</string>
+  <string name="ExtensionRoleInjectorInject">Inject</string>
+  <string name="ExtensionRoleInjectorInjectWikiDescription">Inject a nearby player with a random negative effect. The effect will activate after a configurable delay.</string>
+
+  <!-- Injector Options -->
+  <string name="ExtensionOptionInjectorInjectCooldown">Inject Cooldown</string>
+  <string name="ExtensionOptionInjectorEffectDelay">Effect Activation Delay</string>
+  <string name="ExtensionOptionInjectorEffectDurationType">Effect Duration Type</string>
+  <string name="ExtensionOptionInjectorEffectDurationTypeEnumAllRound">All Round</string>
+  <string name="ExtensionOptionInjectorEffectDurationTypeEnumAllGame">All Game</string>
+  <string name="ExtensionOptionInjectorEffectDurationTypeEnumSetTime">Set Time</string>
+  <string name="ExtensionOptionInjectorEffectDuration">Effect Duration</string>
+  <string name="ExtensionOptionInjectorInitialUses">Initial Uses</string>
+  <string name="ExtensionOptionInjectorUsesPerKill">Uses Per Kill</string>
+  <string name="ExtensionOptionInjectorPositiveEffectsEnabled">Positive Effects Enabled</string>
+  <string name="ExtensionOptionInjectorSelectedEffectType">Effect Type To Configure</string>
+  <string name="ExtensionOptionInjectorEffectChance">Effect Chance</string>
+  <string name="extensionoptionInjectorsharedcooldown">Shared Cooldown</string>
+
+  <!-- Injector Effect Type Enum Values -->
+  <string name="ExtensionOptionInjectorEffectTypeEnumInvertedControls">Inverted Controls</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumLowVision">Low Vision</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumSlowness">Slowness</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumVeryLowVision">Very Low Vision</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumConfused">Confused</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumNoVent">No Vent</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumNoUse">No Use</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumNoReport">No Report</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumNausea">Nausea</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumWeakness">Weakness</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumSpeedBoost">Speed Boost</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumVisionBoost">Vision Boost</string>
+  <string name="ExtensionOptionInjectorEffectTypeEnumRegeneration">Regeneration</string>
+
+  <!-- Injector Effect Chances -->
+  <string name="ExtensionOptionInjectorChanceInvertedControls">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceLowVision">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceSlowness">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceVeryLowVision">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceConfused">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceNoVent">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceNoUse">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceNoReport">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceNausea">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceWeakness">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceSpeedBoost">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceVisionBoost">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceRegeneration">Effect Chance</string>
+
+  <!-- Extension Local Settings -->
+  <string name="ExtensionLocalSettingEnableNauseaCameraShake">Enable Nausea Camera Shake</string>
+
+  <!-- Injector Notifications -->
+  <string name="ExtensionInjectorNotificationInvertedControls">You start to feel lightheaded…</string>
+  <string name="ExtensionInjectorNotificationLowVision">Your vision narrows…</string>
+  <string name="ExtensionInjectorNotificationSlowness">Your legs start to feel heavy…</string>
+  <string name="ExtensionInjectorNotificationVeryLowVision">You feel your eyesight begin to fade...</string>
+  <string name="ExtensionInjectorNotificationConfused">You start to feel confused...</string>
+  <string name="ExtensionInjectorNotificationNoVent">You feel too weak to use vents…</string>
+  <string name="ExtensionInjectorNotificationNoUse">Your body feels paralyzed…</string>
+  <string name="ExtensionInjectorNotificationNoReport">Your mind goes blank when you see bodies…</string>
+  <string name="ExtensionInjectorNotificationNausea">You feel nauseous… (0.7x speed, 0.7x vision, camera shake)</string>
+  <string name="ExtensionInjectorNotificationWeakness">You feel extremely weak…</string>
+  <string name="ExtensionInjectorNotificationSpeedBoost">You feel energized and fast!</string>
+  <string name="ExtensionInjectorNotificationVisionBoost">Your vision becomes crystal clear!</string>
+  <string name="ExtensionInjectorNotificationRegeneration">You feel your body healing rapidly!</string>
+
+  <!-- Injector Effect Descriptions -->
+  <string name="ExtensionInjectorEffectDescriptionInvertedControls">Inverted controls</string>
+  <string name="ExtensionInjectorEffectDescriptionLowVision">0.5x vision</string>
+  <string name="ExtensionInjectorEffectDescriptionVeryLowVision">0.1x vision</string>
+  <string name="ExtensionInjectorEffectDescriptionSlowness">0.5x speed</string>
+  <string name="ExtensionInjectorEffectDescriptionConfused">Hallucinations, cannot report</string>
+  <string name="ExtensionInjectorEffectDescriptionNoVent">Cannot vent</string>
+  <string name="ExtensionInjectorEffectDescriptionNoUse">Cannot use abilities</string>
+  <string name="ExtensionInjectorEffectDescriptionNoReport">Cannot report bodies</string>
+  <string name="ExtensionInjectorEffectDescriptionNausea">0.7x speed, 0.7x vision, camera shake</string>
+  <string name="ExtensionInjectorEffectDescriptionWeakness">0.6x speed</string>
+  <string name="ExtensionInjectorEffectDescriptionSpeedBoost">1.5x speed</string>
+  <string name="ExtensionInjectorEffectDescriptionVisionBoost">1.5x vision</string>
+  <string name="ExtensionInjectorEffectDescriptionRegeneration">Reduced cooldowns</string>
+
+  <!-- Injector Effect Wore Off Notifications -->
+  <string name="ExtensionInjectorNotificationWoreOffInvertedControls">The lightheaded feeling has passed.</string>
+  <string name="ExtensionInjectorNotificationWoreOffLowVision">Your vision has returned to normal.</string>
+  <string name="ExtensionInjectorNotificationWoreOffVeryLowVision">Your eyesight has fully recovered.</string>
+  <string name="ExtensionInjectorNotificationWoreOffSlowness">Your legs feel normal again.</string>
+  <string name="ExtensionInjectorNotificationWoreOffConfused">The confusion has cleared.</string>
+  <string name="ExtensionInjectorNotificationWoreOffNoVent">You can use vents again.</string>
+  <string name="ExtensionInjectorNotificationWoreOffNoUse">You can use abilities again.</string>
+  <string name="ExtensionInjectorNotificationWoreOffNoReport">You can report bodies again.</string>
+  <string name="ExtensionInjectorNotificationWoreOffNausea">The nausea has subsided.</string>
+  <string name="ExtensionInjectorNotificationWoreOffWeakness">Your strength has returned.</string>
+  <string name="ExtensionInjectorNotificationWoreOffSpeedBoost">The speed boost has worn off.</string>
+  <string name="ExtensionInjectorNotificationWoreOffVisionBoost">Your vision has returned to normal.</string>
+  <string name="ExtensionInjectorNotificationWoreOffRegeneration">The regeneration effect has ended.</string>
+
+  <!-- Charlatan Role -->
+  <string name="ExtensionRoleCharlatan">Charlatan</string>
+  <string name="ExtensionRoleCharlatanIntroBlurb">Manipulate body reports to your advantage.</string>
+  <string name="ExtensionRoleCharlatanTabDescription">Use Deceive to report bodies you've killed from any distance.\%nl\%Use Conceal to reduce the report range of nearby bodies.</string>
+  <string name="ExtensionRoleCharlatanWikiDescription">The Charlatan is an Impostor Support role that manipulates body reports. Deceive allows you to report bodies you've killed from any distance for a limited time after killing. Conceal reduces the report range of nearby bodies, but requires you to stay near the body for the duration.</string>
+  <string name="ExtensionRoleCharlatanDeceive">Deceive</string>
+  <string name="ExtensionRoleCharlatanDeceiveWikiDescription">Report the body you killed from any distance, regardless of range or line of sight. Available for a limited time after killing.</string>
+  <string name="ExtensionRoleCharlatanConceal">Conceal</string>
+  <string name="ExtensionRoleCharlatanConcealWikiDescription">Reduce the report range of nearby bodies. You must stay near the body for the duration to successfully conceal it.</string>
+
+  <!-- Charlatan Options -->
+  <string name="ExtensionOptionCharlatanDeceiveBaseDuration">Deceive Base Duration</string>
+  <string name="ExtensionOptionCharlatanDeceiveDurationIncreasePerKill">Deceive Duration Increase Per Kill</string>
+  <string name="ExtensionOptionCharlatanConcealUses">Conceal Uses</string>
+  <string name="ExtensionOptionCharlatanConcealChargesPerKill">Conceal Charges Per Kill</string>
+  <string name="ExtensionOptionCharlatanConcealReportRange">Conceal Report Range</string>
+  <string name="ExtensionOptionCharlatanConcealReportRangeEnumExtremelyShort">Extremely Short</string>
+  <string name="ExtensionOptionCharlatanConcealReportRangeEnumVeryShort">Very Short</string>
+  <string name="ExtensionOptionCharlatanConcealReportRangeEnumShort">Short</string>
+  <string name="ExtensionOptionCharlatanConcealChannelDuration">Conceal Channel Duration</string>
+  <string name="ExtensionOptionCharlatanConcealCooldown">Conceal Cooldown</string>
+
+  <!-- Vulture Role -->
+  <string name="ExtensionRoleVulture">Vulture</string>
+  <string name="ExtensionRoleVultureIntroBlurb">Eat dead bodies to win alone.</string>
+  <string name="ExtensionRoleVultureTabDescription">Eat dead bodies to win alone.</string>
+  <string name="ExtensionRoleVultureWikiDescription">The Vulture is a Neutral Evil role whose goal is to eat a set amount of dead bodies. Optionally, the Vulture can use Scavenge to get arrows pointing to corpses. If the Vulture\'s win condition can no longer be met, they become the configured role.</string>
+  <string name="ExtensionRoleVultureEat">Eat</string>
+  <string name="ExtensionRoleVultureEatWikiDescription">Eat a nearby dead body. This counts toward your win condition.</string>
+  <string name="ExtensionRoleVultureScavenge">Scavenge</string>
+  <string name="ExtensionRoleVultureScavengeWikiDescription">Get arrows pointing to all corpses for a duration. If a corpse is on a different floor on Submerged, the arrow will point to the elevator.</string>
+
+  <!-- Vulture Options -->
+  <string name="ExtensionOptionVultureEatCooldown">Eat Cooldown</string>
+  <string name="ExtensionOptionVultureEatDuration">Eat Duration</string>
+  <string name="ExtensionOptionVultureBodiesToWin">Number Of Bodies To Win</string>
+  <string name="ExtensionOptionVultureCanVent">Vulture Can Vent</string>
+  <string name="ExtensionOptionVultureScavengeEnabled">Scavenge Enabled</string>
+  <string name="ExtensionOptionVultureScavengeCooldown">Scavenge Cooldown</string>
+  <string name="ExtensionOptionVultureScavengeDuration">Scavenge Duration</string>
+  <string name="ExtensionOptionVultureOnLoseBecomes">On Lose, Vulture Becomes</string>
+
+  <!-- Spiteful Modifier -->
+  <string name="ExtensionModifierSpiteful">Spiteful</string>
+  <string name="ExtensionModifierSpitefulIntroBlurb">Punish those who vote you out.</string>
+  <string name="ExtensionModifierSpitefulTabDescription">When you are voted out, everyone who voted for you receives a negative effect.</string>
+  <string name="ExtensionModifierSpitefulWikiDescription">When you are voted out, everyone who voted for you receives a negative effect.</string>
+  <string name="ExtensionModifierSpitefulAmount">Spiteful Amount</string>
+  <string name="ExtensionModifierSpitefulChance">Spiteful Chance</string>
+  <string name="ExtensionModifierSpitefulImpact">Spiteful Impact</string>
+  
+  <string name="ExtensionModifierSpitefulEffectType">Punishment Effect</string>
+  <string name="ExtensionModifierSpitefulEffectTypeEnumLowerVision">Lower Vision</string>
+  <string name="ExtensionModifierSpitefulEffectTypeEnumSlowness">Slowness</string>
+  <string name="ExtensionModifierSpitefulEffectTypeEnumIncreasedCooldowns">Increased Cooldowns</string>
+  
+  <string name="ExtensionModifierSpitefulDurationType">Punishment Duration</string>
+  <string name="ExtensionModifierSpitefulDurationTypeEnumNextRounds">Next Rounds</string>
+  <string name="ExtensionModifierSpitefulDurationTypeEnumRestOfGame">Rest of Game</string>
+  <string name="ExtensionModifierSpitefulRoundCount">Number of Rounds</string>
+
+  <string name="ExtensionModifierSpitefulEffectLowerVision">Lower Vision</string>
+  <string name="ExtensionModifierSpitefulEffectSlowness">Slowness</string>
+  <string name="ExtensionModifierSpitefulEffectIncreasedCooldowns">Increased Cooldowns</string>
+  <string name="ExtensionModifierSpitefulVoterNotification">The player you voted for was &lt;spiteful&gt;! &lt;effect&gt;</string>
+  <string name="ExtensionModifierSpitefulEffectLowerVisionDescription">Your vision is reduced by &lt;impact&gt;%</string>
+  <string name="ExtensionModifierSpitefulEffectSlownessDescription">Your speed is reduced by &lt;impact&gt;%</string>
+  <string name="ExtensionModifierSpitefulEffectIncreasedCooldownsDescription">Your ability cooldowns are increased by &lt;impact&gt;%</string>
+    
+  <!-- Draft Mode -->
+  <string name="ExtensionDraftModeGroupName">Draft Mode</string>
+  <string name="ExtensionOptionDraftModeEnabled">Enable Draft Mode</string>
+  <string name="ExtensionOptionDraftModeLockLobby">Lock Lobby During Draft</string>
+  <string name="ExtensionOptionDraftModeTimeToChoose">Time To Choose</string>
+  <string name="ExtensionOptionDraftModeRolesToShow">Roles To Show</string>
+	
+  <string name="ExtensionDraftModeTitle">Role Draft</string>
+  <string name="ExtensionDraftModeCurrentlyPicking">Currently Picking:</string>
+  <string name="ExtensionDraftModeYourTurn">Your Turn!</string>
+  <string name="ExtensionDraftModeWaiting">Waiting...</string>
+  <string name="ExtensionDraftModeRandomRole">Random</string>
+  <string name="ExtensionDraftModeAutoSelect">Auto-selecting in</string>
+  <string name="ExtensionDraftModeTurnsUntil">turns until your pick</string>
+  <string name="ExtensionDraftModePlayerPicks">Player Picks:</string>
+  
+  <!-- Bounty Hunter Role -->
+  <string name="ExtensionRoleBountyHunter">Bounty Hunter</string>
+  <string name="ExtensionRoleBountyHunterIntroBlurb">Hunt targets to win!</string>
+  <string name="ExtensionRoleBountyHunterTabDescription">Eliminate all targets to win!</string>
+  <string name="ExtensionRoleBountyHunterWikiDescription">You need to murder your targets to win!</string>
+  <string name="ExtensionRoleBountyHunterKill">Hunt</string>
+  <string name="ExtensionRoleBountyHunterKillWikiDescription">Kill your assigned target. You cannot kill any other player.</string>
+  
+  <!-- Bounty Hunter Options -->
+  <string name="ExtensionOptionBHKillCooldown">BH Kill Cooldown</string>
+  <string name="ExtensionOptionBHImpostorKillCd">Bounty Hunter Has Impostor Kill Cd</string>
+  <string name="ExtensionOptionBHCanVent">Bounty Hunter Can Vent</string>
+  <string name="ExtensionOptionBHTargetsToKill">Targets BH Has To Kill</string>
+  <string name="ExtensionOptionBHShowArrow">Show Arrow To Target</string>
+  <string name="ExtensionOptionBHArrowUpdateInterval">Arrow Update Interval</string>
+  <string name="ExtensionOptionBHDiesIfNotKilled">BH Dies If Target Not Killed</string>
+  <string name="ExtensionOptionBHGameContinues">Game Continues Without Other Killers</string>
+  <string name="ExtensionOptionBHWinMode">Win Mode</string>
+  <string name="ExtensionOptionBHWinModeEnumSoloWin">Solo Win (Ends Game)</string>
+  <string name="ExtensionOptionBHWinModeEnumWinWithWinners">Win With Winners</string>
+  
+  <!-- Bounty Hunter Notifications -->
+  <string name="ExtensionBHYourNextTarget">Your Next Target</string>
+  <string name="ExtensionBHNewTarget">New target: &lt;player&gt;</string>
+  <string name="ExtensionBHTargetKilled">Target eliminated! (&lt;current&gt;/&lt;needed&gt;)</string>
+  <string name="ExtensionBHFailed">You failed to kill your target! Cooldown penalty applied.</string>
+  <string name="ExtensionBHNoTargets">No valid targets available!</string>
+  <string name="ExtensionBountyHunterWins">Wins</string>
+  
+  <!-- Bounty Hunter Death Message -->
+  <string name="DiedToBountyHunter">Hunted</string>
+  <string name="DiedByBountyHunter">Hunted by &lt;player&gt;</string>
+  
+  <!-- Poisoner Role -->
+  <string name="ExtensionRolePoisoner">Poisoner</string>
+  <string name="ExtensionRolePoisonerIntroBlurb">Poison and vine your enemies</string>
+  <string name="ExtensionRolePoisonerTabDescription">Use Poison to slowly kill players you approach.\%nl\%Use Vine to remotely kill the nearest player in range.</string>
+  <string name="ExtensionRolePoisonerWikiDescription">An Impostor who can poison players on contact or use vines to kill from a distance.</string>
+  <string name="ExtensionRolePoisonerPoison">Poison</string>
+  <string name="ExtensionRolePoisonerPoisonWikiDescription">Approach a player and poison them. They will die after a delay.</string>
+  <string name="ExtensionRolePoisonerVine">Vine</string>
+  <string name="ExtensionRolePoisonerVining">Vining...</string>
+  <string name="ExtensionRolePoisonerVineWikiDescription">Find the nearest player in range and kill them after a delay. Your camera follows the target.</string>
+  
+  <!-- Poisoner Options -->
+  <string name="ExtensionOptionPoisonerPoisonCooldown">Poison Cooldown</string>
+  <string name="ExtensionOptionPoisonerPoisonDuration">Poison Duration</string>
+  <string name="ExtensionOptionPoisonerVineCooldown">Vine Cooldown</string>
+  <string name="ExtensionOptionPoisonerVineDuration">Vine Duration</string>
+  <string name="ExtensionOptionPoisonerVineRange">Vine Range</string>
+  <string name="ExtensionOptionPoisonerCanVent">Can Vent</string>
+
+  <!-- Poisoner Death Messages -->
+  <string name="DiedToPoisoner">Killed</string>
+  <string name="DiedToPoisonerPoison">Poisoned</string>
+  <string name="DiedToPoisonerVine">Squished</string>
+  
+  <!-- Bodyguard Role -->
+  <string name="ExtensionRoleBodyguard">Bodyguard</string>
+  <string name="ExtensionRoleBodyguardIntroBlurb">Protect your target at all costs!</string>
+  <string name="ExtensionRoleBodyguardTabDescription">Shield a player from attacks. When they are attacked, teleport to them and eliminate the threat.</string>
+  <string name="ExtensionRoleBodyguardWikiDescription">Gives a shield to a player. If someone tries to kill the protected player, you can teleport to them and eliminate the attacker. You can only kill the attacker, and if you do, you die along with them.</string>
+  <string name="ExtensionRoleBodyguardGuard">Guard</string>
+  <string name="ExtensionRoleBodyguardGuardWikiDescription">Shield a nearby player. The shielded player is protected from kill attempts. When attacked, the Guard button transforms into Backlash.</string>
+  <string name="ExtensionRoleBodyguardBacklash">Backlash</string>
+  <string name="ExtensionRoleBodyguardBacklashWikiDescription">After the shielded player is attacked, use Backlash to teleport to them. You then have a limited time to kill the attacker.</string>
+  <string name="ExtensionRoleBodyguardKill">Kill</string>
+  <string name="ExtensionRoleBodyguardKillWikiDescription">After teleporting via Backlash, kill a nearby player. Depending on options, you can only target the attacker or anyone nearby.</string>
+  <string name="ExtensionRoleBodyguardTabGuarding">Guarding: &lt;player&gt;</string>
+  <string name="ExtensionRoleBodyguardTabBacklashReady">BACKLASH READY!</string>
+  <string name="ExtensionRoleBodyguardTabKillMode">KILL MODE ACTIVE!</string>
+
+  <!-- Bodyguard Options -->
+  <string name="ExtensionOptionBodyguardGuardCooldown">Guard Cooldown</string>
+  <string name="ExtensionOptionBodyguardBacklashWindow">Backlash Time Window</string>
+  <string name="ExtensionOptionBodyguardKillWindow">Kill Time Window</string>
+  <string name="ExtensionOptionBodyguardDiesAfterKill">Dies After Kill</string>
+  <string name="ExtensionOptionBodyguardOnlyTargetAttacker">Can Only Kill Attacker</string>
+  <string name="ExtensionOptionBodyguardCanKillCrewKilling">React To Crew Killing</string>
+  <string name="ExtensionOptionBodyguardShowShieldToTarget">Show Shield To</string>
+  <string name="ExtensionOptionBodyguardShieldEnumBodyguard">Bodyguard</string>
+  <string name="ExtensionOptionBodyguardShieldEnumTarget">Target</string>
+  <string name="ExtensionOptionBodyguardShieldEnumTargetAndBodyguard">Target + Bodyguard</string>
+  <string name="ExtensionOptionBodyguardShieldEnumEveryone">Everyone</string>
+  <string name="ExtensionOptionBodyguardShowBacklashArrow">Show Backlash Arrow</string>
+  <string name="ExtensionOptionBodyguardGreenNameOnAttacker">Green Name On Who Attacked</string>
+
+  <!-- Bodyguard Death Messages -->
+  <string name="DiedToTerminated">Terminated</string>
+  <string name="DiedToBodyguard">Sacrificed</string>
+  
+  <!-- Drunk Modifier -->
+  <string name="ExtensionModifierDrunk">Drunk</string>
+  <string name="ExtensionModifierDrunkIntroBlurb">Your controls are inverted!</string>
+  <string name="ExtensionModifierDrunkTabDescription">Your movement controls are inverted for {meetings} meetings.</string>
+  <string name="ExtensionModifierDrunkWikiDescription">The Drunk has their movement controls permanently inverted for {meetings} meetings. They cannot be guessed.</string>
+  <string name="ExtensionModifierDrunkChance">Drunk Chance</string>
+  <string name="ExtensionModifierDrunkAmount">Drunk Amount</string>
+  <string name="ExtensionModifierDrunkDuration">Drunk Duration (Meetings)</string>
+  
+  <!-- Falcon Role -->
+  <string name="ExtensionRoleFalcon">Falcon</string>
+  <string name="ExtensionRoleFalconIntroBlurb">Soar above and see the bigger picture.</string>
+  <string name="ExtensionRoleFalconTabDescription">Zoom out to observe the map from a bird's eye view.</string>
+  <string name="ExtensionRoleFalconWikiDescription">You can zoom out the screen for a few seconds. You can't use this at light sabotage.</string>
+  <string name="ExtensionRoleFalconZoom">Zoom Out</string>
+  <string name="ExtensionRoleFalconZoomIn">Zoom In</string>
+  <string name="ExtensionRoleFalconZoomWikiDescription">Zoom out the camera to see a wider area for a limited duration. Cannot be used during lights sabotage.</string>
+
+  <!-- Falcon Options -->
+  <string name="ExtensionOptionFalconZoomCooldown">Zoom Cooldown</string>
+  <string name="ExtensionOptionFalconZoomDuration">Zoom Duration</string>
+  <string name="ExtensionOptionFalconZoomDistance">Zoom Distance</string>
+  <string name="ExtensionOptionFalconMaxUses">Max Zoom Uses</string>
+
+  <!-- Sage Role -->
+  <string name="ExtensionRoleSage">Sage</string>
+  <string name="ExtensionRoleSageIntroBlurb">Compare two players to determine if they are friends or foes.</string>
+  <string name="ExtensionRoleSageTabDescription">Use Gaze and Intuit on two different players, then learn if they are allies or enemies.</string>
+  <string name="ExtensionRoleSageWikiDescription">You are a very wise person, that can tell if two people win or lose together.</string>
+  <string name="ExtensionRoleSageGaze">Gaze</string>
+  <string name="ExtensionRoleSageGazeWikiDescription">Select the first player to compare.</string>
+  <string name="ExtensionRoleSageIntuit">Intuit</string>
+  <string name="ExtensionRoleSageIntuitWikiDescription">Select the second player to compare. If a Gaze target is already set, the comparison will trigger.</string>
+
+  <!-- Sage Options -->
+  <string name="ExtensionOptionSageCooldown">Sage Cooldown</string>
+  <string name="ExtensionOptionSageMaxCompares">Max Comparisons</string>
+  <string name="ExtensionOptionSageNeutralBenignFriendly">Neutral Benign Shows Friendly</string>
+  <string name="ExtensionOptionSageNeutralEvilFriendly">Neutral Evil Shows Friendly</string>
+  <string name="ExtensionOptionSageNeutralOutlierFriendly">Neutral Outlier Shows Friendly</string>
+
+  <!-- Ventable Modifier -->
+  <string name="ExtensionModifierVentable">Ventable</string>
+  <string name="ExtensionModifierVentableIntroBlurb">You can use vents!</string>
+  <string name="ExtensionModifierVentableTabDescription">You can vent! Uses remaining: -uses-</string>
+  <string name="ExtensionModifierVentableTabDescriptionEmpty">No vent uses remaining.</string>
+  <string name="ExtensionModifierVentableWikiDescription">A Crewmate modifier that grants limited access to vents. You have a set number of vent uses with a cooldown between each use and a maximum duration per vent stay.</string>
+  <string name="ExtensionModifierVentableAmount">Ventable Amount</string>
+  <string name="ExtensionModifierVentableChance">Ventable Chance</string>
+  <string name="ExtensionModifierVentableMaxVentUses">Max Vent Uses</string>
+  <string name="ExtensionModifierVentableVentCooldown">Vent Cooldown</string>
+  <string name="ExtensionModifierVentableVentDuration">Max Vent Duration</string>
+
+  <!-- Doppelganger Role -->
+  <string name="ExtensionRoleDoppelganger">Doppelganger</string>
+  <string name="ExtensionRoleDoppelgangerIntroBlurb">Kill and steal their identity.</string>
+  <string name="ExtensionRoleDoppelgangerTabDescription">Kill players to steal their appearance.\%nl\%You remain disguised until a meeting is called.\%nl\%Once out of steals, you can still kill but won't disguise.</string>
+  <string name="ExtensionRoleDoppelgangerWikiDescription">If u kill a player u will steal his identity for the rest of the round.</string>
+
+  <!-- Doppelganger Options -->
+  <string name="ExtensionOptionDoppelgangerKillCooldown">Kill Cooldown</string>
+  <string name="ExtensionOptionDoppelgangerMaxSteals">Max Identity Thefts</string>
+  <string name="ExtensionOptionDoppelgangerCanVent">Can Vent</string>
+  <string name="ExtensionOptionDoppelgangerStealsPerRound">Reset Steals Each Round</string>
+
+  <!-- Doppelganger Death Message -->
+  <string name="DiedToDoppelganger">Identity Stolen</string>
+
+  <!-- Death Note Modifier -->
+  <string name="ExtensionModifierDeathNote">Death Note</string>
+  <string name="ExtensionModifierDeathNoteIntroBlurb">Write their name... and they die.</string>
+  <string name="ExtensionModifierDeathNoteTabDescription">Find the Death Note near a vent. Write a player's name to curse them with a delayed death.</string>
+  <string name="ExtensionModifierDeathNoteBaseDesc">The Death Note has been used.</string>
+  <string name="ExtensionModifierDeathNoteWikiDescription">The Death Note is spawning on random vent. If u find it, u can write a player's name to curse them. They will die of a Heart Attack after the timer expires.</string>
+ 
+  <!-- Death Note Options -->
+  <string name="ExtensionModifierDeathNoteAmount">Death Note Amount</string>
+  <string name="ExtensionModifierDeathNoteChance">Death Note Chance</string>
+  <string name="ExtensionModifierDeathNoteTimer">Death Timer</string>
+  <string name="ExtensionModifierDeathNoteMaxUses">Max Uses</string>
+  <string name="ExtensionModifierDeathNoteGuessable">Death Note Guessable</string>
+  <string name="DiedToHeartAttack">Heart Attack</string>
+
+  <!-- Death Note Modifier Ability -->
+  <string name="ExtensionModifierDeathNoteAbility">Write Name</string>
+  <string name="ExtensionModifierDeathNoteAbilityWikiDescription">Find the Death Note near a random vent and write the name of a living player. After the configured timer expires, that player dies of a Heart Attack. The Death Note is consumed immediately after use.</string>
+  
+  <!-- Shroud Role -->
+  <string name="ExtensionRoleShroud">Shroud</string>
+  <string name="ExtensionRoleShroudIntroBlurb">Mark players with a deadly trap.</string>
+  <string name="ExtensionRoleShroudTabDescription">Shroud a player to set a trap. Anyone who interacts with them dies.\%nl\%If no one interacts, the shrouded player dies after the meeting is called.</string>
+  <string name="ExtensionRoleShroudWikiDescription">The Shroud can mark one player per round with a deadly trap. Any player who interacts with the shrouded player will be killed instead. If no one interacts with the shrouded player before a meeting is called, the shrouded player dies shortly after the meeting begins.</string>
+  <string name="ExtensionRoleShroudAbility">Shroud</string>
+  <string name="ExtensionRoleShroudAbilityWikiDescription">Mark a player as a trap. Anyone who interacts with them dies. Only one target at a time. If no one interacts with the shrouded player before a meeting is called, the shrouded player dies shortly after the meeting begins.</string>
+  <string name="ExtensionRoleShroudShroudedPlayer">Shrouded Player</string>
+
+  <!-- Shroud Cause of Death -->
+  <string name="DiedToShroud">Shrouded</string>
+
+  <!-- Shroud Options -->
+  <string name="ExtensionOptionShroudCooldown">Shroud Cooldown</string>
+  <string name="ExtensionOptionShroudCanVent">Can Vent</string>
+  <string name="ExtensionOptionShroudSharedCooldown">Shared Cooldown (Kill &amp; Shroud)</string>
+
+  <!-- Vampire Hunter Role -->
+  <string name="ExtensionRoleVampireHunter">Vampire Hunter</string>
+  <string name="ExtensionRoleVampireHunterIntroBlurb">Stake the Vampires!</string>
+  <string name="ExtensionRoleVampireHunterTabDescription">Use your stake to kill Vampires.\%nl\%Failed stakes on non-Vampires are wasted.\%nl\%When all Vampires die, you become a new role.</string>
+  <string name="ExtensionRoleVampireHunterWikiDescription">The Vampire Hunter spawns only when Vampires are in the game. After the first meeting, a random Crewmate is converted into the Vampire Hunter. They can stake players if the player is a Vampire, they die. If not, the stake is used. When all Vampires are eliminated, the Vampire Hunter converts into another Crewmate role.</string>
+  <string name="ExtensionRoleVampireHunterStake">Stake</string>
+  <string name="ExtensionRoleVampireHunterStakeWikiDescription">Stake a nearby player. If they are a Vampire, they die. If not, you waste a stake use.</string>
+
+  <!-- Vampire Hunter Options -->
+  <string name="ExtensionOptionVHStakeCooldown">Stake Cooldown</string>
+  <string name="ExtensionOptionVHMaxFailedStakes">Max Failed Stakes</string>
+  <string name="ExtensionOptionVHCanStakeRoundOne">Can Stake Round One</string>
+  <string name="ExtensionOptionVHSelfKillOnFailure">Self Kill On All Stakes Failed</string>
+  <string name="ExtensionOptionVHBecomesOnVampDeath">Becomes On Vampire Death</string>
+  <string name="ExtensionOptionVHMinVampires">Min Vampires To Spawn</string>
+  <string name="ExtensionOptionVHEnabled">Vampire Hunter Enabled</string>
+  <string name="ExtensionOptionVHChance">Vampire Hunter Spawn Chance</string>
+
+  <!-- Kamikaze Role -->
+  <string name="ExtensionRoleKamikaze">Kamikaze</string>
+  <string name="ExtensionRoleKamikazeIntroBlurb">Go out with a bang and take everyone nearby with you.</string>
+  <string name="ExtensionRoleKamikazeTabDescription">Sacrifice yourself in an explosion to kill all nearby players.</string>
+  <string name="ExtensionRoleKamikazeWikiDescription">The Kamikaze is an Impostor role that can detonate themselves, killing all players within the blast radius. The Kamikaze dies in the process. Use the regular kill button normally, and activate the suicide button when the moment is right to take out as many enemies as possible.</string>
+  <string name="ExtensionRoleKamikazeSuicide">Suicide</string>
+  <string name="ExtensionRoleKamikazeSuicideWikiDescription">Detonate yourself, killing all players within the blast radius. You die in the process. The number of victims is limited by the Max Kills option.</string>
+  <string name="DiedToSeppuku">Seppuku</string>
+
+  <!-- Kamikaze Options -->
+  <string name="ExtensionOptionKamikazeKillCooldown">Kill Cooldown</string>
+  <string name="ExtensionOptionKamikazeSuicideCooldown">Suicide Cooldown</string>
+  <string name="ExtensionOptionKamikazeDetonateRadius">Detonate Radius</string>
+  <string name="ExtensionOptionKamikazeMaxKills">Max Kills In Detonation</string>
+  <string name="ExtensionOptionKamikazeCanVent">Can Vent</string>
+  <string name="ExtensionOptionKamikazeShowRadiusIndicator">Show Radius Indicator</string>
+  <string name="ExtensionOptionKamikazeCanSuicideFirstRound">Can Suicide First Round</string>
+  
+  <!-- Publicity Modifier -->
+  <string name="ExtensionModifierPublicity">Publicity</string>
+  <string name="ExtensionModifierPublicityIntroBlurb">You can see color votes of others during meetings.</string>
+  <string name="ExtensionModifierPublicityTabDescription">You can see the color votes of all players during meetings.</string>
+  <string name="ExtensionModifierPublicityWikiDescription">See the real color votes of all players during meetings.</string>
+
+  <!-- Egotist Extra Options -->
+  <string name="ExtensionOptionEgotistCanVent">Egotist Can Vent</string>
+  <string name="ExtensionOptionEgotistMaxVentTime">Max Time In Vent</string>
+  <string name="ExtensionOptionEgotistVentCooldown">Vent Cooldown</string>
+  <string name="ExtensionOptionEgotistImpostorVision">Egotist Has Impostor Vision</string>
+
+  <!-- TOUMCE Wiki Terms - Symbols -->
+  <string name="TOUMCETermsSymbolsTitle">TOUMCE Symbols</string>
+  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player canonized by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;✶&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#77B962&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client • &lt;color=#C0C0C0&gt;&lt;b&gt;¤&lt;/b&gt;&lt;/color&gt; - Player cursed by the Witch</string>
+
+  <!-- TOUMCE Wiki Terms - Shield Flashes -->
+  <string name="TOUMCETermsShieldFlashesTitle">General Shield Flashes</string>
+  <string name="TOUMCETermsShieldFlashesInfo">When a kill is blocked by a shield, the killer sees a colored flash indicating which role provided the protection: • &lt;color=#006600&gt;&lt;b&gt;Dark Green&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Purple&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyan/Teal&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Silver Blue&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Light Blue&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Mauve&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#77B962&gt;&lt;b&gt;Green&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (meeting protection)</string>
+
+<!-- TOUMCE Wiki Terms - Draft Mode -->
+<string name="TOUMCETermsDraftModeTitle">Draft Mode</string>
+<string name="TOUMCETermsDraftModeInfo">&lt;b&gt;Draft Mode&lt;/b&gt; replaces normal role assignment with a strategic pick phase before the game starts.
+• Players are assigned a side (&lt;color=#4DA6FF&gt;&lt;b&gt;Crewmate&lt;/b&gt;&lt;/color&gt;, &lt;color=#FF3B3B&gt;&lt;b&gt;Impostor&lt;/b&gt;&lt;/color&gt;, or &lt;color=#7F7F7F&gt;&lt;b&gt;Neutral&lt;/b&gt;&lt;/color&gt;) and then choose their specific role in a randomized turn order.
+• Each player is offered 3 unique roles. Spectators are excluded from the process and do not take up pick slots.
+• If you do not pick in time, a role will be automatically assigned to you based on your assigned side.
+• By default, &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates&lt;/b&gt;&lt;/color&gt; and &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors&lt;/b&gt;&lt;/color&gt; draft from specialized sub-categories (e.g., Investigative, Power, Killing).</string>
+
+<!-- TOUMCE Wiki Terms - Draft Factions -->
+<string name="TOUMCETermsDraftFactionsTitle">Draft Factions</string>
+<string name="TOUMCETermsDraftFactionsInfo">Before the draft begins, players are assigned a faction that determines their available role pool.
+• &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors&lt;/b&gt;&lt;/color&gt; draft from various specialized Impostor categories.
+• &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates&lt;/b&gt;&lt;/color&gt; choose from diverse Crewmate sub-groups (e.g., Investigative, Protective, Power).
+• &lt;color=#FFD700&gt;&lt;b&gt;Random Neutral&lt;/b&gt;&lt;/color&gt; offers a balanced set of roles. By default, there is a 70% chance for 2 &lt;b&gt;Neutral Benign&lt;/b&gt; roles, 15% for &lt;b&gt;Neutral Outliner&lt;/b&gt;, and 15% for &lt;b&gt;Neutral Evil&lt;/b&gt;.
+ 
+• &lt;b&gt;Neutral&lt;/b&gt; lobby settings control the &lt;b&gt;Max&lt;/b&gt; number of players assigned to the Benign, Evil, and Killing factions.
+ 
+If &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors Pick From All Classes&lt;/b&gt;&lt;/color&gt; or &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates Pick From All Classes&lt;/b&gt;&lt;/color&gt; is enabled, players can choose from any available category for their side.
+ 
+Drafting can also respect individual role chances (Respect Role Chances), causing roles to appear based on their lobby probabilities.</string>
+
+<!-- TOUMCE Wiki Terms - Game Settings -->
+<string name="TOUMCETermsGameSettingsTitle">Game Settings</string>
+<string name="TOUMCETermsGameSettingsInfo">TOUMCE introduces several global settings that change the game flow:
+• &lt;b&gt;Lock Lobby During Draft&lt;/b&gt; - Prevents new players from joining while a draft is in progress to ensure stability.
+• &lt;b&gt;Respect Role Chances&lt;/b&gt; - If enabled, the probability of roles appearing in the Draft will be based on their individual 'Chance' settings in the lobby.
+• &lt;b&gt;Draft Timer&lt;/b&gt; - Defines how much time each player has to make their strategic selection.</string>
+</resources>
