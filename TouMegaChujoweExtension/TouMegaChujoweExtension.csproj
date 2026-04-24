@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <LangVersion>latest</LangVersion>
@@ -12,7 +12,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Resources\**\*.*" />
+        <EmbeddedResource Include="Resources/**/*.*" />
     </ItemGroup>
 
     <Import Project="../AmongUs.props" />
