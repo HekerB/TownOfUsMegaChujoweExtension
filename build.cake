@@ -15,7 +15,8 @@ Task("Build")
 
     if (tag != null) 
     {
-        settings.MSBuildSettings.Version = tag;
+        var version = tag.StartsWith("v") ? tag.Substring(1) : tag;
+        settings.MSBuildSettings.Version = version;
     }
     else if (buildId != 0)
     {
