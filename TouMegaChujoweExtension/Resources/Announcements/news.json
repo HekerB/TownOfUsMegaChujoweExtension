@@ -60,7 +60,7 @@
         "\n\n\r<b>Version 1.0.1 - Draft Lobby Refinement</b>",
         "\n\n\r<size=105%>Draft Mode Updates:</size>",
         "\n- <b>UI Polish</b> - Fixed background texture visibility and restored proper layer depth for a solid overlay experience",
-        "\n- <b>Instant Start</b> - Draft session now triggers immediately, skipping the standard Among Us countdown (inspired by other Draft mods)",
+        "\n- <b>Instant Start</b> - Draft session now triggers immediately, skipping the standard Among Us countdown (inspired by ninja-au's Draft Mode)",
         "\n- <b>Draft Commands</b> - Added <b>/draft start</b> and <b>/draft cancel</b> commands for easier session management",
         "\n- <b>New Animations</b> - Added dynamic selection animations (punch, glow, glint) for a more satisfying role picking experience",
         "\n- <b>System Notifications</b> - Added automated chat messages for starting and canceling drafts",
