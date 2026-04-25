@@ -48,6 +48,28 @@
         "\n- Optimized mod size (<b>36MB -> 14MB</b>)",
         "\n- <b>Most importantly:</b> fixed old bugs and added new ones!"
       ]
+    },
+    {
+      "Date": "2026-04-25T01:00:00Z",
+      "Number": "200002",
+      "ShortTitle": "TOUMCE v1.0.1",
+      "SubTitle": "Draft Lobby Refinement",
+      "Title": "TOU Mega Chujowe Extension v1.0.1",
+      "Text": [
+        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
+        "\n\n\r<b>Version 1.0.1 - Draft Lobby Refinement</b>",
+        "\n\n\r<size=105%>Draft Mode Updates:</size>",
+        "\n- <b>UI Polish</b> - Fixed background texture visibility and restored proper layer depth for a solid overlay experience",
+        "\n- <b>Instant Start</b> - Draft session now triggers immediately, skipping the standard Among Us countdown (inspired by other Draft mods)",
+        "\n- <b>Draft Commands</b> - Added <b>/draft start</b> and <b>/draft cancel</b> commands for easier session management",
+        "\n- <b>New Animations</b> - Added dynamic selection animations (punch, glow, glint) for a more satisfying role picking experience",
+        "\n- <b>System Notifications</b> - Added automated chat messages for starting and canceling drafts",
+        "\n- <b>Safety Measures</b> - Blocked the <b>/setname</b> command during active drafts to prevent state synchronization issues",
+        "\n- <b>UI Optimization</b> - Automatically hides distracting lobby elements (Settings, Role List) during the draft session",
+        "\n\n\r<size=105%>Internal Fixes:</size>",
+        "\n- <b>CI/CD Pipeline</b> - Fixed automated builds for GitHub (Linux compatibility)",
+        "\n- <b>Dependencies</b> - Restored missing NuGet sources for Reactor and BepInEx"
+      ]
     }
   ]
 }
