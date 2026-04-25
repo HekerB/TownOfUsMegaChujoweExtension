@@ -55,8 +55,8 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
         var player = PlayerControl.LocalPlayer;
         if (player == null || (player.IsImpostorAligned() && target.IsImpostorAligned())) return false;
 
-        var hasNonBodyguardShield = target.GetModifiers<BaseShieldModifier>().Any(x => x is not BodyguardShieldModifier);
-        if (hasNonBodyguardShield || target.HasModifier<FirstDeadShield>()) return false;
+        // Targeting allowed, shield block handled in ShieldEvents
+        if (target.HasModifier<FirstDeadShield>()) return false;
 
         return true;
     }

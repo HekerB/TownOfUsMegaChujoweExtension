@@ -13,6 +13,7 @@ using TouMegaChujoweExtension.Roles.Impostor;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Networking;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Events.Impostor;
@@ -247,9 +248,10 @@ public static class WitchEvents
 
                 var shouldDie = true;
 
-                if (player.HasModifier<GuardianAngelProtectModifier>())
+                var shieldType = player.GetShieldType();
+                if (shieldType != ShieldType.None)
                 {
-                    Logger.LogWarning($"[Witch] CoProcessSpellDeaths: Player {player.Data.PlayerName} is protected by shield");
+                    Logger.LogWarning($"[Witch] CoProcessSpellDeaths: Player {player.Data.PlayerName} is protected by {shieldType}");
                     shouldDie = false;
                 }
 

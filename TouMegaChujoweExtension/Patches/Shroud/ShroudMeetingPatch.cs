@@ -31,7 +31,7 @@ public static class ShroudMeetingPatch
             shroudOwner.RpcSpecialMurder(
                 player,
                 isIndirect: true,
-                ignoreShield: true,
+                ignoreShield: false,
                 resetKillTimer: false,
                 createDeadBody: false,
                 teleportMurderer: false,

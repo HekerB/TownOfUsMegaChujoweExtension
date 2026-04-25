@@ -8,6 +8,7 @@ using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Modifiers;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Neutral;
@@ -63,8 +64,13 @@ public sealed class ShifterShiftButton : TownOfUsKillRoleButton<ShifterRole, Pla
         if (player.Data?.Role is not ShifterRole)
             return;
 
-        if (Target.HasModifier<BaseShieldModifier>() || Target.HasModifier<FirstDeadShield>())
+        var shieldType = ShieldUtils.GetShieldType(Target);
+        if (shieldType != ShieldType.None || Target.HasModifier<FirstDeadShield>())
         {
+            if (shieldType != ShieldType.None)
+            {
+                ShieldUtils.TriggerShieldFlash(player, shieldType);
+            }
             Timer = Cooldown;
             return;
         }

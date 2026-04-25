@@ -2,6 +2,9 @@ using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
+using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Networking;
+using MiraAPI.Events;
 using MiraAPI.Utilities.Assets;
 using Reactor.Utilities;
 using TouMegaChujoweExtension.Assets;
@@ -13,6 +16,7 @@ using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Options;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Neutral;
@@ -124,11 +128,12 @@ public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, Playe
         var player = PlayerControl.LocalPlayer;
         if (player == null) return;
 
-        var shieldResult = PelicanSystem.CheckAllShields(player, Target);
-        if (shieldResult != ShieldCheckResult.NoShield)
+        var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
+        MiraEventManager.InvokeEvent(beforeMurderEvent);
+        
+        if (beforeMurderEvent.IsCancelled)
         {
             Timer = OptionGroupSingleton<GeneralOptions>.Instance.TempSaveCdReset;
-            PelicanSystem.HandleShieldCheck(player, Target);
             RefreshUses();
             return;
         }

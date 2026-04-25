@@ -36,66 +36,65 @@ public static class SerialKillerEvents
     [RegisterEvent]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
-        var killer = @event.Source;
-        var victim = @event.Target;
+        var source = @event.Source;
+        var target = @event.Target;
 
-        if (killer == null || victim == null || !killer.IsRole<SerialKillerRole>())
+        if (source == null || target == null || !source.IsRole<SerialKillerRole>() || @event.IsCancelled)
         {
             return;
         }
 
-        if (SerialKillerVentKillSystem.TryGetVentKillTarget(killer.PlayerId, out var ventTarget) && ventTarget != null && ventTarget.PlayerId == victim.PlayerId)
+        if (SerialKillerVentKillSystem.TryGetVentKillTarget(source.PlayerId, out var ventTarget) && ventTarget != null && ventTarget.PlayerId == target.PlayerId)
         {
-            if (killer.AmOwner && killer.inVent)
+            if (source.AmOwner && source.inVent)
             {
-                if (killer.inVent && Vent.currentVent != null)
+                if (source.inVent && Vent.currentVent != null)
                 {
-                    killer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
-                    killer.MyPhysics?.ExitAllVents();
+                    source.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                    source.MyPhysics?.ExitAllVents();
                 }
 
-                killer.inVent = false;
+                source.inVent = false;
                 Vent.currentVent = null;
             }
 
-            if (victim.AmOwner && victim.inVent)
+            if (target.AmOwner && target.inVent)
             {
-
-                if (victim.HasDied())
+                if (target.HasDied())
                 {
                     return;
                 }
 
-                if (victim.inVent && Vent.currentVent != null)
+                if (target.inVent && Vent.currentVent != null)
                 {
-                    victim.MyPhysics.RpcExitVent(Vent.currentVent.Id);
-                    victim.MyPhysics?.ExitAllVents();
+                    target.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                    target.MyPhysics?.ExitAllVents();
                 }
 
-                victim.inVent = false;
+                target.inVent = false;
                 Vent.currentVent = null;
             }
 
-            VentOccupancySystem.ClearForPlayer(killer.PlayerId);
-            VentOccupancySystem.ClearForPlayer(victim.PlayerId);
+            VentOccupancySystem.ClearForPlayer(source.PlayerId);
+            VentOccupancySystem.ClearForPlayer(target.PlayerId);
 
-            if (!killer.HasModifier<SerialKillerNoVentModifier>())
+            if (!source.HasModifier<SerialKillerNoVentModifier>())
             {
-                killer.AddModifier<SerialKillerNoVentModifier>();
+                source.AddModifier<SerialKillerNoVentModifier>();
             }
         }
 
-        if (killer.AmOwner)
+        if (source.AmOwner)
         {
             DeathHandlerModifier.UpdateDeathHandlerImmediate(
-                victim,
+                target,
                 TouLocale.Get("DiedToSerialKiller"),
                 DeathEventHandlers.CurrentRound,
                 (!MeetingHud.Instance && !ExileController.Instance)
                     ? DeathHandlerOverride.SetTrue
                     : DeathHandlerOverride.SetFalse,
                 TouLocale.GetParsed("DiedByStringBasic")
-                    .Replace("<player>", killer.Data.PlayerName),
+                    .Replace("<player>", source.Data.PlayerName),
                 lockInfo: DeathHandlerOverride.SetTrue
             );
         }

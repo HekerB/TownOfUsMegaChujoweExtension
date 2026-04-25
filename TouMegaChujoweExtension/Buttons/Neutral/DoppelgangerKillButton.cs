@@ -37,7 +37,8 @@ public sealed class DoppelgangerKillButton : TownOfUsKillRoleButton<Doppelganger
             return false;
         }
 
-        if (target.HasModifier<BaseShieldModifier>() || target.HasModifier<FirstDeadShield>())
+        // Targeting is allowed, shield block handled in ShieldEvents
+        if (target.HasModifier<FirstDeadShield>())
         {
             return false;
         }

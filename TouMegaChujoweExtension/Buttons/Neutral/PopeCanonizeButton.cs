@@ -1,4 +1,4 @@
-﻿using MiraAPI.GameOptions;
+using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
@@ -10,6 +10,7 @@ using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Modules;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Neutral;
@@ -34,6 +35,7 @@ public sealed class PopeCanonizeButton : TownOfUsRoleButton<PopeRole, PlayerCont
             .Where(x => !x.Data.IsDead
                       && x.PlayerId != PlayerControl.LocalPlayer.PlayerId
                       && !x.HasModifier<PopeCanonizedModifier>()
+                      && !PelicanSystem.IsSwallowed(x.PlayerId)
                       && Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), x.GetTruePosition()) <= Distance)
             .OrderBy(x => Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), x.GetTruePosition()))
             .FirstOrDefault();

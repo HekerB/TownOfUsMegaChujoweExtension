@@ -32,7 +32,7 @@ public static class ShroudEvents
     [RegisterEvent(1)]
     public static void BeforeMurderHandler(BeforeMurderEvent @event)
     {
-        if (ShroudInteractionPatches.IsProcessingShroud) return;
+        if (ShroudInteractionPatches.IsProcessingShroud || @event.IsCancelled) return;
         if (@event.Source == null || @event.Target == null) return;
         if (@event.Source.Data?.Role is ShroudRole) return;
         if (MeetingHud.Instance || ExileController.Instance) return;

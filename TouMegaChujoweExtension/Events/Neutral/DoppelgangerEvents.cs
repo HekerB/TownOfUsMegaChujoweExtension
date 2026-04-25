@@ -67,30 +67,30 @@ public static class DoppelgangerEvents
     [RegisterEvent]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
-        var killer = @event.Source;
-        var victim = @event.Target;
+        var source = @event.Source;
+        var target = @event.Target;
 
-        if (killer == null || victim == null || !killer.IsRole<DoppelgangerRole>())
+        if (source == null || target == null || !source.IsRole<DoppelgangerRole>() || @event.IsCancelled)
         {
             return;
         }
 
-        if (killer.PlayerId == victim.PlayerId)
+        if (source.PlayerId == target.PlayerId)
         {
             return;
         }
 
-        if (killer.AmOwner)
+        if (source.AmOwner)
         {
             DeathHandlerModifier.UpdateDeathHandlerImmediate(
-                victim,
+                target,
                 TouLocale.Get("DiedToDoppelganger"),
                 DeathEventHandlers.CurrentRound,
                 (!MeetingHud.Instance && !ExileController.Instance)
                     ? DeathHandlerOverride.SetTrue
                     : DeathHandlerOverride.SetFalse,
                 TouLocale.GetParsed("DiedByStringBasic")
-                    .Replace("<player>", killer.Data.PlayerName),
+                    .Replace("<player>", source.Data.PlayerName),
                 lockInfo: DeathHandlerOverride.SetTrue
             );
         }

@@ -175,10 +175,8 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
             return false;
         }
 
-        var hasNonBodyguardShield =
-            target.GetModifiers<BaseShieldModifier>().Any(x => x is not BodyguardShieldModifier);
-
-        if (hasNonBodyguardShield || target.HasModifier<FirstDeadShield>())
+        // Targeting is allowed now, shield logic is handled in ShieldEvents
+        if (target.HasModifier<FirstDeadShield>())
         {
             return false;
         }

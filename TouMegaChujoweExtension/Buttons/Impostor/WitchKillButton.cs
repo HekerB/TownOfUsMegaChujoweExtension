@@ -82,10 +82,8 @@ public sealed class WitchKillButton : TownOfUsKillRoleButton<WitchRole, PlayerCo
             return false;
         }
 
-        var hasNonBodyguardShield =
-            target.GetModifiers<BaseShieldModifier>().Any(x => x is not BodyguardShieldModifier);
-
-        if (hasNonBodyguardShield || target.HasModifier<FirstDeadShield>())
+        // Targeting allowed, shield block handled in ShieldEvents
+        if (target.HasModifier<FirstDeadShield>())
         {
             return false;
         }

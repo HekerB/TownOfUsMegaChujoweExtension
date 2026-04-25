@@ -30,7 +30,7 @@ public static class BodyguardNamePatch
             {
                 if (!__result.Contains("Σ"))
                 {
-                    __result += "<color=#77B962> Σ</color>";
+                    __result += "<color=#0064FF> Σ</color>";
                 }
             }
         }
@@ -43,9 +43,9 @@ public static class BodyguardNamePatch
             && (bgRole.BacklashReady || bgRole.KillModeActive) 
             && OptionGroupSingleton<BodyguardOptions>.Instance.GreenNameOnAttacker)
         {
-            if (!__result.StartsWith("<color=#77B962>"))
+            if (!__result.StartsWith("<color=#0064FF>"))
             {
-                __result = $"<color=#77B962>{__result}</color>";
+                __result = $"<color=#0064FF>{__result}</color>";
             }
         }
     }

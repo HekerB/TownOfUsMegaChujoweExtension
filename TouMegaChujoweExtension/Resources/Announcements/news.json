@@ -75,6 +75,32 @@
         "\n- <b>Wraith Vision</b> - Fixed lantern visibility logic (blocked by walls/shadows)",
         "\n- <b>Internal</b> - Fixed CI/CD pipeline and restored missing dependencies"
       ]
+    },
+    {
+      "Date": "2026-04-25T23:00:00Z",
+      "Number": "200003",
+      "ShortTitle": "TOUMCE v1.0.2",
+      "SubTitle": "Shield Stability & Role Polish",
+      "Title": "TOU Mega Chujowe Extension v1.0.2",
+      "Text": [
+        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
+        "\n\n\r<b>Version 1.0.2 - Shield Stability & Role Polish</b>",
+        "\n\n\r<size=105%>Universal Shield System:</size>",
+        "\n- <b>First Round Stability</b> - Fixed a critical bug where shields were ignored during the first round",
+        "\n- <b>Universal Flashes</b> - All killers now see colored screen flashes when hitting any shield (Medic, Warden, Bodyguard, Cleric, etc.)",
+        "\n- <b>Wiki Alignment</b> - Flash colors now match the in-game wiki descriptions",
+        "\n- <b>Bodyguard Rebrand</b> - Changed Bodyguard's identity to <b>Dark Blue</b> (#0064FF) for role and shield flashes",
+        "\n\n\r<size=105%>Role Fixes & Polish:</size>",
+        "\n- <b>Deadly Quota Stealth</b> - Attacks on Quota-shielded players are now <b>silent (no flash)</b> to prevent meta-guessing",
+        "\n- <b>Pelican Updates</b> - Now correctly respects <b>Deadly Quota</b>, <b>Mercenary</b>, and <b>Fairy</b> shields",
+        "\n- <b>Witch Fix</b> - Spell deaths now respect all universal shields (not just Fairy)",
+        "\n- <b>Guessing System</b> - <b>Death Note</b> and <b>Venomous</b> are now permanently guessable (removed non-functional lobby toggles)",
+        "\n- <b>Interaction Roles</b> - Pelican, Shifter, and Injector now correctly trigger flashes and have refined validation",
+        "\n- <b>Assassin/Vigilante</b> - Added <b>Oracle Magenta</b> flash for meeting guessing protection",
+        "\n\n\r<size=105%>Internal:</size>",
+        "\n- <b>Dev Build Enabled</b> - Switched to dev build mode with internal version 1.0.2",
+        "\n- <b>Role Hierarchy</b> - Refined event priorities to ensure protection always triggers before kill logic"
+      ]
     }
   ]
 }

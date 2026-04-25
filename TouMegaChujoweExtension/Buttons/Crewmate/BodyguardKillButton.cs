@@ -19,13 +19,13 @@ public sealed class BodyguardKillButton : TownOfUsRoleButton<BodyguardRole, Play
     public override string Name => TouLocale.GetParsed("ExtensionRoleBodyguardKill", "Kill");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
 
-    // light green (#77B962)
-    public override Color TextOutlineColor => new Color32(0x77, 0xB9, 0x62, 0xFF);
+    // dark blue (#0064FF)
+    public override Color TextOutlineColor => new Color32(0, 100, 255, 255);
 
     public override float Cooldown => 0.001f;
     public override float InitialCooldown => 0.001f;
 
-    public override LoadableAsset<Sprite> Sprite => TouNeutAssets.GlitchKillSprite;
+    public override LoadableAsset<Sprite> Sprite => new LoadableBundleAsset<Sprite>("OfficerShootButton", TouAssets.MainBundle);
 
     public override bool Enabled(RoleBehaviour? role)
     {
@@ -91,8 +91,10 @@ public sealed class BodyguardKillButton : TownOfUsRoleButton<BodyguardRole, Play
         var protectedTarget = GetShieldedByLocalBodyguard();
         var onlyAttacker = OptionGroupSingleton<BodyguardOptions>.Instance.OnlyTargetAttacker;
 
-        if (onlyAttacker && Role.LastAttacker != null && !Role.LastAttacker.HasDied())
+        if (onlyAttacker)
         {
+            if (Role.LastAttacker == null || Role.LastAttacker.HasDied()) return null;
+
             if (protectedTarget != null && Role.LastAttacker.PlayerId == protectedTarget.PlayerId)
                 return null;
 
@@ -107,7 +109,7 @@ public sealed class BodyguardKillButton : TownOfUsRoleButton<BodyguardRole, Play
             true,
             Distance,
             false,
-            x => protectedTarget == null || x.PlayerId != protectedTarget.PlayerId
+            x => (protectedTarget == null || x.PlayerId != protectedTarget.PlayerId) && x.PlayerId != PlayerControl.LocalPlayer.PlayerId
         );
     }
 

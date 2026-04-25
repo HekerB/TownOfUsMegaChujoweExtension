@@ -19,7 +19,4 @@ public sealed class DeathNoteModifierOptions : AbstractOptionGroup<DeathNoteModi
 
     public ModdedNumberOption DeathNoteMaxUses { get; } =
         new("ExtensionModifierDeathNoteMaxUses", 1f, 1f, 1f, 1f, MiraNumberSuffixes.None);
-
-    public ModdedToggleOption DeathNoteGuessable { get; } =
-        new("ExtensionModifierDeathNoteGuessable", true);
 }

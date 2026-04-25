@@ -70,7 +70,7 @@ public static class PopeMeetingPatch
                 bool canSee = isBodyguard || isTarget || shieldVisibleBySetting || deadKnow;
                 if (canSee && !pva.NameText.text.Contains("Σ"))
                 {
-                    pva.NameText.text += " <color=#77B962>Σ</color>";
+                    pva.NameText.text += " <color=#0064FF>Σ</color>";
                 }
             }
         }
