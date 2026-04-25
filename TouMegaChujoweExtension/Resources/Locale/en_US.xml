@@ -526,8 +526,7 @@
   <string name="ExtensionOptionInjectorUsesPerKill">Uses Per Kill</string>
   <string name="ExtensionOptionInjectorPositiveEffectsEnabled">Positive Effects Enabled</string>
   <string name="ExtensionOptionInjectorSelectedEffectType">Effect Type To Configure</string>
-  <string name="ExtensionOptionInjectorEffectChance">Effect Chance</string>
-  <string name="extensionoptionInjectorsharedcooldown">Shared Cooldown</string>
+  <string name="ExtensionOptionInjectorSharedCooldown">Shared Cooldown</string>
 
   <!-- Injector Effect Type Enum Values -->
   <string name="ExtensionOptionInjectorEffectTypeEnumInvertedControls">Inverted Controls</string>

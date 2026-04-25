@@ -527,7 +527,7 @@
   <string name="ExtensionOptionInjectorUsesPerKill">Uzycia za zabojstwo</string>
   <string name="ExtensionOptionInjectorPositiveEffectsEnabled">Pozytywne efekty wlaczone</string>
   <string name="ExtensionOptionInjectorSelectedEffectType">Typ efektu do konfiguracji</string>
-  <string name="ExtensionOptionInjectorEffectChance">Szansa na efekt</string>
+
 
   <!-- Injector Effect Type Enum Values -->
   <string name="ExtensionOptionInjectorEffectTypeEnumInvertedControls">Odwrocone sterowanie</string>
