@@ -322,7 +322,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 # Requirements
 
 - .NET 6.0
-- Town of Us: Mira 1.5.9-dev+
+- Town of Us: Mira 1.6.0 or later
 - MiraAPI 0.4.0 or later
 - Reactor 2.5.0 or later
 
