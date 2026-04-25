@@ -68,7 +68,8 @@
         "\n- <b>UI Optimization</b> - Automatically hides distracting lobby elements (Settings, Role List) during the draft session",
         "\n\n\r<size=105%>Internal Fixes:</size>",
         "\n- <b>CI/CD Pipeline</b> - Fixed automated builds for GitHub (Linux compatibility)",
-        "\n- <b>Dependencies</b> - Restored missing NuGet sources for Reactor and BepInEx"
+        "\n- <b>Dependencies</b> - Restored missing NuGet sources for Reactor and BepInEx",
+        "\n- <b>Wraith Fixes</b> - Definitive fix for lantern visibility through shadows/walls and restored proper transparency"
       ]
     }
   ]
