@@ -344,7 +344,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 - **[Launchpad Reloaded](https://github.com/All-Of-Us-Mods/LaunchpadReloaded)** - Doppelganger role icon
 - **[All Of Us](https://github.com/All-Of-Us-Mods)** - Death Note modifier icons (from their Discord)
 - **Sidemen (YouTube)** - Kamikaze role icon (temporary, detonator icon); RC-XD Deploy & Detonate button icons
-- **TOHE** - Shroud role icon
+- **[TOHE (Town of Host Enhanced)](https://github.com/0xDrMoe/TownofHost-Enhanced)** - Shroud role icon
 - **Star Wars** - Bounty Hunter role icon
 - **Our friend's girlfriend** - Publicity modifier icon
 
