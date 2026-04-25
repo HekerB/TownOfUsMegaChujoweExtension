@@ -642,6 +642,7 @@
   <!-- Vulture Options -->
   <string name="ExtensionOptionVultureEatCooldown">Cooldown zjadania</string>
   <string name="ExtensionOptionVultureEatDuration">Czas trwania zjadania</string>
+  <string name="ExtensionOptionVultureCleanDuration">Czas znikania ciala</string>
   <string name="ExtensionOptionVultureBodiesToWin">Liczba cial do wygranej</string>
   <string name="ExtensionOptionVultureCanVent">Vulture moze uzywac wentylacji</string>
   <string name="ExtensionOptionVultureScavengeEnabled">Scavenge wlaczone</string>

@@ -1,3 +1,4 @@
+using System.Collections;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
@@ -8,7 +9,9 @@ using Reactor.Networking.Attributes;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Networking;
+using TownOfUs.Events.Crewmate;
 using TownOfUs.Assets;
+using Reactor.Networking.Rpc;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
@@ -56,7 +59,8 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
     {
         CanUseVent = OptionGroupSingleton<VultureOptions>.Instance.CanVent,
         Icon = TouExtensionIcons.VultureRoleIcon,
-        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
+        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        IntroSound = TouAudio.ChefSound,
     };
 
     [HideFromIl2Cpp]
@@ -139,59 +143,92 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         return WinConditionMet();
     }
 
-    [MethodRpc((uint)ExtensionRpc.VultureEat)]
-    public static void RpcVultureEat(PlayerControl Vulture, byte bodyId)
+    [MethodRpc((uint)ExtensionRpc.VultureEat, LocalHandling = RpcLocalHandling.Before)]
+    public static void RpcVultureEat(PlayerControl sender, byte bodyId)
     {
-        if (Vulture?.Data?.Role is not VultureRole role)
-        {
-            return;
-        }
+        if (sender == null) return;
 
-        var body = TimeLordBodyManager.FindDeadBodyIncludingInactive(bodyId);
+        // Find body
+        var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == bodyId);
         if (body == null)
         {
-            body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == bodyId);
+            // Try fallback
+            body = TimeLordBodyManager.FindDeadBodyIncludingInactive(bodyId);
         }
 
-        if (body == null)
+        if (body == null) return;
+
+        // Update count for Vulture
+        if (sender.Data?.Role is VultureRole role)
         {
-            return;
+            role.BodiesEaten++;
         }
-
-        role.BodiesEaten++;
         VultureSystem.MarkBodyEaten(bodyId);
 
-        if (Vulture.AmOwner)
+        if (sender.AmOwner)
         {
             TouAudio.PlaySound(TouExtensionAudio.VultureEatSound);
         }
 
-        var isHost = AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost;
-        var optionEnabled = OptionGroupSingleton<TimeLordOptions>.Instance.UncleanBodiesOnRewind;
-        var shouldRecord = isHost ? optionEnabled : (optionEnabled || TimeLordRewindSystem.MatchHasTimeLord());
+        var options = OptionGroupSingleton<VultureOptions>.Instance;
+        var cleanDuration = options.CleanDuration;
 
+        Coroutines.Start(CoSafeClean(body, cleanDuration, sender));
+
+        // Win condition check (only for host or owner)
+        if (sender.AmOwner || (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost))
+        {
+            CheckWinConditionFor(sender);
+        }
+    }
+
+    private static IEnumerator CoSafeClean(DeadBody body, float duration, PlayerControl scavenger)
+    {
+        if (body == null || body.gameObject == null) yield break;
+
+        var bodyId = body.ParentId;
         var bodyPlayer = MiscUtils.PlayerById(bodyId);
         if (bodyPlayer != null)
         {
             MiscUtils.RemovePet(bodyPlayer);
         }
 
-        if (shouldRecord)
+        // Fade out
+        if (duration > 0f && body.bodyRenderers != null && body.bodyRenderers.Length > 0)
+        {
+            var renderer = body.bodyRenderers[^1];
+            if (renderer != null)
+            {
+                yield return MiscUtils.PerformTimedAction(duration, t => {
+                    if (renderer != null) renderer.color = renderer.color.SetAlpha(1 - t);
+                });
+            }
+        }
+
+        // Definitive removal
+        if (body == null || body.gameObject == null) yield break;
+        body.gameObject.SetActive(false);
+
+        var optionEnabled = OptionGroupSingleton<TimeLordOptions>.Instance.UncleanBodiesOnRewind;
+        if (optionEnabled)
         {
             if (bodyPlayer != null)
             {
-                TimeLordBodyManager.RecordBodyCleaned(body, TimeLordBodyManager.CleanedBodySource.Janitor);
+                TimeLordEventHandlers.RecordBodyCleaned(scavenger, body, body.transform.position, 
+                    TimeLordBodyManager.CleanedBodySource.Janitor);
             }
             Coroutines.Start(TimeLordBodyManager.CoHideBodyForTimeLord(body, (dynamic)1)); 
         }
         else
         {
-            if (isHost)
-            {
-                GameObject.Destroy(body);
-            }
+            Object.Destroy(body.gameObject);
         }
         Coroutines.Start(CrimeSceneComponent.CoClean(body));
+    }
+
+    private static void CheckWinConditionFor(PlayerControl Vulture)
+    {
+        if (Vulture.Data?.Role is not VultureRole role) return;
 
         if (role.IsWinConditionImpossible() && !Vulture.HasDied())
         {
@@ -217,6 +254,7 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         {
             return;
         }
+
 
         var options = OptionGroupSingleton<VultureOptions>.Instance;
         VultureSystem.StartScavenge(Vulture.PlayerId, options.ScavengeDuration.Value);

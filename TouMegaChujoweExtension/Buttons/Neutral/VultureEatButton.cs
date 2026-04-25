@@ -1,4 +1,4 @@
-﻿using MiraAPI.GameOptions;
+using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
 using MiraAPI.Utilities.Assets;
@@ -21,10 +21,10 @@ public sealed class VultureEatButton : TownOfUsRoleButton<VultureRole, DeadBody>
     private bool _isChanneling;
 
     public override string Name => TouLocale.GetParsed("ExtensionRoleVultureEat", "Eat");
-    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Vulture;
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<VultureOptions>.Instance.EatCooldown + MapCooldown, 5f, 120f);
-    public override float EffectDuration => OptionGroupSingleton<VultureOptions>.Instance.EatDuration;
+    public override float EffectDuration => 0f;
     public override LoadableAsset<Sprite> Sprite => TouExtensionNeuAssets.VultureEatButtonSprite;
     public override float Distance => 1.5f;
 
@@ -110,6 +110,20 @@ public sealed class VultureEatButton : TownOfUsRoleButton<VultureRole, DeadBody>
         OnClick();
     }
 
+    protected override void FixedUpdate(PlayerControl playerControl)
+    {
+        base.FixedUpdate(playerControl);
+
+        if (playerControl == null || playerControl.Data == null) return;
+        if (playerControl.Data.Role is not VultureRole role) return;
+
+        var options = OptionGroupSingleton<VultureOptions>.Instance;
+        var total = (int)options.BodiesToWin;
+        var eaten = role.BodiesEaten;
+
+        OverrideName($"{Name} ({eaten}/{total})");
+    }
+
     protected override void OnClick()
     {
         var player = PlayerControl.LocalPlayer;
@@ -118,82 +132,8 @@ public sealed class VultureEatButton : TownOfUsRoleButton<VultureRole, DeadBody>
             return;
         }
 
-        _isChanneling = true;
-        EffectActive = true;
-        Timer = EffectDuration;
-        Button?.SetDisabled();
-
-        // Don't call RPC yet - wait for channeling to complete
-        Coroutines.Start(CoChannelEat(Target.ParentId));
-    }
-
-    private IEnumerator CoChannelEat(byte bodyId)
-    {
-        var player = PlayerControl.LocalPlayer;
-        if (player == null)
-        {
-            _isChanneling = false;
-            EffectActive = false;
-            yield break;
-        }
-
-        var options = OptionGroupSingleton<VultureOptions>.Instance;
-        var channelDuration = options.EatDuration;
-        var elapsed = 0f;
-
-        while (elapsed < channelDuration)
-        {
-            if (player.HasDied() || MeetingHud.Instance != null)
-            {
-                // Channel cancelled - don't eat
-                _isChanneling = false;
-                EffectActive = false;
-                yield break;
-            }
-
-            var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == bodyId);
-            if (body == null)
-            {
-                // Body disappeared - don't eat
-                _isChanneling = false;
-                EffectActive = false;
-                yield break;
-            }
-
-            if (VultureSystem.IsBodyEaten(bodyId))
-            {
-                // Body already eaten - cancel channel
-                _isChanneling = false;
-                EffectActive = false;
-                yield break;
-            }
-
-            var distance = Vector2.Distance(player.GetTruePosition(), body.TruePosition);
-            if (distance > Distance)
-            {
-                // Moved too far - cancel channel and don't eat
-                _isChanneling = false;
-                EffectActive = false;
-                yield break;
-            }
-
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        var finalBody = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == bodyId);
-        if (finalBody != null && player != null && !player.HasDied())
-        {
-            var finalDistance = Vector2.Distance(player.GetTruePosition(), finalBody.TruePosition);
-            if (finalDistance <= Distance && !VultureSystem.IsBodyEaten(bodyId))
-            {
-                VultureRole.RpcVultureEat(player, bodyId);
-            }
-        }
-
-        _isChanneling = false;
-        EffectActive = false;
-        ResetCooldownAndOrEffect();
+        VultureRole.RpcVultureEat(player, Target.ParentId);
+        Timer = Cooldown;
     }
 
     public override void OnEffectEnd()

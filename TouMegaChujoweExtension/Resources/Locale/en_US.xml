@@ -641,6 +641,7 @@
   <!-- Vulture Options -->
   <string name="ExtensionOptionVultureEatCooldown">Eat Cooldown</string>
   <string name="ExtensionOptionVultureEatDuration">Eat Duration</string>
+  <string name="ExtensionOptionVultureCleanDuration">Body Cleaning Duration</string>
   <string name="ExtensionOptionVultureBodiesToWin">Number Of Bodies To Win</string>
   <string name="ExtensionOptionVultureCanVent">Vulture Can Vent</string>
   <string name="ExtensionOptionVultureScavengeEnabled">Scavenge Enabled</string>

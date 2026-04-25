@@ -5,6 +5,8 @@ using TownOfUs.Modules;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using TouMegaChujoweExtension.Assets;
+using Reactor.Utilities;
 
 namespace TouMegaChujoweExtension.Modifiers;
 
@@ -38,6 +40,7 @@ public sealed class VultureBodyArrowModifier(DeadBody deadBody, byte bodyId) : T
         }
 
         _arrow = MiscUtils.CreateArrow(Player.transform, TouExtensionColors.Vulture);
+        Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Vulture));
         UpdateArrowTarget();
     }
 

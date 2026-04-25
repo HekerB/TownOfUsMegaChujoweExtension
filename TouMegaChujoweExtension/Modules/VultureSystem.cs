@@ -111,7 +111,7 @@ public static class VultureSystem
 
     public static void ClearForPlayer(byte playerId)
     {
-        EatenBodies.RemoveWhere(b => false);
+        EatenBodies.Clear();
         ActiveScavenges.Remove(playerId);
     }
 

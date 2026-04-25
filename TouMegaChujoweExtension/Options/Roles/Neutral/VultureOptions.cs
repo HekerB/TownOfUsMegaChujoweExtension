@@ -15,11 +15,12 @@ public sealed class VultureOptions : AbstractOptionGroup<VultureRole>
     [ModdedNumberOption("ExtensionOptionVultureEatCooldown", 5f, 120f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float EatCooldown { get; set; } = 17.5f;
 
-    [ModdedNumberOption("ExtensionOptionVultureEatDuration", 0.5f, 10f, 0.1f, MiraNumberSuffixes.Seconds)]
-    public float EatDuration { get; set; } = 1.5f;
 
     [ModdedNumberOption("ExtensionOptionVultureBodiesToWin", 1f, 15f, 1f, MiraNumberSuffixes.None)]
     public float BodiesToWin { get; set; } = 3f;
+
+    [ModdedNumberOption("ExtensionOptionVultureCleanDuration", 0f, 5f, 0.1f, MiraNumberSuffixes.Seconds)]
+    public float CleanDuration { get; set; } = 1.0f;
 
     [ModdedToggleOption("ExtensionOptionVultureCanVent")]
     public bool CanVent { get; set; } = false;

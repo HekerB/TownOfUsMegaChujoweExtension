@@ -50,26 +50,30 @@
       ]
     },
     {
-      "Date": "2026-04-25T01:00:00Z",
+      "Date": "2026-04-25T15:00:00Z",
       "Number": "200002",
       "ShortTitle": "TOUMCE v1.0.1",
-      "SubTitle": "Draft Lobby Refinement",
+      "SubTitle": "Vulture & Draft Overhaul",
       "Title": "TOU Mega Chujowe Extension v1.0.1",
       "Text": [
         "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
-        "\n\n\r<b>Version 1.0.1 - Draft Lobby Refinement</b>",
-        "\n\n\r<size=105%>Draft Mode Updates:</size>",
-        "\n- <b>UI Polish</b> - Fixed background texture visibility and restored proper layer depth for a solid overlay experience",
-        "\n- <b>Instant Start</b> - Draft session now triggers immediately, skipping the standard Among Us countdown (inspired by ninja-au's Draft Mode)",
-        "\n- <b>Draft Commands</b> - Added <b>/draft start</b> and <b>/draft cancel</b> commands for easier session management",
-        "\n- <b>New Animations</b> - Added dynamic selection animations (punch, glow, glint) for a more satisfying role picking experience",
-        "\n- <b>System Notifications</b> - Added automated chat messages for starting and canceling drafts",
-        "\n- <b>Safety Measures</b> - Blocked the <b>/setname</b> command during active drafts to prevent state synchronization issues",
-        "\n- <b>UI Optimization</b> - Automatically hides distracting lobby elements (Settings, Role List) during the draft session",
-        "\n\n\r<size=105%>Internal Fixes:</size>",
-        "\n- <b>CI/CD Pipeline</b> - Fixed automated builds for GitHub (Linux compatibility)",
-        "\n- <b>Dependencies</b> - Restored missing NuGet sources for Reactor and BepInEx",
-        "\n- <b>Wraith Fixes</b> - Definitive fix for lantern visibility through shadows/walls and restored proper transparency"
+        "\n\n\r<b>Version 1.0.1 - Vulture & Draft Overhaul</b>",
+        "\n\n\r<size=105%>Vulture Updates:</size>",
+        "\n- <b>Robust Eating</b> - Fixed body eating RPC system for maximum reliability",
+        "\n- <b>Fade Effect</b> - Added <b>Body Cleaning Duration</b> option for a smooth fade-out effect",
+        "\n- <b>Streamlined Logic</b> - Removed mandatory stand-near-body duration for a faster experience",
+        "\n- <b>Intro Sound</b> - Changed intro sound to <b>Chef's</b>",
+        "\n- <b>Visual Feedback</b> - Added <b>color-coded screen flash</b> on body detection",
+        "\n- <b>Progress Counter</b> - Eat button shows <b>(Eaten/Total)</b> progress",
+        "\n- <b>Custom Vent</b> - Replaced vent icon with <b>Werewolf Vent</b>",
+        "\n- <b>Vitals Fix</b> - Fixed compatibility with Mira API's vitals system",
+        "\n\n\r<size=105%>Draft Mode & Wraith Updates:</size>",
+        "\n- <b>Instant Start</b> - Draft now triggers immediately, skipping Among Us countdown",
+        "\n- <b>UI Polish</b> - Improved animations (selection punch, glow, glint) and fixed layer depth",
+        "\n- <b>Draft Commands</b> - Added <b>/draft start</b> and <b>/draft cancel</b> commands with chat alerts",
+        "\n- <b>Safety Measures</b> - Blocked nickname changes during active draft sessions",
+        "\n- <b>Wraith Vision</b> - Fixed lantern visibility logic (blocked by walls/shadows)",
+        "\n- <b>Internal</b> - Fixed CI/CD pipeline and restored missing dependencies"
       ]
     }
   ]
