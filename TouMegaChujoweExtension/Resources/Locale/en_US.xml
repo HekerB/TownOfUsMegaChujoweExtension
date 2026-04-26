@@ -707,7 +707,6 @@
   <string name="ExtensionOptionBHTargetsToKill">Targets BH Has To Kill</string>
   <string name="ExtensionOptionBHShowArrow">Show Arrow To Target</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Arrow Update Interval</string>
-  <string name="ExtensionOptionBHDiesIfNotKilled">BH Dies If Target Not Killed</string>
   <string name="ExtensionOptionBHGameContinues">Game Continues Without Other Killers</string>
   <string name="ExtensionOptionBHWinMode">Win Mode</string>
   <string name="ExtensionOptionBHWinModeEnumSoloWin">Solo Win (Ends Game)</string>

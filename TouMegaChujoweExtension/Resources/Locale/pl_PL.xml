@@ -708,7 +708,6 @@
   <string name="ExtensionOptionBHTargetsToKill">Liczba celow do zabicia przez BH</string>
   <string name="ExtensionOptionBHShowArrow">Pokaz strzalke do celu</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Interwal odswiezania strzalki</string>
-  <string name="ExtensionOptionBHDiesIfNotKilled">BH umiera, jesli cel nie zostanie zabity</string>
   <string name="ExtensionOptionBHGameContinues">Gra trwa bez innych zabojcow</string>
   <string name="ExtensionOptionBHWinMode">Tryb wygranej</string>
   <string name="ExtensionOptionBHWinModeEnumSoloWin">Samotna wygrana (konczy gre)</string>

@@ -26,9 +26,6 @@ public sealed class BountyHunterOptions : AbstractOptionGroup<BountyHunterRole>
     [ModdedToggleOption("ExtensionOptionBHShowArrow")]
     public bool ShowArrow { get; set; } = true;
 
-    [ModdedToggleOption("ExtensionOptionBHDiesIfNotKilled")]
-    public bool DiesIfTargetNotKilled { get; set; } = false;
-
     [ModdedEnumOption("ExtensionOptionBHWinMode", typeof(BountyHunterWinMode),
         ["ExtensionOptionBHWinModeEnumSoloWin",
          "ExtensionOptionBHWinModeEnumWinWithWinners"])]
