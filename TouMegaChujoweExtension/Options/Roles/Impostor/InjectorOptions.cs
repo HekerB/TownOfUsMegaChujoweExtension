@@ -42,11 +42,23 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
     [ModdedNumberOption("ExtensionOptionInjectorInjectCooldown", 5f, 120f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float InjectCooldown { get; set; } = 25f;
 
+    [ModdedNumberOption("ExtensionOptionInjectorEffectDelay", 0f, 30f, 0.5f, MiraNumberSuffixes.Seconds)]
+    public float EffectDelay { get; set; } = 5f;
+
+    [ModdedNumberOption("ExtensionOptionInjectorEffectDuration", 5f, 200f, 5f, MiraNumberSuffixes.Seconds)]
+    public float EffectDuration { get; set; } = 45f;
+
+    [ModdedNumberOption("ExtensionOptionInjectorInitialUses", 0, 15)]
+    public float InitialUses { get; set; } = 4f;
+
+    [ModdedNumberOption("ExtensionOptionInjectorUsesPerKill", 0, 5)]
+    public float UsesPerKill { get; set; } = 1f;
+
     [ModdedToggleOption("ExtensionOptionInjectorSharedCooldown")]
     public bool SharedCooldown { get; set; } = true;
 
-    [ModdedNumberOption("ExtensionOptionInjectorEffectDelay", 0f, 30f, 0.5f, MiraNumberSuffixes.Seconds)]
-    public float EffectDelay { get; set; } = 5f;
+    [ModdedToggleOption("ExtensionOptionInjectorPositiveEffectsEnabled")]
+    public bool PositiveEffectsEnabled { get; set; } = true;
 
     private static readonly string[] EffectDurationTypeValues =
     [
@@ -58,19 +70,6 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
     public ModdedEnumOption<InjectorEffectDurationType> EffectDurationType { get; } =
         new("ExtensionOptionInjectorEffectDurationType", InjectorEffectDurationType.SetTime, EffectDurationTypeValues);
 
-    [ModdedNumberOption("ExtensionOptionInjectorEffectDuration", 5f, 200f, 5f, MiraNumberSuffixes.Seconds)]
-    public float EffectDuration { get; set; } = 45f;
-
-    [ModdedNumberOption("ExtensionOptionInjectorInitialUses", 0, 15)]
-    public float InitialUses { get; set; } = 4f;
-
-    [ModdedNumberOption("ExtensionOptionInjectorUsesPerKill", 0, 5)]
-    public float UsesPerKill { get; set; } = 1f;
-
-    [ModdedToggleOption("ExtensionOptionInjectorPositiveEffectsEnabled")]
-    public bool PositiveEffectsEnabled { get; set; } = true;
-
-    // Effect selection and chance configuration
     private static readonly string[] EffectTypeValues =
     [
         "ExtensionOptionInjectorEffectTypeEnumInvertedControls",

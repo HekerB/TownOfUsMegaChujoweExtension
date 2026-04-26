@@ -16,9 +16,9 @@ public sealed class PopeOptions : AbstractOptionGroup<PopeRole>
     [ModdedNumberOption("ExtensionOptionPopeMaxCanonizations", 3f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxCanonizations { get; set; } = 15f;
 
-    [ModdedNumberOption("ExtensionOptionPopeJudgementDuration", 30f, 180f, 5f, MiraNumberSuffixes.Seconds)]
-    public float JudgementDuration { get; set; } = 120f;
-
     [ModdedToggleOption("ExtensionOptionPopeCanonizeInteractions")]
     public bool CanonizeInteractions { get; set; } = true;
+
+    [ModdedNumberOption("ExtensionOptionPopeJudgementDuration", 30f, 180f, 5f, MiraNumberSuffixes.Seconds)]
+    public float JudgementDuration { get; set; } = 120f;
 }

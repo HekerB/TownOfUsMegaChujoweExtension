@@ -12,6 +12,10 @@ using TownOfUs.Buttons;
 using TownOfUs.Modifiers;
 using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Utilities;
+using TownOfUs.Events;
+using TownOfUs.Options;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Neutral;
@@ -30,6 +34,34 @@ public sealed class DoppelgangerKillButton : TownOfUsKillRoleButton<Doppelganger
         SetTimer(Cooldown * multiplier);
     }
 
+    public override void ClickHandler()
+    {
+        if (!CanClick()) return;
+        if (Target == null) return;
+
+        var player = PlayerControl.LocalPlayer;
+        if (player == null) return;
+
+        var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
+        MiraEventManager.InvokeEvent(beforeMurderEvent);
+        
+        if (beforeMurderEvent.IsCancelled)
+        {
+            return;
+        }
+
+        OnClick();
+        
+        if (HasEffect)
+        {
+            EffectActive = true;
+            Timer = EffectDuration;
+        }
+        else
+        {
+            Timer = Cooldown;
+        }
+    }
     public override bool IsTargetValid(PlayerControl? target)
     {
         if (!base.IsTargetValid(target) || target == null)
@@ -38,10 +70,6 @@ public sealed class DoppelgangerKillButton : TownOfUsKillRoleButton<Doppelganger
         }
 
         // Targeting is allowed, shield block handled in ShieldEvents
-        if (target.HasModifier<FirstDeadShield>())
-        {
-            return false;
-        }
 
         return true;
     }

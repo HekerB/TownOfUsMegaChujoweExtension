@@ -11,20 +11,18 @@ public sealed class BountyHunterOptions : AbstractOptionGroup<BountyHunterRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleBountyHunter", "Bounty Hunter");
 
-    [ModdedToggleOption("ExtensionOptionBHImpostorKillCd")]
-    public bool UseImpostorKillCd { get; set; } = false;
-
     public ModdedNumberOption KillCooldown { get; } =
         new("ExtensionOptionBHKillCooldown", 30f, 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds);
+
 
     [ModdedToggleOption("ExtensionOptionBHCanVent")]
     public bool CanVent { get; set; } = false;
 
-    public ModdedNumberOption TargetsToKill { get; } =
-        new("ExtensionOptionBHTargetsToKill", 3f, 1f, 5f, 1f, MiraNumberSuffixes.None);
-
     [ModdedToggleOption("ExtensionOptionBHShowArrow")]
     public bool ShowArrow { get; set; } = true;
+
+    public ModdedNumberOption TargetsToKill { get; } =
+        new("ExtensionOptionBHTargetsToKill", 3f, 1f, 5f, 1f, MiraNumberSuffixes.None);
 
     [ModdedEnumOption("ExtensionOptionBHWinMode", typeof(BountyHunterWinMode),
         ["ExtensionOptionBHWinModeEnumSoloWin",

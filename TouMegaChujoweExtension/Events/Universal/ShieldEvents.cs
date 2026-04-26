@@ -14,14 +14,17 @@ using TownOfUs.Utilities;
 using TownOfUs.Extensions;
 using TownOfUs.Options;
 using MiraAPI.GameOptions;
+using MiraAPI.Hud;
+using TownOfUs.Buttons;
 using Reactor.Utilities;
 using HarmonyLib;
+using TouMegaChujoweExtension.Buttons.Neutral;
 
 namespace TouMegaChujoweExtension.Events.Universal;
 
 public static class ShieldEvents
 {
-    [RegisterEvent(Priority.First)]
+    [RegisterEvent(Priority.Last)]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
         var source = @event.Source;
@@ -32,6 +35,8 @@ public static class ShieldEvents
         var shieldType = target.GetShieldType();
         if (shieldType == ShieldType.None) return;
 
+        Logger<TouMegaChujoweExtensionPlugin>.Info($"[ShieldEvents] Murder from {source.Data.PlayerName} blocked by {shieldType} on {target.Data.PlayerName}");
+
         // Cancel the murder event
         @event.Cancel();
 
@@ -41,7 +46,7 @@ public static class ShieldEvents
         // Show flash for the killer
         if (source.AmOwner)
         {
-            ResetKillButton(source);
+            ResetKillButton(source, shieldType);
             ShieldUtils.TriggerShieldFlash(source, shieldType);
         }
     }
@@ -94,10 +99,60 @@ public static class ShieldEvents
         }
     }
 
-    private static void ResetKillButton(PlayerControl source)
+    private static void ResetKillButton(PlayerControl source, ShieldType shieldType)
     {
-        if (HudManager.Instance == null || HudManager.Instance.KillButton == null) return;
-        var reset = OptionGroupSingleton<GeneralOptions>.Instance.TempSaveCdReset;
-        source.SetKillTimer(reset);
+        var saveCd = OptionGroupSingleton<GeneralOptions>.Instance.TempSaveCdReset;
+        
+        // Custom durations based on user request
+        float duration = saveCd;
+        switch (shieldType)
+        {
+            case ShieldType.Mirrorcaster:
+                duration = source.GetKillCooldown(); // Full CD
+                break;
+            case ShieldType.Bodyguard:
+                duration = 10f;
+                break;
+            case ShieldType.FirstDead:
+                duration = 5.0f;
+                break;
+            case ShieldType.Cleric:
+                duration = 5f;
+                break;
+            case ShieldType.Warden:
+                duration = 1f;
+                break;
+            case ShieldType.Medic:
+            case ShieldType.Fairy:
+                duration = saveCd; // Usually 5s
+                break;
+            // Others use default saveCd
+        }
+        
+        // Reset vanilla kill button
+        if (HudManager.Instance != null && HudManager.Instance.KillButton != null)
+        {
+            source.SetKillTimer(duration);
+        }
+
+        // Reset custom KILL buttons only
+        try
+        {
+            foreach (var button in CustomButtonManager.Buttons)
+            {
+                if (button != null && button.Button != null && button.Button.gameObject.activeSelf)
+                {
+                    if (button is IKillButton || button is PelicanSwallowButton)
+                    {
+                        button.Timer = duration;
+                        try { button.SetUses(button.UsesLeft); } catch { }
+                    }
+                }
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Logger<TouMegaChujoweExtensionPlugin>.Error($"[ShieldEvents] Error resetting custom buttons: {ex.Message}");
+        }
     }
 }

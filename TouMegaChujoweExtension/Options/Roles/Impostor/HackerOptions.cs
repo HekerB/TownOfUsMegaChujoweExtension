@@ -11,20 +11,11 @@ public sealed class HackerOptions : AbstractOptionGroup<HackerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleHacker", "Hacker");
 
-    [ModdedToggleOption("ExtensionOptionHackerSimpleModeJamOnly")]
-    public bool SimpleModeJamOnly { get; set; } = false;
+    [ModdedNumberOption("ExtensionOptionHackerJamCooldown", 10f, 35f, 2.5f, MiraNumberSuffixes.Seconds)]
+    public float JamCooldownSeconds { get; set; } = 25f;
 
-    [ModdedNumberOption("ExtensionOptionHackerMaxBatterySeconds", 3f, 15f, 1f, MiraNumberSuffixes.Seconds)]
-    public float MaxBatterySeconds { get; set; } = 10f;
-
-    [ModdedNumberOption("ExtensionOptionHackerBatteryPerDownloadSecond", 1f, 4f, 1f, MiraNumberSuffixes.Seconds)]
-    public float BatteryPerDownloadSecond { get; set; } = 2f;
-
-    [ModdedNumberOption("ExtensionOptionHackerDownloadRange", 0.5f, 2.5f, 0.25f, MiraNumberSuffixes.None)]
-    public float DownloadRange { get; set; } = 1f;
-
-    [ModdedToggleOption("ExtensionOptionHackerMoveWithDevice")]
-    public bool MoveWithDevice { get; set; } = true;
+    [ModdedNumberOption("ExtensionOptionHackerJamDuration", 5f, 20f, 2.5f, MiraNumberSuffixes.Seconds)]
+    public float JamDurationSeconds { get; set; } = 15f;
 
     [ModdedNumberOption("ExtensionOptionHackerInitialJamCharges", 0f, 10f, 1f, MiraNumberSuffixes.None)]
     public float InitialJamCharges { get; set; } = 3f;
@@ -35,11 +26,34 @@ public sealed class HackerOptions : AbstractOptionGroup<HackerRole>
     [ModdedNumberOption("ExtensionOptionHackerJamMaxCharges", 1f, 10f, 1f, MiraNumberSuffixes.None)]
     public float JamMaxCharges { get; set; } = 6f;
 
-    [ModdedNumberOption("ExtensionOptionHackerJamCooldown", 10f, 35f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float JamCooldownSeconds { get; set; } = 25f;
+    [ModdedToggleOption("ExtensionOptionHackerSimpleModeJamOnly")]
+    public bool SimpleModeJamOnly { get; set; } = false;
 
-    [ModdedNumberOption("ExtensionOptionHackerJamDuration", 5f, 20f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float JamDurationSeconds { get; set; } = 15f;
+    public ModdedToggleOption MoveWithDeviceOption { get; } = new("ExtensionOptionHackerMoveWithDevice", true)
+    {
+        Visible = () => !OptionGroupSingleton<HackerOptions>.Instance.SimpleModeJamOnly
+    };
+
+    public ModdedNumberOption MaxBatterySecondsOption { get; } = new("ExtensionOptionHackerMaxBatterySeconds", 10f, 3f, 15f, 1f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => !OptionGroupSingleton<HackerOptions>.Instance.SimpleModeJamOnly
+    };
+
+    public ModdedNumberOption BatteryPerDownloadSecondOption { get; } = new("ExtensionOptionHackerBatteryPerDownloadSecond", 2f, 1f, 4f, 1f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => !OptionGroupSingleton<HackerOptions>.Instance.SimpleModeJamOnly
+    };
+
+    public ModdedNumberOption DownloadRangeOption { get; } = new("ExtensionOptionHackerDownloadRange", 1f, 0.5f, 2.5f, 0.25f, MiraNumberSuffixes.None)
+    {
+        Visible = () => !OptionGroupSingleton<HackerOptions>.Instance.SimpleModeJamOnly
+    };
+
+    // Backward compatibility for HackerRole
+    public float MaxBatterySeconds => MaxBatterySecondsOption.Value;
+    public bool MoveWithDevice => MoveWithDeviceOption.Value;
+    public float BatteryPerDownloadSecond => BatteryPerDownloadSecondOption.Value;
+    public float DownloadRange => DownloadRangeOption.Value;
 
     public bool JamEnabled =>
         JamMaxCharges > 0f && (SimpleModeJamOnly || JamChargesPerKill > 0f || InitialJamCharges > 0f);

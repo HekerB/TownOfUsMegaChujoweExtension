@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+﻿<?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <!--Doomsayer To Foreteller-->
   <string name="ExtensionLocalSettingRenameDoomsayerToForeteller">Zmien nazwe na Foreteller</string>
@@ -182,6 +182,7 @@
   <string name="ExtensionOptionShifterBecomesCrewmate">Crewmate</string>
   <string name="ExtensionOptionShifterBecomesShifter">Shifter</string>
   <string name="ExtensionOptionShifterStealModifiers">Zabierz modyfikatory</string>
+  <string name="ExtensionOptionShifterWinsWithCrew">Wygrywa z Crew</string>
   
   <!-- Lawyer Win -->
   <string name="ExtensionLawyerWin">Wygrywa</string>
@@ -936,37 +937,39 @@
 
   <!-- TOUMCE Wiki Terms - Symbols -->
   <string name="TOUMCETermsSymbolsTitle">Symbole TOUMCE</string>
-  <string name="TOUMCETermsSymbolsInfo">Symbole TouMegaChujoweExtension • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Gracz kanonizowany przez Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Gracz ustawiony jako pulapka przez Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;✶&lt;/b&gt;&lt;/color&gt; - Gracz wpisany do Death Note • &lt;color=#0064FF&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Gracz chroniony przez Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Gracz otruty przez Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Klient Lawyer • &lt;color=#C0C0C0&gt;&lt;b&gt;¤&lt;/b&gt;&lt;/color&gt; - Gracz przeklety przez Witch</string>
+  <string name="TOUMCETermsSymbolsInfo">Symbole TouMegaChujoweExtension â€˘ &lt;color=#FFD700&gt;&lt;b&gt;Î&lt;/b&gt;&lt;/color&gt; - Gracz kanonizowany przez Pope â€˘ &lt;color=#6699FF&gt;&lt;b&gt;â™˘&lt;/b&gt;&lt;/color&gt; - Gracz ustawiony jako pulapka przez Shroud â€˘ &lt;color=#8B00FF&gt;&lt;b&gt;âś¶&lt;/b&gt;&lt;/color&gt; - Gracz wpisany do Death Note â€˘ &lt;color=#0064FF&gt;&lt;b&gt;ÎŁ&lt;/b&gt;&lt;/color&gt; - Gracz chroniony przez Bodyguard â€˘ &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Gracz otruty przez Poisoner â€˘ &lt;color=#EDB38C&gt;&lt;b&gt;Â§&lt;/b&gt;&lt;/color&gt; - Klient Lawyer â€˘ &lt;color=#C0C0C0&gt;&lt;b&gt;Â¤&lt;/b&gt;&lt;/color&gt; - Gracz przeklety przez Witch</string>
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">Ogolne blyski tarcz</string>
-  <string name="TOUMCETermsShieldFlashesInfo">Gdy zabojstwo zostaje zablokowane przez tarcze, zabojca widzi kolorowy blysk wskazujacy, ktora rola zapewnila ochrone: • &lt;color=#006600&gt;&lt;b&gt;Ciemnozielony&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Fioletowy&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyjan/Turkusowy&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Srebrnoniebieski&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Jasnoniebieski&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Malwa&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#0064FF&gt;&lt;b&gt;Ciemnoniebieski&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (na meetingu)</string>
+  <string name="TOUMCETermsShieldFlashesInfo">Gdy zabojstwo zostaje zablokowane przez tarcze, zabojca widzi kolorowy blysk wskazujacy, ktora rola zapewnila ochrone: â€˘ &lt;color=#006600&gt;&lt;b&gt;Ciemnozielony&lt;/b&gt;&lt;/color&gt; - Medic â€˘ &lt;color=#9900FF&gt;&lt;b&gt;Fioletowy&lt;/b&gt;&lt;/color&gt; - Warden â€˘ &lt;color=#00FFB3&gt;&lt;b&gt;Cyjan/Turkusowy&lt;/b&gt;&lt;/color&gt; - Cleric â€˘ &lt;color=#90A2C3&gt;&lt;b&gt;Srebrnoniebieski&lt;/b&gt;&lt;/color&gt; - Mirrorcaster â€˘ &lt;color=#66AAF3&gt;&lt;b&gt;Jasnoniebieski&lt;/b&gt;&lt;/color&gt; - Fairy â€˘ &lt;color=#8C6699&gt;&lt;b&gt;Malwa&lt;/b&gt;&lt;/color&gt; - Mercenary â€˘ &lt;color=#0064FF&gt;&lt;b&gt;Ciemnoniebieski&lt;/b&gt;&lt;/color&gt; - Bodyguard â€˘ &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (na meetingu)</string>
 
   <!-- TOUMCE Wiki Terms - Draft Mode -->
   <string name="TOUMCETermsDraftModeTitle">Tryb Draft</string>
   <string name="TOUMCETermsDraftModeInfo">&lt;b&gt;Tryb Draft&lt;/b&gt; zastepuje normalne przydzielanie rol strategiczna faza wyboru przed rozpoczeciem gry.
-• Gracze zostaja przypisani do strony (&lt;color=#4DA6FF&gt;&lt;b&gt;Crewmate&lt;/b&gt;&lt;/color&gt;, &lt;color=#FF3B3B&gt;&lt;b&gt;Impostor&lt;/b&gt;&lt;/color&gt; lub &lt;color=#7F7F7F&gt;&lt;b&gt;Neutral&lt;/b&gt;&lt;/color&gt;), a nastepnie wybieraja swoja konkretna role w losowej kolejnosci.
-• Kazdy gracz otrzymuje 3 unikalne role do wyboru. Widzowie sa wykluczeni z procesu i nie zajmuja slotow wyboru.
-• Jesli nie dokonasz wyboru na czas, gra automatycznie przydzieli Ci role pasujaca do Twojej druzyny.
-• Domyslnie &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmate&lt;/b&gt;&lt;/color&gt; oraz &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybieraja z wyspecjalizowanych podkategorii (np. Investigative, Power, Killing).
-• Na drafcie moga byc takze wlaczone szanse (Respect Role Chances), co sprawia ze role pojawiaja sie zgodnie z ich szansami w lobby.</string>
+â€˘ Gracze zostaja przypisani do strony (&lt;color=#4DA6FF&gt;&lt;b&gt;Crewmate&lt;/b&gt;&lt;/color&gt;, &lt;color=#FF3B3B&gt;&lt;b&gt;Impostor&lt;/b&gt;&lt;/color&gt; lub &lt;color=#7F7F7F&gt;&lt;b&gt;Neutral&lt;/b&gt;&lt;/color&gt;), a nastepnie wybieraja swoja konkretna role w losowej kolejnosci.
+â€˘ Kazdy gracz otrzymuje 3 unikalne role do wyboru. Widzowie sa wykluczeni z procesu i nie zajmuja slotow wyboru.
+â€˘ Jesli nie dokonasz wyboru na czas, gra automatycznie przydzieli Ci role pasujaca do Twojej druzyny.
+â€˘ Domyslnie &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmate&lt;/b&gt;&lt;/color&gt; oraz &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybieraja z wyspecjalizowanych podkategorii (np. Investigative, Power, Killing).
+â€˘ Na drafcie moga byc takze wlaczone szanse (Respect Role Chances), co sprawia ze role pojawiaja sie zgodnie z ich szansami w lobby.</string>
 
   <!-- TOUMCE Wiki Terms - Draft Factions -->
   <string name="TOUMCETermsDraftFactionsTitle">Frakcje Draftu</string>
   <string name="TOUMCETermsDraftFactionsInfo">Przed rozpoczeciem draftu gracze zostaja przypisani do frakcji, ktora okresla ich dostepna pule rol.
-• &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybieraja sposrod roznych wyspecjalizowanych kategorii Impostora.
-• &lt;color=#4DA6FF&gt;&lt;b&gt;Zaloganci&lt;/b&gt;&lt;/color&gt; dokonuja wyboru z wielu grup (np. Investigative, Protective, Power).
-• &lt;color=#FFD700&gt;&lt;b&gt;Random Neutral&lt;/b&gt;&lt;/color&gt; oferuje zbalansowany zestaw rol. Domyslnie masz 70% szans na 2 role &lt;b&gt;Neutral Benign&lt;/b&gt;, 15% na &lt;b&gt;Neutral Outlier&lt;/b&gt; oraz 15% na &lt;b&gt;Neutral Evil&lt;/b&gt;.
+â€˘ &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybieraja sposrod roznych wyspecjalizowanych kategorii Impostora.
+â€˘ &lt;color=#4DA6FF&gt;&lt;b&gt;Zaloganci&lt;/b&gt;&lt;/color&gt; dokonuja wyboru z wielu grup (np. Investigative, Protective, Power).
+â€˘ &lt;color=#FFD700&gt;&lt;b&gt;Random Neutral&lt;/b&gt;&lt;/color&gt; oferuje zbalansowany zestaw rol. Domyslnie masz 70% szans na 2 role &lt;b&gt;Neutral Benign&lt;/b&gt;, 15% na &lt;b&gt;Neutral Outlier&lt;/b&gt; oraz 15% na &lt;b&gt;Neutral Evil&lt;/b&gt;.
  
-• Ustawienia &lt;b&gt;Neutral&lt;/b&gt; w lobby kontroluja &lt;b&gt;Max&lt;/b&gt; liczbe graczy przypisanych do frakcji Benign, Evil oraz Killing.
+â€˘ Ustawienia &lt;b&gt;Neutral&lt;/b&gt; w lobby kontroluja &lt;b&gt;Max&lt;/b&gt; liczbe graczy przypisanych do frakcji Benign, Evil oraz Killing.
  
 Jesli opcja &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy wybieraja ze wszystkich klas&lt;/b&gt;&lt;/color&gt; lub &lt;color=#4DA6FF&gt;&lt;b&gt;Zaloganci wybieraja ze wszystkich klas&lt;/b&gt;&lt;/color&gt; jest wlaczona, gracze moga wybierac z dowolnej dostepnej kategorii dla swojej strony.
-• Domyslnie te opcje sa &lt;b&gt;wylaczone&lt;/b&gt;.</string>
+â€˘ Domyslnie te opcje sa &lt;b&gt;wylaczone&lt;/b&gt;.</string>
 
   <!-- TOUMCE Wiki Terms - Game Settings -->
   <string name="TOUMCETermsGameSettingsTitle">Ustawienia Gry</string>
   <string name="TOUMCETermsGameSettingsInfo">TOUMCE wprowadza kilka globalnych ustawien zmieniajacych przebieg gry:
-• &lt;b&gt;Lock Lobby During Draft&lt;/b&gt; - Zapobiega dolaczaniu nowych graczy w trakcie trwania draftu, aby zapewnic stabilnosc.
-• &lt;b&gt;Respect Role Chances&lt;/b&gt; - Jesli wlaczone, prawdopodobienstwo pojawienia sie rol w drafcie bedzie oparte na ich indywidualnych ustawieniach szans (Chance) w lobby.
-• &lt;b&gt;Draft Timer&lt;/b&gt; - Okresla, ile czasu ma kazdy gracz na dokonanie strategicznego wyboru.</string>
+â€˘ &lt;b&gt;Lock Lobby During Draft&lt;/b&gt; - Zapobiega dolaczaniu nowych graczy w trakcie trwania draftu, aby zapewnic stabilnosc.
+â€˘ &lt;b&gt;Respect Role Chances&lt;/b&gt; - Jesli wlaczone, prawdopodobienstwo pojawienia sie rol w drafcie bedzie oparte na ich indywidualnych ustawieniach szans (Chance) w lobby.
+â€˘ &lt;b&gt;Draft Timer&lt;/b&gt; - Okresla, ile czasu ma kazdy gracz na dokonanie strategicznego wyboru.</string>
+  <string name="ExtensionOptionCharlatanDeceiveEnabled">Oszustwo wlaczone</string>
+  <string name="ExtensionOptionWitchCanSpellFirstRound">Moze uzywac czaru w 1 rundzie</string>
 </resources>

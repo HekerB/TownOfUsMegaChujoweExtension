@@ -11,6 +11,10 @@ using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Modifiers;
 using TownOfUs.Utilities;
+using TownOfUs.Events;
+using TownOfUs.Options;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Impostor;
@@ -56,7 +60,6 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
         if (player == null || (player.IsImpostorAligned() && target.IsImpostorAligned())) return false;
 
         // Targeting allowed, shield block handled in ShieldEvents
-        if (target.HasModifier<FirstDeadShield>()) return false;
 
         return true;
     }
@@ -81,6 +84,14 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
         if (!CanClick() || Target == null) return;
         var player = PlayerControl.LocalPlayer;
         if (player == null) return;
+
+        var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
+        MiraEventManager.InvokeEvent(beforeMurderEvent);
+        
+        if (beforeMurderEvent.IsCancelled)
+        {
+            return;
+        }
 
         if (LimitedUses && !_inDoubleKillWindow)
         {

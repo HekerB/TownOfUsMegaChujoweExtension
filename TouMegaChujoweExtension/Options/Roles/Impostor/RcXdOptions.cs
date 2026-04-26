@@ -14,6 +14,12 @@ public sealed class RcXdOptions : AbstractOptionGroup<RcXdRole>
     [ModdedNumberOption("ExtensionOptionRcXdDeployCooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float DeployCooldown { get; set; } = 25f;
 
+    [ModdedNumberOption("ExtensionOptionRcXdMaxDeploys", 0f, 10f, 1f, MiraNumberSuffixes.None, "0", true)]
+    public float MaxDeploys { get; set; } = 3f;
+
+    [ModdedToggleOption("ExtensionOptionRcXdCanVent")]
+    public bool CanVent { get; set; } = true;
+
     [ModdedNumberOption("ExtensionOptionRcXdDriveTime", 3f, 15f, 1f, MiraNumberSuffixes.Seconds)]
     public float DriveTime { get; set; } = 7f;
 
@@ -28,10 +34,4 @@ public sealed class RcXdOptions : AbstractOptionGroup<RcXdRole>
 
     [ModdedNumberOption("ExtensionOptionRcXdMaxKills", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxKillsInDetonation { get; set; } = 5f;
-
-    [ModdedNumberOption("ExtensionOptionRcXdMaxDeploys", 1f, 10f, 1f, MiraNumberSuffixes.None, "0")]
-    public float MaxDeploys { get; set; } = 3f;
-
-    [ModdedToggleOption("ExtensionOptionRcXdCanVent")]
-    public bool CanVent { get; set; } = true;
 }

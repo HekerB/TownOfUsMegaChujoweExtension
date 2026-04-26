@@ -17,9 +17,12 @@ public sealed class EvokerOptions : AbstractOptionGroup<EvokerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleEvoker", "Evoker");
 
+    public ModdedNumberOption BlindDuration { get; } = new("ExtensionOptionEvokerBlindDuration", 10f, 5f, 30f, 1f, MiraNumberSuffixes.Seconds);
     public ModdedNumberOption BlindCooldown { get; } = new("ExtensionOptionEvokerBlindCooldown", 25f, 5f, 60f, 2.5f, MiraNumberSuffixes.Seconds);
 
-    public ModdedNumberOption BlindDuration { get; } = new("ExtensionOptionEvokerBlindDuration", 10f, 5f, 30f, 1f, MiraNumberSuffixes.Seconds);
+    public ModdedToggleOption CrewmateKillersBlinded { get; } = new("ExtensionOptionEvokerCrewKillersBlinded", false);
+
+    public ModdedToggleOption CantVerify { get; } = new("ExtensionOptionEvokerCantVerify", false);
 
     private static readonly string[] BlindTypeValues =
     {
@@ -28,10 +31,6 @@ public sealed class EvokerOptions : AbstractOptionGroup<EvokerRole>
     };
 
     public ModdedEnumOption<EvokerBlindType> BlindType { get; } = new("ExtensionOptionEvokerBlindType", EvokerBlindType.Normal, BlindTypeValues);
-
-    public ModdedToggleOption CrewmateKillersBlinded { get; } = new("ExtensionOptionEvokerCrewKillersBlinded", false);
-
-    public ModdedToggleOption CantVerify { get; } = new("ExtensionOptionEvokerCantVerify", false);
 
     public ModdedNumberOption VerifyCooldown { get; }
     public ModdedNumberOption MaxVerifications { get; }

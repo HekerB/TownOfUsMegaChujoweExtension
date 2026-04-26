@@ -18,12 +18,6 @@ public sealed class BodyguardOptions : AbstractOptionGroup<BodyguardRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleBodyguard", "Bodyguard");
 
-    [ModdedNumberOption("ExtensionOptionBodyguardBacklashWindow", 3f, 30f, 1f, MiraNumberSuffixes.Seconds)]
-    public float BacklashWindow { get; set; } = 10f;
-
-    [ModdedNumberOption("ExtensionOptionBodyguardKillWindow", 3f, 20f, 1f, MiraNumberSuffixes.Seconds)]
-    public float KillWindow { get; set; } = 8f;
-
     [ModdedToggleOption("ExtensionOptionBodyguardDiesAfterKill")]
     public bool DiesAfterKill { get; set; } = true;
 
@@ -50,4 +44,10 @@ public sealed class BodyguardOptions : AbstractOptionGroup<BodyguardRole>
         ]
     )]
     public BodyguardShieldVisibility ShowShieldTo { get; set; } = BodyguardShieldVisibility.TargetAndBodyguard;
+
+    [ModdedNumberOption("ExtensionOptionBodyguardBacklashWindow", 3f, 30f, 1f, MiraNumberSuffixes.Seconds)]
+    public float BacklashWindow { get; set; } = 10f;
+
+    [ModdedNumberOption("ExtensionOptionBodyguardKillWindow", 3f, 20f, 1f, MiraNumberSuffixes.Seconds)]
+    public float KillWindow { get; set; } = 8f;
 }

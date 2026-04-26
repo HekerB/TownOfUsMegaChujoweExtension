@@ -64,13 +64,10 @@ public sealed class ShifterShiftButton : TownOfUsKillRoleButton<ShifterRole, Pla
         if (player.Data?.Role is not ShifterRole)
             return;
 
-        var shieldType = ShieldUtils.GetShieldType(Target);
-        if (shieldType != ShieldType.None || Target.HasModifier<FirstDeadShield>())
+        var shieldType = Target.GetShieldType();
+        if (shieldType == ShieldType.Warden || shieldType == ShieldType.FirstDead || shieldType == ShieldType.Cleric)
         {
-            if (shieldType != ShieldType.None)
-            {
-                ShieldUtils.TriggerShieldFlash(player, shieldType);
-            }
+            ShieldUtils.TriggerShieldFlash(player, shieldType);
             Timer = Cooldown;
             return;
         }

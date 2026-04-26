@@ -1,7 +1,6 @@
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
-using MiraAPI.Networking;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Roles.Impostor;
@@ -9,6 +8,10 @@ using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Modifiers;
 using TownOfUs.Utilities;
+using TownOfUs.Events;
+using TownOfUs.Options;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Impostor;
@@ -54,7 +57,16 @@ public sealed class WitchKillButton : TownOfUsKillRoleButton<WitchRole, PlayerCo
 
     public override void ClickHandler()
     {
-        if (!CanClick())
+        if (!CanClick()) return;
+        if (Target == null) return;
+
+        var player = PlayerControl.LocalPlayer;
+        if (player == null) return;
+
+        var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
+        MiraEventManager.InvokeEvent(beforeMurderEvent);
+        
+        if (beforeMurderEvent.IsCancelled)
         {
             return;
         }

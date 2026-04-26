@@ -99,6 +99,9 @@ public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, Playe
         if (target.Data.Disconnected) return false;
         if (PelicanSystem.IsSwallowed(target.PlayerId)) return false;
 
+        // Block targeting ONLY for Child.
+        if (target.GetShieldType() == ShieldType.Child) return false;
+
         return base.IsTargetValid(target);
     }
 
@@ -133,7 +136,6 @@ public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, Playe
         
         if (beforeMurderEvent.IsCancelled)
         {
-            Timer = OptionGroupSingleton<GeneralOptions>.Instance.TempSaveCdReset;
             RefreshUses();
             return;
         }

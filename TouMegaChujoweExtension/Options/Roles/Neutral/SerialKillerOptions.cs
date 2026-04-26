@@ -11,16 +11,6 @@ public sealed class SerialKillerOptions : AbstractOptionGroup<SerialKillerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleSerialKiller", "Serial Killer");
 
-    [ModdedToggleOption("ExtensionOptionSerialKillerCanReportBodies")]
-    public bool CanReportBodies { get; set; } = false;
-
-    [ModdedEnumOption("ExtensionOptionSerialKillerVentKillTargets", typeof(VentKillTargets),
-        ["ExtensionOptionSerialKillerVentKillTargetsEnumImpostors",
-         "ExtensionOptionSerialKillerVentKillTargetsEnumImpNK",
-         "ExtensionOptionSerialKillerVentKillTargetsEnumImpNeutrals",
-         "ExtensionOptionSerialKillerVentKillTargetsEnumAny"])]
-    public VentKillTargets VentKillTargets { get; set; } = VentKillTargets.Any;
-
     [ModdedToggleOption("ExtensionOptionSerialKillerManiacMode")]
     public bool ManiacMode { get; set; } = true;
 
@@ -33,6 +23,16 @@ public sealed class SerialKillerOptions : AbstractOptionGroup<SerialKillerRole>
     {
         Visible = () => OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacMode
     };
+
+    [ModdedToggleOption("ExtensionOptionSerialKillerCanReportBodies")]
+    public bool CanReportBodies { get; set; } = false;
+
+    [ModdedEnumOption("ExtensionOptionSerialKillerVentKillTargets", typeof(VentKillTargets),
+        ["ExtensionOptionSerialKillerVentKillTargetsEnumImpostors",
+         "ExtensionOptionSerialKillerVentKillTargetsEnumImpNK",
+         "ExtensionOptionSerialKillerVentKillTargetsEnumImpNeutrals",
+         "ExtensionOptionSerialKillerVentKillTargetsEnumAny"])]
+    public VentKillTargets VentKillTargets { get; set; } = VentKillTargets.Any;
 }
 
 public enum VentKillTargets

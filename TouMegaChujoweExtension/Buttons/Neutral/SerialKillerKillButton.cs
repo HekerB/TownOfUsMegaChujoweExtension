@@ -1,7 +1,6 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
-using MiraAPI.Networking;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Modules;
@@ -14,8 +13,14 @@ using TownOfUs.Modifiers;
 using TownOfUs.Modules;
 using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Roles;
+using TownOfUs.Events;
+using TownOfUs.Options;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using TownOfUs.Utilities;
 using UnityEngine;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace TouMegaChujoweExtension.Buttons.Neutral;
 
@@ -43,6 +48,37 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
+    }
+
+    public override void ClickHandler()
+    {
+        if (!CanClick()) return;
+        if (Target == null) return;
+
+        var player = PlayerControl.LocalPlayer;
+        if (player == null) return;
+
+        var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
+        MiraEventManager.InvokeEvent(beforeMurderEvent);
+        
+        if (beforeMurderEvent.IsCancelled)
+        {
+            SetUses(UsesLeft);
+            return;
+        }
+
+        OnClick();
+        
+        if (HasEffect)
+        {
+            EffectActive = true;
+            Timer = EffectDuration;
+        }
+        else
+        {
+            Timer = Cooldown;
+        }
+        SetUses(UsesLeft);
     }
 
     protected override void OnClick()
@@ -175,11 +211,7 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
             return false;
         }
 
-        // Targeting is allowed now, shield logic is handled in ShieldEvents
-        if (target.HasModifier<FirstDeadShield>())
-        {
-            return false;
-        }
+        // Targeting is allowed, shield block handled in ShieldEvents
 
         if (target.inVent)
         {

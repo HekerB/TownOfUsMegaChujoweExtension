@@ -8,12 +8,9 @@ using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Utilities;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Crewmate;
-using TownOfUs.Modifiers.Neutral;
-using TownOfUs.Modifiers.Game.Neutral;
 using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Options.Modifiers.Impostor;
 using TownOfUs.Options.Roles.Neutral;
-using Reactor.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Utilities;
@@ -40,11 +37,11 @@ public static class ShieldUtils
     {
         if (player == null) return ShieldType.None;
 
+        if (player.HasModifier<FirstDeadShield>()) return ShieldType.FirstDead;
         if (player.HasModifier<MedicShieldModifier>()) return ShieldType.Medic;
         if (player.HasModifier<WardenFortifiedModifier>()) return ShieldType.Warden;
         if (player.HasModifier<MagicMirrorModifier>()) return ShieldType.Mirrorcaster;
         if (player.HasModifier<BodyguardShieldModifier>()) return ShieldType.Bodyguard;
-        if (player.HasModifier<FirstDeadShield>()) return ShieldType.FirstDead;
         if (player.TryGetModifier<ChildModifier>(out var child) && !child.IsAdult) return ShieldType.Child;
         if (player.HasModifier<GuardianAngelProtectModifier>()) return ShieldType.Fairy;
         if (player.HasModifier<MercenaryGuardModifier>() && 
@@ -69,11 +66,12 @@ public static class ShieldUtils
             ShieldType.Warden => TouExtensionColors.ShieldFlashes.Warden,
             ShieldType.Mirrorcaster => TouExtensionColors.ShieldFlashes.Mirrorcaster,
             ShieldType.Bodyguard => TouExtensionColors.ShieldFlashes.Bodyguard,
+            ShieldType.FirstDead => Color.clear,
             ShieldType.Fairy => TouExtensionColors.ShieldFlashes.Fairy,
             ShieldType.Mercenary => TouExtensionColors.ShieldFlashes.Mercenary,
             ShieldType.Oracle => TouExtensionColors.ShieldFlashes.Oracle,
             ShieldType.Cleric => TouExtensionColors.ShieldFlashes.Cleric,
-            _ => Color.white
+            _ => Color.clear
         };
     }
 
@@ -83,7 +81,7 @@ public static class ShieldUtils
             shieldType == ShieldType.DeadlyQuota || shieldType == ShieldType.Child) return;
 
         var color = GetFlashColor(shieldType);
-        if (color != Color.white)
+        if (color != Color.clear)
         {
             Coroutines.Start(MiscUtils.CoFlash(color));
         }

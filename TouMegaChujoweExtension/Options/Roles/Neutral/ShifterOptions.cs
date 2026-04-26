@@ -14,8 +14,14 @@ public sealed class ShifterOptions : AbstractOptionGroup<ShifterRole>
     [ModdedNumberOption("ExtensionOptionShifterCooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float ShiftCooldown { get; set; } = 25f;
 
+    [ModdedToggleOption("ExtensionOptionShifterStealModifiers")]
+    public bool StealModifiers { get; set; } = false;
+
     [ModdedToggleOption("ExtensionOptionShifterCanShiftNeutralBenign")]
     public bool CanShiftNeutralBenign { get; set; } = false;
+
+    [ModdedToggleOption("ExtensionOptionShifterWinsWithCrew")]
+    public bool WinsWithCrew { get; set; } = true;
 
     [ModdedEnumOption("ExtensionOptionShifterShiftedBecomes", typeof(ShiftedBecomesOption),
         ["ExtensionOptionShifterBecomesAmnesiac",
@@ -25,9 +31,6 @@ public sealed class ShifterOptions : AbstractOptionGroup<ShifterRole>
          "ExtensionOptionShifterBecomesCrewmate",
          "ExtensionOptionShifterBecomesShifter"])]
     public ShiftedBecomesOption ShiftedBecomes { get; set; } = ShiftedBecomesOption.Crewmate;
-
-    [ModdedToggleOption("ExtensionOptionShifterStealModifiers")]
-    public bool StealModifiers { get; set; } = false;
 }
 
 public enum ShiftedBecomesOption

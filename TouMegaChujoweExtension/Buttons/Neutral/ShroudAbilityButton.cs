@@ -1,4 +1,7 @@
-﻿using MiraAPI.GameOptions;
+using MiraAPI.GameOptions;
+using TownOfUs.Events;
+using TownOfUs.Options;
+using MiraAPI.Events;
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
@@ -9,6 +12,7 @@ using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Buttons;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Neutral;
@@ -30,9 +34,10 @@ public sealed class ShroudAbilityButton : TownOfUsRoleButton<ShroudRole, PlayerC
 
     public override bool IsTargetValid(PlayerControl? target)
     {
-        if (target == null) return false;
-        if (target.HasDied()) return false;
-        if (target == PlayerControl.LocalPlayer) return false;
+        if (target == null || target.HasDied() || target == PlayerControl.LocalPlayer) return false;
+
+        // Block targeting ONLY for Child
+        if (target.GetShieldType() == ShieldType.Child) return false;
 
         if (target.TryGetModifier<ShroudedModifier>(out var mod) && mod.ShroudOwnerId == PlayerControl.LocalPlayer.PlayerId)
             return false;
@@ -44,6 +49,20 @@ public sealed class ShroudAbilityButton : TownOfUsRoleButton<ShroudRole, PlayerC
     {
         var player = PlayerControl.LocalPlayer;
         if (player == null || Target == null) return;
+
+        // Check for shields (excluding Child which is blocked in targeting)
+        var shieldType = Target.GetShieldType();
+        if (shieldType != ShieldType.None)
+        {
+            // Blocked by shield. Trigger flash only if it's NOT DeadlyQuota.
+            if (shieldType != ShieldType.DeadlyQuota)
+            {
+                ShieldUtils.TriggerShieldFlash(player, shieldType);
+            }
+            
+            Timer = (shieldType == ShieldType.FirstDead) ? 0.1f : OptionGroupSingleton<GeneralOptions>.Instance.TempSaveCdReset;
+            return;
+        }
 
         if (Target.TryGetModifier<ShroudedModifier>(out var existingMod) && existingMod.ShroudOwnerId == player.PlayerId)
             return;
