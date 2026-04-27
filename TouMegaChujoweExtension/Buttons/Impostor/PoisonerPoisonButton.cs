@@ -1,3 +1,4 @@
+using System.Collections;
 using System;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
@@ -26,6 +27,17 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
     public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.PoisonButtonSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
 
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        Reactor.Utilities.Coroutines.Start(CoMoveWithDelay());
+    }
+
+    private IEnumerator CoMoveWithDelay()
+    {
+        yield return MiscUtils.CoMoveButtonIndex(this, true);
+    }
+
     private PlayerControl? _closestTarget;
     private PlayerControl? _lastOutlined;
 
@@ -33,10 +45,7 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
     private float _poisonTimer;
     private float _poisonDuration;
 
-    private const float ShakeStartTime = 1.5f;
-    private const float ShakeMaxIntensity = 0.08f;
-    private Vector3 _buttonOriginalPos;
-    private bool _hasOriginalPos;
+
 
     public override bool CanUse()
     {
@@ -119,20 +128,16 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
             }
             else
             {
-                Timer = 0f;
-
-                var remaining = Mathf.Clamp(_poisonTimer / _poisonDuration, 0f, 1f);
-                Button?.SetCooldownFill(remaining);
+                Timer = -1f;
 
                 if (Button != null)
                 {
+                    Button.SetEnabled();
+                    Button.SetFillUp(_poisonTimer, _poisonDuration);
                     Button.cooldownTimerText.text = Mathf.CeilToInt(_poisonTimer).ToString();
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
-
-                ApplyShake();
             }
-
             _closestTarget = null;
             ClearOutline();
 
@@ -172,36 +177,6 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
         base.FixedUpdate(playerControl);
     }
 
-    private void ApplyShake()
-    {
-        if (Button == null) return;
-        var btnTransform = Button.transform;
-
-        if (!_hasOriginalPos)
-        {
-            _buttonOriginalPos = btnTransform.localPosition;
-            _hasOriginalPos = true;
-        }
-
-        if (_poisonTimer > ShakeStartTime)
-        {
-            btnTransform.localPosition = _buttonOriginalPos;
-            return;
-        }
-
-        var progress = 1f - Mathf.Clamp01(_poisonTimer / ShakeStartTime);
-        var intensity = Mathf.Lerp(0f, ShakeMaxIntensity, progress);
-        var offset = UnityEngine.Random.insideUnitCircle * intensity;
-        btnTransform.localPosition = _buttonOriginalPos + new Vector3(offset.x, offset.y, 0f);
-    }
-
-    private void ResetShake()
-    {
-        if (_hasOriginalPos && Button != null)
-            Button.transform.localPosition = _buttonOriginalPos;
-        _hasOriginalPos = false;
-    }
-
     private void UpdateOutline()
     {
         if (_lastOutlined != null && _lastOutlined != _closestTarget)
@@ -226,7 +201,6 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
     {
         _isPoisoning = false;
         _poisonTimer = 0f;
-        ResetShake();
 
         Button?.SetCooldownFill(0f);
         if (Button != null)

@@ -27,6 +27,19 @@ public sealed class SerialKillerOptions : AbstractOptionGroup<SerialKillerRole>
     [ModdedToggleOption("ExtensionOptionSerialKillerCanReportBodies")]
     public bool CanReportBodies { get; set; } = false;
 
+    [ModdedToggleOption("ExtensionOptionSerialKillerKillCooldownReductionEnabled")]
+    public bool KillCooldownReductionEnabled { get; set; } = false;
+
+    public ModdedNumberOption KillCooldownReductionPerKill { get; } = new("ExtensionOptionSerialKillerKillCooldownReductionPerKill", 2.5f, 0f, 15f, 0.5f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => OptionGroupSingleton<SerialKillerOptions>.Instance.KillCooldownReductionEnabled
+    };
+
+    public ModdedNumberOption MinimumKillCooldown { get; } = new("ExtensionOptionSerialKillerMinimumKillCooldown", 10f, 0f, 30f, 1f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => OptionGroupSingleton<SerialKillerOptions>.Instance.KillCooldownReductionEnabled
+    };
+
     [ModdedEnumOption("ExtensionOptionSerialKillerVentKillTargets", typeof(VentKillTargets),
         ["ExtensionOptionSerialKillerVentKillTargetsEnumImpostors",
          "ExtensionOptionSerialKillerVentKillTargetsEnumImpNK",

@@ -14,7 +14,7 @@ public sealed class PresidentOptions : AbstractOptionGroup<PresidentRole>
     [ModdedNumberOption("ExtensionOptionPresidentStartingVoteBank", 0f, 10f, 1f, MiraNumberSuffixes.None)]
     public float StartingVoteBank { get; set; } = 2f;
 
-    [ModdedNumberOption("ExtensionOptionPresidentMaxVoteBank", 0f, 20f, 1f, MiraNumberSuffixes.None, "0", true)]
+    [ModdedNumberOption("ExtensionOptionPresidentMaxVoteBank", 1f, 20f, 1f, MiraNumberSuffixes.None)]
     public float MaxVoteBank { get; set; } = 10f;
 
     [ModdedNumberOption("ExtensionOptionPresidentAbstainBonus", 1f, 5f, 1f, MiraNumberSuffixes.None)]

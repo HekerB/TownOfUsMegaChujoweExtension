@@ -29,18 +29,29 @@ public static class VultureVentPatch
             // 1. Change Sprite
             if (ventButton.graphic != null)
             {
-                var wolfVent = TouNeutAssets.WerewolfVentSprite.LoadAsset();
-                if (ventButton.graphic.sprite != wolfVent)
+                var ventSprite = TouNeutAssets.WerewolfVentSprite.LoadAsset();
+                if (ventButton.graphic.sprite != ventSprite)
                 {
-                    ventButton.graphic.sprite = wolfVent;
+                    ventButton.graphic.sprite = ventSprite;
                 }
             }
 
-            // 2. Change Text Color and Outline
+            // 2. Fix Highlighting (Alpha)
+            var hasTarget = ventButton.currentTarget != null || player.inVent;
+            var alpha = hasTarget ? 1f : 0.3f;
+
+            if (ventButton.graphic != null)
+            {
+                var color = ventButton.graphic.color;
+                color.a = alpha;
+                ventButton.graphic.color = color;
+            }
+
+            // 3. Change Text Color and Outline
             if (ventButton.buttonLabelText != null)
             {
-                ventButton.buttonLabelText.color = Color.white;
-                ventButton.buttonLabelText.SetOutlineColor(TouExtensionColors.Vulture);
+                ventButton.buttonLabelText.color = new Color(1f, 1f, 1f, alpha);
+                ventButton.buttonLabelText.SetOutlineColor(TouExtensionColors.Vulture.SetAlpha(alpha));
             }
 
         }

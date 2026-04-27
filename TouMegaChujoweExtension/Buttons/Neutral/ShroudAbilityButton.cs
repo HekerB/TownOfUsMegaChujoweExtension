@@ -1,10 +1,14 @@
+using System.Collections;
+using System.Linq;
 using MiraAPI.GameOptions;
 using TownOfUs.Events;
 using TownOfUs.Options;
 using MiraAPI.Events;
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
+using MiraAPI;
 using MiraAPI.Modifiers;
+using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Modifiers.Neutral;
@@ -12,6 +16,8 @@ using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Buttons;
 using TownOfUs.Utilities;
+using TownOfUs.Modules;
+using TownOfUs.Modifiers;
 using TouMegaChujoweExtension.Utilities;
 using UnityEngine;
 
@@ -25,11 +31,28 @@ public sealed class ShroudAbilityButton : TownOfUsRoleButton<ShroudRole, PlayerC
     public override float Cooldown => OptionGroupSingleton<ShroudOptions>.Instance.ShroudCooldown;
     public override LoadableAsset<Sprite> Sprite => TouExtensionNeuAssets.ShroudAbilitySprite;
 
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        Reactor.Utilities.Coroutines.Start(CoMoveWithDelay());
+    }
+
+    private IEnumerator CoMoveWithDelay()
+    {
+        yield return null;
+        yield return MiscUtils.CoMoveButtonIndex(this, false);
+    }
+
     public override PlayerControl? GetTarget()
     {
         var player = PlayerControl.LocalPlayer;
         if (player == null) return null;
         return player.GetClosestLivingPlayer(true, Distance);
+    }
+
+    public override bool CanUse()
+    {
+        return base.CanUse() && Target != null && Timer <= 0;
     }
 
     public override bool IsTargetValid(PlayerControl? target)

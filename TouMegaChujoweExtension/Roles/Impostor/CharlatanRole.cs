@@ -1,4 +1,4 @@
-﻿using AmongUs.GameOptions;
+using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Patches.Stubs;
@@ -47,17 +47,23 @@ public sealed class CharlatanRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     {
         get
         {
-            return
-            [
-                new(
+            var abilities = new List<CustomButtonWikiDescription>();
+            var options = OptionGroupSingleton<CharlatanOptions>.Instance;
+
+            if (options.DeceiveEnabled)
+            {
+                abilities.Add(new(
                     TouLocale.GetParsed($"ExtensionRole{LocaleKey}Deceive", "Deceive"),
                     TouLocale.GetParsed($"ExtensionRole{LocaleKey}DeceiveWikiDescription"),
-                    TouExtensionImpAssets.DeceiveButtonSprite),
-                new(
-                    TouLocale.GetParsed($"ExtensionRole{LocaleKey}Conceal", "Conceal"),
-                    TouLocale.GetParsed($"ExtensionRole{LocaleKey}ConcealWikiDescription"),
-                    TouExtensionImpAssets.ConcealButtonSprite)
-            ];
+                    TouExtensionImpAssets.DeceiveButtonSprite));
+            }
+
+            abilities.Add(new(
+                TouLocale.GetParsed($"ExtensionRole{LocaleKey}Conceal", "Conceal"),
+                TouLocale.GetParsed($"ExtensionRole{LocaleKey}ConcealWikiDescription"),
+                TouExtensionImpAssets.ConcealButtonSprite));
+
+            return abilities;
         }
     }
 

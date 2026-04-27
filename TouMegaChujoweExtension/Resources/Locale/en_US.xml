@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding='UTF-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <!--Doomsayer To Foreteller-->
   <string name="ExtensionLocalSettingRenameDoomsayerToForeteller">Rename to Foreteller</string>
@@ -213,11 +213,15 @@
   
   <!-- Serial Killer Options -->
   <string name="ExtensionOptionSerialKillerCanReportBodies">Can Report Bodies</string>
+  <string name="ExtensionOptionSerialKillerKillCooldownReductionEnabled">Progressive Kill Cooldown Reduction</string>
+  <string name="ExtensionOptionSerialKillerKillCooldownReductionPerKill">Kill Cooldown Reduction Per Kill</string>
+  <string name="ExtensionOptionSerialKillerMinimumKillCooldown">Maximum Kill Cooldown</string>
   <string name="ExtensionOptionSerialKillerVentKillTargets">Vent Kill Targets</string>
   <string name="ExtensionOptionSerialKillerVentKillTargetsEnumImpostors">Impostors</string>
   <string name="ExtensionOptionSerialKillerVentKillTargetsEnumImpNK">Impostors + Neutral Killers</string>
   <string name="ExtensionOptionSerialKillerVentKillTargetsEnumImpNeutrals">Impostors + Neutrals</string>
   <string name="ExtensionOptionSerialKillerVentKillTargetsEnumAny">Any</string>
+  <string name="ExtensionRoleSerialKillerTabKillCounter">Kills: &lt;count&gt;</string>
   <string name="ExtensionOptionSerialKillerManiacMode">Maniac Mode</string>
   <string name="ExtensionOptionSerialKillerManiacTimer">Maniac Timer</string>
   <string name="ExtensionOptionSerialKillerManiacCooldown">Kill Cooldown</string>
@@ -364,6 +368,7 @@
   
   <!-- Witch Options -->
   <string name="ExtensionOptionWitchSpellCooldown">Spell Cooldown</string>
+  <string name="ExtensionOptionWitchCanSpellFirstRound">Can Spell in First Round</string>
   <string name="ExtensionOptionWitchAdditionalCooldown">Witch Additional Cooldown</string>
   <string name="ExtensionOptionWitchSpellCastingDuration">Witch Spell Casting Duration</string>
   <string name="ExtensionOptionWitchMeetingsUntilDeath">Meetings Until Death</string>
@@ -618,6 +623,7 @@
   <string name="ExtensionRoleCharlatanConcealWikiDescription">Reduce the report range of nearby bodies. You must stay near the body for the duration to successfully conceal it.</string>
 
   <!-- Charlatan Options -->
+  <string name="ExtensionOptionCharlatanDeceiveEnabled">Deceive Enabled</string>
   <string name="ExtensionOptionCharlatanDeceiveBaseDuration">Deceive Base Duration</string>
   <string name="ExtensionOptionCharlatanDeceiveDurationIncreasePerKill">Deceive Duration Increase Per Kill</string>
   <string name="ExtensionOptionCharlatanConcealUses">Conceal Uses</string>
@@ -777,7 +783,7 @@
   <string name="ExtensionOptionBodyguardShieldEnumTargetAndBodyguard">Target + Bodyguard</string>
   <string name="ExtensionOptionBodyguardShieldEnumEveryone">Everyone</string>
   <string name="ExtensionOptionBodyguardShowBacklashArrow">Show Backlash Arrow</string>
-  <string name="ExtensionOptionBodyguardGreenNameOnAttacker">Green Name On Who Attacked</string>
+  <string name="ExtensionOptionBodyguardGreenNameOnAttacker">Sky Blue Name On Who Attacked</string>
 
   <!-- Bodyguard Death Messages -->
   <string name="DiedToTerminated">Terminated</string>
@@ -904,6 +910,7 @@
   <string name="ExtensionOptionVHMinVampires">Min Vampires To Spawn</string>
   <string name="ExtensionOptionVHEnabled">Vampire Hunter Enabled</string>
   <string name="ExtensionOptionVHChance">Vampire Hunter Spawn Chance</string>
+  <string name="VampireHunterBecomesHunter">Hunter</string>
 
   <!-- Kamikaze Role -->
   <string name="ExtensionRoleKamikaze">Kamikaze</string>
@@ -937,28 +944,28 @@
 
   <!-- TOUMCE Wiki Terms - Symbols -->
   <string name="TOUMCETermsSymbolsTitle">TOUMCE Symbols</string>
-  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary â€˘ &lt;color=#FFD700&gt;&lt;b&gt;Î&lt;/b&gt;&lt;/color&gt; - Player canonized by Pope â€˘ &lt;color=#6699FF&gt;&lt;b&gt;â™˘&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud â€˘ &lt;color=#8B00FF&gt;&lt;b&gt;âś¶&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note â€˘ &lt;color=#0064FF&gt;&lt;b&gt;ÎŁ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard â€˘ &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner â€˘ &lt;color=#EDB38C&gt;&lt;b&gt;Â§&lt;/b&gt;&lt;/color&gt; - Lawyer's client â€˘ &lt;color=#C0C0C0&gt;&lt;b&gt;Â¤&lt;/b&gt;&lt;/color&gt; - Player cursed by the Witch</string>
+  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player canonized by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;✶&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#4DA6FF&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client • &lt;color=#C0C0C0&gt;&lt;b&gt;¤&lt;/b&gt;&lt;/color&gt; - Player cursed by the Witch</string>
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">General Shield Flashes</string>
-  <string name="TOUMCETermsShieldFlashesInfo">When a kill is blocked by a shield, the killer sees a colored flash indicating which role provided the protection: â€˘ &lt;color=#006600&gt;&lt;b&gt;Dark Green&lt;/b&gt;&lt;/color&gt; - Medic â€˘ &lt;color=#9900FF&gt;&lt;b&gt;Purple&lt;/b&gt;&lt;/color&gt; - Warden â€˘ &lt;color=#00FFB3&gt;&lt;b&gt;Cyan/Teal&lt;/b&gt;&lt;/color&gt; - Cleric â€˘ &lt;color=#90A2C3&gt;&lt;b&gt;Silver Blue&lt;/b&gt;&lt;/color&gt; - Mirrorcaster â€˘ &lt;color=#66AAF3&gt;&lt;b&gt;Light Blue&lt;/b&gt;&lt;/color&gt; - Fairy â€˘ &lt;color=#8C6699&gt;&lt;b&gt;Mauve&lt;/b&gt;&lt;/color&gt; - Mercenary â€˘ &lt;color=#0064FF&gt;&lt;b&gt;Dark Blue&lt;/b&gt;&lt;/color&gt; - Bodyguard â€˘ &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (meeting protection)</string>
+  <string name="TOUMCETermsShieldFlashesInfo">When a kill is blocked by a shield, the killer sees a colored flash indicating which role provided the protection: • &lt;color=#006600&gt;&lt;b&gt;Dark Green&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Purple&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyan/Teal&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Silver Blue&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Light Blue&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Mauve&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#4DA6FF&gt;&lt;b&gt;Sky Blue&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (meeting protection)</string>
 
 <!-- TOUMCE Wiki Terms - Draft Mode -->
 <string name="TOUMCETermsDraftModeTitle">Draft Mode</string>
 <string name="TOUMCETermsDraftModeInfo">&lt;b&gt;Draft Mode&lt;/b&gt; replaces normal role assignment with a strategic pick phase before the game starts.
-â€˘ Players are assigned a side (&lt;color=#4DA6FF&gt;&lt;b&gt;Crewmate&lt;/b&gt;&lt;/color&gt;, &lt;color=#FF3B3B&gt;&lt;b&gt;Impostor&lt;/b&gt;&lt;/color&gt;, or &lt;color=#7F7F7F&gt;&lt;b&gt;Neutral&lt;/b&gt;&lt;/color&gt;) and then choose their specific role in a randomized turn order.
-â€˘ Each player is offered 3 unique roles. Spectators are excluded from the process and do not take up pick slots.
-â€˘ If you do not pick in time, a role will be automatically assigned to you based on your assigned side.
-â€˘ By default, &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates&lt;/b&gt;&lt;/color&gt; and &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors&lt;/b&gt;&lt;/color&gt; draft from specialized sub-categories (e.g., Investigative, Power, Killing).</string>
+• Players are assigned a side (&lt;color=#4DA6FF&gt;&lt;b&gt;Crewmate&lt;/b&gt;&lt;/color&gt;, &lt;color=#FF3B3B&gt;&lt;b&gt;Impostor&lt;/b&gt;&lt;/color&gt;, or &lt;color=#7F7F7F&gt;&lt;b&gt;Neutral&lt;/b&gt;&lt;/color&gt;) and then choose their specific role in a randomized turn order.
+• Each player is offered 3 unique roles. Spectators are excluded from the process and do not take up pick slots.
+• If you do not pick in time, a role will be automatically assigned to you based on your assigned side.
+• By default, &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates&lt;/b&gt;&lt;/color&gt; and &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors&lt;/b&gt;&lt;/color&gt; draft from specialized sub-categories (e.g., Investigative, Power, Killing).</string>
 
 <!-- TOUMCE Wiki Terms - Draft Factions -->
 <string name="TOUMCETermsDraftFactionsTitle">Draft Factions</string>
 <string name="TOUMCETermsDraftFactionsInfo">Before the draft begins, players are assigned a faction that determines their available role pool.
-â€˘ &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors&lt;/b&gt;&lt;/color&gt; draft from various specialized Impostor categories.
-â€˘ &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates&lt;/b&gt;&lt;/color&gt; choose from diverse Crewmate sub-groups (e.g., Investigative, Protective, Power).
-â€˘ &lt;color=#FFD700&gt;&lt;b&gt;Random Neutral&lt;/b&gt;&lt;/color&gt; offers a balanced set of roles. By default, there is a 70% chance for 2 &lt;b&gt;Neutral Benign&lt;/b&gt; roles, 15% for &lt;b&gt;Neutral Outliner&lt;/b&gt;, and 15% for &lt;b&gt;Neutral Evil&lt;/b&gt;.
+• &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors&lt;/b&gt;&lt;/color&gt; draft from various specialized Impostor categories.
+• &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates&lt;/b&gt;&lt;/color&gt; choose from diverse Crewmate sub-groups (e.g., Investigative, Protective, Power).
+• &lt;color=#FFD700&gt;&lt;b&gt;Random Neutral&lt;/b&gt;&lt;/color&gt; offers a balanced set of roles. By default, there is a 70% chance for 2 &lt;b&gt;Neutral Benign&lt;/b&gt; roles, 15% for &lt;b&gt;Neutral Outliner&lt;/b&gt;, and 15% for &lt;b&gt;Neutral Evil&lt;/b&gt;.
  
-â€˘ &lt;b&gt;Neutral&lt;/b&gt; lobby settings control the &lt;b&gt;Max&lt;/b&gt; number of players assigned to the Benign, Evil, and Killing factions.
+• &lt;b&gt;Neutral&lt;/b&gt; lobby settings control the &lt;b&gt;Max&lt;/b&gt; number of players assigned to the Benign, Evil, and Killing factions.
  
 If &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors Pick From All Classes&lt;/b&gt;&lt;/color&gt; or &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates Pick From All Classes&lt;/b&gt;&lt;/color&gt; is enabled, players can choose from any available category for their side.
  
@@ -967,9 +974,7 @@ Drafting can also respect individual role chances (Respect Role Chances), causin
 <!-- TOUMCE Wiki Terms - Game Settings -->
 <string name="TOUMCETermsGameSettingsTitle">Game Settings</string>
 <string name="TOUMCETermsGameSettingsInfo">TOUMCE introduces several global settings that change the game flow:
-â€˘ &lt;b&gt;Lock Lobby During Draft&lt;/b&gt; - Prevents new players from joining while a draft is in progress to ensure stability.
-â€˘ &lt;b&gt;Respect Role Chances&lt;/b&gt; - If enabled, the probability of roles appearing in the Draft will be based on their individual 'Chance' settings in the lobby.
-â€˘ &lt;b&gt;Draft Timer&lt;/b&gt; - Defines how much time each player has to make their strategic selection.</string>
-  <string name="ExtensionOptionCharlatanDeceiveEnabled">Deceive Enabled</string>
-  <string name="ExtensionOptionWitchCanSpellFirstRound">Can Spell in First Round</string>
+• &lt;b&gt;Lock Lobby During Draft&lt;/b&gt; - Prevents new players from joining while a draft is in progress to ensure stability.
+• &lt;b&gt;Respect Role Chances&lt;/b&gt; - If enabled, the probability of roles appearing in the Draft will be based on their individual 'Chance' settings in the lobby.
+• &lt;b&gt;Draft Timer&lt;/b&gt; - Defines how much time each player has to make their strategic selection.</string>
 </resources>

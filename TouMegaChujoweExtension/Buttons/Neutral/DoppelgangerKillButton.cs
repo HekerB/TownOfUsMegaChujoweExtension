@@ -1,3 +1,4 @@
+using System.Collections;
 using MiraAPI.GameOptions;
 using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
@@ -93,6 +94,18 @@ public sealed class DoppelgangerKillButton : TownOfUsKillRoleButton<Doppelganger
         }
 
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
+
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        Reactor.Utilities.Coroutines.Start(CoMoveWithDelay());
+    }
+
+    private IEnumerator CoMoveWithDelay()
+    {
+        yield return null;
+        yield return MiscUtils.CoMoveButtonIndex(this, false);
     }
 
     protected override void FixedUpdate(PlayerControl playerControl)

@@ -170,8 +170,7 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
             TouAudio.PlaySound(TouExtensionAudio.VultureEatSound);
         }
 
-        var options = OptionGroupSingleton<VultureOptions>.Instance;
-        var cleanDuration = options.CleanDuration;
+        var cleanDuration = 1.75f;
 
         Coroutines.Start(CoSafeClean(body, cleanDuration, sender));
 

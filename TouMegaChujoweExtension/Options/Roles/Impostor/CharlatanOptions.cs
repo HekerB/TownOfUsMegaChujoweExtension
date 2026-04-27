@@ -10,7 +10,7 @@ namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 public sealed class CharlatanOptions : AbstractOptionGroup<CharlatanRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleCharlatan", "Charlatan");
-
+    
     [ModdedNumberOption("ExtensionOptionCharlatanConcealCooldown", 5f, 300f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float ConcealCooldown { get; set; } = 30f;
 

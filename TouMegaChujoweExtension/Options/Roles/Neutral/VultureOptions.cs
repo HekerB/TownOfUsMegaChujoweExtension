@@ -30,8 +30,6 @@ public sealed class VultureOptions : AbstractOptionGroup<VultureRole>
             Visible = () => OptionGroupSingleton<VultureOptions>.Instance.ScavengeEnabled,
         };
 
-    [ModdedNumberOption("ExtensionOptionVultureCleanDuration", 0f, 5f, 0.1f, MiraNumberSuffixes.Seconds)]
-    public float CleanDuration { get; set; } = 1.0f;
 
     public ModdedNumberOption ScavengeDuration { get; } =
         new("ExtensionOptionVultureScavengeDuration", 5f, 5f, 60f, 1f, MiraNumberSuffixes.Seconds)

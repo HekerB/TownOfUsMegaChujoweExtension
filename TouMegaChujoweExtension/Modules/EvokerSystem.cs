@@ -120,11 +120,6 @@ public static class EvokerSystem
             EndBlind();
             return;
         }
-
-        if (HysteriaApplied)
-        {
-            ReapplyHysteria();
-        }
     }
 
     public static bool IsBlindTarget(PlayerControl? player)
@@ -172,18 +167,19 @@ public static class EvokerSystem
         var players = PlayerControl.AllPlayerControls.ToArray()
             .Where(x => !x.HasDied() && x != local).ToList();
 
+        var localAppearance = local.GetDefaultModifiedAppearance();
         foreach (var player in players)
         {
             if (blindType == EvokerBlindType.ShowOnlySelf)
             {
                 _playerEffects[player.PlayerId] = 3;
-                ApplyEffectToPlayer(player, 3, local);
+                ApplyEffectToPlayer(player, 3, localAppearance);
             }
             else
             {
                 var effect = Random.RandomRangeInt(0, 3);
                 _playerEffects[player.PlayerId] = effect;
-                ApplyEffectToPlayer(player, effect, local);
+                ApplyEffectToPlayer(player, effect, localAppearance);
             }
         }
 
@@ -199,12 +195,12 @@ public static class EvokerSystem
         HysteriaApplied = true;
     }
 
-    private static void ApplyEffectToPlayer(PlayerControl player, int effect, PlayerControl local)
+    private static void ApplyEffectToPlayer(PlayerControl player, int effect, VisualAppearance localAppearance)
     {
         switch (effect)
         {
             case 0:
-                var morph = new VisualAppearance(local.GetDefaultModifiedAppearance(), TownOfUsAppearances.Morph);
+                var morph = new VisualAppearance(localAppearance, TownOfUsAppearances.Morph);
                 player.RawSetAppearance(morph);
                 break;
             case 1:
@@ -225,32 +221,12 @@ public static class EvokerSystem
                 player.RawSetAppearance(swoop);
                 break;
             case 3:
-                var selfMorph = new VisualAppearance(local.GetDefaultModifiedAppearance(), TownOfUsAppearances.Morph);
+                var selfMorph = new VisualAppearance(localAppearance, TownOfUsAppearances.Morph);
                 player.RawSetAppearance(selfMorph);
                 break;
         }
 
         player.cosmetics.ToggleNameVisible(false);
-    }
-
-    private static void ReapplyHysteria()
-    {
-        var local = PlayerControl.LocalPlayer;
-        if (local == null)
-        {
-            return;
-        }
-
-        foreach (var kvp in _playerEffects)
-        {
-            var player = MiscUtils.PlayerById(kvp.Key);
-            if (player == null || player.HasDied())
-            {
-                continue;
-            }
-
-            ApplyEffectToPlayer(player, kvp.Value, local);
-        }
     }
 
     private static void RemoveHysteria()

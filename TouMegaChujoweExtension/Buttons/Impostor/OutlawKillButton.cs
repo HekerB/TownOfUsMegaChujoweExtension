@@ -104,12 +104,13 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
         if (!_inDoubleKillWindow) 
         {
             Timer = Cooldown;
+            player.SetKillTimer(Cooldown);
         }
         else
         {
             // Set a tiny cooldown to prevent double clicking the same target or instant spam
-            // but keep it small enough that it doesn't break the "instant" feel.
             Timer = 0.1f; 
+            player.SetKillTimer(0.1f);
         }
     }
 
@@ -148,6 +149,7 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
             {
                 ResetState();
                 Timer = Cooldown;
+                playerControl.SetKillTimer(Cooldown);
             }
             else
             {
@@ -181,6 +183,7 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
             OverrideName(_killName);
         }
 
+        Target = GetTarget();
         base.FixedUpdate(playerControl);
     }
 

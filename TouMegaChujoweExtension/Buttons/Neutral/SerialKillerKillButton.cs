@@ -1,9 +1,16 @@
+using System;
+using System.Collections;
+using System.Linq;
+using AmongUs.GameOptions;
 using MiraAPI.GameOptions;
 using MiraAPI.Keybinds;
+using MiraAPI;
 using MiraAPI.Modifiers;
+using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Modules;
+using TouMegaChujoweExtension.Modifiers.Neutral;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Roles.Neutral;
 using TouMegaChujoweExtension.Assets;
@@ -34,13 +41,41 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
         get
         {
             var player = PlayerControl.LocalPlayer;
-            if (player != null && player.TryGetModifier<SerialKillerManiacModifier>(out var maniacMod))
+            if (player == null) return 0f;
+
+            var options = OptionGroupSingleton<SerialKillerOptions>.Instance;
+            float baseCooldown;
+
+            if (player.TryGetModifier<SerialKillerManiacModifier>(out var maniacMod))
             {
-                return maniacMod.CooldownDuration;
+                baseCooldown = maniacMod.CooldownDuration;
             }
-            return player?.GetKillCooldown() ?? 0f;
+            else
+            {
+                baseCooldown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+            }
+
+            if (player.TryGetModifier<SerialKillerReductionModifier>(out var redMod))
+            {
+                return Mathf.Max(options.MinimumKillCooldown.Value, baseCooldown - redMod.ReductionAmount);
+            }
+
+            return baseCooldown;
         }
     }
+
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        Reactor.Utilities.Coroutines.Start(CoMoveWithDelay());
+    }
+
+    private IEnumerator CoMoveWithDelay()
+    {
+        yield return null;
+        yield return MiscUtils.CoMoveButtonIndex(this, false);
+    }
+
     public override LoadableAsset<Sprite> Sprite => new LoadableBundleAsset<Sprite>("OfficerShootButton", TouAssets.MainBundle);
 
     public override bool ZeroIsInfinite { get; set; } = true;
@@ -63,7 +98,6 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
         
         if (beforeMurderEvent.IsCancelled)
         {
-            SetUses(UsesLeft);
             return;
         }
 
@@ -78,7 +112,6 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
         {
             Timer = Cooldown;
         }
-        SetUses(UsesLeft);
     }
 
     protected override void OnClick()
@@ -104,20 +137,19 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
 
         if (player.inVent && Vent.currentVent != null && !player.HasModifier<SerialKillerNoVentModifier>())
         {
-            if (!SerialKillerVentKillSystem.TryGetVentKillTarget(player.PlayerId, out var ventTarget) ||
-                ventTarget == null || ventTarget.PlayerId != Target.PlayerId)
+            if (SerialKillerVentKillSystem.TryGetVentKillTarget(player.PlayerId, out var ventTarget) &&
+                ventTarget != null && ventTarget.PlayerId == Target.PlayerId)
             {
-                Error("Serial Killer Kill: Invalid vent kill target");
-                return;
-            }
-            else
-            {
-                player.RpcCustomMurder(Target, true, true, false, false, true, true);
+                player.RpcCustomMurder(Target, true, true, true, false, true, true);
+                Role.KillCount++;
+                Role.UpdateReductionModifier();
                 return;
             }
         }
 
         player.RpcCustomMurder(Target);
+        Role.KillCount++;
+        Role.UpdateReductionModifier();
     }
 
     public override PlayerControl? GetTarget()
@@ -141,17 +173,12 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
                     {
                         return ventTarget;
                     }
-                    else
-                    {
-                        SerialKillerVentKillSystem.ClearForPlayer(player.PlayerId);
-                    }
                 }
-                else
-                {
-                    SerialKillerVentKillSystem.ClearForPlayer(player.PlayerId);
-                }
+                
+                SerialKillerVentKillSystem.ClearForPlayer(player.PlayerId);
             }
-            return null;
+            
+            return player.GetClosestLivingPlayer(true, Distance);
         }
 
         if (!OptionGroupSingleton<LoversOptions>.Instance.LoversKillEachOther && player.IsLover())
@@ -281,36 +308,28 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
             return false;
         }
 
-        if (player.inVent && Vent.currentVent != null && !player.HasModifier<SerialKillerNoVentModifier>())
+        if (TimeLordRewindSystem.IsRewinding)
         {
-            if (Target != null && SerialKillerVentKillSystem.TryGetVentKillTarget(player.PlayerId, out var ventTarget) && ventTarget != null && ventTarget.PlayerId == Target.PlayerId)
-            {
-                if (TimeLordRewindSystem.IsRewinding)
-                {
-                    return false;
-                }
-
-                if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance)
-                {
-                    return false;
-                }
-
-                if (PlayerControl.LocalPlayer.HasDied() && !UsableInDeath)
-                {
-                    return false;
-                }
-
-                if (PlayerControl.LocalPlayer.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
-                {
-                    return false;
-                }
-
-                return Timer <= 0;
-            }
             return false;
         }
 
-        if (!base.CanUse())
+        if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance)
+        {
+            return false;
+        }
+
+        if (player.HasDied() && !UsableInDeath)
+        {
+            return false;
+        }
+
+        if (player.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities))
+        {
+            return false;
+        }
+
+        var inVent = player.inVent && Vent.currentVent != null && !player.HasModifier<SerialKillerNoVentModifier>();
+        if (!inVent && !player.CanMove)
         {
             return false;
         }
@@ -324,7 +343,7 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
         var options = OptionGroupSingleton<SerialKillerOptions>.Instance;
         var highlightColor = Color.green;
         var ventColor = TouExtensionColors.SerialKiller;
-        if (player == null || player.HasModifier<SerialKillerNoVentModifier>())
+        if (player == null || player.HasModifier<SerialKillerNoVentModifier>() || PlayerControl.AllPlayerControls.ToArray().Count(x => !x.HasDied()) <= 2)
         {
             if (ShipStatus.Instance != null)
             {

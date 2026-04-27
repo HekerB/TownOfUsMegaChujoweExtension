@@ -45,8 +45,16 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
     [ModdedNumberOption("ExtensionOptionInjectorEffectDelay", 0f, 30f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float EffectDelay { get; set; } = 5f;
 
-    [ModdedNumberOption("ExtensionOptionInjectorEffectDuration", 5f, 200f, 5f, MiraNumberSuffixes.Seconds)]
-    public float EffectDuration { get; set; } = 45f;
+    public ModdedNumberOption EffectDurationOption { get; } = new("ExtensionOptionInjectorEffectDuration", 45f, 5f, 200f, 5f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.EffectDurationType.Value == InjectorEffectDurationType.SetTime
+    };
+
+    public float EffectDuration => EffectDurationOption.Value;
+
+    public InjectorOptions()
+    {
+    }
 
     [ModdedNumberOption("ExtensionOptionInjectorInitialUses", 0, 15)]
     public float InitialUses { get; set; } = 4f;
