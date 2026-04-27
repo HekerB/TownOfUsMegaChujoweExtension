@@ -77,4 +77,5 @@ public enum ExtensionRpc : uint
     ShareFriendCode = 72,
 	YouAreBanned = 73,
     DeathNoteLaugh = 74,
+    DoctorHeal = 75,
 }

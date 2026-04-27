@@ -24,5 +24,6 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> MirageBanner { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Banners.Mirage_Banner.png", 300f);
         public static LoadableAsset<Sprite> ShifterBanner { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Banners.Shifter_Banner.png", 300f);
         public static LoadableAsset<Sprite> PresidentBanner { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Banners.President_Banner.png", 300f);
+        public static LoadableAsset<Sprite> DoctorBanner => MirageBanner; // Placeholder
     }
 }

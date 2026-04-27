@@ -607,6 +607,47 @@
   <string name="ExtensionInjectorNotificationWoreOffVisionBoost">Twoje widzenie wrocilo do normy.</string>
   <string name="ExtensionInjectorNotificationWoreOffRegeneration">Efekt regeneracji zakonczyl sie.</string>
 
+  <!-- Doctor Role -->
+  <string name="ExtensionRoleDoctor">Doctor</string>
+  <string name="ExtensionRoleDoctorIntroBlurb">Wstrzykuj graczom pozytywne efekty.</string>
+  <string name="ExtensionRoleDoctorTabDescription">Wstrzykuj graczom losowe pozytywne efekty.</string>
+  <string name="ExtensionRoleDoctorWikiDescription">Doctor to rola Crewmate Support, ktora moze wstrzykiwac graczom rozne pozytywne efekty. Efekty sa wybierane losowo i moga obejmowac przyspieszenie, lepsze widzenie, regeneracje, oczyszczenie z negatywnych efektow, tarcze lub wzrok rentgenowski.</string>
+  <string name="ExtensionRoleDoctorHeal">Ulecz</string>
+  <string name="ExtensionRoleDoctorHealWikiDescription">Wstrzyknij pobliskiemu graczowi losowy pozytywny efekt. Efekt aktywuje sie po skonfigurowanym opoznieniu.</string>
+
+  <!-- Doctor Options -->
+  <string name="ExtensionOptionDoctorHealCooldown">Cooldown uleczenia</string>
+  <string name="ExtensionOptionDoctorEffectDelay">Opoznienie aktywacji efektu</string>
+  <string name="ExtensionOptionDoctorEffectDurationType">Typ czasu trwania efektu</string>
+  <string name="ExtensionOptionDoctorEffectDuration">Czas trwania efektu</string>
+  <string name="ExtensionOptionDoctorInitialUses">Poczatkowe uzycia</string>
+  <string name="ExtensionOptionDoctorSelectedEffectType">Typ efektu do konfiguracji</string>
+
+  <!-- Doctor Effect Type Enum Values -->
+  <string name="ExtensionOptionDoctorEffectTypeEnumCleanse">Oczyszczenie</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumShield">Tarcza</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumXRay">RTG (RTG)</string>
+
+  <!-- Doctor Effect Chances -->
+  <string name="ExtensionOptionDoctorChanceSpeedBoost">Szansa na efekt</string>
+  <string name="ExtensionOptionDoctorChanceVisionBoost">Szansa na efekt</string>
+  <string name="ExtensionOptionDoctorChanceRegeneration">Szansa na efekt</string>
+  <string name="ExtensionOptionDoctorChanceCleanse">Szansa na efekt</string>
+  <string name="ExtensionOptionDoctorChanceShield">Szansa na efekt</string>
+  <string name="ExtensionOptionDoctorChanceXRay">Szansa na efekt</string>
+
+  <!-- Doctor Notifications -->
+  <string name="ExtensionDoctorNotificationSpeedBoost">Czujesz przyplyw energii i szybkosci!</string>
+  <string name="ExtensionDoctorNotificationVisionBoost">Twoj wzrok staje sie krystalicznie wyrazny!</string>
+  <string name="ExtensionDoctorNotificationRegeneration">Czujesz, jak twoje cialo szybko sie regeneruje!</string>
+  <string name="ExtensionDoctorNotificationCleanse">Wszystkie negatywne efekty zostaly usuniete!</string>
+  <string name="ExtensionDoctorNotificationShield">Zostales osloniety potezna tarcza!</string>
+  <string name="ExtensionDoctorNotificationXRay">Twoje zmysly sa wyostrzone, widzisz wiecej!</string>
+  <string name="ExtensionDoctorNotificationShieldWoreOff">Tarcza Doktora wygasla.</string>
+  <string name="ExtensionDoctorNotificationWoreOffSpeedBoost">Efekt przyspieszenia Doktora minal.</string>
+  <string name="ExtensionDoctorNotificationWoreOffVisionBoost">Twoje widzenie wrocilo do normy.</string>
+  <string name="ExtensionDoctorNotificationWoreOffRegeneration">Efekt regeneracji zakonczyl sie.</string>
+
   <!-- Charlatan Role -->
   <string name="ExtensionRoleCharlatan">Charlatan</string>
   <string name="ExtensionRoleCharlatanIntroBlurb">Manipuluj zgloszeniami cial na swoja korzysc.</string>
@@ -941,7 +982,7 @@
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">Ogolne blyski tarcz</string>
-  <string name="TOUMCETermsShieldFlashesInfo">Gdy zabojstwo zostaje zablokowane przez tarcze, zabojca widzi kolorowy blysk wskazujacy, ktora rola zapewnila ochrone: • &lt;color=#006600&gt;&lt;b&gt;Ciemnozielony&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Fioletowy&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyjan/Turkusowy&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Srebrnoniebieski&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Jasnoniebieski&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Malwa&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#77B962&gt;&lt;b&gt;Zielony&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (na meetingu)</string>
+  <string name="TOUMCETermsShieldFlashesInfo">Gdy zabojstwo zostaje zablokowane przez tarcze, zabojca widzi kolorowy blysk wskazujacy, ktora rola zapewnila ochrone: • &lt;color=#006600&gt;&lt;b&gt;Ciemnozielony&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Fioletowy&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyjan/Turkusowy&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Srebrnoniebieski&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Jasnoniebieski&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Malwa&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#77B962&gt;&lt;b&gt;Zielony&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (na meetingu) • &lt;color=#00FF7F&gt;&lt;b&gt;Wiosenna Zielen&lt;/b&gt;&lt;/color&gt; - Doctor</string>
 
   <!-- TOUMCE Wiki Terms - Draft Mode -->
   <string name="TOUMCETermsDraftModeTitle">Tryb Draft</string>

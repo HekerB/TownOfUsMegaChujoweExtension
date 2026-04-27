@@ -606,6 +606,47 @@
   <string name="ExtensionInjectorNotificationWoreOffVisionBoost">Your vision has returned to normal.</string>
   <string name="ExtensionInjectorNotificationWoreOffRegeneration">The regeneration effect has ended.</string>
 
+  <!-- Doctor Role -->
+  <string name="ExtensionRoleDoctor">Doctor</string>
+  <string name="ExtensionRoleDoctorIntroBlurb">Inject players with positive effects.</string>
+  <string name="ExtensionRoleDoctorTabDescription">Inject players to give them random positive effects.</string>
+  <string name="ExtensionRoleDoctorWikiDescription">The Doctor is a Crewmate Support role that can inject players with various positive effects. Effects are randomly selected and can include speed boost, enhanced vision, regeneration, cleansing of negative effects, shield, or X-ray vision.</string>
+  <string name="ExtensionRoleDoctorHeal">Heal</string>
+  <string name="ExtensionRoleDoctorHealWikiDescription">Inject a nearby player with a random positive effect. The effect will activate after a configurable delay.</string>
+
+  <!-- Doctor Options -->
+  <string name="ExtensionOptionDoctorHealCooldown">Heal Cooldown</string>
+  <string name="ExtensionOptionDoctorEffectDelay">Effect Activation Delay</string>
+  <string name="ExtensionOptionDoctorEffectDurationType">Effect Duration Type</string>
+  <string name="ExtensionOptionDoctorEffectDuration">Effect Duration</string>
+  <string name="ExtensionOptionDoctorInitialUses">Initial Uses</string>
+  <string name="ExtensionOptionDoctorSelectedEffectType">Effect Type To Configure</string>
+
+  <!-- Doctor Effect Type Enum Values -->
+  <string name="ExtensionOptionDoctorEffectTypeEnumCleanse">Cleanse</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumShield">Shield</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumXRay">X-Ray</string>
+
+  <!-- Doctor Effect Chances -->
+  <string name="ExtensionOptionDoctorChanceSpeedBoost">Effect Chance</string>
+  <string name="ExtensionOptionDoctorChanceVisionBoost">Effect Chance</string>
+  <string name="ExtensionOptionDoctorChanceRegeneration">Effect Chance</string>
+  <string name="ExtensionOptionDoctorChanceCleanse">Effect Chance</string>
+  <string name="ExtensionOptionDoctorChanceShield">Effect Chance</string>
+  <string name="ExtensionOptionDoctorChanceXRay">Effect Chance</string>
+
+  <!-- Doctor Notifications -->
+  <string name="ExtensionDoctorNotificationSpeedBoost">You feel energized and fast!</string>
+  <string name="ExtensionDoctorNotificationVisionBoost">Your vision becomes crystal clear!</string>
+  <string name="ExtensionDoctorNotificationRegeneration">You feel your body healing rapidly!</string>
+  <string name="ExtensionDoctorNotificationCleanse">All negative effects have been removed!</string>
+  <string name="ExtensionDoctorNotificationShield">You have been shielded by a powerful force!</string>
+  <string name="ExtensionDoctorNotificationXRay">Your senses are heightened, you can see more!</string>
+  <string name="ExtensionDoctorNotificationShieldWoreOff">The Doctor's shield has expired.</string>
+  <string name="ExtensionDoctorNotificationWoreOffSpeedBoost">The Doctor's speed boost has worn off.</string>
+  <string name="ExtensionDoctorNotificationWoreOffVisionBoost">Your vision has returned to normal.</string>
+  <string name="ExtensionDoctorNotificationWoreOffRegeneration">The regeneration effect has ended.</string>
+
   <!-- Charlatan Role -->
   <string name="ExtensionRoleCharlatan">Charlatan</string>
   <string name="ExtensionRoleCharlatanIntroBlurb">Manipulate body reports to your advantage.</string>
@@ -941,7 +982,7 @@
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">General Shield Flashes</string>
-  <string name="TOUMCETermsShieldFlashesInfo">When a kill is blocked by a shield, the killer sees a colored flash indicating which role provided the protection: • &lt;color=#006600&gt;&lt;b&gt;Dark Green&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Purple&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyan/Teal&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Silver Blue&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Light Blue&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Mauve&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#77B962&gt;&lt;b&gt;Green&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (meeting protection)</string>
+  <string name="TOUMCETermsShieldFlashesInfo">When a kill is blocked by a shield, the killer sees a colored flash indicating which role provided the protection: • &lt;color=#006600&gt;&lt;b&gt;Dark Green&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Purple&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyan/Teal&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Silver Blue&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Light Blue&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Mauve&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#77B962&gt;&lt;b&gt;Green&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (meeting protection) • &lt;color=#00FF7F&gt;&lt;b&gt;Spring Green&lt;/b&gt;&lt;/color&gt; - Doctor</string>
 
 <!-- TOUMCE Wiki Terms - Draft Mode -->
 <string name="TOUMCETermsDraftModeTitle">Draft Mode</string>
