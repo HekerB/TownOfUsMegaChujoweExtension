@@ -63,12 +63,17 @@ public static class CharlatanEvents
             CharlatanDeceiveSystem.ActivateDeceive(source.PlayerId, target.PlayerId, duration);
         }
 
-        var concealButton = CustomButtonSingleton<CharlatanConcealButton>.Instance;
-        if (concealButton != null && concealButton.LimitedUses)
+        if (source.AmOwner)
         {
-            var chargesPerKill = (int)options.ConcealChargesPerKill;
-            concealButton.UsesLeft += chargesPerKill;
-            concealButton.SetUses(concealButton.UsesLeft);
+            var concealButton = CustomButtonSingleton<CharlatanConcealButton>.Instance;
+            if (concealButton != null)
+            {
+
+                if (options.ResetKillConcealCooldownsTogether)
+                {
+                    concealButton.Timer = concealButton.Cooldown;
+                }
+            }
         }
     }
 }

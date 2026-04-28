@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Assets;

@@ -8,7 +8,6 @@ public static class ClassicAssassinRefreshPatch
 {
     public static void Postfix()
     {
-        if (!ClassicAssassinSystem.IsActive) return;
         if (!MeetingHud.Instance) return;
 
         ClassicAssassinSystem.RefreshExemptions();

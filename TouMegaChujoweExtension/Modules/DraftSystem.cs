@@ -137,8 +137,8 @@ public static class DraftSystem
         for (; idx < remaining.Count; idx++)
             PlayerFactions[remaining[idx]] = DraftFaction.CrewOther;
 
-        foreach (var kvp in PlayerFactions)
-            Info($"[DraftSystem] Player {kvp.Key} assigned faction: {kvp.Value}");
+        // foreach (var kvp in PlayerFactions)
+        //     // Info($"[DraftSystem] Player {kvp.Key} assigned faction: {kvp.Value}");
     }
 
     // === GET ALIGNMENTS FOR FACTION ===

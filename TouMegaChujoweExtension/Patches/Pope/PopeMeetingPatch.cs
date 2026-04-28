@@ -114,4 +114,4 @@ public static class PopeMeetingPatch
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, report, false, true);
         }
     }
-}
+}

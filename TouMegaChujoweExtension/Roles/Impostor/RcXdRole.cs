@@ -1,4 +1,4 @@
-﻿using MiraAPI.GameOptions;
+using MiraAPI.GameOptions;
 using MiraAPI.Networking;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
@@ -55,7 +55,7 @@ public sealed class RcXdRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRol
 
     public CustomRoleConfiguration Configuration => new(this)
 	{
-		UseVanillaKillButton = true,  // â† ZMIANA: zwykĹ‚y kill button obok ability
+		UseVanillaKillButton = true,  // ← ZMIANA: zwykły kill button obok ability
 		Icon = TouExtensionIcons.RcXdRoleIcon,
 		IntroSound = TouExtensionAudio.RCXDIntro,
 		CanUseVent = OptionGroupSingleton<RcXdOptions>.Instance.CanVent,
@@ -82,7 +82,7 @@ public sealed class RcXdRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRol
         if (LobbyBehaviour.Instance) return;
         if (player.Data?.Role is not RcXdRole role)
         {
-            Error("RpcDeployCar - Not an RC-XD role");
+            // ("RpcDeployCar - Not an RC-XD role");
             return;
         }
 

@@ -73,7 +73,7 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
     {
         if (witch.Data.Role is not WitchRole)
         {
-            Error("RpcWitchSpell - Invalid witch");
+            // ("RpcWitchSpell - Invalid witch");
             return;
         }
 

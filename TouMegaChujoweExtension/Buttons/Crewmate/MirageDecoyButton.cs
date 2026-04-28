@@ -10,6 +10,8 @@ using TownOfUs.Buttons;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
+using MiraAPI.Hud;
+using MiraAPI.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Crewmate;
@@ -41,6 +43,7 @@ public sealed class MirageDecoyButton : TownOfUsRoleButton<MirageRole>
     public override int MaxUses => (int)OptionGroupSingleton<MirageOptions>.Instance.InitialUses;
     public override LoadableAsset<Sprite> Sprite => TouExtensionCrewAssets.DecoyButtonSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
+
 
     public override void ClickHandler()
     {
@@ -90,7 +93,7 @@ public sealed class MirageDecoyButton : TownOfUsRoleButton<MirageRole>
             return Time.time >= _destroyUnlockAt;
         }
 
-        return base.CanUse() && Timer <= 0f && (!LimitedUses || UsesLeft > 0);
+        return Timer <= 0f && (!LimitedUses || UsesLeft > 0);
     }
 
     protected override void FixedUpdate(PlayerControl playerControl)
@@ -104,7 +107,24 @@ public sealed class MirageDecoyButton : TownOfUsRoleButton<MirageRole>
         }
 
         LocalInstance = this;
+        
+        if (ShipStatus.Instance == null)
+        {
+            Button?.gameObject.SetActive(false);
+            return;
+        }
 
+        if (Button != null)
+        {
+            if (Button.usesRemainingSprite != null)
+            {
+                Button.usesRemainingSprite.gameObject.SetActive(MaxUses > 0);
+            }
+            if (Button.usesRemainingText != null)
+            {
+                Button.usesRemainingText.gameObject.SetActive(MaxUses > 0);
+            }
+        }
         var hasVisible = MirageDecoySystem.HasVisible(player.PlayerId);
         var hasAny = MirageDecoySystem.HasAny(player.PlayerId);
 
@@ -183,12 +203,12 @@ public sealed class MirageDecoyButton : TownOfUsRoleButton<MirageRole>
 
         if (_stage == Stage.Prime)
         {
-            _stage = Stage.Place;
-            PrimeAtCurrentPosition(player);
+            _primedWorldPos = player.transform.position;
+            OpenTablet();
             return;
         }
 
-        var appearance = GetPrimedAppearanceSource(player) ?? player;
+        var appearance = (_primedAppearanceId.HasValue ? MiscUtils.PlayerById(_primedAppearanceId.Value) : null) ?? player;
 
         if (LimitedUses)
         {
@@ -198,7 +218,7 @@ public sealed class MirageDecoyButton : TownOfUsRoleButton<MirageRole>
             }
 
             UsesLeft--;
-            SetUses(UsesLeft);
+            Button?.SetUsesRemaining(UsesLeft);
         }
 
         MirageRole.RpcMiragePlaceDecoy(
@@ -222,55 +242,57 @@ public sealed class MirageDecoyButton : TownOfUsRoleButton<MirageRole>
         Button?.SetDisabled();
     }
 
-    private static PlayerControl? GetAppearanceSource(PlayerControl mirage)
+    private void OpenTablet()
     {
-        var type = OptionGroupSingleton<MirageOptions>.Instance.DecoyType;
-        if (type == MirageDecoyType.Mirage)
+        var player = PlayerControl.LocalPlayer;
+        if (player == null) return;
+
+        if (Minigame.Instance)
         {
-            return mirage;
+            return;
         }
 
-        var candidates = new List<PlayerControl>();
-        foreach (var pc in PlayerControl.AllPlayerControls)
-        {
-            if (pc != null && !pc.HasDied() && pc.PlayerId != mirage.PlayerId)
+        var menu = CustomPlayerMenu.Create();
+        menu.transform.FindChild("PhoneUI").GetChild(0).GetComponent<SpriteRenderer>().material =
+            player.cosmetics.currentBodySprite.BodySprite.material;
+        menu.transform.FindChild("PhoneUI").GetChild(1).GetComponent<SpriteRenderer>().material =
+            player.cosmetics.currentBodySprite.BodySprite.material;
+
+        menu.Begin(
+            plr => ((!plr.Data.Disconnected && !plr.HasDied()) || Helpers.GetBodyById(plr.PlayerId)),
+            plr =>
             {
-                candidates.Add(pc);
+                menu.ForceClose();
+
+                if (plr == null)
+                {
+                    return;
+                }
+
+                _primedAppearanceId = plr.PlayerId;
+                _stage = Stage.Place;
+
+                MirageRole.RpcMiragePrimeDecoy(
+                    player,
+                    plr,
+                    new Vector2(_primedWorldPos.x, _primedWorldPos.y),
+                    _primedWorldPos.z,
+                    0f,
+                    false);
+            }
+        );
+        
+        foreach (var panel in menu.potentialVictims)
+        {
+            panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);
+            if (panel.NameText.text != player.Data.PlayerName)
+            {
+                panel.NameText.color = Color.white;
             }
         }
-
-        if (candidates.Count == 0)
-        {
-            return mirage;
-        }
-
-        return candidates[UnityEngine.Random.Range(0, candidates.Count)];
     }
 
-    private void PrimeAtCurrentPosition(PlayerControl mirage)
-    {
-        var appearance = GetAppearanceSource(mirage) ?? mirage;
-        _primedAppearanceId = appearance.PlayerId;
-        _primedWorldPos = mirage.transform.position;
 
-        MirageRole.RpcMiragePrimeDecoy(
-            mirage,
-            appearance,
-            new Vector2(_primedWorldPos.x, _primedWorldPos.y),
-            _primedWorldPos.z,
-            0f,
-            false);
-    }
-
-    private PlayerControl? GetPrimedAppearanceSource(PlayerControl mirage)
-    {
-        if (_primedAppearanceId.HasValue)
-        {
-            return MiscUtils.PlayerById(_primedAppearanceId.Value);
-        }
-
-        return GetAppearanceSource(mirage);
-    }
 
     public override void OnEffectEnd()
     {

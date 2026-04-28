@@ -90,7 +90,7 @@
   <string name="ExtensionRoleVanisherWikiDescription">You are crewmate Swooper. You can Vanish and observe neutrals/impostors.</string>
   <string name="ExtensionRoleVanisherVanish">Vanish</string>
   <string name="ExtensionRoleVanisherUnvanish">Unvanish</string>
-  <string name="ExtensionRoleVanisherVanishWikiDescription">Turn invisible for a set duration. While invisible, nearby Impostors and Neutrals receive a warning. You can end the effect early by pressing Unvanish.</string>
+  <string name="ExtensionRoleVanisherVanishWikiDescription">Turn invisible for a short time. Bad players nearby get a warning. You can reappear early by pressing Unvanish.</string>
 
   <!-- Vanisher Options -->
   <string name="ExtensionOptionVanisherCooldown">Vanish Cooldown</string>
@@ -326,9 +326,9 @@
   <string name="ExtensionRolePopeTabDescription">Canonize all living players, then trigger Judgement to eliminate everyone.</string>
   <string name="ExtensionRolePopeWikiDescription">U need to canonize everyone to start Judgement. The Pope wins if all players die to the Judgement.</string>
   <string name="ExtensionRolePopeCanonize">Canonize</string>
-  <string name="ExtensionRolePopeCanonizeWikiDescription">Approach a player and canonize them. Canonized players have a golden outline visible only to the Pope. Once all living players are canonized, the Judgement button becomes available.</string>
+  <string name="ExtensionRolePopeCanonizeWikiDescription">Approach a player and mark them (canonize). Marked players glow gold only for you. When everyone is marked, you can kill them with Judgement.</string>
   <string name="ExtensionRolePopeJudgement">Judgement</string>
-  <string name="ExtensionRolePopeJudgementWikiDescription">After canonizing all players, trigger Divine Judgement. A golden countdown begins - if it reaches zero, all non-Pope players die and the Pope wins.</string>
+  <string name="ExtensionRolePopeJudgementWikiDescription">Starts a countdown. If it hits zero, everyone except you dies and you win.</string>
   <string name="ExtensionRolePopeGlobalWarning">The &lt;role&gt; has unleashed Divine Judgement! &lt;time&gt; seconds remain!</string>
   <string name="ExtensionRolePopeMessageTitle">Divine Warning</string>
   <string name="ExtensionRolePopeWarningNotif">The &lt;role&gt; has begun Divine Judgement! &lt;time&gt; seconds until the end!</string>
@@ -407,11 +407,11 @@
   <string name="ExtensionRoleHackerTabDescription">Download and jam equipment, kill for extra jam charges.</string>
   <string name="ExtensionRoleHackerWikiDescription">The Hacker is an Impostor Support role that can download information from nearby equipment to charge a portable device. Once you start downloading, you\'re locked into that equipment type until the next round. Jam disrupts information systems as if comms were sabotaged, but emergency meetings can still be called.</string>
   <string name="ExtensionRoleHackerDownload">Download</string>
-  <string name="ExtensionRoleHackerDownloadWikiDescription">While near a downloadable console (Admin/Cams/Vitals/Door Log), download to charge your battery. Every 1 second downloading grants 2 seconds of device battery (configurable). You cannot switch equipment type until the next round.</string>
+  <string name="ExtensionRoleHackerDownloadWikiDescription">Download data near a console (Admin, Cams, etc.) to charge your battery. You can use the device anywhere afterwards!</string>
   <string name="ExtensionRoleHackerDevice">Device</string>
   <string name="ExtensionRoleHackerDeviceWikiDescription">Use the downloaded system anywhere, consuming battery over time.</string>
   <string name="ExtensionRoleHackerJam">Jam</string>
-  <string name="ExtensionRoleHackerJamWikiDescription">Spend a Jam charge to disrupt information systems for a duration. This behaves like comms being down, but does not prevent calling emergency meetings.</string>
+  <string name="ExtensionRoleHackerJamWikiDescription">Turn off information systems for a short time (like sabotaging comms), but without blocking meetings.</string>
 
   <!-- Hacker Options -->
   <string name="ExtensionOptionHackerMaxBatterySeconds">Maximum Battery Duration</string>
@@ -467,7 +467,7 @@
   <string name="ExtensionRoleEvokerTabDescription">Activate Blind to flash all killing roles. Verify players to check if they are killers.</string>
   <string name="ExtensionRoleEvokerWikiDescription">Your ability allows you to blind all killing roles making them unable to kill, and making everybody look the same. During Evoke you can may verify if a person is in fact a killer or not.</string>
   <string name="ExtensionRoleEvokerBlind">Blind</string>
-  <string name="ExtensionRoleEvokerBlindWikiDescription">Activate to flash all killing roles. During the flash, all killing roles cannot kill or use abilities and they see themselves.</string>
+  <string name="ExtensionRoleEvokerBlindWikiDescription">Blind all killers. They won't be able to see or use any skills, including killing.</string>
   <string name="ExtensionRoleEvokerVerify">Verify</string>
   <string name="ExtensionRoleEvokerVerifyWikiDescription">While Flash is activated u may verify players. If your screen flashes red this person is killing role. </string>
 
@@ -488,7 +488,7 @@
   <string name="ExtensionRoleMirageTabDescription">Prime a decoy, then place it. If anyone interacts with it, it vanishes and you are notified.</string>
   <string name="ExtensionRoleMirageWikiDescription">The Mirage is a Crewmate Support role that can place a decoy with the appearance of a chosen target (yourself or a random player). If any player interacts with the decoy, it disappears instantly and both the Mirage and the toucher receive a notification. Note: Mirage cannot be guessed if the decoy has the appearance of yourself.</string>
   <string name="ExtensionRoleMirageDecoy">Decoy</string>
-  <string name="ExtensionRoleMirageDecoyWikiDescription">Prime to prepare a decoy for placement. Press again to place the decoy. While active, the button becomes Destroy.</string>
+  <string name="ExtensionRoleMirageDecoyWikiDescription">Prime a clone, and click again to place it. If anyone touches it, you will be notified.</string>
 
   <!-- Mirage Button -->
   <string name="ExtensionRoleMirageDecoyPrime">Prime</string>
@@ -507,6 +507,7 @@
   <string name="ExtensionOptionMirageArrowTarget">Arrow Target</string>
   <string name="ExtensionOptionMirageArrowTargetEnumMirage">Mirage</string>
   <string name="ExtensionOptionMirageArrowTargetEnumInteractor">Interactor</string>
+  <string name="ExtensionOptionMirageRevealInteractorRole">Reveal Interactor Role</string>
 
   <!-- Mirage Notifications -->
   <string name="ExtensionRoleMirageInteractorTriggered">You interacted with a decoy!</string>
@@ -618,9 +619,9 @@
   <string name="ExtensionRoleCharlatanTabDescription">Use Deceive to report bodies you've killed from any distance.\%nl\%Use Conceal to reduce the report range of nearby bodies.</string>
   <string name="ExtensionRoleCharlatanWikiDescription">The Charlatan is an Impostor Support role that manipulates body reports. Deceive allows you to report bodies you've killed from any distance for a limited time after killing. Conceal reduces the report range of nearby bodies, but requires you to stay near the body for the duration.</string>
   <string name="ExtensionRoleCharlatanDeceive">Deceive</string>
-  <string name="ExtensionRoleCharlatanDeceiveWikiDescription">Report the body you killed from any distance, regardless of range or line of sight. Available for a limited time after killing.</string>
+  <string name="ExtensionRoleCharlatanDeceiveWikiDescription">Report the body you just killed from anywhere on the map.</string>
   <string name="ExtensionRoleCharlatanConceal">Conceal</string>
-  <string name="ExtensionRoleCharlatanConcealWikiDescription">Reduce the report range of nearby bodies. You must stay near the body for the duration to successfully conceal it.</string>
+  <string name="ExtensionRoleCharlatanConcealWikiDescription">Make it so nobody can report this body. You must stand near it to hide it.</string>
 
   <!-- Charlatan Options -->
   <string name="ExtensionOptionCharlatanDeceiveEnabled">Deceive Enabled</string>
@@ -632,8 +633,9 @@
   <string name="ExtensionOptionCharlatanConcealReportRangeEnumExtremelyShort">Extremely Short</string>
   <string name="ExtensionOptionCharlatanConcealReportRangeEnumVeryShort">Very Short</string>
   <string name="ExtensionOptionCharlatanConcealReportRangeEnumShort">Short</string>
-  <string name="ExtensionOptionCharlatanConcealChannelDuration">Conceal Channel Duration</string>
+  <string name="ExtensionOptionCharlatanConcealDelay">Conceal Delay</string>
   <string name="ExtensionOptionCharlatanConcealCooldown">Conceal Cooldown</string>
+  <string name="ExtensionOptionCharlatanResetKillConcealCooldownsTogether">Reset Kill &amp; Conceal Cooldowns Together</string>
 
   <!-- Vulture Role -->
   <string name="ExtensionRoleVulture">Vulture</string>
@@ -761,9 +763,9 @@
   <string name="ExtensionRoleBodyguardTabDescription">Shield a player from attacks. When they are attacked, teleport to them and eliminate the threat.</string>
   <string name="ExtensionRoleBodyguardWikiDescription">Gives a shield to a player. If someone tries to kill the protected player, you can teleport to them and eliminate the attacker. You can only kill the attacker, and if you do, you die along with them.</string>
   <string name="ExtensionRoleBodyguardGuard">Guard</string>
-  <string name="ExtensionRoleBodyguardGuardWikiDescription">Shield a nearby player. The shielded player is protected from kill attempts. When attacked, the Guard button transforms into Backlash.</string>
+  <string name="ExtensionRoleBodyguardGuardWikiDescription">Give someone a shield. If someone attacks them, you will be able to teleport to them.</string>
   <string name="ExtensionRoleBodyguardBacklash">Backlash</string>
-  <string name="ExtensionRoleBodyguardBacklashWikiDescription">After the shielded player is attacked, use Backlash to teleport to them. You then have a limited time to kill the attacker.</string>
+  <string name="ExtensionRoleBodyguardBacklashWikiDescription">Click to teleport to the attacked teammate and kill the attacker.</string>
   <string name="ExtensionRoleBodyguardKill">Kill</string>
   <string name="ExtensionRoleBodyguardKillWikiDescription">After teleporting via Backlash, kill a nearby player. Depending on options, you can only target the attacker or anyone nearby.</string>
   <string name="ExtensionRoleBodyguardTabGuarding">Guarding: &lt;player&gt;</string>
@@ -882,7 +884,7 @@
   <string name="ExtensionRoleShroudTabDescription">Shroud a player to set a trap. Anyone who interacts with them dies.\%nl\%If no one interacts, the shrouded player dies after the meeting is called.</string>
   <string name="ExtensionRoleShroudWikiDescription">The Shroud can mark one player per round with a deadly trap. Any player who interacts with the shrouded player will be killed instead. If no one interacts with the shrouded player before a meeting is called, the shrouded player dies shortly after the meeting begins.</string>
   <string name="ExtensionRoleShroudAbility">Shroud</string>
-  <string name="ExtensionRoleShroudAbilityWikiDescription">Mark a player as a trap. Anyone who interacts with them dies. Only one target at a time. If no one interacts with the shrouded player before a meeting is called, the shrouded player dies shortly after the meeting begins.</string>
+  <string name="ExtensionRoleShroudAbilityWikiDescription">Mark a player as a trap. Anyone who interacts with them dies. If no one does before the meeting, the marked player dies right after.</string>
   <string name="ExtensionRoleShroudShroudedPlayer">Shrouded Player</string>
 
   <!-- Shroud Cause of Death -->
@@ -918,7 +920,7 @@
   <string name="ExtensionRoleKamikazeTabDescription">Sacrifice yourself in an explosion to kill all nearby players.</string>
   <string name="ExtensionRoleKamikazeWikiDescription">The Kamikaze is an Impostor role that can detonate themselves, killing all players within the blast radius. The Kamikaze dies in the process. Use the regular kill button normally, and activate the suicide button when the moment is right to take out as many enemies as possible.</string>
   <string name="ExtensionRoleKamikazeSuicide">Suicide</string>
-  <string name="ExtensionRoleKamikazeSuicideWikiDescription">Detonate yourself, killing all players within the blast radius. You die in the process. The number of victims is limited by the Max Kills option.</string>
+  <string name="ExtensionRoleKamikazeSuicideWikiDescription">Blow yourself up! You will kill everyone around you, but you will also die.</string>
   <string name="DiedToSeppuku">Seppuku</string>
 
   <!-- Kamikaze Options -->

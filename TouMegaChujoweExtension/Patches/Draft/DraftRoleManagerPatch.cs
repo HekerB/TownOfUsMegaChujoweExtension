@@ -40,7 +40,7 @@ private static void ApplyDraftRoles()
         var player = MiscUtils.PlayerById(playerId);
         if (player == null || player.Data == null || player.Data.Disconnected)
         {
-            Info($"[Draft] Skipping role assignment for player {playerId} (disconnected/null).");
+            // Info($"[Draft] Skipping role assignment for player {playerId} (disconnected/null).");
             continue;
         }
         

@@ -158,7 +158,7 @@ public static class DraftLobbyPatch
                 clip.name.IndexOf("hns_danger", System.StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 found.TryAdd(clip.name, clip);
-                Info($"[Draft] Found danger clip in memory: {clip.name}");
+                // Info($"[Draft] Found danger clip in memory: {clip.name}");
             }
         }
 
@@ -168,7 +168,7 @@ public static class DraftLobbyPatch
             int idx = 0;
             foreach (var kvp in found)
                 result[idx++] = kvp.Value;
-            Info($"[Draft] Loaded {result.Length} danger clips from memory.");
+            // Info($"[Draft] Loaded {result.Length} danger clips from memory.");
             return result;
         }
 
@@ -187,7 +187,7 @@ public static class DraftLobbyPatch
                 clip.name.IndexOf("countdown", System.StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 _countdownTickClip = clip;
-                Info($"[Draft] Found countdown clip: {clip.name}");
+                // Info($"[Draft] Found countdown clip: {clip.name}");
                 return _countdownTickClip;
             }
         }
@@ -208,7 +208,7 @@ public static class DraftLobbyPatch
             if (n.Contains("stinger") && (n.Contains("hns") || n.Contains("hide") || n.Contains("seek")))
             {
                 _hnsTimeToHideClip = clip;
-                Info($"[Draft] Found stinger clip: {clip.name} ({clip.length:F1}s)");
+                // Info($"[Draft] Found stinger clip: {clip.name} ({clip.length:F1}s)");
                 return _hnsTimeToHideClip;
             }
         }
@@ -224,7 +224,7 @@ public static class DraftLobbyPatch
                 (n.Contains("hns") && n.Contains("begin")))
             {
                 _hnsTimeToHideClip = clip;
-                Info($"[Draft] Found hide clip: {clip.name} ({clip.length:F1}s)");
+                // Info($"[Draft] Found hide clip: {clip.name} ({clip.length:F1}s)");
                 return _hnsTimeToHideClip;
             }
         }
@@ -237,19 +237,21 @@ public static class DraftLobbyPatch
                 !n.Contains("danger") && !n.Contains("countdown") && !n.Contains("footstep"))
             {
                 _hnsTimeToHideClip = clip;
-                Info($"[Draft] Found short HnS clip as stinger: {clip.name} ({clip.length:F1}s)");
+                // Info($"[Draft] Found short HnS clip as stinger: {clip.name} ({clip.length:F1}s)");
                 return _hnsTimeToHideClip;
             }
         }
 
-        Info("[Draft] No time-to-hide clip found. Available HnS clips:");
+        // Info("[Draft] No time-to-hide clip found. Available HnS clips:");
+        /*
         foreach (var obj in allClips)
         {
             var clip = obj.Cast<AudioClip>();
             string n = clip.name.ToLower();
             if (n.Contains("hns") || n.Contains("hide") || n.Contains("seek"))
-                Info($"[Draft]   - {clip.name} ({clip.length:F1}s)");
+                // Info($"[Draft]   - {clip.name} ({clip.length:F1}s)");
         }
+        */
 
         return null;
     }
@@ -273,7 +275,7 @@ public static class DraftLobbyPatch
             AmongUsClient.Instance.ChangeGamePublic(false);
 
         _lobbyLocked = true;
-        Info("[Draft] Lobby locked - no new players can join during draft.");
+        // Info("[Draft] Lobby locked - no new players can join during draft.");
     }
 
     private static void UnlockLobby()
@@ -285,7 +287,7 @@ public static class DraftLobbyPatch
             AmongUsClient.Instance.ChangeGamePublic(true);
 
         _lobbyLocked = false;
-        Info("[Draft] Lobby unlocked.");
+        // Info("[Draft] Lobby unlocked.");
     }
 
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.MakePublic))]
@@ -403,24 +405,26 @@ public static class DraftLobbyPatch
                 if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result != null)
                 {
                     loaded++;
-                    Info($"[Draft] Preloaded: {handle.Result.name}");
+                    // Info($"[Draft] Preloaded: {handle.Result.name}");
                 }
             }
             catch { }
         }
 
-        Info($"[Draft] Preload complete. {loaded} clips loaded into memory.");
+        // Info($"[Draft] Preload complete. {loaded} clips loaded into memory.");
 
         FindTimeToHideClip();
 
         var allClips = Resources.FindObjectsOfTypeAll(Il2CppType.Of<AudioClip>());
+        /*
         foreach (var obj in allClips)
         {
             var c = obj.Cast<AudioClip>();
             string n = c.name.ToLower();
             if (n.Contains("hns") || n.Contains("hide") || n.Contains("seek"))
-                Info($"[Draft] Available HnS clip: {c.name} ({c.length:F1}s)");
+                // Info($"[Draft] Available HnS clip: {c.name} ({c.length:F1}s)");
         }
+        */
     }
 
     // === INTERCEPT COUNTDOWN ===
@@ -529,7 +533,7 @@ public static class DraftLobbyPatch
         _originalPickOrder.Clear();
         _originalPickOrder.AddRange(DraftSystem.PickOrder);
         DraftSystem.AssignFactions(allPlayers, impostors);
-        Info($"[Draft] PickOrder generated: {string.Join(",", DraftSystem.PickOrder)}");
+        // Info($"[Draft] PickOrder generated: {string.Join(",", DraftSystem.PickOrder)}");
 
         DraftNetworking.SendDraftStart(impostors);
 
@@ -668,7 +672,7 @@ public static class DraftLobbyPatch
             return;
         }
 
-        Info("[Draft] Danger clips not in memory, loading from Addressables...");
+        // Info("[Draft] Danger clips not in memory, loading from Addressables...");
         _clipsLoading = true;
         Coroutines.Start(CoLoadDangerClipsAndPlay());
     }
@@ -704,7 +708,7 @@ public static class DraftLobbyPatch
                     if (!loaded.Exists(c => c.name == clip.name))
                     {
                         loaded.Add(clip);
-                        Info($"[Draft] Loaded via address '{address}': {clip.name}");
+                        // Info($"[Draft] Loaded via address '{address}': {clip.name}");
                     }
                 }
             }
@@ -713,7 +717,7 @@ public static class DraftLobbyPatch
 
         if (loaded.Count == 0)
         {
-            Info("[Draft] Addressables failed. Checking Resources again...");
+            // Info("[Draft] Addressables failed. Checking Resources again...");
             yield return null;
 
             var allClips = Resources.FindObjectsOfTypeAll(Il2CppType.Of<AudioClip>());
@@ -723,7 +727,7 @@ public static class DraftLobbyPatch
                 if (c.name.IndexOf("danger", System.StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     loaded.Add(c);
-                    Info($"[Draft] Found in Resources (retry): {c.name}");
+                    // Info($"[Draft] Found in Resources (retry): {c.name}");
                 }
             }
         }
@@ -738,7 +742,7 @@ public static class DraftLobbyPatch
 
         loaded.Sort((a, b) => string.Compare(a.name, b.name, System.StringComparison.OrdinalIgnoreCase));
         _dangerClips = loaded.ToArray();
-        Info($"[Draft] Final music clips ({_dangerClips.Length}): {string.Join(", ", loaded.ConvertAll(c => c.name))}");
+        // Info($"[Draft] Final music clips ({_dangerClips.Length}): {string.Join(", ", loaded.ConvertAll(c => c.name))}");
 
         StartMusicWithClips();
     }
@@ -789,7 +793,7 @@ public static class DraftLobbyPatch
             _draftMusicSourceB.pitch = _musicPitch;
             _draftMusicSourceB.mute = _isMusicMuted;
 
-            Info($"[Draft] Music started: base='{_dangerClips[_baseDangerClipIndex]?.name}', final='{_dangerClips[_finalDangerClipIndex]?.name}', clips={_dangerClips.Length}");
+            // Info($"[Draft] Music started: base='{_dangerClips[_baseDangerClipIndex]?.name}', final='{_dangerClips[_finalDangerClipIndex]?.name}', clips={_dangerClips.Length}");
         }
         catch (System.Exception ex)
         {
@@ -831,7 +835,7 @@ public static class DraftLobbyPatch
 
         _usingSourceA = !_usingSourceA;
 
-        Info($"[Draft] Crossfade -> {newClip.name} (sync {syncTime:F2}s)");
+        // Info($"[Draft] Crossfade -> {newClip.name} (sync {syncTime:F2}s)");
     }
 
     private static void UpdateCrossfade()
@@ -890,7 +894,7 @@ public static class DraftLobbyPatch
             _currentDangerLevel = _finalDangerClipIndex;
             CrossfadeToClip(_dangerClips[_finalDangerClipIndex]);
 
-            Info($"[Draft] Final danger music triggered (remaining={remaining})");
+            // Info($"[Draft] Final danger music triggered (remaining={remaining})");
         }
     }
 
@@ -950,13 +954,13 @@ public static class DraftLobbyPatch
             try
             {
                 SoundManager.Instance.PlaySoundImmediate(clip, false, 0.8f, 1f, SoundManager.Instance.SfxChannel);
-                Info($"[Draft] Played complete sound: {clip.name}");
+                // Info($"[Draft] Played complete sound: {clip.name}");
                 return;
             }
             catch { }
         }
 
-        Info("[Draft] No HnS stinger found, using draft alert.");
+        // Info("[Draft] No HnS stinger found, using draft alert.");
         PlayStartAlert();
     }
 
@@ -2454,7 +2458,7 @@ public static class DraftLobbyPatch
 
         if (!leavingPlayerId.HasValue)
         {
-            Info("[Draft] Unknown player left (no character), ignoring.");
+            // Info("[Draft] Unknown player left (no character), ignoring.");
             return;
         }
 
@@ -2462,17 +2466,17 @@ public static class DraftLobbyPatch
 
         if (!DraftSystem.PlayerFactions.ContainsKey(pid))
         {
-            Info($"[Draft] Non-draft player left (ID: {pid}), ignoring.");
+            // Info($"[Draft] Non-draft player left (ID: {pid}), ignoring.");
             return;
         }
 
         if (!_draftInProgress && _draftCompletedWaitingForStart)
         {
-            Info($"[Draft] Player {pid} left during post-draft countdown, ignoring.");
+            // Info($"[Draft] Player {pid} left during post-draft countdown, ignoring.");
             return;
         }
 
-        Info($"[Draft] Draft participant {pid} left. Continuing draft without them.");
+        // Info($"[Draft] Draft participant {pid} left. Continuing draft without them.");
 
         bool wasCurrentPicker = DraftSystem.CurrentPicker.HasValue && DraftSystem.CurrentPicker.Value == pid;
 
@@ -2496,11 +2500,11 @@ public static class DraftLobbyPatch
             {
                 DraftSystem.ImpostorPlayerIds.Add(newImpostor.Value);
                 DraftSystem.PlayerFactions[newImpostor.Value] = DraftFaction.Impostor;
-                Info($"[Draft] Player {newImpostor.Value} promoted to Impostor (replacing {pid}).");
+                // Info($"[Draft] Player {newImpostor.Value} promoted to Impostor (replacing {pid}).");
             }
             else
             {
-                Info($"[Draft] No replacement found for Impostor {pid}. One less impostor this game.");
+                // Info($"[Draft] No replacement found for Impostor {pid}. One less impostor this game.");
             }
 
             DraftSystem.ImpostorPlayerIds.Remove(pid);
@@ -2508,7 +2512,7 @@ public static class DraftLobbyPatch
 
         if (DraftSystem.PickOrder.Count == 0)
         {
-            Info("[Draft] No more players to pick. Completing draft.");
+            // Info("[Draft] No more players to pick. Completing draft.");
             OnDraftComplete();
             return;
         }

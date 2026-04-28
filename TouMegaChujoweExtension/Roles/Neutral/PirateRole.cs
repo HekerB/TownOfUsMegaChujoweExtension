@@ -28,8 +28,8 @@ namespace TouMegaChujoweExtension.Roles.Neutral;
 public sealed class PirateRole(IntPtr cppPtr)
     : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IContinuesGame
 {
-    private static readonly BepInEx.Logging.ManualLogSource Log =
-        BepInEx.Logging.Logger.CreateLogSource("PirateRole");
+    // // // private static readonly BepInEx.Logging.ManualLogSource Log =
+    // // //     BepInEx.Logging.Logger.CreateLogSource("PirateRole");
 
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "Pirate";
@@ -205,7 +205,7 @@ public sealed class PirateRole(IntPtr cppPtr)
         LastDuelTargetId = byte.MaxValue;
         HasCompletedDuels = false;
         ResetDuelState();
-        Log.LogInfo("PirateRole initialized for " + player.Data.PlayerName);
+        // ("PirateRole initialized for " + player.Data.PlayerName);
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)

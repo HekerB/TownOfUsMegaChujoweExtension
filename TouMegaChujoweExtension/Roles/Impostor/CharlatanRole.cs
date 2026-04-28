@@ -106,6 +106,6 @@ public sealed class CharlatanRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         }
 
         var options = OptionGroupSingleton<CharlatanOptions>.Instance;
-        CharlatanConcealSystem.ConcealBody(charlatan.PlayerId, bodyId, options.ConcealChannelDuration);
+        CharlatanConcealSystem.ConcealBody(charlatan.PlayerId, bodyId, options.ConcealDelay);
     }
 }

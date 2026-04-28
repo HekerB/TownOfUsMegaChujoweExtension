@@ -1,4 +1,4 @@
-﻿using MiraAPI.Keybinds;
+using MiraAPI.Keybinds;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Modules;

@@ -24,7 +24,7 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
     public override BaseKeybind Keybind => Keybinds.TertiaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Charlatan;
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<CharlatanOptions>.Instance.ConcealCooldown + MapCooldown, 5f, 120f);
-    public override float EffectDuration => OptionGroupSingleton<CharlatanOptions>.Instance.ConcealChannelDuration;
+    public override float EffectDuration => OptionGroupSingleton<CharlatanOptions>.Instance.ConcealDelay;
     public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.ConcealButtonSprite;
     public override float Distance => 2f;
 
@@ -147,7 +147,7 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
         }
 
         var options = OptionGroupSingleton<CharlatanOptions>.Instance;
-        var channelDuration = options.ConcealChannelDuration;
+        var channelDuration = options.ConcealDelay;
         var elapsed = 0f;
 
         while (elapsed < channelDuration)
@@ -199,6 +199,11 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
         {
             UsesLeft--;
             SetUses(UsesLeft);
+        }
+
+        if (OptionGroupSingleton<CharlatanOptions>.Instance.ResetKillConcealCooldownsTogether && player != null)
+        {
+            player.SetKillTimer(player.GetKillCooldown());
         }
 
         ResetCooldownAndOrEffect();

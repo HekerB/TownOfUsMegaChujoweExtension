@@ -107,6 +107,26 @@
         "\n- <b>Shroud Ability</b> - Secondary button now triggers a flash and 5s CD when hitting a shield.",
         "\n- <b>Assets</b> - Restored original extension <b>Vent Icons</b>; optimized event priorities for protection logic."
       ]
+    },
+    {
+      "Date": "2026-04-27T21:00:00Z",
+      "Number": "200004",
+      "ShortTitle": "TOUMCE v1.0.3",
+      "SubTitle": "Forestaller & UI Refresh",
+      "Title": "TOU Mega Chujowe Extension v1.0.3",
+      "Text": [
+        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
+        "\n\n\r<b>Version 1.0.3 - Forestaller & UI Refresh</b>",
+        "\n\n\r<size=105%>Role & Mechanics Changes:</size>",
+        "\n- <b>Forestaller</b> - Reworked guessability logic. Forestaller is now <b>Guessable</b> until all tasks are completed. Once tasks are done, they become <b>Unguessable</b>.",
+        "\n- <b>Ventable Modifier</b> - Overhauled Timer UI to use <b>0.0 precision</b>. Fixed and enabled <b>Uses Left</b> counter with a dedicated vent sprite.",
+        "\n- <b>Mirage Rework</b> - Replaced random spawn with a Tablet selector. Decoy uses counter can now be set to infinity (shows infinity symbol and hides count). Provided a <b>custom meeting feedback panel</b> (like Lookout) with colorized roles.",
+        "\n\n\r<size=105%>Assassin & Guessing Polish:</size>",
+        "\n- <b>Tablet UI Refresh</b> - Implemented aggressive refresh for Mira/Tablet guessing screen. Players killed during meetings (e.g., via Death Note) are now <b>immediately removed</b> from the target list.",
+        "\n- <b>FPS Optimization</b> - Optimized the meeting refresh logic to prevent FPS drops. Reflection results are now cached and updates trigger only on player state changes.",
+        "\n- <b>Classic Assassin Fix</b> - Fixed visual bug where the guessing UI would 'stay' for non-guesser roles (e.g., Altruist).",
+        "\n- <b>Bugfix</b> - Fixed a potential soft-lock when opening the tablet while a player was being murdered."
+      ]
     }
   ]
 }

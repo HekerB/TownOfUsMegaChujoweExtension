@@ -2,10 +2,15 @@ using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
+using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Hud;
 using TouMegaChujoweExtension.Buttons.Crewmate;
+using TouMegaChujoweExtension.Patches.Draft;
+using TownOfUs.Modules.Localization;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
 using TouMegaChujoweExtension.Roles.Crewmate;
+using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Events.Crewmate;
 
@@ -37,34 +42,39 @@ public static class MirageEvents
     [RegisterEvent]
     public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
-        if (@event.Player == null || !@event.Player.AmOwner)
+        // Task reward removed as per Mirage rework
+    }
+
+    [RegisterEvent]
+    public static void OnMeetingStart(StartMeetingEvent @event)
+    {
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null || localPlayer.Data?.Role is not MirageRole)
         {
             return;
         }
 
-        if (@event.Player.Data?.Role is not MirageRole)
+        if (!OptionGroupSingleton<MirageOptions>.Instance.RevealInteractorRole)
         {
             return;
         }
 
-        var opt = OptionGroupSingleton<MirageOptions>.Instance;
-        if (opt.UsesPerTasks.Value <= 0)
+        var title = $"<color=#{ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Mirage)}>Mirage Feedback</color>";
+        string msg;
+        
+        if (MirageRole.TriggeredRoles.TryGetValue(localPlayer.PlayerId, out var roles) && roles.Count > 0)
         {
-            return;
+            roles.Shuffle();
+            var rolesStr = string.Join(", ", roles);
+            msg = $"Roles seen interacting with your decoy:\n{rolesStr}";
+        }
+        else
+        {
+            msg = "No players interacted with your decoy";
         }
 
-        if (@event.Task != null && @event.Task.Id != LastTaskId)
-        {
-            ++ActiveTaskCount;
-            LastTaskId = @event.Task.Id;
-        }
-
-        var btn = CustomButtonSingleton<MirageDecoyButton>.Instance;
-        if (btn.LimitedUses && opt.UsesPerTasks.Value <= ActiveTaskCount)
-        {
-            ++btn.UsesLeft;
-            btn.SetUses(btn.UsesLeft);
-            ActiveTaskCount = 0;
-        }
+        MiscUtils.AddFakeChat(localPlayer.Data, title, msg, false, true);
+        
+        MirageRole.TriggeredRoles.Clear();
     }
 }

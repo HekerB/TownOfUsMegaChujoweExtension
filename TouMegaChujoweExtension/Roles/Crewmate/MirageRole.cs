@@ -24,6 +24,8 @@ namespace TouMegaChujoweExtension.Roles.Crewmate;
 public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IUnguessable
 {
     public DoomableType DoomHintType => DoomableType.Insight;
+    public static readonly System.Collections.Generic.Dictionary<byte, System.Collections.Generic.List<string>> TriggeredRoles = new();
+
     public string LocaleKey => "Mirage";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
@@ -59,12 +61,13 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     {
         Icon = TouExtensionIcons.MirageRoleIcon
     };
-    public bool IsGuessable => OptionGroupSingleton<MirageOptions>.Instance.DecoyType != MirageDecoyType.Mirage;
+    public bool IsGuessable => true;
     public RoleBehaviour AppearAs => this;
 
     public void LobbyStart()
     {
         MirageDecoySystem.ClearAll();
+        TriggeredRoles.Clear();
     }
 
     public override void Initialize(PlayerControl player)
@@ -145,6 +148,27 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         if (mirage?.Data?.Role is not MirageRole)
         {
             return;
+        }
+
+        if (OptionGroupSingleton<MirageOptions>.Instance.RevealInteractorRole && interactor != null)
+        {
+            if (!TriggeredRoles.ContainsKey(mirage.PlayerId))
+            {
+                TriggeredRoles[mirage.PlayerId] = new System.Collections.Generic.List<string>();
+            }
+            
+            var role = interactor.Data?.Role;
+            if (role != null)
+            {
+                var roleName = role.GetRoleName() ?? "Unknown";
+                var color = role is ICustomRole customRole ? customRole.RoleColor : role.TeamColor;
+                var coloredRoleName = $"<color=#{ColorUtility.ToHtmlStringRGBA(color)}>{roleName}</color>";
+                
+                if (!TriggeredRoles[mirage.PlayerId].Contains(coloredRoleName))
+                {
+                    TriggeredRoles[mirage.PlayerId].Add(coloredRoleName);
+                }
+            }
         }
 
         if (mirage.AmOwner)

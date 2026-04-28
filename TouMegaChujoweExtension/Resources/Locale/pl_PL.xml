@@ -90,7 +90,7 @@
   <string name="ExtensionRoleVanisherWikiDescription">Jestes crewmate Swooper. Mozesz zniknac i obserwowac neutralnych/impostorow.</string>
   <string name="ExtensionRoleVanisherVanish">Zniknij</string>
   <string name="ExtensionRoleVanisherUnvanish">Pojaw sie</string>
-  <string name="ExtensionRoleVanisherVanishWikiDescription">Stan sie niewidzialny na okreslony czas. Gdy jestes niewidzialny, pobliscy Impostorzy i Neutralni otrzymuja ostrzezenie. Mozesz zakonczyc efekt wczesniej, naciskajac Pojaw sie.</string>
+  <string name="ExtensionRoleVanisherVanishWikiDescription">Zniknij na chwile. Zli gracze w poblizu dostana ostrzezenie. Mozesz pojawic sie wczesniej, klikajac ten sam przycisk.</string>
 
   <!-- Vanisher Options -->
   <string name="ExtensionOptionVanisherCooldown">Cooldown Znikania</string>
@@ -327,9 +327,9 @@
   <string name="ExtensionRolePopeTabDescription">Kanonizuj wszystkich zyjacych graczy, a nastepnie uruchom Judgement, aby wyeliminowac wszystkich.</string>
   <string name="ExtensionRolePopeWikiDescription">Musisz kanonizowac wszystkich, aby rozpoczac Judgement. Pope wygrywa, jesli wszyscy gracze zgina od Judgement.</string>
   <string name="ExtensionRolePopeCanonize">Kanonizuj</string>
-  <string name="ExtensionRolePopeCanonizeWikiDescription">Podejdz do gracza i go kanonizuj. Kanonizowani gracze maja zloty obrys widoczny tylko dla Pope. Gdy wszyscy zyjacy gracze zostana kanonizowani, przycisk Judgement stanie sie dostepny.</string>
+  <string name="ExtensionRolePopeCanonizeWikiDescription">Podejdz do gracza i go zaznacz (kanonizuj). Zaznaczeni gracze swieca sie na zloto tylko dla Ciebie. Gdy zaznaczysz wszystkich zyjacych, bedziesz mogl ich ukatrupic przyciskiem Judgement.</string>
   <string name="ExtensionRolePopeJudgement">Judgement</string>
-  <string name="ExtensionRolePopeJudgementWikiDescription">Po kanonizacji wszystkich graczy uruchom Boski Sad. Rozpocznie sie zlote odliczanie - jesli dojdzie do zera, wszyscy gracze poza Pope zgina, a Pope wygra.</string>
+  <string name="ExtensionRolePopeJudgementWikiDescription">Rozpoczyna odliczanie do konca gry. Jesli czas dojdzie do zera, wszyscy oprocz Ciebie gina i wygrywasz.</string>
   <string name="ExtensionRolePopeGlobalWarning">&lt;role&gt; uwolnil Boski Sad! Pozostalo &lt;time&gt; sekund!</string>
   <string name="ExtensionRolePopeMessageTitle">Boskie ostrzezenie</string>
   <string name="ExtensionRolePopeWarningNotif">&lt;role&gt; rozpoczal Boski Sad! Do konca pozostalo &lt;time&gt; sekund!</string>
@@ -389,7 +389,7 @@
   <string name="ExtensionRoleWraithDash">Dash</string>
   <string name="ExtensionRoleWraithDashWikiDescription">Tymczasowo zwieksz swoja predkosc ruchu o 75%.</string>
   <string name="ExtensionRoleWraithLantern">Lantern</string>
-  <string name="ExtensionRoleWraithLanternWikiDescription">Postaw Lantern widoczna tylko dla siebie. Aktywuj ja ponownie, aby teleportowac sie z powrotem i na chwile stac sie niewidzialnym. Jesli wygasnie, peka i zostawia slady widoczne dla wszystkich.</string>
+  <string name="ExtensionRoleWraithLanternWikiDescription">Postaw latarnie widoczna tylko dla Ciebie. Kliknij znowu, zeby sie do niej teleportowac i zniknac na chwile. Jesli czas minie, latarnia peka i zostawia slady.</string>
   <string name="ExtensionRoleWraithLanternPlace">Lantern</string>
   <string name="ExtensionRoleWraithLanternReturn">Powrot</string>
 
@@ -408,11 +408,11 @@
   <string name="ExtensionRoleHackerTabDescription">Pobieraj i zaklocaj urzadzenia, zabijaj, aby dostac dodatkowe ladunki Jam.</string>
   <string name="ExtensionRoleHackerWikiDescription">Hacker to rola Impostor Support, ktora moze pobierac informacje z pobliskich urzadzen, aby naladowac przenosne urzadzenie. Gdy zaczniesz pobierac, zostajesz przypisany do tego typu urzadzenia do nastepnej rundy. Jam zakloca systemy informacyjne tak, jakby comms byly sabotowane, ale spotkania awaryjne nadal mozna zglaszac.</string>
   <string name="ExtensionRoleHackerDownload">Pobierz</string>
-  <string name="ExtensionRoleHackerDownloadWikiDescription">Bedac blisko konsoli do pobrania (Admin/Cams/Vitals/Door Log), pobieraj, aby naladowac baterie. Kazda 1 sekunda pobierania daje 2 sekundy baterii urzadzenia (konfigurowalne). Nie mozesz zmienic typu urzadzenia do nastepnej rundy.</string>
+  <string name="ExtensionRoleHackerDownloadWikiDescription">Pobieraj dane przy konsoli (Admin, Kamery, itp.), aby naladowac baterie. Urzadzenia mozesz uzywac potem w dowolnym miejscu!</string>
   <string name="ExtensionRoleHackerDevice">Urzadzenie</string>
   <string name="ExtensionRoleHackerDeviceWikiDescription">Uzywaj pobranego systemu gdziekolwiek, zuzywajac baterie z czasem.</string>
   <string name="ExtensionRoleHackerJam">Jam</string>
-  <string name="ExtensionRoleHackerJamWikiDescription">Wydaj ladunek Jam, aby zaklocic systemy informacyjne na pewien czas. Dziala to jak awaria comms, ale nie blokuje zglaszania spotkan awaryjnych.</string>
+  <string name="ExtensionRoleHackerJamWikiDescription">Wylacz systemy informacyjne na chwile (jak awaria comms), ale bez blokowania spotkan.</string>
 
   <!-- Hacker Options -->
   <string name="ExtensionOptionHackerMaxBatterySeconds">Maksymalny czas baterii</string>
@@ -468,7 +468,7 @@
   <string name="ExtensionRoleEvokerTabDescription">Aktywuj Blind, aby oslepic i ogluszyc (Nausea) zabojcow. Verify graczy, aby sprawdzic ich role.</string>
   <string name="ExtensionRoleEvokerWikiDescription">Twoja umiejetnosc pozwala oslepic i ogluszyc (efekt Nausea) wszystkie role zabijajace. Podczas Blind mozesz sprawdzac (Verify), czy dana osoba jest zabojca. Calosc jest zoptymalizowana dla maksymalnej wydajnosci FPS.</string>
   <string name="ExtensionRoleEvokerBlind">Blind</string>
-  <string name="ExtensionRoleEvokerBlindWikiDescription">Aktywuj, aby oslepic wszystkie role zabijajace. Podczas oslepienia wszystkie role zabijajace nie moga zabijac ani uzywac umiejetnosci i widza same siebie.</string>
+  <string name="ExtensionRoleEvokerBlindWikiDescription">Oslep zabojcow. Nie beda nic widziec i nie beda mogli nikogo zabic ani uzyc skilli.</string>
   <string name="ExtensionRoleEvokerVerify">Verify</string>
   <string name="ExtensionRoleEvokerVerifyWikiDescription">Gdy Flash jest aktywny, mozesz sprawdzac graczy. Jesli twoj ekran mignie na czerwono, ta osoba jest rola zabijajaca.</string>
 
@@ -489,7 +489,7 @@
   <string name="ExtensionRoleMirageTabDescription">Przygotuj wabik, a potem go postaw. Jesli ktos z nim wejdzie w interakcje, zniknie, a ty dostaniesz powiadomienie.</string>
   <string name="ExtensionRoleMirageWikiDescription">Mirage to rola Crewmate Support, ktora moze postawic wabik z wygladem wybranego celu (ciebie albo losowego gracza). Jesli jakikolwiek gracz wejdzie w interakcje z wabikiem, ten natychmiast znika, a zarowno Mirage, jak i dotykajacy dostaja powiadomienie. Uwaga: Mirage nie moze zostac odgadniety, jesli wabik ma twoj wyglad.</string>
   <string name="ExtensionRoleMirageDecoy">Wabik</string>
-  <string name="ExtensionRoleMirageDecoyWikiDescription">Przygotuj wabik do postawienia. Nacisnij ponownie, aby go postawic. Gdy jest aktywny, przycisk zmienia sie na Destroy.</string>
+  <string name="ExtensionRoleMirageDecoyWikiDescription">Przygotuj klona, a potem kliknij znowu, zeby go postawic. Jesli ktos go dotknie, dostaniesz info.</string>
 
   <!-- Mirage Button -->
   <string name="ExtensionRoleMirageDecoyPrime">Przygotuj</string>
@@ -508,6 +508,7 @@
   <string name="ExtensionOptionMirageArrowTarget">Cel strzalki</string>
   <string name="ExtensionOptionMirageArrowTargetEnumMirage">Mirage</string>
   <string name="ExtensionOptionMirageArrowTargetEnumInteractor">Interagujacy</string>
+  <string name="ExtensionOptionMirageRevealInteractorRole">Pokaz role wchodzacego w interakcje</string>
 
   <!-- Mirage Notifications -->
   <string name="ExtensionRoleMirageInteractorTriggered">Wszedles w interakcje z wabikiem!</string>
@@ -620,9 +621,9 @@
   <string name="ExtensionRoleCharlatanTabDescription">Uzyj Deceive, aby zglaszac ciala, ktore zabiles, z dowolnej odleglosci.\%nl\%Uzyj Conceal, aby zmniejszyc zasieg zgloszenia pobliskich cial.</string>
   <string name="ExtensionRoleCharlatanWikiDescription">Charlatan to rola Impostor Support, ktora manipuluje zgloszeniami cial. Deceive pozwala ci zglaszac ciala, ktore zabiles, z dowolnej odleglosci przez ograniczony czas po zabojstwie. Conceal zmniejsza zasieg zgloszenia pobliskich cial, ale wymaga pozostania przy ciele przez caly czas trwania.</string>
   <string name="ExtensionRoleCharlatanDeceive">Deceive</string>
-  <string name="ExtensionRoleCharlatanDeceiveWikiDescription">Zglos cialo, ktore zabiles, z dowolnej odleglosci, niezaleznie od zasiegu czy linii wzroku. Dostepne przez ograniczony czas po zabojstwie.</string>
+  <string name="ExtensionRoleCharlatanDeceiveWikiDescription">Zglos cialo, ktore wlasnie zabiles, z dowolnego miejsca na mapie.</string>
   <string name="ExtensionRoleCharlatanConceal">Conceal</string>
-  <string name="ExtensionRoleCharlatanConcealWikiDescription">Zmniejsz zasieg zgloszenia pobliskich cial. Musisz pozostac przy ciele przez caly czas trwania, aby skutecznie je ukryc.</string>
+  <string name="ExtensionRoleCharlatanConcealWikiDescription">Spraw, ze nikt nie bedzie mogl zglosic tego ciala. Musisz przy nim stac, zeby je ukryc.</string>
 
   <!-- Charlatan Options -->
   <string name="ExtensionOptionCharlatanDeceiveEnabled">Oszustwo wlaczone</string>
@@ -634,8 +635,9 @@
   <string name="ExtensionOptionCharlatanConcealReportRangeEnumExtremelyShort">Ekstremalnie krotki</string>
   <string name="ExtensionOptionCharlatanConcealReportRangeEnumVeryShort">Bardzo krotki</string>
   <string name="ExtensionOptionCharlatanConcealReportRangeEnumShort">Krotki</string>
-  <string name="ExtensionOptionCharlatanConcealChannelDuration">Czas kanalowania Conceal</string>
+  <string name="ExtensionOptionCharlatanConcealDelay">Opoznienie Conceal</string>
   <string name="ExtensionOptionCharlatanConcealCooldown">Cooldown Conceal</string>
+  <string name="ExtensionOptionCharlatanResetKillConcealCooldownsTogether">Resetuj cooldowny Zabojstwa i Conceal razem</string>
 
   <!-- Vulture Role -->
   <string name="ExtensionRoleVulture">Vulture</string>
@@ -763,9 +765,9 @@
   <string name="ExtensionRoleBodyguardTabDescription">Daj graczowi tarcze przed atakami. Gdy zostanie zaatakowany, teleportujesz sie do niego i eliminujesz zagrozenie.</string>
   <string name="ExtensionRoleBodyguardWikiDescription">Daje tarcze graczowi. Jesli ktos sprobuje zabic chronionego gracza, mozesz sie do niego teleportowac i wyeliminowac napastnika. Mozesz zabic tylko napastnika, a jesli to zrobisz, giniesz razem z nim.</string>
   <string name="ExtensionRoleBodyguardGuard">Guard</string>
-  <string name="ExtensionRoleBodyguardGuardWikiDescription">Daj tarcze pobliskiemu graczowi. Osloniety gracz jest chroniony przed probami zabojstwa. Gdy zostanie zaatakowany, przycisk Guard zmienia sie w Backlash.</string>
+  <string name="ExtensionRoleBodyguardGuardWikiDescription">Daj komus tarcze. Jesli ktos go zaatakuje, bedziesz mogl sie do niego teleportowac.</string>
   <string name="ExtensionRoleBodyguardBacklash">Backlash</string>
-  <string name="ExtensionRoleBodyguardBacklashWikiDescription">Po zaatakowaniu oslonietego gracza uzyj Backlash, aby sie do niego teleportowac. Nastepnie masz ograniczony czas na zabicie napastnika.</string>
+  <string name="ExtensionRoleBodyguardBacklashWikiDescription">Kliknij, zeby teleportowac sie do zaatakowanego kolegi i zabic napastnika.</string>
   <string name="ExtensionRoleBodyguardKill">Kill</string>
   <string name="ExtensionRoleBodyguardKillWikiDescription">Po teleportacji przez Backlash zabij pobliskiego gracza. W zaleznosci od opcji mozesz atakowac tylko napastnika albo kogokolwiek w poblizu.</string>
   <string name="ExtensionRoleBodyguardTabGuarding">Chronisz: &lt;player&gt;</string>
@@ -883,7 +885,7 @@
   <string name="ExtensionRoleShroudTabDescription">Oznacz gracza jako Shroud, aby ustawic pulapke. Kazdy, kto z nim wejdzie w interakcje, zginie.\%nl\%Jesli nikt nie wejdzie w interakcje, oznaczony gracz umrze po zwolaniu spotkania.</string>
   <string name="ExtensionRoleShroudWikiDescription">Shroud moze oznaczyc jednego gracza na runde smiertelna pulapka. Kazdy gracz, ktory wejdzie w interakcje z oznaczonym graczem, zginie zamiast niego. Jesli nikt nie wejdzie w interakcje z oznaczonym graczem przed zwolaniem spotkania, oznaczony gracz umrze chwile po rozpoczeciu spotkania.</string>
   <string name="ExtensionRoleShroudAbility">Shroud</string>
-  <string name="ExtensionRoleShroudAbilityWikiDescription">Oznacz gracza jako pulapke. Kazdy, kto z nim wejdzie w interakcje, ginie. Tylko jeden cel naraz. Jesli nikt nie wejdzie w interakcje z oznaczonym graczem przed zwolaniem spotkania, oznaczony gracz umrze chwile po rozpoczeciu spotkania.</string>
+  <string name="ExtensionRoleShroudAbilityWikiDescription">Oznacz gracza jako pulapkę. Kto z nim wejdzie w interakcje, ten ginie. Jeśli nikt tego nie zrobi przed spotkaniem, oznaczony gracz umrze zaraz po spotkaniu.</string>
   <string name="ExtensionRoleShroudShroudedPlayer">Oznaczony gracz</string>
 
   <!-- Shroud Cause of Death -->
@@ -919,7 +921,7 @@
   <string name="ExtensionRoleKamikazeTabDescription">Poswiec sie w eksplozji, aby zabic wszystkich pobliskich graczy.</string>
   <string name="ExtensionRoleKamikazeWikiDescription">Kamikaze to rola Impostora, ktory moze zdetonowac samego siebie, zabijajac wszystkich graczy w promieniu wybuchu. Kamikaze ginie w tym procesie. Uzywaj zwyklego przycisku zabojstwa normalnie, a przycisk samobojstwa aktywuj we wlasciwym momencie, aby wyeliminowac jak najwiecej wrogow.</string>
   <string name="ExtensionRoleKamikazeSuicide">Samobojstwo</string>
-  <string name="ExtensionRoleKamikazeSuicideWikiDescription">Zdetonuj siebie, zabijajac wszystkich graczy w promieniu wybuchu. Giniesz w tym procesie. Liczba ofiar jest ograniczona przez opcje Maks. Zabojstw.</string>
+  <string name="ExtensionRoleKamikazeSuicideWikiDescription">Wysadz sie w powietrze! Zabijesz wszystkich wokol, ale sam tez zginiesz.</string>
   <string name="DiedToSeppuku">Seppuku</string>
 
   <!-- Kamikaze Options -->

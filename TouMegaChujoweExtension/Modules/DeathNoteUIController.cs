@@ -1,4 +1,4 @@
-﻿using Il2CppInterop.Runtime.Attributes;
+using Il2CppInterop.Runtime.Attributes;
 using Reactor.Utilities.Attributes;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Modifiers.Neutral;

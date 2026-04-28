@@ -30,7 +30,7 @@ public static class TouExtensionFonts
             using var stream = assembly.GetManifestResourceStream(resourceName);
             if (stream == null)
             {
-                BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogWarning("Chewy font resource not found");
+                // // BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogWarning("Chewy font resource not found");
                 return null;
             }
 
@@ -57,12 +57,12 @@ public static class TouExtensionFonts
                 tmpFont.fallbackFontAssetTable = fallbackList;
             }
 
-            BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogInfo("Chewy font loaded successfully");
+            // // BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogInfo("Chewy font loaded successfully");
             return tmpFont;
         }
         catch (System.Exception ex)
         {
-            BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogError($"Failed to load Chewy font: {ex}");
+            // // BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogError($"Failed to load Chewy font: {ex}");
             return null;
         }
     }

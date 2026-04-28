@@ -53,7 +53,7 @@ public static class DraftNetworking
 
         var myId = PlayerControl.LocalPlayer?.PlayerId ?? 255;
         var isImp = impostorIds.Contains(myId);
-        Info($"[DraftNetworking] Draft started. I am {(isImp ? "IMPOSTOR" : "CREWMATE")}");
+        // Info($"[DraftNetworking] Draft started. I am {(isImp ? "IMPOSTOR" : "CREWMATE")}");
 
         DraftLobbyPatch.ShowSystemMessage("<color=#FF0000>Draft Mode</color> has Started. Be Ready to Pick Your Role!");
     }
@@ -79,7 +79,7 @@ public static class DraftNetworking
             DraftSystem.PlayerFactions[playerId] = faction;
         }
 
-        Info($"[DraftNetworking] Received combined draft data: {orderCount} players, {factionCount} factions.");
+        // Info($"[DraftNetworking] Received combined draft data: {orderCount} players, {factionCount} factions.");
 
         ReceiveDraftStart(impostorIds);
         DraftSystem.DraftActiveThisRound = true;
@@ -109,7 +109,7 @@ public static class DraftNetworking
 
         var role = RoleManager.Instance.GetRole((RoleTypes)roleId);
         var roleName = role?.GetRoleName() ?? $"Unknown({roleId})";
-        Info($"[DraftNetworking] Player {playerId} picked {roleName}");
+        // Info($"[DraftNetworking] Player {playerId} picked {roleName}");
 
         DraftLobbyPatch.OnPickReceived(playerId, roleId);
     }
@@ -132,7 +132,7 @@ public static class DraftNetworking
     {
         DraftSystem.IsRunning = false;
         DraftSystem.DraftComplete = true;
-        Info("[DraftNetworking] Draft complete!");
+        // Info("[DraftNetworking] Draft complete!");
 
         DraftLobbyPatch.ShowSystemMessage("<color=#00FF00>Draft Complete!</color> The game is starting soon.");
     }
@@ -155,7 +155,7 @@ public static class DraftNetworking
     {
         DraftSystem.Reset();
         DraftLobbyPatch.ForceCancelDraft();
-        Info("[DraftNetworking] Draft cancelled by host.");
+        // Info("[DraftNetworking] Draft cancelled by host.");
 
         DraftLobbyPatch.ShowSystemMessage("<color=#FF4444>Draft Cancelled</color> by the Host.");
     }

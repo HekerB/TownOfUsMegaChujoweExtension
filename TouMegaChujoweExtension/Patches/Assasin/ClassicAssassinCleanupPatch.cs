@@ -13,11 +13,6 @@ public static class ClassicAssassinCleanupPatch
     [RegisterEvent]
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
-        if (!ClassicAssassinSystem.IsActive)
-        {
-            return;
-        }
-
         if (!MeetingHud.Instance)
         {
             return;
@@ -42,12 +37,19 @@ public static class ClassicAssassinCleanupPatch
             return;
         }
 
-        if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+        if (ClassicAssassinSystem.IsActive)
         {
-            ClassicAssassinSystem.HideAllButtons();
-            return;
-        }
+            if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                ClassicAssassinSystem.HideAllButtons();
+                return;
+            }
 
-        ClassicAssassinSystem.HideForPlayer(target.PlayerId);
+            ClassicAssassinSystem.HideForPlayer(target.PlayerId);
+        }
+        else
+        {
+            ClassicAssassinSystem.TryRefreshTablet();
+        }
     }
 }

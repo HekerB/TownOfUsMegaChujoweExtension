@@ -1,4 +1,4 @@
-﻿using Il2CppInterop.Runtime.Attributes;
+using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
@@ -71,7 +71,7 @@ public sealed class InjectorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     {
         if (injector.Data.Role is not InjectorRole)
         {
-            Error("RpcInjectorInject - Invalid injector");
+            // ("RpcInjectorInject - Invalid injector");
             return;
         }
 
