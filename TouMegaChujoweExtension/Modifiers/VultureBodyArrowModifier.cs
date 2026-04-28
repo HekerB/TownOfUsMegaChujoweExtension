@@ -53,8 +53,7 @@ public sealed class VultureBodyArrowModifier(DeadBody deadBody, byte bodyId) : T
             return;
         }
 
-        var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(b => b.ParentId == BodyId);
-        if (body == null || body.gameObject == null || !body.gameObject.activeSelf)
+        if (DeadBody == null || DeadBody.gameObject == null || !DeadBody.gameObject.activeSelf)
         {
             ModifierComponent?.RemoveModifier(this);
             return;
@@ -64,7 +63,7 @@ public sealed class VultureBodyArrowModifier(DeadBody deadBody, byte bodyId) : T
 
         if (_arrow != null)
         {
-            var target = _elevatorTarget ?? body.transform.position;
+            var target = _elevatorTarget ?? DeadBody.transform.position;
             _arrow.target = target;
             _arrow.Update();
         }
@@ -72,8 +71,7 @@ public sealed class VultureBodyArrowModifier(DeadBody deadBody, byte bodyId) : T
 
     private void UpdateArrowTarget()
     {
-        var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(b => b.ParentId == BodyId);
-        if (body == null || Player == null)
+        if (DeadBody == null || Player == null)
         {
             return;
         }
@@ -81,7 +79,7 @@ public sealed class VultureBodyArrowModifier(DeadBody deadBody, byte bodyId) : T
         if (ModCompatibility.IsSubmerged())
         {
             var playerFloor = Player.transform.position.y > -7f;
-            var bodyFloor = body.transform.position.y > -7f;
+            var bodyFloor = DeadBody.transform.position.y > -7f;
 
             if (playerFloor != bodyFloor)
             {
@@ -97,29 +95,56 @@ public sealed class VultureBodyArrowModifier(DeadBody deadBody, byte bodyId) : T
         _elevatorTarget = null;
     }
 
+    private static Vector3[]? _cachedElevators;
+    private static int _lastMapId = -1;
+
     private Vector3? FindNearestElevator()
     {
         if (!ModCompatibility.IsSubmerged())
         {
             return null;
         }
-        try
+
+        var currentMapId = GameOptionsManager.Instance.currentNormalGameOptions.MapId;
+        if (_cachedElevators == null || _lastMapId != currentMapId)
         {
-            var allConsoles = Object.FindObjectsOfType<Console>();
-            foreach (var console in allConsoles)
+            try
             {
-                if (console.name.Contains("Elevator", System.StringComparison.OrdinalIgnoreCase))
+                var consoles = Object.FindObjectsOfType<Console>();
+                var elevators = new List<Vector3>();
+                foreach (var console in consoles)
                 {
-                    return console.transform.position;
+                    if (console != null && console.name != null && console.name.Contains("Elevator", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        elevators.Add(console.transform.position);
+                    }
                 }
+                _cachedElevators = elevators.ToArray();
+                _lastMapId = currentMapId;
+            }
+            catch
+            {
+                return new Vector3(0f, -7f, 0f);
             }
         }
-        catch
+
+        if (_cachedElevators == null || _cachedElevators.Length == 0) return null;
+
+        var playerPos = Player.transform.position;
+        Vector3? closest = null;
+        float minDist = float.MaxValue;
+
+        foreach (var elevator in _cachedElevators)
         {
-            return new Vector3(0f, -7f, 0f);
+            float dist = Vector3.Distance(playerPos, elevator);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closest = elevator;
+            }
         }
 
-        return null;
+        return closest;
     }
 
     public override void OnDeactivate()

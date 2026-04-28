@@ -30,13 +30,6 @@ public static class BountyHunterMeetingPatch
         if (BountyHunterSystem.HasWon) return;
         if (!BountyHunterSystem.Hunting) return;
 
-        var opts = OptionGroupSingleton<BountyHunterOptions>.Instance;
-        if (opts.DiesIfTargetNotKilled && !BountyHunterSystem.TargetKilledThisRound
-            && BountyHunterSystem.CurrentTarget != null)
-        {
-            bh.RpcCustomMurder(bh);
-            BountyHunterSystem.ClearArrowModifiers();
-        }
 
         BountyHunterSystem.TargetKilledThisRound = false;
     }

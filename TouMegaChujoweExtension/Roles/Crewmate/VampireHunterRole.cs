@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using UnityEngine;
@@ -19,6 +19,7 @@ using TownOfUs.Utilities;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Modules;
+using TownOfUs.Modifiers.Crewmate;
 using TownOfUs;
 
 
@@ -98,6 +99,7 @@ public sealed class VampireHunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITo
             VampireHunterBecomes.Sheriff => RoleId.Get<TownOfUs.Roles.Crewmate.SheriffRole>(),
             VampireHunterBecomes.Veteran => RoleId.Get<TownOfUs.Roles.Crewmate.VeteranRole>(),
             VampireHunterBecomes.Vigilante => RoleId.Get<TownOfUs.Roles.Crewmate.VigilanteRole>(),
+            VampireHunterBecomes.Hunter => RoleId.Get<TownOfUs.Roles.Crewmate.HunterRole>(),
             _ => (ushort)RoleTypes.Crewmate
         };
 

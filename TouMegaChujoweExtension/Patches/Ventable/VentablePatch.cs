@@ -4,6 +4,7 @@ using MiraAPI.Modifiers;
 using TouMegaChujoweExtension.Modifiers.Crewmate;
 using TouMegaChujoweExtension.Options.Modifiers;
 using TMPro;
+using TownOfUs.Assets;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Ventable;
@@ -69,6 +70,34 @@ public static class VentablePatch
         couldUse = inRange && clearPath;
         canUse = couldUse && mod.CooldownTimer <= 0f;
         __result = distance;
+    }
+
+    [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))]
+    [HarmonyPostfix]
+    public static void EnterVentPostfix(PlayerControl pc)
+    {
+        if (pc == null || !pc.AmOwner)
+            return;
+
+        var mod = pc.GetModifier<VentableModifier>();
+        if (mod == null)
+            return;
+
+        mod.VentsRemaining--;
+    }
+
+    [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent))]
+    [HarmonyPostfix]
+    public static void ExitVentPostfix(PlayerControl pc)
+    {
+        if (pc == null || !pc.AmOwner)
+            return;
+
+        var mod = pc.GetModifier<VentableModifier>();
+        if (mod == null)
+            return;
+
+        mod.CooldownTimer = OptionGroupSingleton<VentableModifierOptions>.Instance.VentCooldown.Value;
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
@@ -137,7 +166,18 @@ public static class VentablePatch
         if (ventButton.buttonLabelText != null)
             ventButton.buttonLabelText.outlineColor = Palette.CrewmateRoleHeaderBlue;
 
-        if (mod.IsShaking)
+        var usesCounter = GetOrCreateUsesCounter(ventButton);
+        if (usesCounter != null)
+        {
+            usesCounter.spriteRenderer.sprite = TouAssets.AbilityCounterVentSprite.LoadAsset();
+            usesCounter.textMesh.text = mod.VentsRemaining.ToString();
+            
+            // Show only if MaxVentUses > 1 (as requested "dependent on settings")
+            bool showCounter = OptionGroupSingleton<VentableModifierOptions>.Instance.MaxVentUses.Value > 1f;
+            usesCounter.gameObject.SetActive(showCounter);
+        }
+
+        if (mod != null && mod.IsShaking)
         {
             if (!_basePosSet)
             {
@@ -145,13 +185,17 @@ public static class VentablePatch
                 _basePosSet = true;
             }
 
-            float time = Time.time;
-            const float intensity = 0.02f;
+            float maxDuration = OptionGroupSingleton<VentableModifierOptions>.Instance.VentDuration.Value;
+            float remaining = Mathf.Max(0f, maxDuration - mod.VentDurationTimer);
 
-            ventButton.transform.localPosition = _buttonBasePos + new Vector3(
-                Mathf.Sin(time * 30f) * intensity,
-                Mathf.Cos(time * 25f) * intensity,
-                0f);
+            var urgency = Mathf.Clamp01((3f - remaining) / 3f);
+            var amp = Mathf.Lerp(0.01f, 0.06f, urgency);
+            var speed = Mathf.Lerp(18f, 35f, urgency);
+
+            var nx = Mathf.PerlinNoise(Time.time * speed, 0.123f) - 0.5f;
+            var ny = Mathf.PerlinNoise(0.456f, Time.time * speed) - 0.5f;
+
+            ventButton.transform.localPosition = _buttonBasePos + new Vector3(nx * amp, ny * amp, 0f);
         }
         else if (_basePosSet)
         {
@@ -217,11 +261,67 @@ public static class VentablePatch
         if (ventButton == null || ventButton.transform == null)
             return;
 
-        var existing = ventButton.transform.Find(TimerTextName);
-        if (existing != null && existing.gameObject != null)
-            existing.gameObject.SetActive(false);
+        var existingTimer = ventButton.transform.Find(TimerTextName);
+        if (existingTimer != null && existingTimer.gameObject != null)
+            existingTimer.gameObject.SetActive(false);
+
+        var existingCounter = ventButton.transform.Find("VentableUsesCounter");
+        if (existingCounter != null && existingCounter.gameObject != null)
+            existingCounter.gameObject.SetActive(false);
 
         _basePosSet = false;
+    }
+
+    private class UsesCounterRefs
+    {
+        public GameObject gameObject;
+        public SpriteRenderer spriteRenderer;
+        public TextMeshPro textMesh;
+    }
+
+    private static UsesCounterRefs? GetOrCreateUsesCounter(ActionButton ventButton)
+    {
+        if (ventButton == null || ventButton.transform == null)
+            return null;
+
+        var existing = ventButton.transform.Find("VentableUsesCounter");
+        if (existing != null)
+        {
+            return new UsesCounterRefs
+            {
+                gameObject = existing.gameObject,
+                spriteRenderer = existing.GetComponent<SpriteRenderer>(),
+                textMesh = existing.transform.Find("Text")?.GetComponent<TextMeshPro>()
+            };
+        }
+
+        // Try to find a source to clone from (like the kill button's uses counter)
+        var hud = HudManager.Instance;
+        if (hud == null) return null;
+
+        var killButton = hud.KillButton;
+        if (killButton == null || killButton.usesRemainingSprite == null) return null;
+
+        var counterObj = UnityEngine.Object.Instantiate(killButton.usesRemainingSprite.gameObject, ventButton.transform);
+        counterObj.name = "VentableUsesCounter";
+        counterObj.transform.localPosition = new Vector3(-0.35f, 0.35f, -1f); // Top left-ish
+        counterObj.transform.localScale = Vector3.one * 0.8f;
+
+        var sr = counterObj.GetComponent<SpriteRenderer>();
+        var text = counterObj.transform.Find("Text")?.GetComponent<TextMeshPro>();
+
+        if (text == null)
+        {
+            // If Text child is missing, try to find it in the clone or create it
+            text = counterObj.GetComponentInChildren<TextMeshPro>();
+        }
+
+        return new UsesCounterRefs
+        {
+            gameObject = counterObj,
+            spriteRenderer = sr,
+            textMesh = text
+        };
     }
 
     private static TextMeshPro? GetOrCreateTimerText(ActionButton ventButton)

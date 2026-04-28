@@ -14,6 +14,10 @@ using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
 using MiraAPI.Keybinds;
+using TownOfUs.Events;
+using TownOfUs.Options;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 
 namespace TouMegaChujoweExtension.Buttons.Neutral;
 
@@ -31,9 +35,7 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
         get
         {
             var opts = OptionGroupSingleton<BountyHunterOptions>.Instance;
-            float cd = opts.UseImpostorKillCd
-                ? GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown
-                : opts.KillCooldown.Value;
+            float cd = opts.KillCooldown.Value;
             return Math.Clamp(cd + MapCooldown, 5f, 120f);
         }
     }
@@ -101,6 +103,25 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
     {
         base.FixedUpdate(rolePlayer);
         RefreshKillCounter();
+    }
+
+    public override void ClickHandler()
+    {
+        if (!CanClick()) return;
+        if (Target == null) return;
+
+        var player = PlayerControl.LocalPlayer;
+        if (player == null) return;
+
+        var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
+        MiraEventManager.InvokeEvent(beforeMurderEvent);
+        
+        if (beforeMurderEvent.IsCancelled)
+        {
+            return;
+        }
+
+        OnClick();
     }
 
     protected override void OnClick()

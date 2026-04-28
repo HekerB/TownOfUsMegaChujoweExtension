@@ -7,6 +7,10 @@ using TouMegaChujoweExtension.Roles.Impostor;
 using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Utilities;
+using TownOfUs.Events;
+using TownOfUs.Options;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Impostor;
@@ -16,7 +20,7 @@ public sealed class KamikazeKillButton : TownOfUsKillRoleButton<KamikazeRole, Pl
     public override string Name => TranslationController.Instance.GetStringWithDefault(StringNames.KillLabel, "Kill");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => Palette.ImpostorRed;
-    public override float Cooldown => OptionGroupSingleton<KamikazeOptions>.Instance.KillCooldown;
+    public override float Cooldown => PlayerControl.LocalPlayer?.GetKillCooldown() ?? 25f;
     public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
 
     public void SetDiseasedTimer(float multiplier)
@@ -48,6 +52,26 @@ public sealed class KamikazeKillButton : TownOfUsKillRoleButton<KamikazeRole, Pl
         }
 
         return true;
+    }
+
+    public override void ClickHandler()
+    {
+        if (!CanClick()) return;
+        if (Target == null) return;
+
+        var player = PlayerControl.LocalPlayer;
+        if (player == null) return;
+
+        var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
+        MiraEventManager.InvokeEvent(beforeMurderEvent);
+        
+        if (beforeMurderEvent.IsCancelled)
+        {
+            return;
+        }
+
+        OnClick();
+        Timer = Cooldown;
     }
 
     protected override void OnClick()

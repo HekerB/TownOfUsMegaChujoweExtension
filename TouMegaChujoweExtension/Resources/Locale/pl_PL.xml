@@ -182,6 +182,7 @@
   <string name="ExtensionOptionShifterBecomesCrewmate">Crewmate</string>
   <string name="ExtensionOptionShifterBecomesShifter">Shifter</string>
   <string name="ExtensionOptionShifterStealModifiers">Zabierz modyfikatory</string>
+  <string name="ExtensionOptionShifterWinsWithCrew">Wygrywa z Crew</string>
   
   <!-- Lawyer Win -->
   <string name="ExtensionLawyerWin">Wygrywa</string>
@@ -207,22 +208,27 @@
   <!-- Serial Killer Role -->
   <string name="ExtensionRoleSerialKiller">Serial Killer</string>
   <string name="ExtensionRoleSerialKillerIntroBlurb">Zabij wszystkich, wygraj samotnie.</string>
-  <string name="ExtensionRoleSerialKillerTabDescription">Zabij wszystkich, aby wygrac samotnie.\%nl\%Mozesz zabijac graczy w wentylacjach, ale po zrobieniu tego stracisz mozliwosc uzywania wentylacji.</string>
-  <string name="ExtensionRoleSerialKillerWikiDescription">Serial Killer to rola Neutral Killing, ktorej jedynym celem jest zabicie wszystkich i samotna wygrana. Serial Killer moze opcjonalnie zabijac graczy, ktorzy sa z nim w wentylacji, ale po tym traci mozliwosc uzywania wentylacji do konca gry.</string>
+  <string name="ExtensionRoleSerialKillerTabDescription">Zabij wszystkich, aby wygrac samotnie.\%nl\%Kazde zabojstwo trwale skraca twoj cooldown.\%nl\%Mozesz zabijac w wentylacjach (tracisz je po uzyciu).</string>
+  <string name="ExtensionRoleSerialKillerWikiDescription">Serial Killer to rola Neutral Killing. Kazde zabojstwo progresywnie skraca jego cooldown (ukryty bonus). \%nl\%Moze zabijac graczy bedac z nimi w wentylacji, ale po takim ataku traci mozliwosc uzywania ventow do konca gry.</string>
   
   <!-- Serial Killer Options -->
   <string name="ExtensionOptionSerialKillerCanReportBodies">Moze zglaszac ciala</string>
+  <string name="ExtensionOptionSerialKillerKillCooldownReductionEnabled">Progresywna redukcja cooldownu</string>
+  <string name="ExtensionOptionSerialKillerKillCooldownReductionPerKill">Zmniejszenie cooldownu za kazde zabojstwo</string>
+  <string name="ExtensionOptionSerialKillerMinimumKillCooldown">Maksymalny cooldown zabojstwa</string>
   <string name="ExtensionOptionSerialKillerVentKillTargets">Cele zabojstwa w wentylacji</string>
   <string name="ExtensionOptionSerialKillerVentKillTargetsEnumImpostors">Impostorzy</string>
   <string name="ExtensionOptionSerialKillerVentKillTargetsEnumImpNK">Impostorzy + Neutral Killing</string>
   <string name="ExtensionOptionSerialKillerVentKillTargetsEnumImpNeutrals">Impostorzy + Neutralni</string>
   <string name="ExtensionOptionSerialKillerVentKillTargetsEnumAny">Dowolni</string>
+  <string name="ExtensionRoleSerialKillerTabKillCounter">Zabójstwa: &lt;count&gt;</string>
   <string name="ExtensionOptionSerialKillerManiacMode">Tryb Maniac</string>
   <string name="ExtensionOptionSerialKillerManiacTimer">Licznik Maniac</string>
   <string name="ExtensionOptionSerialKillerManiacCooldown">Cooldown zabojstwa</string>
   
-  <!-- Serial Killer Maniac Modifier -->
+  <!-- Serial Killer Modifiers -->
   <string name="ExtensionModifierSerialKillerManiac">Maniac</string>
+  <string name="ExtensionModifierSerialKillerReduction">Redukcja Cooldownu</string>
 
   <!-- Serial Killer Death Message -->
   <string name="DiedToSerialKiller">Zamordowany</string>
@@ -290,7 +296,7 @@
   <!-- Joker Role -->
   <string name="ExtensionRoleJoker">Joker</string>
   <string name="ExtensionRoleJokerIntroBlurb">Zmyl zabojcow, aby atakowali twoje klony!</string>
-  <string name="ExtensionRoleJokerTabDescription">Umieszczaj klony innych graczy na mapie.%nl%Jesli role zabijajace wyeliminuja wystarczajaco duzo klonow, wygrywasz!%nl%Klony blokuja zwykle interakcje.</string>
+  <string name="ExtensionRoleJokerTabDescription">Umieszczaj klony innych graczy na mapie.%nl\%Jesli role zabijajace wyeliminuja wystarczajaco duzo klonow, wygrywasz!%nl\%Klony blokuja zwykle interakcje.</string>
   <string name="ExtensionRoleJokerWikiDescription">Joker moze umieszczac klony wybranego gracza na mapie. Jesli role zabijajace wyeliminuja wystarczajaco duzo klonow, wygrywasz!</string>
 
   <string name="ExtensionRoleJokerPlaceClone">Postaw klona</string>
@@ -363,6 +369,7 @@
   
   <!-- Witch Options -->
   <string name="ExtensionOptionWitchSpellCooldown">Cooldown zaklecia</string>
+  <string name="ExtensionOptionWitchCanSpellFirstRound">Moze uzywac czaru w 1 rundzie</string>
   <string name="ExtensionOptionWitchAdditionalCooldown">Dodatkowy cooldown Witch</string>
   <string name="ExtensionOptionWitchSpellCastingDuration">Czas rzucania zaklecia Witch</string>
   <string name="ExtensionOptionWitchMeetingsUntilDeath">Liczba spotkan do smierci</string>
@@ -458,8 +465,8 @@
   <!-- Evoker Role -->
   <string name="ExtensionRoleEvoker">Evoker</string>
   <string name="ExtensionRoleEvokerIntroBlurb">Oslep zabojcow i ujawnij ich!</string>
-  <string name="ExtensionRoleEvokerTabDescription">Aktywuj Blind, aby oslepic wszystkie role zabijajace. Verify graczy, aby sprawdzic, czy sa zabojcami.</string>
-  <string name="ExtensionRoleEvokerWikiDescription">Twoja umiejetnosc pozwala oslepic wszystkie role zabijajace, uniemozliwiajac im zabijanie i sprawiajac, ze wszyscy wygladaja tak samo. Podczas Evoke mozesz sprawdzic, czy dana osoba jest zabojca czy nie.</string>
+  <string name="ExtensionRoleEvokerTabDescription">Aktywuj Blind, aby oslepic i ogluszyc (Nausea) zabojcow. Verify graczy, aby sprawdzic ich role.</string>
+  <string name="ExtensionRoleEvokerWikiDescription">Twoja umiejetnosc pozwala oslepic i ogluszyc (efekt Nausea) wszystkie role zabijajace. Podczas Blind mozesz sprawdzac (Verify), czy dana osoba jest zabojca. Calosc jest zoptymalizowana dla maksymalnej wydajnosci FPS.</string>
   <string name="ExtensionRoleEvokerBlind">Blind</string>
   <string name="ExtensionRoleEvokerBlindWikiDescription">Aktywuj, aby oslepic wszystkie role zabijajace. Podczas oslepienia wszystkie role zabijajace nie moga zabijac ani uzywac umiejetnosci i widza same siebie.</string>
   <string name="ExtensionRoleEvokerVerify">Verify</string>
@@ -659,6 +666,7 @@
   <string name="ExtensionRoleCharlatanConcealWikiDescription">Zmniejsz zasieg zgloszenia pobliskich cial. Musisz pozostac przy ciele przez caly czas trwania, aby skutecznie je ukryc.</string>
 
   <!-- Charlatan Options -->
+  <string name="ExtensionOptionCharlatanDeceiveEnabled">Oszustwo wlaczone</string>
   <string name="ExtensionOptionCharlatanDeceiveBaseDuration">Podstawowy czas trwania Deceive</string>
   <string name="ExtensionOptionCharlatanDeceiveDurationIncreasePerKill">Zwiekkszenie czasu trwania Deceive za zabojstwo</string>
   <string name="ExtensionOptionCharlatanConcealUses">Uzycia Conceal</string>
@@ -673,8 +681,8 @@
   <!-- Vulture Role -->
   <string name="ExtensionRoleVulture">Vulture</string>
   <string name="ExtensionRoleVultureIntroBlurb">Zjadaj martwe ciala, aby wygrac samotnie.</string>
-  <string name="ExtensionRoleVultureTabDescription">Zjadaj martwe ciala, aby wygrac samotnie.</string>
-  <string name="ExtensionRoleVultureWikiDescription">Vulture to rola Neutral Evil, ktorej celem jest zjedzenie okreslonej liczby martwych cial. Opcjonalnie Vulture moze uzywac Scavenge, aby dostac strzalki wskazujace zwloki. Jesli warunek wygranej Vulture nie moze juz zostac spelniony, staje sie skonfigurowana rola.</string>
+  <string name="ExtensionRoleVultureTabDescription">Zjadaj ciala [Q], aby wygrac. Scavenge [F] pokazuje strzalki.</string>
+  <string name="ExtensionRoleVultureWikiDescription">Celem Vulture jest zjedzenie okreslonej liczby cial. Uzywaj [Q] do jedzenia i [F] do namierzania zwlok. Układ przycisków: Eat (Góra-Lewo), Scavenge (Prawo), Vent (Dół).</string>
   <string name="ExtensionRoleVultureEat">Zjedz</string>
   <string name="ExtensionRoleVultureEatWikiDescription">Zjedz pobliskie martwe cialo. Liczy sie to do twojego warunku wygranej.</string>
   <string name="ExtensionRoleVultureScavenge">Scavenge</string>
@@ -689,7 +697,16 @@
   <string name="ExtensionOptionVultureScavengeEnabled">Scavenge wlaczone</string>
   <string name="ExtensionOptionVultureScavengeCooldown">Cooldown Scavenge</string>
   <string name="ExtensionOptionVultureScavengeDuration">Czas trwania Scavenge</string>
-  <string name="ExtensionOptionVultureOnLoseBecomes">Po przegranej Vulture staje sie</string>
+  <string name="ExtensionOptionVultureOnLoseBecomes">W razie przegranej, Vulture staje sie</string>
+
+  <!-- Schrodinger's Cat Role -->
+  <string name="ExtensionRoleSchrodingersCat">Kot Schrodingera</string>
+  <string name="ExtensionRoleSchrodingersCatIntroBlurb">Przezyj probe zabojstwo, aby dolaczyc do druzyny atakujacego.</string>
+  <string name="ExtensionRoleSchrodingersCatTabDescription">Pierwszy gracz, ktory sprobuje Cie zabic, zamiast tego Cie adoptuje. Dolaczysz do jego druzyny i wygrasz wraz z nim. Po adopcji mozesz zostac zabity normalnie przez kazdego, z wyjatkiem Twojego opiekuna.</string>
+  <string name="ExtensionRoleSchrodingersCatWikiDescription">Kot Schrodingera to rola Neutral Benign. Pierwszy zabojca, ktory zaatakuje Kota, nie zabije go — zamiast tego Kot dolacza do druzyny tego zabojcy. Zarowno Kot, jak i zabojca otrzymuja powiadomienie. Po adopcji Kot moze zostac zabity normalnie przez KAZDEGO INNEGO niz jego opiekun. Kot wygrywa, jesli druzyna jego opiekuna wygra, a Kot wciaz zyje.</string>
+
+  <!-- Schrodinger's Cat Options -->
+  <string name="ExtensionOptionCatCanBeAdoptedByNK">Moze zostac zaadoptowany przez NK</string>
 
   <!-- Spiteful Modifier -->
   <string name="ExtensionModifierSpiteful">Spiteful</string>
@@ -749,7 +766,6 @@
   <string name="ExtensionOptionBHTargetsToKill">Liczba celow do zabicia przez BH</string>
   <string name="ExtensionOptionBHShowArrow">Pokaz strzalke do celu</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Interwal odswiezania strzalki</string>
-  <string name="ExtensionOptionBHDiesIfNotKilled">BH umiera, jesli cel nie zostanie zabity</string>
   <string name="ExtensionOptionBHGameContinues">Gra trwa bez innych zabojcow</string>
   <string name="ExtensionOptionBHWinMode">Tryb wygranej</string>
   <string name="ExtensionOptionBHWinModeEnumSoloWin">Samotna wygrana (konczy gre)</string>
@@ -770,8 +786,8 @@
   <!-- Poisoner Role -->
   <string name="ExtensionRolePoisoner">Poisoner</string>
   <string name="ExtensionRolePoisonerIntroBlurb">Truj i pnij swoich wrogow</string>
-  <string name="ExtensionRolePoisonerTabDescription">Uzyj Poison, aby powoli zabijac graczy, do ktorych sie zblizysz.\%nl\%Uzyj Vine, aby zdalnie zabic najblizszego gracza w zasiegu.</string>
-  <string name="ExtensionRolePoisonerWikiDescription">Impostor, ktory moze zatruwac graczy przy kontakcie albo uzywac pnaczy do zabijania z dystansu.</string>
+  <string name="ExtensionRolePoisonerTabDescription">Truj [Lewo] i uzywaj pnaczy [Prawo]. Vent jest na srodku.</string>
+  <string name="ExtensionRolePoisonerWikiDescription">Impostor z układem przycisków Zerkaa. Poison (Lewo), Vent (Srodek), Vine (Prawo). Posiada agresywny efekt drgania przycisków (Flicker Banger) podczas aktywacji.</string>
   <string name="ExtensionRolePoisonerPoison">Poison</string>
   <string name="ExtensionRolePoisonerPoisonWikiDescription">Podejdz do gracza i go zatruj. Umrze po opoznieniu.</string>
   <string name="ExtensionRolePoisonerVine">Vine</string>
@@ -945,6 +961,7 @@
   <string name="ExtensionOptionVHMinVampires">Minimalna liczba Vampires do pojawienia sie</string>
   <string name="ExtensionOptionVHEnabled">Vampire Hunter wlaczony</string>
   <string name="ExtensionOptionVHChance">Szansa pojawienia sie Vampire Hunter</string>
+  <string name="VampireHunterBecomesHunter">Hunter</string>
 
   <!-- Kamikaze Role -->
   <string name="ExtensionRoleKamikaze">Kamikaze</string>
@@ -978,37 +995,35 @@
 
   <!-- TOUMCE Wiki Terms - Symbols -->
   <string name="TOUMCETermsSymbolsTitle">Symbole TOUMCE</string>
-  <string name="TOUMCETermsSymbolsInfo">Symbole TouMegaChujoweExtension • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Gracz kanonizowany przez Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Gracz ustawiony jako pulapka przez Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;✶&lt;/b&gt;&lt;/color&gt; - Gracz wpisany do Death Note • &lt;color=#77B962&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Gracz chroniony przez Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Gracz otruty przez Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Klient Lawyer • &lt;color=#C0C0C0&gt;&lt;b&gt;¤&lt;/b&gt;&lt;/color&gt; - Gracz przeklety przez Witch</string>
+  <string name="TOUMCETermsSymbolsInfo">Glosariusz symboli TOUMCE • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Gracz kanonizowany przez Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Gracz ustawiony jako pułapka przez Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;✶&lt;/b&gt;&lt;/color&gt; - Gracz wpisany do Death Note • &lt;color=#77B962&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Gracz chroniony przez Bodyguarda • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Gracz otruty przez Poisonera • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Klient Lawyera • &lt;color=#C0C0C0&gt;&lt;b&gt;¤&lt;/b&gt;&lt;/color&gt; - Gracz przeklęty przez Witch</string>
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
-  <string name="TOUMCETermsShieldFlashesTitle">Ogolne blyski tarcz</string>
-  <string name="TOUMCETermsShieldFlashesInfo">Gdy zabojstwo zostaje zablokowane przez tarcze, zabojca widzi kolorowy blysk wskazujacy, ktora rola zapewnila ochrone: • &lt;color=#006600&gt;&lt;b&gt;Ciemnozielony&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Fioletowy&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyjan/Turkusowy&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Srebrnoniebieski&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Jasnoniebieski&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Malwa&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#77B962&gt;&lt;b&gt;Zielony&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (na meetingu) • &lt;color=#00FF7F&gt;&lt;b&gt;Wiosenna Zielen&lt;/b&gt;&lt;/color&gt; - Doctor</string>
+  <string name="TOUMCETermsShieldFlashesTitle">Błyski tarczy</string>
+  <string name="TOUMCETermsShieldFlashesInfo">Gdy zabójstwo zostanie zablokowane przez tarczę, zabójca widzi kolorowy błysk wskazujący rolę: • &lt;color=#006600&gt;&lt;b&gt;Ciemnozielony&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Fioletowy&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyjan/Turkusowy&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Srebrnoniebieski&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Jasnoniebieski&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Malwa&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#77B962&gt;&lt;b&gt;Zielony&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (ochrona na meetingu) • &lt;color=#00FF7F&gt;&lt;b&gt;Wiosenna Zieleń&lt;/b&gt;&lt;/color&gt; - Doctor</string>
 
   <!-- TOUMCE Wiki Terms - Draft Mode -->
-  <string name="TOUMCETermsDraftModeTitle">Tryb Draft</string>
-  <string name="TOUMCETermsDraftModeInfo">&lt;b&gt;Tryb Draft&lt;/b&gt; zastepuje normalne przydzielanie rol strategiczna faza wyboru przed rozpoczeciem gry.
-• Gracze zostaja przypisani do strony (&lt;color=#4DA6FF&gt;&lt;b&gt;Crewmate&lt;/b&gt;&lt;/color&gt;, &lt;color=#FF3B3B&gt;&lt;b&gt;Impostor&lt;/b&gt;&lt;/color&gt; lub &lt;color=#7F7F7F&gt;&lt;b&gt;Neutral&lt;/b&gt;&lt;/color&gt;), a nastepnie wybieraja swoja konkretna role w losowej kolejnosci.
-• Kazdy gracz otrzymuje 3 unikalne role do wyboru. Widzowie sa wykluczeni z procesu i nie zajmuja slotow wyboru.
-• Jesli nie dokonasz wyboru na czas, gra automatycznie przydzieli Ci role pasujaca do Twojej druzyny.
-• Domyslnie &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmate&lt;/b&gt;&lt;/color&gt; oraz &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybieraja z wyspecjalizowanych podkategorii (np. Investigative, Power, Killing).
-• Na drafcie moga byc takze wlaczone szanse (Respect Role Chances), co sprawia ze role pojawiaja sie zgodnie z ich szansami w lobby.</string>
+  <string name="TOUMCETermsDraftModeTitle">Tryb Draftu</string>
+  <string name="TOUMCETermsDraftModeInfo">Draft Mode to alternatywny sposób przydzielania ról:
+• Gracze są przypisywani do strony (&lt;color=#4DA6FF&gt;&lt;b&gt;Złoga&lt;/b&gt;&lt;/color&gt;, &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt;, lub &lt;color=#7F7F7F&gt;&lt;b&gt;Neutralni&lt;/b&gt;&lt;/color&gt;), a następnie wybierają rolę w losowej kolejności tur.
+• Każdy gracz otrzymuje do wyboru 3 unikalne role. Widzowie są wykluczeni z procesu.
+• Jeśli nie wybierzesz roli w wyznaczonym czasie, zostanie ona przydzielona automatycznie.
+• Domyślnie &lt;color=#4DA6FF&gt;&lt;b&gt;Złoganci&lt;/b&gt;&lt;/color&gt; i &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybierają ze specjalistycznych kategorii.</string>
 
   <!-- TOUMCE Wiki Terms - Draft Factions -->
   <string name="TOUMCETermsDraftFactionsTitle">Frakcje Draftu</string>
-  <string name="TOUMCETermsDraftFactionsInfo">Przed rozpoczeciem draftu gracze zostaja przypisani do frakcji, ktora okresla ich dostepna pule rol.
-• &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybieraja sposrod roznych wyspecjalizowanych kategorii Impostora.
-• &lt;color=#4DA6FF&gt;&lt;b&gt;Zaloganci&lt;/b&gt;&lt;/color&gt; dokonuja wyboru z wielu grup (np. Investigative, Protective, Power).
-• &lt;color=#FFD700&gt;&lt;b&gt;Random Neutral&lt;/b&gt;&lt;/color&gt; oferuje zbalansowany zestaw rol. Domyslnie masz 70% szans na 2 role &lt;b&gt;Neutral Benign&lt;/b&gt;, 15% na &lt;b&gt;Neutral Outlier&lt;/b&gt; oraz 15% na &lt;b&gt;Neutral Evil&lt;/b&gt;.
+  <string name="TOUMCETermsDraftFactionsInfo">Przed rozpoczęciem draftu gracze zostają przypisani do frakcji:
+• &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybierają spośród różnych kategorii Impostora.
+• &lt;color=#4DA6FF&gt;&lt;b&gt;Zaloganci&lt;/b&gt;&lt;/color&gt; dokonuja wyboru z grup takich jak Investigative czy Protective.
+• &lt;color=#FFD700&gt;&lt;b&gt;Random Neutral&lt;/b&gt;&lt;/color&gt; oferuje zestaw ról Neutralnych. Domyślnie masz 70% szans na 2 role &lt;b&gt;Neutral Benign&lt;/b&gt;, 15% na &lt;b&gt;Neutral Outlier&lt;/b&gt; oraz 15% na &lt;b&gt;Neutral Evil&lt;/b&gt;.
  
-• Ustawienia &lt;b&gt;Neutral&lt;/b&gt; w lobby kontroluja &lt;b&gt;Max&lt;/b&gt; liczbe graczy przypisanych do frakcji Benign, Evil oraz Killing.
+• Ustawienia &lt;b&gt;Neutral&lt;/b&gt; w lobby kontrolują &lt;b&gt;Maksymalną&lt;/b&gt; liczbę graczy przypisanych do frakcji Benign, Evil oraz Killing.
  
-Jesli opcja &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy wybieraja ze wszystkich klas&lt;/b&gt;&lt;/color&gt; lub &lt;color=#4DA6FF&gt;&lt;b&gt;Zaloganci wybieraja ze wszystkich klas&lt;/b&gt;&lt;/color&gt; jest wlaczona, gracze moga wybierac z dowolnej dostepnej kategorii dla swojej strony.
-• Domyslnie te opcje sa &lt;b&gt;wylaczone&lt;/b&gt;.</string>
+Jeśli opcja &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy wybierają ze wszystkich klas&lt;/b&gt;&lt;/color&gt; jest włączona, gracze mogą wybierać z dowolnej dostępnej kategorii.</string>
 
   <!-- TOUMCE Wiki Terms - Game Settings -->
   <string name="TOUMCETermsGameSettingsTitle">Ustawienia Gry</string>
-  <string name="TOUMCETermsGameSettingsInfo">TOUMCE wprowadza kilka globalnych ustawien zmieniajacych przebieg gry:
-• &lt;b&gt;Lock Lobby During Draft&lt;/b&gt; - Zapobiega dolaczaniu nowych graczy w trakcie trwania draftu, aby zapewnic stabilnosc.
-• &lt;b&gt;Respect Role Chances&lt;/b&gt; - Jesli wlaczone, prawdopodobienstwo pojawienia sie rol w drafcie bedzie oparte na ich indywidualnych ustawieniach szans (Chance) w lobby.
-• &lt;b&gt;Draft Timer&lt;/b&gt; - Okresla, ile czasu ma kazdy gracz na dokonanie strategicznego wyboru.</string>
+  <string name="TOUMCETermsGameSettingsInfo">TOUMCE wprowadza globalne ustawienia zmieniające przebieg gry:
+• &lt;b&gt;Blokada Lobby podczas Draftu&lt;/b&gt; - Zapobiega dołączaniu nowych graczy w trakcie wyboru ról.
+• &lt;b&gt;Respektuj Szanse Ról&lt;/b&gt; - Jeśli włączone, prawdopodobieństwo wystąpienia roli w drafcie opiera się na jej ustawieniach szans w lobby.
+• &lt;b&gt;Czas Draftu&lt;/b&gt; - Określa, ile sekund ma każdy gracz na dokonanie wybóru.</string>
 </resources>

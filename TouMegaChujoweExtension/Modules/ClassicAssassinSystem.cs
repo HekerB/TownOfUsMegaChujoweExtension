@@ -5,8 +5,10 @@ using MiraAPI.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using TouMegaChujoweExtension.Assets;
+using TouMegaChujoweExtension.Utilities;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Modifiers.Neutral;
+using TouMegaChujoweExtension.Modifiers.Universal;
 using TouMegaChujoweExtension.Options.Modifiers;
 using TouMegaChujoweExtension.Options.Roles.Impostor;
 using TouMegaChujoweExtension.Roles.Crewmate;
@@ -524,10 +526,13 @@ public static class ClassicAssassinSystem
     private static bool IsModifierValid(BaseModifier modifier, AssassinOptions options)
     {
         if (modifier is DeathNoteModifier)
-            return OptionGroupSingleton<DeathNoteModifierOptions>.Instance.DeathNoteGuessable;
+            return true;
 
         if (modifier is VenomousModifier)
-            return OptionGroupSingleton<VenomousModifierOptions>.Instance.VenomousGuessable;
+            return true;
+
+        if (modifier is ChildModifier)
+            return false;
 
         if (modifier is TouGameModifier touMod &&
             (touMod.CustomAmount <= 0 || touMod.CustomChance <= 0))
@@ -563,10 +568,13 @@ public static class ClassicAssassinSystem
     private static bool IsModifierValidForVigilante(BaseModifier modifier)
     {
         if (modifier is DeathNoteModifier)
-            return OptionGroupSingleton<DeathNoteModifierOptions>.Instance.DeathNoteGuessable;
+            return true;
 
         if (modifier is VenomousModifier)
-            return OptionGroupSingleton<VenomousModifierOptions>.Instance.VenomousGuessable;
+            return true;
+
+        if (modifier is ChildModifier)
+            return false;
 
         var isValid =
             !((modifier is TouGameModifier touMod && (touMod.CustomAmount <= 0 || touMod.CustomChance <= 0)) ||
@@ -630,6 +638,9 @@ public static class ClassicAssassinSystem
         if (player.HasModifier<TownOfUs.Modifiers.Crewmate.JailedModifier>())
             return true;
 
+        if (player.TryGetModifier<ChildModifier>(out var child) && !child.IsAdult)
+            return true;
+
         return false;
     }
 
@@ -645,7 +656,8 @@ public static class ClassicAssassinSystem
                (player != null && IsMayorRevealed(player)) ||
                (player != null && player.IsRevealed()) ||
                (player != null && IsForestallerRevealed(player)) ||
-               (vigilante.Player.IsLover() && player?.IsLover() == true);
+               (vigilante.Player.IsLover() && player?.IsLover() == true) ||
+               (player != null && player.TryGetModifier<ChildModifier>(out var child) && !child.IsAdult);
     }
 
     private static bool IsExempt(PlayerVoteArea voteArea, DoomsayerRole doomsayer)
@@ -660,7 +672,8 @@ public static class ClassicAssassinSystem
                (player != null && IsMayorRevealed(player)) ||
                (player != null && player.IsRevealed()) ||
                (player != null && IsForestallerRevealed(player)) ||
-               (doomsayer.Player.IsLover() && player?.IsLover() == true);
+               (doomsayer.Player.IsLover() && player?.IsLover() == true) ||
+               (player != null && player.TryGetModifier<ChildModifier>(out var child) && !child.IsAdult);
     }
 
     // =========================
@@ -713,6 +726,7 @@ public static class ClassicAssassinSystem
             victim.TryGetModifier<TownOfUs.Modifiers.Crewmate.OracleBlessedModifier>(out var oracleMod))
         {
             OracleRole.RpcOracleBlessNotify(PlayerControl.LocalPlayer, oracleMod.Oracle, victim);
+            ShieldUtils.TriggerShieldFlash(PlayerControl.LocalPlayer, ShieldType.Oracle);
             HideSingle(targetId);
             return;
         }
@@ -783,6 +797,7 @@ public static class ClassicAssassinSystem
             victim.TryGetModifier<TownOfUs.Modifiers.Crewmate.OracleBlessedModifier>(out var oracleMod))
         {
             OracleRole.RpcOracleBlessNotify(PlayerControl.LocalPlayer, oracleMod.Oracle, victim);
+            ShieldUtils.TriggerShieldFlash(PlayerControl.LocalPlayer, ShieldType.Oracle);
             HideSingle(targetId);
             return;
         }
@@ -856,6 +871,7 @@ public static class ClassicAssassinSystem
         if (victim.TryGetModifier<TownOfUs.Modifiers.Crewmate.OracleBlessedModifier>(out var oracleMod))
         {
             OracleRole.RpcOracleBlessNotify(PlayerControl.LocalPlayer, oracleMod.Oracle, victim);
+            ShieldUtils.TriggerShieldFlash(PlayerControl.LocalPlayer, ShieldType.Oracle);
             HideSingle(targetId);
             return;
         }

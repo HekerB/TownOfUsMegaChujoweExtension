@@ -1,11 +1,15 @@
+using System.Text;
 using AmongUs.GameOptions;
+using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TouMegaChujoweExtension.Modifiers;
+using TouMegaChujoweExtension.Modifiers.Neutral;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
+using TownOfUs;
 using TownOfUs.Assets;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
@@ -20,6 +24,7 @@ namespace TouMegaChujoweExtension.Roles.Neutral;
 
 public sealed class SerialKillerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
+    public int KillCount { get; set; }
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "SerialKiller";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
@@ -44,6 +49,16 @@ public sealed class SerialKillerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         Icon = TouRoleIcons.SerialKiller,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
     };
+    
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        var stringB = ITownOfUsRole.SetNewTabText(this);
+        var killsText = TouLocale.GetParsed("ExtensionRoleSerialKillerTabKillCounter", "Kills: <count>");
+        stringB.Append(TownOfUsPlugin.Culture, $"\n<b>{killsText.Replace("<count>", $"{KillCount}")}</b>");
+
+        return stringB;
+    }
 
     public bool WinConditionMet()
     {
@@ -67,10 +82,34 @@ public sealed class SerialKillerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
             Player.AddModifier<SerialKillerNoReportModifier>();
         }
 
-        if (Player.AmOwner && OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacMode)
+        var options = OptionGroupSingleton<SerialKillerOptions>.Instance;
+        if (options.ManiacMode)
         {
-            var options = OptionGroupSingleton<SerialKillerOptions>.Instance;
             Player.AddModifier<SerialKillerManiacModifier>(options.ManiacTimer.Value, options.ManiacCooldown.Value);
+        }
+        UpdateReductionModifier();
+    }
+
+    public void UpdateReductionModifier()
+    {
+        var options = OptionGroupSingleton<SerialKillerOptions>.Instance;
+        if (!options.KillCooldownReductionEnabled || KillCount <= 0)
+        {
+            if (Player.HasModifier<SerialKillerReductionModifier>())
+            {
+                Player.RemoveModifier<SerialKillerReductionModifier>();
+            }
+            return;
+        }
+
+        var reduction = options.KillCooldownReductionPerKill.Value * KillCount;
+        if (Player.TryGetModifier<SerialKillerReductionModifier>(out var mod))
+        {
+            mod.ReductionAmount = reduction;
+        }
+        else
+        {
+            Player.AddModifier<SerialKillerReductionModifier>(reduction);
         }
     }
 

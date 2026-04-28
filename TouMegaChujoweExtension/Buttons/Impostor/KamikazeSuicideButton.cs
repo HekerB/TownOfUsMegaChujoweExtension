@@ -46,7 +46,7 @@ public sealed class KamikazeSuicideButton : TownOfUsRoleButton<KamikazeRole>
         KamikazeRole.RpcKamikazeDetonate(player);
 
         CustomButtonSingleton<KamikazeKillButton>.Instance.SetTimer(
-            OptionGroupSingleton<KamikazeOptions>.Instance.KillCooldown);
+            player.GetKillCooldown());
     }
 
     protected override void FixedUpdate(PlayerControl playerControl)

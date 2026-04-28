@@ -26,7 +26,22 @@ public sealed class VultureEatButton : TownOfUsRoleButton<VultureRole, DeadBody>
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<VultureOptions>.Instance.EatCooldown + MapCooldown, 5f, 120f);
     public override float EffectDuration => 0f;
     public override LoadableAsset<Sprite> Sprite => TouExtensionNeuAssets.VultureEatButtonSprite;
+
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        Reactor.Utilities.Coroutines.Start(CoMoveWithDelay());
+    }
+
+    private IEnumerator CoMoveWithDelay()
+    {
+        yield return null; 
+        yield return MiscUtils.CoMoveButtonIndex(this, false);
+    }
     public override float Distance => 1.5f;
+
+    private static DeadBody[]? _allBodiesCache;
+    private static float _lastCacheTime;
 
     public override DeadBody? GetTarget()
     {
@@ -35,14 +50,19 @@ public sealed class VultureEatButton : TownOfUsRoleButton<VultureRole, DeadBody>
             return null;
         }
 
+        if (_allBodiesCache == null || Time.time - _lastCacheTime > 0.1f)
+        {
+            _allBodiesCache = Object.FindObjectsOfType<DeadBody>();
+            _lastCacheTime = Time.time;
+        }
+
         var player = PlayerControl.LocalPlayer;
-        var allBodies = Object.FindObjectsOfType<DeadBody>();
         DeadBody? closest = null;
         var closestDistance = float.MaxValue;
 
-        foreach (var body in allBodies)
+        foreach (var body in _allBodiesCache)
         {
-            if (VultureSystem.IsBodyEaten(body.ParentId))
+            if (body == null || VultureSystem.IsBodyEaten(body.ParentId))
             {
                 continue;
             }

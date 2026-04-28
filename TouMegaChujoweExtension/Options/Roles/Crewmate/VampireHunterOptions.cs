@@ -11,7 +11,8 @@ public enum VampireHunterBecomes
     Crewmate = 0,
     Sheriff,
     Veteran,
-    Vigilante
+    Vigilante,
+    Hunter
 }
 
 public sealed class VampireHunterOptions : AbstractOptionGroup<VampireHunterRole>

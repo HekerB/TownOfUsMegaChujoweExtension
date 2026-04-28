@@ -22,4 +22,7 @@ public sealed class WitchOptions : AbstractOptionGroup<WitchRole>
 
     [ModdedNumberOption("ExtensionOptionWitchMeetingsUntilDeath", 1f, 5f, 1f, MiraNumberSuffixes.None)]
     public float MeetingsUntilDeath { get; set; } = 1f;
+
+    [ModdedToggleOption("ExtensionOptionWitchCanSpellFirstRound")]
+    public bool CanSpellFirstRound { get; set; } = false;
 }

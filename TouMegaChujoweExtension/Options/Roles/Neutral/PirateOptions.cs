@@ -14,14 +14,14 @@ public sealed class PirateOptions : AbstractOptionGroup<PirateRole>
     [ModdedNumberOption("ExtensionOptionPirateDuelCooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float DuelCooldown { get; set; } = 25f;
 
-    public ModdedNumberOption DuelsToWin { get; } =
-        new("ExtensionOptionPirateDuelsToWin", 2f, 1f, 5f, 1f, MiraNumberSuffixes.None, "0");
-
     [ModdedToggleOption("ExtensionOptionPirateDrawCountsAsWin")]
     public bool DrawCountsAsWin { get; set; } = true;
 
     [ModdedToggleOption("ExtensionOptionPirateCantDuelSamePersonTwice")]
     public bool CantDuelSamePersonTwiceInARow { get; set; } = false;
+
+    public ModdedNumberOption DuelsToWin { get; } =
+        new("ExtensionOptionPirateDuelsToWin", 2f, 1f, 5f, 1f, MiraNumberSuffixes.None, "0");
 
     [ModdedEnumOption("ExtensionOptionPirateWinMode", typeof(PirateWinMode),
         ["ExtensionOptionPirateWinModePirateWins",

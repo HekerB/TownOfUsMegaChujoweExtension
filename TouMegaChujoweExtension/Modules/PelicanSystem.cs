@@ -3,6 +3,8 @@ using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using Reactor.Utilities;
 using System.Collections;
 using TouMegaChujoweExtension.Modifiers;
@@ -19,6 +21,7 @@ using TownOfUs.Networking;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using TownOfUs.Events;
+using TouMegaChujoweExtension.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
@@ -137,60 +140,61 @@ public static class PelicanSystem
 
     // ==================== SHIELD CHECKING ====================
 
-    public static ShieldCheckResult CheckAllShields(PlayerControl pelican, PlayerControl target)
+    public static ShieldType CheckAllShields(PlayerControl pelican, PlayerControl target)
     {
-        if (target == null) return ShieldCheckResult.NoShield;
-
-        try { if (target.HasModifier<FirstDeadShield>()) return ShieldCheckResult.FirstDeadShield; } catch { }
-        try { if (target.HasModifier<BodyguardShieldModifier>()) return ShieldCheckResult.BodyguardShield; } catch { }
-        try { if (target.HasModifier<InvulnerabilityModifier>()) return ShieldCheckResult.ChildInvulnerable; } catch { }
-        try { if (target.TryGetModifier<MedicShieldModifier>(out _)) return ShieldCheckResult.MedicShield; } catch { }
-        try { if (target.TryGetModifier<WardenFortifiedModifier>(out _)) return ShieldCheckResult.WardenFortified; } catch { }
-        try { if (target.TryGetModifier<MagicMirrorModifier>(out _)) return ShieldCheckResult.MagicMirror; } catch { }
-        try { if (target.HasModifier<GuardianAngelProtectModifier>()) return ShieldCheckResult.FairyProtect; } catch { }
-        try { if (target.HasModifier<MercenaryGuardModifier>()) return ShieldCheckResult.MercenaryGuard; } catch { }
-
-        return ShieldCheckResult.NoShield;
+        return target.GetShieldType();
     }
 
     public static bool HandleShieldCheck(PlayerControl pelican, PlayerControl target)
     {
-        var result = CheckAllShields(pelican, target);
-        if (result == ShieldCheckResult.NoShield) return false;
+        var shieldType = CheckAllShields(pelican, target);
+        if (shieldType == ShieldType.None) return false;
 
-        switch (result)
+        switch (shieldType)
         {
-            case ShieldCheckResult.FirstDeadShield:
+            case ShieldType.FirstDead:
                 break;
 
-            case ShieldCheckResult.BodyguardShield:
+            case ShieldType.Bodyguard:
                 HandleBodyguardShieldHit(pelican, target);
                 break;
 
-            case ShieldCheckResult.ChildInvulnerable:
+            case ShieldType.Child:
                 break;
 
-            case ShieldCheckResult.MedicShield:
+            case ShieldType.Medic:
                 HandleMedicShieldHit(pelican, target);
                 break;
 
-            case ShieldCheckResult.WardenFortified:
+            case ShieldType.Warden:
                 HandleWardenFortifiedHit(pelican, target);
                 break;
 
-            case ShieldCheckResult.MagicMirror:
+            case ShieldType.Mirrorcaster:
                 HandleMagicMirrorHit(pelican, target);
                 break;
 
-            case ShieldCheckResult.FairyProtect:
-                break;
+            case ShieldType.Fairy:
+                return true;
 
-            case ShieldCheckResult.MercenaryGuard:
+            case ShieldType.Mercenary:
+                return true;
+
+            case ShieldType.DeadlyQuota:
+                return true;
+
+            case ShieldType.Oracle:
+                HandleOracleBlessHit(pelican, target);
                 break;
         }
 
+        if (pelican.AmOwner)
+        {
+            ShieldUtils.TriggerShieldFlash(pelican, shieldType);
+        }
+
         Logger<TouMegaChujoweExtensionPlugin>.Info(
-            $"[PelicanSystem] Swallow blocked by {result} on player {target.PlayerId}");
+            $"[PelicanSystem] Swallow blocked by {shieldType} on player {target.PlayerId}");
         return true;
     }
 
@@ -251,6 +255,19 @@ public static class PelicanSystem
         catch (System.Exception ex)
         {
             Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Error handling Mirrorcaster shield: {ex.Message}");
+        }
+    }
+
+    private static void HandleOracleBlessHit(PlayerControl pelican, PlayerControl target)
+    {
+        try
+        {
+            if (target.TryGetModifier<TownOfUs.Modifiers.Crewmate.OracleBlessedModifier>(out var oracleMod))
+                OracleRole.RpcOracleBlessNotify(pelican, oracleMod.Oracle, target);
+        }
+        catch (System.Exception ex)
+        {
+            Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Error handling Oracle blessing: {ex.Message}");
         }
     }
 
@@ -382,6 +399,14 @@ public static class PelicanSystem
                 victim.Die(DeathReason.Kill, false);
 
                 var pelican = MiscUtils.PlayerById(pelicanId);
+                
+                // Trigger AfterMurderEvent so it counts as a real kill for the system
+                if (pelican != null)
+                {
+                    var afterMurderEvent = new AfterMurderEvent(pelican, victim, null);
+                    MiraEventManager.InvokeEvent(afterMurderEvent);
+                }
+
                 var localPlayer = PlayerControl.LocalPlayer;
                 bool isGhostOrPelican = localPlayer != null && (localPlayer.Data.IsDead || localPlayer.PlayerId == pelicanId);
 
@@ -815,17 +840,4 @@ public static class PelicanSystem
         DigestKillVictims.Clear();
         _preWinDigestDone = false;
     }
-}
-
-public enum ShieldCheckResult
-{
-    NoShield,
-    FirstDeadShield,
-    BodyguardShield,
-    ChildInvulnerable,
-    MedicShield,
-    WardenFortified,
-    MagicMirror,
-    FairyProtect,
-    MercenaryGuard
 }

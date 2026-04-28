@@ -14,23 +14,16 @@ public sealed class TrapperOptions : AbstractOptionGroup<TrapperRole>
     [ModdedNumberOption("ExtensionOptionTrapperTrapCooldown", 1f, 60f, 1f, MiraNumberSuffixes.Seconds)]
     public float TrapCooldown { get; set; } = 25f;
 
-    [ModdedNumberOption("ExtensionOptionTrapperTrappeduration", 0.5f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
-    public float Trappeduration { get; set; } = 4f;
-
-    [ModdedNumberOption("ExtensionOptionTrapperArrowDuration", 0.5f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
-    public float ArrowDuration { get; set; } = 4.5f;
-
     [ModdedNumberOption("ExtensionOptionTrapperMaxTraps", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
     public float MaxTraps { get; set; } = 3f;
-
-    [ModdedNumberOption("ExtensionOptionTrapperTrapRoundsLast", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
-    public float TrapRoundsLast { get; set; } = 3f;
 
     [ModdedToggleOption("ExtensionOptionTrapperGetMoreFromTasks")]
     public bool GetMoreFromTasks { get; set; } = true;
 
-    [ModdedNumberOption("ExtensionOptionTrapperTasksUntilMoreTraps", 1f, 10f, 1f, MiraNumberSuffixes.None, "0")]
-    public float TasksUntilMoreTraps { get; set; } = 2f;
+    public ModdedNumberOption TasksUntilMoreTrapsOption { get; } = new("ExtensionOptionTrapperTasksUntilMoreTraps", 2f, 1f, 10f, 1f, MiraNumberSuffixes.None, "0")
+    {
+        Visible = () => OptionGroupSingleton<TrapperOptions>.Instance.GetMoreFromTasks
+    };
 
     [ModdedEnumOption("ExtensionOptionTrapperTrapTargets", typeof(VentTrapTargets),
         ["ExtensionOptionTrapperTrapTargetsEnumImpostors", "ExtensionOptionTrapperTrapTargetsEnumImpostorsAndNeutrals", "ExtensionOptionTrapperTrapTargetsEnumAll"])]
@@ -39,6 +32,18 @@ public sealed class TrapperOptions : AbstractOptionGroup<TrapperRole>
     [ModdedEnumOption("ExtensionOptionTrapperArrowTarget", typeof(TrapperArrowTarget),
         ["ExtensionOptionTrapperArrowTargetEnumVent", "ExtensionOptionTrapperArrowTargetEnumPerson"])]
     public TrapperArrowTarget ArrowTarget { get; set; } = TrapperArrowTarget.Vent;
+
+    [ModdedNumberOption("ExtensionOptionTrapperTrappeduration", 0.5f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
+    public float Trappeduration { get; set; } = 4f;
+
+    [ModdedNumberOption("ExtensionOptionTrapperArrowDuration", 0.5f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
+    public float ArrowDuration { get; set; } = 4.5f;
+
+    [ModdedNumberOption("ExtensionOptionTrapperTrapRoundsLast", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
+    public float TrapRoundsLast { get; set; } = 3f;
+
+    // Backward compatibility for TrapperRole
+    public float TasksUntilMoreTraps => TasksUntilMoreTrapsOption.Value;
 }
 
 public enum VentTrapTargets

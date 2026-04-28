@@ -11,6 +11,10 @@ using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Modifiers;
 using TownOfUs.Utilities;
+using TownOfUs.Events;
+using TownOfUs.Options;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Impostor;
@@ -55,8 +59,7 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
         var player = PlayerControl.LocalPlayer;
         if (player == null || (player.IsImpostorAligned() && target.IsImpostorAligned())) return false;
 
-        var hasNonBodyguardShield = target.GetModifiers<BaseShieldModifier>().Any(x => x is not BodyguardShieldModifier);
-        if (hasNonBodyguardShield || target.HasModifier<FirstDeadShield>()) return false;
+        // Targeting allowed, shield block handled in ShieldEvents
 
         return true;
     }
@@ -82,6 +85,14 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
         var player = PlayerControl.LocalPlayer;
         if (player == null) return;
 
+        var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
+        MiraEventManager.InvokeEvent(beforeMurderEvent);
+        
+        if (beforeMurderEvent.IsCancelled)
+        {
+            return;
+        }
+
         if (LimitedUses && !_inDoubleKillWindow)
         {
             UsesLeft--;
@@ -93,12 +104,13 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
         if (!_inDoubleKillWindow) 
         {
             Timer = Cooldown;
+            player.SetKillTimer(Cooldown);
         }
         else
         {
             // Set a tiny cooldown to prevent double clicking the same target or instant spam
-            // but keep it small enough that it doesn't break the "instant" feel.
             Timer = 0.1f; 
+            player.SetKillTimer(0.1f);
         }
     }
 
@@ -137,6 +149,7 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
             {
                 ResetState();
                 Timer = Cooldown;
+                playerControl.SetKillTimer(Cooldown);
             }
             else
             {
@@ -170,6 +183,7 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
             OverrideName(_killName);
         }
 
+        Target = GetTarget();
         base.FixedUpdate(playerControl);
     }
 

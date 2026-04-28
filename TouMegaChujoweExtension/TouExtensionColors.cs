@@ -14,6 +14,7 @@ public static class TouExtensionColors
     public static Color Mirage => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(222, 168, 94, 255);
     public static Color Hacker => Palette.ImpostorRed;
     public static Color Injector => Palette.ImpostorRed;
+    public static Color SchrodingersCat => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(255, 211, 105, 255);
     public static Color Poisoner => Palette.ImpostorRed;
     public static Color Charlatan => Palette.ImpostorRed;
     public static Color Vulture => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(139, 69, 19, 255);
@@ -28,12 +29,27 @@ public static class TouExtensionColors
 	public static Color Shifter => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(186, 186, 186, 255);
     public static Color Pope => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(255, 215, 0, 255);
     public static Color BountyHunter => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(0, 18, 97, 255);
-	public static Color Bodyguard => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(166, 209, 179, 255);
+	public static Color Bodyguard => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(77, 166, 255, 255);
 	public static Color Falcon => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(255, 255, 255, 255);
 	public static Color Sage => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(200, 162, 255, 255);
 	public static Color Shroud => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(102, 153, 255, 255);
 	public static Color Doppelganger => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(93, 63, 211, 255);
 	public static Color VampireHunter => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(150, 100, 200, 255);
+
+    // Shield Flash Colors
+    public static class ShieldFlashes
+    {
+        public static Color Medic => new Color32(0, 102, 0, 255);       // Dark Green
+        public static Color Warden => new Color32(153, 0, 255, 255);    // Purple
+        public static Color Cleric => new Color32(0, 255, 179, 255);    // Cyan/Teal
+        public static Color Mirrorcaster => new Color32(144, 162, 195, 255); // Silver Blue
+        public static Color Fairy => new Color32(102, 170, 243, 255);   // Light Blue
+        public static Color Mercenary => new Color32(140, 102, 153, 255); // Mauve
+        public static Color Bodyguard => new Color32(77, 166, 255, 255); // Light Blue
+        public static Color Oracle => new Color32(191, 0, 191, 255);    // Magenta
+        public static Color SchrodingersCat => new Color32(255, 211, 105, 255);
+    }
+
 	// Modifiers
     public static Color Ventable => new Color32(51, 179, 179, 255);
     public static Color Venomous => new Color32(0, 200, 90, 255);

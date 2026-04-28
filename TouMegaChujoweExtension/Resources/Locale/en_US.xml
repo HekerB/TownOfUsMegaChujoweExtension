@@ -182,6 +182,7 @@
   <string name="ExtensionOptionShifterBecomesCrewmate">Crewmate</string>
   <string name="ExtensionOptionShifterBecomesShifter">Shifter</string>
   <string name="ExtensionOptionShifterStealModifiers">Steal Modifiers</string>
+  <string name="ExtensionOptionShifterWinsWithCrew">Wins With Crew</string>
   
   <!-- Lawyer Win -->
   <string name="ExtensionLawyerWin">Wins</string>
@@ -212,11 +213,15 @@
   
   <!-- Serial Killer Options -->
   <string name="ExtensionOptionSerialKillerCanReportBodies">Can Report Bodies</string>
+  <string name="ExtensionOptionSerialKillerKillCooldownReductionEnabled">Progressive Kill Cooldown Reduction</string>
+  <string name="ExtensionOptionSerialKillerKillCooldownReductionPerKill">Kill Cooldown Reduction Per Kill</string>
+  <string name="ExtensionOptionSerialKillerMinimumKillCooldown">Maximum Kill Cooldown</string>
   <string name="ExtensionOptionSerialKillerVentKillTargets">Vent Kill Targets</string>
   <string name="ExtensionOptionSerialKillerVentKillTargetsEnumImpostors">Impostors</string>
   <string name="ExtensionOptionSerialKillerVentKillTargetsEnumImpNK">Impostors + Neutral Killers</string>
   <string name="ExtensionOptionSerialKillerVentKillTargetsEnumImpNeutrals">Impostors + Neutrals</string>
   <string name="ExtensionOptionSerialKillerVentKillTargetsEnumAny">Any</string>
+  <string name="ExtensionRoleSerialKillerTabKillCounter">Kills: &lt;count&gt;</string>
   <string name="ExtensionOptionSerialKillerManiacMode">Maniac Mode</string>
   <string name="ExtensionOptionSerialKillerManiacTimer">Maniac Timer</string>
   <string name="ExtensionOptionSerialKillerManiacCooldown">Kill Cooldown</string>
@@ -363,6 +368,7 @@
   
   <!-- Witch Options -->
   <string name="ExtensionOptionWitchSpellCooldown">Spell Cooldown</string>
+  <string name="ExtensionOptionWitchCanSpellFirstRound">Can Spell in First Round</string>
   <string name="ExtensionOptionWitchAdditionalCooldown">Witch Additional Cooldown</string>
   <string name="ExtensionOptionWitchSpellCastingDuration">Witch Spell Casting Duration</string>
   <string name="ExtensionOptionWitchMeetingsUntilDeath">Meetings Until Death</string>
@@ -562,16 +568,16 @@
   <string name="ExtensionLocalSettingEnableNauseaCameraShake">Enable Nausea Camera Shake</string>
 
   <!-- Injector Notifications -->
-  <string name="ExtensionInjectorNotificationInvertedControls">You start to feel lightheaded…</string>
-  <string name="ExtensionInjectorNotificationLowVision">Your vision narrows…</string>
-  <string name="ExtensionInjectorNotificationSlowness">Your legs start to feel heavy…</string>
+  <string name="ExtensionInjectorNotificationInvertedControls">You start to feel lightheadedâ€¦</string>
+  <string name="ExtensionInjectorNotificationLowVision">Your vision narrowsâ€¦</string>
+  <string name="ExtensionInjectorNotificationSlowness">Your legs start to feel heavyâ€¦</string>
   <string name="ExtensionInjectorNotificationVeryLowVision">You feel your eyesight begin to fade...</string>
   <string name="ExtensionInjectorNotificationConfused">You start to feel confused...</string>
-  <string name="ExtensionInjectorNotificationNoVent">You feel too weak to use vents…</string>
-  <string name="ExtensionInjectorNotificationNoUse">Your body feels paralyzed…</string>
-  <string name="ExtensionInjectorNotificationNoReport">Your mind goes blank when you see bodies…</string>
-  <string name="ExtensionInjectorNotificationNausea">You feel nauseous… (0.7x speed, 0.7x vision, camera shake)</string>
-  <string name="ExtensionInjectorNotificationWeakness">You feel extremely weak…</string>
+  <string name="ExtensionInjectorNotificationNoVent">You feel too weak to use ventsâ€¦</string>
+  <string name="ExtensionInjectorNotificationNoUse">Your body feels paralyzedâ€¦</string>
+  <string name="ExtensionInjectorNotificationNoReport">Your mind goes blank when you see bodiesâ€¦</string>
+  <string name="ExtensionInjectorNotificationNausea">You feel nauseousâ€¦ (0.7x speed, 0.7x vision, camera shake)</string>
+  <string name="ExtensionInjectorNotificationWeakness">You feel extremely weakâ€¦</string>
   <string name="ExtensionInjectorNotificationSpeedBoost">You feel energized and fast!</string>
   <string name="ExtensionInjectorNotificationVisionBoost">Your vision becomes crystal clear!</string>
   <string name="ExtensionInjectorNotificationRegeneration">You feel your body healing rapidly!</string>
@@ -658,6 +664,7 @@
   <string name="ExtensionRoleCharlatanConcealWikiDescription">Reduce the report range of nearby bodies. You must stay near the body for the duration to successfully conceal it.</string>
 
   <!-- Charlatan Options -->
+  <string name="ExtensionOptionCharlatanDeceiveEnabled">Deceive Enabled</string>
   <string name="ExtensionOptionCharlatanDeceiveBaseDuration">Deceive Base Duration</string>
   <string name="ExtensionOptionCharlatanDeceiveDurationIncreasePerKill">Deceive Duration Increase Per Kill</string>
   <string name="ExtensionOptionCharlatanConcealUses">Conceal Uses</string>
@@ -689,6 +696,15 @@
   <string name="ExtensionOptionVultureScavengeCooldown">Scavenge Cooldown</string>
   <string name="ExtensionOptionVultureScavengeDuration">Scavenge Duration</string>
   <string name="ExtensionOptionVultureOnLoseBecomes">On Lose, Vulture Becomes</string>
+
+  <!-- Schrodinger's Cat Role -->
+  <string name="ExtensionRoleSchrodingersCat">Schrodinger's Cat</string>
+  <string name="ExtensionRoleSchrodingersCatIntroBlurb">Survive a kill to join your attacker's team.</string>
+  <string name="ExtensionRoleSchrodingersCatTabDescription">The first player to attempt to kill you will adopt you instead. You will join their team and win with them. After adoption, you can be killed normally by anyone except your adopter.</string>
+  <string name="ExtensionRoleSchrodingersCatWikiDescription">Schrodinger's Cat is a Neutral Benign role. The first killer who targets the Cat will not kill them — instead, the Cat joins that killer's team. Both the Cat and the killer receive a notification. After being adopted, the Cat can be killed normally by anyone OTHER than their adopter. The Cat wins if their adopter's team wins and the Cat is still alive.</string>
+
+  <!-- Schrodinger's Cat Options -->
+  <string name="ExtensionOptionCatCanBeAdoptedByNK">Can Be Adopted By NK</string>
 
   <!-- Spiteful Modifier -->
   <string name="ExtensionModifierSpiteful">Spiteful</string>
@@ -748,7 +764,6 @@
   <string name="ExtensionOptionBHTargetsToKill">Targets BH Has To Kill</string>
   <string name="ExtensionOptionBHShowArrow">Show Arrow To Target</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Arrow Update Interval</string>
-  <string name="ExtensionOptionBHDiesIfNotKilled">BH Dies If Target Not Killed</string>
   <string name="ExtensionOptionBHGameContinues">Game Continues Without Other Killers</string>
   <string name="ExtensionOptionBHWinMode">Win Mode</string>
   <string name="ExtensionOptionBHWinModeEnumSoloWin">Solo Win (Ends Game)</string>
@@ -818,7 +833,7 @@
   <string name="ExtensionOptionBodyguardShieldEnumTargetAndBodyguard">Target + Bodyguard</string>
   <string name="ExtensionOptionBodyguardShieldEnumEveryone">Everyone</string>
   <string name="ExtensionOptionBodyguardShowBacklashArrow">Show Backlash Arrow</string>
-  <string name="ExtensionOptionBodyguardGreenNameOnAttacker">Green Name On Who Attacked</string>
+  <string name="ExtensionOptionBodyguardGreenNameOnAttacker">Sky Blue Name On Who Attacked</string>
 
   <!-- Bodyguard Death Messages -->
   <string name="DiedToTerminated">Terminated</string>
@@ -945,6 +960,7 @@
   <string name="ExtensionOptionVHMinVampires">Min Vampires To Spawn</string>
   <string name="ExtensionOptionVHEnabled">Vampire Hunter Enabled</string>
   <string name="ExtensionOptionVHChance">Vampire Hunter Spawn Chance</string>
+  <string name="VampireHunterBecomesHunter">Hunter</string>
 
   <!-- Kamikaze Role -->
   <string name="ExtensionRoleKamikaze">Kamikaze</string>
@@ -978,11 +994,11 @@
 
   <!-- TOUMCE Wiki Terms - Symbols -->
   <string name="TOUMCETermsSymbolsTitle">TOUMCE Symbols</string>
-  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player canonized by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;✶&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#77B962&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client • &lt;color=#C0C0C0&gt;&lt;b&gt;¤&lt;/b&gt;&lt;/color&gt; - Player cursed by the Witch</string>
+  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player canonized by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;✶&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#4DA6FF&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client • &lt;color=#C0C0C0&gt;&lt;b&gt;¤&lt;/b&gt;&lt;/color&gt; - Player cursed by the Witch</string>
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">General Shield Flashes</string>
-  <string name="TOUMCETermsShieldFlashesInfo">When a kill is blocked by a shield, the killer sees a colored flash indicating which role provided the protection: • &lt;color=#006600&gt;&lt;b&gt;Dark Green&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Purple&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyan/Teal&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Silver Blue&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Light Blue&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Mauve&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#77B962&gt;&lt;b&gt;Green&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (meeting protection) • &lt;color=#00FF7F&gt;&lt;b&gt;Spring Green&lt;/b&gt;&lt;/color&gt; - Doctor</string>
+  <string name="TOUMCETermsShieldFlashesInfo">When a kill is blocked by a shield, the killer sees a colored flash indicating which role provided the protection: • &lt;color=#006600&gt;&lt;b&gt;Dark Green&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Purple&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyan/Teal&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Silver Blue&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Light Blue&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Mauve&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#4DA6FF&gt;&lt;b&gt;Sky Blue&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (meeting protection) • &lt;color=#00FF7F&gt;&lt;b&gt;Spring Green&lt;/b&gt;&lt;/color&gt; - Doctor</string>
 
 <!-- TOUMCE Wiki Terms - Draft Mode -->
 <string name="TOUMCETermsDraftModeTitle">Draft Mode</string>

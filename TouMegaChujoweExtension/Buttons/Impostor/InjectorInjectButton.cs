@@ -9,6 +9,7 @@ using TownOfUs.Buttons;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Impostor;
@@ -46,8 +47,8 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
             return false;
         }
 
-        // Cannot inject shielded players
-        if (target.HasModifier<BaseShieldModifier>() || target.HasModifier<FirstDeadShield>())
+        // Targeting allowed, shield handled in OnClick
+        if (target.HasModifier<FirstDeadShield>())
         {
             return false;
         }
@@ -72,6 +73,18 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
         if (player == null)
         {
             Error("Injector Inject: LocalPlayer is null");
+            return;
+        }
+
+        var shieldType = ShieldUtils.GetShieldType(Target);
+        if (shieldType != ShieldType.None)
+        {
+            ShieldUtils.TriggerShieldFlash(player, shieldType);
+            if (OptionGroupSingleton<InjectorOptions>.Instance.SharedCooldown)
+            {
+                player.SetKillTimer(player.GetKillCooldown());
+            }
+            Timer = Cooldown;
             return;
         }
 

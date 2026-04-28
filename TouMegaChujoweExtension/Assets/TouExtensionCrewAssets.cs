@@ -17,6 +17,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> ZoomOutButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Zoom_Out_Icon.png", 400f);
         public static LoadableAsset<Sprite> ZoomInButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Zoom_Out_Icon.png", 400f);
         public static LoadableAsset<Sprite> StakeButtonIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.VH_Stake_Button.png", 350f);
+        // TODO: Replace with custom Doctor heal button sprite when available
         public static LoadableAsset<Sprite> DoctorHealButtonSprite => TouExtensionImpAssets.InjectorInjectButtonSprite; // Placeholder
     }
 }

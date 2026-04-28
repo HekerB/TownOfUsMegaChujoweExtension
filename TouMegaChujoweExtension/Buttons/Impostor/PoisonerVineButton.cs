@@ -1,3 +1,4 @@
+using System.Collections;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
@@ -24,6 +25,17 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
     public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.VineButtonSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
 
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        Reactor.Utilities.Coroutines.Start(CoMoveWithDelay());
+    }
+
+    private IEnumerator CoMoveWithDelay()
+    {
+        yield return MiscUtils.CoMoveButtonIndex(this, false);
+    }
+
     private PlayerControl? _closestInRange;
     private PlayerControl? _lastOutlined;
 
@@ -32,11 +44,7 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
     private float _vineTimer;
     private float _vineDuration;
 
-    // Shake
-    private const float ShakeStartTime = 1.0f;
-    private const float ShakeMaxIntensity = 0.1f;
-    private Vector3 _buttonOriginalPos;
-    private bool _hasOriginalPos;
+
 
     public override bool CanUse()
     {
@@ -88,18 +96,15 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
             }
             else
             {
-                Timer = 0f;
-
-                var fill = Mathf.Clamp(_vineTimer / _vineDuration, 0f, 1f);
-                Button?.SetCooldownFill(fill);
+                Timer = -1f;
 
                 if (Button != null)
                 {
+                    Button.SetEnabled();
+                    Button.SetFillUp(_vineTimer, _vineDuration);
                     Button.cooldownTimerText.text = Mathf.CeilToInt(_vineTimer).ToString();
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
-
-                ApplyShake();
             }
 
             _closestInRange = null;
@@ -145,36 +150,6 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
         }
 
         return closest;
-    }
-
-    private void ApplyShake()
-    {
-        if (Button == null) return;
-        var btnTransform = Button.transform;
-
-        if (!_hasOriginalPos)
-        {
-            _buttonOriginalPos = btnTransform.localPosition;
-            _hasOriginalPos = true;
-        }
-
-        if (_vineTimer > ShakeStartTime)
-        {
-            btnTransform.localPosition = _buttonOriginalPos;
-            return;
-        }
-
-        var progress = 1f - Mathf.Clamp01(_vineTimer / ShakeStartTime);
-        var intensity = Mathf.Lerp(0f, ShakeMaxIntensity, progress);
-        var offset = UnityEngine.Random.insideUnitCircle * intensity;
-        btnTransform.localPosition = _buttonOriginalPos + new Vector3(offset.x, offset.y, 0f);
-    }
-
-    private void ResetShake()
-    {
-        if (_hasOriginalPos && Button != null)
-            Button.transform.localPosition = _buttonOriginalPos;
-        _hasOriginalPos = false;
     }
 
     private void UpdateOutline()
@@ -223,7 +198,6 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
     {
         _isVining = false;
         _vineTimer = 0f;
-        ResetShake();
     }
 
     public override void ResetCooldownAndOrEffect()

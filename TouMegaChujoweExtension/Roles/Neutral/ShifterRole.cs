@@ -10,12 +10,14 @@ using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Modules;
+using TouMegaChujoweExtension.Utilities;
 using TownOfUs;
 using TownOfUs.Assets;
 using TownOfUs.Extensions;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Modifiers.Game.Neutral;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
@@ -107,6 +109,10 @@ namespace TouMegaChujoweExtension.Roles.Neutral;
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
+        if (OptionGroupSingleton<ShifterOptions>.Instance.WinsWithCrew)
+        {
+            return gameOverReason is GameOverReason.CrewmatesByVote or GameOverReason.CrewmatesByTask;
+        }
         return false;
     }
 
@@ -128,7 +134,8 @@ namespace TouMegaChujoweExtension.Roles.Neutral;
             return;
         }
 
-        if (target.HasModifier<BaseShieldModifier>() || target.HasModifier<FirstDeadShield>())
+        var shieldType = target.GetShieldType();
+        if (shieldType == ShieldType.Warden || shieldType == ShieldType.FirstDead || shieldType == ShieldType.Cleric)
         {
             RpcCancelShift(Player);
             return;

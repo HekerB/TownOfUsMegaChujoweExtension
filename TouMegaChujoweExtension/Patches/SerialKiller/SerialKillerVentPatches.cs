@@ -24,10 +24,7 @@ public static class SerialKillerVentPatches
             return;
         }
 
-        if (pc.AmOwner)
-        {
-            VentOccupancySystem.SetOccupant(__instance.Id, pc.PlayerId);
-        }
+        VentOccupancySystem.SetOccupant(__instance.Id, pc.PlayerId);
 
         if (pc.AmOwner && pc.IsRole<SerialKillerRole>())
         {
@@ -50,14 +47,28 @@ public static class SerialKillerVentPatches
             return;
         }
 
-        if (player.AmOwner)
-        {
-            VentOccupancySystem.SetOccupant(ventId, 0);
-        }
+        VentOccupancySystem.SetOccupant(ventId, 0);
 
         if (player.AmOwner && player.IsRole<SerialKillerRole>())
         {
-            SerialKillerVentKillSystem.ClearForPlayer(player.PlayerId);
+            // If we're processing a vent kill, don't clear the target yet
+            if (!SerialKillerVentKillSystem.IsProcessingVentKill(player.PlayerId))
+            {
+                SerialKillerVentKillSystem.ClearForPlayer(player.PlayerId);
+            }
+
+            // If they have escape vent usages, consume one and give them the no vent modifier
+            if (SerialKillerVentKillSystem.TryConsumeEscapeVentUsage(player.PlayerId))
+            {
+                // If we have no more usages left, we lose the ability to vent
+                if (!SerialKillerVentKillSystem.HasEscapeVentUsages(player.PlayerId))
+                {
+                    if (!player.HasModifier<SerialKillerNoVentModifier>())
+                    {
+                        player.AddModifier<SerialKillerNoVentModifier>();
+                    }
+                }
+            }
         }
 
         if (player.AmOwner)

@@ -2,7 +2,11 @@ using HarmonyLib;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Player;
+using MiraAPI.GameOptions;
+using MiraAPI.Hud;
 using MiraAPI.Modifiers;
+using TouMegaChujoweExtension.Modifiers.Neutral;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Roles.Neutral;
@@ -10,6 +14,7 @@ using TownOfUs.Events;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Buttons.Neutral;
 
 namespace TouMegaChujoweExtension.Events.Neutral;
 
@@ -36,66 +41,40 @@ public static class SerialKillerEvents
     [RegisterEvent]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
-        var killer = @event.Source;
-        var victim = @event.Target;
+        var source = @event.Source;
+        var target = @event.Target;
 
-        if (killer == null || victim == null || !killer.IsRole<SerialKillerRole>())
+        if (source == null || target == null || !source.IsRole<SerialKillerRole>() || @event.IsCancelled)
         {
             return;
         }
 
-        if (SerialKillerVentKillSystem.TryGetVentKillTarget(killer.PlayerId, out var ventTarget) && ventTarget != null && ventTarget.PlayerId == victim.PlayerId)
+        if (SerialKillerVentKillSystem.TryGetVentKillTarget(source.PlayerId, out var ventTarget) && ventTarget != null && ventTarget.PlayerId == target.PlayerId)
         {
-            if (killer.AmOwner && killer.inVent)
-            {
-                if (killer.inVent && Vent.currentVent != null)
-                {
-                    killer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
-                    killer.MyPhysics?.ExitAllVents();
-                }
+            // Flag the kill as processing so ExitVentPostfix won't clear the target mid-kill
+            SerialKillerVentKillSystem.SetProcessingVentKill(source.PlayerId, true);
 
-                killer.inVent = false;
-                Vent.currentVent = null;
-            }
+            VentOccupancySystem.ClearForPlayer(source.PlayerId);
+            VentOccupancySystem.ClearForPlayer(target.PlayerId);
 
-            if (victim.AmOwner && victim.inVent)
-            {
+            // Grant the Serial Killer 2 escape vent usages so they can exit now and exit one more time to escape
+            SerialKillerVentKillSystem.SetEscapeVentUsages(source.PlayerId, 2);
 
-                if (victim.HasDied())
-                {
-                    return;
-                }
-
-                if (victim.inVent && Vent.currentVent != null)
-                {
-                    victim.MyPhysics.RpcExitVent(Vent.currentVent.Id);
-                    victim.MyPhysics?.ExitAllVents();
-                }
-
-                victim.inVent = false;
-                Vent.currentVent = null;
-            }
-
-            VentOccupancySystem.ClearForPlayer(killer.PlayerId);
-            VentOccupancySystem.ClearForPlayer(victim.PlayerId);
-
-            if (!killer.HasModifier<SerialKillerNoVentModifier>())
-            {
-                killer.AddModifier<SerialKillerNoVentModifier>();
-            }
+            // Clear the processing flag
+            SerialKillerVentKillSystem.SetProcessingVentKill(source.PlayerId, false);
         }
 
-        if (killer.AmOwner)
+        if (source.AmOwner)
         {
             DeathHandlerModifier.UpdateDeathHandlerImmediate(
-                victim,
+                target,
                 TouLocale.Get("DiedToSerialKiller"),
                 DeathEventHandlers.CurrentRound,
                 (!MeetingHud.Instance && !ExileController.Instance)
                     ? DeathHandlerOverride.SetTrue
                     : DeathHandlerOverride.SetFalse,
                 TouLocale.GetParsed("DiedByStringBasic")
-                    .Replace("<player>", killer.Data.PlayerName),
+                    .Replace("<player>", source.Data.PlayerName),
                 lockInfo: DeathHandlerOverride.SetTrue
             );
         }
@@ -125,12 +104,47 @@ public static class SerialKillerEvents
 
         if (SerialKillerVentKillSystem.TryGetVentKillTarget(killer.PlayerId, out var ventTarget) && ventTarget != null && ventTarget.PlayerId == victim.PlayerId)
         {
+            if (killer.AmOwner && killer.inVent)
+            {
+                if (killer.inVent && Vent.currentVent != null)
+                {
+                    killer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                    killer.MyPhysics?.ExitAllVents();
+                }
+
+                killer.inVent = false;
+                Vent.currentVent = null;
+            }
+
+            if (victim.AmOwner && victim.inVent)
+            {
+                if (victim.inVent && Vent.currentVent != null)
+                {
+                    victim.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                    victim.MyPhysics?.ExitAllVents();
+                }
+
+                victim.inVent = false;
+                Vent.currentVent = null;
+            }
+
             SerialKillerVentKillSystem.ClearForPlayer(killer.PlayerId);
         }
 
         if (killer.TryGetModifier<SerialKillerManiacModifier>(out var maniacMod))
         {
             maniacMod.ResetOnKill();
+        }
+
+        var options = OptionGroupSingleton<SerialKillerOptions>.Instance;
+        if (!options.KillCooldownReductionEnabled)
+        {
+            return;
+        }
+
+        if (killer.AmOwner)
+        {
+            CustomButtonSingleton<SerialKillerKillButton>.Instance.ResetCooldownAndOrEffect();
         }
     }
 }

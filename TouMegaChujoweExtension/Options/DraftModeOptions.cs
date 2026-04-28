@@ -21,7 +21,17 @@ public sealed class DraftModeOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
-    public ModdedNumberOption TimeToChoose { get; } = new("Time To Choose", 10f, 3f, 67f, 1f, MiraNumberSuffixes.Seconds)
+    public ModdedToggleOption ImpostorsPickFromAllClasses { get; } = new("Impostors Pick From All Classes", false)
+    {
+        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
+    };
+
+    public ModdedToggleOption CrewmatesPickFromAllClasses { get; } = new("Crewmates Pick From All Classes", false)
+    {
+        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
+    };
+
+    public ModdedToggleOption RespectRoleChances { get; } = new("Use Roles Chances", false)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
@@ -31,9 +41,12 @@ public sealed class DraftModeOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
+    public ModdedNumberOption TimeToChoose { get; } = new("Time To Choose", 10f, 3f, 67f, 1f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
+    };
+
     // === FACTION COUNTS ===
-
-
 
     public ModdedNumberOption MinNeutralBenign { get; } = new("Min Neutral Benign", 0f, 0f, 5f, 1f, MiraNumberSuffixes.None)
     {
@@ -71,23 +84,6 @@ public sealed class DraftModeOptions : AbstractOptionGroup
     };
 
     public ModdedNumberOption MaxRandomNeutral { get; } = new("Max Random Neutral", 0f, 0f, 5f, 1f, MiraNumberSuffixes.None)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    // === ALL CLASSES TOGGLES ===
-
-    public ModdedToggleOption ImpostorsPickFromAllClasses { get; } = new("Impostors Pick From All Classes", false)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    public ModdedToggleOption CrewmatesPickFromAllClasses { get; } = new("Crewmates Pick From All Classes", false)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    public ModdedToggleOption RespectRoleChances { get; } = new("Use Roles Chances", false)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };

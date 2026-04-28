@@ -160,6 +160,11 @@ public sealed class PelicanRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
     {
         if (pelican == null) return;
 
+        var victim = MiscUtils.PlayerById(victimId);
+        if (victim == null || victim.HasDied()) return;
+
+        if (PelicanSystem.HandleShieldCheck(pelican, victim)) return;
+
         if (AmongUsClient.Instance.AmClient && pelican.AmOwner)
         {
             var writer = AmongUsClient.Instance.StartRpcImmediately(pelican.NetId, (byte)ExtensionRpc.PelicanSwallow, Hazel.SendOption.Reliable, -1);
@@ -167,14 +172,10 @@ public sealed class PelicanRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
 
-        var victim = MiscUtils.PlayerById(victimId);
-        if (victim != null && !victim.HasDied())
+        PelicanSystem.SwallowPlayer(pelican.PlayerId, victimId);
+        if (victim.AmOwner)
         {
-            PelicanSystem.SwallowPlayer(pelican.PlayerId, victimId);
-            if (victim.AmOwner)
-            {
-                PelicanSystem.ShowSwallowedNotification();
-            }
+            PelicanSystem.ShowSwallowedNotification();
         }
     }
 

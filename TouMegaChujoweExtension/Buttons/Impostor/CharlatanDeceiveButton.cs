@@ -1,5 +1,7 @@
+using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
+using MiraAPI.Roles;
 using MiraAPI.Utilities.Assets;
 using System.Globalization;
 using TouMegaChujoweExtension.Assets;
@@ -27,6 +29,7 @@ public sealed class CharlatanDeceiveButton : TownOfUsRoleButton<CharlatanRole, D
     public override string Name => TouLocale.GetParsed("ExtensionRoleCharlatanDeceive", "Deceive");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Charlatan;
+    public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && OptionGroupSingleton<CharlatanOptions>.Instance.DeceiveEnabled;
     public override float Cooldown => 0.01f;
     public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.DeceiveButtonSprite;
     public override float Distance => float.MaxValue;

@@ -15,7 +15,4 @@ public sealed class VenomousModifierOptions : AbstractOptionGroup<VenomousModifi
 
     public ModdedNumberOption VenomousRotDelay { get; } =
         new("ExtensionModifierVenomousRotDelay", 5f, 5f, 40f, 1f, MiraNumberSuffixes.Seconds);
-
-    public ModdedToggleOption VenomousGuessable { get; } =
-        new("ExtensionModifierVenomousGuessable", true);
 }

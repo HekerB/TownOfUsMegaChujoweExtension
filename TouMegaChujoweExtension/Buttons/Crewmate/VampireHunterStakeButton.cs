@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using MiraAPI.GameOptions;
 using MiraAPI.Keybinds;
 using MiraAPI.Networking;
@@ -12,6 +12,10 @@ using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
+using TownOfUs.Events;
+using TownOfUs.Options;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Crewmate;
@@ -46,6 +50,27 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>
         if (UsesLeft <= 0) return false;
 
         return _target != null;
+    }
+
+    public override void ClickHandler()
+    {
+        if (!CanClick()) return;
+        if (_target == null) return;
+
+        var player = PlayerControl.LocalPlayer;
+        if (player == null) return;
+
+        // Simulate murder event to check for shields
+        var beforeMurderEvent = new BeforeMurderEvent(player, _target, MeetingCheck.OutsideMeeting);
+        MiraEventManager.InvokeEvent(beforeMurderEvent);
+        
+        if (beforeMurderEvent.IsCancelled)
+        {
+            return;
+        }
+
+        OnClick();
+        Timer = Cooldown;
     }
 
     protected override void OnClick()

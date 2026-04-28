@@ -78,4 +78,6 @@ public enum ExtensionRpc : uint
 	YouAreBanned = 73,
     DeathNoteLaugh = 74,
     DoctorHeal = 75,
+    CatSetTeammate = 82,
+    SendCatChat = 83,
 }
