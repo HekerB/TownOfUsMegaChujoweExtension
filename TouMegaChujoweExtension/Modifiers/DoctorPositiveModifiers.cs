@@ -1,4 +1,5 @@
 using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
 using TouMegaChujoweExtension.Events.Crewmate;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
 using TownOfUs.Modules.Localization;
@@ -76,6 +77,43 @@ public sealed class DoctorRegenerationModifier : TimedModifier
         if (Player != null && Player.AmOwner)
         {
             DoctorEvents.ShowNotification(Player, "ExtensionDoctorNotificationWoreOffRegeneration", "Regeneration wore off");
+        }
+    }
+}
+
+public sealed class DoctorSpeedBoostModifier : TimedModifier
+{
+    public override string ModifierName => "Doctor Boost (Speed)";
+    public override bool HideOnUi => true;
+
+    private float _duration;
+    private DoctorEffectDurationType _durationType;
+
+    public DoctorSpeedBoostModifier(float duration, DoctorEffectDurationType durationType)
+    {
+        _duration = duration;
+        _durationType = durationType;
+    }
+
+    public override float Duration
+    {
+        get
+        {
+            return _durationType switch
+            {
+                DoctorEffectDurationType.AllRound => -1f,
+                DoctorEffectDurationType.AllGame => -1f,
+                DoctorEffectDurationType.SetTime => _duration,
+                _ => _duration
+            };
+        }
+    }
+
+    public override void OnDeactivate()
+    {
+        if (Player != null && Player.AmOwner)
+        {
+            DoctorEvents.ShowNotification(Player, "ExtensionDoctorNotificationWoreOffSpeedBoost", "Speed boost wore off");
         }
     }
 }

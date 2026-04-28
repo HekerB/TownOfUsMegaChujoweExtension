@@ -2,6 +2,7 @@ using AmongUs.GameOptions;
 using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.Utilities;
 using TouMegaChujoweExtension.Roles.Crewmate;
 using TownOfUs.Interfaces;
 using TownOfUs.Modules.Localization;

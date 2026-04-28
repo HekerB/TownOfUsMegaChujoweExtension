@@ -48,6 +48,7 @@ public static class TouExtensionColors
         public static Color Bodyguard => new Color32(77, 166, 255, 255); // Light Blue
         public static Color Oracle => new Color32(191, 0, 191, 255);    // Magenta
         public static Color SchrodingersCat => new Color32(255, 211, 105, 255);
+        public static Color Doctor => new Color32(0, 255, 127, 255); // Spring Green
     }
 
 	// Modifiers

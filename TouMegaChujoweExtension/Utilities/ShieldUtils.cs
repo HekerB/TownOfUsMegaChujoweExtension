@@ -29,7 +29,8 @@ public enum ShieldType
     Oracle,
     DeadlyQuota,
     Cleric,
-    SchrodingersCat
+    SchrodingersCat,
+    Doctor
 }
 
 public static class ShieldUtils
@@ -56,6 +57,7 @@ public static class ShieldUtils
         }
         if (player.HasModifier<ClericBarrierModifier>()) return ShieldType.Cleric;
         if (player.IsRole<SchrodingersCatRole>() && !player.GetRole<SchrodingersCatRole>().IsAdopted) return ShieldType.SchrodingersCat;
+        if (player.HasModifier<DoctorShieldModifier>()) return ShieldType.Doctor;
         
         return ShieldType.None;
     }
@@ -74,6 +76,7 @@ public static class ShieldUtils
             ShieldType.Oracle => TouExtensionColors.ShieldFlashes.Oracle,
             ShieldType.Cleric => TouExtensionColors.ShieldFlashes.Cleric,
             ShieldType.SchrodingersCat => TouExtensionColors.ShieldFlashes.SchrodingersCat,
+            ShieldType.Doctor => TouExtensionColors.ShieldFlashes.Doctor,
             _ => Color.clear
         };
     }

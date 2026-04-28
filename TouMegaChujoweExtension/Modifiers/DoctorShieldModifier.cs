@@ -1,14 +1,18 @@
 using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
 using TownOfUs.Modifiers;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
 using TouMegaChujoweExtension.Events.Crewmate;
 
 namespace TouMegaChujoweExtension.Modifiers;
 
-public sealed class DoctorShieldModifier : TimedModifier, IShieldModifier
+public sealed class DoctorShieldModifier : BaseShieldModifier
 {
     public override string ModifierName => "Doctor Shield";
     public override bool HideOnUi => true;
+
+    public override string ShieldDescription => "You are protected by a Doctor's shield!";
+    public override bool VisibleSymbol => true;
 
     private float _duration;
     private DoctorEffectDurationType _durationType;

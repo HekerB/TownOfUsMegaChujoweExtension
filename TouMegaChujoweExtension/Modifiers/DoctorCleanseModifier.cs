@@ -1,13 +1,14 @@
 using MiraAPI.Modifiers;
+using MiraAPI.Modifiers.Types;
 using TouMegaChujoweExtension.Events.Crewmate;
 using TownOfUs.Modules.Localization;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modifiers;
 
-public sealed class CleanseModifier : TimedModifier
+public sealed class DoctorCleanseModifier : TimedModifier
 {
-    public override string ModifierName => "Cleansed";
+    public override string ModifierName => "Doctor Cleansed";
     public override bool HideOnUi => true;
 
     public override float Duration => 1f; // Instant effect, but TimedModifier needs a duration

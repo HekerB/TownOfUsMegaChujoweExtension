@@ -97,7 +97,7 @@ public static class DoctorEvents
         effects.Add((options.ChanceSpeedBoost, () => new DoctorSpeedBoostModifier(duration, durationType), "ExtensionDoctorNotificationSpeedBoost", "Increased movement speed"));
         effects.Add((options.ChanceVisionBoost, () => new DoctorVisionBoostModifier(duration, durationType), "ExtensionDoctorNotificationVisionBoost", "Increased vision"));
         effects.Add((options.ChanceRegeneration, () => new DoctorRegenerationModifier(duration, durationType), "ExtensionDoctorNotificationRegeneration", "Slowly regenerating"));
-        effects.Add((options.ChanceCleanse, () => new CleanseModifier(), "ExtensionDoctorNotificationCleanse", "Negative effects removed"));
+        effects.Add((options.ChanceCleanse, () => new DoctorCleanseModifier(), "ExtensionDoctorNotificationCleanse", "Negative effects removed"));
         effects.Add((options.ChanceShield, () => new DoctorShieldModifier(duration, durationType), "ExtensionDoctorNotificationShield", "Protected from one attack"));
         // TODO: X-Ray effect logic if needed, for now just high vision
         effects.Add((options.ChanceXRay, () => new DoctorVisionBoostModifier(duration * 2, durationType), "ExtensionDoctorNotificationXRay", "Seeing through walls (enhanced vision)"));

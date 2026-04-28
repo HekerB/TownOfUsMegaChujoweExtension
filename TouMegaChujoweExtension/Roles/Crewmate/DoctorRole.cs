@@ -30,7 +30,7 @@ public sealed class DoctorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         return TouLocale.GetParsed($"ExtensionRole{LocaleKey}WikiDescription") + MiscUtils.AppendOptionsText(GetType());
     }
 
-    public override Color RoleColor => TouExtensionColors.Doctor;
+    public Color RoleColor => TouExtensionColors.Doctor;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
     public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
 
