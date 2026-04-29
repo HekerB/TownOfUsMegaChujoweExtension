@@ -3,6 +3,12 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using MiraAPI.GameOptions;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
 using TouMegaChujoweExtension.Roles.Crewmate;
+using TouMegaChujoweExtension.Roles.Neutral;
+using TownOfUs.Extensions;
+using AmongUs.GameOptions;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace TouMegaChujoweExtension.Patches;
 
@@ -34,15 +40,31 @@ public static class ForestallerExtraTasksPatch
             return;
         }
 
-        if (player.Data.Role is not ForestallerRole)
+        var isForestaller = player.Data.Role is ForestallerRole;
+        var isCat = player.Data.Role is SchrodingersCatRole;
+
+        if (!isForestaller && !isCat)
         {
             return;
         }
 
-        var opt = OptionGroupSingleton<ForestallerOptions>.Instance;
-        var extraShort = opt != null ? Math.Max(0, (int)opt.ExtraShortTasks) : 0;
-        var extraLong = opt != null ? Math.Max(0, (int)opt.ExtraLongTasks) : 0;
-        if (extraShort == 0 && extraLong == 0)
+        int extraShort = 0;
+        int extraLong = 0;
+
+        if (isForestaller)
+        {
+            var opt = OptionGroupSingleton<ForestallerOptions>.Instance;
+            extraShort = opt != null ? Math.Max(0, (int)opt.ExtraShortTasks) : 0;
+            extraLong = opt != null ? Math.Max(0, (int)opt.ExtraLongTasks) : 0;
+        }
+        else if (isCat && taskTypeIds.Length == 0)
+        {
+            // Cat needs base tasks
+            extraShort = 2; // Default 2 short tasks
+            extraLong = 1;  // Default 1 long task
+        }
+
+        if (extraShort == 0 && extraLong == 0 && isForestaller)
         {
             return;
         }

@@ -92,6 +92,31 @@
   <string name="ExtensionRoleVanisherUnvanish">Unvanish</string>
   <string name="ExtensionRoleVanisherVanishWikiDescription">Turn invisible for a set duration. While invisible, nearby Impostors and Neutrals receive a warning. You can end the effect early by pressing Unvanish.</string>
 
+  <!-- Doctor Options -->
+  <string name="ExtensionOptionDoctorHealCooldown">Inject Cooldown</string>
+  <string name="ExtensionOptionDoctorEffectDelay">Effect Delay</string>
+  <string name="ExtensionOptionDoctorEffectDurationType">Effect Duration Type</string>
+  <string name="ExtensionOptionDoctorEffectDuration">Effect Duration</string>
+  <string name="ExtensionOptionDoctorInitialUses">Initial Inject Uses</string>
+  <string name="ExtensionOptionDoctorCanGiveNegativeEffects">Can Give Negative Effects</string>
+  <string name="ExtensionOptionDoctorSeesShieldFlash">Doctor Sees Shield Flash</string>
+  <string name="ExtensionOptionDoctorTargetSeesShield">Target Sees Shield</string>
+  <string name="ExtensionOptionDoctorSelectedEffectType">Effect Type To Configure</string>
+  <string name="ExtensionOptionDoctorChanceSpeedBoost">Chance for Speed Boost</string>
+  <string name="ExtensionOptionDoctorChanceVisionBoost">Chance for Vision Boost</string>
+  <string name="ExtensionOptionDoctorChanceCleanse">Chance for Cleanse</string>
+  <string name="ExtensionOptionDoctorChanceShield">Chance for Shield</string>
+  <string name="ExtensionOptionDoctorChanceCanVent">Chance for Can Vent</string>
+  <string name="ExtensionOptionDoctorChanceRegeneration">Chance for Regeneration</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumCleanse">Cleanse</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumShield">Shield</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumCanVent">Can Vent</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumRegeneration">Regeneration</string>
+  <string name="ExtensionDoctorNotificationShieldAttacked">Your shield on &lt;target&gt; protected them!</string>
+  <string name="ExtensionDoctorNotificationShieldSaved">You were protected by the Doctor's shield!</string>
+  <string name="ExtensionDoctorNotificationWoreOffCanVent">Can Vent effect wore off!</string>
+  <string name="ExtensionDoctorNotificationWoreOffRegeneration">Regeneration wore off!</string>
+
   <!-- Vanisher Options -->
   <string name="ExtensionOptionVanisherCooldown">Vanish Cooldown</string>
   <string name="ExtensionOptionVanisherDuration">Vanish Duration</string>
@@ -618,7 +643,9 @@
   <string name="ExtensionRoleDoctorTabDescription">Inject players to give them random positive effects.</string>
   <string name="ExtensionRoleDoctorWikiDescription">The Doctor is a Crewmate Support role that can inject players with various positive effects. Effects are randomly selected and can include speed boost, enhanced vision, regeneration, cleansing of negative effects, shield, or X-ray vision.</string>
   <string name="ExtensionRoleDoctorHeal">Heal</string>
-  <string name="ExtensionRoleDoctorHealWikiDescription">Inject a nearby player with a random positive effect. The effect will activate after a configurable delay.</string>
+  <string name="ExtensionRoleDoctorInject">Inject</string>
+  <string name="ExtensionModifierDoctorVisionBoost">Vision Boost</string>
+  <string name="ExtensionModifierDoctorRegeneration">Regeneration</string>
 
   <!-- Doctor Options -->
   <string name="ExtensionOptionDoctorHealCooldown">Heal Cooldown</string>

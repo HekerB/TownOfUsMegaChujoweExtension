@@ -93,7 +93,14 @@ public static class ShieldEvents
             case ShieldType.Cleric:
                 if (target.TryGetModifier<ClericBarrierModifier>(out var clericMod))
                 {
-                    ClericRole.RpcClericBarrierAttacked(clericMod.Cleric, source, target);
+                    if (clericMod.Cleric != null && clericMod.Cleric.Data.Role is TouMegaChujoweExtension.Roles.Crewmate.DoctorRole)
+                    {
+                        TouMegaChujoweExtension.Roles.Crewmate.DoctorRole.RpcDoctorShieldAttacked(clericMod.Cleric, source, target);
+                    }
+                    else
+                    {
+                        ClericRole.RpcClericBarrierAttacked(clericMod.Cleric, source, target);
+                    }
                 }
                 break;
         }

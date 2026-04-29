@@ -18,7 +18,7 @@ public sealed class DoctorCleanseModifier : TimedModifier
         if (Player == null) return;
 
         // Remove negative modifiers
-        var modifiersToRemove = Player.GetModifiers().Where(m => 
+        var modifiersToRemove = Player.GetModifiers<BaseModifier>().Where(m => 
             m is InjectedInvertedControlsModifier ||
             m is InjectedLowVisionModifier ||
             m is InjectedSlownessModifier ||
@@ -36,11 +36,6 @@ public sealed class DoctorCleanseModifier : TimedModifier
             Player.RemoveModifier(mod);
         }
 
-        if (Player.AmOwner)
-        {
-            DoctorEvents.ShowNotification(Player, "ExtensionDoctorNotificationCleanse", "All negative effects removed");
-        }
-        
         Player.RemoveModifier(this);
     }
 }

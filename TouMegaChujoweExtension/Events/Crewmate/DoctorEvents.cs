@@ -18,6 +18,7 @@ using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using TouMegaChujoweExtension.Modifiers.Crewmate;
 
 namespace TouMegaChujoweExtension.Events.Crewmate;
 
@@ -25,7 +26,7 @@ public static class DoctorEvents
 {
     private static readonly Dictionary<byte, List<PendingHeal>> PendingHeals = new();
 
-    public static void ScheduleHeal(PlayerControl doctor, PlayerControl target)
+    public static void ScheduleHeal(PlayerControl doctor, PlayerControl target, int seed)
     {
         if (target == null || target.HasDied() || doctor == null)
         {
@@ -41,7 +42,8 @@ public static class DoctorEvents
             Target = target,
             Delay = delay,
             ScheduledTime = Time.time,
-            HealId = Guid.NewGuid()
+            HealId = Guid.NewGuid(),
+            Seed = seed
         };
 
         if (!PendingHeals.ContainsKey(target.PlayerId))
@@ -69,7 +71,7 @@ public static class DoctorEvents
             yield break;
         }
 
-        ApplyHealEffect(pending.Doctor, pending.Target);
+        ApplyHealEffect(pending.Doctor, pending.Target, pending.Seed);
         
         if (PendingHeals.ContainsKey(pending.Target.PlayerId))
         {
@@ -81,7 +83,7 @@ public static class DoctorEvents
         }
     }
 
-    private static void ApplyHealEffect(PlayerControl doctor, PlayerControl target)
+    private static void ApplyHealEffect(PlayerControl doctor, PlayerControl target, int seed)
     {
         if (target == null || target.HasDied())
         {
@@ -94,13 +96,20 @@ public static class DoctorEvents
 
         var effects = new List<(float Weight, Func<BaseModifier> CreateModifier, string NotificationKey, string Desc)>();
 
-        effects.Add((options.ChanceSpeedBoost, () => new DoctorSpeedBoostModifier(duration, durationType), "ExtensionDoctorNotificationSpeedBoost", "Increased movement speed"));
-        effects.Add((options.ChanceVisionBoost, () => new DoctorVisionBoostModifier(duration, durationType), "ExtensionDoctorNotificationVisionBoost", "Increased vision"));
-        effects.Add((options.ChanceRegeneration, () => new DoctorRegenerationModifier(duration, durationType), "ExtensionDoctorNotificationRegeneration", "Slowly regenerating"));
-        effects.Add((options.ChanceCleanse, () => new DoctorCleanseModifier(), "ExtensionDoctorNotificationCleanse", "Negative effects removed"));
-        effects.Add((options.ChanceShield, () => new DoctorShieldModifier(duration, durationType), "ExtensionDoctorNotificationShield", "Protected from one attack"));
-        // TODO: X-Ray effect logic if needed, for now just high vision
-        effects.Add((options.ChanceXRay, () => new DoctorVisionBoostModifier(duration * 2, durationType), "ExtensionDoctorNotificationXRay", "Seeing through walls (enhanced vision)"));
+        effects.Add((options.ChanceSpeedBoost, new Func<BaseModifier>(() => new DoctorSpeedBoostModifier(duration, durationType)), "ExtensionDoctorNotificationSpeedBoost", "Increased movement speed"));
+        effects.Add((options.ChanceVisionBoost, new Func<BaseModifier>(() => new DoctorVisionBoostModifier(duration, durationType)), "ExtensionDoctorNotificationVisionBoost", "Increased vision"));
+        effects.Add((options.ChanceCleanse, new Func<BaseModifier>(() => new DoctorCleanseModifier()), "ExtensionDoctorNotificationCleanse", "Negative effects removed"));
+        effects.Add((options.ChanceShield, new Func<BaseModifier>(() => new DoctorShieldModifier(doctor, duration, durationType)), "ExtensionDoctorNotificationShield", "Protected from one attack"));
+        effects.Add((options.ChanceCanVent, new Func<BaseModifier>(() => new DoctorCanVentModifier(duration, durationType)), "ExtensionDoctorNotificationCanVent", "Can use vents"));
+        effects.Add((options.ChanceRegeneration, new Func<BaseModifier>(() => new DoctorRegenerationModifier(duration, durationType)), "ExtensionDoctorNotificationRegeneration", "Cooldowns recover faster"));
+
+        // Injector negative effects if enabled
+        if (options.CanGiveNegativeEffects)
+        {
+            effects.Add((options.ChanceSpeedBoost, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.InjectedSlownessModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionRoleInjectorEffectTypeEnumSlowness", "Slowness"));
+            effects.Add((options.ChanceVisionBoost, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.InjectedLowVisionModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionRoleInjectorEffectTypeEnumLowVision", "Low Vision"));
+            effects.Add((options.ChanceCleanse, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.InjectedConfusedModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionRoleInjectorEffectTypeEnumConfused", "Confused"));
+        }
 
         var totalWeight = effects.Sum(e => e.Weight);
 
@@ -113,7 +122,10 @@ public static class DoctorEvents
             return;
         }
 
-        var randomValue = Random.RandomRange(0f, totalWeight);
+        // Use System.Random for deterministic generation across clients using the same seed
+        var rng = new System.Random(seed);
+        var randomValue = (float)(rng.NextDouble() * totalWeight);
+        
         var cumulativeWeight = 0f;
         BaseModifier? selectedModifier = null;
         string selectedNotificationKey = string.Empty;
@@ -135,6 +147,25 @@ public static class DoctorEvents
         {
             target.AddModifier(selectedModifier);
             ShowNotification(target, selectedNotificationKey, selectedDesc);
+            
+            // Start coroutine to remove ClericBarrierModifier if it was selected and durationType is SetTime
+            // TimedModifiers handle their own duration removal
+        }
+    }
+
+
+    public static void ShieldAttacked(PlayerControl doctor, PlayerControl attacker, PlayerControl target)
+    {
+        var options = OptionGroupSingleton<DoctorOptions>.Instance;
+        
+        if (options.DoctorSeesShieldFlash)
+        {
+            ShowNotification(doctor, "ExtensionDoctorNotificationShieldAttacked", $"Your shield on {target.Data.PlayerName} protected them from {attacker.Data.PlayerName}!");
+        }
+
+        if (options.TargetSeesShield)
+        {
+            ShowNotification(target, "ExtensionDoctorNotificationShieldSaved", $"You were protected by the Doctor's shield from {attacker.Data.PlayerName}!");
         }
     }
 
@@ -182,5 +213,6 @@ public static class DoctorEvents
         public float Delay { get; set; }
         public float ScheduledTime { get; set; }
         public Guid HealId { get; set; }
+        public int Seed { get; set; }
     }
 }

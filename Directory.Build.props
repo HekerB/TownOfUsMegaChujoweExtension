@@ -10,8 +10,8 @@
 
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
-        <VersionPrefix>1.0.2</VersionPrefix>
-        <VersionSuffix></VersionSuffix>
+        <VersionPrefix>1.0.3</VersionPrefix>
+        <VersionSuffix>beta.1</VersionSuffix>
 
         <Authors>TouMegaChujoweExtension</Authors>
         <Company>Mega Shit Bunch</Company>

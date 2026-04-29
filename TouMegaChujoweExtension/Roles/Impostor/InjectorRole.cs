@@ -1,4 +1,4 @@
-﻿using Il2CppInterop.Runtime.Attributes;
+using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
@@ -67,7 +67,7 @@ public sealed class InjectorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     }
 
     [MethodRpc((uint)ExtensionRpc.InjectorInject)]
-    public static void RpcInjectorInject(PlayerControl injector, PlayerControl target)
+    public static void RpcInjectorInject(PlayerControl injector, PlayerControl target, int randomSeed)
     {
         if (injector.Data.Role is not InjectorRole)
         {
@@ -80,6 +80,6 @@ public sealed class InjectorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
             return;
         }
 
-        InjectorEvents.ScheduleInjection(injector, target);
+        InjectorEvents.ScheduleInjection(injector, target, randomSeed);
     }
 }

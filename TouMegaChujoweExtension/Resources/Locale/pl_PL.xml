@@ -92,6 +92,31 @@
   <string name="ExtensionRoleVanisherUnvanish">Pojaw sie</string>
   <string name="ExtensionRoleVanisherVanishWikiDescription">Stan sie niewidzialny na okreslony czas. Gdy jestes niewidzialny, pobliscy Impostorzy i Neutralni otrzymuja ostrzezenie. Mozesz zakonczyc efekt wczesniej, naciskajac Pojaw sie.</string>
 
+  <!-- Doctor Options -->
+  <string name="ExtensionOptionDoctorHealCooldown">Cooldown wstrzykiwania</string>
+  <string name="ExtensionOptionDoctorEffectDelay">Opoznienie efektu</string>
+  <string name="ExtensionOptionDoctorEffectDurationType">Typ czasu trwania efektu</string>
+  <string name="ExtensionOptionDoctorEffectDuration">Czas trwania efektu</string>
+  <string name="ExtensionOptionDoctorInitialUses">Poczatkowe uzycia wstrzykniecia</string>
+  <string name="ExtensionOptionDoctorCanGiveNegativeEffects">Moze dawac negatywne efekty</string>
+  <string name="ExtensionOptionDoctorSeesShieldFlash">Doctor widzi blysk tarczy</string>
+  <string name="ExtensionOptionDoctorTargetSeesShield">Cel widzi tarcze</string>
+  <string name="ExtensionOptionDoctorSelectedEffectType">Typ efektu do konfiguracji</string>
+  <string name="ExtensionOptionDoctorChanceSpeedBoost">Szansa na Speed Boost</string>
+  <string name="ExtensionOptionDoctorChanceVisionBoost">Szansa na Vision Boost</string>
+  <string name="ExtensionOptionDoctorChanceCleanse">Szansa na Cleanse</string>
+  <string name="ExtensionOptionDoctorChanceShield">Szansa na Shield</string>
+  <string name="ExtensionOptionDoctorChanceCanVent">Szansa na Can Vent</string>
+  <string name="ExtensionOptionDoctorChanceRegeneration">Szansa na Regeneration</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumCleanse">Cleanse</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumShield">Shield</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumCanVent">Can Vent</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumRegeneration">Regeneration</string>
+  <string name="ExtensionDoctorNotificationShieldAttacked">Twoja tarcza na &lt;target&gt; go obronila!</string>
+  <string name="ExtensionDoctorNotificationShieldSaved">Zostales obroniony przez tarcze Doctora!</string>
+  <string name="ExtensionDoctorNotificationWoreOffCanVent">Efekt Can Vent wygasl!</string>
+  <string name="ExtensionDoctorNotificationWoreOffRegeneration">Regeneracja wygasla!</string>
+
   <!-- Vanisher Options -->
   <string name="ExtensionOptionVanisherCooldown">Cooldown Znikania</string>
   <string name="ExtensionOptionVanisherDuration">Czas trwania znikniecia</string>
@@ -619,7 +644,9 @@
   <string name="ExtensionRoleDoctorIntroBlurb">Wstrzykuj graczom pozytywne efekty.</string>
   <string name="ExtensionRoleDoctorTabDescription">Wstrzykuj graczom losowe pozytywne efekty.</string>
   <string name="ExtensionRoleDoctorWikiDescription">Doctor to rola Crewmate Support, ktora moze wstrzykiwac graczom rozne pozytywne efekty. Efekty sa wybierane losowo i moga obejmowac przyspieszenie, lepsze widzenie, regeneracje, oczyszczenie z negatywnych efektow, tarcze lub wzrok rentgenowski.</string>
-  <string name="ExtensionRoleDoctorHeal">Ulecz</string>
+  <string name="ExtensionRoleDoctorInject">Wstrzyknij</string>
+  <string name="ExtensionModifierDoctorVisionBoost">Lepsze widzenie</string>
+  <string name="ExtensionModifierDoctorRegeneration">Regeneracja</string>
   <string name="ExtensionRoleDoctorHealWikiDescription">Wstrzyknij pobliskiemu graczowi losowy pozytywny efekt. Efekt aktywuje sie po skonfigurowanym opoznieniu.</string>
 
   <!-- Doctor Options -->
@@ -680,13 +707,13 @@
 
   <!-- Vulture Role -->
   <string name="ExtensionRoleVulture">Vulture</string>
-  <string name="ExtensionRoleVultureIntroBlurb">Zjadaj martwe ciala, aby wygrac samotnie.</string>
-  <string name="ExtensionRoleVultureTabDescription">Zjadaj ciala [Q], aby wygrac. Scavenge [F] pokazuje strzalki.</string>
-  <string name="ExtensionRoleVultureWikiDescription">Celem Vulture jest zjedzenie okreslonej liczby cial. Uzywaj [Q] do jedzenia i [F] do namierzania zwlok. Uklad przyciskow: Eat (Gora-Lewo), Scavenge (Prawo), Vent (Dol).</string>
+  <string name="ExtensionRoleVultureIntroBlurb">Zjadaj zwloki, aby wygrac samotnie.</string>
+  <string name="ExtensionRoleVultureTabDescription">Zjadaj martwe ciala, aby wygrac jako jedyny ocalaly.</string>
+  <string name="ExtensionRoleVultureWikiDescription">Vulture to rola Neutral Evil, ktorej celem jest zjedzenie okreslonej liczby zwlok. Opcjonalnie Vulture moze uzywac Scavenge, aby otrzymac strzalki wskazujace ciala. Jesli warunek wygranej Vulture nie moze byc juz spelniony, zamienia sie on w skonfigurowana role.</string>
   <string name="ExtensionRoleVultureEat">Zjedz</string>
-  <string name="ExtensionRoleVultureEatWikiDescription">Zjedz pobliskie martwe cialo. Liczy sie to do twojego warunku wygranej.</string>
-  <string name="ExtensionRoleVultureScavenge">Scavenge</string>
-  <string name="ExtensionRoleVultureScavengeWikiDescription">Dostan strzalki wskazujace wszystkie zwloki na pewien czas. Jesli zwloki sa na innym pietrze na Submerged, strzalka wskaze winde.</string>
+  <string name="ExtensionRoleVultureEatWikiDescription">Zjedz pobliskie zwloki. Liczy sie to do twojego warunku wygranej.</string>
+  <string name="ExtensionRoleVultureScavenge">Padlina</string>
+  <string name="ExtensionRoleVultureScavengeWikiDescription">Otrzymaj strzalki wskazujace wszystkie ciala przez pewien czas. Jesli zwloki sa na innym pietrze na mapie Submerged, strzalka bedzie wskazywac winde.</string>
 
   <!-- Vulture Options -->
   <string name="ExtensionOptionVultureEatCooldown">Cooldown zjadania</string>
@@ -785,14 +812,14 @@
   
   <!-- Poisoner Role -->
   <string name="ExtensionRolePoisoner">Poisoner</string>
-  <string name="ExtensionRolePoisonerIntroBlurb">Truj i pnij swoich wrogow</string>
-  <string name="ExtensionRolePoisonerTabDescription">Truj [Lewo] i uzywaj pnaczy [Prawo]. Vent jest na srodku.</string>
-  <string name="ExtensionRolePoisonerWikiDescription">Impostor z ukladem przyciskow Zerkaa. Poison (Lewo), Vent (Srodek), Vine (Prawo). Posiada agresywny efekt drgania przyciskow (Flicker Banger) podczas aktywacji.</string>
-  <string name="ExtensionRolePoisonerPoison">Poison</string>
-  <string name="ExtensionRolePoisonerPoisonWikiDescription">Podejdz do gracza i go zatruj. Umrze po opoznieniu.</string>
-  <string name="ExtensionRolePoisonerVine">Vine</string>
-  <string name="ExtensionRolePoisonerVining">Vining...</string>
-  <string name="ExtensionRolePoisonerVineWikiDescription">Znajdz najblizszego gracza w zasiegu i zabij go po opoznieniu. Twoja kamera podaza za celem.</string>
+  <string name="ExtensionRolePoisonerIntroBlurb">Zatruwaj i owijaj bluszczem swoich wrogow</string>
+  <string name="ExtensionRolePoisonerTabDescription">Uzywaj Trucizny, aby powoli zabijac graczy, do ktorych sie zblizysz.\%nl\%Uzywaj Bluszczu, aby zdalnie zabic najblizszego gracza w zasiegu.</string>
+  <string name="ExtensionRolePoisonerWikiDescription">Impostor, ktory moze zatruwac graczy przy kontakcie lub uzywac bluszczu, aby zabijac z dystansu.</string>
+  <string name="ExtensionRolePoisonerPoison">Trucizna</string>
+  <string name="ExtensionRolePoisonerPoisonWikiDescription">Podejdz do gracza i go zatruj. Zginie po pewnym czasie.</string>
+  <string name="ExtensionRolePoisonerVine">Bluszcz</string>
+  <string name="ExtensionRolePoisonerVining">Owijanie...</string>
+  <string name="ExtensionRolePoisonerVineWikiDescription">Znajdz najblizszego gracza w zasiegu i zabij go po pewnym czasie. Twoja kamera podaza za celem.</string>
   
   <!-- Poisoner Options -->
   <string name="ExtensionOptionPoisonerPoisonCooldown">Cooldown Poison</string>

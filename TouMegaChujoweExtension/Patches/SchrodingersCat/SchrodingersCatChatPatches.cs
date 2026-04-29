@@ -4,9 +4,11 @@ using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Utilities;
 using TownOfUs;
 using TownOfUs.Extensions;
+using TownOfUs.Roles.Neutral;
 using TouMegaChujoweExtension.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using MiraAPI.Modifiers;
 
 namespace TouMegaChujoweExtension.Patches.SchrodingersCat;
 
@@ -26,6 +28,7 @@ public static class SchrodingersCatChatPatches
         var text = __args[1] as string;
         
         if (sender == null || text == null) return;
+        if (!MiraAPI.GameOptions.OptionGroupSingleton<TouMegaChujoweExtension.Options.GeneralOptions>.Instance.CatChat) return;
 
         var localPlayer = PlayerControl.LocalPlayer;
         if (localPlayer == null) return;

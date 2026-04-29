@@ -3,6 +3,7 @@ using MiraAPI.GameOptions;
 using Reactor.Utilities;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Modifiers.Universal;
+using TouMegaChujoweExtension.Modifiers.Crewmate;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Utilities;
@@ -11,6 +12,8 @@ using TownOfUs.Modifiers.Game.Crewmate;
 using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Options.Modifiers.Impostor;
 using TownOfUs.Options.Roles.Neutral;
+using TownOfUs.Extensions;
+using TouMegaChujoweExtension.Roles.Neutral;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Utilities;
@@ -56,8 +59,9 @@ public static class ShieldUtils
             if (hasShieldOpt && underQuota) return ShieldType.DeadlyQuota;
         }
         if (player.HasModifier<ClericBarrierModifier>()) return ShieldType.Cleric;
-        if (player.IsRole<SchrodingersCatRole>() && !player.GetRole<SchrodingersCatRole>().IsAdopted) return ShieldType.SchrodingersCat;
         if (player.HasModifier<DoctorShieldModifier>()) return ShieldType.Doctor;
+        if (player.IsRole<SchrodingersCatRole>() && !player.GetRole<SchrodingersCatRole>().IsAdopted) return ShieldType.SchrodingersCat;
+        // Doctor now uses ClericBarrierModifier, so it's handled by ShieldType.Cleric above
         
         return ShieldType.None;
     }

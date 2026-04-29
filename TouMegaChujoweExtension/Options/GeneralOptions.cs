@@ -13,4 +13,7 @@ public sealed class GeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("Lovers Get A Private Chat In Meetings")]
     public bool LoversChat { get; set; } = true;
+
+    [ModdedToggleOption("ExtensionOptionCatChat")]
+    public bool CatChat { get; set; } = true;
 }

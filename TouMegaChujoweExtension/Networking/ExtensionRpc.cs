@@ -80,4 +80,6 @@ public enum ExtensionRpc : uint
     DoctorHeal = 75,
     CatSetTeammate = 82,
     SendCatChat = 83,
+    CatChangeRoleOnOwnerDeath = 84,
+    DoctorShieldAttacked = 85
 }

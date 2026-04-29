@@ -7,10 +7,8 @@ using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
+using TownOfUs.Assets;
 using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Modules;
-using TownOfUs;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
@@ -20,6 +18,10 @@ using TownOfUs.Utilities;
 using UnityEngine;
 using TouMegaChujoweExtension.Networking;
 using TouMegaChujoweExtension.Modifiers;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
+using TownOfUs.Modifiers;
+using MiraAPI.Modifiers;
+using Reactor.Utilities;
 
 namespace TouMegaChujoweExtension.Roles.Neutral;
 
@@ -149,12 +151,12 @@ public sealed class SchrodingersCatRole(IntPtr cppPtr) : NeutralRole(cppPtr), IT
 
     private static bool IsImpostorWin(GameOverReason reason)
     {
-        return reason is GameOverReason.ImpostorByKill or GameOverReason.ImpostorByVote or GameOverReason.ImpostorBySabotage or GameOverReason.ImpostorDisconnect;
+        return reason is GameOverReason.ImpostorsByKill or GameOverReason.ImpostorsByVote or GameOverReason.ImpostorsBySabotage or GameOverReason.ImpostorDisconnect;
     }
 
     private static bool IsCrewmateWin(GameOverReason reason)
     {
-        return reason is GameOverReason.HumansByVote or GameOverReason.HumansByTask or GameOverReason.HumansDisconnect;
+        return reason is GameOverReason.CrewmatesByVote or GameOverReason.CrewmatesByTask;
     }
 
     [HideFromIl2Cpp]
@@ -182,15 +184,27 @@ public sealed class SchrodingersCatRole(IntPtr cppPtr) : NeutralRole(cppPtr), IT
         if (cat.Data?.Role is not SchrodingersCatRole catRole)
             return;
 
+        if (catRole.IsAdopted) return;
+
         catRole.TeammateId = killerId;
         Log.LogInfo($"SchrodingersCat {cat.Data.PlayerName} adopted by killer {killerId}");
 
         var killer = MiscUtils.PlayerById(killerId);
 
+        // Role reveal logic
+        if (killer != null && OptionGroupSingleton<SchrodingersCatOptions>.Instance.RevealRolesToEachOther)
+        {
+            if (!cat.HasModifier<CatRevealModifier>())
+                cat.AddModifier<CatRevealModifier>(cat.Data.Role);
+
+            if (!killer.HasModifier<PartnerRevealModifier>())
+                killer.AddModifier<PartnerRevealModifier>(killer.Data.Role);
+        }
+
         // Flash for cat
         if (cat.AmOwner)
         {
-            PirateDuelSystem.FlashScreen(TouExtensionColors.SchrodingersCat, 0.5f, 0.3f);
+            Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.SchrodingersCat));
             ShowCatNotification(killer != null
                 ? $"You were adopted by {killer.Data.PlayerName}!"
                 : "You were adopted!");
@@ -199,15 +213,23 @@ public sealed class SchrodingersCatRole(IntPtr cppPtr) : NeutralRole(cppPtr), IT
         // Flash for killer
         if (killer != null && killer.AmOwner)
         {
-            PirateDuelSystem.FlashScreen(TouExtensionColors.SchrodingersCat, 0.5f, 0.3f);
+            Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.SchrodingersCat));
             ShowCatNotification($"You adopted {cat.Data.PlayerName}!");
         }
+    }
+
+    [MethodRpc((uint)Networking.ExtensionRpc.CatChangeRoleOnOwnerDeath)]
+    public static void RpcChangeRoleOnOwnerDeath(PlayerControl cat, ushort newRoleId)
+    {
+        if (cat == null || cat.HasDied()) return;
+        cat.ChangeRole(newRoleId);
     }
 
     [MethodRpc((uint)Networking.ExtensionRpc.SendCatChat)]
     public static void RpcSendCatChat(PlayerControl sender, string text)
     {
         if (sender == null) return;
+        if (!MiraAPI.GameOptions.OptionGroupSingleton<TouMegaChujoweExtension.Options.GeneralOptions>.Instance.CatChat) return;
 
         var localPlayer = PlayerControl.LocalPlayer;
         if (localPlayer == null) return;
@@ -259,7 +281,7 @@ public sealed class SchrodingersCatRole(IntPtr cppPtr) : NeutralRole(cppPtr), IT
         }
 
         bool canSee = recipients.Contains(localPlayer.PlayerId);
-        if (!canSee && DeathHandlerModifier.IsFullyDead(localPlayer) && OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance.TheDeadKnow)
+        if (!canSee && TownOfUs.Modifiers.DeathHandlerModifier.IsFullyDead(localPlayer) && OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance.TheDeadKnow)
         {
             canSee = true;
         }

@@ -37,8 +37,7 @@ public sealed class DoctorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = false,
-        Icon = TouExtensionIcons.DoctorRoleIcon,
-        Banner = TouExtensionBanners.DoctorBanner,
+        Icon = TouExtensionIcons.DoctorRoleIcon
     };
 
     [HideFromIl2Cpp]
@@ -67,7 +66,7 @@ public sealed class DoctorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     }
 
     [MethodRpc((uint)ExtensionRpc.DoctorHeal)]
-    public static void RpcDoctorHeal(PlayerControl doctor, PlayerControl target)
+    public static void RpcDoctorHeal(PlayerControl doctor, PlayerControl target, int randomSeed)
     {
         if (doctor.Data.Role is not DoctorRole)
         {
@@ -80,6 +79,18 @@ public sealed class DoctorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             return;
         }
 
-        DoctorEvents.ScheduleHeal(doctor, target);
+        DoctorEvents.ScheduleHeal(doctor, target, randomSeed);
+    }
+
+    [MethodRpc((uint)ExtensionRpc.DoctorShieldAttacked)]
+    public static void RpcDoctorShieldAttacked(PlayerControl doctor, PlayerControl attacker, PlayerControl target)
+    {
+        if (doctor.Data.Role is not DoctorRole)
+        {
+            Error("RpcDoctorShieldAttacked - Invalid doctor");
+            return;
+        }
+
+        DoctorEvents.ShieldAttacked(doctor, attacker, target);
     }
 }

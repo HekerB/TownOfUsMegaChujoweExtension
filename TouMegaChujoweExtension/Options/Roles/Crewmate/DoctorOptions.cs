@@ -20,10 +20,10 @@ public enum DoctorEffectType
 {
     SpeedBoost,
     VisionBoost,
-    Regeneration,
     Cleanse,
     Shield,
-    XRay
+    CanVent,
+    Regeneration
 }
 
 public sealed class DoctorOptions : AbstractOptionGroup<DoctorRole>, IWikiOptionsSummaryProvider
@@ -52,15 +52,24 @@ public sealed class DoctorOptions : AbstractOptionGroup<DoctorRole>, IWikiOption
     [ModdedNumberOption("ExtensionOptionDoctorInitialUses", 0, 15)]
     public float InitialUses { get; set; } = 3f;
 
+    [ModdedToggleOption("ExtensionOptionDoctorCanGiveNegativeEffects")]
+    public bool CanGiveNegativeEffects { get; set; } = false;
+
+    [ModdedToggleOption("ExtensionOptionDoctorSeesShieldFlash")]
+    public bool DoctorSeesShieldFlash { get; set; } = true;
+
+    [ModdedToggleOption("ExtensionOptionDoctorTargetSeesShield")]
+    public bool TargetSeesShield { get; set; } = true;
+
     // Effect selection and chance configuration
     private static readonly string[] EffectTypeValues =
     [
         "ExtensionOptionInjectorEffectTypeEnumSpeedBoost",
         "ExtensionOptionInjectorEffectTypeEnumVisionBoost",
-        "ExtensionOptionInjectorEffectTypeEnumRegeneration",
         "ExtensionOptionDoctorEffectTypeEnumCleanse",
         "ExtensionOptionDoctorEffectTypeEnumShield",
-        "ExtensionOptionDoctorEffectTypeEnumXRay"
+        "ExtensionOptionDoctorEffectTypeEnumCanVent",
+        "ExtensionOptionDoctorEffectTypeEnumRegeneration"
     ];
 
     public ModdedEnumOption<DoctorEffectType> SelectedEffectType { get; } =
@@ -78,12 +87,6 @@ public sealed class DoctorOptions : AbstractOptionGroup<DoctorRole>, IWikiOption
             Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.SelectedEffectType.Value == DoctorEffectType.VisionBoost
         };
 
-    public ModdedNumberOption ChanceRegenerationOption { get; } =
-        new("ExtensionOptionDoctorChanceRegeneration", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.SelectedEffectType.Value == DoctorEffectType.Regeneration
-        };
-
     public ModdedNumberOption ChanceCleanseOption { get; } =
         new("ExtensionOptionDoctorChanceCleanse", 40f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
         {
@@ -96,18 +99,24 @@ public sealed class DoctorOptions : AbstractOptionGroup<DoctorRole>, IWikiOption
             Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.SelectedEffectType.Value == DoctorEffectType.Shield
         };
 
-    public ModdedNumberOption ChanceXRayOption { get; } =
-        new("ExtensionOptionDoctorChanceXRay", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption ChanceCanVentOption { get; } =
+        new("ExtensionOptionDoctorChanceCanVent", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
         {
-            Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.SelectedEffectType.Value == DoctorEffectType.XRay
+            Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.SelectedEffectType.Value == DoctorEffectType.CanVent
+        };
+
+    public ModdedNumberOption ChanceRegenerationOption { get; } =
+        new("ExtensionOptionDoctorChanceRegeneration", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
+        {
+            Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.SelectedEffectType.Value == DoctorEffectType.Regeneration
         };
 
     public float ChanceSpeedBoost => ChanceSpeedBoostOption.Value;
     public float ChanceVisionBoost => ChanceVisionBoostOption.Value;
-    public float ChanceRegeneration => ChanceRegenerationOption.Value;
     public float ChanceCleanse => ChanceCleanseOption.Value;
     public float ChanceShield => ChanceShieldOption.Value;
-    public float ChanceXRay => ChanceXRayOption.Value;
+    public float ChanceCanVent => ChanceCanVentOption.Value;
+    public float ChanceRegeneration => ChanceRegenerationOption.Value;
 
     public float GetEffectChance(DoctorEffectType effectType)
     {
@@ -115,10 +124,10 @@ public sealed class DoctorOptions : AbstractOptionGroup<DoctorRole>, IWikiOption
         {
             DoctorEffectType.SpeedBoost => ChanceSpeedBoost,
             DoctorEffectType.VisionBoost => ChanceVisionBoost,
-            DoctorEffectType.Regeneration => ChanceRegeneration,
             DoctorEffectType.Cleanse => ChanceCleanse,
             DoctorEffectType.Shield => ChanceShield,
-            DoctorEffectType.XRay => ChanceXRay,
+            DoctorEffectType.CanVent => ChanceCanVent,
+            DoctorEffectType.Regeneration => ChanceRegeneration,
             _ => 0f
         };
     }
@@ -129,10 +138,10 @@ public sealed class DoctorOptions : AbstractOptionGroup<DoctorRole>, IWikiOption
             SelectedEffectType.StringName,
             ChanceSpeedBoostOption.StringName,
             ChanceVisionBoostOption.StringName,
-            ChanceRegenerationOption.StringName,
             ChanceCleanseOption.StringName,
             ChanceShieldOption.StringName,
-            ChanceXRayOption.StringName
+            ChanceCanVentOption.StringName,
+            ChanceRegenerationOption.StringName
         };
 
     public IEnumerable<string> GetWikiOptionSummaryLines()
@@ -141,10 +150,10 @@ public sealed class DoctorOptions : AbstractOptionGroup<DoctorRole>, IWikiOption
         
         if (ChanceSpeedBoost > 0) enabledEffects.Add($"Speed Boost: {ChanceSpeedBoost}%");
         if (ChanceVisionBoost > 0) enabledEffects.Add($"Vision Boost: {ChanceVisionBoost}%");
-        if (ChanceRegeneration > 0) enabledEffects.Add($"Regeneration: {ChanceRegeneration}%");
         if (ChanceCleanse > 0) enabledEffects.Add($"Cleanse: {ChanceCleanse}%");
         if (ChanceShield > 0) enabledEffects.Add($"Shield: {ChanceShield}%");
-        if (ChanceXRay > 0) enabledEffects.Add($"X-Ray: {ChanceXRay}%");
+        if (ChanceCanVent > 0) enabledEffects.Add($"Can Vent: {ChanceCanVent}%");
+        if (ChanceRegeneration > 0) enabledEffects.Add($"Regeneration: {ChanceRegeneration}%");
 
         if (enabledEffects.Count == 0)
         {

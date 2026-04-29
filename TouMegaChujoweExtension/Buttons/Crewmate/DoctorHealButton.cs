@@ -13,16 +13,22 @@ namespace TouMegaChujoweExtension.Buttons.Crewmate;
 
 public sealed class DoctorHealButton : TownOfUsRoleButton<DoctorRole, PlayerControl>
 {
-    public DoctorHealButton(DoctorRole role) : base(role, TouExtensionIcons.DoctorHealButtonIcon)
-    {
-    }
-
-    public override string Name => TouLocale.Get("ExtensionRoleDoctorHeal", "Heal");
+    public override string Name => TouLocale.Get("ExtensionRoleDoctorInject", "Inject");
+    // public override bool UsesCircleSprite => true; // Need to know the correct property for this
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Doctor;
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<DoctorOptions>.Instance.HealCooldown + MapCooldown, 5f, 120f);
     public override LoadableAsset<Sprite> Sprite => TouExtensionCrewAssets.DoctorHealButtonSprite;
     public override int MaxUses => (int)OptionGroupSingleton<DoctorOptions>.Instance.InitialUses;
+
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        if (Button != null)
+        {
+            Button.usesRemainingSprite.sprite = TownOfUs.Assets.TouAssets.AbilityCounterBodySprite.LoadAsset();
+        }
+    }
 
     public override bool ZeroIsInfinite { get; set; } = true;
 
@@ -56,6 +62,7 @@ public sealed class DoctorHealButton : TownOfUsRoleButton<DoctorRole, PlayerCont
             return;
         }
 
-        DoctorRole.RpcDoctorHeal(player, Target);
+        int seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+        DoctorRole.RpcDoctorHeal(player, Target, seed);
     }
 }

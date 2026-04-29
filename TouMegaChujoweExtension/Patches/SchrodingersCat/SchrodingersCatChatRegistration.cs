@@ -1,14 +1,14 @@
-using MiraAPI.GameOptions;
-using TouMegaChujoweExtension.Utilities;
-using TownOfUs;
-using TownOfUs.Patches.Options;
-using UnityEngine;
-using static TownOfUs.Patches.Options.TeamChatPatches;
-using TouMegaChujoweExtension.Roles.Neutral;
-using TouMegaChujoweExtension.Networking;
 using TownOfUs.Extensions;
+using TownOfUs.Utilities;
+using TownOfUs.Roles.Neutral;
+using TouMegaChujoweExtension.Roles.Neutral;
+using TouMegaChujoweExtension.Utilities;
+using TownOfUs.Patches.Options;
+using static TownOfUs.Patches.Options.TeamChatPatches;
+using UnityEngine;
+using MiraAPI.Modifiers;
 
-namespace TouMegaChujoweExtension.Patches;
+namespace TouMegaChujoweExtension.Patches.SchrodingersCat;
 
 public static class SchrodingersCatChatRegistration
 {
@@ -25,6 +25,7 @@ public static class SchrodingersCatChatRegistration
             {
                 var localPlayer = PlayerControl.LocalPlayer;
                 if (localPlayer == null || localPlayer.Data == null) return false;
+                if (!MiraAPI.GameOptions.OptionGroupSingleton<TouMegaChujoweExtension.Options.GeneralOptions>.Instance.CatChat) return false;
 
                 if (localPlayer.IsRole<SchrodingersCatRole>())
                 {
