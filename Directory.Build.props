@@ -10,7 +10,7 @@
 
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
-        <VersionPrefix>1.0.3</VersionPrefix>
+        <VersionPrefix>1.0.4</VersionPrefix>
         <VersionSuffix>beta.1</VersionSuffix>
 
         <Authors>TouMegaChujoweExtension</Authors>
