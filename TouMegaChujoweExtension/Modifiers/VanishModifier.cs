@@ -37,7 +37,7 @@ public sealed class VanishModifier : ConcealedModifier, IVisualAppearance
             VisorId = string.Empty,
             PlayerName = string.Empty,
             PetId = string.Empty,
-            RendererColor = new Color(0f, 0f, 0f, 0.1f),
+            RendererColor = Player.AmOwner ? new Color(0f, 0f, 0f, 0.1f) : Color.clear,
             NameColor = Color.clear,
             ColorBlindTextColor = Color.clear
         };

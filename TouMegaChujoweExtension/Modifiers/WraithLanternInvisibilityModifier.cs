@@ -17,6 +17,7 @@ public sealed class WraithLanternInvisibilityModifier : ConcealedModifier, IVisu
     public override float Duration => OptionGroupSingleton<WraithOptions>.Instance.InvisibleDuration.Value;
     public override bool HideOnUi => true;
     public override bool AutoStart => true;
+    public override bool VisibleToOthers => false;
     public bool VisualPriority => true;
 
     public VisualAppearance GetVisualAppearance()
@@ -28,7 +29,7 @@ public sealed class WraithLanternInvisibilityModifier : ConcealedModifier, IVisu
             VisorId = string.Empty,
             PlayerName = string.Empty,
             PetId = string.Empty,
-            RendererColor = new Color(0f, 0f, 0f, 0.1f),
+            RendererColor = Player.AmOwner ? new Color(0f, 0f, 0f, 0.1f) : Color.clear,
             NameColor = Color.clear,
             ColorBlindTextColor = Color.clear
         };
