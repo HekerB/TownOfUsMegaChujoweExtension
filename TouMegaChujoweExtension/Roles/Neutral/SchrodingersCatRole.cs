@@ -179,30 +179,27 @@ public sealed class SchrodingersCatRole(IntPtr cppPtr) : NeutralRole(cppPtr), IT
     /// Called via RPC when a killer tries to kill this cat for the first time.
     /// </summary>
     [MethodRpc((uint)Networking.ExtensionRpc.CatSetTeammate)]
-    public static void RpcSetTeammate(PlayerControl cat, byte killerId)
+    public void RpcSetTeammate(byte killerId)
     {
-        if (cat.Data?.Role is not SchrodingersCatRole catRole)
-            return;
+        if (IsAdopted) return;
 
-        if (catRole.IsAdopted) return;
-
-        catRole.TeammateId = killerId;
-        Log.LogInfo($"SchrodingersCat {cat.Data.PlayerName} adopted by killer {killerId}");
+        TeammateId = killerId;
+        Log.LogInfo($"SchrodingersCat {Player.Data.PlayerName} adopted by killer {killerId}");
 
         var killer = MiscUtils.PlayerById(killerId);
 
         // Role reveal logic
         if (killer != null && OptionGroupSingleton<SchrodingersCatOptions>.Instance.RevealRolesToEachOther)
         {
-            if (!cat.HasModifier<CatRevealModifier>())
-                cat.AddModifier<CatRevealModifier>(cat.Data.Role);
+            if (!Player.HasModifier<CatRevealModifier>())
+                Player.AddModifier<CatRevealModifier>(Player.Data.Role);
 
             if (!killer.HasModifier<PartnerRevealModifier>())
                 killer.AddModifier<PartnerRevealModifier>(killer.Data.Role);
         }
 
         // Flash for cat
-        if (cat.AmOwner)
+        if (Player.AmOwner)
         {
             Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.SchrodingersCat));
             ShowCatNotification(killer != null
@@ -214,7 +211,7 @@ public sealed class SchrodingersCatRole(IntPtr cppPtr) : NeutralRole(cppPtr), IT
         if (killer != null && killer.AmOwner)
         {
             Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.SchrodingersCat));
-            ShowCatNotification($"You adopted {cat.Data.PlayerName}!");
+            ShowCatNotification($"You adopted {Player.Data.PlayerName}!");
         }
     }
 

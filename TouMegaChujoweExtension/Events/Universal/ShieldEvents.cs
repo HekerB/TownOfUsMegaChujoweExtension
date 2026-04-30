@@ -19,6 +19,8 @@ using TownOfUs.Buttons;
 using Reactor.Utilities;
 using HarmonyLib;
 using TouMegaChujoweExtension.Buttons.Neutral;
+using TouMegaChujoweExtension.Roles.Neutral;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
 
 namespace TouMegaChujoweExtension.Events.Universal;
 
@@ -33,6 +35,52 @@ public static class ShieldEvents
         if (source == null || target == null || MeetingHud.Instance != null || ExileController.Instance != null) return;
 
         var shieldType = target.GetShieldType();
+        
+        // Handle Schrodinger's Cat specific logic (Adoption and Owner Protection)
+        if (target.IsRole<SchrodingersCatRole>())
+        {
+            var catRole = target.GetRole<SchrodingersCatRole>();
+            
+            // Case 1: Unadopted Cat (Immortal + Adopt)
+            if (!catRole.IsAdopted)
+            {
+                Logger<TouMegaChujoweExtensionPlugin>.Info($"[ShieldEvents] Adoption attempt from {source.Data.PlayerName} on Cat {target.Data.PlayerName}");
+                @event.Cancel();
+
+                if (source.AmOwner)
+                {
+                    var isNk = source.Is(TownOfUs.Roles.RoleAlignment.NeutralKilling);
+                    var canAdoptNk = OptionGroupSingleton<SchrodingersCatOptions>.Instance.CanBeAdoptedByNeutralKillers;
+                    
+                    if (!isNk || canAdoptNk)
+                    {
+                        catRole.RpcSetTeammate(source.PlayerId);
+                    }
+                    
+                    ResetKillButton(source, ShieldType.SchrodingersCat);
+                    ShieldUtils.TriggerShieldFlash(source, ShieldType.SchrodingersCat);
+                }
+                return;
+            }
+            
+            // Case 2: Adopted Cat vs Owner (Blocked)
+            if (catRole.TeammateId == source.PlayerId)
+            {
+                Logger<TouMegaChujoweExtensionPlugin>.Info($"[ShieldEvents] Owner {source.Data.PlayerName} blocked from killing his Cat {target.Data.PlayerName}");
+                @event.Cancel();
+                
+                if (source.AmOwner)
+                {
+                    ResetKillButton(source, ShieldType.SchrodingersCat);
+                    ShieldUtils.TriggerShieldFlash(source, ShieldType.SchrodingersCat);
+                }
+                return;
+            }
+            
+            // Case 3: Adopted Cat vs Others (Mortal)
+            // Do nothing, let it pass (shieldType will be None for adopted cat anyway)
+        }
+
         if (shieldType == ShieldType.None) return;
 
         Logger<TouMegaChujoweExtensionPlugin>.Info($"[ShieldEvents] Murder from {source.Data.PlayerName} blocked by {shieldType} on {target.Data.PlayerName}");
