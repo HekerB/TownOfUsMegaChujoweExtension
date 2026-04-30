@@ -626,7 +626,7 @@ public static class DraftSystem
         var fallback = new List<byte>();
         foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (player != null && !player.Data.Disconnected &&
+            if (player != null && player.Data != null && !player.Data.Disconnected &&
                 !TownOfUs.Roles.Other.SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
                 fallback.Add(player.PlayerId);
         }

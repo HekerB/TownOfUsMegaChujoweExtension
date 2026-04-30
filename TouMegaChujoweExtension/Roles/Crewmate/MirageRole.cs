@@ -59,7 +59,8 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        Icon = TouExtensionIcons.MirageRoleIcon
+        Icon = TouExtensionIcons.MirageRoleIcon,
+        IntroSound = TouAudio.NoisemakerIntroSound,
     };
     public bool IsGuessable => true;
     public RoleBehaviour AppearAs => this;

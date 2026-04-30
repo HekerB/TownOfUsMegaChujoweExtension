@@ -2,6 +2,7 @@ using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using MiraAPI.Modifiers;
 using TouMegaChujoweExtension.Buttons.Crewmate;
 using TouMegaChujoweExtension.Modifiers.Crewmate;
 using TouMegaChujoweExtension.Roles.Crewmate;

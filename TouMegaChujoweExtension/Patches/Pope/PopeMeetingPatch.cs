@@ -19,10 +19,14 @@ namespace TouMegaChujoweExtension.Patches.Pope;
 [HarmonyPatch]
 public static class PopeMeetingPatch
 {
+    private static float _lastUpdate;
+
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
     [HarmonyPostfix]
     public static void UpdatePostfix(MeetingHud __instance)
     {
+        if (UnityEngine.Time.time - _lastUpdate < 0.2f) return;
+        _lastUpdate = UnityEngine.Time.time;
         var local = PlayerControl.LocalPlayer;
         if (local == null || local.Data == null) return;
 

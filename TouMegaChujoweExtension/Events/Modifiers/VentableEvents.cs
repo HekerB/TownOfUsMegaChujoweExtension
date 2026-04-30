@@ -1,9 +1,11 @@
 using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Usables;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using TouMegaChujoweExtension.Modifiers.Crewmate;
 using TouMegaChujoweExtension.Options.Modifiers;
+using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Events.Modifiers;
 
@@ -22,5 +24,22 @@ public static class VentableEvents
 
         --ventableMod.VentsRemaining;
         ventableMod.CooldownTimer = OptionGroupSingleton<VentableModifierOptions>.Instance.VentCooldown.Value;
+    }
+
+    [RegisterEvent]
+    public static void RoundStartEventHandler(RoundStartEvent @event)
+    {
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.HasDied())
+            {
+                continue;
+            }
+
+            if (player.TryGetModifier<VentableModifier>(out var ventableMod))
+            {
+                ventableMod.CooldownTimer = OptionGroupSingleton<VentableModifierOptions>.Instance.VentCooldown.Value;
+            }
+        }
     }
 }

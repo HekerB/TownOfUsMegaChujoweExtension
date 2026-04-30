@@ -8,6 +8,7 @@ using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Networking;
 using TouMegaChujoweExtension.Options.Roles.Impostor;
+using TownOfUs.Assets;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
@@ -39,7 +40,8 @@ public sealed class CharlatanRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = true,
-        Icon = TouExtensionIcons.CharlatanRole
+        Icon = TouExtensionIcons.CharlatanRole,
+        IntroSound = TouAudio.NoisemakerIntroSound,
     };
 
     [HideFromIl2Cpp]

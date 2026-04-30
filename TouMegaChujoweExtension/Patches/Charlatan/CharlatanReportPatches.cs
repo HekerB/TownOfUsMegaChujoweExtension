@@ -119,8 +119,18 @@ public static class CharlatanReportPatches
         UpdateReportButton(__instance);
     }
 
+    private static float _lastReportUpdateTime = 0f;
+    private static bool _lastReportableState = false;
+
     private static void UpdateReportButton(HudManager __instance)
     {
+        if (Time.time - _lastReportUpdateTime < 0.1f)
+        {
+            __instance.ReportButton.SetActive(_lastReportableState);
+            return;
+        }
+        _lastReportUpdateTime = Time.time;
+
         var localPlayer = PlayerControl.LocalPlayer;
         if (localPlayer == null || localPlayer.Data.IsDead)
         {
@@ -179,6 +189,7 @@ public static class CharlatanReportPatches
             }
         }
 
+        _lastReportableState = reportable;
         __instance.ReportButton.SetActive(reportable);
     }
 }

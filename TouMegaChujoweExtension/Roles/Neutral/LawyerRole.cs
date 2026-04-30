@@ -848,7 +848,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public void CheckClientDeath(PlayerControl? victim)
     {
-        if (Player.HasDied() || AboutToWin || ClientVoted)
+        if (AboutToWin || ClientVoted)
         {
             return;
         }
@@ -856,7 +856,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         if (Client == null || victim == Client)
         {
             var dieOnClientDeath = OptionGroupSingleton<LawyerOptions>.Instance.DieOnClientDeath;
-            if (dieOnClientDeath)
+            if (dieOnClientDeath && !Player.HasDied())
             {
                 var showAnim = MeetingHud.Instance == null && ExileController.Instance == null;
                 var murderResultFlags = MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost;
@@ -889,6 +889,18 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                 BecomeOptions.Mercenary => RoleId.Get<MercenaryRole>(),
                 _ => (ushort)RoleTypes.Crewmate
             };
+
+            if (Player.HasModifier<LawyerRevealModifier>())
+            {
+                Player.RemoveModifier<LawyerRevealModifier>();
+            }
+
+            if (Client != null && Client.HasModifier<LawyerTargetModifier>())
+            {
+                Client.RemoveModifier<LawyerTargetModifier>();
+            }
+
+            Client = null;
 
             Player.ChangeRole(roleType);
 

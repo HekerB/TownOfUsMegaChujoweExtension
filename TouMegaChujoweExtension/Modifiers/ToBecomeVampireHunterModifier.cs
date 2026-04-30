@@ -24,10 +24,13 @@ using Random = System.Random;
 
 namespace TouMegaChujoweExtension.Modifiers.Crewmate;
 
+[MiraAPI.PluginLoading.MiraIgnore]
 internal sealed class ToBecomeVampireHunterModifier : ExcludedGameModifier
 {
     public override string ModifierName => "Possible Vampire Hunter";
     public override bool HideOnUi => true;
+    public override int GetAmountPerGame() => 0;
+    public override int GetAssignmentChance() => 0;
     private static int _vampireHuntersSpawned;
     private static bool _vhHasDied;
     private static bool _assignmentScheduled;
@@ -195,6 +198,7 @@ internal sealed class ToBecomeVampireHunterModifier : ExcludedGameModifier
         if (role is NeutralRole) return false;
 
         if (IsCrewPowerOrProtective(role)) return false;
+        if (role.GetType().Name.Contains("Imitator")) return false;
 
         if (player.HasModifier<EgotistModifier>() || HasModifierLike(player, "Egotist")) return false;
         if (player.HasModifier<CrewpostorModifier>() || HasModifierLike(player, "Crewpostor")) return false;

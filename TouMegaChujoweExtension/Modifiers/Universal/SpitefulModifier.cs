@@ -76,7 +76,7 @@ public sealed class SpitefulModifier : UniversalGameModifier, IWikiDiscoverable
         return description;
     }
 
-    public override Color FreeplayFileColor => new Color32(255, 100, 0, 255);
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
 

@@ -63,8 +63,8 @@ public static class LawyerTargetIndicatorPatch
         // Dead players should see ALL lawyer/client relationships
         if (localPlayer.HasDied() && genOpt != null && genOpt.TheDeadKnow && !hidden)
         {
-            // Check if the player being displayed is a lawyer (has a client)
-            var isLawyer = player.IsRole<LawyerRole>();
+            // Check if the player being displayed is an active lawyer (has a client)
+            var isLawyer = player.IsRole<LawyerRole>() && player.GetRole<LawyerRole>()?.Client != null;
             
             // Check if the player being displayed is a client (has a lawyer)
             var isClient = LawyerUtils.IsClientOfAnyLawyer(player);

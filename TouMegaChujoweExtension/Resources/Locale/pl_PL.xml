@@ -978,4 +978,9 @@ Jeśli opcja &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy wybierają ze wszystkich k
 • &lt;b&gt;Blokada Lobby podczas Draftu&lt;/b&gt; - Zapobiega dołączaniu nowych graczy w trakcie wyboru ról.
 • &lt;b&gt;Respektuj Szanse Ról&lt;/b&gt; - Jeśli włączone, prawdopodobieństwo wystąpienia roli w drafcie opiera się na jej ustawieniach szans w lobby.
 • &lt;b&gt;Czas Draftu&lt;/b&gt; - Określa, ile sekund ma każdy gracz na dokonanie wybóru.</string>
+  <!-- Better Sonar Options -->
+  <string name="ExtensionOptionBetterSonar">Lepszy Sonar</string>
+  <string name="ExtensionOptionBetterSonarMode">Tryb Sonaru</string>
+  <string name="ExtensionOptionBetterSonarModeArrowAndMap">Strzalka + Mapa</string>
+  <string name="ExtensionOptionBetterSonarModeMapOnly">Tylko Mapa</string>
 </resources>

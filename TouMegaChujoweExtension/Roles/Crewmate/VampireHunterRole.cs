@@ -75,6 +75,7 @@ public sealed class VampireHunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITo
         Icon = TouExtensionIcons.VampireHunterRoleIcon,
         CanUseVent = false,
         MaxRoleCount = 1,
+        IntroSound = TouAudio.WarlockIntroSound,
     };
 
     public override void Initialize(PlayerControl player)
@@ -100,6 +101,7 @@ public sealed class VampireHunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITo
             VampireHunterBecomes.Veteran => RoleId.Get<TownOfUs.Roles.Crewmate.VeteranRole>(),
             VampireHunterBecomes.Vigilante => RoleId.Get<TownOfUs.Roles.Crewmate.VigilanteRole>(),
             VampireHunterBecomes.Hunter => RoleId.Get<TownOfUs.Roles.Crewmate.HunterRole>(),
+            VampireHunterBecomes.Officer => RoleId.Get<TownOfUs.Roles.Crewmate.OfficerRole>(),
             _ => (ushort)RoleTypes.Crewmate
         };
 

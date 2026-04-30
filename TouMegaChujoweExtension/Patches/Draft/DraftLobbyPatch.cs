@@ -9,10 +9,12 @@ using TouMegaChujoweExtension.Options;
 using TMPro;
 using UnityEngine;
 using Reactor.Utilities;
+
 using Object = UnityEngine.Object;
 using Il2CppInterop.Runtime;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+
 
 namespace TouMegaChujoweExtension.Patches.Draft;
 
@@ -52,6 +54,8 @@ public static class DraftLobbyPatch
     private static GameObject _forceStartButtonObj;
     private static bool _pickLocked = false;
     private static byte? _lastAlertedPicker;
+    private static int _lastTimeLeftInt = -1;
+    private static bool _forceUpdatePlayerList = false;
 
     // === DANGER MUSIC (DUAL SOURCE CROSSFADE) ===
     private static AudioSource _draftMusicSourceA;
@@ -500,6 +504,8 @@ public static class DraftLobbyPatch
         _alertPlayed = false;
         _pickTimer = 0f;
         _lastAlertedPicker = null;
+        _lastTimeLeftInt = -1;
+        _forceUpdatePlayerList = true;
 
         DraftSystem.Reset();
 
@@ -510,7 +516,7 @@ public static class DraftLobbyPatch
         var allPlayers = new List<byte>();
         foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (player != null && !player.Data.Disconnected)
+            if (player != null && player.Data != null && !player.Data.Disconnected)
             {
                 if (!TownOfUs.Roles.Other.SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
                 {
@@ -519,8 +525,15 @@ public static class DraftLobbyPatch
             }
         }
 
-        impostorCount = Mathf.Min(impostorCount, allPlayers.Count - 1);
-        impostorCount = Mathf.Max(impostorCount, 1);
+        if (allPlayers.Count == 0)
+        {
+            impostorCount = 0;
+        }
+        else
+        {
+            impostorCount = Mathf.Min(impostorCount, allPlayers.Count - 1);
+            impostorCount = Mathf.Max(impostorCount, 1);
+        }
 
         var shuffled = new List<byte>(allPlayers);
         shuffled.Shuffle();
@@ -552,6 +565,8 @@ public static class DraftLobbyPatch
         _alertPlayed = false;
         _pickTimer = 0f;
         _lastAlertedPicker = null;
+        _lastTimeLeftInt = -1;
+        _forceUpdatePlayerList = true;
 
         DraftSystem.DraftPicks.Clear();
         DraftSystem.AlreadyPicked.Clear();
@@ -1651,6 +1666,21 @@ public static class DraftLobbyPatch
     private static void UpdatePlayerList()
     {
         if (_playerListText == null) return;
+
+        var picker = DraftSystem.CurrentPicker;
+        int timeLeftInt = -1;
+        if (picker.HasValue)
+        {
+            float timeLeft = Mathf.Max(0, DraftSystem.TimeToChoose - _pickTimer);
+            timeLeftInt = (int)timeLeft;
+        }
+
+        if (!_forceUpdatePlayerList && picker.HasValue && timeLeftInt == _lastTimeLeftInt)
+            return;
+
+        _lastTimeLeftInt = timeLeftInt;
+        _forceUpdatePlayerList = false;
+
         var text = "";
         int num = 1;
 
@@ -2261,6 +2291,7 @@ public static class DraftLobbyPatch
         _pickTimer = 0f;
         _alertPlayed = false;
         _countdownSoundTimer = 1f;
+        _forceUpdatePlayerList = true;
         UpdatePlayerList();
 
         if (DraftSystem.PickOrder.Count == 0)
@@ -2522,11 +2553,13 @@ public static class DraftLobbyPatch
             _pickTimer = 0f;
             _countdownSoundTimer = 1f;
             _lastAlertedPicker = null;
+            _forceUpdatePlayerList = true;
             UpdatePlayerList();
             ShowRoleButtonsForCurrentPicker();
         }
         else
         {
+            _forceUpdatePlayerList = true;
             UpdatePlayerList();
         }
     }

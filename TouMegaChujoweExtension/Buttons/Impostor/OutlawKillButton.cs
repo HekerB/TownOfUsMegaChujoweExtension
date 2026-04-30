@@ -50,7 +50,7 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
         OverrideName(_killName);
     }
 
-    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    public override PlayerControl? GetTarget() => PlayerControl.LocalPlayer.GetClosestLivingPlayer(false, Distance);
 
     public override bool IsTargetValid(PlayerControl? target)
     {

@@ -21,11 +21,6 @@ public sealed class WraithLanternInvisibilityModifier : ConcealedModifier, IVisu
 
     public VisualAppearance GetVisualAppearance()
     {
-        var playerColor = (PlayerControl.LocalPlayer.IsImpostorAligned() ||
-                           (PlayerControl.LocalPlayer.DiedOtherRound() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
-            ? new Color(0f, 0f, 0f, 0.1f)
-            : Color.clear;
-
         return new VisualAppearance(Player.GetDefaultModifiedAppearance(), TownOfUsAppearances.Swooper)
         {
             HatId = string.Empty,
@@ -33,7 +28,7 @@ public sealed class WraithLanternInvisibilityModifier : ConcealedModifier, IVisu
             VisorId = string.Empty,
             PlayerName = string.Empty,
             PetId = string.Empty,
-            RendererColor = playerColor,
+            RendererColor = new Color(0f, 0f, 0f, 0.1f),
             NameColor = Color.clear,
             ColorBlindTextColor = Color.clear
         };
@@ -55,12 +50,18 @@ public sealed class WraithLanternInvisibilityModifier : ConcealedModifier, IVisu
         Player.cosmetics.ToggleNameVisible(false);
     }
 
+    private MushroomMixupSabotageSystem? _cachedMushroom;
+
     public override void FixedUpdate()
     {
         base.FixedUpdate();
 
-        var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
-        if (mushroom && mushroom.IsActive)
+        if (_cachedMushroom == null)
+        {
+            _cachedMushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
+        }
+
+        if (_cachedMushroom && _cachedMushroom.IsActive)
         {
             Player.RawSetAppearance(this);
             Player.cosmetics.ToggleNameVisible(false);

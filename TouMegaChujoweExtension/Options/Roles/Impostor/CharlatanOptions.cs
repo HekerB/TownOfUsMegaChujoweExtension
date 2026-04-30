@@ -14,7 +14,7 @@ public sealed class CharlatanOptions : AbstractOptionGroup<CharlatanRole>
     [ModdedNumberOption("ExtensionOptionCharlatanConcealCooldown", 10f, 60f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float ConcealCooldown { get; set; } = 40f;
 
-    [ModdedNumberOption("ExtensionOptionCharlatanConcealUses", 0f, 15f, 1f, MiraNumberSuffixes.None)]
+    [ModdedNumberOption("ExtensionOptionCharlatanConcealUses", 0f, 10f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float ConcealUses { get; set; } = 0f;
 
     [ModdedNumberOption("ExtensionOptionCharlatanConcealDelay", 0f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]

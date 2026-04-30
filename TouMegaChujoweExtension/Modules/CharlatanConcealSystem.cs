@@ -98,8 +98,13 @@ public static class CharlatanConcealSystem
         };
     }
 
+    private static float _lastUpdateTime = 0f;
+
     public static void UpdateBodyTransparency()
     {
+        if (Time.time - _lastUpdateTime < 0.2f) return;
+        _lastUpdateTime = Time.time;
+
         var allBodies = Object.FindObjectsOfType<DeadBody>();
         var options = OptionGroupSingleton<CharlatanOptions>.Instance;
 

@@ -27,7 +27,7 @@ public sealed class CharlatanDeceiveButton : TownOfUsRoleButton<CharlatanRole, D
     private bool _hasCapturedButtonPos;
 
     public override string Name => TouLocale.GetParsed("ExtensionRoleCharlatanDeceive", "Deceive");
-    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.TertiaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Charlatan;
     public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && OptionGroupSingleton<CharlatanOptions>.Instance.DeceiveEnabled;
     public override float Cooldown => 0.01f;
@@ -54,6 +54,9 @@ public sealed class CharlatanDeceiveButton : TownOfUsRoleButton<CharlatanRole, D
         }
     }
 
+    private static DeadBody[]? _allBodiesCache;
+    private static float _lastCacheTime;
+
     public override DeadBody? GetTarget()
     {
         if (PlayerControl.LocalPlayer == null)
@@ -67,9 +70,15 @@ public sealed class CharlatanDeceiveButton : TownOfUsRoleButton<CharlatanRole, D
             return null;
         }
 
-        var allBodies = Object.FindObjectsOfType<DeadBody>();
-        foreach (var body in allBodies)
+        if (_allBodiesCache == null || Time.time - _lastCacheTime > 0.2f)
         {
+            _allBodiesCache = Object.FindObjectsOfType<DeadBody>();
+            _lastCacheTime = Time.time;
+        }
+
+        foreach (var body in _allBodiesCache)
+        {
+            if (body == null) continue;
             if (CharlatanDeceiveSystem.CanDeceiveReport(charlatan.PlayerId, body.ParentId))
             {
                 return body;

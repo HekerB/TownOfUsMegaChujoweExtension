@@ -32,7 +32,7 @@ public sealed class VenomousModifier : UniversalGameModifier, IWikiDiscoverable,
         return description;
     }
 
-    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
+    public override Color FreeplayFileColor => new Color32(0, 200, 90, 255);
     public override ModifierFaction FactionType => ModifierFaction.NeutralPassive;
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
 

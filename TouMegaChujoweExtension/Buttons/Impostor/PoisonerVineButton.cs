@@ -139,7 +139,7 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
         foreach (var pc in PlayerControl.AllPlayerControls)
         {
             if (pc == null || pc.Data.IsDead || pc.PlayerId == poisoner.PlayerId) continue;
-            if (pc.Data.Role.IsImpostor) continue;
+            if (pc.IsImpostorAligned()) continue;
 
             var dist = Vector2.Distance(poisoner.transform.position, pc.transform.position);
             if (dist <= range && dist < minDist)

@@ -12,7 +12,8 @@ public enum VampireHunterBecomes
     Sheriff,
     Veteran,
     Vigilante,
-    Hunter
+    Hunter,
+    Officer
 }
 
 public sealed class VampireHunterOptions : AbstractOptionGroup<VampireHunterRole>

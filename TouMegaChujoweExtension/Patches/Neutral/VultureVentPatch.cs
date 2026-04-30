@@ -11,6 +11,7 @@ namespace TouMegaChujoweExtension.Patches.Neutral;
 [HarmonyPatch]
 public static class VultureVentPatch
 {
+    private static bool? _lastHasTarget;
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     [HarmonyPostfix]
@@ -38,20 +39,25 @@ public static class VultureVentPatch
 
             // 2. Fix Highlighting (Alpha)
             var hasTarget = ventButton.currentTarget != null || player.inVent;
-            var alpha = hasTarget ? 1f : 0.3f;
-
-            if (ventButton.graphic != null)
+            
+            if (!_lastHasTarget.HasValue || _lastHasTarget.Value != hasTarget)
             {
-                var color = ventButton.graphic.color;
-                color.a = alpha;
-                ventButton.graphic.color = color;
-            }
+                _lastHasTarget = hasTarget;
+                var alpha = hasTarget ? 1f : 0.3f;
 
-            // 3. Change Text Color and Outline
-            if (ventButton.buttonLabelText != null)
-            {
-                ventButton.buttonLabelText.color = new Color(1f, 1f, 1f, alpha);
-                ventButton.buttonLabelText.SetOutlineColor(TouExtensionColors.Vulture.SetAlpha(alpha));
+                if (ventButton.graphic != null)
+                {
+                    var color = ventButton.graphic.color;
+                    color.a = alpha;
+                    ventButton.graphic.color = color;
+                }
+
+                // 3. Change Text Color and Outline
+                if (ventButton.buttonLabelText != null)
+                {
+                    ventButton.buttonLabelText.color = new Color(1f, 1f, 1f, alpha);
+                    ventButton.buttonLabelText.SetOutlineColor(TouExtensionColors.Vulture.SetAlpha(alpha));
+                }
             }
 
         }
