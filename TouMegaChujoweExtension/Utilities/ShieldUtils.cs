@@ -42,12 +42,14 @@ public static class ShieldUtils
         if (player.HasModifier<WardenFortifiedModifier>()) return ShieldType.Warden;
         if (player.HasModifier<MagicMirrorModifier>()) return ShieldType.Mirrorcaster;
         if (player.HasModifier<BodyguardShieldModifier>()) return ShieldType.Bodyguard;
-        if (player.TryGetModifier<ChildModifier>(out var child) && !child.IsAdult) return ShieldType.Child;
+        var child = player.GetModifiers<ChildModifier>().FirstOrDefault();
+        if (child != null && !child.IsAdult) return ShieldType.Child;
         if (player.HasModifier<GuardianAngelProtectModifier>()) return ShieldType.Fairy;
         if (player.HasModifier<MercenaryGuardModifier>() && 
             OptionGroupSingleton<MercenaryOptions>.Instance.GuardProtection.Value) return ShieldType.Mercenary;
         if (player.HasModifier<TownOfUs.Modifiers.Crewmate.OracleBlessedModifier>()) return ShieldType.Oracle;
-        if (player.TryGetModifier<DeadlyQuotaModifier>(out var deadlyQuota))
+        var deadlyQuota = player.GetModifiers<DeadlyQuotaModifier>().FirstOrDefault();
+        if (deadlyQuota != null)
         {
             var hasShieldOpt = OptionGroupSingleton<DeadlyQuotaOptions>.Instance.QuotaShield;
             var underQuota = deadlyQuota.KillCount < deadlyQuota.KillQuota;

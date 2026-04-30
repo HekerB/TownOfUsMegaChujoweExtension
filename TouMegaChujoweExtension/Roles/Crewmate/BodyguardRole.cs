@@ -59,7 +59,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        IntroSound = TownOfUs.Assets.TouAudio.ScientistIntroSound,
+        IntroSound = TownOfUs.Assets.TouAudio.GuardianAngelSound,
         Icon = TouExtensionIcons.BodyguardRoleIcon,
         OptionsScreenshot = TouExtensionBanners.BodyguardBanner,
     };

@@ -257,7 +257,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        IntroSound = TouAudio.DiscoveredSound,
+        IntroSound = TouMegaChujoweExtension.Assets.TouExtensionAudio.ObjectionSound,
         Icon = TouRoleIcons.Lawyer,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
     };

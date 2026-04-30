@@ -21,7 +21,7 @@ public static class TouExtensionColors
 	public static Color President => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(150, 100, 200, 255);
 	public static Color Pirate => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(255, 247, 0, 255);
 	public static Color Joker => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(138, 43, 226, 255);
-	public static Color Evoker => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(0, 18, 97, 255);
+	public static Color Evoker => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(0, 153, 255, 255);
 	public static Color RcXd => Palette.ImpostorRed;
 	public static Color Vanisher => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(145, 230, 184, 255);
 	public static Color Shifter => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(186, 186, 186, 255);

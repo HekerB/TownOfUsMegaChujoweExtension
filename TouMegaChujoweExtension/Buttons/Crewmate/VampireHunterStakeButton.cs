@@ -4,6 +4,7 @@ using MiraAPI.Keybinds;
 using MiraAPI.Networking;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
+using MiraAPI.Modifiers;
 using Reactor.Utilities;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
@@ -63,6 +64,30 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IKillBu
         if (beforeMurderEvent.IsCancelled)
         {
             var shieldType = _target.GetShieldType();
+
+            // Flash effect for the attacker
+            if (shieldType != ShieldType.None)
+            {
+                ShieldUtils.TriggerShieldFlash(PlayerControl.LocalPlayer, shieldType);
+
+                if (shieldType == ShieldType.Bodyguard)
+                {
+                    var bgMod = _target.GetModifiers<TouMegaChujoweExtension.Modifiers.BodyguardShieldModifier>().FirstOrDefault();
+                    if (bgMod != null && bgMod.Bodyguard != null)
+                    {
+                        TouMegaChujoweExtension.Roles.Crewmate.BodyguardRole.RpcBodyguardShieldAttacked(bgMod.Bodyguard, PlayerControl.LocalPlayer, _target);
+                    }
+                }
+                else if (shieldType == ShieldType.Medic)
+                {
+                    var medicMod = _target.GetModifiers<TownOfUs.Modifiers.Crewmate.MedicShieldModifier>().FirstOrDefault();
+                    if (medicMod != null)
+                    {
+                        TownOfUs.Roles.Crewmate.MedicRole.RpcMedicShieldAttacked(medicMod.Medic, PlayerControl.LocalPlayer, _target);
+                    }
+                }
+            }
+
             var saveCd = OptionGroupSingleton<GeneralOptions>.Instance.TempSaveCdReset;
             float duration = saveCd;
             switch (shieldType)

@@ -146,7 +146,9 @@
         "\n- <b>Extended Wiki Previews</b> - Sonar and Egotist Extended will properly outline all hidden options on the wiki page.",
         "\n- <b>Possible Vampire Hunter</b> - completely hidden from the role setup list to prevent lobby setup confusion.",
         "\n- <b>Bodyguard Colors</b> - Darkened base role color to premium deep sapphire, matching associated shield flash visuals.",
-        "\n- <b>Wiki Colors</b> - Universal modifiers now utilize gray file styling, while <b>Death Note</b> and <b>Venomous</b> strictly carry distinct alignments."
+        "\n- <b>Wiki Colors</b> - Universal modifiers now utilize gray file styling, while <b>Death Note</b> and <b>Venomous</b> strictly carry distinct alignments.",
+        "\n- <b>Audio Overhaul</b> - updated intro sounds for multiple roles (Bodyguard, Witch, Lawyer, Hacker, etc.) to better fit their thematic identities.",
+        "\n- <b>Bugfix</b> - Fixed a critical bug where <b>Parasite</b> taking control during <b>Communications Sabotage</b> would reveal Impostor names to Crewmates."
       ]
     }
   ]

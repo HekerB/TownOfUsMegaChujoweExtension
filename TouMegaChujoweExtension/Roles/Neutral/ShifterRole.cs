@@ -59,7 +59,7 @@ namespace TouMegaChujoweExtension.Roles.Neutral;
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = false,
-        IntroSound = TouAudio.DiscoveredSound,
+        IntroSound = TouAudio.NoisemakerIntroSound,
         Icon = TouRoleIcons.Shifter,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
     };

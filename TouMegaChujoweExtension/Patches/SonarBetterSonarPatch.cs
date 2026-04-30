@@ -119,8 +119,6 @@ public static class SonarBetterSonarPatch
         }
 
         var xPos = TownOfUs.Utilities.MiscUtils.GetCurrentMap is TownOfUs.Utilities.ExpandedMapNames.Dleks ? -1 : 1;
-        var delay = GetTrackerDelay();
-        var currentTime = Time.time;
 
         foreach (var tracker in localTrackers)
         {
@@ -131,24 +129,18 @@ public static class SonarBetterSonarPatch
             }
 
             var playerId = trackedPlayer.PlayerId;
-            var currentPos = trackedPlayer.transform.position;
 
-            if (!PositionHistory.TryGetValue(playerId, out var queue))
+            // Use the arrow's target, which already respects the update interval
+            Vector3 targetPos;
+            if (tracker.Arrow != null)
             {
-                queue = new Queue<(float time, Vector3 pos)>();
-                PositionHistory[playerId] = queue;
+                targetPos = tracker.Arrow.target;
+            }
+            else
+            {
+                targetPos = trackedPlayer.transform.position;
             }
 
-            queue.Enqueue((currentTime, currentPos));
-
-            // Maintain queue - remove points older than delay (keep at least one)
-            while (queue.Count > 1 && currentTime - queue.Peek().time > delay)
-            {
-                queue.Dequeue();
-            }
-
-            // The oldest point in the queue is where the player was roughly `delay` seconds ago
-            var targetPos = queue.Peek().pos;
             var location = targetPos / ShipStatus.Instance.MapScale;
             location.x *= xPos;
             location.z = -1.99f;
@@ -180,7 +172,6 @@ public static class SonarBetterSonarPatch
                 Object.Destroy(icon);
             }
             TrackerIcons.Remove(id);
-            PositionHistory.Remove(id);
         }
     }
 

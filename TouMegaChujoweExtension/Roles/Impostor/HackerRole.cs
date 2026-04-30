@@ -64,7 +64,7 @@ public sealed class HackerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     {
         UseVanillaKillButton = true,
         Icon = TouExtensionIcons.HackerRole,
-        IntroSound = TouAudio.NoisemakerIntroSound,
+        IntroSound = TouAudio.GlitchSound,
     };
 
     [HideFromIl2Cpp]

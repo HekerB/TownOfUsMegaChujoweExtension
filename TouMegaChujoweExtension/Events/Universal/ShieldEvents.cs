@@ -3,6 +3,7 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Modifiers;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Roles.Crewmate;
+using TouMegaChujoweExtension.Options.Roles.Crewmate;
 using TouMegaChujoweExtension.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Roles;
@@ -34,6 +35,17 @@ public static class ShieldEvents
 
         var shieldType = target.GetShieldType();
         if (shieldType == ShieldType.None) return;
+
+        // Check for Bodyguard specific option "Can Kill Crew Killing"
+        if (shieldType == ShieldType.Bodyguard && source.Data.Role.GetRoleAlignment() == RoleAlignment.CrewmateKilling)
+        {
+            var options = OptionGroupSingleton<BodyguardOptions>.Instance;
+            if (!options.CanKillCrewKilling)
+            {
+                // If option is OFF, the shield DOES NOT protect against Crewmate Killing roles.
+                return;
+            }
+        }
 
         Logger<TouMegaChujoweExtensionPlugin>.Info($"[ShieldEvents] Murder from {source.Data.PlayerName} blocked by {shieldType} on {target.Data.PlayerName}");
 
