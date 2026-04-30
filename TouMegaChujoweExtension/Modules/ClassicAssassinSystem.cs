@@ -347,29 +347,30 @@ public static class ClassicAssassinSystem
             });
         }
 
-        var options = OptionGroupSingleton<AssassinOptions>.Instance;
-
-        if (options.AssassinGuessCrewModifiers || options.AssassinGuessAlliances)
-        {
-            var modifiers = MiscUtils.AllModifiers
-                .Where(m => IsModifierValid(m, options))
-                .OrderBy(m => m.ModifierName)
-                .ToList();
-
-            foreach (var mod in modifiers)
+        var assassinOptions = OptionGroupSingleton<AssassinOptions>.Instance;
+        var modifiers = MiscUtils.AllModifiers
+            .Where(m =>
             {
-                var color = mod switch
-                {
-                    IColoredModifier colored => colored.ModifierColor,
-                    _ => MiscUtils.GetRoleColour(mod.ModifierName.Replace(" ", string.Empty))
-                };
-                _guessableEntries.Add(new GuessEntry
-                {
-                    Name = mod.ModifierName,
-                    Color = color,
-                    Modifier = mod
-                });
-            }
+                if (m is DeathNoteModifier or VenomousModifier) return true;
+                if (!assassinOptions.AssassinGuessCrewModifiers && !assassinOptions.AssassinGuessAlliances) return false;
+                return IsModifierValid(m, assassinOptions);
+            })
+            .OrderBy(m => m.ModifierName)
+            .ToList();
+
+        foreach (var mod in modifiers)
+        {
+            var color = mod switch
+            {
+                IColoredModifier colored => colored.ModifierColor,
+                _ => MiscUtils.GetRoleColour(mod.ModifierName.Replace(" ", string.Empty))
+            };
+            _guessableEntries.Add(new GuessEntry
+            {
+                Name = mod.ModifierName,
+                Color = color,
+                Modifier = mod
+            });
         }
     }
 
@@ -391,28 +392,30 @@ public static class ClassicAssassinSystem
             });
         }
 
-        var options = OptionGroupSingleton<VigilanteOptions>.Instance;
-        if (options.VigilanteGuessAlliances || options.VigilanteGuessKillerMods)
-        {
-            var modifiers = MiscUtils.AllModifiers
-                .Where(IsModifierValidForVigilante)
-                .OrderBy(m => m.ModifierName)
-                .ToList();
-
-            foreach (var mod in modifiers)
+        var vigilanteOptions = OptionGroupSingleton<VigilanteOptions>.Instance;
+        var modifiers = MiscUtils.AllModifiers
+            .Where(m =>
             {
-                var color = mod switch
-                {
-                    IColoredModifier colored => colored.ModifierColor,
-                    _ => MiscUtils.GetRoleColour(mod.ModifierName.Replace(" ", string.Empty))
-                };
-                _guessableEntries.Add(new GuessEntry
-                {
-                    Name = mod.ModifierName,
-                    Color = color,
-                    Modifier = mod
-                });
-            }
+                if (m is DeathNoteModifier or VenomousModifier) return true;
+                if (!vigilanteOptions.VigilanteGuessAlliances && !vigilanteOptions.VigilanteGuessKillerMods) return false;
+                return IsModifierValidForVigilante(m);
+            })
+            .OrderBy(m => m.ModifierName)
+            .ToList();
+
+        foreach (var mod in modifiers)
+        {
+            var color = mod switch
+            {
+                IColoredModifier colored => colored.ModifierColor,
+                _ => MiscUtils.GetRoleColour(mod.ModifierName.Replace(" ", string.Empty))
+            };
+            _guessableEntries.Add(new GuessEntry
+            {
+                Name = mod.ModifierName,
+                Color = color,
+                Modifier = mod
+            });
         }
     }
 

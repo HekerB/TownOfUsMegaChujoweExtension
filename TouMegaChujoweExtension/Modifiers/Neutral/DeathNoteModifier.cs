@@ -20,7 +20,7 @@ using Reactor.Networking.Rpc;
 
 namespace TouMegaChujoweExtension.Modifiers.Neutral;
 
-public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IButtonModifier, IColoredModifier
+public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IButtonModifier, IColoredModifier, IGuessable
 {
     public Color ModifierColor => TouExtensionColors.DeathNote;
     public override string LocaleKey => "DeathNote";
@@ -30,6 +30,10 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
     public override Color FreeplayFileColor => new Color32(42, 10, 42, 255);
     public override ModifierFaction FactionType => ModifierFaction.NeutralUtility;
     public override bool ShowInFreeplay => true;
+    public string GuesserName => ModifierName;
+    public Color GuesserColor => ModifierColor;
+    public Sprite? GuesserIcon => ModifierIcon?.LoadAsset();
+    public bool CanBeGuessed => GetAmountPerGame() > 0;
 
 	[HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
