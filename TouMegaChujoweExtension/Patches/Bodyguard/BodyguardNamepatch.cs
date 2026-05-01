@@ -13,30 +13,6 @@ namespace TouMegaChujoweExtension.Patches.Bodyguard;
 [HarmonyPatch]
 public static class BodyguardNamePatch
 {
-    [HarmonyPatch(typeof(PlayerRoleTextExtensions), nameof(PlayerRoleTextExtensions.UpdateProtectionSymbols), typeof(string), typeof(PlayerControl), typeof(bool))]
-    [HarmonyPostfix]
-    public static void UpdateProtectionSymbolsPostfix(ref string __result, PlayerControl player, bool hidden)
-    {
-        var local = PlayerControl.LocalPlayer;
-        if (player == null || local == null || local.Data == null)
-            return;
-
-        var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
-        bool isGhost = local.HasDied();
-        bool deadKnow = isGhost && genOpt.TheDeadKnow;
-
-        // === Shield symbol Σ ===
-        if (player.TryGetModifier<BodyguardShieldModifier>(out var shieldMod))
-        {
-            if (shieldMod.VisibleSymbol || deadKnow)
-            {
-                if (!__result.Contains("Σ"))
-                {
-                    __result += "<color=#0064FF> Σ</color>";
-                }
-            }
-        }
-    }
 
     [HarmonyPatch(typeof(PlayerRoleTextExtensions), nameof(PlayerRoleTextExtensions.UpdateTargetColor), typeof(Color), typeof(PlayerControl), typeof(bool))]
     [HarmonyPostfix]

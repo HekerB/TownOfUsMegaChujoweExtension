@@ -139,7 +139,7 @@ public static class InjectorEvents
                 defaultInjectedMod.InjectionId = injectionId;
             }
             target.AddModifier(defaultModifier);
-            ShowNotification(target, "ExtensionInjectorNotificationInvertedControls", 
+            ShowNotification(injector, target, "ExtensionInjectorNotificationInvertedControls", 
                 defaultModifier is IInjectedModifier defaultInjected ? defaultInjected.GetEffectDescription() : string.Empty);
             return;
         }
@@ -172,12 +172,12 @@ public static class InjectorEvents
         }
         target.AddModifier(selectedModifier);
         var effectDesc = selectedModifier is IInjectedModifier injected ? injected.GetEffectDescription() : string.Empty;
-        ShowNotification(target, selectedNotificationKey, effectDesc);
+        ShowNotification(injector, target, selectedNotificationKey, effectDesc);
     }
 
-    private static void ShowNotification(PlayerControl target, string notificationKey, string effectDescription = "")
+    private static void ShowNotification(PlayerControl injector, PlayerControl target, string notificationKey, string effectDescription = "")
     {
-        if (target == null || !target.AmOwner)
+        if (injector == null || !injector.AmOwner)
         {
             return;
         }
@@ -185,8 +185,12 @@ public static class InjectorEvents
         var baseMessage = TouLocale.GetParsed(notificationKey, notificationKey);
         var message = string.IsNullOrEmpty(effectDescription) ? baseMessage : $"{baseMessage} ({effectDescription})";
         var injectorColor = ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Injector);
+        
+        var localizedPrefix = TouLocale.GetParsed("ExtensionInjectorNotificationPrefix", "Injected {0}:");
+        var finalMessage = string.Format(localizedPrefix, target.Data.PlayerName) + " " + message;
+
         var notif = Helpers.CreateAndShowNotification(
-            $"<b><color=#{injectorColor}>{message}</color></b>",
+            $"<b><color=#{injectorColor}>{finalMessage}</color></b>",
             Color.white,
             new Vector3(0f, 1f, -20f),
             spr: TouExtensionIcons.InjectorRole.LoadAsset());

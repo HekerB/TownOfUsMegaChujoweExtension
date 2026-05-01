@@ -32,7 +32,7 @@
   
   <!-- Renamed Trapper to Revealer -->
   <string name="TouRoleRevealer">Revealer</string>
-  <string name="TouRoleRevealerIntroBlurb">Place traps to reveal roles of players who stay in them.</string>
+  <string name="TouRoleRevealerIntroBlurb">Place traps to reveal players' roles.</string>
   <string name="TouRoleRevealerTabDescription">Place traps around the map. Players who stay in traps long enough will have their roles revealed to you at the next meeting.</string>
   <string name="TouRoleRevealerWikiDescription">The Revealer is a Crewmate role that can place traps around the map. \%nl\%When players stay in a trap for a certain amount of time, \%nl\%their roles are revealed to the Revealer at the next meeting.</string>
   <string name="TouRoleRevealerTrap">Trap</string>
@@ -71,7 +71,7 @@
   
   <!-- President Role -->
   <string name="ExtensionRolePresident">President</string>
-  <string name="ExtensionRolePresidentIntroBlurb">Your vote is your power.</string>
+  <string name="ExtensionRolePresidentIntroBlurb">Stack your votes and unleash them all at once!</string>
   <string name="ExtensionRolePresidentTabDescription">You have a vote bank. Each meeting you can\%nl\%distribute your votes freely among players, or\%nl\%Abstain to save your votes for later meetings.</string>
   <string name="ExtensionRolePresidentWikiDescription">You can Abstain form voting at a meeting, by doing so you are saving votes that you can then spend all at once, For example 10 votes at one meeting.</string>
   <string name="ExtensionRolePresidentAbstain">Abstain</string>
@@ -85,7 +85,7 @@
   
   <!-- Vanisher Role -->
   <string name="ExtensionRoleVanisher">Vanisher</string>
-  <string name="ExtensionRoleVanisherIntroBlurb">Turn invisible to detect evil players nearby.</string>
+  <string name="ExtensionRoleVanisherIntroBlurb">Vanish to track and expose evil players.</string>
   <string name="ExtensionRoleVanisherTabDescription">Vanish to become invisible and detect impostors and neutrals in your radius.</string>
   <string name="ExtensionRoleVanisherWikiDescription">You are crewmate Swooper. You can Vanish and observe neutrals/impostors.</string>
   <string name="ExtensionRoleVanisherVanish">Vanish</string>
@@ -138,7 +138,7 @@
   <string name="ExtensionRoleLawyer">Lawyer</string>
   <string name="ExtensionRoleLawyerIntroBlurb">Defend your client to win!</string>
   <string name="ExtensionRoleLawyerTabDescription">Defend &lt;client&gt;. If they get voted out, you lose!</string>
-  <string name="ExtensionRoleLawyerWikiDescription">The Lawyer is a Neutral Benign role that wins by keeping their assigned client from being voted out. If their client gets voted out, the Lawyer loses.</string>
+  <string name="ExtensionRoleLawyerWikiDescription">The &lt;color=#EDB38C&gt;Lawyer&lt;/color&gt; is a Neutral Benign role that wins by keeping their assigned client from being voted out. If their client gets voted out, the Lawyer loses.</string>
   <string name="ExtensionRoleLawyerObject">Object</string>
   <string name="ExtensionRoleLawyerObjectWikiDescription">During meetings, click the objection button on your client\'s vote area to object to all votes, clearing them and forcing players to vote again.</string>
   
@@ -207,7 +207,7 @@
   
   <!-- Serial Killer Role -->
   <string name="ExtensionRoleSerialKiller">Serial Killer</string>
-  <string name="ExtensionRoleSerialKillerIntroBlurb">Kill everyone, win alone.</string>
+  <string name="ExtensionRoleSerialKillerIntroBlurb">Murder everyone, win alone.</string>
   <string name="ExtensionRoleSerialKillerTabDescription">Kill everyone to win alone.\%nl\%You can kill players in vents, but you'll lose the ability to vent after doing so.</string>
   <string name="ExtensionRoleSerialKillerWikiDescription">The Serial Killer is a Neutral Killing role whose only objective is to kill everyone and win alone. The Serial Killer can optionally kill players who are in vents with them, but loses the ability to vent for the rest of the game after doing so.</string>
   
@@ -324,7 +324,7 @@
   <string name="ExtensionRolePope">Pope</string>
   <string name="ExtensionRolePopeIntroBlurb">Canonize everyone and unleash Divine Judgement!</string>
   <string name="ExtensionRolePopeTabDescription">Canonize all living players, then trigger Judgement to eliminate everyone.</string>
-  <string name="ExtensionRolePopeWikiDescription">U need to canonize everyone to start Judgement. The Pope wins if all players die to the Judgement.</string>
+  <string name="ExtensionRolePopeWikiDescription">U need to canonize everyone to start Judgement. The &lt;color=#FFD700&gt;Pope&lt;/color&gt; wins if all players die to the Judgement.</string>
   <string name="ExtensionRolePopeCanonize">Canonize</string>
   <string name="ExtensionRolePopeCanonizeWikiDescription">Approach a player and mark them (canonize). Marked players glow gold only for you. When everyone is marked, you can kill them with Judgement.</string>
   <string name="ExtensionRolePopeJudgement">Judgement</string>
@@ -360,7 +360,7 @@
 
   <!-- Witch Role -->
   <string name="ExtensionRoleWitch">Witch</string>
-  <string name="ExtensionRoleWitchIntroBlurb">We love casting spells!</string>
+  <string name="ExtensionRoleWitchIntroBlurb">Cast curses that kill players after meetings.</string>
   <string name="ExtensionRoleWitchTabDescription">Cast spells on players.\%nl\%They'll be highlighted in the next meeting and die after the configured amount of meetings.</string>
   <string name="ExtensionRoleWitchWikiDescription">The Witch is an Impostor Killing role that can cast spells on other players. Spellbound players are highlighted in the next meeting and die after the configured amount of meetings. If the Witch dies, gets exiled, or is guessed, all spellbound players survive.</string>
   <string name="ExtensionRoleWitchSpell">Spell</string>
@@ -384,7 +384,7 @@
   <string name="ExtensionRoleWraith">Wraith</string>
   <string name="ExtensionRoleWraithIntroBlurb">Move fast and strike unpredictably.</string>
   <string name="ExtensionRoleWraithTabDescription">Dash for speed. Place a Lantern to teleport back to it.</string>
-  <string name="ExtensionRoleWraithWikiDescription">The Wraith is an Impostor Power role focused on fast, unpredictable movement. Dash increases your movement speed by 75% for a short time. Lantern lets you place a hidden marker only you can see; reactivate it to teleport back and briefly swoop. If the Lantern expires before you return, it breaks and leaves permanent evidence visible to all players.</string>
+  <string name="ExtensionRoleWraithWikiDescription">The &lt;color=#D62020&gt;Wraith&lt;/color&gt; is an Impostor Power role focused on fast, unpredictable movement. Dash increases your movement speed by 75% for a short time. Lantern lets you place a hidden marker only you can see; reactivate it to teleport back and briefly swoop. If the Lantern expires before you return, it breaks and leaves permanent evidence visible to all players.</string>
   <string name="ExtensionRoleWraithDash">Dash</string>
   <string name="ExtensionRoleWraithDashWikiDescription">Temporarily increase your movement speed by 75%.</string>
   <string name="ExtensionRoleWraithLantern">Lantern</string>
@@ -405,13 +405,14 @@
   <string name="ExtensionRoleHacker">Hacker</string>
   <string name="ExtensionRoleHackerIntroBlurb">Download system information and jam comms.</string>
   <string name="ExtensionRoleHackerTabDescription">Download and jam equipment, kill for extra jam charges.</string>
-  <string name="ExtensionRoleHackerWikiDescription">The Hacker is an Impostor Support role that can download information from nearby equipment to charge a portable device. Once you start downloading, you\'re locked into that equipment type until the next round. Jam disrupts information systems as if comms were sabotaged, but emergency meetings can still be called.</string>
+  <string name="ExtensionRoleHackerWikiDescription">The Hacker is an Impostor Support role that can download information from nearby equipment to charge a portable device. Once you start downloading, you're locked into that equipment type until the next round. Jam disrupts information systems (Comms, Admin, Cams, etc.) and blocks all players from reporting bodies or calling emergency meetings, but the Hacker can still use their portable device during this time.</string>
   <string name="ExtensionRoleHackerDownload">Download</string>
   <string name="ExtensionRoleHackerDownloadWikiDescription">Download data near a console (Admin, Cams, etc.) to charge your battery. You can use the device anywhere afterwards!</string>
   <string name="ExtensionRoleHackerDevice">Device</string>
   <string name="ExtensionRoleHackerDeviceWikiDescription">Use the downloaded system anywhere, consuming battery over time.</string>
   <string name="ExtensionRoleHackerJam">Jam</string>
-  <string name="ExtensionRoleHackerJamWikiDescription">Turn off information systems for a short time (like sabotaging comms), but without blocking meetings.</string>
+  <string name="ExtensionRoleHackerJamWikiDescription">Turn off information systems for a short time (like sabotaging comms). During Jam, Emergency Meetings and Body Reports are disabled for all players except the Hacker's portable device.</string>
+  <string name="ExtensionRoleHackerJamActivated">SYSTEM JAMMED</string>
 
   <!-- Hacker Options -->
   <string name="ExtensionOptionHackerMaxBatterySeconds">Maximum Battery Duration</string>
@@ -427,7 +428,7 @@
   
   <!-- RC-XD Role -->
   <string name="ExtensionRoleRcXd">RC-XD</string>
-  <string name="ExtensionRoleRcXdIntroBlurb">Remote controlled explosive</string>
+  <string name="ExtensionRoleRcXdIntroBlurb">Steer a bomb-car and destroy the crew.</string>
   <string name="ExtensionRoleRcXdTabDescription">Deploy an RC car, steer it with arrow names, and detonate it near enemies.</string>
   <string name="ExtensionRoleRcXdWikiDescription">As an RC-XD, you can launch a mini car from CALL OF DUTY. This car is a bomb you control, and you can detonate it at any moment.</string>
   <string name="ExtensionRoleRcXdDeploy">Deploy</string>
@@ -484,7 +485,7 @@
 
   <!-- Mirage Role -->
   <string name="ExtensionRoleMirage">Mirage</string>
-  <string name="ExtensionRoleMirageIntroBlurb">You got blam-boozled!</string>
+  <string name="ExtensionRoleMirageIntroBlurb">Deploy decoys to expose murderers.</string>
   <string name="ExtensionRoleMirageTabDescription">Prime a decoy, then place it. If anyone interacts with it, it vanishes and you are notified.</string>
   <string name="ExtensionRoleMirageWikiDescription">The Mirage is a Crewmate Support role that can place a decoy with the appearance of a chosen target (yourself or a random player). If any player interacts with the decoy, it disappears instantly and both the Mirage and the toucher receive a notification. Note: Mirage cannot be guessed if the decoy has the appearance of yourself.</string>
   <string name="ExtensionRoleMirageDecoy">Decoy</string>
@@ -569,19 +570,20 @@
   <string name="ExtensionLocalSettingEnableNauseaCameraShake">Enable Nausea Camera Shake</string>
 
   <!-- Injector Notifications -->
-  <string name="ExtensionInjectorNotificationInvertedControls">You start to feel lightheadedâ€¦</string>
-  <string name="ExtensionInjectorNotificationLowVision">Your vision narrowsâ€¦</string>
-  <string name="ExtensionInjectorNotificationSlowness">Your legs start to feel heavyâ€¦</string>
-  <string name="ExtensionInjectorNotificationVeryLowVision">You feel your eyesight begin to fade...</string>
-  <string name="ExtensionInjectorNotificationConfused">You start to feel confused...</string>
-  <string name="ExtensionInjectorNotificationNoVent">You feel too weak to use ventsâ€¦</string>
-  <string name="ExtensionInjectorNotificationNoUse">Your body feels paralyzedâ€¦</string>
-  <string name="ExtensionInjectorNotificationNoReport">Your mind goes blank when you see bodiesâ€¦</string>
-  <string name="ExtensionInjectorNotificationNausea">You feel nauseousâ€¦ (0.7x speed, 0.7x vision, camera shake)</string>
-  <string name="ExtensionInjectorNotificationWeakness">You feel extremely weakâ€¦</string>
-  <string name="ExtensionInjectorNotificationSpeedBoost">You feel energized and fast!</string>
-  <string name="ExtensionInjectorNotificationVisionBoost">Your vision becomes crystal clear!</string>
-  <string name="ExtensionInjectorNotificationRegeneration">You feel your body healing rapidly!</string>
+  <string name="ExtensionInjectorNotificationPrefix">Injected {0}:</string>
+  <string name="ExtensionInjectorNotificationInvertedControls">Inverted Controls</string>
+  <string name="ExtensionInjectorNotificationLowVision">Low Vision</string>
+  <string name="ExtensionInjectorNotificationSlowness">Slowness</string>
+  <string name="ExtensionInjectorNotificationVeryLowVision">Very Low Vision</string>
+  <string name="ExtensionInjectorNotificationConfused">Confused</string>
+  <string name="ExtensionInjectorNotificationNoVent">No Vent</string>
+  <string name="ExtensionInjectorNotificationNoUse">No Use</string>
+  <string name="ExtensionInjectorNotificationNoReport">No Report</string>
+  <string name="ExtensionInjectorNotificationNausea">Nausea</string>
+  <string name="ExtensionInjectorNotificationWeakness">Weakness</string>
+  <string name="ExtensionInjectorNotificationSpeedBoost">Speed Boost</string>
+  <string name="ExtensionInjectorNotificationVisionBoost">Vision Boost</string>
+  <string name="ExtensionInjectorNotificationRegeneration">Regeneration</string>
 
   <!-- Injector Effect Descriptions -->
   <string name="ExtensionInjectorEffectDescriptionInvertedControls">Inverted controls</string>
@@ -703,7 +705,7 @@
   
   <!-- Bounty Hunter Role -->
   <string name="ExtensionRoleBountyHunter">Bounty Hunter</string>
-  <string name="ExtensionRoleBountyHunterIntroBlurb">Hunt targets to win!</string>
+  <string name="ExtensionRoleBountyHunterIntroBlurb">Hunt your assigned targets to victory.</string>
   <string name="ExtensionRoleBountyHunterTabDescription">Eliminate all targets to win!</string>
   <string name="ExtensionRoleBountyHunterWikiDescription">You need to murder your targets to win!</string>
   <string name="ExtensionRoleBountyHunterKill">Hunt</string>
@@ -735,7 +737,7 @@
   
   <!-- Poisoner Role -->
   <string name="ExtensionRolePoisoner">Poisoner</string>
-  <string name="ExtensionRolePoisonerIntroBlurb">Poison and vine your enemies</string>
+  <string name="ExtensionRolePoisonerIntroBlurb">Poison enemies or trap them with vines.</string>
   <string name="ExtensionRolePoisonerTabDescription">Use Poison to slowly kill players you approach.\%nl\%Use Vine to remotely kill the nearest player in range.</string>
   <string name="ExtensionRolePoisonerWikiDescription">An Impostor who can poison players on contact or use vines to kill from a distance.</string>
   <string name="ExtensionRolePoisonerPoison">Poison</string>
@@ -761,7 +763,7 @@
   <string name="ExtensionRoleBodyguard">Bodyguard</string>
   <string name="ExtensionRoleBodyguardIntroBlurb">Protect your target at all costs!</string>
   <string name="ExtensionRoleBodyguardTabDescription">Shield a player from attacks. When they are attacked, teleport to them and eliminate the threat.</string>
-  <string name="ExtensionRoleBodyguardWikiDescription">Gives a shield to a player. If someone tries to kill the protected player, you can teleport to them and eliminate the attacker. You can only kill the attacker, and if you do, you die along with them.</string>
+  <string name="ExtensionRoleBodyguardWikiDescription">Gives a shield to a player. If someone tries to kill the protected player, the &lt;color=#003380&gt;Bodyguard&lt;/color&gt; can teleport to them and eliminate the attacker. You can only kill the attacker, and if you do, you die along with them.</string>
   <string name="ExtensionRoleBodyguardGuard">Guard</string>
   <string name="ExtensionRoleBodyguardGuardWikiDescription">Give someone a shield. If someone attacks them, you will be able to teleport to them.</string>
   <string name="ExtensionRoleBodyguardBacklash">Backlash</string>
@@ -817,7 +819,7 @@
 
   <!-- Sage Role -->
   <string name="ExtensionRoleSage">Sage</string>
-  <string name="ExtensionRoleSageIntroBlurb">Compare two players to determine if they are friends or foes.</string>
+  <string name="ExtensionRoleSageIntroBlurb">Use your intuition to discover who is working together.</string>
   <string name="ExtensionRoleSageTabDescription">Use Gaze and Intuit on two different players, then learn if they are allies or enemies.</string>
   <string name="ExtensionRoleSageWikiDescription">You are a very wise person, that can tell if two people win or lose together.</string>
   <string name="ExtensionRoleSageGaze">Gaze</string>
@@ -916,7 +918,7 @@
 
   <!-- Kamikaze Role -->
   <string name="ExtensionRoleKamikaze">Kamikaze</string>
-  <string name="ExtensionRoleKamikazeIntroBlurb">Go out with a bang and take everyone nearby with you.</string>
+  <string name="ExtensionRoleKamikazeIntroBlurb">Sacrifice yourself in a massive explosion and take your enemies down with you!</string>
   <string name="ExtensionRoleKamikazeTabDescription">Sacrifice yourself in an explosion to kill all nearby players.</string>
   <string name="ExtensionRoleKamikazeWikiDescription">The Kamikaze is an Impostor role that can detonate themselves, killing all players within the blast radius. The Kamikaze dies in the process. Use the regular kill button normally, and activate the suicide button when the moment is right to take out as many enemies as possible.</string>
   <string name="ExtensionRoleKamikazeSuicide">Suicide</string>
@@ -946,7 +948,7 @@
 
   <!-- TOUMCE Wiki Terms - Symbols -->
   <string name="TOUMCETermsSymbolsTitle">TOUMCE Symbols</string>
-  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player canonized by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;✶&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client • &lt;color=#C0C0C0&gt;&lt;b&gt;¤&lt;/b&gt;&lt;/color&gt; - Player cursed by the Witch</string>
+  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player canonized by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client • &lt;color=#C0C0C0&gt;&lt;b&gt;¤&lt;/b&gt;&lt;/color&gt; - Player cursed by the Witch</string>
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">General Shield Flashes</string>

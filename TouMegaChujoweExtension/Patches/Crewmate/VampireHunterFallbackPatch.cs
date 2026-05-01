@@ -40,6 +40,7 @@ public static class VampireHunterFallbackPatch
                 VampireHunterBecomes.Veteran => RoleId.Get<TownOfUs.Roles.Crewmate.VeteranRole>(),
                 VampireHunterBecomes.Vigilante => RoleId.Get<TownOfUs.Roles.Crewmate.VigilanteRole>(),
                 VampireHunterBecomes.Hunter => RoleId.Get<TownOfUs.Roles.Crewmate.HunterRole>(),
+                VampireHunterBecomes.Officer => RoleId.Get<TownOfUs.Roles.Crewmate.OfficerRole>(),
                 _ => (ushort)AmongUs.GameOptions.RoleTypes.Crewmate
             };
 

@@ -150,6 +150,35 @@
         "\n- <b>Audio Overhaul</b> - updated intro sounds for multiple roles (Bodyguard, Witch, Lawyer, Hacker, etc.) to better fit their thematic identities.",
         "\n- <b>Bugfix</b> - Fixed a critical bug where <b>Parasite</b> taking control during <b>Communications Sabotage</b> would reveal Impostor names to Crewmates."
       ]
+    },
+    {
+      "Date": "2026-04-30T18:00:00Z",
+      "Number": "200005",
+      "ShortTitle": "TOUMCE v1.0.4",
+      "SubTitle": "Stability & Explosive Fixes",
+      "Title": "TOU Mega Chujowe Extension v1.0.4",
+      "Text": [
+        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
+        "\n\n\r<b>Version 1.0.4 - Stability & Explosive Fixes</b>",
+        "\n\n\r<size=105%>UI & Nickname Stability:</size>",
+        "\n- <b>Nickname Flickering</b> - FIXED flickering of nicknames. All symbols (<b>Lawyer</b>, <b>Pope</b>, <b>Death Note</b>, <b>Shroud</b>) now use a stable, synchronized system.",
+        "\n- <b>Death Note Symbol</b> - FIXED missing square; changed target marker to a beautiful purple outlined heart (<b>♡</b>).",
+        "\n\n\r<size=105%>Role Fixes & Logic:</size>",
+        "\n- <b>RC-XD</b> - Reworked detonation: correctly kills up to 5 players (including teammates). FIXED logic blocks near dead bodies.",
+        "\n- <b>Self-Kills</b> - Verified that shields correctly protect (or don't) from misfire/sacrifice according to lobby settings.",
+        "\n\n\r<size=105%>Optimizations:</size>",
+        "\n- <b>Lawyer & Pope</b> - Optimized indicator logic to eliminate micro-stutters and removed redundant UI objects.",
+        "\n\n\r<size=105%>Hacker - Massive Jam Rework:</size>",
+        "\n- <b>Contextual Feedback</b> - Removed global notifications. Jam feedback is now integrated directly into the UI.",
+        "\n- <b>Emergency Button</b> - During Jam, the emergency meeting button is disabled and displays <b>\"SYSTEM JAMMED\"</b>.",
+        "\n- <b>Report Block</b> - Report button is now <b>visually disabled (greyed out)</b> during Jam. Attempting to report is blocked without causing UI freezes.",
+        "\n- <b>Portable Device</b> - Hacker's portable device now <b>works normally</b> during Jam or Communications Sabotage, while others remain blocked.",
+        "\n\n\r<size=105%>UI, Symbols & Colors:</size>",
+        "\n- <b>Symbol Stability</b> - Fixed a bug where Lawyer and Bodyguard symbols were visible on everyone for ghosts. They now strictly follow their targets.",
+        "\n- <b>Color Reorganization</b> - Cleaned up and categorized all role colors in the codebase (Crew/Neutral/Impostor) for better maintainability.",
+        "\n- <b>Evoker</b> - Darkened base color to a more atmospheric <b>Cobalt Blue</b>.",
+        "\n- <b>Injector</b> - Individual effect notifications are now only visible to the Injector."
+      ]
     }
   ]
 }

@@ -348,7 +348,9 @@ public static class ClassicAssassinSystem
         }
 
         var assassinOptions = OptionGroupSingleton<AssassinOptions>.Instance;
-        var modifiers = MiscUtils.AllModifiers
+        var allPossibleModifiers = GetGuessableModifiersWithDynamicSupport(MiscUtils.AllModifiers);
+
+        var modifiers = allPossibleModifiers
             .Where(m =>
             {
                 if (m is DeathNoteModifier or VenomousModifier) return true;
@@ -393,7 +395,9 @@ public static class ClassicAssassinSystem
         }
 
         var vigilanteOptions = OptionGroupSingleton<VigilanteOptions>.Instance;
-        var modifiers = MiscUtils.AllModifiers
+        var allPossibleModifiers = GetGuessableModifiersWithDynamicSupport(MiscUtils.AllModifiers);
+
+        var modifiers = allPossibleModifiers
             .Where(m =>
             {
                 if (m is DeathNoteModifier or VenomousModifier) return true;
@@ -417,6 +421,73 @@ public static class ClassicAssassinSystem
                 Modifier = mod
             });
         }
+    }
+
+    private static List<BaseModifier> GetGuessableModifiersWithDynamicSupport(IEnumerable<BaseModifier> baseModifiers)
+    {
+        var modifiers = baseModifiers.ToList();
+
+        // 1. Player-based discovery (active instances)
+        foreach (var pc in PlayerControl.AllPlayerControls)
+        {
+            if (pc == null || pc.Data == null) continue;
+            var playerModifiers = pc.GetModifiers<BaseModifier>();
+            if (playerModifiers == null) continue;
+
+            foreach (var mod in playerModifiers)
+            {
+                if (mod == null) continue;
+                if (mod is IGuessable && !modifiers.Any(m => m.GetType() == mod.GetType()))
+                {
+                    modifiers.Add(mod);
+                }
+            }
+        }
+
+        // 2. Prototype discovery (for unassigned modifiers)
+        // Since these are extension modifiers (C# classes), we can safely instantiate them
+        // with IntPtr.Zero to use as prototypes for their names and colors.
+        try
+        {
+            var extensionTypes = new[] 
+            { 
+                typeof(TouMegaChujoweExtension.Modifiers.Neutral.DeathNoteModifier),
+                typeof(TouMegaChujoweExtension.Modifiers.Neutral.VenomousModifier),
+                typeof(TouMegaChujoweExtension.Modifiers.Crewmate.PublicityModifier)
+            };
+
+            foreach (var type in extensionTypes)
+            {
+                if (!modifiers.Any(m => m.GetType() == type))
+                {
+                    try
+                    {
+                        // Use the IntPtr constructor if it exists (standard for Il2Cpp-wrapped types)
+                        var prototype = (BaseModifier)System.Activator.CreateInstance(type, new object[] { System.IntPtr.Zero });
+                        if (prototype != null)
+                        {
+                            modifiers.Add(prototype);
+                        }
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            // Fallback to parameterless constructor if it's a pure C# class
+                            var prototype = (BaseModifier)System.Activator.CreateInstance(type);
+                            if (prototype != null)
+                            {
+                                modifiers.Add(prototype);
+                            }
+                        }
+                        catch { }
+                    }
+                }
+            }
+        }
+        catch { }
+
+        return modifiers;
     }
 
     private static void BuildGuessableListForDoomsayer(DoomsayerRole doomsayer)

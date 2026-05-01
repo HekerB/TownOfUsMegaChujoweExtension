@@ -116,6 +116,11 @@ public sealed class WraithRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
             wraith.AddModifier<WraithLanternInvisibilityModifier>();
         }
 
+        if (PlayerControl.LocalPlayer != null)
+        {
+            TouAudio.PlaySound(TouAudio.SwooperActivateSound);
+        }
+
         Coroutines.Start(CoDelayedTeleport(wraith, pos));
     }
 

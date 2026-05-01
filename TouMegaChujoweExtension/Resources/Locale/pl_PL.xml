@@ -32,7 +32,7 @@
   
   <!-- Renamed Trapper to Revealer -->
   <string name="TouRoleRevealer">Revealer</string>
-  <string name="TouRoleRevealerIntroBlurb">Rozstawiaj pulapki, aby ujawniac role graczy, ktorzy w nich pozostana.</string>
+  <string name="TouRoleRevealerIntroBlurb">Rozstawiaj pułapki, aby ujawniać role graczy.</string>
   <string name="TouRoleRevealerTabDescription">Rozstawiaj pulapki na mapie. Gracze, ktorzy pozostana w pulapkach wystarczajaco dlugo, beda mieli ujawnione role podczas nastepnego spotkania.</string>
   <string name="TouRoleRevealerWikiDescription">Revealer to rola Crewmate, ktora moze rozstawiac pulapki na mapie. \%nl\%Gdy gracze pozostaja w pulapce przez okreslony czas, \%nl\%ich role zostaja ujawnione Revealerowi podczas nastepnego spotkania.</string>
   <string name="TouRoleRevealerTrap">Pulapka</string>
@@ -44,7 +44,7 @@
 
   <!-- Trapper Role -->
   <string name="ExtensionRoleTrapper">Trapper</string>
-  <string name="ExtensionRoleTrapperIntroBlurb">Zastawiaj pulapki na wentylacje, aby lapac korzystajacych z nich graczy.</string>
+  <string name="ExtensionRoleTrapperIntroBlurb">Zastawiaj pułapki na wentylacje, by łapać graczy.</string>
   <string name="ExtensionRoleTrapperTabDescription">Umieszczaj pulapki na wentylacjach. Gracze, ktorzy uzyja pulapki na wentylacji, zostana unieruchomieni na pewien czas.</string>
   <string name="ExtensionRoleTrapperWikiDescription">Trapper to rola Crewmate, ktora moze zastawiac pulapki na wentylacjach. Gdy gracze uzyja wentylacji z pulapka, zostaja unieruchomieni na pewien czas, a Trapper otrzymuje powiadomienie.</string>
   <string name="ExtensionRoleTrapperTrap">Pulapka</string>
@@ -71,7 +71,7 @@
   
   <!-- President Role -->
   <string name="ExtensionRolePresident">President</string>
-  <string name="ExtensionRolePresidentIntroBlurb">Twoj glos to twoja sila.</string>
+  <string name="ExtensionRolePresidentIntroBlurb">Gromadź głosy w banku i wyrzuć je wszystkie naraz w decydującym momencie!</string>
   <string name="ExtensionRolePresidentTabDescription">Masz bank glosow. Na kazdym spotkaniu mozesz\%nl\%dowolnie rozdzielac swoje glosy miedzy graczy lub\%nl\%wstrzymac sie, aby zachowac glosy na pozniejsze spotkania.</string>
   <string name="ExtensionRolePresidentWikiDescription">Mozesz wstrzymac sie od glosowania podczas spotkania, a dzieki temu zachowasz glosy, ktore potem mozesz wydac wszystkie naraz, na przyklad 10 glosow na jednym spotkaniu.</string>
   <string name="ExtensionRolePresidentAbstain">Wstrzymaj sie</string>
@@ -85,7 +85,7 @@
   
   <!-- Vanisher Role -->
   <string name="ExtensionRoleVanisher">Vanisher</string>
-  <string name="ExtensionRoleVanisherIntroBlurb">Stan sie niewidzialny, aby wykrywac zlych graczy w poblizu.</string>
+  <string name="ExtensionRoleVanisherIntroBlurb">Znikaj, by tropić i demaskować złych graczy.</string>
   <string name="ExtensionRoleVanisherTabDescription">Zniknij, aby stac sie niewidzialnym i wykrywac impostorow oraz neutralnych w swoim zasiegu.</string>
   <string name="ExtensionRoleVanisherWikiDescription">Jestes crewmate Swooper. Mozesz zniknac i obserwowac neutralnych/impostorow.</string>
   <string name="ExtensionRoleVanisherVanish">Zniknij</string>
@@ -115,7 +115,7 @@
   
   <!-- Child Modifier -->
   <string name="ExtensionModifierChild">Child</string>
-  <string name="ExtensionModifierChildIntroBlurb">Jestes dzieckiem! Dorosnij, aby stracic ochrone.</string>
+  <string name="ExtensionModifierChildIntroBlurb">Jesteś dzieckiem! Dorośnij, aby stracić ochronę.</string>
   <string name="ExtensionModifierChildTabDescription">Jestes Child (Wiek: &lt;age&gt;/&lt;adultAge&gt;).\%nl\%Dopoki jestes niepelnoletni, nie mozna cie zabic.\%nl\%Starzejesz sie co kilka sekund.\%nl\%Gdy osiagniesz doroslosc, tracisz ochrone.</string>
   <string name="ExtensionModifierChildWikiDescription">Gdy jestes dzieckiem, jestes chroniony przed zabiciem. Gdy osiagniesz doroslosc, tracisz ochrone.</string>
   <string name="ExtensionModifierChildChance">Szansa na Child</string>
@@ -136,11 +136,11 @@
 
   <!-- Lawyer Role -->
   <string name="ExtensionRoleLawyer">Lawyer</string>
-  <string name="ExtensionRoleLawyerIntroBlurb">Bron swojego klienta, aby wygrac!</string>
+  <string name="ExtensionRoleLawyerIntroBlurb">Broń klienta przed wyrzuceniem, aby zwyciężyć.</string>
   <string name="ExtensionRoleLawyerTabDescription">Bron &lt;client&gt;. Jesli zostanie wyrzucony przez glosowanie, przegrywasz!</string>
-  <string name="ExtensionRoleLawyerWikiDescription">Lawyer to rola Neutral Benign, ktora wygrywa poprzez utrzymanie swojego klienta przed wyrzuceniem przez glosowanie. Jesli klient zostanie wyrzucony, Lawyer przegrywa.</string>
+  <string name="ExtensionRoleLawyerWikiDescription">&lt;color=#EDB38C&gt;Lawyer&lt;/color&gt; to rola Neutral Benign, ktora wygrywa poprzez utrzymanie swojego klienta przed wyrzuceniem przez glosowanie. Jesli klient zostanie wyrzucony, Lawyer przegrywa.</string>
   <string name="ExtensionRoleLawyerObject">Sprzeciw</string>
-  <string name="ExtensionRoleLawyerObjectWikiDescription">Podczas spotkan kliknij przycisk sprzeciwu przy obszarze glosu twojego klienta, aby zaprotestowac przeciw wszystkim glosom, wyczyscic je i zmusic graczy do ponownego glosowania.</string>
+  <string name="ExtensionRoleLawyerObjectWikiDescription">Podczas spotkań kliknij przycisk sprzeciwu przy obszarze głosu twojego klienta, aby zaprotestować przeciw wszystkim głosom, wyczyścić je i zmusić graczy do ponownego głosowania.</string>
   
   <!-- Lucky Modifier -->
   <string name="ExtensionModifierLucky">Lucky</string>
@@ -165,7 +165,7 @@
   
   <!-- Shifter Role -->
   <string name="ExtensionRoleShifter">Shifter</string>
-  <string name="ExtensionRoleShifterIntroBlurb">Kradnij role innych graczy.</string>
+  <string name="ExtensionRoleShifterIntroBlurb">Kradnij role innym i stań się jednym z nich.</string>
   <string name="ExtensionRoleShifterTabDescription">Wybierz gracza, aby ukrasc jego role podczas nastepnego spotkania.\%nl\%Jesli wybierzesz nie-crewmate'a (chyba ze jest to dozwolone), zginiesz.</string>
   <string name="ExtensionRoleShifterWikiDescription">Mozesz ukrasc role gracza, ale jesli sprobujeesz ukrasc role Impostora lub Neutralnego, natychmiast popelnisz samobojstwo.</string>
   <string name="ExtensionRoleShifterShift">Shift</string>
@@ -207,7 +207,7 @@
   
   <!-- Serial Killer Role -->
   <string name="ExtensionRoleSerialKiller">Serial Killer</string>
-  <string name="ExtensionRoleSerialKillerIntroBlurb">Zabij wszystkich, wygraj samotnie.</string>
+  <string name="ExtensionRoleSerialKillerIntroBlurb">Zabij wszystkich na swojej drodze, by zostać jedynym ocalałym.</string>
   <string name="ExtensionRoleSerialKillerTabDescription">Zabij wszystkich, aby wygrac samotnie.\%nl\%Kazde zabojstwo trwale skraca twoj cooldown.\%nl\%Mozesz zabijac w wentylacjach (tracisz je po uzyciu).</string>
   <string name="ExtensionRoleSerialKillerWikiDescription">Serial Killer to rola Neutral Killing. Kazde zabojstwo progresywnie skraca jego cooldown (ukryty bonus). \%nl\%Moze zabijac graczy bedac z nimi w wentylacji, ale po takim ataku traci mozliwosc uzywania ventow do konca gry.</string>
   
@@ -235,11 +235,11 @@
   
   <!-- Pelican Role -->
   <string name="ExtensionRolePelican">Pelican</string>
-  <string name="ExtensionRolePelicanIntroBlurb">Polknij wszystkich graczy, aby wygrac!</string>
-  <string name="ExtensionRolePelicanTabDescription">Polykaj graczy, aby uwiezic ich w swoim zoladku.\%nl\%Zostana strawieni, gdy zostanie zwolane spotkanie.\%nl\%Jesli zginiesz, uciekna zywi.</string>
-  <string name="ExtensionRolePelicanWikiDescription">Mozesz zjadac ludzi zycem, zjedz wszystkich, aby wygrac! Osoby w twoim zoladku umra na poczatku spotkania.</string>
-  <string name="ExtensionRolePelicanSwallow">Polknij</string>
-  <string name="ExtensionRolePelicanSwallowWikiDescription">Polknij graczy. Znajduja sie w twoim zoladku, dopoki nie zostanie zwolane spotkanie albo nie zginiesz.</string>
+  <string name="ExtensionRolePelicanIntroBlurb">Połykaj graczy żywcem, aby wygrać samotnie.</string>
+  <string name="ExtensionRolePelicanTabDescription">Połykaj graczy, aby uwięzić ich w swoim żołądku.\%nl\%Zostaną strawieni, gdy zostanie zwołane spotkanie.\%nl\%Jeśli zginiesz, uciekną żywi.</string>
+  <string name="ExtensionRolePelicanWikiDescription">Możesz zjadać ludzi żywcem, zjedz wszystkich, aby wygrać! Osoby w twoim żołądku umrą na początku spotkania.</string>
+  <string name="ExtensionRolePelicanSwallow">Połknij</string>
+  <string name="ExtensionRolePelicanSwallowWikiDescription">Połknij graczy. Znajdują się w twoim żołądku, dopóki nie zostanie zwołane spotkanie albo nie zginiesz.</string>
 
   <!-- Pelican Options -->
   <string name="ExtensionOptionPelicanSwallowCooldown">Cooldown polkniecia</string>
@@ -260,7 +260,7 @@
   
   <!-- Pirate Role -->
   <string name="ExtensionRolePirate">Pirate</string>
-  <string name="ExtensionRolePirateIntroBlurb">Wygrywaj pojedynki, aby osiagnac zwyciestwo!</string>
+  <string name="ExtensionRolePirateIntroBlurb">Wygrywaj pojedynki RPS podczas spotkań.</string>
   <string name="ExtensionRolePirateTabDescription">Wyzywaj graczy na pojedynki w Kamien-Papier-Nozyce podczas spotkan.\%nl\%Wygraj wystarczajaco duzo pojedynkow, aby wygrac gre.</string>
   <string name="ExtensionRolePirateWikiDescription">Mozesz wyzwac gracza na pojedynek i zmusic go do gry w Kamien, Papier, Nozyce podczas nastepnego spotkania. Jesli wygrasz, ginie. Jesli przegrasz, nic sie nie dzieje. Remis liczy sie tylko jesli opcja jest wlaczona.</string>
   <string name="ExtensionRolePirateDuel">Pojedynek</string>
@@ -295,7 +295,7 @@
   
   <!-- Joker Role -->
   <string name="ExtensionRoleJoker">Joker</string>
-  <string name="ExtensionRoleJokerIntroBlurb">Zmyl zabojcow, aby atakowali twoje klony!</string>
+  <string name="ExtensionRoleJokerIntroBlurb">Myl morderców klonami, aby wygrać jako cel.</string>
   <string name="ExtensionRoleJokerTabDescription">Umieszczaj klony innych graczy na mapie.%nl\%Jesli role zabijajace wyeliminuja wystarczajaco duzo klonow, wygrywasz!%nl\%Klony blokuja zwykle interakcje.</string>
   <string name="ExtensionRoleJokerWikiDescription">Joker moze umieszczac klony wybranego gracza na mapie. Jesli role zabijajace wyeliminuja wystarczajaco duzo klonow, wygrywasz!</string>
 
@@ -323,9 +323,9 @@
   
   <!-- Pope Role -->
   <string name="ExtensionRolePope">Pope</string>
-  <string name="ExtensionRolePopeIntroBlurb">Kanonizuj wszystkich i uwolnij Boski Sad!</string>
+  <string name="ExtensionRolePopeIntroBlurb">Kanonizuj wiernych i wymierz im Boski Sąd.</string>
   <string name="ExtensionRolePopeTabDescription">Kanonizuj wszystkich zyjacych graczy, a nastepnie uruchom Judgement, aby wyeliminowac wszystkich.</string>
-  <string name="ExtensionRolePopeWikiDescription">Musisz kanonizowac wszystkich, aby rozpoczac Judgement. Pope wygrywa, jesli wszyscy gracze zgina od Judgement.</string>
+  <string name="ExtensionRolePopeWikiDescription">Musisz kanonizowac wszystkich, aby rozpoczac Judgement. &lt;color=#FFD700&gt;Pope&lt;/color&gt; wygrywa, jesli wszyscy gracze zgina od Judgement.</string>
   <string name="ExtensionRolePopeCanonize">Kanonizuj</string>
   <string name="ExtensionRolePopeCanonizeWikiDescription">Podejdz do gracza i go zaznacz (kanonizuj). Zaznaczeni gracze swieca sie na zloto tylko dla Ciebie. Gdy zaznaczysz wszystkich zyjacych, bedziesz mogl ich ukatrupic przyciskiem Judgement.</string>
   <string name="ExtensionRolePopeJudgement">Judgement</string>
@@ -350,7 +350,7 @@
   
   <!-- Outlaw Role -->
   <string name="ExtensionRoleOutlaw">Outlaw</string>
-  <string name="ExtensionRoleOutlawIntroBlurb">Podwojne klopoty</string>
+  <string name="ExtensionRoleOutlawIntroBlurb">Wykorzystaj szał zabijania, by uderzyć dwa razy.</string>
   <string name="ExtensionRoleOutlawTabDescription">Po zabojstwie masz krotkie okno na zabicie drugiego gracza bez cooldownu.</string>
   <string name="ExtensionRoleOutlawWikiDescription">Mozesz wykonac wiele zabojstw w zaleznosci od opcji.</string>
 
@@ -361,7 +361,7 @@
 
   <!-- Witch Role -->
   <string name="ExtensionRoleWitch">Witch</string>
-  <string name="ExtensionRoleWitchIntroBlurb">Uwielbiamy rzucac zaklecia!</string>
+  <string name="ExtensionRoleWitchIntroBlurb">Rzucaj klątwy, które zabijają po spotkaniu.</string>
   <string name="ExtensionRoleWitchTabDescription">Rzucaj zaklecia na graczy.\%nl\%Beda podswietleni podczas nastepnego spotkania i umra po skonfigurowanej liczbie spotkan.</string>
   <string name="ExtensionRoleWitchWikiDescription">Witch to rola Impostor Killing, ktora moze rzucac zaklecia na innych graczy. Zaczarowani gracze sa podswietleni podczas nastepnego spotkania i umieraja po skonfigurowanej liczbie spotkan. Jesli Witch zginie, zostanie wyrzucony lub odgadniety, wszyscy zaczarowani gracze przezyja.</string>
   <string name="ExtensionRoleWitchSpell">Zaklecie</string>
@@ -383,9 +383,9 @@
 
   <!-- Wraith Role -->
   <string name="ExtensionRoleWraith">Wraith</string>
-  <string name="ExtensionRoleWraithIntroBlurb">Poruszaj sie szybko i uderzaj nieprzewidywalnie.</string>
+  <string name="ExtensionRoleWraithIntroBlurb">Teleportuj się do latarni i uderzaj z cienia.</string>
   <string name="ExtensionRoleWraithTabDescription">Uzyj Dash dla szybkosci. Postaw Lantern, aby teleportowac sie z powrotem do niej.</string>
-  <string name="ExtensionRoleWraithWikiDescription">Wraith to rola Impostor Power skupiona na szybkim, nieprzewidywalnym poruszaniu sie. Dash zwieksza twoja predkosc ruchu o 75% na krotki czas. Lantern pozwala ci postawic ukryty znacznik widoczny tylko dla ciebie; aktywuj go ponownie, aby teleportowac sie z powrotem i na chwile zniknac. Jesli Lantern wygasnie zanim wrocisz, peka i zostawia trwaly slad widoczny dla wszystkich graczy.</string>
+  <string name="ExtensionRoleWraithWikiDescription">&lt;color=#D62020&gt;Wraith&lt;/color&gt; to rola Impostor Power skupiona na szybkim, nieprzewidywalnym poruszaniu sie. Dash zwieksza twoja predkosc ruchu o 75% na krotki czas. Lantern pozwala ci postawic ukryty znacznik widoczny tylko dla ciebie; aktywuj go ponownie, aby teleportowac sie z powrotem i na chwile zniknac. Jesli Lantern wygasnie zanim wrocisz, peka i zostawia trwaly slad widoczny dla wszystkich graczy.</string>
   <string name="ExtensionRoleWraithDash">Dash</string>
   <string name="ExtensionRoleWraithDashWikiDescription">Tymczasowo zwieksz swoja predkosc ruchu o 75%.</string>
   <string name="ExtensionRoleWraithLantern">Lantern</string>
@@ -404,20 +404,21 @@
 
   <!-- Hacker Role -->
   <string name="ExtensionRoleHacker">Hacker</string>
-  <string name="ExtensionRoleHackerIntroBlurb">Pobieraj informacje systemowe i zaklocaj komunikacje.</string>
+  <string name="ExtensionRoleHackerIntroBlurb">Hakuj dane i paraliżuj systemy komunikacji.</string>
   <string name="ExtensionRoleHackerTabDescription">Pobieraj i zaklocaj urzadzenia, zabijaj, aby dostac dodatkowe ladunki Jam.</string>
-  <string name="ExtensionRoleHackerWikiDescription">Hacker to rola Impostor Support, ktora moze pobierac informacje z pobliskich urzadzen, aby naladowac przenosne urzadzenie. Gdy zaczniesz pobierac, zostajesz przypisany do tego typu urzadzenia do nastepnej rundy. Jam zakloca systemy informacyjne tak, jakby comms byly sabotowane, ale spotkania awaryjne nadal mozna zglaszac.</string>
+  <string name="ExtensionRoleHackerWikiDescription">Hacker to rola Impostor Support, która może pobierać informacje z pobliskich urządzeń, aby naładować przenośne urządzenie. Jam zakłóca systemy informacyjne (Comms, Admin, Kamery itp.) oraz blokuje wszystkim graczom możliwość zgłaszania ciał i zwoływania spotkań, jednak Hacker może nadal korzystać ze swojego urządzenia w tym czasie.</string>
   <string name="ExtensionRoleHackerDownload">Pobierz</string>
   <string name="ExtensionRoleHackerDownloadWikiDescription">Pobieraj dane przy konsoli (Admin, Kamery, itp.), aby naladowac baterie. Urzadzenia mozesz uzywac potem w dowolnym miejscu!</string>
   <string name="ExtensionRoleHackerDevice">Urzadzenie</string>
   <string name="ExtensionRoleHackerDeviceWikiDescription">Uzywaj pobranego systemu gdziekolwiek, zuzywajac baterie z czasem.</string>
   <string name="ExtensionRoleHackerJam">Jam</string>
-  <string name="ExtensionRoleHackerJamWikiDescription">Wylacz systemy informacyjne na chwile (jak awaria comms), ale bez blokowania spotkan.</string>
+  <string name="ExtensionRoleHackerJamWikiDescription">Wyłącz systemy informacyjne na chwilę (jak awaria comms). Podczas działania Jamu, spotkania awaryjne oraz zgłaszanie ciał są zablokowane dla wszystkich (Hacker może jednak używać swojego urządzenia).</string>
+  <string name="ExtensionRoleHackerJamActivated">SYSTEM ZAKŁÓCONY</string>
 
   <!-- Hacker Options -->
   <string name="ExtensionOptionHackerMaxBatterySeconds">Maksymalny czas baterii</string>
   <string name="ExtensionOptionHackerBatteryPerDownloadSecond">Bateria zyskiwana za sekunde pobierania</string>
-  <string name="ExtensionOptionHackerDownloadRange">Zasieg pobierania</string>
+  <string name="ExtensionOptionHackerDownloadRange">Zasięg pobierania</string>
   <string name="ExtensionOptionHackerMoveWithDevice">Mozliwosc ruchu podczas uzywania urzadzenia</string>
   <string name="ExtensionOptionHackerSimpleModeJamOnly">Tryb prosty (tylko Jam)</string>
   <string name="ExtensionOptionHackerInitialJamCharges">Poczatkowe ladunki Jam</string>
@@ -428,7 +429,7 @@
   
   <!-- RC-XD Role -->
   <string name="ExtensionRoleRcXd">RC-XD</string>
-  <string name="ExtensionRoleRcXdIntroBlurb">Zdalnie sterowany ladunek wybuchowy</string>
+  <string name="ExtensionRoleRcXdIntroBlurb">Steruj wybuchowym autkiem i niszcz załogę.</string>
   <string name="ExtensionRoleRcXdTabDescription">Wypusc auto RC, steruj nim za pomoca strzalek i zdetonuj je w poblizu wrogow.</string>
   <string name="ExtensionRoleRcXdWikiDescription">Jako RC-XD mozesz wypuscic mini auto z CALL OF DUTY. To auto jest bomba, ktora kontrolujesz i mozesz zdetonowac w dowolnym momencie.</string>
   <string name="ExtensionRoleRcXdDeploy">Wypusc</string>
@@ -448,7 +449,7 @@
 
   <!-- Forestaller Role -->
   <string name="ExtensionRoleForestaller">Forestaller</string>
-  <string name="ExtensionRoleForestallerIntroBlurb">Wykonaj wszystkie zadania, aby wylaczyc sabotaze.</string>
+  <string name="ExtensionRoleForestallerIntroBlurb">Skończ zadania, by na stałe zablokować sabotaże.</string>
   <string name="ExtensionRoleForestallerTabDescription">Skoncz wszystkie swoje zadania. Gdy to zrobisz, sabotaze nie moga byc wywolywane, dopoki zyjesz.</string>
   <string name="ExtensionRoleForestallerWikiDescription">Forestaller to rola Crewmate Support, ktora moze zapobiegac sabotazom zanim sie wydarza. Po ukonczeniu wszystkich zadan sabotaze sa wylaczone, dopoki Forestaller zyje. Forestaller zostaje ujawniony po ukonczeniu ostatniego zadania.</string>
 
@@ -464,7 +465,7 @@
   
   <!-- Evoker Role -->
   <string name="ExtensionRoleEvoker">Evoker</string>
-  <string name="ExtensionRoleEvokerIntroBlurb">Oslep zabojcow i ujawnij ich!</string>
+  <string name="ExtensionRoleEvokerIntroBlurb">Oślepiaj napastników i demaskuj ich błyskiem.</string>
   <string name="ExtensionRoleEvokerTabDescription">Aktywuj Blind, aby oslepic i ogluszyc (Nausea) zabojcow. Verify graczy, aby sprawdzic ich role.</string>
   <string name="ExtensionRoleEvokerWikiDescription">Twoja umiejetnosc pozwala oslepic i ogluszyc (efekt Nausea) wszystkie role zabijajace. Podczas Blind mozesz sprawdzac (Verify), czy dana osoba jest zabojca. Calosc jest zoptymalizowana dla maksymalnej wydajnosci FPS.</string>
   <string name="ExtensionRoleEvokerBlind">Blind</string>
@@ -485,7 +486,7 @@
 
   <!-- Mirage Role -->
   <string name="ExtensionRoleMirage">Mirage</string>
-  <string name="ExtensionRoleMirageIntroBlurb">Ale cie wkrecilo!</string>
+  <string name="ExtensionRoleMirageIntroBlurb">Rozstawiaj wabiki, by demaskować morderców.</string>
   <string name="ExtensionRoleMirageTabDescription">Przygotuj wabik, a potem go postaw. Jesli ktos z nim wejdzie w interakcje, zniknie, a ty dostaniesz powiadomienie.</string>
   <string name="ExtensionRoleMirageWikiDescription">Mirage to rola Crewmate Support, ktora moze postawic wabik z wygladem wybranego celu (ciebie albo losowego gracza). Jesli jakikolwiek gracz wejdzie w interakcje z wabikiem, ten natychmiast znika, a zarowno Mirage, jak i dotykajacy dostaja powiadomienie. Uwaga: Mirage nie moze zostac odgadniety, jesli wabik ma twoj wyglad.</string>
   <string name="ExtensionRoleMirageDecoy">Wabik</string>
@@ -516,7 +517,7 @@
 
   <!-- Injector Role -->
   <string name="ExtensionRoleInjector">Injector</string>
-  <string name="ExtensionRoleInjectorIntroBlurb">Wstrzykuj graczom negatywne efekty.</string>
+  <string name="ExtensionRoleInjectorIntroBlurb">Wstrzykuj toksyny paraliżujące Twoje ofiary.</string>
   <string name="ExtensionRoleInjectorTabDescription">Wstrzykuj graczom losowe efekty.</string>
   <string name="ExtensionRoleInjectorWikiDescription">Injector to rola Impostor Support, ktora moze wstrzykiwac graczom rozne negatywne efekty. Efekty sa wybierane losowo i moga obejmowac odwrocone sterowanie, zmniejszone widzenie, spowolnienie lub dezorientacje.</string>
   <string name="ExtensionRoleInjectorInject">Wstrzyknij</string>
@@ -571,19 +572,20 @@
   <string name="ExtensionLocalSettingEnableNauseaCameraShake">Wlacz trzesienie kamery przy mdlosciach</string>
 
   <!-- Injector Notifications -->
-  <string name="ExtensionInjectorNotificationInvertedControls">Zaczynasz czuc zawroty glowy...</string>
-  <string name="ExtensionInjectorNotificationLowVision">Twoje widzenie sie zawaza...</string>
-  <string name="ExtensionInjectorNotificationSlowness">Twoje nogi zaczynaja byc ciezkie...</string>
-  <string name="ExtensionInjectorNotificationVeryLowVision">Czujesz, jak twoj wzrok zaczyna zanikac...</string>
-  <string name="ExtensionInjectorNotificationConfused">Zaczynasz czuc sie zdezorientowany...</string>
-  <string name="ExtensionInjectorNotificationNoVent">Czujesz sie zbyt slaby, aby uzywac wentylacji...</string>
-  <string name="ExtensionInjectorNotificationNoUse">Twoje cialo wydaje sie sparalizowane...</string>
-  <string name="ExtensionInjectorNotificationNoReport">Twoj umysl pustoszeje, gdy widzisz ciala...</string>
-  <string name="ExtensionInjectorNotificationNausea">Czujesz mdlosci... (0.7x predkosc, 0.7x widzenie, trzesienie kamery)</string>
-  <string name="ExtensionInjectorNotificationWeakness">Czujesz sie bardzo slaby...</string>
-  <string name="ExtensionInjectorNotificationSpeedBoost">Czujesz przyplyw energii i szybkosci!</string>
-  <string name="ExtensionInjectorNotificationVisionBoost">Twoj wzrok staje sie krystalicznie wyrazny!</string>
-  <string name="ExtensionInjectorNotificationRegeneration">Czujesz, jak twoje cialo szybko sie regeneruje!</string>
+  <string name="ExtensionInjectorNotificationPrefix">Zainfekowano {0}:</string>
+  <string name="ExtensionInjectorNotificationInvertedControls">Odwrócone Sterowanie</string>
+  <string name="ExtensionInjectorNotificationLowVision">Słabe Widzenie</string>
+  <string name="ExtensionInjectorNotificationSlowness">Spowolnienie</string>
+  <string name="ExtensionInjectorNotificationVeryLowVision">Bardzo Słabe Widzenie</string>
+  <string name="ExtensionInjectorNotificationConfused">Dezorientacja</string>
+  <string name="ExtensionInjectorNotificationNoVent">Blokada Wentów</string>
+  <string name="ExtensionInjectorNotificationNoUse">Blokada Use</string>
+  <string name="ExtensionInjectorNotificationNoReport">Blokada Reportów</string>
+  <string name="ExtensionInjectorNotificationNausea">Mdłości</string>
+  <string name="ExtensionInjectorNotificationWeakness">Słabość</string>
+  <string name="ExtensionInjectorNotificationSpeedBoost">Przyspieszenie</string>
+  <string name="ExtensionInjectorNotificationVisionBoost">Lepsze Widzenie</string>
+  <string name="ExtensionInjectorNotificationRegeneration">Regeneracja</string>
 
   <!-- Injector Effect Descriptions -->
   <string name="ExtensionInjectorEffectDescriptionInvertedControls">Odwrocone sterowanie</string>
@@ -617,7 +619,7 @@
 
   <!-- Charlatan Role -->
   <string name="ExtensionRoleCharlatan">Charlatan</string>
-  <string name="ExtensionRoleCharlatanIntroBlurb">Manipuluj zgloszeniami cial na swoja korzysc.</string>
+  <string name="ExtensionRoleCharlatanIntroBlurb">Manipuluj raportami i zmylaj załogę.</string>
   <string name="ExtensionRoleCharlatanTabDescription">Uzyj Deceive, aby zglaszac ciala, ktore zabiles, z dowolnej odleglosci.\%nl\%Uzyj Conceal, aby zmniejszyc zasieg zgloszenia pobliskich cial.</string>
   <string name="ExtensionRoleCharlatanWikiDescription">Charlatan to rola Impostor Support, ktora manipuluje zgloszeniami cial. Deceive pozwala ci zglaszac ciala, ktore zabiles, z dowolnej odleglosci przez ograniczony czas po zabojstwie. Conceal zmniejsza zasieg zgloszenia pobliskich cial, ale wymaga pozostania przy ciele przez caly czas trwania.</string>
   <string name="ExtensionRoleCharlatanDeceive">Deceive</string>
@@ -641,9 +643,9 @@
 
   <!-- Vulture Role -->
   <string name="ExtensionRoleVulture">Vulture</string>
-  <string name="ExtensionRoleVultureIntroBlurb">Zjadaj martwe ciala, aby wygrac samotnie.</string>
-  <string name="ExtensionRoleVultureTabDescription">Zjadaj ciala [Q], aby wygrac. Scavenge [F] pokazuje strzalki.</string>
-  <string name="ExtensionRoleVultureWikiDescription">Celem Vulture jest zjedzenie okreslonej liczby cial. Uzywaj [Q] do jedzenia i [F] do namierzania zwlok. Układ przycisków: Eat (Góra-Lewo), Scavenge (Prawo), Vent (Dół).</string>
+  <string name="ExtensionRoleVultureIntroBlurb">Zjadaj martwe ciała, by wygrać jako padlinożerca.</string>
+  <string name="ExtensionRoleVultureTabDescription">Zjadaj ciała, aby wygrać grę. Używaj Scavenge, aby zobaczyć strzałki wskazujące zwłoki.</string>
+  <string name="ExtensionRoleVultureWikiDescription">Celem Vulture jest zjedzenie określonej liczby ciał. Używaj przycisku jedzenia, aby konsumować zwłoki i Scavenge, aby je namierzać.</string>
   <string name="ExtensionRoleVultureEat">Zjedz</string>
   <string name="ExtensionRoleVultureEatWikiDescription">Zjedz pobliskie martwe cialo. Liczy sie to do twojego warunku wygranej.</string>
   <string name="ExtensionRoleVultureScavenge">Scavenge</string>
@@ -705,7 +707,7 @@
   
   <!-- Bounty Hunter Role -->
   <string name="ExtensionRoleBountyHunter">Bounty Hunter</string>
-  <string name="ExtensionRoleBountyHunterIntroBlurb">Poluj na cele, aby wygrac!</string>
+  <string name="ExtensionRoleBountyHunterIntroBlurb">Poluj na wyznaczone cele, aby zwyciężyć.</string>
   <string name="ExtensionRoleBountyHunterTabDescription">Wyeliminuj wszystkie cele, aby wygrac!</string>
   <string name="ExtensionRoleBountyHunterWikiDescription">Musisz mordowac swoje cele, aby wygrac!</string>
   <string name="ExtensionRoleBountyHunterKill">Polowanie</string>
@@ -737,33 +739,33 @@
   
   <!-- Poisoner Role -->
   <string name="ExtensionRolePoisoner">Poisoner</string>
-  <string name="ExtensionRolePoisonerIntroBlurb">Truj i pnij swoich wrogow</string>
-  <string name="ExtensionRolePoisonerTabDescription">Truj [Lewo] i uzywaj pnaczy [Prawo]. Vent jest na srodku.</string>
-  <string name="ExtensionRolePoisonerWikiDescription">Impostor z układem przycisków Zerkaa. Poison (Lewo), Vent (Srodek), Vine (Prawo). Posiada agresywny efekt drgania przycisków (Flicker Banger) podczas aktywacji.</string>
-  <string name="ExtensionRolePoisonerPoison">Poison</string>
-  <string name="ExtensionRolePoisonerPoisonWikiDescription">Podejdz do gracza i go zatruj. Umrze po opoznieniu.</string>
-  <string name="ExtensionRolePoisonerVine">Vine</string>
-  <string name="ExtensionRolePoisonerVining">Vining...</string>
-  <string name="ExtensionRolePoisonerVineWikiDescription">Znajdz najblizszego gracza w zasiegu i zabij go po opoznieniu. Twoja kamera podaza za celem.</string>
+  <string name="ExtensionRolePoisonerIntroBlurb">Zatruwaj wrogów lub pętaj ich pnączami.</string>
+  <string name="ExtensionRolePoisonerTabDescription">Używaj Trucia, aby powoli eliminować graczy, do których podejdziesz.\%nl\%Używaj Pnącza, aby zdalnie zabić najbliższego gracza w zasięgu.</string>
+  <string name="ExtensionRolePoisonerWikiDescription">Impostor, który może zatruwać graczy przy kontakcie lub używać pnączy do zabijania z dystansu.</string>
+  <string name="ExtensionRolePoisonerPoison">Trucie</string>
+  <string name="ExtensionRolePoisonerPoisonWikiDescription">Podejdź do gracza i go zatruj. Umrze po opóźnieniu.</string>
+  <string name="ExtensionRolePoisonerVine">Pnącze</string>
+  <string name="ExtensionRolePoisonerVining">Pętanie...</string>
+  <string name="ExtensionRolePoisonerVineWikiDescription">Znajdź najbliższego gracza w zasięgu i zabij go po opóźnieniu. Twoja kamera podąża za celem.</string>
   
   <!-- Poisoner Options -->
-  <string name="ExtensionOptionPoisonerPoisonCooldown">Cooldown Poison</string>
-  <string name="ExtensionOptionPoisonerPoisonDuration">Czas trwania Poison</string>
-  <string name="ExtensionOptionPoisonerVineCooldown">Cooldown Vine</string>
-  <string name="ExtensionOptionPoisonerVineDuration">Czas trwania Vine</string>
-  <string name="ExtensionOptionPoisonerVineRange">Zasieg Vine</string>
+  <string name="ExtensionOptionPoisonerPoisonCooldown">Cooldown Trucia</string>
+  <string name="ExtensionOptionPoisonerPoisonDuration">Czas trwania Trucia</string>
+  <string name="ExtensionOptionPoisonerVineCooldown">Cooldown Pnącza</string>
+  <string name="ExtensionOptionPoisonerVineDuration">Czas trwania Pnącza</string>
+  <string name="ExtensionOptionPoisonerVineRange">Zasięg Pnącza</string>
   <string name="ExtensionOptionPoisonerCanVent">Moze uzywac wentylacji</string>
 
   <!-- Poisoner Death Messages -->
   <string name="DiedToPoisoner">Zabity</string>
-  <string name="DiedToPoisonerPoison">Zatruty</string>
+  <string name="DiedToPoisonerPoison">Zatrucie</string>
   <string name="DiedToPoisonerVine">Zgnieciony</string>
   
   <!-- Bodyguard Role -->
   <string name="ExtensionRoleBodyguard">Bodyguard</string>
-  <string name="ExtensionRoleBodyguardIntroBlurb">Chron swoj cel za wszelka cene!</string>
+  <string name="ExtensionRoleBodyguardIntroBlurb">Chroń swój cel i eliminuj każdego napastnika.</string>
   <string name="ExtensionRoleBodyguardTabDescription">Daj graczowi tarcze przed atakami. Gdy zostanie zaatakowany, teleportujesz sie do niego i eliminujesz zagrozenie.</string>
-  <string name="ExtensionRoleBodyguardWikiDescription">Daje tarcze graczowi. Jesli ktos sprobuje zabic chronionego gracza, mozesz sie do niego teleportowac i wyeliminowac napastnika. Mozesz zabic tylko napastnika, a jesli to zrobisz, giniesz razem z nim.</string>
+  <string name="ExtensionRoleBodyguardWikiDescription">Daje tarcze graczowi. Jesli ktos sprobuje zabic chronionego gracza, &lt;color=#003380&gt;Bodyguard&lt;/color&gt; moze sie do niego teleportowac i wyeliminowac napastnika. Mozesz zabic tylko napastnika, a jesli to zrobisz, giniesz razem z nim.</string>
   <string name="ExtensionRoleBodyguardGuard">Guard</string>
   <string name="ExtensionRoleBodyguardGuardWikiDescription">Daj komus tarcze. Jesli ktos go zaatakuje, bedziesz mogl sie do niego teleportowac.</string>
   <string name="ExtensionRoleBodyguardBacklash">Backlash</string>
@@ -820,7 +822,7 @@
 
   <!-- Sage Role -->
   <string name="ExtensionRoleSage">Sage</string>
-  <string name="ExtensionRoleSageIntroBlurb">Porownaj dwoch graczy, aby ustalic, czy sa przyjaciolmi czy wrogami.</string>
+  <string name="ExtensionRoleSageIntroBlurb">Wykorzystaj swoją intuicję, by odkryć, kto ze sobą współpracuje.</string>
   <string name="ExtensionRoleSageTabDescription">Uzyj Gaze i Intuit na dwoch roznych graczach, a potem dowiedz sie, czy sa sojusznikami czy wrogami.</string>
   <string name="ExtensionRoleSageWikiDescription">Jestes bardzo madra osoba, ktora potrafi powiedziec, czy dwie osoby wygrywaja lub przegrywaja razem.</string>
   <string name="ExtensionRoleSageGaze">Gaze</string>
@@ -917,7 +919,7 @@
 
   <!-- Kamikaze Role -->
   <string name="ExtensionRoleKamikaze">Kamikaze</string>
-  <string name="ExtensionRoleKamikazeIntroBlurb">Zgin z hukiem i zabierz wszystkich w poblizu ze soba.</string>
+  <string name="ExtensionRoleKamikazeIntroBlurb">Poświęć się w potężnej eksplozji i zabierz wrogów ze sobą do grobu!</string>
   <string name="ExtensionRoleKamikazeTabDescription">Poswiec sie w eksplozji, aby zabic wszystkich pobliskich graczy.</string>
   <string name="ExtensionRoleKamikazeWikiDescription">Kamikaze to rola Impostora, ktory moze zdetonowac samego siebie, zabijajac wszystkich graczy w promieniu wybuchu. Kamikaze ginie w tym procesie. Uzywaj zwyklego przycisku zabojstwa normalnie, a przycisk samobojstwa aktywuj we wlasciwym momencie, aby wyeliminowac jak najwiecej wrogow.</string>
   <string name="ExtensionRoleKamikazeSuicide">Samobojstwo</string>
@@ -947,11 +949,11 @@
 
   <!-- TOUMCE Wiki Terms - Symbols -->
   <string name="TOUMCETermsSymbolsTitle">Symbole TOUMCE</string>
-  <string name="TOUMCETermsSymbolsInfo">Glosariusz symboli TOUMCE • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Gracz kanonizowany przez Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Gracz ustawiony jako pułapka przez Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;✶&lt;/b&gt;&lt;/color&gt; - Gracz wpisany do Death Note • &lt;color=#77B962&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Gracz chroniony przez Bodyguarda • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Gracz otruty przez Poisonera • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Klient Lawyera • &lt;color=#C0C0C0&gt;&lt;b&gt;¤&lt;/b&gt;&lt;/color&gt; - Gracz przeklęty przez Witch</string>
+  <string name="TOUMCETermsSymbolsInfo">Glosariusz symboli TOUMCE • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Gracz kanonizowany przez Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Gracz ustawiony jako pułapka przez Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Gracz wpisany do Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Gracz chroniony przez Bodyguarda • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Gracz otruty przez Poisonera • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Klient Lawyera • &lt;color=#C0C0C0&gt;&lt;b&gt;¤&lt;/b&gt;&lt;/color&gt; - Gracz przeklęty przez Witch</string>
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">Błyski tarczy</string>
-  <string name="TOUMCETermsShieldFlashesInfo">Gdy zabójstwo zostanie zablokowane przez tarczę, zabójca widzi kolorowy błysk wskazujący rolę: • &lt;color=#006600&gt;&lt;b&gt;Ciemnozielony&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Fioletowy&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyjan/Turkusowy&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Srebrnoniebieski&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Jasnoniebieski&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Malwa&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#77B962&gt;&lt;b&gt;Zielony&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (ochrona na meetingu)</string>
+  <string name="TOUMCETermsShieldFlashesInfo">Gdy zabójstwo zostanie zablokowane przez tarczę, zabójca widzi kolorowy błysk wskazujący rolę: • &lt;color=#006600&gt;&lt;b&gt;Ciemnozielony&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Fioletowy&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyjan/Turkusowy&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Srebrnoniebieski&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Jasnoniebieski&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Malwa&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#77B962&gt;&lt;b&gt;Zielony&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (ochrona na spotkaniu)</string>
 
   <!-- TOUMCE Wiki Terms - Draft Mode -->
   <string name="TOUMCETermsDraftModeTitle">Tryb Draftu</string>

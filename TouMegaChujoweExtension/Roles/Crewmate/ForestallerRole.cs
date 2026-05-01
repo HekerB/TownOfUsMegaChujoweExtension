@@ -15,9 +15,9 @@ namespace TouMegaChujoweExtension.Roles.Crewmate;
 /// Forestaller role: when they complete all tasks, sabotages are disabled (while they are alive).
 /// They are revealed in meetings after completing all tasks.
 /// </summary>
-public sealed class ForestallerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IGuessable
+public sealed class ForestallerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IGuessable, IUnguessable
 {
-    public bool CanBeGuessed => !Modules.ForestallerSystem.IsForestallerRevealed(Player.PlayerId);
+    public bool CanBeGuessed => Player == null || !Modules.ForestallerSystem.IsForestallerRevealed(Player.PlayerId);
     public DoomableType DoomHintType => DoomableType.Insight;
     public string LocaleKey => "Forestaller";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Forestaller");

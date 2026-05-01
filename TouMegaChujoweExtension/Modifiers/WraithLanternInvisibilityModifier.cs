@@ -6,6 +6,7 @@ using TownOfUs.Options;
 using TownOfUs.Patches;
 using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
+using TownOfUs.Assets;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -73,6 +74,11 @@ public sealed class WraithLanternInvisibilityModifier : ConcealedModifier, IVisu
     {
         Player.ResetAppearance();
         Player.cosmetics.ToggleNameVisible(true);
+
+        if (PlayerControl.LocalPlayer != null)
+        {
+            TouAudio.PlaySound(TouAudio.SwooperDeactivateSound);
+        }
 
         if (HudManagerPatches.CamouflageCommsEnabled)
         {
