@@ -20,14 +20,19 @@ public sealed class SerialKillerManiacModifier(float timerDuration, float cooldo
     private GameObject? maniacUI;
     private float soundTimer = 1f;
     private bool hasMadeFirstKill;
-
+    private float _timerDuration = timerDuration;
     public override string ModifierName => TouLocale.Get("ExtensionModifierSerialKillerManiac", "Maniac");
-    public override float Duration => timerDuration;
+    public override float Duration => _timerDuration;
     public override bool AutoStart => false;
     public override bool HideOnUi => true;
     public override bool RemoveOnComplete => false;
 
     public float CooldownDuration => cooldownDuration;
+
+    public void UpdateDuration(float newDuration)
+    {
+        _timerDuration = newDuration;
+    }
 
     public override string GetDescription()
     {

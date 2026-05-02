@@ -225,6 +225,9 @@
   <string name="ExtensionOptionSerialKillerManiacMode">Maniac Mode</string>
   <string name="ExtensionOptionSerialKillerManiacTimer">Maniac Timer</string>
   <string name="ExtensionOptionSerialKillerManiacCooldown">Kill Cooldown</string>
+  <string name="ExtensionOptionSerialKillerManiacTimerReductionEnabled">Progressive Maniac (Scatter) Timer Reduction</string>
+  <string name="ExtensionOptionSerialKillerManiacTimerReductionPerKill">Maniac Timer Reduction Per Kill</string>
+  <string name="ExtensionOptionSerialKillerManiacTimerLimit">Maniac Timer Limit</string>
   
   <!-- Serial Killer Maniac Modifier -->
   <string name="ExtensionModifierSerialKillerManiac">Maniac</string>
@@ -405,13 +408,13 @@
   <string name="ExtensionRoleHacker">Hacker</string>
   <string name="ExtensionRoleHackerIntroBlurb">Download system information and jam comms.</string>
   <string name="ExtensionRoleHackerTabDescription">Download and jam equipment, kill for extra jam charges.</string>
-  <string name="ExtensionRoleHackerWikiDescription">The Hacker is an Impostor Support role that can download information from nearby equipment to charge a portable device. Once you start downloading, you're locked into that equipment type until the next round. Jam disrupts information systems (Comms, Admin, Cams, etc.) and blocks all players from reporting bodies or calling emergency meetings, but the Hacker can still use their portable device during this time.</string>
+  <string name="ExtensionRoleHackerWikiDescription">The Hacker is an Impostor Support role that can download information from nearby equipment to charge a portable device. Once you start downloading, you're locked into that equipment type until the next round. Jam disrupts information systems (Admin, Cams, etc.) and blocks all players from reporting bodies or calling emergency meetings. The Hacker is the only one who can still use their portable device during Jam or Communications sabotage.</string>
   <string name="ExtensionRoleHackerDownload">Download</string>
   <string name="ExtensionRoleHackerDownloadWikiDescription">Download data near a console (Admin, Cams, etc.) to charge your battery. You can use the device anywhere afterwards!</string>
   <string name="ExtensionRoleHackerDevice">Device</string>
   <string name="ExtensionRoleHackerDeviceWikiDescription">Use the downloaded system anywhere, consuming battery over time.</string>
   <string name="ExtensionRoleHackerJam">Jam</string>
-  <string name="ExtensionRoleHackerJamWikiDescription">Turn off information systems for a short time (like sabotaging comms). During Jam, Emergency Meetings and Body Reports are disabled for all players except the Hacker's portable device.</string>
+  <string name="ExtensionRoleHackerJamWikiDescription">Turn off information systems for a short time (like sabotaging comms). During Jam, Emergency Meetings and Body Reports are disabled for all players, but the Hacker can still use their portable device during this time.</string>
   <string name="ExtensionRoleHackerJamActivated">SYSTEM JAMMED</string>
 
   <!-- Hacker Options -->
@@ -425,6 +428,10 @@
   <string name="ExtensionOptionHackerJamMaxCharges">Max Jam Charges</string>
   <string name="ExtensionOptionHackerJamCooldown">Jam Cooldown</string>
   <string name="ExtensionOptionHackerJamDuration">Jam Duration</string>
+
+  <!-- Injector Options -->
+  <string name="ExtensionOptionInjectorDoubleInjectionMultiplier">Double Injection Multiplier</string>
+  <string name="ExtensionRoleBodyguardShieldAttacked">Your shield has been attacked! You have a moment for Backlash!</string>
   
   <!-- RC-XD Role -->
   <string name="ExtensionRoleRcXd">RC-XD</string>
@@ -761,9 +768,9 @@
   
   <!-- Bodyguard Role -->
   <string name="ExtensionRoleBodyguard">Bodyguard</string>
-  <string name="ExtensionRoleBodyguardIntroBlurb">Protect your target at all costs!</string>
+  <string name="ExtensionRoleBodyguardIntroBlurb">Protect your target! Your shield now reacts to all kill attempts.</string>
   <string name="ExtensionRoleBodyguardTabDescription">Shield a player from attacks. When they are attacked, teleport to them and eliminate the threat.</string>
-  <string name="ExtensionRoleBodyguardWikiDescription">Gives a shield to a player. If someone tries to kill the protected player, the &lt;color=#003380&gt;Bodyguard&lt;/color&gt; can teleport to them and eliminate the attacker. You can only kill the attacker, and if you do, you die along with them.</string>
+  <string name="ExtensionRoleBodyguardWikiDescription">Gives a shield to a player. The shield reacts to &lt;b&gt;all&lt;/b&gt; kill attempts (including Crewmate Killing roles like Sheriff). If someone tries to kill the protected player, the &lt;color=#003380&gt;Bodyguard&lt;/color&gt; can teleport to them and eliminate the attacker. You can only kill the attacker, and if you do, you die along with them (Sacrifice is absolute and ignores all shields).</string>
   <string name="ExtensionRoleBodyguardGuard">Guard</string>
   <string name="ExtensionRoleBodyguardGuardWikiDescription">Give someone a shield. If someone attacks them, you will be able to teleport to them.</string>
   <string name="ExtensionRoleBodyguardBacklash">Backlash</string>
@@ -780,7 +787,6 @@
   <string name="ExtensionOptionBodyguardKillWindow">Kill Time Window</string>
   <string name="ExtensionOptionBodyguardDiesAfterKill">Dies After Kill</string>
   <string name="ExtensionOptionBodyguardOnlyTargetAttacker">Can Only Kill Attacker</string>
-  <string name="ExtensionOptionBodyguardCanKillCrewKilling">React To Crew Killing</string>
   <string name="ExtensionOptionBodyguardShowShieldToTarget">Show Shield To</string>
   <string name="ExtensionOptionBodyguardShieldEnumBodyguard">Bodyguard</string>
   <string name="ExtensionOptionBodyguardShieldEnumTarget">Target</string>

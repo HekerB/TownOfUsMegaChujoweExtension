@@ -57,67 +57,9 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IKillBu
         var player = PlayerControl.LocalPlayer;
         if (player == null) return;
 
-        // Simulate murder event to check for shields
-        var beforeMurderEvent = new BeforeMurderEvent(player, _target, MeetingCheck.OutsideMeeting);
-        MiraEventManager.InvokeEvent(beforeMurderEvent);
-        
-        if (beforeMurderEvent.IsCancelled)
+        // Use centralized shield interaction handler
+        if (ShieldUtils.HandleButtonShieldClick(this, _target))
         {
-            var shieldType = _target.GetShieldType();
-
-            // Flash effect for the attacker
-            if (shieldType != ShieldType.None)
-            {
-                ShieldUtils.TriggerShieldFlash(PlayerControl.LocalPlayer, shieldType);
-
-                if (shieldType == ShieldType.Bodyguard)
-                {
-                    var bgMod = _target.GetModifiers<TouMegaChujoweExtension.Modifiers.BodyguardShieldModifier>().FirstOrDefault();
-                    if (bgMod != null && bgMod.Bodyguard != null)
-                    {
-                        TouMegaChujoweExtension.Roles.Crewmate.BodyguardRole.RpcBodyguardShieldAttacked(bgMod.Bodyguard, PlayerControl.LocalPlayer, _target);
-                    }
-                }
-                else if (shieldType == ShieldType.Medic)
-                {
-                    var medicMod = _target.GetModifiers<TownOfUs.Modifiers.Crewmate.MedicShieldModifier>().FirstOrDefault();
-                    if (medicMod != null)
-                    {
-                        TownOfUs.Roles.Crewmate.MedicRole.RpcMedicShieldAttacked(medicMod.Medic, PlayerControl.LocalPlayer, _target);
-                    }
-                }
-            }
-
-            var saveCd = OptionGroupSingleton<GeneralOptions>.Instance.TempSaveCdReset;
-            float duration = saveCd;
-            switch (shieldType)
-            {
-                case ShieldType.Mirrorcaster:
-                    duration = PlayerControl.LocalPlayer.GetKillCooldown();
-                    break;
-                case ShieldType.Bodyguard:
-                    duration = 10f;
-                    break;
-                case ShieldType.Medic:
-                    duration = 10f;
-                    break;
-                case ShieldType.Warden:
-                    duration = 1f;
-                    break;
-                case ShieldType.Cleric:
-                    duration = 5f;
-                    break;
-                case ShieldType.Fairy:
-                    duration = 10f;
-                    break;
-                case ShieldType.Mercenary:
-                    duration = 10f;
-                    break;
-                default:
-                    duration = saveCd;
-                    break;
-            }
-            Timer = duration;
             return;
         }
 
@@ -139,7 +81,10 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IKillBu
         {
             player.RpcCustomMurder(_target);
             role.SuccessfulStakes++;
+            
+            // Increment to cancel current use and refresh UI
             UsesLeft++;
+            SetUses(UsesLeft);
         }
         else
         {

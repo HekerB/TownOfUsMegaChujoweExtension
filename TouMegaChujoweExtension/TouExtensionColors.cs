@@ -46,7 +46,7 @@ public static class TouExtensionColors
         public static Color Mirrorcaster => new Color32(144, 162, 195, 255); // Silver Blue
         public static Color Fairy => new Color32(102, 170, 243, 255);   // Light Blue
         public static Color Mercenary => new Color32(140, 102, 153, 255); // Mauve
-        public static Color Bodyguard => new Color32(0, 51, 128, 255); // Navy Blue
+        public static Color Bodyguard => new Color32(0, 35, 255, 255); // Vibrant Royal Blue (Distinct from Mirror)
         public static Color Oracle => new Color32(191, 0, 191, 255);    // Magenta
     }
 

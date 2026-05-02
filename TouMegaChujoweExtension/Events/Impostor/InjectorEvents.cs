@@ -26,6 +26,7 @@ namespace TouMegaChujoweExtension.Events.Impostor;
 public static class InjectorEvents
 {
     private static readonly Dictionary<byte, List<PendingInjection>> PendingInjections = new();
+    private static readonly Dictionary<byte, int> AppliedInjectionCounts = new();
 
     public static void ScheduleInjection(PlayerControl injector, PlayerControl target)
     {
@@ -92,6 +93,18 @@ public static class InjectorEvents
 
         var options = OptionGroupSingleton<InjectorOptions>.Instance;
         var duration = options.EffectDuration;
+
+        if (!AppliedInjectionCounts.ContainsKey(target.PlayerId))
+        {
+            AppliedInjectionCounts[target.PlayerId] = 0;
+        }
+        AppliedInjectionCounts[target.PlayerId]++;
+
+        if (AppliedInjectionCounts[target.PlayerId] > 1)
+        {
+            duration *= options.DoubleInjectionMultiplier;
+        }
+
         var durationType = options.EffectDurationType.Value;
 
         var effects = new List<(float Weight, Func<BaseModifier> CreateModifier, string NotificationKey)>();
@@ -258,6 +271,12 @@ public static class InjectorEvents
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
+        if (@event.TriggeredByIntro)
+        {
+            AppliedInjectionCounts.Clear();
+            PendingInjections.Clear();
+        }
+
         if (!@event.TriggeredByIntro)
         {
             return;

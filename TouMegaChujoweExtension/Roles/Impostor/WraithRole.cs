@@ -116,7 +116,7 @@ public sealed class WraithRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
             wraith.AddModifier<WraithLanternInvisibilityModifier>();
         }
 
-        if (PlayerControl.LocalPlayer != null)
+        if (wraith.AmOwner)
         {
             TouAudio.PlaySound(TouAudio.SwooperActivateSound);
         }

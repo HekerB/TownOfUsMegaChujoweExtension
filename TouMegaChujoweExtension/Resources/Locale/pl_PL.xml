@@ -225,6 +225,9 @@
   <string name="ExtensionOptionSerialKillerManiacMode">Tryb Maniac</string>
   <string name="ExtensionOptionSerialKillerManiacTimer">Licznik Maniac</string>
   <string name="ExtensionOptionSerialKillerManiacCooldown">Cooldown zabojstwa</string>
+  <string name="ExtensionOptionSerialKillerManiacTimerReductionEnabled">Progresywna redukcja Licznika Maniac (Scatter)</string>
+  <string name="ExtensionOptionSerialKillerManiacTimerReductionPerKill">Zmniejszenie czasu Maniac za kazde zabojstwo</string>
+  <string name="ExtensionOptionSerialKillerManiacTimerLimit">Limit Licznika Maniac (Najkrotszy)</string>
   
   <!-- Serial Killer Modifiers -->
   <string name="ExtensionModifierSerialKillerManiac">Maniac</string>
@@ -406,13 +409,13 @@
   <string name="ExtensionRoleHacker">Hacker</string>
   <string name="ExtensionRoleHackerIntroBlurb">Hakuj dane i paraliżuj systemy komunikacji.</string>
   <string name="ExtensionRoleHackerTabDescription">Pobieraj i zaklocaj urzadzenia, zabijaj, aby dostac dodatkowe ladunki Jam.</string>
-  <string name="ExtensionRoleHackerWikiDescription">Hacker to rola Impostor Support, która może pobierać informacje z pobliskich urządzeń, aby naładować przenośne urządzenie. Jam zakłóca systemy informacyjne (Comms, Admin, Kamery itp.) oraz blokuje wszystkim graczom możliwość zgłaszania ciał i zwoływania spotkań, jednak Hacker może nadal korzystać ze swojego urządzenia w tym czasie.</string>
+  <string name="ExtensionRoleHackerWikiDescription">Hacker to rola Impostor Support, która może pobierać informacje z pobliskich urządzeń, aby naładować przenośne urządzenie. Umiejętność Jam zakłóca systemy informacyjne (Admin, Kamery itp.) oraz blokuje wszystkim graczom możliwość zgłaszania ciał i zwoływania spotkań awaryjnych. Hacker jako jedyny może nadal korzystać ze swojego urządzenia przenośnego podczas trwania Jamu oraz sabotażu Komunikacji.</string>
   <string name="ExtensionRoleHackerDownload">Pobierz</string>
   <string name="ExtensionRoleHackerDownloadWikiDescription">Pobieraj dane przy konsoli (Admin, Kamery, itp.), aby naladowac baterie. Urzadzenia mozesz uzywac potem w dowolnym miejscu!</string>
   <string name="ExtensionRoleHackerDevice">Urzadzenie</string>
   <string name="ExtensionRoleHackerDeviceWikiDescription">Uzywaj pobranego systemu gdziekolwiek, zuzywajac baterie z czasem.</string>
   <string name="ExtensionRoleHackerJam">Jam</string>
-  <string name="ExtensionRoleHackerJamWikiDescription">Wyłącz systemy informacyjne na chwilę (jak awaria comms). Podczas działania Jamu, spotkania awaryjne oraz zgłaszanie ciał są zablokowane dla wszystkich (Hacker może jednak używać swojego urządzenia).</string>
+  <string name="ExtensionRoleHackerJamWikiDescription">Wyłącz systemy informacyjne na chwilę (jak awaria komunikacji). Podczas działania Jamu, spotkania awaryjne oraz zgłaszanie ciał są zablokowane dla wszystkich. Hacker może jednak nadal używać swojego urządzenia przenośnego w tym czasie.</string>
   <string name="ExtensionRoleHackerJamActivated">SYSTEM ZAKŁÓCONY</string>
 
   <!-- Hacker Options -->
@@ -426,6 +429,9 @@
   <string name="ExtensionOptionHackerJamMaxCharges">Maksymalna liczba ladunkow Jam</string>
   <string name="ExtensionOptionHackerJamCooldown">Cooldown Jam</string>
   <string name="ExtensionOptionHackerJamDuration">Czas trwania Jam</string>
+  
+  <!-- Injector Options -->
+  <string name="ExtensionOptionInjectorDoubleInjectionMultiplier">Mnożnik podwójnego wstrzyknięcia</string>
   
   <!-- RC-XD Role -->
   <string name="ExtensionRoleRcXd">RC-XD</string>
@@ -763,9 +769,9 @@
   
   <!-- Bodyguard Role -->
   <string name="ExtensionRoleBodyguard">Bodyguard</string>
-  <string name="ExtensionRoleBodyguardIntroBlurb">Chroń swój cel i eliminuj każdego napastnika.</string>
+  <string name="ExtensionRoleBodyguardIntroBlurb">Chroń swój cel! Twoja tarcza reaguje teraz na każdą próbę zabójstwa.</string>
   <string name="ExtensionRoleBodyguardTabDescription">Daj graczowi tarcze przed atakami. Gdy zostanie zaatakowany, teleportujesz sie do niego i eliminujesz zagrozenie.</string>
-  <string name="ExtensionRoleBodyguardWikiDescription">Daje tarcze graczowi. Jesli ktos sprobuje zabic chronionego gracza, &lt;color=#003380&gt;Bodyguard&lt;/color&gt; moze sie do niego teleportowac i wyeliminowac napastnika. Mozesz zabic tylko napastnika, a jesli to zrobisz, giniesz razem z nim.</string>
+  <string name="ExtensionRoleBodyguardWikiDescription">Daje tarczę graczowi. Tarcza reaguje na &lt;b&gt;każdą&lt;/b&gt; próbę zabójstwa (w tym role Crewmate Killing, jak Sheriff). Jeśli ktoś spróbuje zabić chronionego gracza, &lt;color=#003380&gt;Bodyguard&lt;/color&gt; może się do niego teleportować i wyeliminować napastnika. Możesz zabić tylko napastnika, a jeśli to zrobisz, giniesz razem z nim (Poświęcenie jest absolutne i ignoruje wszelkie tarcze).</string>
   <string name="ExtensionRoleBodyguardGuard">Guard</string>
   <string name="ExtensionRoleBodyguardGuardWikiDescription">Daj komus tarcze. Jesli ktos go zaatakuje, bedziesz mogl sie do niego teleportowac.</string>
   <string name="ExtensionRoleBodyguardBacklash">Backlash</string>
@@ -782,7 +788,6 @@
   <string name="ExtensionOptionBodyguardKillWindow">Czas na Zabojstwo</string>
   <string name="ExtensionOptionBodyguardDiesAfterKill">Umiera po Zabojstwie</string>
   <string name="ExtensionOptionBodyguardOnlyTargetAttacker">Moze Zabic tylko Napastnika</string>
-  <string name="ExtensionOptionBodyguardCanKillCrewKilling">Reaguje na Crew Killing</string>
   <string name="ExtensionOptionBodyguardShowShieldToTarget">Pokaz Tarcze Celowi</string>
   <string name="ExtensionOptionBodyguardShieldEnumBodyguard">Bodyguard</string>
   <string name="ExtensionOptionBodyguardShieldEnumTarget">Cel</string>
@@ -790,6 +795,7 @@
   <string name="ExtensionOptionBodyguardShieldEnumEveryone">Kazdy</string>
   <string name="ExtensionOptionBodyguardShowBacklashArrow">Pokaz Strzalek Backlash</string>
   <string name="ExtensionOptionBodyguardGreenNameOnAttacker">Zielone Imie Na Osobie Atakujacej</string>
+  <string name="ExtensionRoleBodyguardShieldAttacked">Twoja tarcza została zaatakowana! Masz chwilę na Backlash!</string>
 
   
   <!-- Bodyguard Death Messages -->

@@ -5,6 +5,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
@@ -12,6 +13,7 @@ using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Networking;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
+using TouMegaChujoweExtension.Utilities;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
@@ -231,7 +233,14 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (Player.AmOwner)
         {
-            Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Bodyguard));
+            ShieldUtils.TriggerShieldFlash(Player, ShieldType.Bodyguard);
+            
+            var notif = Helpers.CreateAndShowNotification(
+                TouLocale.Get("ExtensionRoleBodyguardShieldAttacked"),
+                TouExtensionColors.Bodyguard,
+                new Vector3(0f, 1f, -20f),
+                spr: TouExtensionIcons.BodyguardRoleIcon.LoadAsset());
+            notif.AdjustNotification();
         }
     }
 
@@ -305,11 +314,16 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         if (bodyguard.Data.Role is not BodyguardRole role)
         {
-            // ("RpcBodyguardShieldAttacked - Invalid bodyguard");
             return;
         }
 
         role.OnGuardedAttacked(attacker);
+        
+        // Notify attacker too if they are the local player
+        if (attacker != null && attacker.AmOwner)
+        {
+            ShieldUtils.TriggerShieldFlash(attacker, ShieldType.Bodyguard);
+        }
     }
 
     [MethodRpc((uint)ExtensionRpc.BodyguardBacklash)]
@@ -360,7 +374,10 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (OptionGroupSingleton<BodyguardOptions>.Instance.DiesAfterKill && !bodyguard.HasDied())
         {
+            // Bodyguard sacrifice is absolute - no shield (Warden, Medic, etc.) can prevent it
             bodyguard.RpcSpecialMurder(bodyguard,
+                isIndirect: true,
+                ignoreShield: true,
                 createDeadBody: true,
                 teleportMurderer: false,
                 showKillAnim: true,

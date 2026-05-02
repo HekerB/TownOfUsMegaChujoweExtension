@@ -27,9 +27,6 @@ public sealed class BodyguardOptions : AbstractOptionGroup<BodyguardRole>
     [ModdedToggleOption("ExtensionOptionBodyguardShowBacklashArrow")]
     public bool ShowBacklashArrow { get; set; } = true;
 
-    [ModdedToggleOption("ExtensionOptionBodyguardCanKillCrewKilling")]
-    public bool CanKillCrewKilling { get; set; } = false;
-
     [ModdedToggleOption("ExtensionOptionBodyguardGreenNameOnAttacker")]
     public bool GreenNameOnAttacker { get; set; } = true;
 

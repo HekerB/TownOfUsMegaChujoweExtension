@@ -179,6 +179,32 @@
         "\n- <b>Evoker</b> - Darkened base color to a more atmospheric <b>Cobalt Blue</b>.",
         "\n- <b>Injector</b> - Individual effect notifications are now only visible to the Injector."
       ]
+    },
+    {
+      "Date": "2026-05-02T01:00:00Z",
+      "Number": "200006",
+      "ShortTitle": "TOUMCE v1.0.5",
+      "SubTitle": "Stability & Shield Overhaul",
+      "Title": "TOU Mega Chujowe Extension v1.0.5",
+      "Text": [
+        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
+        "\n\n\r<b>Version 1.0.5 - Stability & Role Reworks</b>",
+        "\n\n\r<size=105%>Shield System & Bodyguard Fixes:</size>",
+        "\n- <b>DEFINITIVE Shield Fix</b> - Fixed a critical issue where Sheriff and Officer could hit protected players without triggering any notifications or flashes. This was caused by hardcoded shield checks in the base Town of Us mod that we now successfully intercept.",
+        "\n- <b>Centralized Shield Logic</b> - Moved all shield hit processing (flashes, RPCs, cooldowns) to a unified <b>ShieldUtils</b> system, ensuring 100% consistency across all killing roles.",
+        "\n- <b>Mirror-Style Flashes</b> - Reworked the screen flash effect to match the official <b>Mirrorcaster</b> logic. It now uses a dedicated renderer for a cleaner, high-quality visual response.",
+        "\n- <b>Bodyguard Retaliation</b> - Fixed the retaliation window: Bodyguards now reliably receive alerts when their target is hit by Sheriff, Officer, or Vampire Hunter.",
+        "\n\n\r<size=105%>Role & Logic Reworks:</size>",
+        "\n- <b>Serial Killer</b> - Added progressive <b>Maniac Timer Reduction</b> option. The Maniac timer now decreases after each kill, with a configurable floor (limit).",
+        "\n- <b>Vampire Hunter</b> - Killing a Vampire now <b>restores 1 stake charge</b> instead of just not consuming one, preventing bugs with charge UI synchronization.",
+        "\n- <b>Wraith Swoop</b> - Swoop sound effect is now <b>local only</b> (only the Wraith hears it), preventing everyone on the map from knowing the Wraith's location.",
+        "\n- <b>Poisoner</b> - Removed the annoying 'banger' screen shake effect when poisoning players.",
+        "\n\n\r<size=105%>Stability & Fixes:</size>",
+        "\n- <b>Imitator</b> - Fixed UI buttons disappearing when players died mid-meeting.",
+        "\n- <b>Pope</b> - Synchronized win priority during Judgement to prevent desync wins.",
+        "\n- <b>Forestaller</b> - Fixed visibility in guesser menus based on task completion status.",
+        "\n- <b>General</b> - Optimized internal RPC handling and updated intro sounds for improved performance."
+      ]
     }
   ]
 }

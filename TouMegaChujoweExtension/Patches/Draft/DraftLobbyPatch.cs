@@ -28,6 +28,7 @@ public static class DraftLobbyPatch
     private static TextMeshPro _timerText;
     private static TextMeshPro _draftCompleteText;
     private static TextMeshPro _draftTitleText;
+    private static float _titleRandomOffset;
     private static bool _isTitleAnimRunning;
     private static Sprite _cachedRoundedSprite;
     private static Sprite _cachedRandomIcon;
@@ -1062,8 +1063,9 @@ public static class DraftLobbyPatch
         var titleText = CreateTMP("DraftTitle", _draftContainer.transform,
             new Vector3(2.23f, 2.15f, -510f), 1.8f, TextAlignmentOptions.Center, true);
         
-        bool startWithHeker = ((int)(Time.time / 30f) % 2) == 0;
-        titleText.text = $"<size=130%><b>DRAFT MODE</b></size>\nBY {(startWithHeker ? "HEKER" : "MARZEC")}";
+        _titleRandomOffset = UnityEngine.Random.Range(0f, 1000f);
+        bool startWithHeker = ((int)((Time.time + _titleRandomOffset) / 20f) % 2) == 0;
+        titleText.text = $"<size=130%><b>DRAFT MODE</b></size>\nBY {(startWithHeker ? "HEKER" : "MARZECOOO")}";
         _draftTitleText = titleText;
         if (!_isTitleAnimRunning) Coroutines.Start(CoAnimateDraftTitle());
 
@@ -2468,15 +2470,15 @@ public static class DraftLobbyPatch
         if (_isTitleAnimRunning) yield break;
         _isTitleAnimRunning = true;
 
-        float interval = 30f;
+        float interval = 20f;
         while (_draftInProgress || _draftCompletedWaitingForStart)
         {
             if (_draftTitleText == null) yield break;
 
             // Check what name SHOULD be displayed now
-            bool isHekerTime = ((int)(Time.time / interval) % 2) == 0;
+            bool isHekerTime = ((int)((Time.time + _titleRandomOffset) / interval) % 2) == 0;
             string currentText = _draftTitleText.text;
-            string targetAuthor = isHekerTime ? "HEKER" : "MARZEC";
+            string targetAuthor = isHekerTime ? "HEKER" : "MARZECOOO";
 
             // If the current name doesn't match the desired one, trigger transition
             if (!currentText.Contains(targetAuthor))

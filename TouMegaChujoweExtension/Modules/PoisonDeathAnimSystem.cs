@@ -5,6 +5,7 @@ using PowerTools;
 using Reactor.Utilities;
 using UnityEngine;
 using TownOfUs.Utilities;
+using MiraAPI.GameOptions;
 
 namespace TouMegaChujoweExtension.Modules;
 

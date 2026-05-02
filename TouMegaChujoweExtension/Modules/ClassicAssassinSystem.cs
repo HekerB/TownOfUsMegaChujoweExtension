@@ -1160,10 +1160,16 @@ public static class ClassicAssassinSystem
                 // Check all buttons currently managed by this menu
                 foreach (var targetId in menu.Buttons.Keys.ToList())
                 {
-                    var player = MiscUtils.PlayerById(targetId);
-                    if (player == null || player.Data.IsDead || player.Data.Disconnected)
+                    var voteArea = TownOfUs.Modules.MeetingMenu.Instances.Count > 0 ? MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == targetId) : null;
+                    if (voteArea == null)
                     {
-                        // Force hide the button in the base mod's UI
+                        menu.HideSingle(targetId);
+                        continue;
+                    }
+
+                    // Evaluate the actual exemption rules of the menu
+                    if (menu.IsExempt != null && menu.IsExempt(voteArea))
+                    {
                         menu.HideSingle(targetId);
                     }
                 }

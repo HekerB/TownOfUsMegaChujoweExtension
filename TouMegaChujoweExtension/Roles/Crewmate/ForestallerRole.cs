@@ -51,6 +51,6 @@ public sealed class ForestallerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         Modules.ForestallerSystem.TryActivateIfCompletedAllTasks(Player);
     }
 
-    public bool IsGuessable => Player != null && !Modules.ForestallerSystem.IsForestallerRevealed(Player.PlayerId);
+    public bool IsGuessable => Player == null || !Modules.ForestallerSystem.IsForestallerRevealed(Player.PlayerId);
     public RoleBehaviour AppearAs => this;
 }

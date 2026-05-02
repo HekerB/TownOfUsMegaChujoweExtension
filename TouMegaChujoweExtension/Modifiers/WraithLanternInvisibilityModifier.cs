@@ -75,7 +75,7 @@ public sealed class WraithLanternInvisibilityModifier : ConcealedModifier, IVisu
         Player.ResetAppearance();
         Player.cosmetics.ToggleNameVisible(true);
 
-        if (PlayerControl.LocalPlayer != null)
+        if (Player.AmOwner)
         {
             TouAudio.PlaySound(TouAudio.SwooperDeactivateSound);
         }

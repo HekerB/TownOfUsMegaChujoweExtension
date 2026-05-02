@@ -3,7 +3,6 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Modifiers;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Roles.Crewmate;
-using TouMegaChujoweExtension.Options.Roles.Crewmate;
 using TouMegaChujoweExtension.Utilities;
 using TownOfUs.Modifiers;
 using TownOfUs.Roles;
@@ -20,11 +19,15 @@ using TownOfUs.Buttons;
 using Reactor.Utilities;
 using HarmonyLib;
 using TouMegaChujoweExtension.Buttons.Neutral;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Events.Universal;
 
 public static class ShieldEvents
 {
+    private static float _lastShieldTriggerTime = 0f;
+    private static byte _lastShieldTargetId = 255;
+
     [RegisterEvent(Priority.Last)]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
@@ -36,16 +39,14 @@ public static class ShieldEvents
         var shieldType = target.GetShieldType();
         if (shieldType == ShieldType.None) return;
 
-        // Check for Bodyguard specific option "Can Kill Crew Killing"
-        if (shieldType == ShieldType.Bodyguard && source.Data.Role.GetRoleAlignment() == RoleAlignment.CrewmateKilling)
+        // Anti-multi-trigger guard
+        if (Time.time - _lastShieldTriggerTime < 0.2f && _lastShieldTargetId == target.PlayerId)
         {
-            var options = OptionGroupSingleton<BodyguardOptions>.Instance;
-            if (!options.CanKillCrewKilling)
-            {
-                // If option is OFF, the shield DOES NOT protect against Crewmate Killing roles.
-                return;
-            }
+            @event.Cancel(); // Still cancel to be safe
+            return;
         }
+        _lastShieldTriggerTime = Time.time;
+        _lastShieldTargetId = target.PlayerId;
 
         Logger<TouMegaChujoweExtensionPlugin>.Info($"[ShieldEvents] Murder from {source.Data.PlayerName} blocked by {shieldType} on {target.Data.PlayerName}");
 

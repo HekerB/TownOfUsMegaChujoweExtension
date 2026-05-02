@@ -6,16 +6,15 @@ using TownOfUs.Utilities;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
-using MiraAPI.Roles;
 using TouMegaChujoweExtension.Utilities;
-using UnityEngine;
-using TownOfUs.Options;
 using TouMegaChujoweExtension.Roles.Crewmate;
 using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Options.Roles.Crewmate;
+using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Modifiers.Crewmate;
 using System.Linq;
+using UnityEngine;
+using Reactor.Utilities;
 
 namespace TouMegaChujoweExtension.Patches;
 
@@ -26,110 +25,50 @@ public static class CustomKillButtonShieldPatch
     [HarmonyPrefix]
     public static bool TownOfUsClickHandlerPrefix(TownOfUsButton __instance)
     {
-        // Try to get target from button instance via reflection if it's not a known target button
-        if (__instance is IAftermathablePlayerButton playerButton) {
-            return HandleShieldClick(__instance, playerButton.Target);
-        }
-        
-        // Some buttons might have a private or protected target field/property
-        var bindingFlags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
-        var targetValue = (__instance.GetType().GetProperty("Target", bindingFlags)?.GetValue(__instance) ?? 
-                          __instance.GetType().GetField("Target", bindingFlags)?.GetValue(__instance) ??
-                          __instance.GetType().GetField("_target", bindingFlags)?.GetValue(__instance)) as PlayerControl;
-        
-        if (targetValue != null) {
-            return HandleShieldClick(__instance, targetValue);
-        }
-
-        return true;
+        if (__instance == null) return true;
+        return !ShieldUtils.HandleButtonShieldClick(__instance, GetTarget(__instance));
     }
 
-    // Patch for target-based buttons (Sheriff, VH, etc.)
     [HarmonyPatch(typeof(TownOfUsTargetButton<PlayerControl>), nameof(TownOfUsTargetButton<PlayerControl>.ClickHandler))]
     [HarmonyPrefix]
     public static bool TargetClickHandlerPrefix(TownOfUsTargetButton<PlayerControl> __instance)
     {
-        return HandleShieldClick(__instance, __instance.Target);
+        if (__instance == null) return true;
+        return !ShieldUtils.HandleButtonShieldClick(__instance, __instance.Target);
     }
 
-    // Patch for basic Mira buttons (just in case)
     [HarmonyPatch(typeof(CustomActionButton<PlayerControl>), nameof(CustomActionButton<PlayerControl>.ClickHandler))]
     [HarmonyPrefix]
     public static bool MiraClickHandlerPrefix(CustomActionButton<PlayerControl> __instance)
     {
-        return HandleShieldClick(__instance, __instance.Target);
+        if (__instance == null) return true;
+        return !ShieldUtils.HandleButtonShieldClick(__instance, __instance.Target);
     }
 
-    private static bool HandleShieldClick(CustomActionButton button, PlayerControl target)
+    private static PlayerControl GetTarget(TownOfUsButton button)
     {
-        if (button is not IKillButton) return true;
+        if (button is IAftermathablePlayerButton playerButton) return playerButton.Target;
+        
+        var bindingFlags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
+        return (button.GetType().GetProperty("Target", bindingFlags)?.GetValue(button) ?? 
+                button.GetType().GetField("Target", bindingFlags)?.GetValue(button) ??
+                button.GetType().GetField("_target", bindingFlags)?.GetValue(button)) as PlayerControl;
+    }
+
+    [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
+    [HarmonyPrefix]
+    public static bool VanillaKillButtonClickHandlerPrefix(KillButton __instance)
+    {
+        if (__instance == null || __instance.gameObject == null || !__instance.gameObject.activeSelf) return true;
+        
+        var target = __instance.currentTarget;
         if (target == null) return true;
 
-        var attacker = PlayerControl.LocalPlayer;
-        if (attacker == null) return true;
-
-        var shieldType = target.GetShieldType();
-        if (shieldType == ShieldType.None) return true;
-
-        // Check for Bodyguard specific option "Can Kill Crew Killing"
-        if (shieldType == ShieldType.Bodyguard && attacker.Data.Role.GetRoleAlignment() == RoleAlignment.CrewmateKilling)
+        if (ShieldUtils.HandleButtonShieldClick(null, target))
         {
-            var options = OptionGroupSingleton<BodyguardOptions>.Instance;
-            if (!options.CanKillCrewKilling)
-            {
-                // If option is OFF, the shield DOES NOT protect against Crewmate Killing roles.
-                return true;
-            }
+            PlayerControl.LocalPlayer.SetKillTimer(10f); // Fallback for vanilla button
+            return false;
         }
-
-        // Flash effect for the attacker (Sheriff/VH)
-        ShieldUtils.TriggerShieldFlash(attacker, shieldType);
-
-        // RPCs for specific shields (Bodyguard, Medic)
-        if (shieldType == ShieldType.Bodyguard)
-        {
-            var bgMod = target.GetModifiers<BodyguardShieldModifier>().FirstOrDefault();
-            if (bgMod != null && bgMod.Bodyguard != null)
-            {
-                BodyguardRole.RpcBodyguardShieldAttacked(bgMod.Bodyguard, attacker, target);
-            }
-        }
-        else if (shieldType == ShieldType.Medic)
-        {
-            var medicMod = target.GetModifiers<MedicShieldModifier>().FirstOrDefault();
-            if (medicMod != null)
-            {
-                MedicRole.RpcMedicShieldAttacked(medicMod.Medic, attacker, target);
-            }
-        }
-
-        // Set cooldown and cancel murder
-        var saveCd = OptionGroupSingleton<GeneralOptions>.Instance.TempSaveCdReset;
-        
-        float duration = saveCd;
-        switch (shieldType)
-        {
-            case ShieldType.Medic:
-            case ShieldType.Bodyguard:
-            case ShieldType.Fairy:
-            case ShieldType.Mercenary:
-                duration = 10f;
-                break;
-            case ShieldType.Warden:
-                duration = 1f;
-                break;
-            case ShieldType.Cleric:
-                duration = 5f;
-                break;
-            case ShieldType.Mirrorcaster:
-                duration = attacker.GetKillCooldown();
-                break;
-            default:
-                duration = saveCd;
-                break;
-        }
-
-        button.Timer = duration;
-        return false;
+        return true;
     }
 }

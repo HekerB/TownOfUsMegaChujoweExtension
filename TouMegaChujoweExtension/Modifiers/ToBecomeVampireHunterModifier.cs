@@ -16,6 +16,7 @@ using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Roles;
+using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -24,7 +25,6 @@ using Random = System.Random;
 
 namespace TouMegaChujoweExtension.Modifiers.Crewmate;
 
-[MiraAPI.PluginLoading.MiraIgnore]
 internal sealed class ToBecomeVampireHunterModifier : ExcludedGameModifier
 {
     public override string ModifierName => "Possible Vampire Hunter";
@@ -190,20 +190,15 @@ internal sealed class ToBecomeVampireHunterModifier : ExcludedGameModifier
     {
         if (player == null || player.Data == null) return false;
         if (player.Data.Disconnected) return false;
-
         var role = player.Data.Role;
         if (role == null) return false;
-
         if (role.IsImpostor) return false;
         if (role is NeutralRole) return false;
-
         if (IsCrewPowerOrProtective(role)) return false;
-        if (role.GetType().Name.Contains("Imitator")) return false;
-
         if (player.HasModifier<EgotistModifier>() || HasModifierLike(player, "Egotist")) return false;
         if (player.HasModifier<CrewpostorModifier>() || HasModifierLike(player, "Crewpostor")) return false;
-
         if (player.HasModifier<ToBecomeTraitorModifier>() || HasModifierLike(player, "Traitor")) return false;
+        if (player.Data.Role is ImitatorRole || HasModifierLike(player, "Imitator")) return false;
 
         return true;
     }

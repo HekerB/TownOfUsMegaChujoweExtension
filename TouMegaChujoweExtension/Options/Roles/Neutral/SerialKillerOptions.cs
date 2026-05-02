@@ -40,6 +40,19 @@ public sealed class SerialKillerOptions : AbstractOptionGroup<SerialKillerRole>
         Visible = () => OptionGroupSingleton<SerialKillerOptions>.Instance.KillCooldownReductionEnabled
     };
 
+    [ModdedToggleOption("ExtensionOptionSerialKillerManiacTimerReductionEnabled")]
+    public bool ManiacTimerReductionEnabled { get; set; } = false;
+
+    public ModdedNumberOption ManiacTimerReductionPerKill { get; } = new("ExtensionOptionSerialKillerManiacTimerReductionPerKill", 2.5f, 0f, 10f, 0.5f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacMode && OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacTimerReductionEnabled
+    };
+
+    public ModdedNumberOption ManiacTimerLimit { get; } = new("ExtensionOptionSerialKillerManiacTimerLimit", 30f, 15f, 60f, 1f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacMode && OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacTimerReductionEnabled
+    };
+
     [ModdedEnumOption("ExtensionOptionSerialKillerVentKillTargets", typeof(VentKillTargets),
         ["ExtensionOptionSerialKillerVentKillTargetsEnumImpostors",
          "ExtensionOptionSerialKillerVentKillTargetsEnumImpNK",
