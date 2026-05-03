@@ -159,16 +159,30 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             }
             
             var role = interactor.Data?.Role;
+            string roleName = "Unknown";
+            Color roleColor = Color.white;
+
             if (role != null)
             {
-                var roleName = role.GetRoleName() ?? "Unknown";
-                var color = role is ICustomRole customRole ? customRole.RoleColor : role.TeamColor;
-                var coloredRoleName = $"<color=#{ColorUtility.ToHtmlStringRGBA(color)}>{roleName}</color>";
-                
-                if (!TriggeredRoles[mirage.PlayerId].Contains(coloredRoleName))
+                roleName = role.GetRoleName();
+                if (string.IsNullOrWhiteSpace(roleName) || roleName == "Unknown")
                 {
-                    TriggeredRoles[mirage.PlayerId].Add(coloredRoleName);
+                    // Fallback to class name if localization or standard retrieval fails
+                    roleName = role.GetType().Name.Replace("Role", "").Replace("RoleBehaviour", "");
+                    if (string.IsNullOrWhiteSpace(roleName)) roleName = "Player";
                 }
+                roleColor = role is ICustomRole customRole ? customRole.RoleColor : role.TeamColor;
+            }
+            else
+            {
+                roleName = "Unknown Player";
+            }
+
+            var coloredRoleName = $"<color=#{ColorUtility.ToHtmlStringRGBA(roleColor)}>{roleName}</color>";
+            
+            if (!TriggeredRoles[mirage.PlayerId].Contains(coloredRoleName))
+            {
+                TriggeredRoles[mirage.PlayerId].Add(coloredRoleName);
             }
         }
 

@@ -205,6 +205,35 @@
         "\n- <b>Forestaller</b> - Fixed visibility in guesser menus based on task completion status.",
         "\n- <b>General</b> - Optimized internal RPC handling and updated intro sounds for improved performance."
       ]
+    },
+    {
+      "Date": "2026-05-02T22:00:00Z",
+      "Number": "200007",
+      "ShortTitle": "TOUMCE v1.0.6",
+      "SubTitle": "Mirage, Time Lord & Forensic",
+      "Title": "TOU Mega Chujowe Extension v1.0.6",
+      "Text": [
+        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
+        "\n\n\r<b>Version 1.0.6 - Mirage, Time Lord & Forensic Updates</b>",
+        "\n\n\r<size=105%>Mirage Decoy Fixes & Rework:</size>",
+        "\n- <b>Dynamic Interaction Range</b> - FIXED \"shot\" interactions (Sheriff, Shroud, etc.) not triggering decoys from a distance. The decoy now correctly detects interactions based on the button's range.",
+        "\n- <b>Proximity Trigger</b> - Added a <b>\"touch\" interaction</b>. Walking into a decoy now correctly triggers it, providing a reliable fallback for all interaction types.",
+        "\n- <b>Robust Role Detection</b> - Improved meeting feedback. Even if role data is unsynced, the interactor is now correctly identified (falling back to class names) to prevent <b>\"No players interacted\"</b> false negatives.",
+        "\n- <b>Interaction Polish</b> - Optimized decoy destruction logic to prevent double-triggers and improved sync across all clients.",
+        "\n\n\r<size=105%>Time Lord Updates:</size>",
+        "\n- <b>Rewind Speed Multiplier</b> - Added a new option to the Modifiers menu to control the speed of the rewind animation (0.5x - 5.0x).",
+        "\n- <b>Dynamic Timing</b> - Rewind duration and internal event schedules (revives, body restorations, task undos) now dynamically scale to match the chosen speed multiplier.",
+        "\n- <b>Wiki Integration</b> - The current speed multiplier is now displayed in the Time Lord's advanced description in the Wiki.",
+        "\n- <b>Reliability</b> - Physical movement and snapshot popping are perfectly synchronized with the speed multiplier, ensuring players always rewind exactly by the amount of history seconds set in the lobby.",
+        "\n\n\r<size=105%>Forensic Updates:</size>",
+        "\n- <b>Freeze Scenes on Meeting</b> - Added a new lobby option. If enabled, crime scenes will stop tracking new suspects once a meeting starts. This ensures players aren't wrongly identified as suspects for old murders if the body remains on the map in subsequent rounds.",
+        "\n- <b>UI Polish</b> - Updated Forensic UI color to <b>Deep Orchid</b> and moved the role to the bottom of the modifiers list (priority 999).",
+        "\n\n\r<size=105%>Mayor & President Updates:</size>",
+        "\n- <b>Mayor Votes</b> - Fully reworked the vote count system. Mayor now correctly supports <b>3-10 votes</b> as configured in the lobby options, bypassing base mod overrides.",
+        "\n- <b>President-Monarch Integration</b> - Finally allowed the <b>President to be knighted</b> by the Monarch. Added a <b>Smart Injection System</b>: bonus votes are now manually injected only on the first click, preserving the President's vote bank.",
+        "\n- <b>President HUD Feedback</b> - Added a dynamic vote counter to the meeting timer HUD for the President, displaying current bank votes and <b>Monarch bonuses</b>.",
+        "\n- <b>Localization</b> - Added full English and Polish support for all new President and Mayor UI elements."
+      ]
     }
   ]
 }

@@ -46,6 +46,33 @@ public static class WikiAppendOptionsPatch
                     __result += $"\nImpostor Vision: {(opts.ImpostorVision.Value ? "True" : "False")}";
                 }
             }
+            else if (classType == typeof(ForensicRole))
+            {
+                var opts = OptionGroupSingleton<ForensicExtensionOptions>.Instance;
+                if (opts != null)
+                {
+                    var title = TouLocale.Get("ExtensionOptionForensicFreezeOnMeeting");
+                    __result += $"\n{title}: {(opts.FreezeOnMeeting ? "True" : "False")}";
+                }
+            }
+            else if (classType == typeof(TimeLordRole))
+            {
+                var opts = OptionGroupSingleton<TimeLordExtensionOptions>.Instance;
+                if (opts != null)
+                {
+                    var title = TouLocale.Get("ExtensionOptionTimeLordRewindSpeed");
+                    __result += $"\n{title}: {opts.RewindSpeed}x";
+                }
+            }
+            else if (classType == typeof(MayorRole))
+            {
+                var opts = OptionGroupSingleton<MayorExtensionOptions>.Instance;
+                if (opts != null)
+                {
+                    var title = TouLocale.Get("ExtensionOptionMayorVoteCount");
+                    __result += $"\n{title}: {opts.VoteCount}";
+                }
+            }
         }
         catch
         {

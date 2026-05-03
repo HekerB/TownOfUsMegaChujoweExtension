@@ -253,12 +253,20 @@ public static class MirageDecoyTownOfUsTargetButtonPatches
         try
         {
             var prop = instance.GetType().GetProperty("Distance", BindingFlags.Instance | BindingFlags.Public);
-            if (prop != null && prop.PropertyType == typeof(float))
+            if (prop != null)
             {
-                var boxed = prop.GetValue(instance);
-                if (boxed is float f)
+                var val = prop.GetValue(instance);
+                if (val is float f) return f;
+            }
+
+            if (instance is IKillButton)
+            {
+                var opts = GameOptionsManager.Instance?.currentNormalGameOptions;
+                if (opts != null)
                 {
-                    return f;
+                    var killDistances = opts.GetFloatArray(AmongUs.GameOptions.FloatArrayOptionNames.KillDistances);
+                    var idx = Mathf.Clamp(opts.KillDistance, 0, killDistances.Length - 1);
+                    return killDistances[idx] + 0.2f;
                 }
             }
         }
@@ -267,6 +275,6 @@ public static class MirageDecoyTownOfUsTargetButtonPatches
             // ignore
         }
 
-        return 1.25f;
+        return 1.5f;
     }
 }

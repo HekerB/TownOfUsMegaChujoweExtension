@@ -4,6 +4,7 @@ using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Roles.Crewmate;
 using TownOfUs.Buttons;
 using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches;
 
@@ -24,13 +25,46 @@ public static class MirageDecoyTownOfUsButtonPatches
             return true;
         }
 
-        if (!TryTriggerFromLocalPlayer(1.25f))
+        var distance = GetDistance(__instance);
+        if (!TryTriggerFromLocalPlayer(distance))
         {
             return true;
         }
 
         SpendCooldownAndUses(__instance);
         return false;
+    }
+
+    private static float GetDistance(TownOfUsButton instance)
+    {
+        try
+        {
+            // Try to get Distance property via reflection for targeted buttons
+            var prop = instance.GetType().GetProperty("Distance", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            if (prop != null)
+            {
+                var val = prop.GetValue(instance);
+                if (val is float f) return f;
+            }
+            
+            // Fallback for KillButton which might have its own distance logic
+            if (instance is IKillButton)
+            {
+                var opts = GameOptionsManager.Instance?.currentNormalGameOptions;
+                if (opts != null)
+                {
+                    var killDistances = opts.GetFloatArray(AmongUs.GameOptions.FloatArrayOptionNames.KillDistances);
+                    var idx = Mathf.Clamp(opts.KillDistance, 0, killDistances.Length - 1);
+                    return killDistances[idx] + 0.2f; // Add small buffer
+                }
+            }
+        }
+        catch
+        {
+            // ignore
+        }
+
+        return 1.5f; // Increased default from 1.25f to be safer
     }
 
     private static void SpendCooldownAndUses(CustomActionButton instance)

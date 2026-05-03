@@ -1,6 +1,7 @@
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
@@ -343,6 +344,10 @@ public sealed class PirateRole(IntPtr cppPtr)
                     diedThisRound: DeathHandlerOverride.SetTrue,
                     killedBy: TouLocale.GetParsed("ExtensionDiedByPirateDuel", "Dueled by <player>").Replace("<player>", pirate.Data.PlayerName),
                     lockInfo: DeathHandlerOverride.SetTrue);
+
+                // Trigger AfterMurderEvent so other systems (like Legacy Animation) pick it up
+                var afterMurderEvent = new MiraAPI.Events.Vanilla.Gameplay.AfterMurderEvent(pirate, target, null);
+                MiraEventManager.InvokeEvent(afterMurderEvent);
             }
         }
         else if (result == 0)

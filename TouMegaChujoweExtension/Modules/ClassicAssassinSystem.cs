@@ -101,6 +101,7 @@ public static class ClassicAssassinSystem
         _guessableEntries.Clear();
         _guessedThisMeeting = false;
         _remainingKills = 0;
+        _lastAliveCount = -1;
     }
 
     public static void FullReset()
@@ -1005,15 +1006,31 @@ public static class ClassicAssassinSystem
         if (currentAlive == _lastAliveCount) return;
         _lastAliveCount = currentAlive;
 
+        // Force meeting UI sync for any newly dead players
+        // This ensures mid-meeting deaths (e.g. Death Note, Assassin) are visually reflected
+        foreach (var pva in MeetingHud.Instance.playerStates)
+        {
+            if (pva == null) continue;
+            var pc = pva.GetPlayer();
+            if (pc != null && pc.Data != null && (pc.Data.IsDead || pc.Data.Disconnected) && !pva.AmDead)
+            {
+                pva.AmDead = true;
+                if (pva.Overlay != null) pva.Overlay.gameObject.SetActive(true);
+                if (pva.XMark != null) pva.XMark.gameObject.SetActive(true);
+            }
+        }
+
         RefreshBaseModButtons();
 
         if (IsActive)
         {
             var local = PlayerControl.LocalPlayer;
+            var roleName = local.Data?.Role?.GetType().Name ?? "";
             var isGuesser = local.TryGetModifier<AssassinModifier>(out _) ||
                             local.Data.Role is VigilanteRole ||
                             local.Data.Role is DoomsayerRole ||
-                            local.Data.Role is JailorRole;
+                            local.Data.Role is JailorRole ||
+                            roleName.Contains("Imitator");
 
             if (!isGuesser)
             {
@@ -1075,42 +1092,36 @@ public static class ClassicAssassinSystem
             if (local == null) return;
 
             object? screen = null;
+            var roleName = local.Data?.Role?.GetType().Name ?? "";
             var isGuesser = local.TryGetModifier<AssassinModifier>(out _) ||
                             local.Data.Role is VigilanteRole ||
                             local.Data.Role is DoomsayerRole ||
-                            local.Data.Role is JailorRole;
+                            local.Data.Role is JailorRole ||
+                            roleName.Contains("Imitator");
 
             // Find active guessing screen using cached fields
             System.Type? type = null;
+            object? target = null;
+
             if (local.TryGetModifier<AssassinModifier>(out var assassin))
             {
                 type = assassin.GetType();
-                if (!_screenFields.TryGetValue(type, out var field))
-                {
-                    field = type.GetField("guessingScreen", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    if (field != null) _screenFields[type] = field;
-                }
-                screen = _screenFields.TryGetValue(type, out var f) ? f.GetValue(assassin) : null;
+                target = assassin;
             }
-            else if (local.Data?.Role is DoomsayerRole doomsayer)
+            else if (local.Data?.Role != null)
             {
-                type = doomsayer.GetType();
-                if (!_screenFields.TryGetValue(type, out var field))
-                {
-                    field = type.GetField("guessingScreen", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    if (field != null) _screenFields[type] = field;
-                }
-                screen = _screenFields.TryGetValue(type, out var f) ? f.GetValue(doomsayer) : null;
+                type = local.Data.Role.GetType();
+                target = local.Data.Role;
             }
-            else if (local.Data?.Role is VigilanteRole vigilante)
+
+            if (type != null && target != null)
             {
-                type = vigilante.GetType();
                 if (!_screenFields.TryGetValue(type, out var field))
                 {
                     field = type.GetField("guessingScreen", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                     if (field != null) _screenFields[type] = field;
                 }
-                screen = _screenFields.TryGetValue(type, out var f) ? f.GetValue(vigilante) : null;
+                screen = _screenFields.TryGetValue(type, out var f) ? f.GetValue(target) : null;
             }
 
             if (screen != null)

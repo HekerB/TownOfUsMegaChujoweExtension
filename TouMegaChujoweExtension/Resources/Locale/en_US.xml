@@ -82,6 +82,8 @@
   <string name="ExtensionOptionPresidentStartingVoteBank">Starting Vote Bank</string>
   <string name="ExtensionOptionPresidentMaxVoteBank">Max Vote Bank</string>
   <string name="ExtensionOptionPresidentAbstainBonus">Votes Gained Per Abstain</string>
+  <string name="ExtensionMeetingPresidentBankInfo">You have {0} bank votes!</string>
+  <string name="ExtensionMeetingPresidentBankInfoKnighted">You have {0} bank votes (+{1} from Monarch)!</string>
   
   <!-- Vanisher Role -->
   <string name="ExtensionRoleVanisher">Vanisher</string>
@@ -382,6 +384,7 @@
   <!-- Witch Notifications -->
   <string name="ExtensionWitchSpellNotification">&lt;player&gt; has been cursed! They have &lt;meetings&gt; meeting(s) left. Vote out or kill the Witch to save them!</string>
   <string name="ExtensionWitchSpellNotificationMultiple">Multiple players have been cursed:\n&lt;players&gt;\nVote out or kill the Witch to save them!</string>
+
 
   <!-- Wraith Role -->
   <string name="ExtensionRoleWraith">Wraith</string>
@@ -954,7 +957,7 @@
 
   <!-- TOUMCE Wiki Terms - Symbols -->
   <string name="TOUMCETermsSymbolsTitle">TOUMCE Symbols</string>
-  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player canonized by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client • &lt;color=#C0C0C0&gt;&lt;b&gt;¤&lt;/b&gt;&lt;/color&gt; - Player cursed by the Witch</string>
+  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player canonized by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client</string>
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">General Shield Flashes</string>
@@ -992,4 +995,10 @@ Drafting can also respect individual role chances (Respect Role Chances), causin
   <string name="ExtensionOptionBetterSonarMode">Sonar Type</string>
   <string name="ExtensionOptionBetterSonarModeArrowAndMap">Arrow + Map</string>
   <string name="ExtensionOptionBetterSonarModeMapOnly">Map Only</string>
+  <!-- Time Lord Options -->
+  <string name="ExtensionOptionTimeLordRewindSpeed">Rewind Speed</string>
+  <!-- Forensic Options -->
+  <string name="ExtensionOptionForensicFreezeOnMeeting">Freeze Scenes on Meeting</string>
+  <!-- Mayor Options -->
+  <string name="ExtensionOptionMayorVoteCount">Vote Count</string>
 </resources>

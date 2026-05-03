@@ -106,6 +106,7 @@ public static class DraftLobbyPatch
     // === COUNTDOWN SOUND ===
     private static float _countdownSoundTimer = 1f;
     private static AudioClip _countdownTickClip;
+    private static AudioClip _hoverSoundClip;
 
     // === DISCONNECTED PLAYERS ===
     private static readonly HashSet<byte> _disconnectedDuringDraft = new();
@@ -1428,7 +1429,11 @@ public static class DraftLobbyPatch
         }));
 
         btn.OnMouseOver = new UnityEngine.Events.UnityEvent();
-        btn.OnMouseOver.AddListener((System.Action)(() => { bgRenderer.color = new Color(0.4f, 0.4f, 0.4f, 0.8f); }));
+        btn.OnMouseOver.AddListener((System.Action)(() => 
+        { 
+            bgRenderer.color = new Color(0.4f, 0.4f, 0.4f, 0.8f); 
+            PlayHoverSound();
+        }));
 
         btn.OnMouseOut = new UnityEngine.Events.UnityEvent();
         btn.OnMouseOut.AddListener((System.Action)(() => { bgRenderer.color = new Color(0.2f, 0.2f, 0.2f, 0.8f); }));
@@ -1495,6 +1500,7 @@ public static class DraftLobbyPatch
         {
             if (bgRenderer != null)
                 bgRenderer.color = hoverColor;
+            PlayHoverSound();
         }));
 
         btn.OnMouseOut = new UnityEngine.Events.UnityEvent();
@@ -1559,7 +1565,11 @@ public static class DraftLobbyPatch
         }));
 
         btn.OnMouseOver = new UnityEngine.Events.UnityEvent();
-        btn.OnMouseOver.AddListener((System.Action)(() => { bgRenderer.color = hoverColor; }));
+        btn.OnMouseOver.AddListener((System.Action)(() => 
+        { 
+            bgRenderer.color = hoverColor; 
+            PlayHoverSound();
+        }));
 
         btn.OnMouseOut = new UnityEngine.Events.UnityEvent();
         btn.OnMouseOut.AddListener((System.Action)(() => { bgRenderer.color = normalColor; }));
@@ -2244,6 +2254,7 @@ public static class DraftLobbyPatch
             if (_pickLocked) return;
             if (bgRenderer) bgRenderer.color = hoverColor;
             if (borderRenderer) borderRenderer.color = Color.white;
+            PlayHoverSound();
             StartHoverAnimation(container, 1.15f, 0.12f);
             
             if (iconRenderer != null) StartIconWobble(iconRenderer.gameObject, true);
@@ -2400,6 +2411,37 @@ public static class DraftLobbyPatch
     private static void PlayPickSound()
     {
         try { SoundManager.Instance.PlaySound(TouExtensionAudio.DraftPickSound.LoadAsset(), false); } catch { }
+    }
+
+    private static AudioClip FindHoverSound()
+    {
+        if (_hoverSoundClip != null) return _hoverSoundClip;
+
+        var allClips = Resources.FindObjectsOfTypeAll(Il2CppType.Of<AudioClip>());
+        foreach (var obj in allClips)
+        {
+            var clip = obj.Cast<AudioClip>();
+            string n = clip.name.ToLower();
+            
+            // "rollover" is the standard name for hover sounds in AU
+            if (n.Contains("rollover") || n.Contains("buttonhover") || n.Contains("ui_hover"))
+            {
+                _hoverSoundClip = clip;
+                return _hoverSoundClip;
+            }
+        }
+        return null;
+    }
+
+    private static void PlayHoverSound()
+    {
+        try 
+        {
+            var clip = FindHoverSound();
+            if (clip != null)
+                SoundManager.Instance.PlaySound(clip, false, 0.5f);
+        }
+        catch { }
     }
 
     // === PICK HANDLING ===

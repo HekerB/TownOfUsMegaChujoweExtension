@@ -18,7 +18,7 @@ public sealed class SonarExtendedOptions : AbstractOptionGroup
     public override string GroupName => "Sonar";
     public override Color GroupColor => TownOfUsColors.Tracker;
     public override bool ShowInModifiersMenu => true;
-    public override uint GroupPriority => 91;
+    public override uint GroupPriority => 93;
 
     [ModdedToggleOption("ExtensionOptionBetterSonar")]
     public bool BetterSonar { get; set; } = false;
