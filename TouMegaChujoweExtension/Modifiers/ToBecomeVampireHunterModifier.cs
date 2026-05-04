@@ -16,6 +16,7 @@ using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Roles;
+using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -28,6 +29,8 @@ internal sealed class ToBecomeVampireHunterModifier : ExcludedGameModifier
 {
     public override string ModifierName => "Possible Vampire Hunter";
     public override bool HideOnUi => true;
+    public override int GetAmountPerGame() => 0;
+    public override int GetAssignmentChance() => 0;
     private static int _vampireHuntersSpawned;
     private static bool _vhHasDied;
     private static bool _assignmentScheduled;
@@ -187,19 +190,15 @@ internal sealed class ToBecomeVampireHunterModifier : ExcludedGameModifier
     {
         if (player == null || player.Data == null) return false;
         if (player.Data.Disconnected) return false;
-
         var role = player.Data.Role;
         if (role == null) return false;
-
         if (role.IsImpostor) return false;
         if (role is NeutralRole) return false;
-
         if (IsCrewPowerOrProtective(role)) return false;
-
         if (player.HasModifier<EgotistModifier>() || HasModifierLike(player, "Egotist")) return false;
         if (player.HasModifier<CrewpostorModifier>() || HasModifierLike(player, "Crewpostor")) return false;
-
         if (player.HasModifier<ToBecomeTraitorModifier>() || HasModifierLike(player, "Traitor")) return false;
+        if (player.Data.Role is ImitatorRole || HasModifierLike(player, "Imitator")) return false;
 
         return true;
     }

@@ -4,6 +4,7 @@ using MiraAPI.Keybinds;
 using MiraAPI.Networking;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
+using MiraAPI.Modifiers;
 using Reactor.Utilities;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
@@ -17,10 +18,12 @@ using TownOfUs.Options;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using UnityEngine;
+using TouMegaChujoweExtension.Utilities;
 
 namespace TouMegaChujoweExtension.Buttons.Crewmate;
 
-public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>
+public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IKillButton
+
 {
     private PlayerControl? _target;
     private PlayerControl? _lastOutlined;
@@ -34,20 +37,14 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>
     public override float Cooldown =>
         Math.Clamp(OptionGroupSingleton<VampireHunterOptions>.Instance.StakeCooldown + MapCooldown, 5f, 120f);
 
-    public override int MaxUses
-    {
-        get
-        {
-            var max = (int)OptionGroupSingleton<VampireHunterOptions>.Instance.MaxFailedStakes;
-            return max == 0 ? int.MaxValue : max;
-        }
-    }
+    public override int MaxUses => (int)OptionGroupSingleton<VampireHunterOptions>.Instance.MaxFailedStakes;
+    public override bool ZeroIsInfinite { get; set; } = true;
 
     public override bool CanUse()
     {
         if (!base.CanUse()) return false;
         if (_firstRound && !OptionGroupSingleton<VampireHunterOptions>.Instance.CanStakeRoundOne) return false;
-        if (UsesLeft <= 0) return false;
+        if (MaxUses > 0 && UsesLeft <= 0) return false;
 
         return _target != null;
     }
@@ -60,11 +57,8 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>
         var player = PlayerControl.LocalPlayer;
         if (player == null) return;
 
-        // Simulate murder event to check for shields
-        var beforeMurderEvent = new BeforeMurderEvent(player, _target, MeetingCheck.OutsideMeeting);
-        MiraEventManager.InvokeEvent(beforeMurderEvent);
-        
-        if (beforeMurderEvent.IsCancelled)
+        // Use centralized shield interaction handler
+        if (ShieldUtils.HandleButtonShieldClick(this, _target))
         {
             return;
         }
@@ -87,7 +81,10 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>
         {
             player.RpcCustomMurder(_target);
             role.SuccessfulStakes++;
+            
+            // Increment to cancel current use and refresh UI
             UsesLeft++;
+            SetUses(UsesLeft);
         }
         else
         {

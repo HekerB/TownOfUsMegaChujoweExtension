@@ -206,10 +206,9 @@ public static class HackerSystem
         dist = float.MaxValue;
 
 
-        if (_cachedMapConsoles == null || Time.frameCount != _cachedConsoleFrame)
+        if (_cachedMapConsoles == null)
         {
             _cachedMapConsoles = Object.FindObjectsOfType<MapConsole>();
-            _cachedConsoleFrame = Time.frameCount;
         }
 
         var consoles = _cachedMapConsoles;
@@ -465,10 +464,9 @@ public static class HackerSystem
     private static SystemConsole[] GetCachedSystemConsoles()
     {
 
-        if (_cachedSystemConsoles == null || Time.frameCount != _cachedConsoleFrame)
+        if (_cachedSystemConsoles == null)
         {
             _cachedSystemConsoles = FindAllSystemConsoles();
-            _cachedConsoleFrame = Time.frameCount;
         }
 
         return _cachedSystemConsoles ?? System.Array.Empty<SystemConsole>();

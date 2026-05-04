@@ -10,9 +10,13 @@ namespace TouMegaChujoweExtension.Patches.President;
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
 public static class PresidentMeetingPatch
 {
+    private static float _lastUpdate;
+
     [HarmonyPostfix]
     public static void Postfix(MeetingHud __instance)
     {
+        if (UnityEngine.Time.time - _lastUpdate < 0.2f) return;
+        _lastUpdate = UnityEngine.Time.time;
         var localPlayer = PlayerControl.LocalPlayer;
         if (localPlayer == null || localPlayer.Data.Role is not PresidentRole presidentRole)
         {

@@ -11,8 +11,8 @@ namespace TouMegaChujoweExtension.Modules;
 
 public static class BountyHunterSystem
 {
-    private static readonly BepInEx.Logging.ManualLogSource Log =
-        BepInEx.Logging.Logger.CreateLogSource("BH");
+    // // private static readonly BepInEx.Logging.ManualLogSource Log =
+        // // BepInEx.Logging.Logger.CreateLogSource("BH");
 
     public static PlayerControl? CurrentTarget { get; set; }
     public static byte? LastTargetPlayerId { get; set; }
@@ -52,7 +52,7 @@ public static class BountyHunterSystem
         {
             CurrentTarget = null;
             LastTargetPlayerId = null;
-            Log.LogWarning("[BH] No candidates for target!");
+            // Log.LogWarning("[BH] No candidates for target!");
             return;
         }
 
@@ -60,7 +60,7 @@ public static class BountyHunterSystem
         LastTargetPlayerId = CurrentTarget.PlayerId;
         TargetKilledThisRound = false;
 
-        Log.LogWarning($"[BH] New target assigned: {CurrentTarget.Data.PlayerName} (PlayerId={CurrentTarget.PlayerId}), BH PlayerId={bh.PlayerId}");
+        // Log.LogWarning($"[BH] New target assigned: {CurrentTarget.Data.PlayerName} (PlayerId={CurrentTarget.PlayerId}), BH PlayerId={bh.PlayerId}");
 
         if (bh.AmOwner && CurrentTarget != null)
         {
@@ -87,13 +87,13 @@ public static class BountyHunterSystem
         var opts = OptionGroupSingleton<BountyHunterOptions>.Instance;
         var needed = (int)opts.TargetsToKill.Value;
 
-        Log.LogWarning($"[BH] Target killed! {KillsDone}/{needed}");
+        // Log.LogWarning($"[BH] Target killed! {KillsDone}/{needed}");
 
         if (KillsDone >= needed)
         {
             HasWon = true;
             ClearArrowModifiers();
-            Log.LogWarning("[BH] WIN CONDITION MET! HasWon=true");
+            // Log.LogWarning("[BH] WIN CONDITION MET! HasWon=true");
             return;
         }
 

@@ -25,6 +25,7 @@ public sealed class VanisherVanishButton : TownOfUsRoleButton<VanisherRole>
     public override int MaxUses => (int)OptionGroupSingleton<VanisherOptions>.Instance.MaxVanishes;
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.CrewSwoopSprite;
 
+    public override bool HasEffect => true;
     public override bool ZeroIsInfinite { get; set; } = true;
 
     private bool _lastMeetingState;

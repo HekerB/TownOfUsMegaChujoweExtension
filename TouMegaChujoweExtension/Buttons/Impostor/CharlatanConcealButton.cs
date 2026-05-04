@@ -21,16 +21,19 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
     private bool _isChanneling;
 
     public override string Name => TouLocale.GetParsed("ExtensionRoleCharlatanConceal", "Conceal");
-    public override BaseKeybind Keybind => Keybinds.TertiaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Charlatan;
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<CharlatanOptions>.Instance.ConcealCooldown + MapCooldown, 5f, 120f);
-    public override float EffectDuration => OptionGroupSingleton<CharlatanOptions>.Instance.ConcealChannelDuration;
+    public override float EffectDuration => OptionGroupSingleton<CharlatanOptions>.Instance.ConcealDelay;
     public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.ConcealButtonSprite;
     public override float Distance => 2f;
 
     public override bool ZeroIsInfinite { get; set; } = true;
 
     public override int MaxUses => (int)OptionGroupSingleton<CharlatanOptions>.Instance.ConcealUses;
+
+    private static DeadBody[]? _allBodiesCache;
+    private static float _lastCacheTime;
 
     public override DeadBody? GetTarget()
     {
@@ -39,13 +42,19 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
             return null;
         }
 
+        if (_allBodiesCache == null || Time.time - _lastCacheTime > 0.2f)
+        {
+            _allBodiesCache = Object.FindObjectsOfType<DeadBody>();
+            _lastCacheTime = Time.time;
+        }
+
         var player = PlayerControl.LocalPlayer;
-        var allBodies = Object.FindObjectsOfType<DeadBody>();
         DeadBody? closest = null;
         var closestDistance = float.MaxValue;
 
-        foreach (var body in allBodies)
+        foreach (var body in _allBodiesCache)
         {
+            if (body == null) continue;
             var distance = Vector2.Distance(player.GetTruePosition(), body.TruePosition);
             if (distance <= Distance && distance < closestDistance)
             {
@@ -147,7 +156,7 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
         }
 
         var options = OptionGroupSingleton<CharlatanOptions>.Instance;
-        var channelDuration = options.ConcealChannelDuration;
+        var channelDuration = options.ConcealDelay;
         var elapsed = 0f;
 
         while (elapsed < channelDuration)
@@ -199,6 +208,11 @@ public sealed class CharlatanConcealButton : TownOfUsRoleButton<CharlatanRole, D
         {
             UsesLeft--;
             SetUses(UsesLeft);
+        }
+
+        if (OptionGroupSingleton<CharlatanOptions>.Instance.ResetKillConcealCooldownsTogether && player != null)
+        {
+            player.SetKillTimer(player.GetKillCooldown());
         }
 
         ResetCooldownAndOrEffect();

@@ -17,7 +17,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> PopeCanonizeButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Pope_Canonize_Button.png", 200f);
         public static LoadableAsset<Sprite> PopeJudgementButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Pope_Judgement_Button.png", 200f);
         public static LoadableAsset<Sprite> BountyHunterKillButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.BountyHunter_kill_button.png");
-        public static LoadableAsset<Sprite> ShroudAbilitySprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Shroud_Ability_Button.png", 180f);
+        public static LoadableAsset<Sprite> ShroudAbilitySprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Shroud_Role_Icon.png", 180f);
         public static LoadableAsset<Sprite> ShroudKillButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Shroud_Kill_Button.png", 100f);
         public static LoadableAsset<Sprite> ShroudVentSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Shroud_Vent_Button.png", 100f);
         public static LoadableAsset<Sprite> DoppelgangerKillButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Doppelganger_Kill_Button.png", 100f);

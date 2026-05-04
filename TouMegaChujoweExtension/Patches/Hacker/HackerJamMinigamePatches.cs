@@ -262,7 +262,7 @@ public static class HackerJamMinigamePatches
             // ignore
         }
 
-        if (HackerSystem.IsJammed)
+        if (HackerSystem.IsJammed && !TouMegaChujoweExtension.Buttons.Impostor.HackerDeviceButton.IsPortableDeviceOpen)
         {
             ApplyAdminJammed(__instance);
         }
@@ -277,7 +277,7 @@ public static class HackerJamMinigamePatches
             return true;
         }
 
-        if (!HackerSystem.IsJammed)
+        if (!HackerSystem.IsJammed || TouMegaChujoweExtension.Buttons.Impostor.HackerDeviceButton.IsPortableDeviceOpen)
         {
             return true;
         }
@@ -292,7 +292,7 @@ public static class HackerJamMinigamePatches
     [HarmonyPostfix]
     public static void SurveillanceMinigameBeginPostfix(SurveillanceMinigame __instance)
     {
-        if (__instance != null && HackerSystem.IsJammed)
+        if (__instance != null && HackerSystem.IsJammed && !TouMegaChujoweExtension.Buttons.Impostor.HackerDeviceButton.IsPortableDeviceOpen)
         {
             ApplyCamsJammed(__instance);
         }
@@ -308,7 +308,7 @@ public static class HackerJamMinigamePatches
             return true;
         }
 
-        if (!HackerSystem.IsJammed)
+        if (!HackerSystem.IsJammed || TouMegaChujoweExtension.Buttons.Impostor.HackerDeviceButton.IsPortableDeviceOpen)
         {
             return true;
         }
@@ -323,7 +323,7 @@ public static class HackerJamMinigamePatches
     [HarmonyPostfix]
     public static void PlanetSurveillanceMinigameBeginPostfix(PlanetSurveillanceMinigame __instance)
     {
-        if (__instance != null && HackerSystem.IsJammed)
+        if (__instance != null && HackerSystem.IsJammed && !TouMegaChujoweExtension.Buttons.Impostor.HackerDeviceButton.IsPortableDeviceOpen)
         {
             ApplyPlanetCamsJammed(__instance);
         }
@@ -340,7 +340,7 @@ public static class HackerJamMinigamePatches
                 return true;
             }
 
-            if (HackerSystem.IsJammed)
+            if (HackerSystem.IsJammed && !TouMegaChujoweExtension.Buttons.Impostor.HackerDeviceButton.IsPortableDeviceOpen)
             {
                 ApplyPlanetCamsJammed(__instance);
 
@@ -395,7 +395,7 @@ public static class HackerJamMinigamePatches
             return true;
         }
 
-        if (!HackerSystem.IsJammed)
+        if (!HackerSystem.IsJammed || TouMegaChujoweExtension.Buttons.Impostor.HackerDeviceButton.IsPortableDeviceOpen)
         {
             return true;
         }
@@ -414,7 +414,7 @@ public static class HackerJamMinigamePatches
             return true;
         }
 
-        if (!HackerSystem.IsJammed)
+        if (!HackerSystem.IsJammed || TouMegaChujoweExtension.Buttons.Impostor.HackerDeviceButton.IsPortableDeviceOpen)
         {
             return true;
         }
@@ -526,7 +526,7 @@ public static class HackerJamMinigamePatches
             return true;
         }
 
-        if (HackerSystem.IsJammed)
+        if (HackerSystem.IsJammed && !TouMegaChujoweExtension.Buttons.Impostor.HackerDeviceButton.IsPortableDeviceOpen)
         {
             ApplyDoorLogJammed(__instance);
             return false;
@@ -544,7 +544,7 @@ public static class HackerJamMinigamePatches
             return true;
         }
 
-        if (HackerSystem.IsJammed)
+        if (HackerSystem.IsJammed && !TouMegaChujoweExtension.Buttons.Impostor.HackerDeviceButton.IsPortableDeviceOpen)
         {
             try
             {

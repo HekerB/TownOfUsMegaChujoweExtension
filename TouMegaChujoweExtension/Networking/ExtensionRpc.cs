@@ -77,9 +77,4 @@ public enum ExtensionRpc : uint
     ShareFriendCode = 72,
 	YouAreBanned = 73,
     DeathNoteLaugh = 74,
-    DoctorHeal = 75,
-    CatSetTeammate = 82,
-    SendCatChat = 83,
-    CatChangeRoleOnOwnerDeath = 84,
-    DoctorShieldAttacked = 85
 }

@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using TMPro;
@@ -84,6 +84,11 @@ public static class WitchSpellboundIndicatorPatch
 
     private static bool ShouldShowHexedSprite(PlayerControl player)
     {
+        if (MeetingHud.Instance == null)
+        {
+            return false;
+        }
+
         if (player == null || !player.HasModifier<WitchSpellboundModifier>())
         {
             return false;
@@ -95,35 +100,24 @@ public static class WitchSpellboundIndicatorPatch
             return false;
         }
 
-
-        if (MeetingHud.Instance != null)
-        {
-            return true;
-        }
-
         var modifier = player.GetModifier<WitchSpellboundModifier>();
         if (modifier != null)
         {
             var options = OptionGroupSingleton<WitchOptions>.Instance;
             var meetingsUntilDeath = options.MeetingsUntilDeath;
             var currentMeetingCount = Events.Impostor.WitchEvents.GetCurrentMeetingCount();
-            var meetingsSinceSpell = currentMeetingCount - modifier.SpellCastMeeting;
+            var meetingsSinceSpell = (currentMeetingCount - 1) - modifier.SpellCastMeeting;
             var meetingsRemaining = meetingsUntilDeath - meetingsSinceSpell;
 
-
-            if (meetingsSinceSpell >= 1 && meetingsRemaining > 0)
+            if (meetingsRemaining < 0)
             {
-                return true;
+                return false;
             }
         }
 
-
-        if (localPlayer.IsRole<WitchRole>())
-        {
-            return true;
-        }
-
-        return false;
+        // In meeting, all players see it, or only Witch? 
+        // Base mod says everyone in meeting or after first meeting. Let's keep it visible for anyone authorized in meetings.
+        return true;
     }
 
     private static bool IsPlayerNameVisible(PlayerControl player, TextMeshPro nameText)
@@ -133,45 +127,7 @@ public static class WitchSpellboundIndicatorPatch
             return false;
         }
 
-
-        if (!nameText.gameObject.activeInHierarchy || !nameText.enabled || nameText.color.a <= 0.01f)
-        {
-            return false;
-        }
-
-
-        var localPos = PlayerControl.LocalPlayer.GetTruePosition();
-        var playerPos = player.GetTruePosition();
-        var distance = Vector2.Distance(localPos, playerPos);
-
-
-        if (distance > PlayerControl.LocalPlayer.lightSource.viewDistance * 1.5f)
-        {
-            return false;
-        }
-
-
-
-        var direction = (playerPos - localPos).normalized;
-        var checkDistance = Mathf.Min(distance, PlayerControl.LocalPlayer.lightSource.viewDistance);
-
-
-        var centerHit = PhysicsHelpers.AnyNonTriggersBetween(localPos, direction, checkDistance, Constants.ShipAndObjectsMask);
-        if (!centerHit)
-        {
-            return true;
-        }
-
-
-        var perp = new Vector2(-direction.y, direction.x);
-        var offset1 = localPos + perp * 0.3f;
-        var offset2 = localPos - perp * 0.3f;
-
-        var offset1Hit = PhysicsHelpers.AnyNonTriggersBetween(offset1, direction, checkDistance, Constants.ShipAndObjectsMask);
-        var offset2Hit = PhysicsHelpers.AnyNonTriggersBetween(offset2, direction, checkDistance, Constants.ShipAndObjectsMask);
-
-
-        return !offset1Hit || !offset2Hit;
+        return nameText.gameObject.activeInHierarchy && nameText.enabled && nameText.color.a > 0.01f;
     }
 
     private static void EnsureHexedSprite(PlayerControl player)

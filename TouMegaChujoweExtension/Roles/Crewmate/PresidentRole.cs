@@ -172,6 +172,11 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         AbstainButton.voteComplete = meeting.SkipVoteButton.voteComplete;
     }
 
+    /// <summary>
+    /// True when the president has cast their knighted bonus vote this meeting.
+    /// </summary>
+    public bool HasCastKnightedVote { get; set; }
+
     public override void OnMeetingStart()
     {
         RoleBehaviourStubs.OnMeetingStart(this);
@@ -184,6 +189,7 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         SelectingAbstain = false;
         HasAbstained = false;
         HasVotedOnPlayer = false;
+        HasCastKnightedVote = false;
 
         var voteData = Player.GetVoteData();
         if (voteData != null)

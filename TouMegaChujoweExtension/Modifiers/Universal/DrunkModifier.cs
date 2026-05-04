@@ -1,4 +1,4 @@
-﻿using MiraAPI.GameOptions;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Assets;
@@ -45,7 +45,7 @@ public sealed class DrunkModifier : UniversalGameModifier, IUnguessable, IWikiDi
         return description;
     }
 
-    public override Color FreeplayFileColor => new Color32(139, 69, 19, 255);
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
 

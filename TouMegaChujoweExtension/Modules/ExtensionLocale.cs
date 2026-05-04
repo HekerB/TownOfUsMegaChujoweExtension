@@ -10,7 +10,7 @@ namespace TouMegaChujoweExtension.Modules;
 
 public static class ExtensionLocale
 {
-    internal static ManualLogSource LocaleLogger { get; } = BepInEx.Logging.Logger.CreateLogSource("ExtensionLocale");
+    // // internal static ManualLogSource LocaleLogger { get; } = BepInEx.Logging.Logger.CreateLogSource("ExtensionLocale");
 
     public static void SearchInternalLocale()
     {
@@ -32,7 +32,7 @@ public static class ExtensionLocale
         
         if (resourceStream == null)
         {
-            LocaleLogger.LogError($"File not found: {targetFile}");
+            // LocaleLogger.LogError($"File not found: {targetFile}");
             
             if (forcePolish)
             {
@@ -43,7 +43,7 @@ public static class ExtensionLocale
         }
 
         ForceInjectTranslations(resourceStream);
-        LocaleLogger.LogWarning($"Successfully loaded and overwritten translations from file: {targetFile}");
+        // LocaleLogger.LogWarning($"Successfully loaded and overwritten translations from file: {targetFile}");
     }
 
     private static void ForceInjectTranslations(Stream stream)
@@ -89,7 +89,7 @@ public static class ExtensionLocale
         }
         catch (System.Exception ex)
         {
-            LocaleLogger.LogError($"XML parsing error: {ex.Message}");
+            // LocaleLogger.LogError($"XML parsing error: {ex.Message}");
         }
     }
 }

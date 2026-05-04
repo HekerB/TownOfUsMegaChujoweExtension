@@ -10,10 +10,10 @@
 
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
-        <VersionPrefix>1.0.4</VersionPrefix>
-        <VersionSuffix>beta.1</VersionSuffix>
+        <VersionPrefix>1.0.6</VersionPrefix>
+        <VersionSuffix></VersionSuffix>
 
-        <Authors>TouMegaChujoweExtension</Authors>
+        <Authors>Heker, Marzecooo, Weakpass, Kajo, Radzik360</Authors>
         <Company>Mega Shit Bunch</Company>
 
         <!-- SourceLink -->

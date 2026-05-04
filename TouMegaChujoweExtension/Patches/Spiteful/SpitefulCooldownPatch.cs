@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using TouMegaChujoweExtension.Modifiers.Universal;

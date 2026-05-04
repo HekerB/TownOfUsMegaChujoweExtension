@@ -87,4 +87,4 @@ public sealed class KamikazeKillButton : TownOfUsKillRoleButton<KamikazeRole, Pl
         CustomButtonSingleton<KamikazeSuicideButton>.Instance.SetTimer(
             OptionGroupSingleton<KamikazeOptions>.Instance.SuicideCooldown);
     }
-}
+}

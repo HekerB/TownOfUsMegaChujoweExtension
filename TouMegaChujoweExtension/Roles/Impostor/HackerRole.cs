@@ -1,8 +1,9 @@
-﻿using AmongUs.GameOptions;
+using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Networking.Rpc;
 using Reactor.Utilities;
@@ -64,6 +65,7 @@ public sealed class HackerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     {
         UseVanillaKillButton = true,
         Icon = TouExtensionIcons.HackerRole,
+        IntroSound = TouAudio.GlitchSound,
     };
 
     [HideFromIl2Cpp]
@@ -164,9 +166,8 @@ public sealed class HackerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     {
         HackerSystem.ActivateJam(durationSeconds);
 
-
         var localPlayer = PlayerControl.LocalPlayer;
-        if (localPlayer != null && localPlayer.PlayerId == hackerId && IsHackerRole(localPlayer))
+        if (localPlayer != null)
         {
             TouAudio.PlaySound(TouExtensionAudio.HackerJamSound);
         }

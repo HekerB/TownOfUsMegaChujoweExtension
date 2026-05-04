@@ -1,4 +1,4 @@
-﻿using MiraAPI.GameOptions;
+using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
@@ -30,10 +30,6 @@ public sealed class VanishModifier : ConcealedModifier, IVisualAppearance
 
     public VisualAppearance GetVisualAppearance()
     {
-        var playerColor = Player.AmOwner
-            ? new Color(1f, 1f, 1f, 0.3f)
-            : Color.clear;
-
         return new VisualAppearance(Player.GetDefaultModifiedAppearance(), TownOfUsAppearances.Swooper)
         {
             HatId = string.Empty,
@@ -41,7 +37,7 @@ public sealed class VanishModifier : ConcealedModifier, IVisualAppearance
             VisorId = string.Empty,
             PlayerName = string.Empty,
             PetId = string.Empty,
-            RendererColor = playerColor,
+            RendererColor = Player.AmOwner ? new Color(0f, 0f, 0f, 0.1f) : Color.clear,
             NameColor = Color.clear,
             ColorBlindTextColor = Color.clear
         };
@@ -72,17 +68,23 @@ public sealed class VanishModifier : ConcealedModifier, IVisualAppearance
         if (Player.AmOwner)
         {
             var button = CustomButtonSingleton<VanisherVanishButton>.Instance;
-            button.OverrideSprite(TouExtensionCrewAssets.UnvanishButtonSprite.LoadAsset());
+            button.OverrideSprite(TouCrewAssets.CrewUnswoopSprite.LoadAsset());
             button.OverrideName(TouLocale.Get("ExtensionRoleVanisherUnvanish", "Unvanish"));
         }
     }
+
+    private MushroomMixupSabotageSystem? _cachedMushroom;
 
     public override void FixedUpdate()
     {
         base.FixedUpdate();
 
-        var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
-        if (mushroom && mushroom.IsActive)
+        if (_cachedMushroom == null)
+        {
+            _cachedMushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
+        }
+
+        if (_cachedMushroom && _cachedMushroom.IsActive)
         {
             Player.RawSetAppearance(this);
             Player.cosmetics.ToggleNameVisible(false);
@@ -134,7 +136,7 @@ public sealed class VanishModifier : ConcealedModifier, IVisualAppearance
         if (Player.AmOwner)
         {
             var button = CustomButtonSingleton<VanisherVanishButton>.Instance;
-            button.OverrideSprite(TouExtensionCrewAssets.VanishButtonSprite.LoadAsset());
+            button.OverrideSprite(TouCrewAssets.CrewSwoopSprite.LoadAsset());
             button.OverrideName(TouLocale.Get("ExtensionRoleVanisherVanish", "Vanish"));
 
             if (MeetingHud.Instance == null)

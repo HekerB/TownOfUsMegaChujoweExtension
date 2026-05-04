@@ -65,6 +65,9 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
     [ModdedToggleOption("ExtensionOptionInjectorSharedCooldown")]
     public bool SharedCooldown { get; set; } = true;
 
+    [ModdedNumberOption("ExtensionOptionInjectorDoubleInjectionMultiplier", 1f, 5f, 0.5f, MiraNumberSuffixes.Multiplier)]
+    public float DoubleInjectionMultiplier { get; set; } = 2.0f;
+
     [ModdedToggleOption("ExtensionOptionInjectorPositiveEffectsEnabled")]
     public bool PositiveEffectsEnabled { get; set; } = true;
 

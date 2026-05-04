@@ -6,7 +6,7 @@ namespace TouMegaChujoweExtension.Assets
     public static class TouExtensionCrewAssets
     {
         private const string ShortPath = "TouMegaChujoweExtension.Resources.Buttons";
-        public static LoadableAsset<Sprite> DecoyButtonSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Decoy_Button.png");
+        public static LoadableAsset<Sprite> DecoyButtonSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Decoy_Button.png", 100f);
         public static LoadableAsset<Sprite> EvokerBlindButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.BlindButton_Icon.png", 100f);
         public static LoadableAsset<Sprite> EvokerVerifyButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.VerifyButton_Icon.png", 100f);
         public static LoadableAsset<Sprite> VanishButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Vanish_Button.png", 100f);

@@ -5,6 +5,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
@@ -12,6 +13,7 @@ using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Networking;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
+using TouMegaChujoweExtension.Utilities;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
@@ -59,7 +61,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        IntroSound = TownOfUs.Assets.TouAudio.ScientistIntroSound,
+        IntroSound = TownOfUs.Assets.TouAudio.GuardianAngelSound,
         Icon = TouExtensionIcons.BodyguardRoleIcon,
         OptionsScreenshot = TouExtensionBanners.BodyguardBanner,
     };
@@ -76,7 +78,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
         {
             if (_backlashReady && !value)
             {
-                Info($"[BG-Role] BacklashReady CLEARED! Caller:\n{System.Environment.StackTrace}");
+                // ($"[BG-Role] BacklashReady CLEARED! Caller:\n{System.Environment.StackTrace}");
             }
             _backlashReady = value;
         }
@@ -98,7 +100,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (Guarded != null && Guarded.HasDied())
         {
-            Info("[BG-Role] Guarded player died - calling Clear()");
+            // ("[BG-Role] Guarded player died - calling Clear()");
             Clear();
         }
 
@@ -107,7 +109,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
             BacklashTimer -= Time.fixedDeltaTime;
             if (BacklashTimer <= 0f)
             {
-                Info("[BG-Role] BacklashTimer expired");
+                // ("[BG-Role] BacklashTimer expired");
                 BacklashReady = false;
                 LastAttacker = null;
                 MarkedAttackerDot = false;
@@ -128,7 +130,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
                 if (Player.AmOwner && !Player.HasDied())
                 {
-                    Info("[BG-Role] Kill mode expired - bodyguard dies");
+                    // ("[BG-Role] Kill mode expired - bodyguard dies");
                     Player.RpcSpecialMurder(Player,
                         createDeadBody: true,
                         teleportMurderer: false,
@@ -182,7 +184,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
     public void Clear()
     {
-        Info("[BG-Role] Clear() called");
+        // ("[BG-Role] Clear() called");
 
         RemoveBacklashArrow();
 
@@ -221,7 +223,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
     public void OnGuardedAttacked(PlayerControl attacker)
     {
-        Info($"[BG-Role] OnGuardedAttacked by {attacker?.Data?.PlayerName}");
+        // ($"[BG-Role] OnGuardedAttacked by {attacker?.Data?.PlayerName}");
         LastAttacker = attacker;
         BacklashReady = true;
         BacklashTimer = OptionGroupSingleton<BodyguardOptions>.Instance.BacklashWindow;
@@ -231,13 +233,20 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (Player.AmOwner)
         {
-            Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Bodyguard));
+            ShieldUtils.TriggerShieldFlash(Player, ShieldType.Bodyguard);
+            
+            var notif = Helpers.CreateAndShowNotification(
+                TouLocale.Get("ExtensionRoleBodyguardShieldAttacked"),
+                TouExtensionColors.Bodyguard,
+                new Vector3(0f, 1f, -20f),
+                spr: TouExtensionIcons.BodyguardRoleIcon.LoadAsset());
+            notif.AdjustNotification();
         }
     }
 
     public void ActivateKillMode()
     {
-        Info("[BG-Role] ActivateKillMode()");
+        // ("[BG-Role] ActivateKillMode()");
         BacklashReady = false;
         KillModeActive = true;
         KillModeTimer = OptionGroupSingleton<BodyguardOptions>.Instance.KillWindow;
@@ -281,7 +290,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         if (bodyguard.Data.Role is not BodyguardRole role)
         {
-            Error("RpcBodyguardGuard - Invalid bodyguard");
+            // ("RpcBodyguardGuard - Invalid bodyguard");
             return;
         }
 
@@ -293,7 +302,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         if (bodyguard.Data.Role is not BodyguardRole role)
         {
-            Error("RpcBodyguardClearGuard - Invalid bodyguard");
+            // ("RpcBodyguardClearGuard - Invalid bodyguard");
             return;
         }
 
@@ -305,11 +314,16 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         if (bodyguard.Data.Role is not BodyguardRole role)
         {
-            Error("RpcBodyguardShieldAttacked - Invalid bodyguard");
             return;
         }
 
         role.OnGuardedAttacked(attacker);
+        
+        // Notify attacker too if they are the local player
+        if (attacker != null && attacker.AmOwner)
+        {
+            ShieldUtils.TriggerShieldFlash(attacker, ShieldType.Bodyguard);
+        }
     }
 
     [MethodRpc((uint)ExtensionRpc.BodyguardBacklash)]
@@ -317,7 +331,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         if (bodyguard.Data.Role is not BodyguardRole role)
         {
-            Error("RpcBodyguardBacklash - Invalid bodyguard");
+            // ("RpcBodyguardBacklash - Invalid bodyguard");
             return;
         }
 
@@ -329,13 +343,13 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         if (bodyguard.Data.Role is not BodyguardRole role)
         {
-            Error("RpcBodyguardKill - Invalid bodyguard");
+            // ("RpcBodyguardKill - Invalid bodyguard");
             return;
         }
 
         if (!role.KillModeActive)
         {
-            Warning("[BG-Role] RpcBodyguardKill called but KillModeActive=false, ignoring");
+            // ("[BG-Role] RpcBodyguardKill called but KillModeActive=false, ignoring");
             return;
         }
 
@@ -360,7 +374,10 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (OptionGroupSingleton<BodyguardOptions>.Instance.DiesAfterKill && !bodyguard.HasDied())
         {
+            // Bodyguard sacrifice is absolute - no shield (Warden, Medic, etc.) can prevent it
             bodyguard.RpcSpecialMurder(bodyguard,
+                isIndirect: true,
+                ignoreShield: true,
                 createDeadBody: true,
                 teleportMurderer: false,
                 showKillAnim: true,

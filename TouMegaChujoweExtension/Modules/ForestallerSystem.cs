@@ -1,4 +1,4 @@
-﻿using MiraAPI.GameOptions;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
@@ -139,12 +139,20 @@ public static class ForestallerSystem
 
     public static void OnMeetingStarted()
     {
+        if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
+        {
+            foreach (var id in PendingMeetingRevealIds.ToArray())
+            {
+                var pc = MiscUtils.PlayerById(id);
+                if (pc != null) RpcForestallerReveal(pc);
+            }
+        }
+
         if (PendingMeetingRevealIds.Count == 0)
         {
             return;
         }
 
-        var shouldAnnounce = PendingMeetingRevealIds.Any(id => IsForestallerActive(id) && !RevealedIds.Contains(id));
         foreach (var id in PendingMeetingRevealIds.ToArray())
         {
             PendingMeetingRevealIds.Remove(id);
@@ -153,13 +161,6 @@ public static class ForestallerSystem
                 RevealedIds.Add(id);
             }
         }
-
-        if (!shouldAnnounce)
-        {
-            return;
-        }
-
-        ShowSabotagesDisabledAnnouncement();
     }
 
     [MethodRpc((uint)ExtensionRpc.ForestallerReveal)]

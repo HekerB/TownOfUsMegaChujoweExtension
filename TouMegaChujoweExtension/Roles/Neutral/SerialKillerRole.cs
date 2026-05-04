@@ -111,6 +111,12 @@ public sealed class SerialKillerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         {
             Player.AddModifier<SerialKillerReductionModifier>(reduction);
         }
+
+        if (options.ManiacMode && options.ManiacTimerReductionEnabled && Player.TryGetModifier<SerialKillerManiacModifier>(out var maniac))
+        {
+            var newDuration = Math.Max(options.ManiacTimerLimit.Value, options.ManiacTimer.Value - (options.ManiacTimerReductionPerKill.Value * KillCount));
+            maniac.UpdateDuration(newDuration);
+        }
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)

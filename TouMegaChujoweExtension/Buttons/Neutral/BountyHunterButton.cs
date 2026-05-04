@@ -23,8 +23,8 @@ namespace TouMegaChujoweExtension.Buttons.Neutral;
 
 public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole, PlayerControl>
 {
-    private static readonly BepInEx.Logging.ManualLogSource Log =
-        BepInEx.Logging.Logger.CreateLogSource("BH-Button");
+    // // private static readonly BepInEx.Logging.ManualLogSource Log =
+        // // BepInEx.Logging.Logger.CreateLogSource("BH-Button");
 
     public override string Name => TouLocale.Get("ExtensionRoleBountyHunterKill", "Hunt");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
@@ -128,25 +128,25 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
     {
         if (Target == null || PlayerControl.LocalPlayer == null)
         {
-            Log.LogWarning("[BH-Button] OnClick: Target or LocalPlayer is null");
+            // Log.LogWarning("[BH-Button] OnClick: Target or LocalPlayer is null");
             return;
         }
 
         if (BountyHunterSystem.CurrentTarget == null)
         {
-            Log.LogWarning("[BH-Button] OnClick: CurrentTarget is null");
+            // Log.LogWarning("[BH-Button] OnClick: CurrentTarget is null");
             return;
         }
 
         if (Target.PlayerId != BountyHunterSystem.CurrentTarget.PlayerId)
         {
-            Log.LogWarning("[BH-Button] OnClick: Target mismatch!");
+            // Log.LogWarning("[BH-Button] OnClick: Target mismatch!");
             return;
         }
 
         BountyHunterSystem.LastTargetPlayerId = Target.PlayerId;
 
-        Log.LogWarning($"[BH-Button] OnClick: Killing {Target.Data.PlayerName} (PlayerId={Target.PlayerId})");
+        // Log.LogWarning($"[BH-Button] OnClick: Killing {Target.Data.PlayerName} (PlayerId={Target.PlayerId})");
 
         PlayerControl.LocalPlayer.RpcCustomMurder(Target);
 

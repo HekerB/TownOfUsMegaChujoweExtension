@@ -75,7 +75,7 @@ public sealed class PoisonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         PoisonSystem.StartPoison(poisoner.PlayerId, targetId);
     }
 	
-	[MethodRpc((uint)ExtensionRpc.PoisonerPlayDeathAnim)]
+    [MethodRpc((uint)ExtensionRpc.PoisonerPlayDeathAnim)]
     public static void RpcPlayDeathAnim(PlayerControl sender, byte targetId)
     {
         PoisonDeathAnimSystem.TriggerDeathAnimation(targetId);

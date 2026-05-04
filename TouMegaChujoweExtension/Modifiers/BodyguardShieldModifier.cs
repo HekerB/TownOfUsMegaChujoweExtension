@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
@@ -122,7 +122,7 @@ public sealed class BodyguardShieldModifier(PlayerControl bodyguard) : BaseShiel
             SetLayerRecursive(_holderFront, playerLayer);
         }
 
-        // Set initial sorting (WAĹ»NE: bez +1, bo SpriteMask ma zakres sorting order)
+        // Set initial sorting (WAŻNE: bez +1, bo SpriteMask ma zakres sorting order)
         if (bodyRenderer != null)
         {
             var baseOrder = bodyRenderer.sortingOrder;
@@ -130,7 +130,7 @@ public sealed class BodyguardShieldModifier(PlayerControl bodyguard) : BaseShiel
             if (_frontSr != null)
             {
                 _frontSr.sortingLayerID = bodyRenderer.sortingLayerID;
-                _frontSr.sortingOrder = baseOrder; // <- tu byĹ‚ +1
+                _frontSr.sortingOrder = baseOrder; // <- tu był +1
             }
             if (_backSr != null)
             {
@@ -205,7 +205,7 @@ public sealed class BodyguardShieldModifier(PlayerControl bodyguard) : BaseShiel
 
         var canSee = CanLocalSeeShield(includeDeadKnow: true);
 
-        // Bez raycast/vision â€” maska vision â€śucinaâ€ť sprite sama
+        // Bez raycast/vision — maska vision “ucina” sprite sama
         var isVisible = canSee && !Player.IsConcealed() && IsVisible;
 
         if (_holderFront != null) _holderFront.SetActive(isVisible);
@@ -226,7 +226,7 @@ public sealed class BodyguardShieldModifier(PlayerControl bodyguard) : BaseShiel
         {
             _frontSr.maskInteraction = bodyRenderer.maskInteraction;
             _frontSr.sortingLayerID = bodyRenderer.sortingLayerID;
-            _frontSr.sortingOrder = baseOrder; // <- tu teĹĽ bez +1
+            _frontSr.sortingOrder = baseOrder; // <- tu też bez +1
             var fc = _frontSr.color;
             _frontSr.color = new Color(fc.r, fc.g, fc.b, bodyAlpha);
         }

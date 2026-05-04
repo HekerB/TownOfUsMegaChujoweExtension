@@ -51,10 +51,7 @@ public sealed class HackerDeviceButton : TownOfUsRoleButton<HackerRole>
             return false;
         }
 
-        if (player.AreCommsAffected())
-        {
-            return false;
-        }
+        // Allow using device during comms/jam
 
         var locked = HackerSystem.GetLockedSource(player.PlayerId);
         if (locked == HackerInfoSource.None)
@@ -90,11 +87,7 @@ public sealed class HackerDeviceButton : TownOfUsRoleButton<HackerRole>
         Button.usesRemainingText.text = $"{Mathf.CeilToInt(battery)}s";
 
 
-        if (player.AreCommsAffected())
-        {
-            CloseAll();
-            return;
-        }
+        // Allow keeping device open during comms/jam
 
 
         if (_usingAdminMap && MapBehaviour.Instance != null && !MapBehaviour.Instance.gameObject.activeSelf)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,8 +36,8 @@ public static class PirateDuelMeetingPatch
     private static readonly Color PirateTargetColor = Color.yellow;
     private static readonly List<(TMP_Text Text, string OriginalText, Color OriginalColor)> _modifiedNames = new();
 
-    private static readonly BepInEx.Logging.ManualLogSource Log =
-        BepInEx.Logging.Logger.CreateLogSource("PirateDuel");
+    // // private static readonly BepInEx.Logging.ManualLogSource Log =
+        // // BepInEx.Logging.Logger.CreateLogSource("PirateDuel");
 
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
     [HarmonyPostfix]
@@ -162,7 +162,7 @@ public static class PirateDuelMeetingPatch
         }
         catch (Exception ex)
         {
-            Log.LogError($"MeetingStart error: {ex}");
+            // Log.LogError($"MeetingStart error: {ex}");
         }
     }
 
@@ -185,7 +185,7 @@ public static class PirateDuelMeetingPatch
         }
         catch (Exception ex)
         {
-            Log.LogError($"CreateDuelButton error: {ex}");
+            // Log.LogError($"CreateDuelButton error: {ex}");
             _buttonCreated = true;
         }
     }
@@ -205,9 +205,9 @@ public static class PirateDuelMeetingPatch
 
             area.NameText.color = PirateTargetColor;
 
-            if (!area.NameText.text.StartsWith("â  "))
+            if (!area.NameText.text.StartsWith("☠ "))
             {
-                area.NameText.text = "â  " + area.NameText.text;
+                area.NameText.text = "☠ " + area.NameText.text;
             }
 
             break;
@@ -247,7 +247,7 @@ public static class PirateDuelMeetingPatch
         catch
         {
             _sprites = null;
-            Log.LogError("Failed to load duel sprites");
+            // Log.LogError("Failed to load duel sprites");
         }
     }
 
@@ -346,7 +346,7 @@ public static class PirateDuelMeetingPatch
         }
         catch (Exception ex)
         {
-            Log.LogError($"RpcDuelChoice error: {ex}");
+            // Log.LogError($"RpcDuelChoice error: {ex}");
         }
     }
 
@@ -375,7 +375,7 @@ public static class PirateDuelMeetingPatch
         }
         catch (Exception ex)
         {
-            Log.LogError($"VotingComplete error: {ex}");
+            // Log.LogError($"VotingComplete error: {ex}");
         }
     }
 
@@ -439,7 +439,7 @@ public static class PirateDuelMeetingPatch
         }
         catch (Exception ex)
         {
-            Log.LogError($"Notification error: {ex}");
+            // Log.LogError($"Notification error: {ex}");
         }
     }
 
@@ -457,7 +457,7 @@ public static class PirateDuelMeetingPatch
         }
         catch (Exception ex)
         {
-            Log.LogError($"Jailed notification error: {ex}");
+            // Log.LogError($"Jailed notification error: {ex}");
         }
     }
 
@@ -475,7 +475,7 @@ public static class PirateDuelMeetingPatch
         }
         catch (Exception ex)
         {
-            Log.LogError($"Target jailed notification error: {ex}");
+            // Log.LogError($"Target jailed notification error: {ex}");
         }
     }
 

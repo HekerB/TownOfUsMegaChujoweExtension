@@ -1,12 +1,13 @@
-﻿using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.Patches.Stubs;
-using MiraAPI.Roles;
-using TouMegaChujoweExtension.Assets;
 using TownOfUs.Extensions;
+using TownOfUs.Interfaces;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
 using UnityEngine;
+using MiraAPI.Patches.Stubs;
+using MiraAPI.Roles;
+using TouMegaChujoweExtension.Assets;
+using Il2CppInterop.Runtime.Attributes;
 
 namespace TouMegaChujoweExtension.Roles.Crewmate;
 
@@ -14,8 +15,9 @@ namespace TouMegaChujoweExtension.Roles.Crewmate;
 /// Forestaller role: when they complete all tasks, sabotages are disabled (while they are alive).
 /// They are revealed in meetings after completing all tasks.
 /// </summary>
-public sealed class ForestallerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IUnguessable
+public sealed class ForestallerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IGuessable, IUnguessable
 {
+    public bool CanBeGuessed => Player == null || !Modules.ForestallerSystem.IsForestallerRevealed(Player.PlayerId);
     public DoomableType DoomHintType => DoomableType.Insight;
     public string LocaleKey => "Forestaller";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Forestaller");
@@ -49,6 +51,6 @@ public sealed class ForestallerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         Modules.ForestallerSystem.TryActivateIfCompletedAllTasks(Player);
     }
 
-    public bool IsGuessable => Player != null && !Modules.ForestallerSystem.IsForestallerRevealed(Player.PlayerId);
+    public bool IsGuessable => Player == null || !Modules.ForestallerSystem.IsForestallerRevealed(Player.PlayerId);
     public RoleBehaviour AppearAs => this;
 }

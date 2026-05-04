@@ -40,11 +40,24 @@ private static void ApplyDraftRoles()
         var player = MiscUtils.PlayerById(playerId);
         if (player == null || player.Data == null || player.Data.Disconnected)
         {
-            Info($"[Draft] Skipping role assignment for player {playerId} (disconnected/null).");
+            // Info($"[Draft] Skipping role assignment for player {playerId} (disconnected/null).");
             continue;
         }
         
         player.RpcSetRole((RoleTypes)roleId);
+    }
+
+    // Assign Crewmate to any player not in draft picks (e.g. spectators)
+    // This ensures they get a valid base role so TownOfUs can convert them to SpectatorRole
+    foreach (var player in PlayerControl.AllPlayerControls)
+    {
+        if (player == null || player.Data == null || player.Data.Disconnected)
+            continue;
+
+        if (!DraftSystem.DraftPicks.ContainsKey(player.PlayerId))
+        {
+            player.RpcSetRole(RoleTypes.Crewmate);
+        }
     }
 
     DraftSystem.DraftComplete = false;

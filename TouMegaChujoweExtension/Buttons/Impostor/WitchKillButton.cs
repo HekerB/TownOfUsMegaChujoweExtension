@@ -105,6 +105,6 @@ public sealed class WitchKillButton : TownOfUsKillRoleButton<WitchRole, PlayerCo
 
     public override PlayerControl? GetTarget()
     {
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(false, Distance);
     }
 }

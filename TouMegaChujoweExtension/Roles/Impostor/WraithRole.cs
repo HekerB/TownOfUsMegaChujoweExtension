@@ -41,6 +41,7 @@ public sealed class WraithRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     {
         UseVanillaKillButton = true,
         Icon = TouRoleIcons.Wraith,
+        IntroSound = TouAudio.PhantomIntroSound,
         CanUseVent = OptionGroupSingleton<WraithOptions>.Instance.CanVent
     };
 
@@ -113,6 +114,11 @@ public sealed class WraithRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
         if (invisDuration > 0f && !wraith.HasDied())
         {
             wraith.AddModifier<WraithLanternInvisibilityModifier>();
+        }
+
+        if (wraith.AmOwner)
+        {
+            TouAudio.PlaySound(TouAudio.SwooperActivateSound);
         }
 
         Coroutines.Start(CoDelayedTeleport(wraith, pos));

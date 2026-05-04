@@ -151,7 +151,6 @@ public static class PelicanInteractionPatches
         if (PelicanSystem.IsPendingDigest(__instance.PlayerId)) return true;
         if (PelicanSystem.IsDigestKillVictim(__instance.PlayerId)) return true;
 
-        Logger<TouMegaChujoweExtensionPlugin>.Warning($"[PelicanSystem] Blocked Die() on swallowed player {__instance.PlayerId} (reason: {reason})");
         return false;
     }
 

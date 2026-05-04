@@ -19,10 +19,14 @@ namespace TouMegaChujoweExtension.Patches.Pope;
 [HarmonyPatch]
 public static class PopeMeetingPatch
 {
+    private static float _lastUpdate;
+
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
     [HarmonyPostfix]
     public static void UpdatePostfix(MeetingHud __instance)
     {
+        if (UnityEngine.Time.time - _lastUpdate < 0.2f) return;
+        _lastUpdate = UnityEngine.Time.time;
         var local = PlayerControl.LocalPlayer;
         if (local == null || local.Data == null) return;
 
@@ -36,43 +40,9 @@ public static class PopeMeetingPatch
             var target = MiscUtils.PlayerById(pva.TargetPlayerId);
             if (target == null) continue;
 
-            // --- POPE (Θ) ---
-            if (target.HasModifier<PopeCanonizedModifier>())
-            {
-                bool canSee = (local.Data.Role is PopeRole) || deadKnow;
-                if (canSee && !pva.NameText.text.Contains("Θ"))
-                {
-                    pva.NameText.text += $" <color=#{ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Pope)}>Θ</color>";
-                }
-            }
-
-            // --- DEATH NOTE (✶) ---
-            var dnTarget = GetDeathNoteTarget();
-            if (dnTarget != null && target.PlayerId == dnTarget.PlayerId)
-            {
-                bool isDeathNote = local.TryGetModifier<DeathNoteModifier>(out _);
-                bool canSee = isDeathNote || deadKnow;
-                if (canSee && !pva.NameText.text.Contains("✶"))
-                {
-                    pva.NameText.text += " <color=#8B00FF>✶</color>";
-                }
-            }
-
-            // --- BODYGUARD (Σ) ---
-            if (target.TryGetModifier<BodyguardShieldModifier>(out var shieldMod))
-            {
-                bool isBodyguard = local.Data.Role is BodyguardRole;
-                bool isTarget = local.PlayerId == target.PlayerId;
-                
-                // For Bodyguard, visibility also depends on their own setting or if it's set to everyone
-                bool shieldVisibleBySetting = shieldMod.VisibleSymbol;
-                
-                bool canSee = isBodyguard || isTarget || shieldVisibleBySetting || deadKnow;
-                if (canSee && !pva.NameText.text.Contains("Σ"))
-                {
-                    pva.NameText.text += " <color=#0064FF>Σ</color>";
-                }
-            }
+            // Symbols are now handled by UpdateRoleNameText calling UpdateTargetSymbols/UpdateProtectionSymbols
+            // every frame. We don't need to append them here, which was causing flickering due to the 0.2s timer
+            // fighting with the per-frame resets in HudManagerPatches.
         }
     }
 
@@ -114,4 +84,4 @@ public static class PopeMeetingPatch
             MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, report, false, true);
         }
     }
-}
+}

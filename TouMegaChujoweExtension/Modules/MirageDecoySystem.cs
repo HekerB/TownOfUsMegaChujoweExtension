@@ -308,45 +308,54 @@ public static class MirageDecoySystem
 
     public static void UpdateHost()
     {
-
-
-
         if (ActiveByMirage.Count == 0)
         {
             return;
         }
 
         var now = Time.time;
-        var expired = new List<byte>();
-        foreach (var kvp in ActiveByMirage)
+        var mirageIds = ActiveByMirage.Keys.ToArray();
+        
+        foreach (var mirageId in mirageIds)
         {
-            if (kvp.Value.IsVisible && now >= kvp.Value.ExpiresAt)
+            if (!ActiveByMirage.TryGetValue(mirageId, out var decoy) || !decoy.IsVisible)
             {
-                expired.Add(kvp.Key);
+                continue;
             }
-        }
 
-        foreach (var mirageId in expired)
-        {
             var mirage = MiscUtils.PlayerById(mirageId);
             if (mirage == null)
             {
-
                 ClearForPlayer(mirageId);
                 continue;
             }
 
-            if (mirage.AmOwner)
+            if (!mirage.AmOwner)
             {
-
-
-                Roles.Crewmate.MirageRole.RpcMirageDestroyDecoy(mirage);
+                continue;
             }
-            else
+
+            // 1. Check expiration
+            if (now >= decoy.ExpiresAt)
             {
+                Roles.Crewmate.MirageRole.RpcMirageDestroyDecoy(mirage);
+                continue;
+            }
 
+            // 2. Check proximity (touch interaction)
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                if (player == null || player.Data == null || player.Data.IsDead || player.PlayerId == mirageId)
+                {
+                    continue;
+                }
 
-                ClearForPlayer(mirageId);
+                var dist = Vector2.Distance(player.GetTruePosition(), new Vector2(decoy.WorldPosition.x, decoy.WorldPosition.y));
+                if (dist < 0.35f)
+                {
+                    Roles.Crewmate.MirageRole.RpcMirageTriggerDecoy(mirage, player, new Vector2(decoy.WorldPosition.x, decoy.WorldPosition.y));
+                    break;
+                }
             }
         }
     }

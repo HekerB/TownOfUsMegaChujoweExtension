@@ -39,6 +39,7 @@ public sealed class InjectorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     {
         UseVanillaKillButton = true,
         Icon = TouExtensionIcons.InjectorRole,
+        IntroSound = TownOfUs.Assets.TouAudio.ScientistIntroSound,
     };
 
     [HideFromIl2Cpp]
@@ -71,7 +72,7 @@ public sealed class InjectorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     {
         if (injector.Data.Role is not InjectorRole)
         {
-            Error("RpcInjectorInject - Invalid injector");
+            // ("RpcInjectorInject - Invalid injector");
             return;
         }
 

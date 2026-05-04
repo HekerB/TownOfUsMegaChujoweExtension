@@ -1,6 +1,7 @@
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
@@ -28,8 +29,8 @@ namespace TouMegaChujoweExtension.Roles.Neutral;
 public sealed class PirateRole(IntPtr cppPtr)
     : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IContinuesGame
 {
-    private static readonly BepInEx.Logging.ManualLogSource Log =
-        BepInEx.Logging.Logger.CreateLogSource("PirateRole");
+    // // // private static readonly BepInEx.Logging.ManualLogSource Log =
+    // // //     BepInEx.Logging.Logger.CreateLogSource("PirateRole");
 
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "Pirate";
@@ -205,7 +206,7 @@ public sealed class PirateRole(IntPtr cppPtr)
         LastDuelTargetId = byte.MaxValue;
         HasCompletedDuels = false;
         ResetDuelState();
-        Log.LogInfo("PirateRole initialized for " + player.Data.PlayerName);
+        // ("PirateRole initialized for " + player.Data.PlayerName);
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -343,6 +344,10 @@ public sealed class PirateRole(IntPtr cppPtr)
                     diedThisRound: DeathHandlerOverride.SetTrue,
                     killedBy: TouLocale.GetParsed("ExtensionDiedByPirateDuel", "Dueled by <player>").Replace("<player>", pirate.Data.PlayerName),
                     lockInfo: DeathHandlerOverride.SetTrue);
+
+                // Trigger AfterMurderEvent so other systems (like Legacy Animation) pick it up
+                var afterMurderEvent = new MiraAPI.Events.Vanilla.Gameplay.AfterMurderEvent(pirate, target, null);
+                MiraEventManager.InvokeEvent(afterMurderEvent);
             }
         }
         else if (result == 0)

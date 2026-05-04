@@ -1,4 +1,4 @@
-﻿using MiraAPI.GameOptions;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Options.Modifiers;

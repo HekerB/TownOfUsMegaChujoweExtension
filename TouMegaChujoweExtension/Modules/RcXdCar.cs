@@ -516,18 +516,23 @@ public sealed class RcXdCar : IDisposable
         if (!MeetingHud.Instance && !ExileController.Instance && _owner != null)
         {
             var radius = opts.DetonateRadius * ShipStatus.Instance.MaxLightRadius;
-            var affected = Helpers.GetClosestPlayers(bombPos, radius);
-            affected.Shuffle();
+            var allNear = Helpers.GetClosestPlayers(bombPos, radius);
+            
+            // Filter for valid targets FIRST (including teammates!)
+            var validTargets = allNear.Where(x => 
+                x != null && 
+                !x.HasDied() && 
+                x.PlayerId != _owner.PlayerId && // Don't kill the owner themselves
+                !(x.HasModifier<BaseShieldModifier>() && x.AmOwner) && 
+                !(x.HasModifier<FirstDeadShield>() && x.AmOwner)
+            ).ToList();
 
-            while (affected.Count > opts.MaxKillsInDetonation)
-                affected.Remove(affected[^1]);
+            validTargets.Shuffle();
 
-            var targetList = affected.Where(x =>
-                !x.HasDied() &&
-                !(x.HasModifier<BaseShieldModifier>() && x.AmOwner) &&
-                !(x.HasModifier<FirstDeadShield>() && x.AmOwner)).ToList();
+            // Take up to MaxKills from the VALID targets
+            var targetsToKill = validTargets.Take((int)opts.MaxKillsInDetonation).ToList();
 
-            foreach (var target in targetList)
+            foreach (var target in targetsToKill)
             {
                 _owner.RpcCustomMurder(target,
                     createDeadBody: true, teleportMurderer: false,

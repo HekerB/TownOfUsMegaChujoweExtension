@@ -6,6 +6,7 @@ using TownOfUs.Options;
 using TownOfUs.Patches;
 using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
+using TownOfUs.Assets;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -17,15 +18,11 @@ public sealed class WraithLanternInvisibilityModifier : ConcealedModifier, IVisu
     public override float Duration => OptionGroupSingleton<WraithOptions>.Instance.InvisibleDuration.Value;
     public override bool HideOnUi => true;
     public override bool AutoStart => true;
+    public override bool VisibleToOthers => false;
     public bool VisualPriority => true;
 
     public VisualAppearance GetVisualAppearance()
     {
-        var playerColor = (PlayerControl.LocalPlayer.IsImpostorAligned() ||
-                           (PlayerControl.LocalPlayer.DiedOtherRound() && OptionGroupSingleton<GeneralOptions>.Instance.TheDeadKnow))
-            ? new Color(0f, 0f, 0f, 0.1f)
-            : Color.clear;
-
         return new VisualAppearance(Player.GetDefaultModifiedAppearance(), TownOfUsAppearances.Swooper)
         {
             HatId = string.Empty,
@@ -33,7 +30,7 @@ public sealed class WraithLanternInvisibilityModifier : ConcealedModifier, IVisu
             VisorId = string.Empty,
             PlayerName = string.Empty,
             PetId = string.Empty,
-            RendererColor = playerColor,
+            RendererColor = Player.AmOwner ? new Color(0f, 0f, 0f, 0.1f) : Color.clear,
             NameColor = Color.clear,
             ColorBlindTextColor = Color.clear
         };
@@ -55,12 +52,18 @@ public sealed class WraithLanternInvisibilityModifier : ConcealedModifier, IVisu
         Player.cosmetics.ToggleNameVisible(false);
     }
 
+    private MushroomMixupSabotageSystem? _cachedMushroom;
+
     public override void FixedUpdate()
     {
         base.FixedUpdate();
 
-        var mushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
-        if (mushroom && mushroom.IsActive)
+        if (_cachedMushroom == null)
+        {
+            _cachedMushroom = Object.FindObjectOfType<MushroomMixupSabotageSystem>();
+        }
+
+        if (_cachedMushroom && _cachedMushroom.IsActive)
         {
             Player.RawSetAppearance(this);
             Player.cosmetics.ToggleNameVisible(false);
@@ -71,6 +74,11 @@ public sealed class WraithLanternInvisibilityModifier : ConcealedModifier, IVisu
     {
         Player.ResetAppearance();
         Player.cosmetics.ToggleNameVisible(true);
+
+        if (Player.AmOwner)
+        {
+            TouAudio.PlaySound(TouAudio.SwooperDeactivateSound);
+        }
 
         if (HudManagerPatches.CamouflageCommsEnabled)
         {

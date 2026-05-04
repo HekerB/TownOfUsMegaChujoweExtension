@@ -11,8 +11,8 @@ namespace TouMegaChujoweExtension.Modules;
 
 public static class PirateDuelSystem
 {
-    private static readonly BepInEx.Logging.ManualLogSource Log =
-        BepInEx.Logging.Logger.CreateLogSource("PirateDuelSystem");
+    // // private static readonly BepInEx.Logging.ManualLogSource Log =
+        // // BepInEx.Logging.Logger.CreateLogSource("PirateDuelSystem");
 
     private static MethodInfo? _coAnimateDeathMethod;
 
@@ -66,7 +66,7 @@ public static class PirateDuelSystem
 
         if (voteArea == null)
         {
-            Log.LogError($"Could not find vote area for player {targetId}");
+            // Log.LogError($"Could not find vote area for player {targetId}");
             return;
         }
 
@@ -79,7 +79,7 @@ public static class PirateDuelSystem
 
             if (_coAnimateDeathMethod == null)
             {
-                Log.LogError("Could not find CoAnimateDeath method via reflection");
+                // Log.LogError("Could not find CoAnimateDeath method via reflection");
                 // Fallback - just show dead overlay
                 voteArea.AmDead = true;
                 voteArea.Overlay.gameObject.SetActive(true);
@@ -98,7 +98,7 @@ public static class PirateDuelSystem
         }
         catch (System.Exception ex)
         {
-            Log.LogError($"Failed to invoke CoAnimateDeath: {ex}");
+            // Log.LogError($"Failed to invoke CoAnimateDeath: {ex}");
             voteArea.AmDead = true;
             voteArea.Overlay.gameObject.SetActive(true);
             voteArea.XMark.gameObject.SetActive(true);

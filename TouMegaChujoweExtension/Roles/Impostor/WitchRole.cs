@@ -41,7 +41,8 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = false,
-        Icon = TouRoleIcons.Witch
+        Icon = TouRoleIcons.Witch,
+        IntroSound = TouMegaChujoweExtension.Assets.TouExtensionAudio.WitchLaugh,
     };
 
     [HideFromIl2Cpp]
@@ -73,7 +74,7 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
     {
         if (witch.Data.Role is not WitchRole)
         {
-            Error("RpcWitchSpell - Invalid witch");
+            // ("RpcWitchSpell - Invalid witch");
             return;
         }
 
@@ -262,6 +263,16 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
 
             player.RemoveModifier<WitchSpellboundModifier>();
         }
+
+        // Odświeżenie Meetingu (ikonki i kolory)
+        Patches.WitchSpellboundIndicatorPatch.UpdateRoleNameTextPostfix();
+        if (MeetingHud.Instance != null)
+        {
+            foreach (var pva in MeetingHud.Instance.playerStates)
+            {
+                pva.NameText.color = Color.white;
+            }
+        }
     }
 
     [MethodRpc((uint)ExtensionRpc.WitchClearSpellboundPlayer)]
@@ -276,6 +287,13 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         if (player.HasModifier<WitchSpellboundModifier>())
         {
             player.RemoveModifier<WitchSpellboundModifier>();
+        }
+
+        Patches.WitchSpellboundIndicatorPatch.UpdateRoleNameTextPostfix();
+        if (MeetingHud.Instance != null)
+        {
+            var pva = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == targetId);
+            if (pva != null) pva.NameText.color = Color.white;
         }
     }
 
@@ -299,6 +317,23 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
             {
                 player.RemoveModifier<WitchSpellboundModifier>();
                 clearedCount++;
+            }
+        }
+
+        if (clearedCount > 0)
+        {
+            // Odświeżenie Meetingu
+            Patches.WitchSpellboundIndicatorPatch.UpdateRoleNameTextPostfix();
+            if (MeetingHud.Instance != null)
+            {
+                foreach (var pva in MeetingHud.Instance.playerStates)
+                {
+                    var pc = MiscUtils.PlayerById(pva.TargetPlayerId);
+                    if (pc != null && !pc.HasModifier<WitchSpellboundModifier>())
+                    {
+                        pva.NameText.color = Color.white;
+                    }
+                }
             }
         }
     }

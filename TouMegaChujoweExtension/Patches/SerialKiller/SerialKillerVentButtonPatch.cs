@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Roles.Neutral;
 using UnityEngine;

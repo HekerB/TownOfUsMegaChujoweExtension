@@ -24,6 +24,8 @@ namespace TouMegaChujoweExtension.Roles.Crewmate;
 public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IUnguessable
 {
     public DoomableType DoomHintType => DoomableType.Insight;
+    public static readonly System.Collections.Generic.Dictionary<byte, System.Collections.Generic.List<string>> TriggeredRoles = new();
+
     public string LocaleKey => "Mirage";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
@@ -57,14 +59,16 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        Icon = TouExtensionIcons.MirageRoleIcon
+        Icon = TouExtensionIcons.MirageRoleIcon,
+        IntroSound = TouAudio.NoisemakerIntroSound,
     };
-    public bool IsGuessable => OptionGroupSingleton<MirageOptions>.Instance.DecoyType != MirageDecoyType.Mirage;
+    public bool IsGuessable => true;
     public RoleBehaviour AppearAs => this;
 
     public void LobbyStart()
     {
         MirageDecoySystem.ClearAll();
+        TriggeredRoles.Clear();
     }
 
     public override void Initialize(PlayerControl player)
@@ -145,6 +149,41 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         if (mirage?.Data?.Role is not MirageRole)
         {
             return;
+        }
+
+        if (OptionGroupSingleton<MirageOptions>.Instance.RevealInteractorRole && interactor != null)
+        {
+            if (!TriggeredRoles.ContainsKey(mirage.PlayerId))
+            {
+                TriggeredRoles[mirage.PlayerId] = new System.Collections.Generic.List<string>();
+            }
+            
+            var role = interactor.Data?.Role;
+            string roleName = "Unknown";
+            Color roleColor = Color.white;
+
+            if (role != null)
+            {
+                roleName = role.GetRoleName();
+                if (string.IsNullOrWhiteSpace(roleName) || roleName == "Unknown")
+                {
+                    // Fallback to class name if localization or standard retrieval fails
+                    roleName = role.GetType().Name.Replace("Role", "").Replace("RoleBehaviour", "");
+                    if (string.IsNullOrWhiteSpace(roleName)) roleName = "Player";
+                }
+                roleColor = role is ICustomRole customRole ? customRole.RoleColor : role.TeamColor;
+            }
+            else
+            {
+                roleName = "Unknown Player";
+            }
+
+            var coloredRoleName = $"<color=#{ColorUtility.ToHtmlStringRGBA(roleColor)}>{roleName}</color>";
+            
+            if (!TriggeredRoles[mirage.PlayerId].Contains(coloredRoleName))
+            {
+                TriggeredRoles[mirage.PlayerId].Add(coloredRoleName);
+            }
         }
 
         if (mirage.AmOwner)

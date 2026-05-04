@@ -11,6 +11,8 @@ namespace TouMegaChujoweExtension.Patches.Evoker;
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
 public static class EvokerHudPatch
 {
+    private static float _lastOutlineUpdateTime = 0f;
+
     [HarmonyPostfix]
     [HarmonyPriority(Priority.Last)]
     public static void Postfix()
@@ -18,6 +20,9 @@ public static class EvokerHudPatch
         EvokerSystem.Update();
 
         if (!EvokerSystem.IsBlindActive) return;
+
+        if (Time.time - _lastOutlineUpdateTime < 0.2f) return;
+        _lastOutlineUpdateTime = Time.time;
 
         var local = PlayerControl.LocalPlayer;
         if (local?.Data?.Role is not EvokerRole) return;

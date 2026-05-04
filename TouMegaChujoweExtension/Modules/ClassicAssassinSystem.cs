@@ -1,3 +1,4 @@
+using System.Reflection;
 using MiraAPI.GameOptions;
 using MiraAPI.LocalSettings;
 using MiraAPI.Modifiers;
@@ -39,6 +40,10 @@ public static class ClassicAssassinSystem
 
     public static bool IsActive =>
         LocalSettingsTabSingleton<TouExtensionLocalSettings>.Instance.UseClassicAssassinGuessing.Value;
+
+    private static int _lastAliveCount = -1;
+    private static readonly Dictionary<System.Type, FieldInfo> _screenFields = new();
+    private static readonly Dictionary<System.Type, MethodInfo[]> _refreshMethods = new();
 
     private class GuessEntry
     {
@@ -96,10 +101,14 @@ public static class ClassicAssassinSystem
         _guessableEntries.Clear();
         _guessedThisMeeting = false;
         _remainingKills = 0;
+        _lastAliveCount = -1;
     }
 
     public static void FullReset()
     {
+        _lastAliveCount = -1;
+        _screenFields.Clear();
+        _refreshMethods.Clear();
         foreach (var (_, (cycleBack, cycleForward, guess, guessText)) in Buttons)
         {
             if (cycleBack != null) Object.Destroy(cycleBack);
@@ -339,29 +348,32 @@ public static class ClassicAssassinSystem
             });
         }
 
-        var options = OptionGroupSingleton<AssassinOptions>.Instance;
+        var assassinOptions = OptionGroupSingleton<AssassinOptions>.Instance;
+        var allPossibleModifiers = GetGuessableModifiersWithDynamicSupport(MiscUtils.AllModifiers);
 
-        if (options.AssassinGuessCrewModifiers || options.AssassinGuessAlliances)
-        {
-            var modifiers = MiscUtils.AllModifiers
-                .Where(m => IsModifierValid(m, options))
-                .OrderBy(m => m.ModifierName)
-                .ToList();
-
-            foreach (var mod in modifiers)
+        var modifiers = allPossibleModifiers
+            .Where(m =>
             {
-                var color = mod switch
-                {
-                    IColoredModifier colored => colored.ModifierColor,
-                    _ => MiscUtils.GetRoleColour(mod.ModifierName.Replace(" ", string.Empty))
-                };
-                _guessableEntries.Add(new GuessEntry
-                {
-                    Name = mod.ModifierName,
-                    Color = color,
-                    Modifier = mod
-                });
-            }
+                if (m is DeathNoteModifier or VenomousModifier) return true;
+                if (!assassinOptions.AssassinGuessCrewModifiers && !assassinOptions.AssassinGuessAlliances) return false;
+                return IsModifierValid(m, assassinOptions);
+            })
+            .OrderBy(m => m.ModifierName)
+            .ToList();
+
+        foreach (var mod in modifiers)
+        {
+            var color = mod switch
+            {
+                IColoredModifier colored => colored.ModifierColor,
+                _ => MiscUtils.GetRoleColour(mod.ModifierName.Replace(" ", string.Empty))
+            };
+            _guessableEntries.Add(new GuessEntry
+            {
+                Name = mod.ModifierName,
+                Color = color,
+                Modifier = mod
+            });
         }
     }
 
@@ -383,29 +395,100 @@ public static class ClassicAssassinSystem
             });
         }
 
-        var options = OptionGroupSingleton<VigilanteOptions>.Instance;
-        if (options.VigilanteGuessAlliances || options.VigilanteGuessKillerMods)
-        {
-            var modifiers = MiscUtils.AllModifiers
-                .Where(IsModifierValidForVigilante)
-                .OrderBy(m => m.ModifierName)
-                .ToList();
+        var vigilanteOptions = OptionGroupSingleton<VigilanteOptions>.Instance;
+        var allPossibleModifiers = GetGuessableModifiersWithDynamicSupport(MiscUtils.AllModifiers);
 
-            foreach (var mod in modifiers)
+        var modifiers = allPossibleModifiers
+            .Where(m =>
             {
-                var color = mod switch
+                if (m is DeathNoteModifier or VenomousModifier) return true;
+                if (!vigilanteOptions.VigilanteGuessAlliances && !vigilanteOptions.VigilanteGuessKillerMods) return false;
+                return IsModifierValidForVigilante(m);
+            })
+            .OrderBy(m => m.ModifierName)
+            .ToList();
+
+        foreach (var mod in modifiers)
+        {
+            var color = mod switch
+            {
+                IColoredModifier colored => colored.ModifierColor,
+                _ => MiscUtils.GetRoleColour(mod.ModifierName.Replace(" ", string.Empty))
+            };
+            _guessableEntries.Add(new GuessEntry
+            {
+                Name = mod.ModifierName,
+                Color = color,
+                Modifier = mod
+            });
+        }
+    }
+
+    private static List<BaseModifier> GetGuessableModifiersWithDynamicSupport(IEnumerable<BaseModifier> baseModifiers)
+    {
+        var modifiers = baseModifiers.ToList();
+
+        // 1. Player-based discovery (active instances)
+        foreach (var pc in PlayerControl.AllPlayerControls)
+        {
+            if (pc == null || pc.Data == null) continue;
+            var playerModifiers = pc.GetModifiers<BaseModifier>();
+            if (playerModifiers == null) continue;
+
+            foreach (var mod in playerModifiers)
+            {
+                if (mod == null) continue;
+                if (mod is IGuessable && !modifiers.Any(m => m.GetType() == mod.GetType()))
                 {
-                    IColoredModifier colored => colored.ModifierColor,
-                    _ => MiscUtils.GetRoleColour(mod.ModifierName.Replace(" ", string.Empty))
-                };
-                _guessableEntries.Add(new GuessEntry
-                {
-                    Name = mod.ModifierName,
-                    Color = color,
-                    Modifier = mod
-                });
+                    modifiers.Add(mod);
+                }
             }
         }
+
+        // 2. Prototype discovery (for unassigned modifiers)
+        // Since these are extension modifiers (C# classes), we can safely instantiate them
+        // with IntPtr.Zero to use as prototypes for their names and colors.
+        try
+        {
+            var extensionTypes = new[] 
+            { 
+                typeof(TouMegaChujoweExtension.Modifiers.Neutral.DeathNoteModifier),
+                typeof(TouMegaChujoweExtension.Modifiers.Neutral.VenomousModifier),
+                typeof(TouMegaChujoweExtension.Modifiers.Crewmate.PublicityModifier)
+            };
+
+            foreach (var type in extensionTypes)
+            {
+                if (!modifiers.Any(m => m.GetType() == type))
+                {
+                    try
+                    {
+                        // Use the IntPtr constructor if it exists (standard for Il2Cpp-wrapped types)
+                        var prototype = (BaseModifier)System.Activator.CreateInstance(type, new object[] { System.IntPtr.Zero });
+                        if (prototype != null)
+                        {
+                            modifiers.Add(prototype);
+                        }
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            // Fallback to parameterless constructor if it's a pure C# class
+                            var prototype = (BaseModifier)System.Activator.CreateInstance(type);
+                            if (prototype != null)
+                            {
+                                modifiers.Add(prototype);
+                            }
+                        }
+                        catch { }
+                    }
+                }
+            }
+        }
+        catch { }
+
+        return modifiers;
     }
 
     private static void BuildGuessableListForDoomsayer(DoomsayerRole doomsayer)
@@ -434,6 +517,7 @@ public static class ClassicAssassinSystem
     {
         if (role.IsDead) return false;
         if (role is IUnguessable { IsGuessable: false }) return false;
+        if (role is IGuessable { CanBeGuessed: false }) return false;
         if (role is TownOfUs.Roles.Impostor.TraitorRole && assassin.Player.IsImpostorAligned()) return false;
 
         var options = OptionGroupSingleton<AssassinOptions>.Instance;
@@ -444,7 +528,7 @@ public static class ClassicAssassinSystem
         if (alignment == RoleAlignment.CrewmateInvestigative)
             return options.AssassinGuessInvest;
 
-        if (role.IsCrewmate() && role is MiraAPI.Roles.ICustomRole)
+        if (role.IsCrewmate() && (role is MiraAPI.Roles.ICustomRole || role is TownOfUs.Roles.ITownOfUsRole))
             return true;
 
         if (role.IsCrewmate() && options.AssassinCrewmateGuess)
@@ -476,6 +560,7 @@ public static class ClassicAssassinSystem
     {
         if (role.IsDead) return false;
         if (role is IUnguessable { IsGuessable: false }) return false;
+        if (role is IGuessable { CanBeGuessed: false }) return false;
 
         var options = OptionGroupSingleton<VigilanteOptions>.Instance;
 
@@ -907,47 +992,201 @@ public static class ClassicAssassinSystem
     // =========================
     public static void RefreshExemptions()
     {
-        if (!IsActive) return;
         if (MeetingHud.Instance == null) return;
         if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null) return;
 
-        foreach (var targetId in Buttons.Keys.ToList())
+        // Optimization: Only run refresh logic if someone died or disconnected
+        int currentAlive = 0;
+        foreach (var p in PlayerControl.AllPlayerControls)
         {
-            var voteArea = MeetingHud.Instance.playerStates?.FirstOrDefault(x => x.TargetPlayerId == targetId);
-            if (voteArea == null)
+            if (p != null && p.Data != null && !p.Data.IsDead && !p.Data.Disconnected)
+                currentAlive++;
+        }
+
+        if (currentAlive == _lastAliveCount) return;
+        _lastAliveCount = currentAlive;
+
+        // Force meeting UI sync for any newly dead players
+        // This ensures mid-meeting deaths (e.g. Death Note, Assassin) are visually reflected
+        foreach (var pva in MeetingHud.Instance.playerStates)
+        {
+            if (pva == null) continue;
+            var pc = pva.GetPlayer();
+            if (pc != null && pc.Data != null && (pc.Data.IsDead || pc.Data.Disconnected) && !pva.AmDead)
             {
-                HideSingle(targetId);
-                continue;
+                pva.AmDead = true;
+                if (pva.Overlay != null) pva.Overlay.gameObject.SetActive(true);
+                if (pva.XMark != null) pva.XMark.gameObject.SetActive(true);
+            }
+        }
+
+        RefreshBaseModButtons();
+
+        if (IsActive)
+        {
+            var local = PlayerControl.LocalPlayer;
+            var roleName = local.Data?.Role?.GetType().Name ?? "";
+            var isGuesser = local.TryGetModifier<AssassinModifier>(out _) ||
+                            local.Data.Role is VigilanteRole ||
+                            local.Data.Role is DoomsayerRole ||
+                            local.Data.Role is JailorRole ||
+                            roleName.Contains("Imitator");
+
+            if (!isGuesser)
+            {
+                HideAllButtons();
+                return;
             }
 
-            if (PlayerControl.LocalPlayer.TryGetModifier<AssassinModifier>(out var assassin))
+            foreach (var targetId in Buttons.Keys.ToList())
             {
-                if (IsExempt(voteArea, assassin))
+                var voteArea = MeetingHud.Instance.playerStates?.FirstOrDefault(x => x.TargetPlayerId == targetId);
+                if (voteArea == null)
                 {
                     HideSingle(targetId);
+                    continue;
                 }
 
-                continue;
-            }
-
-            if (PlayerControl.LocalPlayer.Data.Role is VigilanteRole vigilante)
-            {
-                if (IsExempt(voteArea, vigilante))
+                if (local.TryGetModifier<AssassinModifier>(out var assassin))
                 {
-                    HideSingle(targetId);
+                    if (IsExempt(voteArea, assassin))
+                    {
+                        HideSingle(targetId);
+                    }
+                    continue;
                 }
 
-                continue;
+                if (local.Data.Role is VigilanteRole vigilante)
+                {
+                    if (IsExempt(voteArea, vigilante))
+                    {
+                        HideSingle(targetId);
+                    }
+                    continue;
+                }
+
+                if (local.Data.Role is DoomsayerRole doomsayer)
+                {
+                    if (IsExempt(voteArea, doomsayer))
+                    {
+                        HideSingle(targetId);
+                    }
+                    continue;
+                }
+                
+                // If we reach here, it means they are a guesser (e.g. Jailor) but we don't have custom logic for them yet
+                // For now, we'll keep them shown unless we add more checks
+            }
+        }
+        else
+        {
+            TryRefreshTablet();
+        }
+    }
+
+    public static void TryRefreshTablet()
+    {
+        try
+        {
+            var local = PlayerControl.LocalPlayer;
+            if (local == null) return;
+
+            object? screen = null;
+            var roleName = local.Data?.Role?.GetType().Name ?? "";
+            var isGuesser = local.TryGetModifier<AssassinModifier>(out _) ||
+                            local.Data.Role is VigilanteRole ||
+                            local.Data.Role is DoomsayerRole ||
+                            local.Data.Role is JailorRole ||
+                            roleName.Contains("Imitator");
+
+            // Find active guessing screen using cached fields
+            System.Type? type = null;
+            object? target = null;
+
+            if (local.TryGetModifier<AssassinModifier>(out var assassin))
+            {
+                type = assassin.GetType();
+                target = assassin;
+            }
+            else if (local.Data?.Role != null)
+            {
+                type = local.Data.Role.GetType();
+                target = local.Data.Role;
             }
 
-            if (PlayerControl.LocalPlayer.Data.Role is DoomsayerRole doomsayer)
+            if (type != null && target != null)
             {
-                if (IsExempt(voteArea, doomsayer))
+                if (!_screenFields.TryGetValue(type, out var field))
                 {
-                    HideSingle(targetId);
+                    field = type.GetField("guessingScreen", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    if (field != null) _screenFields[type] = field;
+                }
+                screen = _screenFields.TryGetValue(type, out var f) ? f.GetValue(target) : null;
+            }
+
+            if (screen != null)
+            {
+                var screenType = screen.GetType();
+
+                // If the player is no longer a guesser, close the tablet
+                if (!isGuesser)
+                {
+                    screenType.GetMethod("Close", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)?.Invoke(screen, null);
+                    return;
+                }
+
+                // Force an update of the guessing screen using cached methods
+                if (!_refreshMethods.TryGetValue(screenType, out var methods))
+                {
+                    var flags = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
+                    var list = new List<MethodInfo>();
+                    string[] names = { "UpdatePlayers", "UpdateButtons", "Update", "OnEnable" };
+                    foreach (var name in names)
+                    {
+                        var m = screenType.GetMethod(name, flags);
+                        if (m != null) list.Add(m);
+                    }
+                    methods = list.ToArray();
+                    _refreshMethods[screenType] = methods;
+                }
+
+                foreach (var m in methods)
+                {
+                    m.Invoke(screen, null);
                 }
             }
         }
+        catch { /* Ignore reflection errors */ }
+    }
+
+    public static void RefreshBaseModButtons()
+    {
+        try
+        {
+            // TownOfUs.Modules.MeetingMenu.Instances stores all active guessing menus (Assassin, Vigilante, etc.)
+            foreach (var menu in TownOfUs.Modules.MeetingMenu.Instances)
+            {
+                if (menu == null) continue;
+
+                // Check all buttons currently managed by this menu
+                foreach (var targetId in menu.Buttons.Keys.ToList())
+                {
+                    var voteArea = TownOfUs.Modules.MeetingMenu.Instances.Count > 0 ? MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == targetId) : null;
+                    if (voteArea == null)
+                    {
+                        menu.HideSingle(targetId);
+                        continue;
+                    }
+
+                    // Evaluate the actual exemption rules of the menu
+                    if (menu.IsExempt != null && menu.IsExempt(voteArea))
+                    {
+                        menu.HideSingle(targetId);
+                    }
+                }
+            }
+        }
+        catch { /* Ignore errors from base mod interactions */ }
     }
 
     // =========================

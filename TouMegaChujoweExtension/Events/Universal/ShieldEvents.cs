@@ -19,13 +19,15 @@ using TownOfUs.Buttons;
 using Reactor.Utilities;
 using HarmonyLib;
 using TouMegaChujoweExtension.Buttons.Neutral;
-using TouMegaChujoweExtension.Roles.Neutral;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Events.Universal;
 
 public static class ShieldEvents
 {
+    private static float _lastShieldTriggerTime = 0f;
+    private static byte _lastShieldTargetId = 255;
+
     [RegisterEvent(Priority.Last)]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
@@ -82,6 +84,15 @@ public static class ShieldEvents
         }
 
         if (shieldType == ShieldType.None) return;
+
+        // Anti-multi-trigger guard
+        if (Time.time - _lastShieldTriggerTime < 0.2f && _lastShieldTargetId == target.PlayerId)
+        {
+            @event.Cancel(); // Still cancel to be safe
+            return;
+        }
+        _lastShieldTriggerTime = Time.time;
+        _lastShieldTargetId = target.PlayerId;
 
         Logger<TouMegaChujoweExtensionPlugin>.Info($"[ShieldEvents] Murder from {source.Data.PlayerName} blocked by {shieldType} on {target.Data.PlayerName}");
 

@@ -1,4 +1,4 @@
-﻿using MiraAPI.GameOptions;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Assets;
@@ -23,7 +23,7 @@ public sealed class ChildModifier : UniversalGameModifier, IWikiDiscoverable
     public override LoadableAsset<Sprite>? ModifierIcon => TouExtensionModifierIcons.ChildModifierIcon;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
-    public override Color FreeplayFileColor => new Color32(255, 220, 100, 255);
+    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
 
     public float CurrentAge { get; set; }
     public float TimeSinceLastGrowth { get; set; }
