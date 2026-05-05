@@ -34,6 +34,7 @@ public static class DraftSystem
     public static float PickTimer { get; set; }
     public static Dictionary<byte, ushort> DraftPicks { get; } = new();
     public static HashSet<byte> ImpostorPlayerIds { get; set; } = new();
+    public static HashSet<byte> LastNeutralKillingIds { get; } = new();
     public static bool DraftActiveThisRound { get; set; }
     public static List<RoleBehaviour>? CurrentOfferedRoles { get; set; }
     public static RoleAlignment? SelectedAlignment { get; set; }
@@ -128,17 +129,47 @@ public static class DraftSystem
         for (int i = 0; i < neutralEvilCount && idx < remaining.Count; i++, idx++)
             PlayerFactions[remaining[idx]] = DraftFaction.NeutralEvil;
 
-        for (int i = 0; i < neutralKillingCount && idx < remaining.Count; i++, idx++)
+        // Apply Neutral Killing streak reduction
+        var nkReductionEnabled = options.ReduceKillingStreak.Value;
+        var nkBiasPercent = options.NKReductionChance.Value / 100f;
+        var random = new System.Random();
+
+        for (int i = 0; i < neutralKillingCount && remaining.Count > idx; i++)
+        {
+            int startIdx = idx;
+            int num = -1;
+            
+            if (nkReductionEnabled && LastNeutralKillingIds.Count > 0)
+            {
+                // Try to find someone who wasn't NK last time
+                var subPool = remaining.Skip(idx).ToList();
+                var nonRecentNK = subPool.Where(id => !LastNeutralKillingIds.Contains(id)).ToList();
+                
+                if (nonRecentNK.Count > 0 && random.NextDouble() < nkBiasPercent)
+                {
+                    // Pick from non-recent NKs
+                    byte chosenId = nonRecentNK[random.Next(nonRecentNK.Count)];
+                    num = remaining.IndexOf(chosenId);
+                }
+            }
+
+            if (num == -1)
+            {
+                // Normal random pick from remaining pool starting at idx
+                num = random.Next(idx, remaining.Count);
+            }
+
+            // Swap chosen player to the current 'idx' position so they are assigned NK
+            (remaining[idx], remaining[num]) = (remaining[num], remaining[idx]);
             PlayerFactions[remaining[idx]] = DraftFaction.NeutralKilling;
+            idx++;
+        }
 
         for (int i = 0; i < randomNeutralCount && idx < remaining.Count; i++, idx++)
             PlayerFactions[remaining[idx]] = DraftFaction.RandomNeutral;
 
         for (; idx < remaining.Count; idx++)
             PlayerFactions[remaining[idx]] = DraftFaction.CrewOther;
-
-        // foreach (var kvp in PlayerFactions)
-        //     // Info($"[DraftSystem] Player {kvp.Key} assigned faction: {kvp.Value}");
     }
 
     // === GET ALIGNMENTS FOR FACTION ===
@@ -290,6 +321,53 @@ public static class DraftSystem
         try { respectChances = OptionGroupSingleton<DraftModeOptions>.Instance.RespectRoleChances.Value; }
         catch { respectChances = false; }
         var roleCount = RolesToShow;
+
+        // Merge Neutrals with Crew Logic
+        if (faction == DraftFaction.CrewOther && !ShouldCrewmatesPickFromAllClasses())
+        {
+            var options = OptionGroupSingleton<DraftModeOptions>.Instance;
+            if (options.MergeNeutralsWithCrew.Value && Random.Range(0f, 100f) < options.NeutralMergeChance.Value)
+            {
+                var crewRoles = GetRolesForAlignments(enabledAlignments);
+                var neutralAlignments = new List<RoleAlignment> 
+                { 
+                    RoleAlignment.NeutralBenign, 
+                    RoleAlignment.NeutralEvil,
+                    RoleAlignment.NeutralOutlier
+                };
+                var neutralRoles = GetRolesForAlignments(neutralAlignments);
+
+                if (crewRoles.Count > 0 && neutralRoles.Count > 0)
+                {
+                    SelectedAlignment = null;
+
+                    // Determine how many neutrals to show (at least 1, up to MaxNeutralsInMerge or roleCount-1)
+                    int maxAllowed = (int)options.MaxNeutralsInMerge.Value;
+                    int wantedNeutrals = Random.Range(1, maxAllowed + 1);
+                    wantedNeutrals = Mathf.Min(wantedNeutrals, neutralRoles.Count);
+                    wantedNeutrals = Mathf.Min(wantedNeutrals, roleCount - 1); 
+
+                    var chosenNeutrals = (respectChances ? OrderRoles(neutralRoles) : neutralRoles.OrderBy(_ => Random.Range(0f, 1f)))
+                        .Take(wantedNeutrals).ToList();
+                    
+                    var chosenCrew = (respectChances ? OrderRoles(crewRoles) : crewRoles.OrderBy(_ => Random.Range(0f, 1f)))
+                        .Take(roleCount - chosenNeutrals.Count).ToList();
+
+                    var finalPool = chosenNeutrals.Concat(chosenCrew).ToList();
+                    
+                    // If we still need more roles (e.g. pools were small), pad from either
+                    if (finalPool.Count < roleCount)
+                    {
+                        var remainingPool = crewRoles.Concat(neutralRoles).Where(r => !finalPool.Contains(r)).ToList();
+                        var pad = (respectChances ? OrderRoles(remainingPool) : remainingPool.OrderBy(_ => Random.Range(0f, 1f)))
+                            .Take(roleCount - finalPool.Count);
+                        finalPool.AddRange(pad);
+                    }
+
+                    return finalPool.OrderBy(_ => Random.Range(0f, 1f)).ToList();
+                }
+            }
+        }
 
         // RandomNeutral
         if (faction == DraftFaction.RandomNeutral)

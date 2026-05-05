@@ -108,9 +108,7 @@ public sealed class PirateRole(IntPtr cppPtr)
     [HideFromIl2Cpp]
     public bool IsBlacklisted(byte targetId)
     {
-        var options = OptionGroupSingleton<PirateOptions>.Instance;
-
-        if (!options.CantDuelSamePersonTwiceInARow)
+        if (!OptionGroupSingleton<PirateOptions>.Instance.CantDuelSamePersonTwiceInARow)
         {
             return false;
         }
@@ -170,7 +168,7 @@ public sealed class PirateRole(IntPtr cppPtr)
             var lastTarget = MiscUtils.PlayerById(LastDuelTargetId);
             if (lastTarget != null && !lastTarget.HasDied())
             {
-                stringB.AppendLine($"Cannot target next round: {lastTarget.Data.PlayerName}");
+                stringB.AppendLine(TouLocale.GetParsed("ExtensionPirateTabCannotTarget", "Cannot target next round: {0}").Replace("{0}", lastTarget.Data.PlayerName));
             }
         }
 
@@ -227,6 +225,7 @@ public sealed class PirateRole(IntPtr cppPtr)
         TargetChoice = 0;
         DuelActive = false;
         DuelResolved = false;
+        DuelTargetId = byte.MaxValue;
     }
 
     public override bool CanUse(IUsable usable)
@@ -268,7 +267,7 @@ public sealed class PirateRole(IntPtr cppPtr)
         {
             if (pirate.AmOwner)
             {
-                ShowPirateNotification("You can't duel the same person twice in a row.");
+                ShowPirateNotification(TouLocale.Get("ExtensionPirateCantDuelSamePersonTwiceNotif", "You can't duel the same person twice in a row."));
             }
 
             return;
@@ -313,12 +312,9 @@ public sealed class PirateRole(IntPtr cppPtr)
         var choiceNames = new[] { "Rock", "Paper", "Scissors" };
         var pirateChoiceName = choiceNames[pirateRole.PirateChoice];
         var targetChoiceName = choiceNames[pirateRole.TargetChoice];
-        var options = OptionGroupSingleton<PirateOptions>.Instance;
-
-        if (options.CantDuelSamePersonTwiceInARow)
-        {
-            pirateRole.LastDuelTargetId = targetId;
-        }
+        // Always update last target ID if a duel was attempted, 
+        // independent of the option check (we check the option in IsBlacklisted)
+        pirateRole.LastDuelTargetId = targetId;
 
         if (result == 1)
         {
@@ -352,6 +348,7 @@ public sealed class PirateRole(IntPtr cppPtr)
         }
         else if (result == 0)
         {
+            var options = OptionGroupSingleton<PirateOptions>.Instance;
             if (options.DrawCountsAsWin)
             {
                 pirateRole.DuelsWon++;

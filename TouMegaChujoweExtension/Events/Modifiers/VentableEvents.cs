@@ -22,7 +22,6 @@ public static class VentableEvents
             return;
         }
 
-        --ventableMod.VentsRemaining;
         ventableMod.CooldownTimer = OptionGroupSingleton<VentableModifierOptions>.Instance.VentCooldown.Value;
     }
 

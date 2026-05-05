@@ -141,7 +141,7 @@
         "\n- <b>Impostor Friendly Fire</b> - Fixed <b>Poisoner</b> being able to target, poison, or slow down allied Impostors and Crewpostors.",
         "\n- <b>Targeting Blocks</b> - Fixed <b>Outlaw</b>, <b>Witch</b>, and <b>Kamikaze</b> single-target kills getting completely blocked when an allied player stands closer to the killer than a valid target.",
         "\n- <b>Draft UI Optimization</b> - Greatly optimized Draft UI update logic, resolving background micro-stutters and providing silky smooth menu animations.",
-        "\n- <b>Draft Spectator Fix</b> - Fixed a critical game-breaking bug where having spectators in the lobby would cause a permanent black screen after the draft phase completed. Spectators are now properly initialized with a fallback role, allowing the game to transition smoothly to the intro phase.",
+        "\n- <b>Draft Spectator Fix</b> - Fixed a critical bug where having spectators in the lobby would cause a permanent black screen after the draft phase completed. Spectators are now properly initialized with a fallback role, allowing the game to transition smoothly to the intro phase.",
         "\n- <b>Better Sonar</b> - added custom player head map pointers and arrow overlays directly toggleable in the Modifiers tab.",
         "\n- <b>Extended Wiki Previews</b> - Sonar and Egotist Extended will properly outline all hidden options on the wiki page.",
         "\n- <b>Possible Vampire Hunter</b> - completely hidden from the role setup list to prevent lobby setup confusion.",
@@ -233,6 +233,42 @@
         "\n- <b>President-Monarch Integration</b> - Finally allowed the <b>President to be knighted</b> by the Monarch. Added a <b>Smart Injection System</b>: bonus votes are now manually injected only on the first click, preserving the President's vote bank.",
         "\n- <b>President HUD Feedback</b> - Added a dynamic vote counter to the meeting timer HUD for the President, displaying current bank votes and <b>Monarch bonuses</b>.",
         "\n- <b>Localization</b> - Added full English and Polish support for all new President and Mayor UI elements."
+      ]
+    },
+    {
+      "Date": "2026-05-04T22:45:00Z",
+      "Number": "200008",
+      "ShortTitle": "TOUMCE v1.0.7",
+      "SubTitle": "Vampire, Egotist & Quality of Life",
+      "Title": "TOU Mega Chujowe Extension v1.0.7",
+      "Text": [
+        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
+        "\n\n\r<b>Version 1.0.7 - Vampire Rework & Quality of Life</b>",
+        "\n\n\r<size=110%><b>★ MAJOR CHANGE: VAMPIRE REWORK ★</b></size>",
+        "\n- <b>Vampire Sabotage</b> - Finalized the sabotage system. Vampires now use a stable, <b>TAB-only sabotage interaction</b> and are restricted to <b>Lights</b> to maintain map stability during meetings.",
+        "\n- <b>New Option: Can Only Sabotage Lights</b> - Added a dedicated toggle in the Better Roles tab to restrict Vampire sabotage exclusively to Lights.",
+        "\n\n\r<size=105%>Better Roles/Modifiers Tab:</size>",
+        "\n- <b>New Sidebar Tab</b> - Centralized all extension options for existing roles (Vampire, Egotist, Forensic, Mayor, Sonar, Time Lord) into a dedicated <b>Better Roles/Modifiers</b> tab.",
+        "\n- <b>Aesthetic Prefixes</b> - Added <b>\"Better role: \"</b> and <b>\"Better modifier: \"</b> prefixes to clearly distinguish between standard settings and extension features.",
+        "\n- <b>Alphabetical Sorting</b> - Enforced strict alphabetical order in both the Lobby settings sidebar and the Wiki documentation for better navigability.",
+        "\n\n\r<size=105%>Role & Modifier Improvements:</size>",
+        "\n- <b>Ventable Fix</b> - <b>FIXED Usage Logic</b>: entering and exiting a vent now correctly consumes <b>only 1 usage</b> for the entire action.",
+        "\n- <b>Oracle Improvements</b> - Fixed a bug where Oracle's <b>Bless</b> acted as a physical shield. Added <b>screen flash effects</b> for both exile and guess protection to ensure visual feedback for all involved players.",
+        "\n- <b>RC-XD Improvements</b> - Added a toggle to restrict car deployment to the <b>first round only</b>.",
+        "\n- <b>Hacker Balancing</b> - Reworked <b>Jam Charges</b>: initial charges can now be set to <b>Infinite</b> (hides UI counter). Removed redundant options (Max Charges, Charges per Kill) for a cleaner configuration.",
+        "\n- <b>Shifter Fix</b> - Fixed a bug where Shifter was able to steal <b>Chef</b> and <b>Inquisitor</b> (Neutral Outlier) roles.",
+        "\n\n\r<size=105%>Draft Mode & Vampire Hunter Polish:</size>",
+        "\n- <b>Reduce Killing Streak</b> - Consolidated streak reduction into a single, user-friendly toggle. Added support for <b>Neutral Killing</b> roles and a configurable <b>Reduction Chance</b> (0-100%), allowing you to fine-tune the probability of players becoming killers multiple times in a row.",
+        "\n- <b>VH Uses Logic Fixed</b> - Stake button now correctly consumes a charge <b>only on a failed stake</b> (hitting a non-vampire). Successful vampire kills are now free of charge, as originally intended.",
+        "\n- <b>VH Report Button Polish</b> - When standing near your own victim, the <b>Report button is now greyed out</b> instead of disappearing. This matches standard Among Us behavior.",
+        "\n- <b>VH Visual Feedback</b> - The <b>Stake button now correctly desaturates (turns grey)</b> when no targets are in range or when out of charges.",
+        "\n- <b>Merge Neutrals with Crew</b> - Added a feature that allows Neutral Benign, Evil, and <b>Outlier</b> (e.g., Chef, Inquisitor) roles to occasionally appear in the Crewmate selection pool.",
+        "\n- <b>Full Polish Support</b> - Localized strings for all new Draft options, Better Roles tab, and Vampire settings.",
+        "\n- <b>Serial Killer Win Rework</b> - Fixed 1v1 standoffs. Serial Killer now <b>correctly wins at parity</b> against passive crew (e.g. Engineer). Standoffs with <b>Power Crew</b> (Veteran, Vigilante) are respected based on lobby settings.",
+        "\n- <b>Hacker Audio Polish</b> - Jam activation sound is now audible <b>only to Impostors and Crewpostors</b>, allowing for better coordinated attacks.",
+        "\n- <b>Egotist Vent Rework</b> - Fixed exit cooldown (now triggers immediately on exit) and added a <b>visual timer/radial CD</b> to the vent button.",
+        "\n- <b>Pirate Win Screen Fix</b> - Pirates now correctly show <b>\"Victorious\" (Zwyciestwo)</b> instead of \"Ejected\" on the end-game screen.",
+        "\n- <b>Polish Localization Update</b> - Added missing end-game status strings for winning and ejection reasons."
       ]
     }
   ]

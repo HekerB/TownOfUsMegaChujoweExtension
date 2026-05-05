@@ -21,19 +21,34 @@ public sealed class DraftModeOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
-    public ModdedToggleOption ImpostorsPickFromAllClasses { get; } = new("Impostors Pick From All Classes", false)
+    public ModdedToggleOption ImpostorsPickFromAllClasses { get; } = new("All Classes (Imp)", false)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
-    public ModdedToggleOption CrewmatesPickFromAllClasses { get; } = new("Crewmates Pick From All Classes", false)
+    public ModdedToggleOption CrewmatesPickFromAllClasses { get; } = new("All Classes (Crew)", false)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
-    public ModdedToggleOption RespectRoleChances { get; } = new("Use Roles Chances", false)
+    public ModdedToggleOption RespectRoleChances { get; } = new("Use Role Chances", false)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
+    };
+
+    public ModdedToggleOption MergeNeutralsWithCrew { get; } = new("Merge Neutrals with Crew", false)
+    {
+        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
+    };
+
+    public ModdedNumberOption NeutralMergeChance { get; } = new("Neutral Merge Chance", 15f, 5f, 50f, 5f, MiraNumberSuffixes.Percent)
+    {
+        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.MergeNeutralsWithCrew.Value && OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
+    };
+
+    public ModdedNumberOption MaxNeutralsInMerge { get; } = new("Max Neutrals in Merge", 1f, 1f, 3f, 1f, MiraNumberSuffixes.None)
+    {
+        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.MergeNeutralsWithCrew.Value && OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
     public ModdedNumberOption RolesToShow { get; } = new("Roles To Show", 3f, 1f, 8f, 1f, MiraNumberSuffixes.None)
@@ -45,6 +60,23 @@ public sealed class DraftModeOptions : AbstractOptionGroup
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
+
+    public ModdedToggleOption ReduceKillingStreak { get; } = new("Reduce Killing Streak", true)
+    {
+        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
+    };
+
+    public ModdedNumberOption ReductionChance { get; } = new("Impostor", 20f, 0f, 100f, 5f, MiraNumberSuffixes.Percent)
+    {
+        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.ReduceKillingStreak.Value && OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
+    };
+
+    public ModdedNumberOption NKReductionChance { get; } = new("Neutral Killing", 20f, 0f, 100f, 5f, MiraNumberSuffixes.Percent)
+    {
+        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.ReduceKillingStreak.Value && OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
+    };
+
+
 
     // === FACTION COUNTS ===
 

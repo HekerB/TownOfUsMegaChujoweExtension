@@ -19,6 +19,7 @@ public static class VampireHunterEvents
         if (@event.TriggeredByIntro)
         {
             StakeButton.ResetFirstRound();
+            StakeButton.HunterKilledVictims.Clear();
 
             if (PlayerControl.LocalPlayer.IsHost())
             {

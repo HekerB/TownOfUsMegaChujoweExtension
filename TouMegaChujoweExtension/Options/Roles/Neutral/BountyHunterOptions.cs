@@ -18,6 +18,9 @@ public sealed class BountyHunterOptions : AbstractOptionGroup<BountyHunterRole>
     [ModdedToggleOption("ExtensionOptionBHCanVent")]
     public bool CanVent { get; set; } = false;
 
+    [ModdedToggleOption("ExtensionOptionBHCanKillInRoundOne")]
+    public bool CanKillInRoundOne { get; set; } = true;
+
     [ModdedToggleOption("ExtensionOptionBHShowArrow")]
     public bool ShowArrow { get; set; } = true;
 

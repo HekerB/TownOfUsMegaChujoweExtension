@@ -18,37 +18,44 @@ public static class WitchSpellboundColorPatch
     [HarmonyPostfix]
     public static void UpdateTargetColorPostfix(ref Color __result, PlayerControl player, bool hidden = false)
     {
-        if (player == null || !player.HasModifier<WitchSpellboundModifier>())
-        {
-            return;
-        }
-
+        if (player == null) return;
+        
         var localPlayer = PlayerControl.LocalPlayer;
-        var modifier = player.GetModifier<WitchSpellboundModifier>();
-        if (modifier == null) return;
+        if (localPlayer == null) return;
 
-        var options = OptionGroupSingleton<WitchOptions>.Instance;
-        var meetingsUntilDeath = options.MeetingsUntilDeath;
-        var currentMeetingCount = Events.Impostor.WitchEvents.GetCurrentMeetingCount();
-        var meetingsSinceSpell = (currentMeetingCount - 1) - modifier.SpellCastMeeting;
-        var meetingsRemaining = meetingsUntilDeath - meetingsSinceSpell;
-
-        if (MeetingHud.Instance != null)
+        // --- WITCH LOGIC ---
+        if (player.HasModifier<WitchSpellboundModifier>())
         {
-            // W trakcie meetingu kolorujemy nick wszystkim, gdy widać Hexa
-            if (meetingsSinceSpell >= 0 && meetingsRemaining >= 0)
+            var modifier = player.GetModifier<WitchSpellboundModifier>();
+            if (modifier != null)
             {
-                __result = TouExtensionColors.Witch;
+                var options = OptionGroupSingleton<WitchOptions>.Instance;
+                var currentMeetingCount = Events.Impostor.WitchEvents.GetCurrentMeetingCount();
+                var meetingsSinceSpell = (currentMeetingCount - 1) - modifier.SpellCastMeeting;
+                var meetingsRemaining = options.MeetingsUntilDeath - meetingsSinceSpell;
+
+                if (MeetingHud.Instance != null)
+                {
+                    if (meetingsSinceSpell >= 0 && meetingsRemaining >= 0)
+                    {
+                        __result = TouExtensionColors.Witch;
+                        return;
+                    }
+                }
+                else if (localPlayer.IsRole<WitchRole>() || (localPlayer.Data?.Role != null && localPlayer.Data.Role.IsImpostor))
+                {
+                    __result = TouExtensionColors.Witch;
+                    return;
+                }
             }
-            return;
         }
 
-        // W zwykłej rozgrywce kolor widzi TYLKO Wiedźma i inni Impostorzy
-        if (localPlayer != null && localPlayer.Data != null && localPlayer.Data.Role != null)
+        // --- POISONER LOGIC ---
+        if (Modules.PoisonSystem.IsTargetPoisonedByPoison(player.PlayerId))
         {
-            if (localPlayer.IsRole<WitchRole>() || localPlayer.Data.Role.IsImpostor)
+            if (localPlayer.IsImpostorAligned())
             {
-                __result = TouExtensionColors.Witch;
+                __result = new Color32(0, 255, 0, 255); // Green %
             }
         }
     }

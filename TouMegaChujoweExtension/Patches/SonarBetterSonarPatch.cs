@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
@@ -17,6 +19,52 @@ public static class SonarBetterSonarPatch
     public static readonly Dictionary<byte, GameObject> TrackerIcons = new();
     private static readonly Dictionary<byte, Queue<(float time, Vector3 pos)>> PositionHistory = new();
 
+    public static bool GetTrackerResetEveryRound()
+    {
+        try
+        {
+            var assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
+            {
+                var type = assembly.GetType("MiraAPI.Options.Roles.Crewmate.SonarOptions") ??
+                           assembly.GetType("TownOfUs.Options.Roles.Crewmate.SonarOptions") ??
+                           assembly.GetType("TownOfUs.Options.Roles.Crewmate.TrackerOptions") ??
+                           assembly.GetType("TownOfUs.Options.TrackerOptions");
+
+                if (type != null)
+                {
+                    var singletonType = typeof(OptionGroupSingleton<>).MakeGenericType(type);
+                    var instanceProp = singletonType.GetProperty("Instance", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                    var instance = instanceProp?.GetValue(null);
+                    if (instance != null)
+                    {
+                        var props = type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                        foreach (var prop in props)
+                        {
+                            if (prop.Name.Contains("Reset", System.StringComparison.OrdinalIgnoreCase))
+                            {
+                                var val = prop.GetValue(instance);
+                                if (val is bool b) return b;
+
+                                var valueProp = prop.PropertyType.GetProperty("Value");
+                                if (valueProp != null)
+                                {
+                                    var optVal = valueProp.GetValue(val);
+                                    if (optVal is bool b2) return b2;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch
+        {
+            // Fallback
+        }
+        return false;
+    }
+
     public static float GetTrackerDelay()
     {
         try
@@ -24,7 +72,9 @@ public static class SonarBetterSonarPatch
             var assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in assemblies)
             {
-                var type = assembly.GetType("TownOfUs.Options.Roles.Crewmate.TrackerOptions") ??
+                var type = assembly.GetType("MiraAPI.Options.Roles.Crewmate.SonarOptions") ??
+                           assembly.GetType("TownOfUs.Options.Roles.Crewmate.SonarOptions") ??
+                           assembly.GetType("TownOfUs.Options.Roles.Crewmate.TrackerOptions") ??
                            assembly.GetType("TownOfUs.Options.TrackerOptions");
                 
                 if (type != null)
@@ -179,6 +229,31 @@ public static class SonarBetterSonarPatch
     [HarmonyPostfix]
     public static void ShipStatusBeginPostfix()
     {
+        ClearIcons();
+    }
+
+    [RegisterEvent]
+    public static void RoundStartEventHandler(RoundStartEvent @event)
+    {
+        if (@event.TriggeredByIntro)
+            return;
+
+        var opts = OptionGroupSingleton<SonarExtendedOptions>.Instance;
+        if (!opts.BetterSonar || !GetTrackerResetEveryRound())
+            return;
+
+        var localTrackers = ModifierUtils.GetActiveModifiers<TrackerArrowTargetModifier>()
+            .Where(mod => mod.Owner == PlayerControl.LocalPlayer)
+            .ToList();
+
+        foreach (var tracker in localTrackers)
+        {
+            if (tracker != null)
+            {
+                tracker.Owner.RemoveModifier(tracker);
+            }
+        }
+
         ClearIcons();
     }
 

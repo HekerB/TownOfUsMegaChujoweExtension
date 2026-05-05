@@ -231,6 +231,11 @@
   <string name="ExtensionOptionSerialKillerManiacTimerReductionPerKill">Maniac Timer Reduction Per Kill</string>
   <string name="ExtensionOptionSerialKillerManiacTimerLimit">Maniac Timer Limit</string>
   
+  <!-- Eclipsal Role -->
+  <string name="ExtensionRoleEclipsal">Eclipsal</string>
+  <string name="ExtensionOptionEclipsalCanEclipseDuringSabotage">Can Eclipse During Sabotage</string>
+  <string name="ExtensionOptionEclipsalCanVent">Can Vent</string>
+  
   <!-- Serial Killer Maniac Modifier -->
   <string name="ExtensionModifierSerialKillerManiac">Maniac</string>
 
@@ -249,6 +254,13 @@
   <string name="ExtensionOptionPelicanSwallowCooldown">Swallow Cooldown</string>
   <string name="ExtensionOptionPelicanMaxSwallowed">Max Players In Stomach</string>
   <string name="ExtensionOptionPelicanCanVent">Pelican Can Vent</string>
+  
+  <!-- Vampire Role -->
+  <string name="ExtensionRoleVampire">Vampire</string>
+  <string name="ExtensionOptionVampireCanOnlySabotageLights">Vampire Can Sabotage Lights</string>
+  <string name="ExtensionOptionVampireSabotageCooldown">Sabotage Lights Cooldown</string>
+  <string name="ExtensionOptionVampireOnlyOgCanSabotage">Only OG Vampire Can Sabotage</string>
+
 
   <!-- Pelican Notifications -->
   <string name="ExtensionPelicanSwallowedNotification">You have been swallowed by Pelican!</string>
@@ -292,6 +304,8 @@
   <string name="ExtensionPirateDuelNotification">You are being dueled by the Pirate!</string>
   <string name="ExtensionPirateDuelJailedPirateNotif">You are jailed! Your duel has been cancelled.</string>
   <string name="ExtensionPirateDuelJailedTargetNotif">Your duel target is jailed! Duel cancelled.</string>
+  <string name="ExtensionPirateCantDuelSamePersonTwiceNotif">You can't duel the same person twice in a row.</string>
+  <string name="ExtensionPirateTabCannotTarget">Cannot target next round: {0}</string>
 
   <!-- Pirate Death Message -->
   <string name="ExtensionDiedToPirate">Lost Duel</string>
@@ -427,8 +441,6 @@
   <string name="ExtensionOptionHackerMoveWithDevice">Move While Using Device</string>
   <string name="ExtensionOptionHackerSimpleModeJamOnly">Simple Mode (Jam Only)</string>
   <string name="ExtensionOptionHackerInitialJamCharges">Initial Jam Charges</string>
-  <string name="ExtensionOptionHackerJamChargesPerKill">Jam Charges Per Kill</string>
-  <string name="ExtensionOptionHackerJamMaxCharges">Max Jam Charges</string>
   <string name="ExtensionOptionHackerJamCooldown">Jam Cooldown</string>
   <string name="ExtensionOptionHackerJamDuration">Jam Duration</string>
 
@@ -455,6 +467,7 @@
   <string name="ExtensionOptionRcXdMaxKills">Max Kills per Detonation</string>
   <string name="ExtensionOptionRcXdCanVent">Can Vent</string>
   <string name="ExtensionOptionRcXdMaxDeploys">Max Deploys</string>
+  <string name="ExtensionOptionRcXdCanUseInFirstRound">Can use in first round</string>
 
   <!-- Forestaller Role -->
   <string name="ExtensionRoleForestaller">Forestaller</string>
@@ -712,6 +725,10 @@
   <string name="ExtensionDraftModeAutoSelect">Auto-selecting in</string>
   <string name="ExtensionDraftModeTurnsUntil">turns until your pick</string>
   <string name="ExtensionDraftModePlayerPicks">Player Picks:</string>
+  <string name="Reduce Killing Streak">Reduce Killing Streak</string>
+  <string name="Impostor">Impostor</string>
+  <string name="Neutral">Neutral</string>
+
   
   <!-- Bounty Hunter Role -->
   <string name="ExtensionRoleBountyHunter">Bounty Hunter</string>
@@ -727,6 +744,7 @@
   <string name="ExtensionOptionBHCanVent">Bounty Hunter Can Vent</string>
   <string name="ExtensionOptionBHTargetsToKill">Targets BH Has To Kill</string>
   <string name="ExtensionOptionBHShowArrow">Show Arrow To Target</string>
+  <string name="ExtensionOptionBHCanKillInRoundOne">Can Kill in Round 1</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Arrow Update Interval</string>
   <string name="ExtensionOptionBHGameContinues">Game Continues Without Other Killers</string>
   <string name="ExtensionOptionBHWinMode">Win Mode</string>
@@ -920,6 +938,7 @@
   <string name="ExtensionOptionVHCanStakeRoundOne">Can Stake Round One</string>
   <string name="ExtensionOptionVHSelfKillOnFailure">Self Kill On All Stakes Failed</string>
   <string name="ExtensionOptionVHBecomesOnVampDeath">Becomes On Vampire Death</string>
+  <string name="ExtensionOptionVHCanSelfReport">Can Self Report</string>
   <string name="ExtensionOptionVHMinVampires">Min Vampires To Spawn</string>
   <string name="ExtensionOptionVHEnabled">Vampire Hunter Enabled</string>
   <string name="ExtensionOptionVHChance">Vampire Hunter Spawn Chance</string>
@@ -963,42 +982,83 @@
   <string name="TOUMCETermsShieldFlashesTitle">General Shield Flashes</string>
   <string name="TOUMCETermsShieldFlashesInfo">When a kill is blocked by a shield, the killer sees a colored flash indicating which role provided the protection: • &lt;color=#006600&gt;&lt;b&gt;Dark Green&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Purple&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyan/Teal&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Silver Blue&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Light Blue&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Mauve&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#003380&gt;&lt;b&gt;Dark Blue&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (meeting protection)</string>
 
-<!-- TOUMCE Wiki Terms - Draft Mode -->
-<string name="TOUMCETermsDraftModeTitle">Draft Mode</string>
-<string name="TOUMCETermsDraftModeInfo">&lt;b&gt;Draft Mode&lt;/b&gt; replaces normal role assignment with a strategic pick phase before the game starts.
+  <!-- TOUMCE Wiki Terms - Draft Mode -->
+  <string name="TOUMCETermsDraftModeTitle">Draft Mode</string>
+  <string name="TOUMCETermsDraftModeInfo">&lt;b&gt;Draft Mode&lt;/b&gt; replaces normal role assignment with a strategic pick phase before the game starts.
 • Players are assigned a side (&lt;color=#4DA6FF&gt;&lt;b&gt;Crewmate&lt;/b&gt;&lt;/color&gt;, &lt;color=#FF3B3B&gt;&lt;b&gt;Impostor&lt;/b&gt;&lt;/color&gt;, or &lt;color=#7F7F7F&gt;&lt;b&gt;Neutral&lt;/b&gt;&lt;/color&gt;) and then choose their specific role in a randomized turn order.
 • Each player is offered 3 unique roles. Spectators are excluded from the process and do not take up pick slots.
 • If you do not pick in time, a role will be automatically assigned to you based on your assigned side.
 • By default, &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates&lt;/b&gt;&lt;/color&gt; and &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors&lt;/b&gt;&lt;/color&gt; draft from specialized sub-categories (e.g., Investigative, Power, Killing).</string>
 
-<!-- TOUMCE Wiki Terms - Draft Factions -->
-<string name="TOUMCETermsDraftFactionsTitle">Draft Factions</string>
-<string name="TOUMCETermsDraftFactionsInfo">Before the draft begins, players are assigned a faction that determines their available role pool.
+  <!-- TOUMCE Wiki Terms - Draft Factions -->
+  <string name="TOUMCETermsDraftFactionsTitle">Draft Factions</string>
+  <string name="TOUMCETermsDraftFactionsInfo">Before the draft begins, players are assigned a faction that determines their available role pool.
 • &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors&lt;/b&gt;&lt;/color&gt; draft from various specialized Impostor categories.
 • &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates&lt;/b&gt;&lt;/color&gt; choose from diverse Crewmate sub-groups (e.g., Investigative, Protective, Power).
 • &lt;color=#FFD700&gt;&lt;b&gt;Random Neutral&lt;/b&gt;&lt;/color&gt; offers a balanced set of roles. By default, there is a 70% chance for 2 &lt;b&gt;Neutral Benign&lt;/b&gt; roles, 15% for &lt;b&gt;Neutral Outliner&lt;/b&gt;, and 15% for &lt;b&gt;Neutral Evil&lt;/b&gt;.
  
 • &lt;b&gt;Neutral&lt;/b&gt; lobby settings control the &lt;b&gt;Max&lt;/b&gt; number of players assigned to the Benign, Evil, and Killing factions.
  
-If &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors Pick From All Classes&lt;/b&gt;&lt;/color&gt; or &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates Pick From All Classes&lt;/b&gt;&lt;/color&gt; is enabled, players can choose from any available category for their side.
+If &lt;color=#FF3B3B&gt;&lt;b&gt;All Classes (Imp)&lt;/b&gt;&lt;/color&gt; or &lt;color=#4DA6FF&gt;&lt;b&gt;All Classes (Crew)&lt;/b&gt;&lt;/color&gt; is enabled, players can choose from any available category for their side.
  
-Drafting can also respect individual role chances (Respect Role Chances), causing roles to appear based on their lobby probabilities.</string>
+Drafting can also use individual role chances (Use Role Chances), causing roles to appear based on their lobby probabilities.
+ 
+If &lt;b&gt;Merge Neutrals with Crew&lt;/b&gt; is enabled, &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates&lt;/b&gt;&lt;/color&gt; have a chance to see Neutral roles (Benign, Evil, or Outlier) in their draft pool.</string>
 
-<!-- TOUMCE Wiki Terms - Game Settings -->
-<string name="TOUMCETermsGameSettingsTitle">Game Settings</string>
-<string name="TOUMCETermsGameSettingsInfo">TOUMCE introduces several global settings that change the game flow:
+  <!-- TOUMCE Wiki Terms - Role Extensions -->
+  <string name="TOUMCETermsRoleExtensionsTitle">Better Roles/Modifiers</string>
+  <string name="TOUMCETermsRoleExtensionsInfo">This section contains advanced options for existing roles and modifiers, enhancing their abilities and gameplay mechanics.</string>
+  
+  <string name="TOUMCETermsVampireSabotageTitle">Vampire Sabotage</string>
+  <string name="TOUMCETermsVampireSabotageInfo">Vampires have advanced sabotage options: • &lt;color=#FF0000&gt;&lt;b&gt;Only Lights&lt;/b&gt;&lt;/color&gt; - The Vampire can only sabotage the Electrical system via the TAB map. • &lt;color=#FF0000&gt;&lt;b&gt;Cooldown After Fix&lt;/b&gt;&lt;/color&gt; - The sabotage has its own timer starting after lights are fixed. • &lt;color=#FF0000&gt;&lt;b&gt;Only OG&lt;/b&gt;&lt;/color&gt; - Sabotage can be restricted to the original Vampire only (bitten vampires cannot sabotage).</string>
+  <string name="TOUMCETabOptionBetterRoles">Better Roles/Modifiers</string>
+  <string name="TOUMCETabOptionBetterRolesDesc">Configure extension options for existing roles and modifiers here!</string>
+
+  <!-- TOUMCE Wiki Terms - Game Settings -->
+  <string name="TOUMCETermsGameSettingsTitle">Game Settings</string>
+  <string name="TOUMCETermsGameSettingsInfo">TOUMCE introduces several global settings that change the game flow:
 • &lt;b&gt;Lock Lobby During Draft&lt;/b&gt; - Prevents new players from joining while a draft is in progress to ensure stability.
-• &lt;b&gt;Respect Role Chances&lt;/b&gt; - If enabled, the probability of roles appearing in the Draft will be based on their individual 'Chance' settings in the lobby.
-• &lt;b&gt;Draft Timer&lt;/b&gt; - Defines how much time each player has to make their strategic selection.</string>
+• &lt;b&gt;Use Role Chances&lt;/b&gt; - If enabled, the probability of roles appearing in the Draft will be based on their individual 'Chance' settings in the lobby.
+• &lt;b&gt;Merge Neutrals with Crew&lt;/b&gt; - There is a chance that Neutral Benign/Evil/Outlier roles will appear in the Crewmate selection pool.
+• &lt;b&gt;Draft Timer&lt;/b&gt; - Defines how much time each player has to make their strategic selection.
+• &lt;b&gt;Reduce Killing Streak&lt;/b&gt; - Decreases the chance of players becoming a killing role again if they were one in the previous round.
+• &lt;b&gt;Impostor&lt;/b&gt; - Reduction chance for Impostors.
+• &lt;b&gt;Neutral&lt;/b&gt; - Reduction chance for Neutral Killing roles.</string>
+
+
+  <string name="All Classes (Imp)">All Classes (Imp)</string>
+  <string name="All Classes (Crew)">All Classes (Crew)</string>
+  <string name="Use Role Chances">Use Role Chances</string>
+  <string name="Merge Neutrals with Crew">Merge Neutrals with Crew</string>
+  <string name="Neutral Merge Chance">Neutral Merge Chance</string>
+  <string name="Max Neutrals in Merge">Max Neutrals in Merge</string>
+
   <!-- Better Sonar Options -->
   <string name="ExtensionOptionBetterSonar">Better Sonar</string>
   <string name="ExtensionOptionBetterSonarMode">Sonar Type</string>
   <string name="ExtensionOptionBetterSonarModeArrowAndMap">Arrow + Map</string>
   <string name="ExtensionOptionBetterSonarModeMapOnly">Map Only</string>
+
   <!-- Time Lord Options -->
   <string name="ExtensionOptionTimeLordRewindSpeed">Rewind Speed</string>
+
   <!-- Forensic Options -->
   <string name="ExtensionOptionForensicFreezeOnMeeting">Freeze Scenes on Meeting</string>
+
   <!-- Mayor Options -->
   <string name="ExtensionOptionMayorVoteCount">Vote Count</string>
+
+  <!-- Role Names for Tab -->
+  <string name="TOUMCEBetterRolePrefix">Better role: </string>
+  <string name="TOUMCEBetterModifierPrefix">Better modifier: </string>
+  <string name="Sonar">Sonar</string>
+  <string name="Egotist">Egotist</string>
+  <string name="Forensic">Forensic</string>
+  <string name="Time Lord">Time Lord</string>
+  <string name="Mayor">Mayor</string>
+
+  <!-- Death Handler reasons for end-game screen -->
+  <string name="DiedToWinning">Victorious</string>
+  <string name="DiedToEjection">Ejected</string>
 </resources>
+

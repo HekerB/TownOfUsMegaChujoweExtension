@@ -69,6 +69,10 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
 
     public override bool Enabled(RoleBehaviour? role)
     {
+        var opts = OptionGroupSingleton<BountyHunterOptions>.Instance;
+        if (!opts.CanKillInRoundOne && TownOfUs.Events.DeathEventHandlers.CurrentRound <= 1)
+            return false;
+
         return base.Enabled(role) && !PlayerControl.LocalPlayer.Data.IsDead;
     }
 

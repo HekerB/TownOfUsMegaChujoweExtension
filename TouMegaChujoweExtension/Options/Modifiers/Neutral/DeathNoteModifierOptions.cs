@@ -10,7 +10,7 @@ namespace TouMegaChujoweExtension.Options.Modifiers;
 public sealed class DeathNoteModifierOptions : AbstractOptionGroup<DeathNoteModifier>
 {
     public override string GroupName => "Death Note";
-    public override Color GroupColor => TownOfUsColors.Neutral;
+    public override Color GroupColor => new Color32(40, 0, 80, 255);
     public override bool ShowInModifiersMenu => true;
     public override uint GroupPriority => 41;
 

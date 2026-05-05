@@ -64,32 +64,4 @@ public static class HackerEvents
             HackerRole.RpcHackerResetRound(PlayerControl.LocalPlayer);
         }
     }
-
-    [RegisterEvent]
-    public static void AfterMurderEventHandler(AfterMurderEvent @event)
-    {
-        var killer = @event.Source;
-        if (!IsHackerRole(killer))
-        {
-            return;
-        }
-
-        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost || PlayerControl.LocalPlayer == null)
-        {
-            return;
-        }
-
-        var opts = OptionGroupSingleton<HackerOptions>.Instance;
-        if (!opts.JamEnabled)
-        {
-            return;
-        }
-
-        var perKill = (int)opts.JamChargesPerKill;
-        var max = (int)opts.JamMaxCharges;
-        HackerSystem.AddJamCharge(killer.PlayerId, perKill, max);
-
-        var newCharges = HackerSystem.GetJamCharges(killer.PlayerId);
-        HackerRole.RpcHackerSetJamCharges(PlayerControl.LocalPlayer, killer.PlayerId, newCharges);
-    }
 }

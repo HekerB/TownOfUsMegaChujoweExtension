@@ -2,8 +2,12 @@ using System;
 using HarmonyLib;
 using MiraAPI.GameOptions;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
+using TouMegaChujoweExtension.Options.Roles.Impostor;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Options.Modifiers;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles.Impostor;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
@@ -37,13 +41,13 @@ public static class WikiAppendOptionsPatch
                 var opts = OptionGroupSingleton<EgotistExtendedOptions>.Instance;
                 if (opts != null)
                 {
-                    __result += $"\nCan Vent: {(opts.CanVent.Value ? "True" : "False")}";
-                    if (opts.CanVent.Value)
+                    __result += $"\nCan Vent: {(opts.CanVent ? "True" : "False")}";
+                    if (opts.CanVent)
                     {
-                        __result += $"\nMax Vent Time: {opts.MaxVentTime.Value}s";
-                        __result += $"\nVent Cooldown: {opts.VentCooldown.Value}s";
+                        __result += $"\nMax Vent Time: {opts.MaxVentTime}s";
+                        __result += $"\nVent Cooldown: {opts.VentCooldown}s";
                     }
-                    __result += $"\nImpostor Vision: {(opts.ImpostorVision.Value ? "True" : "False")}";
+                    __result += $"\nImpostor Vision: {(opts.ImpostorVision ? "True" : "False")}";
                 }
             }
             else if (classType == typeof(ForensicRole))
@@ -71,6 +75,19 @@ public static class WikiAppendOptionsPatch
                 {
                     var title = TouLocale.Get("ExtensionOptionMayorVoteCount");
                     __result += $"\n{title}: {opts.VoteCount}";
+                }
+            }
+            else if (classType == typeof(VampireRole))
+            {
+                var opts = OptionGroupSingleton<VampireExtendedOptions>.Instance;
+                if (opts != null)
+                {
+                    __result += $"\n{TouLocale.Get("ExtensionOptionVampireCanOnlySabotageLights")}: {(opts.CanOnlySabotageLights ? "True" : "False")}";
+                    if (opts.CanOnlySabotageLights)
+                    {
+                        __result += $"\n{TouLocale.Get("ExtensionOptionVampireSabotageCooldown")}: {opts.SabotageCooldown}s";
+                        __result += $"\n{TouLocale.Get("ExtensionOptionVampireOnlyOgCanSabotage")}: {(opts.OnlyOgCanSabotage ? "True" : "False")}";
+                    }
                 }
             }
         }

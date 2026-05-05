@@ -171,7 +171,7 @@ namespace TouMegaChujoweExtension.Roles.Neutral;
         if (target.IsImpostorAligned())
             return false;
 
-        if (target.Is(RoleAlignment.NeutralKilling) || target.Is(RoleAlignment.NeutralEvil))
+        if (target.Is(RoleAlignment.NeutralKilling) || target.Is(RoleAlignment.NeutralEvil) || target.Is(RoleAlignment.NeutralOutlier))
             return false;
 
         if (target.HasModifier<EgotistModifier>() || target.HasModifier<CrewpostorModifier>())

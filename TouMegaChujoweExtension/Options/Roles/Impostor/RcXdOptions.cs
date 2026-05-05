@@ -17,6 +17,9 @@ public sealed class RcXdOptions : AbstractOptionGroup<RcXdRole>
     [ModdedNumberOption("ExtensionOptionRcXdMaxDeploys", 0f, 10f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float MaxDeploys { get; set; } = 3f;
 
+    [ModdedToggleOption("ExtensionOptionRcXdCanUseInFirstRound")]
+    public bool CanUseInFirstRound { get; set; } = false;
+
     [ModdedToggleOption("ExtensionOptionRcXdCanVent")]
     public bool CanVent { get; set; } = true;
 

@@ -31,8 +31,14 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
     ///     Gets the specified Culture for string manipulations.
     /// </summary> 
     public static CultureInfo Culture => TownOfUsPlugin.Culture;
-	/// <inheritdoc />
+	    /// <inheritdoc />
     public string OptionsTitleText => "TOU Mega Chujowe Extension";
+
+    /// <inheritdoc />
+    public string CustomOptionMenuNameOne => TownOfUs.Modules.Localization.TouLocale.Get("TOUMCETabOptionBetterRoles");
+
+    /// <inheritdoc />
+    public string CustomOptionMenuOneDescription => TownOfUs.Modules.Localization.TouLocale.Get("TOUMCETabOptionBetterRolesDesc");
     /// <summary>
     ///     Determines if the current build is a dev build or not.
     /// </summary>

@@ -11,6 +11,9 @@ public sealed class SerialKillerOptions : AbstractOptionGroup<SerialKillerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleSerialKiller", "Serial Killer");
 
+    [ModdedToggleOption("ExtensionOptionSerialKillerCanReportBodies")]
+    public bool CanReportBodies { get; set; } = false;
+
     [ModdedToggleOption("ExtensionOptionSerialKillerManiacMode")]
     public bool ManiacMode { get; set; } = true;
 
@@ -23,9 +26,6 @@ public sealed class SerialKillerOptions : AbstractOptionGroup<SerialKillerRole>
     {
         Visible = () => OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacMode
     };
-
-    [ModdedToggleOption("ExtensionOptionSerialKillerCanReportBodies")]
-    public bool CanReportBodies { get; set; } = false;
 
     [ModdedToggleOption("ExtensionOptionSerialKillerKillCooldownReductionEnabled")]
     public bool KillCooldownReductionEnabled { get; set; } = false;

@@ -73,10 +73,17 @@ public static class VentablePatch
     }
 
     [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))]
-    [HarmonyPostfix]
-    public static void EnterVentPostfix(PlayerControl pc)
+    [HarmonyPrefix]
+    public static void EnterVentPrefix(PlayerControl pc, out bool __state)
     {
-        if (pc == null || !pc.AmOwner)
+        __state = pc != null && pc.inVent;
+    }
+
+    [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))]
+    [HarmonyPostfix]
+    public static void EnterVentPostfix(PlayerControl pc, bool __state)
+    {
+        if (pc == null || !pc.AmOwner || __state)
             return;
 
         var mod = pc.GetModifier<VentableModifier>();

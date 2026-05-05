@@ -67,10 +67,26 @@ public sealed class SerialKillerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
             return false;
         }
 
-        var aliveCount = Helpers.GetAlivePlayers().Count;
-        var killersAlive = MiscUtils.KillersAliveCount;
+        var alivePlayers = Helpers.GetAlivePlayers();
+        var aliveCount = alivePlayers.Count;
+        var sksAlive = alivePlayers.Count(x => x.IsRole<SerialKillerRole>());
+        
+        // 1. Impostors always prevent SK win
+        if (MiscUtils.ImpAliveCount > 0) return false;
 
-        return aliveCount <= killersAlive && killersAlive == 1;
+        // 2. Other Neutral Killing roles always prevent SK win
+        if (MiscUtils.NKillersAliveCount > sksAlive) return false;
+
+        // 3. Crewmate Killing roles (Sheriff, Veteran, Vigilante) always prevent SK win (as per request)
+        if (alivePlayers.Any(x => x.Is(RoleAlignment.CrewmateKilling))) return false;
+
+        // 4. Other Power Crew roles (Mayor, etc.) prevent win only if the Mira option is enabled
+        // MiscUtils.KillersAliveCount handles (PowerCrew && OptionEnabled)
+        var otherKillers = MiscUtils.KillersAliveCount - sksAlive;
+        if (otherKillers > 0) return false;
+
+        // Parity win against passive crewmates
+        return aliveCount <= sksAlive * 2;
     }
 
     public override void Initialize(PlayerControl player)

@@ -26,6 +26,9 @@ public sealed class VampireHunterOptions : AbstractOptionGroup<VampireHunterRole
     [ModdedNumberOption("ExtensionOptionVHMaxFailedStakes", 0f, 15f, 1f, MiraNumberSuffixes.None, zeroInfinity: true)]
     public float MaxFailedStakes { get; set; } = 5f;
 
+    [ModdedToggleOption("ExtensionOptionVHCanSelfReport")]
+    public bool CanSelfReport { get; set; } = true;
+
     [ModdedToggleOption("ExtensionOptionVHCanStakeRoundOne")]
     public bool CanStakeRoundOne { get; set; } = false;
 

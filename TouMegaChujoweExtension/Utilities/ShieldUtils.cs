@@ -55,7 +55,6 @@ public static class ShieldUtils
         if (player.HasModifier<GuardianAngelProtectModifier>()) return ShieldType.Fairy;
         if (player.HasModifier<MercenaryGuardModifier>() && 
             OptionGroupSingleton<MercenaryOptions>.Instance.GuardProtection.Value) return ShieldType.Mercenary;
-        if (player.HasModifier<TownOfUs.Modifiers.Crewmate.OracleBlessedModifier>()) return ShieldType.Oracle;
         var deadlyQuota = player.GetModifiers<DeadlyQuotaModifier>().FirstOrDefault();
         if (deadlyQuota != null)
         {

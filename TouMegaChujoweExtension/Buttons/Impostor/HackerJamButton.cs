@@ -24,38 +24,7 @@ public sealed class HackerJamButton : TownOfUsRoleButton<HackerRole>
     public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.HackerJamButtonSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
 
-    public override void CreateButton(Transform parent)
-    {
-        base.CreateButton(parent);
-        EnsureChargesInitialized();
-    }
 
-    private static void EnsureChargesInitialized()
-    {
-        var player = PlayerControl.LocalPlayer;
-        if (player == null || player.Data?.Role == null)
-        {
-            return;
-        }
-
-        if (!(player.Data.Role is HackerRole))
-        {
-            return;
-        }
-
-        var opts = OptionGroupSingleton<HackerOptions>.Instance;
-        if (opts.JamMaxCharges <= 0f)
-        {
-            return;
-        }
-
-        if (HackerSystem.GetJamCharges(player.PlayerId) == 0)
-        {
-            var max = (int)opts.JamMaxCharges;
-            var initial = (byte)Mathf.Clamp((int)opts.InitialJamCharges, 0, Math.Max(0, max));
-            HackerSystem.SetJamCharges(player.PlayerId, initial);
-        }
-    }
 
     public override bool Enabled(RoleBehaviour? role)
     {
@@ -83,6 +52,8 @@ public sealed class HackerJamButton : TownOfUsRoleButton<HackerRole>
         return Timer <= 0f && HackerSystem.GetJamCharges(player.PlayerId) > 0;
     }
 
+    private bool _chargesInitialized;
+
     protected override void FixedUpdate(PlayerControl playerControl)
     {
         base.FixedUpdate(playerControl);
@@ -92,12 +63,30 @@ public sealed class HackerJamButton : TownOfUsRoleButton<HackerRole>
             return;
         }
 
-        EnsureChargesInitialized();
+        if (!_chargesInitialized)
+        {
+            var opts = OptionGroupSingleton<HackerOptions>.Instance;
+            if (opts.JamEnabled)
+            {
+                var initialVal = (int)opts.InitialJamCharges;
+                byte initial = initialVal >= 11 ? (byte)255 : (byte)Mathf.Clamp(initialVal, 0, 10);
+                HackerSystem.SetJamCharges(PlayerControl.LocalPlayer.PlayerId, initial);
+            }
+            _chargesInitialized = true;
+        }
 
         var charges = HackerSystem.GetJamCharges(PlayerControl.LocalPlayer.PlayerId);
-        Button.usesRemainingText.gameObject.SetActive(true);
-        Button.usesRemainingSprite.gameObject.SetActive(true);
-        Button.usesRemainingText.text = charges.ToString(CultureInfo.InvariantCulture);
+        if (charges == 255)
+        {
+            Button.usesRemainingText.gameObject.SetActive(false);
+            Button.usesRemainingSprite.gameObject.SetActive(false);
+        }
+        else
+        {
+            Button.usesRemainingText.gameObject.SetActive(true);
+            Button.usesRemainingSprite.gameObject.SetActive(true);
+            Button.usesRemainingText.text = charges.ToString(CultureInfo.InvariantCulture);
+        }
 
         if (EffectActive && !HackerSystem.IsJammed)
         {

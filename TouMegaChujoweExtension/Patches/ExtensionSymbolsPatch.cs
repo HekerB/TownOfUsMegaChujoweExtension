@@ -74,18 +74,7 @@ public static class ExtensionSymbolsPatch
             }
         }
 
-        // --- WITCH (¤) ---
-        if (player.TryGetModifier<WitchSpellboundModifier>(out _))
-        {
-            if (!__result.Contains("¤"))
-            {
-                bool hasWitch = local.IsRole<WitchRole>();
-                if (hasWitch || deadKnow)
-                {
-                    __result += " <color=#C0C0C0>¤</color>";
-                }
-            }
-        }
+        // --- WITCH (Removed gray symbol) ---
 
         // --- LAWYER (§) ---
         if (!__result.Contains("§"))

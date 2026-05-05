@@ -231,6 +231,11 @@
   <string name="ExtensionOptionSerialKillerManiacTimerReductionPerKill">Zmniejszenie czasu Maniac za kazde zabojstwo</string>
   <string name="ExtensionOptionSerialKillerManiacTimerLimit">Limit Licznika Maniac (Najkrotszy)</string>
   
+  <!-- Eclipsal Role -->
+  <string name="ExtensionRoleEclipsal">Eclipsal</string>
+  <string name="ExtensionOptionEclipsalCanEclipseDuringSabotage">Moze eclipsowac podczas sabotazu</string>
+  <string name="ExtensionOptionEclipsalCanVent">Moze ventowac</string>
+  
   <!-- Serial Killer Modifiers -->
   <string name="ExtensionModifierSerialKillerManiac">Maniac</string>
   <string name="ExtensionModifierSerialKillerReduction">Redukcja Cooldownu</string>
@@ -250,6 +255,12 @@
   <string name="ExtensionOptionPelicanSwallowCooldown">Cooldown polkniecia</string>
   <string name="ExtensionOptionPelicanMaxSwallowed">Maksymalna liczba graczy w zoladku</string>
   <string name="ExtensionOptionPelicanCanVent">Pelican moze uzywac wentylacji</string>
+  
+  <!-- Vampire Role -->
+  <string name="ExtensionRoleVampire">Wampir</string>
+  <string name="ExtensionOptionVampireCanOnlySabotageLights">Moze sabotowac tylko swiatla</string>
+  <string name="ExtensionOptionVampireSabotageCooldown">Cooldown na sabotaz swiatel</string>
+  <string name="ExtensionOptionVampireOnlyOgCanSabotage">Tylko pierwotny wampir moze sabotowac</string>
 
   <!-- Pelican Notifications -->
   <string name="ExtensionPelicanSwallowedNotification">Zostales polkniety przez Pelicana!</string>
@@ -293,6 +304,8 @@
   <string name="ExtensionPirateDuelNotification">Pirate wyzwal cie na pojedynek!</string>
   <string name="ExtensionPirateDuelJailedPirateNotif">Jestes uwieziony! Twoj pojedynek zostal anulowany.</string>
   <string name="ExtensionPirateDuelJailedTargetNotif">Twoj cel pojedynku jest uwieziony! Pojedynek anulowany.</string>
+  <string name="ExtensionPirateCantDuelSamePersonTwiceNotif">Nie mozesz wyzwac tej samej osoby dwa razy pod rzad.</string>
+  <string name="ExtensionPirateTabCannotTarget">Nie mozna wyzwac w nastepnej rundzie: {0}</string>
 
   <!-- Pirate Death Message -->
   <string name="ExtensionDiedToPirate">Przegral pojedynek</string>
@@ -427,8 +440,6 @@
   <string name="ExtensionOptionHackerMoveWithDevice">Mozliwosc ruchu podczas uzywania urzadzenia</string>
   <string name="ExtensionOptionHackerSimpleModeJamOnly">Tryb prosty (tylko Jam)</string>
   <string name="ExtensionOptionHackerInitialJamCharges">Poczatkowe ladunki Jam</string>
-  <string name="ExtensionOptionHackerJamChargesPerKill">Ladunki Jam za zabojstwo</string>
-  <string name="ExtensionOptionHackerJamMaxCharges">Maksymalna liczba ladunkow Jam</string>
   <string name="ExtensionOptionHackerJamCooldown">Cooldown Jam</string>
   <string name="ExtensionOptionHackerJamDuration">Czas trwania Jam</string>
   
@@ -454,6 +465,7 @@
   <string name="ExtensionOptionRcXdMaxKills">Maksymalna liczba zabojstw na detonacje</string>
   <string name="ExtensionOptionRcXdCanVent">Moze uzywac wentylacji</string>
   <string name="ExtensionOptionRcXdMaxDeploys">Maksymalna liczba wypuszczen</string>
+  <string name="ExtensionOptionRcXdCanUseInFirstRound">Moze uzywac w pierwszej rundzie</string>
 
   <!-- Forestaller Role -->
   <string name="ExtensionRoleForestaller">Forestaller</string>
@@ -727,6 +739,7 @@
   <string name="ExtensionOptionBHCanVent">Bounty Hunter moze uzywac wentylacji</string>
   <string name="ExtensionOptionBHTargetsToKill">Liczba celow do zabicia przez BH</string>
   <string name="ExtensionOptionBHShowArrow">Pokaz strzalke do celu</string>
+  <string name="ExtensionOptionBHCanKillInRoundOne">Moze zabijac w pierwszej rundzie</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Interwal odswiezania strzalki</string>
   <string name="ExtensionOptionBHGameContinues">Gra trwa bez innych zabojcow</string>
   <string name="ExtensionOptionBHWinMode">Tryb wygranej</string>
@@ -920,6 +933,7 @@
   <string name="ExtensionOptionVHCanStakeRoundOne">Moze uzyc Stake w pierwszej rundzie</string>
   <string name="ExtensionOptionVHSelfKillOnFailure">Samobojstwo po wykorzystaniu wszystkich Stake</string>
   <string name="ExtensionOptionVHBecomesOnVampDeath">Staje sie po smierci Vampire</string>
+  <string name="ExtensionOptionVHCanSelfReport">Moze raportowac wlasne ofiary</string>
   <string name="ExtensionOptionVHMinVampires">Minimalna liczba Vampires do pojawienia sie</string>
   <string name="ExtensionOptionVHEnabled">Vampire Hunter wlaczony</string>
   <string name="ExtensionOptionVHChance">Szansa pojawienia sie Vampire Hunter</string>
@@ -981,14 +995,44 @@
  
 • Ustawienia &lt;b&gt;Neutral&lt;/b&gt; w lobby kontroluja &lt;b&gt;Maksymalna&lt;/b&gt; liczbe graczy przypisanych do frakcji Benign, Evil oraz Killing.
  
-Jesli opcja &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy wybieraja ze wszystkich klas&lt;/b&gt;&lt;/color&gt; jest wlaczona, gracze moga wybierac z dowolnej dostepnej kategorii.</string>
+Jesli opcja &lt;color=#FF3B3B&gt;&lt;b&gt;Dowolne klasy (Imp)&lt;/b&gt;&lt;/color&gt; lub &lt;color=#4DA6FF&gt;&lt;b&gt;Dowolne klasy (Crew)&lt;/b&gt;&lt;/color&gt; jest wlaczona, gracze moga wybierac z dowolnej dostepnej kategorii.
+ 
+Draft moze rowniez brac pod uwage szanse rol (Uzyj szans rol), przez co role pojawiaja sie zgodnie z ich szansami w lobby.
+ 
+Jesli opcja &lt;b&gt;Mieszaj Neutralnych z Zalogantami&lt;/b&gt; jest wlaczona, &lt;color=#4DA6FF&gt;&lt;b&gt;Zaloganci&lt;/b&gt;&lt;/color&gt; maja szanse wylosowac role Neutralne (Benign, Evil lub Outlier) w swojej puli wyboru.</string>
+
+  <!-- TOUMCE Wiki Terms - Role Extensions -->
+  <string name="TOUMCETermsRoleExtensionsTitle">Better Roles/Modifiers</string>
+  <string name="TOUMCETermsRoleExtensionsInfo">Ta sekcja zawiera zaawansowane opcje dla istniejacych rol i modyfikatorow, zwiekszajac ich mozliwosci i mechaniki rozgrywki.</string>
+  
+  <string name="TOUMCETermsVampireSabotageTitle">Sabotaz Wampira</string>
+  <string name="TOUMCETermsVampireSabotageInfo">Wampiry posiadaja zaawansowane opcje sabotazu: • &lt;color=#FF0000&gt;&lt;b&gt;Tylko Swiatla&lt;/b&gt;&lt;/color&gt; - Wampir moze sabotowac tylko system Electrical pod klawiszem TAB. • &lt;color=#FF0000&gt;&lt;b&gt;Cooldown po naprawie&lt;/b&gt;&lt;/color&gt; - Sabotaz posiada wlasny licznik startujacy po naprawie swiatel. • &lt;color=#FF0000&gt;&lt;b&gt;Tylko OG&lt;/b&gt;&lt;/color&gt; - Mozna ograniczyc sabotaz tylko dla pierwotnego Wampira (ugryzieni nie moga sabotowac).</string>
+  <string name="TOUMCETabOptionBetterRoles">Better Roles/Modifiers</string>
+  <string name="TOUMCETabOptionBetterRolesDesc">Skonfiguruj rozszerzone opcje dla istniejacych rol i modyfikatorow tutaj!</string>
 
   <!-- TOUMCE Wiki Terms - Game Settings -->
   <string name="TOUMCETermsGameSettingsTitle">Ustawienia Gry</string>
   <string name="TOUMCETermsGameSettingsInfo">TOUMCE wprowadza globalne ustawienia zmieniajace przebieg gry:
 • &lt;b&gt;Blokada Lobby podczas Draftu&lt;/b&gt; - Zapobiega dolaczaniu nowych graczy w trakcie wyboru rol.
-• &lt;b&gt;Respektuj Szanse Rol&lt;/b&gt; - Jesli wlaczone, prawdopodobienstwo wystapienia roli w drafcie opiera sie na jej ustawieniach szans w lobby.
-• &lt;b&gt;Czas Draftu&lt;/b&gt; - Okresla, ile sekund ma kazdy gracz na dokonanie wyboru.</string>
+• &lt;b&gt;Uzyj szans rol&lt;/b&gt; - Jesli wlaczone, prawdopodobienstwo wystapienia roli w drafcie opiera sie na jej ustawieniach szans w lobby.
+• &lt;b&gt;Mieszaj Neutralnych z Zalogantami&lt;/b&gt; - Istnieje szansa, ze role Neutral Benign/Evil/Outlier pojawia sie w puli wyboru dla Zalogantow.
+• &lt;b&gt;Czas Draftu&lt;/b&gt; - Okresla, ile sekund ma kazdy gracz na dokonanie wyboru.
+• &lt;b&gt;Zredukuj streak zabojcy&lt;/b&gt; - Zmniejsza szanse na bycie rola zabijajaca pod rzad.
+• &lt;b&gt;Impostor&lt;/b&gt; - Szansa na redukcje dla Impostorow.
+• &lt;b&gt;Neutral Killing&lt;/b&gt; - Szansa na redukcje dla rol Neutral Killing.</string>
+
+
+
+
+  <string name="All Classes (Imp)">Dowolne klasy (Imp)</string>
+  <string name="All Classes (Crew)">Dowolne klasy (Crew)</string>
+  <string name="Use Role Chances">Uzyj szans rol</string>
+  <string name="Merge Neutrals with Crew">Mieszaj Neutralnych z Zalogantami</string>
+  <string name="Neutral Merge Chance">Szansa na Neutralnych</string>
+  <string name="Max Neutrals in Merge">Maks. liczba Neutralnych (Mieszanie)</string>
+  <string name="Reduce Killing Streak">Zredukuj streak zabojcy</string>
+  <string name="Impostor">Impostor</string>
+  <string name="Neutral">Neutral Killing</string>
 
   <!-- Better Sonar Options -->
   <string name="ExtensionOptionBetterSonar">Lepszy Sonar</string>
@@ -1003,4 +1047,18 @@ Jesli opcja &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy wybieraja ze wszystkich kla
   <string name="ExtensionOptionForensicFreezeOnMeeting">Zamroz dowody po naradzie</string>
   <!-- Mayor Options -->
   <string name="ExtensionOptionMayorVoteCount">Liczba glosow</string>
+
+  <!-- Role Names for Tab -->
+  <string name="TOUMCEBetterRolePrefix">Better role: </string>
+  <string name="TOUMCEBetterModifierPrefix">Better modifier: </string>
+  <string name="Sonar">Sonar</string>
+  <string name="Egotist">Egotysta</string>
+  <string name="Forensic">Forensic</string>
+  <string name="Time Lord">Time Lord</string>
+  <string name="Mayor">Burmistrz</string>
+
+  <!-- Death Handler reasons for end-game screen -->
+  <string name="DiedToWinning">Zwyciestwo</string>
+  <string name="DiedToEjection">Wyrzucony</string>
 </resources>
+

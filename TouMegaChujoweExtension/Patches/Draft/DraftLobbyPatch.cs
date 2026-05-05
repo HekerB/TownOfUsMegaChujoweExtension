@@ -545,11 +545,68 @@ public static class DraftLobbyPatch
             impostorCount = Mathf.Max(impostorCount, 1);
         }
 
-        var shuffled = new List<byte>(allPlayers);
-        shuffled.Shuffle();
         var impostors = new HashSet<byte>();
-        for (int i = 0; i < impostorCount; i++)
-            impostors.Add(shuffled[i]);
+        
+        if (options.ReduceKillingStreak.Value)
+        {
+            var biasPercent = options.ReductionChance.Value / 100f;
+            var random = new System.Random();
+            
+            // Try to get LastImps from TownOfUs
+            List<int> lastImps = new List<int>();
+            try
+            {
+                var type = AccessTools.TypeByName("TownOfUs.Patches.TouRoleManagerPatches");
+                if (type != null)
+                {
+                    // Access private static property using reflection flags
+                    var prop = type.GetProperty("LastImps", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+                    if (prop != null)
+                    {
+                        lastImps = (List<int>)prop.GetValue(null);
+                    }
+                }
+            }
+            catch { }
+
+            var remainingPlayers = new List<byte>(allPlayers);
+            var skippedPlayers = new List<byte>();
+
+            while (impostors.Count < impostorCount && (remainingPlayers.Count > 0 || skippedPlayers.Count > 0))
+            {
+                // If we ran out of clean players, we must pick from the skipped ones
+                if (remainingPlayers.Count == 0)
+                {
+                    remainingPlayers.AddRange(skippedPlayers);
+                    skippedPlayers.Clear();
+                    remainingPlayers.Shuffle();
+                }
+
+                int num = random.Next(remainingPlayers.Count);
+                byte playerId = remainingPlayers[num];
+                var pc = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == playerId);
+                
+                bool shouldSkip = pc != null && lastImps != null && lastImps.Contains(pc.Data.ClientId) && random.NextDouble() < biasPercent;
+
+                if (shouldSkip) 
+                {
+                    // Move to skipped list for this selection round
+                    skippedPlayers.Add(playerId);
+                    remainingPlayers.RemoveAt(num);
+                    continue;
+                }
+
+                impostors.Add(playerId);
+                remainingPlayers.RemoveAt(num);
+            }
+        }
+        else
+        {
+            var shuffled = new List<byte>(allPlayers);
+            shuffled.Shuffle();
+            for (int i = 0; i < impostorCount; i++)
+                impostors.Add(shuffled[i]);
+        }
 
         DraftSystem.ImpostorPlayerIds = impostors;
         DraftSystem.GeneratePickOrder(allPlayers);

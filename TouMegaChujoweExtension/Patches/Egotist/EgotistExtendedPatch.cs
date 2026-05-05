@@ -6,6 +6,7 @@ using TouMegaChujoweExtension.Options.Modifiers;
 using TownOfUs.Buttons;
 using TownOfUs.Modifiers.Game.Alliance;
 using UnityEngine;
+using TMPro;
 
 namespace TouMegaChujoweExtension.Patches.Egotist;
 
@@ -15,6 +16,7 @@ public static class EgotistExtendedPatch
     private static float _ventTimer;
     private static float _ventCooldownTimer;
     private static bool _onCooldown;
+    private const string TimerTextName = "EgotistVentTimerText";
 
     public static void ResetVentState()
     {
@@ -51,6 +53,9 @@ public static class EgotistExtendedPatch
     {
         if (!IsLocalEgotist(out var opts)) return;
 
+        var player = PlayerControl.LocalPlayer;
+        if (player == null) return;
+
         if (MeetingHud.Instance != null)
         {
             try
@@ -86,11 +91,17 @@ public static class EgotistExtendedPatch
             }
         }
 
-        var player = PlayerControl.LocalPlayer;
+        var timerText = GetOrCreateTimerText(__instance.ImpostorVentButton);
+        if (timerText == null) return;
+
         if (player.inVent && opts.CanVent)
         {
             _ventTimer += Time.deltaTime;
-            if (_ventTimer >= opts.MaxVentTime.Value)
+            float remainingInVent = Mathf.Max(0f, opts.MaxVentTime - _ventTimer);
+            __instance.ImpostorVentButton.SetCoolDown(remainingInVent, opts.MaxVentTime);
+            SetTimerText(timerText, remainingInVent);
+
+            if (_ventTimer >= opts.MaxVentTime)
             {
                 if (Vent.currentVent != null)
                 {
@@ -100,13 +111,64 @@ public static class EgotistExtendedPatch
 
                 _ventTimer = 0f;
                 _onCooldown = true;
-                _ventCooldownTimer = opts.VentCooldown.Value;
+                _ventCooldownTimer = opts.VentCooldown;
             }
+        }
+        else if (_onCooldown)
+        {
+            __instance.ImpostorVentButton.SetCoolDown(_ventCooldownTimer, opts.VentCooldown);
+            SetTimerText(timerText, _ventCooldownTimer);
         }
         else
         {
             _ventTimer = 0f;
+            __instance.ImpostorVentButton.SetCoolDown(0f, 1f);
+            timerText.gameObject.SetActive(false);
         }
+    }
+
+    [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent))]
+    [HarmonyPostfix]
+    public static void ExitVentPostfix(PlayerControl pc)
+    {
+        if (pc == null || !pc.AmOwner) return;
+        if (!pc.TryGetModifier<EgotistModifier>(out _)) return;
+        
+        var opts = OptionGroupSingleton<EgotistExtendedOptions>.Instance;
+        if (opts == null || !opts.CanVent) return;
+
+        // Manual exit also triggers cooldown
+        if (!_onCooldown)
+        {
+            _onCooldown = true;
+            _ventCooldownTimer = opts.VentCooldown;
+        }
+    }
+
+    private static void SetTimerText(TextMeshPro timerText, float seconds)
+    {
+        if (timerText == null || timerText.gameObject == null) return;
+        timerText.gameObject.SetActive(true);
+        timerText.enabled = true;
+        timerText.text = Mathf.CeilToInt(seconds).ToString();
+        timerText.color = Color.white;
+    }
+
+    private static TextMeshPro GetOrCreateTimerText(ActionButton button)
+    {
+        if (button == null) return null;
+        var existing = button.transform.Find(TimerTextName);
+        if (existing != null) return existing.GetComponent<TextMeshPro>();
+
+        var source = HudManager.Instance?.KillButton?.cooldownTimerText;
+        if (source == null) return null;
+
+        var timer = UnityEngine.Object.Instantiate(source, button.transform);
+        timer.name = TimerTextName;
+        timer.transform.localPosition = new Vector3(0f, 0f, -1f);
+        timer.color = Color.white;
+        timer.gameObject.SetActive(true);
+        return timer;
     }
 
     [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]

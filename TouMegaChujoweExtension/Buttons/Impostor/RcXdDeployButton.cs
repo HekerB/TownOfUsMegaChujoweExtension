@@ -38,6 +38,13 @@ public sealed class RcXdDeployButton : TownOfUsKillRoleButton<RcXdRole>, IDiseas
     {
         if (_driving) return true;
         if (_isNearWall) return false;
+
+        if (!OptionGroupSingleton<RcXdOptions>.Instance.CanUseInFirstRound &&
+            TownOfUs.Events.DeathEventHandlers.CurrentRound <= 1)
+        {
+            return false;
+        }
+
         return base.CanUse();
     }
 

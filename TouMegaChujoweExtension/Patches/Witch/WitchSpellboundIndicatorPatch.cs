@@ -84,11 +84,6 @@ public static class WitchSpellboundIndicatorPatch
 
     private static bool ShouldShowHexedSprite(PlayerControl player)
     {
-        if (MeetingHud.Instance == null)
-        {
-            return false;
-        }
-
         if (player == null || !player.HasModifier<WitchSpellboundModifier>())
         {
             return false;
@@ -97,6 +92,16 @@ public static class WitchSpellboundIndicatorPatch
         var localPlayer = PlayerControl.LocalPlayer;
         if (localPlayer == null)
         {
+            return false;
+        }
+
+        if (MeetingHud.Instance == null)
+        {
+            // Only Witch and Impostors see it during gameplay
+            if (localPlayer.IsRole<WitchRole>() || (localPlayer.Data?.Role != null && localPlayer.Data.Role.IsImpostor))
+            {
+                return true;
+            }
             return false;
         }
 
@@ -115,8 +120,6 @@ public static class WitchSpellboundIndicatorPatch
             }
         }
 
-        // In meeting, all players see it, or only Witch? 
-        // Base mod says everyone in meeting or after first meeting. Let's keep it visible for anyone authorized in meetings.
         return true;
     }
 
@@ -169,6 +172,7 @@ public static class WitchSpellboundIndicatorPatch
             spriteRenderer.sprite = TouExtensionAssets.HexedSprite.LoadAsset();
             spriteRenderer.sortingOrder = nameText.sortingOrder + 1;
             spriteRenderer.transform.localScale = Vector3.one * 0.4f;
+            spriteRenderer.color = TouExtensionColors.Witch;
 
 
             spriteObj.layer = nameTextGameObject.layer;
@@ -194,6 +198,7 @@ public static class WitchSpellboundIndicatorPatch
             }
 
             spriteRenderer.transform.localPosition = new Vector3(textWidth + 0.15f, 0f, -0.1f);
+            spriteRenderer.color = TouExtensionColors.Witch;
 
 
             spriteRenderer.sortingOrder = nameText.sortingOrder + 1;
@@ -266,6 +271,7 @@ public static class WitchSpellboundIndicatorPatch
             spriteRenderer = spriteObj.AddComponent<SpriteRenderer>();
             spriteRenderer.sprite = TouExtensionAssets.HexedSprite.LoadAsset();
             spriteRenderer.transform.localScale = Vector3.one * 0.4f;
+            spriteRenderer.color = TouExtensionColors.Witch;
 
             HexedSprites[meetingKey] = spriteRenderer;
         }
@@ -284,6 +290,7 @@ public static class WitchSpellboundIndicatorPatch
 
             var nameTextLocalPos = nameText.transform.localPosition;
             spriteRenderer.transform.localPosition = new Vector3(nameTextLocalPos.x + textWidth + 0.15f, nameTextLocalPos.y, -1f);
+            spriteRenderer.color = TouExtensionColors.Witch;
 
 
             if (spriteRenderer.transform.parent != playerVA.transform)

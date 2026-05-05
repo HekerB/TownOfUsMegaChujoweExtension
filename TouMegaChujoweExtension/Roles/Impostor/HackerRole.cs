@@ -94,6 +94,14 @@ public sealed class HackerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
+        
+        var opts = OptionGroupSingleton<HackerOptions>.Instance;
+        if (opts.JamEnabled)
+        {
+            var initialVal = (int)opts.InitialJamCharges;
+            byte charges = initialVal >= 11 ? (byte)255 : (byte)Mathf.Clamp(initialVal, 0, 10);
+            HackerSystem.SetJamCharges(player.PlayerId, charges);
+        }
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -167,7 +175,7 @@ public sealed class HackerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
         HackerSystem.ActivateJam(durationSeconds);
 
         var localPlayer = PlayerControl.LocalPlayer;
-        if (localPlayer != null)
+        if (localPlayer != null && localPlayer.IsImpostorAligned())
         {
             TouAudio.PlaySound(TouExtensionAudio.HackerJamSound);
         }

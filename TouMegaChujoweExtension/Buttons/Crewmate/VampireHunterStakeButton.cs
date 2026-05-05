@@ -17,6 +17,7 @@ using TownOfUs.Events;
 using TownOfUs.Options;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
+using Il2CppInterop.Runtime;
 using UnityEngine;
 using TouMegaChujoweExtension.Utilities;
 
@@ -28,6 +29,7 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IKillBu
     private PlayerControl? _target;
     private PlayerControl? _lastOutlined;
     private static bool _firstRound = true;
+    public static List<byte> HunterKilledVictims = new();
 
     public override string Name => TouLocale.Get("ExtensionRoleVampireHunterStake", "Stake");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
@@ -81,14 +83,22 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IKillBu
         {
             player.RpcCustomMurder(_target);
             role.SuccessfulStakes++;
-            
-            // Increment to cancel current use and refresh UI
-            UsesLeft++;
-            SetUses(UsesLeft);
+
+            if (!OptionGroupSingleton<VampireHunterOptions>.Instance.CanSelfReport)
+            {
+                HunterKilledVictims.Add(_target.PlayerId);
+            }
         }
         else
         {
             role.FailedStakes++;
+            
+            if (MaxUses > 0)
+            {
+                UsesLeft--;
+                SetUses(UsesLeft);
+            }
+
             Coroutines.Start(MiscUtils.CoFlash(new Color(1f, 0f, 0f, 0.3f)));
 
             Coroutines.Start(CheckSelfKill(player, role));
@@ -110,6 +120,8 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IKillBu
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
+        base.FixedUpdate(playerControl);
+
         if (MeetingHud.Instance)
         {
             ClearOutline();
@@ -125,6 +137,18 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IKillBu
 
         ClearOutline();
         _target = playerControl.GetClosestLivingPlayer(true, 1.5f, false);
+
+        if (Button != null)
+        {
+            if (CanUse())
+            {
+                Button.SetEnabled();
+            }
+            else
+            {
+                Button.SetDisabled();
+            }
+        }
 
         if (_target != null && !_target.HasDied())
         {
