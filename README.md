@@ -388,7 +388,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 - **Radzik360** - Joker laugh (intro & in-game), Kamikaze explosion sound, Pelican swallow sound
 - **Ano** - Pope intro sound
 - **Innersloth & Puffballs United** - Draft music ("Seek")
-- **Dymowy Among Us (Tajemniczy Typiarz)** - Draft pick sound, Draft alert sound
+- **Tajemniczy Among Us (Tajemniczy Typiarz)** - Draft pick sound, Draft alert sound
 - **Death Note (anime)** - Death Note kill sound (Light's laugh)
 - **YouTube** - Pope alarm & Judgement end sounds (from Divine Judgement concept videos)
 - **Star Wars** - Bounty Hunter intro sound
