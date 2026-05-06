@@ -288,7 +288,6 @@ Draft Mode is a special game feature that lets players take turns choosing their
 |--------|-------------|
 | Enable Draft Mode | Toggle draft mode on/off |
 | Lock Lobby During Draft | Prevent players from joining mid-draft |
-| Instant Start | Skip Among Us countdown after pick phase |
 | Reduce Killing Streak | Lower the chance of players being Impostors multiple times in a row |
 | Reduction Chance | Configure the streak reduction probability (0-100%) |
 | Merge Neutrals with Crew | Neutral roles can appear in the Crewmate pick pool |
@@ -372,7 +371,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 - **Radzik360** - Joker laugh (intro & in-game), Kamikaze explosion sound, Pelican swallow sound
 - **Ano** - Pope intro sound
 - **Innersloth & Puffballs United** - Draft music ("Seek")
-- **Dymowy Among Us (Tajemniczy Typiarz)** - Draft pick sound, Draft alert sound
+- **Tajemniczy Among Us (Tajemniczy Typiarz)** - Draft pick sound, Draft alert sound
 - **Death Note (anime)** - Death Note kill sound (Light's laugh)
 - **YouTube** - Pope alarm & Judgement end sounds (from Divine Judgement concept videos)
 - **Star Wars** - Bounty Hunter intro sound
