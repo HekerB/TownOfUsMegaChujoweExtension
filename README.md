@@ -284,7 +284,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 6. **Game Start** - Once all players have picked, the game begins with chosen roles.
 
 > [!IMPORTANT]
-> In Draft Mode, the original Town of Us: Mira role chances and spawn settings are **NOT used**. The draft pool is generated based on Draft-specific configuration, ensuring a balanced selection regardless of standard lobby settings.
+> By default, Draft Mode **does NOT use** the original Town of Us: Mira role chances or spawn settings. The draft pool is generated based on Draft-specific configuration. However, you can enable the **"Respect Role Chances"** option in the lobby to use your standard spawn probabilities.
 
 ## Features
 
@@ -328,9 +328,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 > Watch the Draft Mode in action below!
 
 <div align="center">
-  <p align="center">
-    <img src="https://github.com/HekerB/TownOfUsMegaChujoweExtension/raw/main/Images/Screenshots/Showcase.mp4" width="80%" />
-  </p>
+  https://github.com/HekerB/TownOfUsMegaChujoweExtension/raw/main/Images/Screenshots/Showcase.mp4
 </div>
 
 
