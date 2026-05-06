@@ -16,6 +16,14 @@
 
 An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira) that adds new roles, modifiers, features, and an advanced Draft Mode!
 
+> [!IMPORTANT]
+> **Compatibility Note:** This extension mod is only guaranteed to work with the specific versions of **Town of Us: Mira** listed below. Due to differing releases on PC and Android, versions with an `x` (e.g., `17.3.x`) are compatible with all minor releases for both platforms.
+
+| Among Us Version | TOU: Mira Version | Download Mira |
+|------------------|-------------------|---------------|
+| 17.3.x           | 1.6.1             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.1) |
+| 17.3.x           | 1.6.0             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.0) |
+
 > [!TIP]
 > **In-Game Patch Notes:** Every time a new version is released, you can view the full changelog directly in the game's Main Menu through our custom announcement system!
 
@@ -24,6 +32,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
 # Contents
 
 - [**Contents**](#contents)
+- [**Compatibility**](#compatibility-note)
 - [**Installation**](#installation)
 - [**Building**](#building)
 - [**Requirements**](#requirements)
