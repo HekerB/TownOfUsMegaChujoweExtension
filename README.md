@@ -262,10 +262,6 @@ This extension focuses on improving existing roles from Town of Us: Mira. These 
 ### Better Role: Sonar
 - **Map Overlays:** Custom player head map pointers and arrow overlays.
 
-### Better Role: Pelican
-- **Shield Bypass Fix:** Correctly respects all protections.
-- **Layout:** Uses Juggernaut button layout.
-
 ### Better Modifier: Egotist
 - **Vent Access:** Toggle whether the Egotist can use vents.
 - **Impostor Vision:** Optional enhanced vision.
@@ -332,7 +328,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 > Watch the Draft Mode in action below!
 
 <div align="center">
-  <video src="./Images/Screenshots/Showcase.mp4" width="80%" controls style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.5);"></video>
+  <video src="https://github.com/HekerB/TownOfUsMegaChujoweExtension/raw/main/Images/Screenshots/Showcase.mp4" width="80%" controls></video>
 </div>
 
 
