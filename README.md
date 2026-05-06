@@ -328,7 +328,9 @@ Draft Mode is a special game feature that lets players take turns choosing their
 > Watch the Draft Mode in action below!
 
 <div align="center">
-  <video src="https://github.com/HekerB/TownOfUsMegaChujoweExtension/raw/main/Images/Screenshots/Showcase.mp4" width="80%" controls></video>
+  <p align="center">
+    <img src="https://github.com/HekerB/TownOfUsMegaChujoweExtension/raw/main/Images/Screenshots/Showcase.mp4" width="80%" />
+  </p>
 </div>
 
 
