@@ -5,6 +5,8 @@
 
 > [!WARNING]
 > This project is under constant development. Expect bugs, weird edge cases, and frequent changes! Please report any issues you find.
+> 
+> **AI Usage:** Artificial Intelligence was used during development to help with code and documentation.
 
 -----------------------
 
