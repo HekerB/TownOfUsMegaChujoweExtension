@@ -1,5 +1,3 @@
-
-https://github.com/user-attachments/assets/e6a8f174-e783-4249-aa4f-6dd2cb4bd2f0
 > [!NOTE]
 > This repo is an extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira) that adds new roles and modifiers.\
 > This mod requires Town of Us: Mira to be installed and is NOT for console versions of Among Us.\
@@ -330,13 +328,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 > Watch the Draft Mode in action below!
 
 <div align="center">
-  
-
 https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
-
-
-
-
 </div>
 
 
