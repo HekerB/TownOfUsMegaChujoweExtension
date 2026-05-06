@@ -312,6 +312,8 @@ Draft Mode is a special game feature that lets players take turns choosing their
 |--------|-------------|
 | Enable Draft Mode | Toggle draft mode on/off |
 | Lock Lobby During Draft | Prevent players from joining mid-draft |
+| All Classes (Imp) | Allow Impostors to pick from all available Impostor roles |
+| All Classes (Crew) | Allow Crewmates to pick from all available Crewmate roles |
 | Reduce Killing Streak | Lower the chance of players being Impostors multiple times in a row |
 | Reduction Chance | Configure the streak reduction probability (0-100%) |
 | Merge Neutrals with Crew | Neutral roles can appear in the Crewmate pick pool |
