@@ -16,6 +16,9 @@
 
 An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira) that adds new roles, modifiers, features, and an advanced Draft Mode!
 
+> [!TIP]
+> **In-Game Patch Notes:** Every time a new version is released, you can view the full changelog directly in the game's Main Menu through our custom announcement system!
+
 -----------------------
 
 # Contents
@@ -27,6 +30,8 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
 - [**Roles & Modifiers**](#roles--modifiers)
 - [**Better Roles & Modifiers (Improvements)**](#better-roles--modifiers-improvements)
 - [**Draft Mode**](#draft-mode)
+- [**Security & Stability**](#security--stability)
+- [**Localization 🇵🇱 🇺🇸**](#localization--)
 - [**Chat Commands**](#chat-commands)
 - [**Credits**](#credits)
 - [**License**](#license)
@@ -109,7 +114,7 @@ Vanisher can temporarily turn invisible to avoid being seen. May Neutral and Imp
 Vampire Hunter only appears when there are vampires in the game. Vampire Hunter stakes other players; if the player is not a vampire, the stake is wasted and nothing happens. If the targeted player is a vampire, they die. If there are no vampires left in the game, Vampire Hunter receives a new role based on the game settings.
 
 ### President (Crewmate Power)
-Abstain to bank votes. Features a custom HUD counter for banked votes and Monarch bonuses.
+Abstain from voting to bank votes, then spend them all at once in a future meeting.
 
 ### Bodyguard (Crewmate Protective)
 Shield a player. When they're attacked, teleport to them and eliminate the attacker but you die too.
@@ -218,9 +223,6 @@ Grants limited vent access with a cooldown and max duration.
 
 ## Additional Features & Tweaks
 
-### Egotist Tweaks
-Added options to allow the Egotist modifier to use vents, have Impostor vision, and custom vent cooldowns.
-
 ### Polish Language Support
 An option added to use Polish localizations via `ExtensionLocalSettingUsePolish`.
 
@@ -254,10 +256,21 @@ This extension focuses on improving existing roles from Town of Us: Mira. These 
 - **Freeze Scenes:** Option to stop tracking suspects once a meeting starts.
 - **Suspect Logic:** Improved suspect identification to prevent false positives.
 
+### Better Role: Mayor
+- **Custom Votes:** Supports **3-10 votes** based on lobby settings.
+
+### Better Role: Sonar
+- **Map Overlays:** Custom player head map pointers and arrow overlays.
+
+### Better Role: Pelican
+- **Shield Bypass Fix:** Correctly respects all protections.
+- **Layout:** Uses Juggernaut button layout.
+
 ### Better Modifier: Egotist
 - **Vent Access:** Toggle whether the Egotist can use vents.
 - **Impostor Vision:** Optional enhanced vision.
 - **Vent Cooldown:** Fully customizable vent timings.
+
 
 -----------------------
 
@@ -272,7 +285,10 @@ Draft Mode is a special game feature that lets players take turns choosing their
 3. **Turn-Based Picking** - Players take turns selecting their desired role from a pool of available roles
 4. **Timer** - Each player has limited time to pick (configurable by host)
 5. **Random Fallback** - If a player doesn't pick in time, a random role is assigned
-6. **Game Start** - Once all players have picked, the game begins with chosen roles
+6. **Game Start** - Once all players have picked, the game begins with chosen roles.
+
+> [!IMPORTANT]
+> In Draft Mode, the original Town of Us: Mira role chances and spawn settings are **NOT used**. The draft pool is generated based on Draft-specific configuration, ensuring a balanced selection regardless of standard lobby settings.
 
 ## Features
 
@@ -281,6 +297,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 - **Pick Order Display** - See how many turns until your pick
 - **Audio Cues** - Alert on draft complete, your turn, and pick confirmation
 - **Random Button** - Can't decide? Pick a random role from your side
+- **Instant Start** - Automatically skips the Among Us countdown after the picking phase is complete to jump straight into the round.
 
 ## Configuration Options
 
@@ -288,10 +305,11 @@ Draft Mode is a special game feature that lets players take turns choosing their
 |--------|-------------|
 | Enable Draft Mode | Toggle draft mode on/off |
 | Lock Lobby During Draft | Prevent players from joining mid-draft |
-| Instant Start | Skip Among Us countdown after pick phase |
 | Reduce Killing Streak | Lower the chance of players being Impostors multiple times in a row |
 | Reduction Chance | Configure the streak reduction probability (0-100%) |
 | Merge Neutrals with Crew | Neutral roles can appear in the Crewmate pick pool |
+| Min Neutral Roles | Minimum number of Neutral roles available in the draft |
+| Max Neutral Roles | Maximum number of Neutral roles available in the draft |
 | Time To Choose | Seconds each player has to pick |
 | Roles To Show | Number of role options displayed |
 | Respect Role Chances | Draft pool follows lobby spawn probabilities |
@@ -309,14 +327,12 @@ Draft Mode is a special game feature that lets players take turns choosing their
   </table>
 </div>
 
-### Gameplay Video (PiP)
+### Gameplay Video
 > [!TIP]
-> Click the thumbnail below to watch the Draft Mode in action!
+> Watch the Draft Mode in action below!
 
 <div align="center">
-  <a href="https://www.youtube.com/watch?v=gleivmIt4nY">
-    <img src="https://img.youtube.com/vi/gleivmIt4nY/maxresdefault.jpg" width="80%" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.5);"/>
-  </a>
+  <video src="./Images/Screenshots/Showcase.mp4" width="80%" controls style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.5);"></video>
 </div>
 
 
@@ -390,6 +406,33 @@ Draft Mode is a special game feature that lets players take turns choosing their
 
 ## Wiki & Documentation
 - **dziabe** - Helped with shortening role descriptions for the wiki (minimal effort)
+
+-----------------------
+
+# Security & Stability
+
+### Duplicate Extension Guard
+To ensure maximum stability and prevent frequent crashes, the mod includes a built-in **Duplicate Checker**. If you accidentally leave an old version of the mod (like `TouMegaChujoweExtension (1).dll`) in your plugins folder, the game will:
+1. Display a massive red warning on the Main Menu.
+2. Automatically prevent you from joining or hosting lobbies until the duplicate is removed.
+This protects both you and other players from unexpected "Assembly not registered" errors.
+
+### Memory & Performance
+The extension is optimized to prevent common IL2CPP memory leaks. We've eliminated "Death Loops" in UI button logic that previously caused FPS drops and `OutOfMemoryException`.
+
+-----------------------
+
+# Localization 🇵🇱 🇺🇸
+
+This mod features **100% complete Polish translation**, including:
+- Role descriptions and abilities.
+- Lobby options and tooltips.
+- In-game notifications and win screens.
+- Custom "Better Roles" settings tab.
+
+You can toggle between **English** and **Polish** in the game settings via `ExtensionLocalSettingUsePolish`.
+
+-----------------------
 
 ## Frameworks & Dependencies
 - **[Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)** - Base mod
