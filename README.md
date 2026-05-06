@@ -4,7 +4,7 @@
 > Forked from [TownOfUsMiraRolesExtension](https://github.com/rewalo/TownOfUsMiraRolesExtension) by rewalo.
 
 > [!WARNING]
-> This project is under constant development and much of the code was written **(a bit)** with the assistance of AI. Expect bugs, weird edge cases, and frequent changes! Please report any issues you find.
+> This project is under constant development. Expect bugs, weird edge cases, and frequent changes! Please report any issues you find.
 
 -----------------------
 
@@ -14,7 +14,7 @@
 </div>
 <br/>
 
-An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira) that adds new roles, modifiers, features, and the best, Draft Mode!
+An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira) that adds new roles, modifiers, features, and an advanced Draft Mode!
 
 -----------------------
 
@@ -25,6 +25,8 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
 - [**Building**](#building)
 - [**Requirements**](#requirements)
 - [**Roles & Modifiers**](#roles--modifiers)
+- [**Better Roles & Modifiers (Improvements)**](#better-roles--modifiers-improvements)
+- [**Draft Mode**](#draft-mode)
 - [**Chat Commands**](#chat-commands)
 - [**Credits**](#credits)
 - [**License**](#license)
@@ -65,7 +67,6 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="#shifter-benign"><img width="10%" src="./Images/Icons/Shifter_Role_Icon.png" /></a>
   <img src="./Images/Groups/NeutEvil.png" align="center" />
   <a href="#bounty-hunter-evil"><img width="10%" src="./Images/Icons/BountyHunter_Role_Icon.png" /></a>
-  <a href="#joker-evil"><img width="10%" src="./Images/Icons/Joker_Role_Icon.png" /></a>
   <a href="#pirate-evil"><img width="10%" src="./Images/Icons/Pirate_Role_Icon.png" /></a>
   <a href="#pope-evil"><img width="10%" src="./Images/Icons/Pope_Role_Icon.png" /></a>
   <a href="#vulture-evil"><img width="10%" src="./Images/Icons/Vulture_Icon.png" /></a>
@@ -108,7 +109,7 @@ Vanisher can temporarily turn invisible to avoid being seen. May Neutral and Imp
 Vampire Hunter only appears when there are vampires in the game. Vampire Hunter stakes other players; if the player is not a vampire, the stake is wasted and nothing happens. If the targeted player is a vampire, they die. If there are no vampires left in the game, Vampire Hunter receives a new role based on the game settings.
 
 ### President (Crewmate Power)
-Abstain from voting to bank votes, then spend them all at once in a future meeting.
+Abstain to bank votes. Features a custom HUD counter for banked votes and Monarch bonuses.
 
 ### Bodyguard (Crewmate Protective)
 Shield a player. When they're attacked, teleport to them and eliminate the attacker but you die too.
@@ -164,9 +165,6 @@ Steal another player's role at the next meeting. You can only steal a Crewmate r
 
 ### Bounty Hunter (Neutral Evil)
 Hunt assigned targets. The Bounty Hunter can only kill their assigned targets. Eliminate all targets to win.
-
-### Joker (Neutral Evil)
-Place clones of other players on the map. When killing roles attack clones, it counts toward your win.
 
 ### Pirate (Neutral Evil)
 Challenge players to Rock-Paper-Scissors duels during meetings. Win enough duels to win the game.
@@ -232,14 +230,34 @@ Optional cycling-style assassin guessing (arrows + guess button instead of panel
 ### Legacy Guess Death Animation
 Optional old-style death animation for guessing.
 
-### Joker PiP Customization
-Added local settings to adjust the Picture-in-Picture size and location for the Joker role.
-
 -----------------------
 
-# Chat Commands
+# Better Roles & Modifiers (Improvements)
 
-- `/me` - Displays information about your role, modifiers and task progression.
+This extension focuses on improving existing roles from Town of Us: Mira. These can be configured in the **Better Roles/Modifiers** tab in the lobby.
+
+### Better Role: Time Lord (FULLY FIXED)
+- **Physical Position Rewind:** Now correctly rewinds actual player coordinates.
+- **Revive Thresholds:** Fixed game-breaking logic where revives were inconsistent.
+- **Speed Multiplier:** Configure the rewind animation speed (0.5x - 5.0x).
+- **Pelican Fix:** Swallowed players are safely ejected during rewind.
+
+### Better Role: Vampire
+- **Vampire Sabotage:** Finalized sabotage system (TAB-only).
+- **Lights Sabotage Restriction:** Toggle whether Vampires can only sabotage Lights.
+
+### Better Role: Mirror Caster
+- **Move While Targeting:** Option to move freely (WASD) while the targeting map is open.
+- **Instant Selection:** Fixed targeting buttons to respond on the first click.
+
+### Better Role: Forensic
+- **Freeze Scenes:** Option to stop tracking suspects once a meeting starts.
+- **Suspect Logic:** Improved suspect identification to prevent false positives.
+
+### Better Modifier: Egotist
+- **Vent Access:** Toggle whether the Egotist can use vents.
+- **Impostor Vision:** Optional enhanced vision.
+- **Vent Cooldown:** Fully customizable vent timings.
 
 -----------------------
 
@@ -270,10 +288,12 @@ Draft Mode is a special game feature that lets players take turns choosing their
 |--------|-------------|
 | Enable Draft Mode | Toggle draft mode on/off |
 | Lock Lobby During Draft | Prevent players from joining mid-draft |
+| Instant Start | Skip Among Us countdown after pick phase |
+| Reduce Killing Streak | Lower the chance of players being Impostors multiple times in a row |
+| Reduction Chance | Configure the streak reduction probability (0-100%) |
+| Merge Neutrals with Crew | Neutral roles can appear in the Crewmate pick pool |
 | Time To Choose | Seconds each player has to pick |
 | Roles To Show | Number of role options displayed |
-| Impostor Pick from all classes | Player can draft from all valid factions for their side |
-| Crewmate Pick from all classes | Player can draft from all valid factions for their side |
 | Respect Role Chances | Draft pool follows lobby spawn probabilities |
 
 ## Showcase
@@ -386,7 +406,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 
 -----------------------
 
-# License
+# License & Copyright
 This software is distributed under the GNU GPLv3.0 License.
 
 # Copyright
