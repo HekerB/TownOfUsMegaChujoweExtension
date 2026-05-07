@@ -259,7 +259,6 @@
   <!-- Vampire Role -->
   <string name="ExtensionRoleVampire">Wampir</string>
   <string name="ExtensionOptionVampireCanOnlySabotageLights">Moze sabotowac tylko swiatla</string>
-  <string name="ExtensionOptionVampireSabotageCooldown">Cooldown na sabotaz swiatel</string>
   <string name="ExtensionOptionVampireOnlyOgCanSabotage">Tylko pierwotny wampir moze sabotowac</string>
 
   <!-- Pelican Notifications -->
@@ -1006,7 +1005,7 @@ Jesli opcja &lt;b&gt;Mieszaj Neutralnych z Zalogantami&lt;/b&gt; jest wlaczona, 
   <string name="TOUMCETermsRoleExtensionsInfo">Ta sekcja zawiera zaawansowane opcje dla istniejacych rol i modyfikatorow, zwiekszajac ich mozliwosci i mechaniki rozgrywki.</string>
   
   <string name="TOUMCETermsVampireSabotageTitle">Sabotaz Wampira</string>
-  <string name="TOUMCETermsVampireSabotageInfo">Wampiry posiadaja zaawansowane opcje sabotazu: • &lt;color=#FF0000&gt;&lt;b&gt;Tylko Swiatla&lt;/b&gt;&lt;/color&gt; - Wampir moze sabotowac tylko system Electrical pod klawiszem TAB. • &lt;color=#FF0000&gt;&lt;b&gt;Cooldown po naprawie&lt;/b&gt;&lt;/color&gt; - Sabotaz posiada wlasny licznik startujacy po naprawie swiatel. • &lt;color=#FF0000&gt;&lt;b&gt;Tylko OG&lt;/b&gt;&lt;/color&gt; - Mozna ograniczyc sabotaz tylko dla pierwotnego Wampira (ugryzieni nie moga sabotowac).</string>
+  <string name="TOUMCETermsVampireSabotageInfo">Wampiry posiadaja zaawansowane opcje sabotazu: • &lt;color=#FF0000&gt;&lt;b&gt;Tylko Swiatla&lt;/b&gt;&lt;/color&gt; - Wampir moze sabotowac tylko system Electrical pod klawiszem TAB. • &lt;color=#FF0000&gt;&lt;b&gt;Wspolny Cooldown&lt;/b&gt;&lt;/color&gt; - Wampiry dziela ten sam globalny licznik sabotazu z Impostorami. • &lt;color=#FF0000&gt;&lt;b&gt;Tylko OG&lt;/b&gt;&lt;/color&gt; - Mozna ograniczyc sabotaz tylko dla pierwotnego Wampira (ugryzieni nie moga sabotowac).</string>
   <string name="TOUMCETabOptionBetterRoles">Better Roles/Modifiers</string>
   <string name="TOUMCETabOptionBetterRolesDesc">Skonfiguruj rozszerzone opcje dla istniejacych rol i modyfikatorow tutaj!</string>
 
@@ -1055,10 +1054,15 @@ Jesli opcja &lt;b&gt;Mieszaj Neutralnych z Zalogantami&lt;/b&gt; jest wlaczona, 
   <string name="Egotist">Egotysta</string>
   <string name="Forensic">Forensic</string>
   <string name="Time Lord">Time Lord</string>
+  <string name="Mirror Caster">Mirror Caster</string>
+  <string name="ExtensionOptionMirrorCasterMoveWhileMenu">Mozliwosc ruchu przy otwartym menu</string>
   <string name="Mayor">Burmistrz</string>
 
-  <!-- Death Handler reasons for end-game screen -->
-  <string name="DiedToWinning">Zwyciestwo</string>
-  <string name="DiedToEjection">Wyrzucony</string>
+  <!-- General Options -->
+  <string name="ExtensionOptionGeneralLawyerChat">Prywatny czat Prawnik/Klient</string>
+  <string name="ExtensionOptionGeneralLoversChat">Prywatny czat Kochankowie</string>
+  <!-- Mod Compatibility Options -->
+  <string name="ExtensionOptionCompatibilityDuplicateWarnings">Pokazuj ostrzezenia o duplikatach</string>
+  <string name="ExtensionOptionCompatibilityDuplicateAutoKick">Automatyczne wyrzucanie przy duplikatach</string>
 </resources>
 

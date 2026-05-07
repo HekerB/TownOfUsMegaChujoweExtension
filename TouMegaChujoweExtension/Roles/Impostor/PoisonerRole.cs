@@ -42,6 +42,7 @@ public sealed class PoisonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         Icon = TouRoleIcons.Poisoner,
         IntroSound = TouAudio.ViperIntroSound,
         CanUseVent = OptionGroupSingleton<PoisonerOptions>.Instance.CanVent,
+        OptionsScreenshot = TouBanners.ImpostorRoleBanner,
     };
 
     [HideFromIl2Cpp]

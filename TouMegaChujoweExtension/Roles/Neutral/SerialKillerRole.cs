@@ -47,7 +47,8 @@ public sealed class SerialKillerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         CanUseVent = true,
         IntroSound = TouAudio.WarlockIntroSound,
         Icon = TouRoleIcons.SerialKiller,
-        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
+        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        OptionsScreenshot = TouBanners.NeutralRoleBanner,
     };
     
     [HideFromIl2Cpp]

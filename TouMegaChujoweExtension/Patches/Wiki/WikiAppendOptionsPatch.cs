@@ -77,6 +77,15 @@ public static class WikiAppendOptionsPatch
                     __result += $"\n{title}: {opts.VoteCount}";
                 }
             }
+            else if (classType == typeof(MirrorcasterRole))
+            {
+                var opts = OptionGroupSingleton<MirrorCasterExtensionOptions>.Instance;
+                if (opts != null)
+                {
+                    var title = TouLocale.Get("ExtensionOptionMirrorCasterMoveWhileMenu");
+                    __result += $"\n{title}: {(opts.MoveWhileMenu ? "True" : "False")}";
+                }
+            }
             else if (classType == typeof(VampireRole))
             {
                 var opts = OptionGroupSingleton<VampireExtendedOptions>.Instance;
@@ -85,7 +94,6 @@ public static class WikiAppendOptionsPatch
                     __result += $"\n{TouLocale.Get("ExtensionOptionVampireCanOnlySabotageLights")}: {(opts.CanOnlySabotageLights ? "True" : "False")}";
                     if (opts.CanOnlySabotageLights)
                     {
-                        __result += $"\n{TouLocale.Get("ExtensionOptionVampireSabotageCooldown")}: {opts.SabotageCooldown}s";
                         __result += $"\n{TouLocale.Get("ExtensionOptionVampireOnlyOgCanSabotage")}: {(opts.OnlyOgCanSabotage ? "True" : "False")}";
                     }
                 }

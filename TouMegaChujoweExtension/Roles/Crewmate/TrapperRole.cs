@@ -63,7 +63,8 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouExtensionIcons.TrapperRoleIcon,
-        IntroSound = TouAudio.EngineerIntroSound
+        IntroSound = TouAudio.EngineerIntroSound,
+        OptionsScreenshot = TouBanners.CrewmateRoleBanner,
     };
 
     public void LobbyStart()
@@ -106,6 +107,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         }
     }
 
+    [HideFromIl2Cpp]
     [MethodRpc((uint)ExtensionRpc.TrapperTriggerTrap)]
     public static IEnumerator RpcTrapperTriggerTrap(PlayerControl trapper, int ventId, byte victimId)
     {

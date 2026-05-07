@@ -1,4 +1,5 @@
 using HarmonyLib;
+using AmongUs.GameOptions;
 using MiraAPI.GameOptions;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TownOfUs.Modifiers.Neutral;
@@ -7,6 +8,7 @@ using TownOfUs.Utilities;
 using TownOfUs.Extensions;
 using MiraAPI.Utilities;
 using MiraAPI.Modifiers;
+using TouMegaChujoweExtension.Patches.Neutral;
 using UnityEngine;
 using System.Linq;
 
@@ -15,61 +17,23 @@ namespace TouMegaChujoweExtension.Patches.UI;
 [HarmonyPatch]
 public static class RoleUIExtensionPatch
 {
-    public static float VampireSabotageTimer = 0f;
-    private static bool _lastLightsWorking = true;
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     [HarmonyPostfix]
     public static void HudUpdatePostfix(HudManager __instance)
     {
         var player = PlayerControl.LocalPlayer;
-        if (player == null || player.Data.IsDead) return;
+        if (player == null || player.Data == null || player.Data.Role == null || player.Data.IsDead) return;
 
-        if (VampireSabotageTimer > 0f)
-            VampireSabotageTimer -= Time.deltaTime;
-
-        // Detect Electrical Sabotage State
-        if (ShipStatus.Instance != null)
-        {
-            var electrical = ShipStatus.Instance.Systems?.ContainsKey(SystemTypes.Electrical) == true 
-                ? ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>() 
-                : null;
-                
-            if (electrical != null)
-            {
-                bool isWorking = electrical.IsActive;
-                
-                // Sabotage FIXED! Start cooldown now
-                if (isWorking && !_lastLightsWorking)
-                {
-                    var options = OptionGroupSingleton<VampireExtendedOptions>.Instance;
-                    if (options != null)
-                    {
-                        VampireSabotageTimer = options.SabotageCooldown;
-                    }
-                }
-                
-                _lastLightsWorking = isWorking;
-            }
-        }
-
-        // Vampire: Hide the sabotage button on HUD to prevent bugs, rely on TAB instead
+        var isImpostor = player.Data.Role.TeamType == RoleTeamTypes.Impostor;
         var vampireRole = player.GetRole<VampireRole>();
-        if (vampireRole != null)
-        {
-            // Force global sabotage timer to zero if our custom timer is finished
-            if (VampireSabotageTimer <= 0f && ShipStatus.Instance != null)
-            {
-                var sabotageSystem = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
-                if (sabotageSystem.Timer > 0f)
-                {
-                    sabotageSystem.Timer = 0f;
-                }
-            }
 
+        if (vampireRole != null || isImpostor)
+        {
             var options = OptionGroupSingleton<VampireExtendedOptions>.Instance;
             if (options != null && options.CanOnlySabotageLights)
             {
-                if (__instance.SabotageButton != null && __instance.SabotageButton.gameObject.activeSelf)
+                // Hide the sabotage button on HUD for Vampires (they use TAB/Map)
+                if (vampireRole != null && __instance.SabotageButton != null && __instance.SabotageButton.gameObject.activeSelf)
                 {
                     __instance.SabotageButton.gameObject.SetActive(false);
                 }
@@ -84,31 +48,23 @@ public static class RoleUIExtensionPatch
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.Data.IsDead) return true;
 
+        var isImpostor = player.Data.Role.TeamType == RoleTeamTypes.Impostor;
         var vampireRole = player.GetRole<VampireRole>();
-        if (vampireRole != null)
+        if (vampireRole != null || isImpostor)
         {
             var options = OptionGroupSingleton<VampireExtendedOptions>.Instance;
             if (options != null && options.CanOnlySabotageLights)
             {
-                // Don't redirect during meetings, show normal map
+                // Don't redirect during meetings
                 if (MeetingHud.Instance != null) return true;
 
-                // Check Global Sabotage Status (Ignore Timer > 0 for Vampire to respect their own cooldown)
-                var sabotageSystem = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
-                bool globalActive = sabotageSystem.AnyActive;
+                // Check "Only OG" restriction
+                bool isBitten = player.GetModifiers<VampireBittenModifier>().Any();
+                if (vampireRole != null && options.OnlyOgCanSabotage && isBitten) return true;
 
-                // Check Cooldown or "Only OG" restriction
-                bool canSabotage = VampireSabotageTimer <= 0f && !globalActive;
-                if (options.OnlyOgCanSabotage && player.GetModifiers<VampireBittenModifier>().Any())
-                {
-                    canSabotage = false;
-                }
-
-                if (canSabotage)
-                {
-                    __instance.ShowSabotageMap();
-                    return false;
-                }
+                // Always show sabotage map if they can sabotage, even if on cooldown (to see the timer)
+                __instance.ShowSabotageMap();
+                return false;
             }
         }
         return true;
@@ -121,8 +77,9 @@ public static class RoleUIExtensionPatch
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.Data.IsDead) return;
 
+        var isImpostor = player.Data.Role.TeamType == RoleTeamTypes.Impostor;
         var vampireRole = player.GetRole<VampireRole>();
-        if (vampireRole == null) return;
+        if (vampireRole == null && !isImpostor) return;
 
         var options = OptionGroupSingleton<VampireExtendedOptions>.Instance;
         if (options == null || !options.CanOnlySabotageLights) return;
@@ -136,9 +93,26 @@ public static class RoleUIExtensionPatch
             var name = button.gameObject.name.ToLower();
             bool isLights = name.Contains("electrical") || name.Contains("lights");
             
-            if (!isLights)
+            if (!isLights && vampireRole != null) // Only hide for Vampires
             {
                 button.gameObject.SetActive(false);
+            }
+            else if (isLights)
+            {
+                // Both Vampires and Impostors now share the global sabotage timer
+                float currentTimer = 0f;
+                if (ShipStatus.Instance != null && ShipStatus.Instance.Systems != null && ShipStatus.Instance.Systems.ContainsKey(SystemTypes.Sabotage))
+                {
+                    currentTimer = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>().Timer;
+                }
+
+                var timerField = button.GetType().GetField("cooldownTimer", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                                 ?? button.GetType().GetField("Timer", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                
+                if (timerField != null)
+                {
+                    timerField.SetValue(button, currentTimer);
+                }
             }
         }
     }

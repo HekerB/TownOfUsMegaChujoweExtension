@@ -36,7 +36,8 @@ public sealed class OutlawRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     {
         UseVanillaKillButton = false,
         Icon = TouExtensionIcons.OutlawRole,
-		IntroSound = TouAudio.WarlockIntroSound,
+        IntroSound = TouAudio.WarlockIntroSound,
+        OptionsScreenshot = TouBanners.ImpostorRoleBanner,
     };
 
     public override void Initialize(PlayerControl player)

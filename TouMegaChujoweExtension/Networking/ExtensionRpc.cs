@@ -27,7 +27,7 @@ public enum ExtensionRpc : uint
     HackerResetRound = 22,
     InjectorInject = 23,
     CharlatanConceal = 24,
-    VultureEat = 50025,
+    VultureEat = 25,
     VultureScavenge = 26,
     PelicanSwallow = 27,
     PelicanDigest = 28,
@@ -77,4 +77,5 @@ public enum ExtensionRpc : uint
     ShareFriendCode = 72,
 	YouAreBanned = 73,
     DeathNoteLaugh = 74,
+    DuplicateModKick = 75,
 }

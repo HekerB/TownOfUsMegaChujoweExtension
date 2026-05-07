@@ -61,8 +61,9 @@ public sealed class ShroudRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     {
         CanUseVent = OptionGroupSingleton<ShroudOptions>.Instance.CanVent,
         Icon = TouExtensionIcons.ShroudRoleIcon,
-		IntroSound = TouAudio.DetectiveIntroSound,
-        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
+        IntroSound = TouAudio.DetectiveIntroSound,
+        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        OptionsScreenshot = TouBanners.NeutralRoleBanner,
     };
 
     [HideFromIl2Cpp]

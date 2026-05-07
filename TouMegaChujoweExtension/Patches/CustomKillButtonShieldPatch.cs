@@ -1,4 +1,5 @@
 using HarmonyLib;
+using System.Reflection;
 using TownOfUs.Buttons;
 using TownOfUs;
 using TownOfUs.Roles;
@@ -37,12 +38,19 @@ public static class CustomKillButtonShieldPatch
         return !ShieldUtils.HandleButtonShieldClick(__instance, __instance.Target);
     }
 
-    [HarmonyPatch(typeof(CustomActionButton<PlayerControl>), nameof(CustomActionButton<PlayerControl>.ClickHandler))]
+    [HarmonyPatch(typeof(ActionButton), nameof(ActionButton.DoClick))]
     [HarmonyPrefix]
-    public static bool MiraClickHandlerPrefix(CustomActionButton<PlayerControl> __instance)
+    public static bool ActionButtonClickHandlerPrefix(ActionButton __instance)
     {
         if (__instance == null) return true;
-        return !ShieldUtils.HandleButtonShieldClick(__instance, __instance.Target);
+        
+        // Use reflection to get Target, as ActionButton doesn't have it but subclasses do
+        var targetProp = __instance.GetType().GetProperty("Target", BindingFlags.Instance | BindingFlags.Public);
+        var target = targetProp?.GetValue(__instance) as PlayerControl;
+
+        if (target == null) return true;
+
+        return !ShieldUtils.HandleButtonShieldClick(__instance, target);
     }
 
     private static PlayerControl GetTarget(TownOfUsButton button)

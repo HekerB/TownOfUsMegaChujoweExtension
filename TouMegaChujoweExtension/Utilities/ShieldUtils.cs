@@ -126,8 +126,31 @@ public static class ShieldUtils
     private static float _lastShieldTriggerTime = 0f;
     private static byte _lastShieldTargetId = 255;
 
-    public static bool HandleButtonShieldClick(CustomActionButton button, PlayerControl target)
+    public static bool HandleButtonShieldClick(object button, PlayerControl target)
     {
+        if (!InternalHandleShieldHit(target, out float duration)) return false;
+        
+        if (button != null)
+        {
+            try
+            {
+                var prop = button.GetType().GetProperty("Timer", BindingFlags.Instance | BindingFlags.Public);
+                if (prop != null && prop.CanWrite)
+                {
+                    prop.SetValue(button, duration);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger<TouMegaChujoweExtensionPlugin>.Error($"[ShieldUtils] Failed to set button timer: {ex.Message}");
+            }
+        }
+        return true;
+    }
+
+    private static bool InternalHandleShieldHit(PlayerControl target, out float duration)
+    {
+        duration = 0f;
         if (target == null) return false;
         var attacker = PlayerControl.LocalPlayer;
         if (attacker == null) return false;
@@ -138,7 +161,8 @@ public static class ShieldUtils
         // Anti-multi-trigger guard
         if (Time.time - _lastShieldTriggerTime < 0.1f && _lastShieldTargetId == target.PlayerId)
         {
-            return true; // Already handled
+            duration = 10f; // Default safety
+            return true; 
         }
         _lastShieldTriggerTime = Time.time;
         _lastShieldTargetId = target.PlayerId;
@@ -151,9 +175,9 @@ public static class ShieldUtils
         // Notify Bodyguard/Medic etc.
         HandleShieldRpc(attacker, target, shieldType);
 
-        // Apply cooldown to the button
+        // Calculate cooldown
         var saveCd = OptionGroupSingleton<GeneralOptions>.Instance.TempSaveCdReset;
-        float duration = saveCd;
+        duration = saveCd;
         switch (shieldType)
         {
             case ShieldType.Medic:
@@ -176,12 +200,7 @@ public static class ShieldUtils
                 break;
         }
 
-        if (button != null)
-        {
-            button.Timer = duration;
-        }
-
-        return true; // Click was handled by shield
+        return true;
     }
 
     private static void HandleShieldRpc(PlayerControl source, PlayerControl target, ShieldType shieldType)

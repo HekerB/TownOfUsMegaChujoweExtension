@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Keybinds;
 using MiraAPI.Networking;
@@ -105,6 +106,7 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IKillBu
         }
     }
 
+    [HideFromIl2Cpp]
     private static System.Collections.IEnumerator CheckSelfKill(PlayerControl player, VampireHunterRole role)
     {
         yield return new WaitForSeconds(0.3f);

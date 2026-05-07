@@ -270,6 +270,35 @@
         "\n- <b>Pirate Win Screen Fix</b> - Pirates now correctly show <b>\"Victorious\" (Zwyciestwo)</b> instead of \"Ejected\" on the end-game screen.",
         "\n- <b>Polish Localization Update</b> - Added missing end-game status strings for winning and ejection reasons."
       ]
+    },
+    {
+      "Date": "2026-05-07T18:00:00Z",
+      "Number": "200009",
+      "ShortTitle": "TOUMCE v1.0.8",
+      "SubTitle": "Anti-Cheat & Vampire Mega Update",
+      "Title": "TOU Mega Chujowe Extension v1.0.8",
+      "Text": [
+        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
+        "\n\n\r<b>Version 1.0.8 - Mirror Caster & Stability Breakthrough</b>",
+        "\n\n\r<size=110%><b>★ Anti-Cheat & Security ★</b></size>",
+        "\n- <b>Duplicate Guard 2.0</b> - Fully stabilized detection system for duplicated mod files. Detects files like <b>TouMegaChujoweExtension (1).dll</b> and prevents lobby crashes.",
+        "\n- <b>System Notification</b> - Kicked players trigger a professional, <b>black 'System' chat bubble</b> exclusively on the Host's screen, matching the native TOU style.",
+        "\n- <b>Visual Warning</b> - Displays a red warning on the Main Menu if a duplicate is found and prevents joining unstable lobbies.",
+        "\n\n\r<size=110%><b>★ Vampire & Roles Rework ★</b></size>",
+        "\n- <b>Vampire Sabotage Map</b> - The TAB sabotage map is now <b>100% functional</b> for Vampires! Properly overrides Impostor cooldowns and features a custom radial cooldown ring.",
+        "\n- <b>Vampire Hunter</b> - Fixed self-report logic and stake targeting to eliminate random compilation errors and mid-game crashes.",
+        "\n- <b>Vampire Sabotage Update</b> - Reworked the Light Sabotage system. Vampires now share a unified sabotage cooldown with Impostors for better balance.",
+        "\n- <b>Mirror Caster</b> - Added WASD/Joystick movement while targeting and optimized UI responsiveness.",
+        "\n\n\r<size=110%><b>★ Extreme Stability & Optimization ★</b></size>",
+        "\n- <b>IL2CPP Compatibility</b> - Fixed <b>\"Assembly not registered\"</b> crashes by isolating all custom role coroutines (Wraith, Hacker, Vulture, Kamikaze, StakeButton, etc.).",
+        "\n- <b>Memory Leak Prevention</b> - Eliminated the <b>\"Death Loop\"</b> of NullReferenceExceptions in UI buttons (Falcon, Egotist) that was causing OutOfMemory crashes.",
+        "\n- <b>Lover Chat Safety</b> - Added robust null-checks for meeting chat RPCs to prevent crashes when players disconnect.",
+        "\n- <b>Localization Safety</b> - Fixed a hard crash in the Mayor and Better Roles tabs when certain strings were missing.",
+        "\n\n\r<size=105%>UI & Graphics:</size>",
+        "\n- <b>Promotional Banners</b> - Added high-quality custom banners for all extension roles (Hacker, Injector, RC-XD, etc.) and promotional slides.",
+        "\n- <b>Role Menu Banners</b> - Assigned generic fallback banners to all remaining roles and updated configuration for the entire extension roster.",
+        "\n- Optimized overall mod loading speed and fixed various minor UI bugs in the Lobby sidebar."
+      ]
     }
   ]
 }

@@ -1,3 +1,4 @@
+using TownOfUs.Assets;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
@@ -39,7 +40,8 @@ public sealed class EvokerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouExtensionIcons.EvokerRoleIcon,
-        IntroSound = TownOfUs.Assets.TouAudio.PhantomIntroSound
+        IntroSound = TownOfUs.Assets.TouAudio.PhantomIntroSound,
+        OptionsScreenshot = TouBanners.CrewmateRoleBanner
     };
 
     public override void Initialize(PlayerControl player)

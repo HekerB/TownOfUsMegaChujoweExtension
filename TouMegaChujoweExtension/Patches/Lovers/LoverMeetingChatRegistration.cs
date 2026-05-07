@@ -61,6 +61,7 @@ public static class LoverMeetingChatRegistration
             },
             SendMessage = (sender, message) =>
             {
+                if (sender == null || sender.Data == null) return;
                 TeamChatPatches.RpcSendLoveChat(sender, message);
             },
             GetDisplayText = () => "Lover Chat",
@@ -88,7 +89,7 @@ public static class LoverMeetingChatRegistration
 [HarmonyPatch(typeof(ChatBubble), nameof(ChatBubble.SetCosmetics))]
 public static class LoverChatBubblePatch
 {
-    public static void Postfix(ChatBubble __instance, NetworkedPlayerInfo info)
+    public static void Postfix(ChatBubble __instance, NetworkedPlayerInfo playerInfo)
     {
         var rawText = System.Text.RegularExpressions.Regex.Replace(__instance.NameText.text, "<.*?>", string.Empty);
 

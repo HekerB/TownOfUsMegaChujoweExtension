@@ -62,7 +62,8 @@ public sealed class PopeRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole
         Icon = TouExtensionIcons.PopeRoleIcon,
         MaxRoleCount = 1,
         IntroSound = TouExtensionAudio.PopeIntroSound,
-        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
+        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        OptionsScreenshot = TouBanners.NeutralRoleBanner,
     };
 
     public override void Initialize(PlayerControl player)

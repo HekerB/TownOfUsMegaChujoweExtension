@@ -8,9 +8,9 @@ public sealed class GeneralOptions : AbstractOptionGroup
     public override string GroupName => "General";
     public override uint GroupPriority => 1;
 
-    [ModdedToggleOption("Lawyer/Client Gets A Private Chat")]
+    [ModdedToggleOption("ExtensionOptionGeneralLawyerChat")]
     public bool LawyerChat { get; set; } = true;
 
-    [ModdedToggleOption("Lovers Get A Private Chat In Meetings")]
+    [ModdedToggleOption("ExtensionOptionGeneralLoversChat")]
     public bool LoversChat { get; set; } = true;
 }

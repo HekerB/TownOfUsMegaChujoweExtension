@@ -11,8 +11,9 @@ public static class VampireExtensionPatch
 {
     // sabotageId for Lights is 7 on most maps
     private const byte LightsSabotageId = 7;
+    public static bool LocalVampireJustSabotaged = false;
 
-    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.RpcUpdateSystem))]
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.RpcUpdateSystem), typeof(SystemTypes), typeof(byte))]
     [HarmonyPrefix]
     public static bool RpcUpdateSystemPrefix(SystemTypes systemType, byte amount)
     {
@@ -28,18 +29,23 @@ public static class VampireExtensionPatch
         // If it's the Sabotage system, we only allow Lights (Id 7)
         if (systemType == SystemTypes.Sabotage)
         {
-            if (amount == LightsSabotageId) return true;
+            if (amount == LightsSabotageId)
+            {
+                // Mark that we are the one who sabotaged
+                LocalVampireJustSabotaged = true;
+                return true;
+            }
             
             // Block all other sabotages (Reactor, O2, Comms, etc.)
             return false;
         }
 
-        // Block door systems (SystemTypes.Doors is 1 on Skeld, but maps vary)
-        // We block anything that isn't the sabotage system we just checked
-        // because "Only Lights" means exactly that.
-        
-        // Note: Some maps use specific door systems, but they all inherit from SystemTypes or use RpcUpdateSystem.
-        // We block them all for the Vampire with this option.
-        return false;
+        // Block door systems if it's a door sabotage attempt
+        if (systemType == SystemTypes.Doors)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

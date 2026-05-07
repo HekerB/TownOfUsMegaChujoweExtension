@@ -139,11 +139,13 @@ public sealed class FalconZoomButton : TownOfUsRoleButton<FalconRole>
             }
             else if (_cooldownTimer > 0)
             {
-                Button.SetCoolDown(_cooldownTimer, ZoomCooldown);
+                if (Button != null && Button.graphic != null)
+                    Button.SetCoolDown(_cooldownTimer, ZoomCooldown);
             }
             else
             {
-                Button.SetCoolDown(0, ZoomCooldown);
+                if (Button != null && Button.graphic != null)
+                    Button.SetCoolDown(0, ZoomCooldown);
             }
         }
 

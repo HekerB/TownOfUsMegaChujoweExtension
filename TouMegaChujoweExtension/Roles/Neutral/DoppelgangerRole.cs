@@ -48,7 +48,8 @@ public sealed class DoppelgangerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         CanUseVent = OptionGroupSingleton<DoppelgangerOptions>.Instance.CanVent,
         IntroSound = TouAudio.GlitchSound,
         Icon = TouExtensionIcons.DoppelgangerRoleIcon,
-        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
+        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        OptionsScreenshot = TouExtensionBanners.DoppelgangerBanner,
     };
 
     public bool WinConditionMet()

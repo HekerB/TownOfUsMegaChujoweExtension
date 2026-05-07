@@ -1,4 +1,5 @@
 using System.Collections;
+using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
@@ -145,6 +146,7 @@ public sealed class BodyguardShieldModifier(PlayerControl bodyguard) : BaseShiel
         Coroutines.Start(_animCoroutineRef);
     }
 
+    [HideFromIl2Cpp]
     private IEnumerator AnimateShield(Sprite[] frontFrames, Sprite[] backFrames, float fps)
     {
         var frameTime = 1f / fps;

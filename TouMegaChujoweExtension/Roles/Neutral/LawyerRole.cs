@@ -73,7 +73,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     [HideFromIl2Cpp] 
     public Dictionary<byte, byte> ObjectedVoterOriginalVotes { get; set; } = [];
 
-    private MeetingMenu meetingMenu = null!;
+    public MeetingMenu meetingMenu = null!;
 
     public int Priority { get; set; } = 2;
 
@@ -259,7 +259,8 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     {
         IntroSound = TouMegaChujoweExtension.Assets.TouExtensionAudio.ObjectionSound,
         Icon = TouRoleIcons.Lawyer,
-        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
+        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        OptionsScreenshot = TouBanners.NeutralRoleBanner,
     };
 
     public bool MetWinCon => Client != null && !Client.HasDied();
@@ -328,6 +329,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         }
     }
 
+    [HideFromIl2Cpp]
     private static IEnumerator SetTutorialTargets(LawyerRole lawyer)
     {
         yield return new WaitForSeconds(0.01f);
@@ -380,119 +382,13 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                 meetingMenu.GenButtons(MeetingHud.Instance,
                     Player.AmOwner && !Player.HasDied() && Client != null && !Client.HasDied());
 
-                Coroutines.Start(ScaleObjectionButton());
-                Coroutines.Start(UpdateObjectionButton());
+                Coroutines.Start(LawyerCoroutines.ScaleObjectionButton(this));
+                Coroutines.Start(LawyerCoroutines.UpdateObjectionButton(this));
             }
         }
     }
 
-    private IEnumerator ScaleObjectionButton()
-    {
-        yield return new WaitForSeconds(0.1f);
 
-        if (meetingMenu == null || Client == null || Client.HasDied())
-        {
-            yield break;
-        }
-
-        var meeting = MeetingHud.Instance;
-        if (meeting == null)
-        {
-            yield break;
-        }
-
-        var voteArea = meeting.playerStates.FirstOrDefault(pva => pva.TargetPlayerId == Client.PlayerId);
-        if (voteArea == null || voteArea.NameText == null)
-        {
-            yield break;
-        }
-
-        if (meetingMenu.Buttons.TryGetValue(Client.PlayerId, out var button) && button != null)
-        {
-            voteArea.NameText.ForceMeshUpdate();
-
-            float textWidth = 0f;
-            if (voteArea.NameText.textBounds.size.x > 0)
-            {
-                textWidth = voteArea.NameText.textBounds.size.x / 2f;
-            }
-            else if (voteArea.NameText.preferredWidth > 0)
-            {
-                textWidth = voteArea.NameText.preferredWidth / 2f;
-            }
-
-            var nameTextLocalPos = voteArea.NameText.transform.localPosition;
-            button.transform.localPosition = new Vector3(nameTextLocalPos.x + textWidth + 0.15f, nameTextLocalPos.y, -1f);
-            button.transform.localScale = new Vector3(0.07f, 0.07f, 1f);
-        }
-    }
-
-    private IEnumerator UpdateObjectionButton()
-    {
-        while (MeetingHud.Instance != null)
-        {
-            yield return new WaitForSeconds(0.1f);
-
-            if (meetingMenu == null || Client == null || Client.HasDied())
-            {
-                continue;
-            }
-
-            var meeting = MeetingHud.Instance;
-            var maxObjections = (int)OptionGroupSingleton<LawyerOptions>.Instance.MaxObjections;
-            var maxObjectionsPerMeeting = (int)OptionGroupSingleton<LawyerOptions>.Instance.MaxObjectionsPerMeeting;
-
-            if (!meetingMenu.Buttons.TryGetValue(Client.PlayerId, out var buttonGo) || buttonGo == null)
-            {
-
-                meetingMenu.GenButtons(meeting, Player.AmOwner && !Player.HasDied() && !Client.HasDied());
-                meetingMenu.Buttons.TryGetValue(Client.PlayerId, out buttonGo);
-            }
-
-            bool objectionsExhausted = false;
-            if (maxObjections > 0 && ObjectionsUsed >= maxObjections)
-            {
-                objectionsExhausted = true;
-            }
-            if (maxObjectionsPerMeeting > 0 && ObjectionsUsedThisMeeting >= maxObjectionsPerMeeting)
-            {
-                objectionsExhausted = true;
-            }
-
-
-            var showButton = !objectionsExhausted &&
-                             maxObjections > 0 &&
-                             (meeting.state == MeetingHud.VoteStates.Voted || meeting.state == MeetingHud.VoteStates.NotVoted) &&
-                             !IsInLastSecondsOfVoting(meeting, NoObjectLastSeconds);
-
-            if (buttonGo != null)
-            {
-                buttonGo.SetActive(showButton);
-            }
-
-            if (showButton && buttonGo != null)
-            {
-                var voteArea = meeting.playerStates.FirstOrDefault(pva => pva.TargetPlayerId == Client.PlayerId);
-                if (voteArea != null && voteArea.NameText != null)
-                {
-                    voteArea.NameText.ForceMeshUpdate();
-
-                    float textWidth = 0f;
-                    if (voteArea.NameText.textBounds.size.x > 0)
-                    {
-                        textWidth = voteArea.NameText.textBounds.size.x / 2f;
-                    }
-                    else if (voteArea.NameText.preferredWidth > 0)
-                    {
-                        textWidth = voteArea.NameText.preferredWidth / 2f;
-                    }
-
-                    var nameTextLocalPos = voteArea.NameText.transform.localPosition;
-                    buttonGo.transform.localPosition = new Vector3(nameTextLocalPos.x + textWidth + 0.15f, nameTextLocalPos.y, -1f);
-                }
-            }
-        }
-    }
 
     public override void OnVotingComplete()
     {
@@ -569,7 +465,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         RpcObjectVotes(Player);
     }
 
-    private static bool IsInLastSecondsOfVoting(MeetingHud meeting, float seconds)
+    public static bool IsInLastSecondsOfVoting(MeetingHud meeting, float seconds)
     {
         if (meeting == null)
         {
@@ -637,7 +533,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         if (clip != null)
         {
             var source = SoundManager.Instance.PlaySound(clip, false, 1f);
-            if (source != null) Coroutines.Start(CoFadeOutObjection(source, 1.2f, 0.5f));
+            if (source != null) Coroutines.Start(LawyerCoroutines.CoFadeOutObjection(source, 1.2f, 0.5f));
         }
 
         var lawyerName = lawyer.Data.PlayerName;
@@ -980,7 +876,120 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         }
     }
 
-    private static IEnumerator CoFadeOutObjection(AudioSource source, float delay, float duration)
+}
+
+public static class LawyerCoroutines
+{
+    [HideFromIl2Cpp]
+    public static IEnumerator ScaleObjectionButton(LawyerRole lawyer)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        if (lawyer.meetingMenu == null || lawyer.Client == null || lawyer.Client.HasDied())
+        {
+            yield break;
+        }
+
+        var meeting = MeetingHud.Instance;
+        if (meeting == null)
+        {
+            yield break;
+        }
+
+        var voteArea = meeting.playerStates.FirstOrDefault(pva => pva.TargetPlayerId == lawyer.Client.PlayerId);
+        if (voteArea == null || voteArea.NameText == null)
+        {
+            yield break;
+        }
+
+        if (lawyer.meetingMenu.Buttons.TryGetValue(lawyer.Client.PlayerId, out var button) && button != null)
+        {
+            voteArea.NameText.ForceMeshUpdate();
+
+            float textWidth = 0f;
+            if (voteArea.NameText.textBounds.size.x > 0)
+            {
+                textWidth = voteArea.NameText.textBounds.size.x / 2f;
+            }
+            else if (voteArea.NameText.preferredWidth > 0)
+            {
+                textWidth = voteArea.NameText.preferredWidth / 2f;
+            }
+
+            var nameTextLocalPos = voteArea.NameText.transform.localPosition;
+            button.transform.localPosition = new Vector3(nameTextLocalPos.x + textWidth + 0.15f, nameTextLocalPos.y, -1f);
+            button.transform.localScale = new Vector3(0.07f, 0.07f, 1f);
+        }
+    }
+
+    [HideFromIl2Cpp]
+    public static IEnumerator UpdateObjectionButton(LawyerRole lawyer)
+    {
+        while (MeetingHud.Instance != null)
+        {
+            yield return new WaitForSeconds(0.1f);
+
+            if (lawyer.meetingMenu == null || lawyer.Client == null || lawyer.Client.HasDied())
+            {
+                continue;
+            }
+
+            var meeting = MeetingHud.Instance;
+            var maxObjections = (int)OptionGroupSingleton<LawyerOptions>.Instance.MaxObjections;
+            var maxObjectionsPerMeeting = (int)OptionGroupSingleton<LawyerOptions>.Instance.MaxObjectionsPerMeeting;
+
+            if (!lawyer.meetingMenu.Buttons.TryGetValue(lawyer.Client.PlayerId, out var buttonGo) || buttonGo == null)
+            {
+                lawyer.meetingMenu.GenButtons(meeting, lawyer.Player.AmOwner && !lawyer.Player.HasDied() && !lawyer.Client.HasDied());
+                lawyer.meetingMenu.Buttons.TryGetValue(lawyer.Client.PlayerId, out buttonGo);
+            }
+
+            bool objectionsExhausted = false;
+            if (maxObjections > 0 && lawyer.ObjectionsUsed >= maxObjections)
+            {
+                objectionsExhausted = true;
+            }
+            if (maxObjectionsPerMeeting > 0 && lawyer.ObjectionsUsedThisMeeting >= maxObjectionsPerMeeting)
+            {
+                objectionsExhausted = true;
+            }
+
+            var showButton = !objectionsExhausted &&
+                             maxObjections > 0 &&
+                             (meeting.state == MeetingHud.VoteStates.Voted || meeting.state == MeetingHud.VoteStates.NotVoted) &&
+                             !LawyerRole.IsInLastSecondsOfVoting(meeting, 20f);
+
+            if (buttonGo != null)
+            {
+                buttonGo.SetActive(showButton);
+            }
+
+            if (showButton && buttonGo != null)
+            {
+                var voteArea = meeting.playerStates.FirstOrDefault(pva => pva.TargetPlayerId == lawyer.Client.PlayerId);
+                if (voteArea != null && voteArea.NameText != null)
+                {
+                    voteArea.NameText.ForceMeshUpdate();
+
+                    float textWidth = 0f;
+                    if (voteArea.NameText.textBounds.size.x > 0)
+                    {
+                        textWidth = voteArea.NameText.textBounds.size.x / 2f;
+                    }
+                    else if (voteArea.NameText.preferredWidth > 0)
+                    {
+                        textWidth = voteArea.NameText.preferredWidth / 2f;
+                    }
+
+                    var nameTextLocalPos = voteArea.NameText.transform.localPosition;
+                    buttonGo.transform.localPosition = new Vector3(nameTextLocalPos.x + textWidth + 0.15f, nameTextLocalPos.y, -1f);
+                }
+            }
+        }
+    }
+
+    [HideFromIl2Cpp]
+    public static IEnumerator CoFadeOutObjection(AudioSource source, float delay, float duration)
     {
         yield return new WaitForSeconds(delay);
         if (source == null) yield break;

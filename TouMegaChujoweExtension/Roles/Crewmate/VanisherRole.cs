@@ -51,7 +51,8 @@ public sealed class VanisherRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouExtensionIcons.VanisherRoleIcon,
-		IntroSound = TouAudio.PhantomIntroSound,
+        IntroSound = TouAudio.PhantomIntroSound,
+        OptionsScreenshot = TouExtensionBanners.VanisherBanner,
     };
 
     public bool IsGuessable => true;

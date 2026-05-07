@@ -46,6 +46,7 @@ public sealed class KamikazeRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         UseVanillaKillButton = false,
         Icon = TouExtensionIcons.KamikazeRole,
         CanUseVent = OptionGroupSingleton<KamikazeOptions>.Instance.CanVent,
+        OptionsScreenshot = TouBanners.ImpostorRoleBanner,
     };
 
     [HideFromIl2Cpp]
@@ -152,6 +153,7 @@ public sealed class KamikazeRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         Coroutines.Start(CoProcessKills(kamikaze, victims));
     }
 
+    [HideFromIl2Cpp]
     private static IEnumerator CoProcessKills(PlayerControl kamikaze, List<PlayerControl> victims)
     {
         foreach (var victim in victims)
@@ -186,6 +188,7 @@ public sealed class KamikazeRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         }
     }
 
+    [HideFromIl2Cpp]
     private static IEnumerator CoDestroySphere(GameObject? sphere)
     {
         yield return new WaitForSeconds(0.5f);

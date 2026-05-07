@@ -43,6 +43,7 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         UseVanillaKillButton = false,
         Icon = TouRoleIcons.Witch,
         IntroSound = TouMegaChujoweExtension.Assets.TouExtensionAudio.WitchLaugh,
+        OptionsScreenshot = TouBanners.ImpostorRoleBanner,
     };
 
     [HideFromIl2Cpp]

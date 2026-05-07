@@ -61,6 +61,7 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         Icon = TouExtensionIcons.VultureRoleIcon,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
         IntroSound = TouAudio.ChefSound,
+        OptionsScreenshot = TouExtensionBanners.VultureBanner,
     };
 
     [HideFromIl2Cpp]
@@ -181,6 +182,7 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         }
     }
 
+    [HideFromIl2Cpp]
     private static IEnumerator CoSafeClean(DeadBody body, float duration, PlayerControl scavenger)
     {
         if (body == null || body.gameObject == null) yield break;

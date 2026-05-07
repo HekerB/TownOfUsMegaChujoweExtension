@@ -40,6 +40,7 @@ public sealed class InjectorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         UseVanillaKillButton = true,
         Icon = TouExtensionIcons.InjectorRole,
         IntroSound = TownOfUs.Assets.TouAudio.ScientistIntroSound,
+        OptionsScreenshot = TouBanners.ImpostorRoleBanner,
     };
 
     [HideFromIl2Cpp]

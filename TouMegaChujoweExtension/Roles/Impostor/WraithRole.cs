@@ -42,7 +42,8 @@ public sealed class WraithRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
         UseVanillaKillButton = true,
         Icon = TouRoleIcons.Wraith,
         IntroSound = TouAudio.PhantomIntroSound,
-        CanUseVent = OptionGroupSingleton<WraithOptions>.Instance.CanVent
+        CanUseVent = OptionGroupSingleton<WraithOptions>.Instance.CanVent,
+        OptionsScreenshot = TouExtensionBanners.WraithBanner,
     };
 
     [HideFromIl2Cpp]
@@ -124,6 +125,7 @@ public sealed class WraithRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
         Coroutines.Start(CoDelayedTeleport(wraith, pos));
     }
 
+    [HideFromIl2Cpp]
     private static System.Collections.IEnumerator CoDelayedTeleport(PlayerControl wraith, Vector2 pos)
     {
         yield return new WaitForSeconds(0.08f);

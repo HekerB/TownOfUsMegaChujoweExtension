@@ -42,6 +42,7 @@ public sealed class CharlatanRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         UseVanillaKillButton = true,
         Icon = TouExtensionIcons.CharlatanRole,
         IntroSound = TouAudio.NoisemakerIntroSound,
+        OptionsScreenshot = TouExtensionBanners.CharlatanBanner,
     };
 
     [HideFromIl2Cpp]

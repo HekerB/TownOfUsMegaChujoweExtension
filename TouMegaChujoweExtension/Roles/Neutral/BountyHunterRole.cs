@@ -13,6 +13,7 @@ using Reactor.Networking.Attributes;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
+using TownOfUs.Assets;
 using TownOfUs;
 using TownOfUs.Extensions;
 using TownOfUs.GameOver;
@@ -61,7 +62,8 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         CanUseVent = OptionGroupSingleton<BountyHunterOptions>.Instance.CanVent,
         Icon = TouExtensionIcons.BountyHunterRoleIcon,
         IntroSound = TouExtensionAudio.BountyHunterIntroSound,
-        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
+        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        OptionsScreenshot = TouBanners.NeutralRoleBanner,
     };
 
     [HideFromIl2Cpp]

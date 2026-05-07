@@ -57,7 +57,8 @@ public sealed class PelicanRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         CanUseVent = OptionGroupSingleton<PelicanOptions>.Instance.CanVent,
         Icon = TouExtensionIcons.PelicanRoleIcon,
         IntroSound = TouAudio.PhantomIntroSound,
-        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
+        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        OptionsScreenshot = TouBanners.NeutralRoleBanner,
     };
 
     [HideFromIl2Cpp]

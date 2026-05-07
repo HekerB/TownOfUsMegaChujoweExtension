@@ -66,6 +66,7 @@ public sealed class HackerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
         UseVanillaKillButton = true,
         Icon = TouExtensionIcons.HackerRole,
         IntroSound = TouAudio.GlitchSound,
+        OptionsScreenshot = TouBanners.ImpostorRoleBanner,
     };
 
     [HideFromIl2Cpp]
@@ -146,6 +147,7 @@ public sealed class HackerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
         Coroutines.Start(CoBroadcastJamNextFrame(host, hacker.PlayerId, newCharges, opts.JamDurationSeconds));
     }
 
+    [HideFromIl2Cpp]
     private static IEnumerator CoBroadcastJamNextFrame(PlayerControl host, byte hackerId, byte newCharges, float durationSeconds)
     {
         yield return null;

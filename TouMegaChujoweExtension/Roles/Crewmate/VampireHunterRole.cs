@@ -76,6 +76,7 @@ public sealed class VampireHunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITo
         CanUseVent = false,
         MaxRoleCount = 1,
         IntroSound = TouAudio.VampIntroSound,
+        OptionsScreenshot = TouBanners.CrewmateRoleBanner,
     };
 
     public override void Initialize(PlayerControl player)

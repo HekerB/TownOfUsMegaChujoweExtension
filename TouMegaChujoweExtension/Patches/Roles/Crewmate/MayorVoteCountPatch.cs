@@ -136,15 +136,20 @@ public static class MayorVoteCountPatch
                 if (monarchOpts != null) knightBonus = (int)monarchOpts.VotesPerKnight;
             }
 
-            string info;
-            if (knightBonus > 0)
+            string info = "";
+            var formatKnighted = TouLocale.Get("ExtensionMeetingPresidentBankInfoKnighted");
+            var formatNormal = TouLocale.Get("ExtensionMeetingPresidentBankInfo");
+
+            if (knightBonus > 0 && !string.IsNullOrEmpty(formatKnighted))
             {
-                info = "\n" + string.Format(TouLocale.Get("ExtensionMeetingPresidentBankInfoKnighted"), remaining, knightBonus);
+                info = "\n" + string.Format(formatKnighted, remaining, knightBonus);
             }
-            else
+            else if (!string.IsNullOrEmpty(formatNormal))
             {
-                info = "\n" + string.Format(TouLocale.Get("ExtensionMeetingPresidentBankInfo"), remaining);
+                info = "\n" + string.Format(formatNormal, remaining);
             }
+            
+            if (string.IsNullOrEmpty(info)) return;
 
             // Append to the timer text if it's not already there
             // We use the localized strings to check for presence

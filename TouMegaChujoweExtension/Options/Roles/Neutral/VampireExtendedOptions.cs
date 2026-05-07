@@ -20,12 +20,8 @@ public sealed class VampireExtendedOptions : AbstractOptionGroup<VampireRole>
     [ModdedToggleOption("ExtensionOptionVampireCanOnlySabotageLights")]
     public bool CanOnlySabotageLights { get; set; } = false;
 
-    [ModdedNumberOption("ExtensionOptionVampireSabotageCooldown", 0f, 120f, 5f, MiraNumberSuffixes.Seconds)]
-    public ModdedNumberOption SabotageCooldownOption { get; } = new("ExtensionOptionVampireSabotageCooldown", 30f, 0f, 120f, 5f, MiraNumberSuffixes.Seconds)
-    {
-        Visible = () => OptionGroupSingleton<VampireExtendedOptions>.Instance.CanOnlySabotageLights
-    };
-    public float SabotageCooldown => SabotageCooldownOption.Value;
+
+
 
     [ModdedToggleOption("ExtensionOptionVampireOnlyOgCanSabotage")]
     public ModdedToggleOption OnlyOgCanSabotageOption { get; } = new("ExtensionOptionVampireOnlyOgCanSabotage", false)

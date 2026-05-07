@@ -15,8 +15,8 @@ using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
-using TownOfUs;          // TownOfUsColors
-using TownOfUs.Assets;   // TouCrewAssets, TouAudio
+using TownOfUs;         
+using TownOfUs.Assets;   
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Crewmate;
@@ -58,7 +58,8 @@ public sealed class SageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRol
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouExtensionIcons.SageRoleIcon,
-        IntroSound = TouAudio.QuestionSound
+        IntroSound = TouAudio.QuestionSound,
+        OptionsScreenshot = TouBanners.SeerRoleBanner,
     };
 
     [HideFromIl2Cpp] public PlayerControl? GazeTarget { get; set; }

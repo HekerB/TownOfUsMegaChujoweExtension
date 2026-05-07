@@ -220,7 +220,8 @@ public static class VentablePatch
             if (maxDuration > 0f)
             {
                 float remaining = Mathf.Max(0f, maxDuration - mod.VentDurationTimer);
-                ventButton.SetCoolDown(remaining, maxDuration);
+                if (ventButton != null && ventButton.graphic != null)
+                    ventButton.SetCoolDown(remaining, maxDuration);
                 SetTimerText(timerText, remaining);
                 return;
             }
@@ -228,12 +229,14 @@ public static class VentablePatch
         else if (mod.CooldownTimer > 0f)
         {
             float maxCd = OptionGroupSingleton<VentableModifierOptions>.Instance.VentCooldown.Value;
-            ventButton.SetCoolDown(mod.CooldownTimer, maxCd);
+            if (ventButton != null && ventButton.graphic != null)
+                ventButton.SetCoolDown(mod.CooldownTimer, maxCd);
             SetTimerText(timerText, mod.CooldownTimer);
             return;
         }
 
-        ventButton.SetCoolDown(0f, 1f);
+        if (ventButton != null && ventButton.graphic != null)
+            ventButton.SetCoolDown(0f, 1f);
         timerText.gameObject.SetActive(false);
     }
 

@@ -19,7 +19,7 @@ public sealed class SonarExtendedOptions : AbstractOptionGroup
     public override Color GroupColor => TownOfUsColors.Tracker;
     public override bool ShowInModifiersMenu => false;
     public override MenuCategory ParentMenu => MenuCategory.CustomOne;
-    public override uint GroupPriority => 103;
+    public override uint GroupPriority => 104;
 
     [ModdedToggleOption("ExtensionOptionBetterSonar")]
     public bool BetterSonar { get; set; } = false;

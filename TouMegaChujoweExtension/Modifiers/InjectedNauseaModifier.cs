@@ -1,4 +1,5 @@
 using System.Collections;
+using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.LocalSettings;
 using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
@@ -104,6 +105,7 @@ public sealed class InjectedNauseaModifier : TimedModifier, IVisualAppearance, I
         }
     }
 
+    [HideFromIl2Cpp]
     private IEnumerator CoCameraShake()
     {
         if (Camera.main == null)

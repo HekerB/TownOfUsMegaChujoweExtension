@@ -51,6 +51,7 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 
 	public override void Load()
 	{
+		DuplicateChecker.Check();
 		Harmony = new Harmony(Id);
 
 		ReactorCredits.Register("Tou Mega Chujowe Extension", Version, IsDevBuild, ReactorCredits.AlwaysShow);

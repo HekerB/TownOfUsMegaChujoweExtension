@@ -59,6 +59,7 @@ public sealed class RcXdRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRol
 		Icon = TouExtensionIcons.RcXdRoleIcon,
 		IntroSound = TouExtensionAudio.RCXDIntro,
 		CanUseVent = OptionGroupSingleton<RcXdOptions>.Instance.CanVent,
+        OptionsScreenshot = TouBanners.ImpostorRoleBanner,
 	};
 
     public override void Initialize(PlayerControl player)

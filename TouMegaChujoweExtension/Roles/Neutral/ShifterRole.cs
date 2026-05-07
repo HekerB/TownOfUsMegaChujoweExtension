@@ -1,3 +1,5 @@
+using System;
+using System.Reflection;
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
@@ -24,6 +26,7 @@ using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
+using TouMegaChujoweExtension.Assets;
 
 namespace TouMegaChujoweExtension.Roles.Neutral;
 
@@ -61,7 +64,8 @@ namespace TouMegaChujoweExtension.Roles.Neutral;
         CanUseVent = false,
         IntroSound = TouAudio.NoisemakerIntroSound,
         Icon = TouRoleIcons.Shifter,
-        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
+        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        OptionsScreenshot = TouBanners.NeutralRoleBanner,
     };
 
     [HideFromIl2Cpp]
@@ -229,15 +233,44 @@ namespace TouMegaChujoweExtension.Roles.Neutral;
             }
         }
 
+        // Force role change even if base role matches (important for Imitator)
+        // If the target is a CustomRole already imitating the role they are becoming,
+        // ChangeRole might skip the update. We force it by resetting the base role first.
+        if (target.Data?.Role != null && target.Data.Role is ICustomRole)
+        {
+            target.Data.Role.Role = (RoleTypes)byte.MaxValue;
+        }
         target.ChangeRole(becomeRoleId);
         
-        // BUG FIX: Remove ALL Assassin-related modifiers from the target
-        // We iterate and check for the base type or name to be safe
+        // BUG FIX: Remove role-defining modifiers from the target that might desync the UI
         foreach (var modifier in targetModifiers)
         {
-            if (modifier is AssassinModifier || modifier.GetType().Name.Contains("Assassin"))
+            if (modifier == null) continue;
+            var type = modifier.GetType();
+            var typeName = type.Name;
+            var typeFullName = type.FullName ?? string.Empty;
+
+            bool shouldRemove = typeName.Contains("Assassin", StringComparison.OrdinalIgnoreCase) ||
+                               typeName.Contains("Imitator", StringComparison.OrdinalIgnoreCase) ||
+                               typeName.Contains("Phantom", StringComparison.OrdinalIgnoreCase) ||
+                               typeName.Contains("Amnesiac", StringComparison.OrdinalIgnoreCase) ||
+                               typeFullName.Contains("Assassin", StringComparison.OrdinalIgnoreCase) ||
+                               typeFullName.Contains("Imitator", StringComparison.OrdinalIgnoreCase);
+
+            if (!shouldRemove)
             {
-                target.RemoveModifier(modifier.GetType());
+                var mnProp = type.GetProperty("ModifierName", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                var mn = mnProp?.GetValue(modifier)?.ToString() ?? string.Empty;
+                if (mn.Contains("Assassin", StringComparison.OrdinalIgnoreCase) ||
+                    mn.Contains("Imitator", StringComparison.OrdinalIgnoreCase))
+                {
+                    shouldRemove = true;
+                }
+            }
+
+            if (shouldRemove)
+            {
+                target.RemoveModifier(type);
             }
         }
 

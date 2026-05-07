@@ -56,7 +56,8 @@ public sealed class FalconRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouExtensionIcons.FalconRoleIcon,
-		IntroSound = TouAudio.QuestionSound,
+        IntroSound = TouAudio.QuestionSound,
+        OptionsScreenshot = TouBanners.CrewmateRoleBanner,
     };
 
     public bool IsGuessable => true;

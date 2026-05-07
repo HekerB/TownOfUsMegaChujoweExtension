@@ -258,7 +258,6 @@
   <!-- Vampire Role -->
   <string name="ExtensionRoleVampire">Vampire</string>
   <string name="ExtensionOptionVampireCanOnlySabotageLights">Vampire Can Sabotage Lights</string>
-  <string name="ExtensionOptionVampireSabotageCooldown">Sabotage Lights Cooldown</string>
   <string name="ExtensionOptionVampireOnlyOgCanSabotage">Only OG Vampire Can Sabotage</string>
 
 
@@ -1010,7 +1009,7 @@ If &lt;b&gt;Merge Neutrals with Crew&lt;/b&gt; is enabled, &lt;color=#4DA6FF&gt;
   <string name="TOUMCETermsRoleExtensionsInfo">This section contains advanced options for existing roles and modifiers, enhancing their abilities and gameplay mechanics.</string>
   
   <string name="TOUMCETermsVampireSabotageTitle">Vampire Sabotage</string>
-  <string name="TOUMCETermsVampireSabotageInfo">Vampires have advanced sabotage options: • &lt;color=#FF0000&gt;&lt;b&gt;Only Lights&lt;/b&gt;&lt;/color&gt; - The Vampire can only sabotage the Electrical system via the TAB map. • &lt;color=#FF0000&gt;&lt;b&gt;Cooldown After Fix&lt;/b&gt;&lt;/color&gt; - The sabotage has its own timer starting after lights are fixed. • &lt;color=#FF0000&gt;&lt;b&gt;Only OG&lt;/b&gt;&lt;/color&gt; - Sabotage can be restricted to the original Vampire only (bitten vampires cannot sabotage).</string>
+  <string name="TOUMCETermsVampireSabotageInfo">Vampires have advanced sabotage options: • &lt;color=#FF0000&gt;&lt;b&gt;Only Lights&lt;/b&gt;&lt;/color&gt; - The Vampire can only sabotage the Electrical system via the TAB map. • &lt;color=#FF0000&gt;&lt;b&gt;Shared Cooldown&lt;/b&gt;&lt;/color&gt; - Vampires share the same global sabotage timer with Impostors. • &lt;color=#FF0000&gt;&lt;b&gt;Only OG&lt;/b&gt;&lt;/color&gt; - Sabotage can be restricted to the original Vampire only (bitten vampires cannot sabotage).</string>
   <string name="TOUMCETabOptionBetterRoles">Better Roles/Modifiers</string>
   <string name="TOUMCETabOptionBetterRolesDesc">Configure extension options for existing roles and modifiers here!</string>
 
@@ -1055,10 +1054,15 @@ If &lt;b&gt;Merge Neutrals with Crew&lt;/b&gt; is enabled, &lt;color=#4DA6FF&gt;
   <string name="Egotist">Egotist</string>
   <string name="Forensic">Forensic</string>
   <string name="Time Lord">Time Lord</string>
+  <string name="Mirror Caster">Mirror Caster</string>
+  <string name="ExtensionOptionMirrorCasterMoveWhileMenu">Can Move While Menu</string>
   <string name="Mayor">Mayor</string>
 
-  <!-- Death Handler reasons for end-game screen -->
-  <string name="DiedToWinning">Victorious</string>
-  <string name="DiedToEjection">Ejected</string>
+  <!-- General Options -->
+  <string name="ExtensionOptionGeneralLawyerChat">Lawyer/Client Private Chat</string>
+  <string name="ExtensionOptionGeneralLoversChat">Lovers Private Chat</string>
+  <!-- Mod Compatibility Options -->
+  <string name="ExtensionOptionCompatibilityDuplicateWarnings">Show Duplicate Mod Warnings</string>
+  <string name="ExtensionOptionCompatibilityDuplicateAutoKick">Auto-Kick If Duplicates Detected</string>
 </resources>
 

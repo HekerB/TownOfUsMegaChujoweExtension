@@ -27,7 +27,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
 | 17.3.x           | 1.6.0             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.0) |
 
 > [!TIP]
-> **In-Game Patch Notes:** Every time a new version is released, you can view the full changelog directly in the game's Main Menu through our custom announcement system!
+> **In-Game Patch Notes:** Every time a new version is released, you can view the full changelog directly in the game's Main Menu through our custom announcement system! (Inspired by **Town of Us: Mira** as it uses a similar system).
 
 -----------------------
 
