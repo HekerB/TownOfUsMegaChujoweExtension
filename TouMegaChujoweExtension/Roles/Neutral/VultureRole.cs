@@ -218,7 +218,7 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
                 TimeLordEventHandlers.RecordBodyCleaned(scavenger, body, body.transform.position, 
                     TimeLordBodyManager.CleanedBodySource.Janitor);
             }
-            Coroutines.Start(TimeLordBodyManager.CoHideBodyForTimeLord(body, (dynamic)1)); 
+            Coroutines.Start(TimeLordBodyManager.CoHideBodyForTimeLord(body)); 
         }
         else
         {

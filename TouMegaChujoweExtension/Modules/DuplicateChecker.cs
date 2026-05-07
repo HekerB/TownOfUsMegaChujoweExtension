@@ -167,15 +167,33 @@ public static class DuplicateChecker
                 var fileName = Path.GetFileName(DuplicatePath);
                 string playerName = PlayerControl.LocalPlayer.Data.PlayerName;
 
-                var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)TouMegaChujoweExtension.Networking.ExtensionRpc.DuplicateModKick, Hazel.SendOption.Reliable, AmongUsClient.Instance.HostId);
-                writer.Write(playerName);
-                writer.Write(fileName);
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    ShowDuplicateModSystemMessage(playerName, fileName);
+                }
+                else
+                {
+                    // Find a player that won't be destroyed immediately (like the host or the first available player)
+                    var targetNetId = PlayerControl.LocalPlayer.NetId;
+                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    {
+                        if (pc.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                        {
+                            targetNetId = pc.NetId;
+                            break;
+                        }
+                    }
+
+                    var writer = AmongUsClient.Instance.StartRpcImmediately(targetNetId, (byte)TouMegaChujoweExtension.Networking.ExtensionRpc.DuplicateModKick, Hazel.SendOption.Reliable, AmongUsClient.Instance.HostId);
+                    writer.Write(playerName);
+                    writer.Write(fileName);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                }
             }
         } catch { }
 
-        // Give a tiny moment for RPC to send over network
-        yield return new WaitForSeconds(0.4f);
+        // Give a bit more time for RPC to send over network before objects are destroyed
+        yield return new WaitForSeconds(1.0f);
 
         // Kick the player
         AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
@@ -203,37 +221,12 @@ public static class DuplicateChecker
     public static void ShowDuplicateModSystemMessage(string playerName, string fileName)
     {
         if (HudManager.Instance == null || HudManager.Instance.Chat == null) return;
-        var chat = HudManager.Instance.Chat;
-
         var player = PlayerControl.LocalPlayer;
-        if (player == null) return;
+        if (player == null || player.Data == null) return;
 
-        var pooledBubble = chat.GetPooledBubble();
-        if (pooledBubble == null) return;
+        string systemName = "<color=#FF4444>System</color>";
+        string msg = $"{playerName} was KICKED for duplicated mod files:\n<color=#FF4444>{fileName}</color>";
 
-        pooledBubble.transform.SetParent(chat.scroller.Inner);
-        pooledBubble.transform.localScale = Vector3.one;
-        pooledBubble.SetLeft();
-        pooledBubble.SetCosmetics(player.Data);
-        
-        pooledBubble.NameText.text = "<color=#FF4444>System</color>";
-        pooledBubble.NameText.color = Color.white;
-        pooledBubble.votedMark.enabled = false;
-        pooledBubble.Xmark.enabled = false;
-        
-        pooledBubble.TextArea.text = $"{playerName} was KICKED for duplicated mod files:\n<color=#FF4444>{fileName}</color>";
-        pooledBubble.TextArea.color = Color.white;
-        pooledBubble.TextArea.ForceMeshUpdate(true, true);
-        
-        pooledBubble.Background.color = Color.black;
-        
-        float h = pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight() + 0.4f;
-        pooledBubble.Background.size = new Vector2(5.52f, h);
-        pooledBubble.MaskArea.size = new Vector2(5.52f, h - 0.05f);
-        pooledBubble.AlignChildren();
-        chat.AlignAllBubbles();
-
-        if (chat is { IsOpenOrOpening: false, notificationRoutine: null })
-            chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());
+        TownOfUs.Utilities.MiscUtils.AddFakeChat(player.Data, systemName, msg, true, true);
     }
 }

@@ -137,71 +137,8 @@ public static class MirageDecoyTownOfUsTargetButtonPatches
         }
     }
 
-    [HarmonyPatch(typeof(TownOfUsTargetButton<DeadBody>), nameof(TownOfUsTargetButton<DeadBody>.ClickHandler))]
-    private static class BodyTargetClickHandlerPatch
-    {
-        [HarmonyPrefix]
-        [HarmonyPriority(Priority.First)]
-        public static bool Prefix(object __instance)
-        {
-            if (__instance is Buttons.Crewmate.MirageDecoyButton)
-            {
-                return true;
-            }
 
-            if (!TryTriggerFromLocalPlayer(GetDistance(__instance)))
-            {
-                return true;
-            }
 
-            SpendCooldownAndUses(__instance);
-            return false;
-        }
-    }
-
-    [HarmonyPatch(typeof(TownOfUsTargetButton<DeadBody>), nameof(TownOfUsTargetButton<DeadBody>.FixedUpdateHandler))]
-    private static class BodyTargetFixedUpdateHandlerPatch
-    {
-        [HarmonyPostfix]
-        [HarmonyPriority(Priority.Last)]
-        public static void Postfix(object __instance)
-        {
-            MirageDecoySystem.ClearLocalOutline();
-        }
-    }
-
-    [HarmonyPatch(typeof(TownOfUsTargetButton<Vent>), nameof(TownOfUsTargetButton<Vent>.ClickHandler))]
-    private static class VentTargetClickHandlerPatch
-    {
-        [HarmonyPrefix]
-        [HarmonyPriority(Priority.First)]
-        public static bool Prefix(object __instance)
-        {
-            if (__instance is Buttons.Crewmate.MirageDecoyButton)
-            {
-                return true;
-            }
-
-            if (!TryTriggerFromLocalPlayer(GetDistance(__instance)))
-            {
-                return true;
-            }
-
-            SpendCooldownAndUses(__instance);
-            return false;
-        }
-    }
-
-    [HarmonyPatch(typeof(TownOfUsTargetButton<Vent>), nameof(TownOfUsTargetButton<Vent>.FixedUpdateHandler))]
-    private static class VentTargetFixedUpdateHandlerPatch
-    {
-        [HarmonyPostfix]
-        [HarmonyPriority(Priority.Last)]
-        public static void Postfix(object __instance)
-        {
-            MirageDecoySystem.ClearLocalOutline();
-        }
-    }
 
     private static bool TryTriggerFromLocalPlayer(float maxDistance)
     {

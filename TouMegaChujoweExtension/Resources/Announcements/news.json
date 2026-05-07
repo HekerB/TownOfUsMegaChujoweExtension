@@ -299,6 +299,23 @@
         "\n- <b>Role Menu Banners</b> - Assigned generic fallback banners to all remaining roles and updated configuration for the entire extension roster.",
         "\n- Optimized overall mod loading speed and fixed various minor UI bugs in the Lobby sidebar."
       ]
+    },
+    {
+      "Date": "2026-05-07T18:30:00Z",
+      "Number": "200010",
+      "ShortTitle": "TOUMCE v1.0.9",
+      "SubTitle": "Shifter & Anti-Cheat Fixes",
+      "Title": "TOU Mega Chujowe Extension v1.0.9",
+      "Text": [
+        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
+        "\n\n\r<b>Version 1.0.9 - Shifter & Anti-Cheat Fixes</b>",
+        "\n\n\r<size=110%><b>★ Anti-Cheat & Stability ★</b></size>",
+        "\n- <b>Duplicate Guard Alerts</b> - Fixed the system notification for duplicated mod files. The Host now reliably receives a styled black 'System' bubble without UI errors or layout breaking.",
+        "\n- <b>RPC & Networking Fixes</b> - Handled edge cases where the duplicate mod was held by the Host or when players disconnected too quickly for the RPC to be processed.",
+        "\n\n\r<size=110%><b>★ Role Fixes ★</b></size>",
+        "\n- <b>Shifter / Imitator</b> - Fixed a critical bug where players who had their role stolen by a Shifter retained their previous role (e.g., Imitator) instead of properly transitioning.",
+        "\n- <b>Role Cleanup</b> - Ensured that stolen roles are correctly removed and updated for both the Shifter and their target."
+      ]
     }
   ]
 }
