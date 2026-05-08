@@ -62,10 +62,7 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 	
 		PatchAllWithErrorHandling();
 
-		WinConditionRegistry.Register(new LawyerDuoWinCondition());
-		WinConditionRegistry.Register(new LawyerParityWinCondition());
-		WinConditionRegistry.Register(new PelicanWinCondition());
-		WinConditionRegistry.Register(new PopeWinCondition());
+		WinConditionRegistry.Register(new NeutralExtensionWinCondition());
 	}
 
     private void PatchAllWithErrorHandling()

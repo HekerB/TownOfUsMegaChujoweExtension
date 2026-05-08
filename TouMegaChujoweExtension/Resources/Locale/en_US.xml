@@ -193,7 +193,11 @@
   <string name="ExtensionShifterCancelGeneric">Shift cancelled.</string>
   
   <!-- Lawyer Win -->
+  <string name="ExtensionLawyerWins">Lawyer &amp; Client Win</string>
   <string name="ExtensionLawyerWin">Wins</string>
+  
+  <!-- Neutral Win Format -->
+  <string name="ExtensionNeutralWinsFormat">{0} Wins</string>
   
   <!-- Lawyer Client Info -->
   <string name="ExtensionRoleLawyerClientDescription">Your lawyer is &lt;lawyer&gt;.</string>
@@ -756,12 +760,18 @@
   <string name="ExtensionOptionBHWinModeEnumSoloWin">Solo Win (Ends Game)</string>
   <string name="ExtensionOptionBHWinModeEnumWinWithWinners">Win With Winners</string>
   
+  <string name="ExtensionBHTabTargetsKilled">Targets Killed: {0} / {1}</string>
+  <string name="ExtensionBHTabCurrentTarget">Current Target: {0}</string>
+  
   <!-- Bounty Hunter Notifications -->
   <string name="ExtensionBHYourNextTarget">Your Next Target</string>
   <string name="ExtensionBHNewTarget">New target: &lt;player&gt;</string>
   <string name="ExtensionBHTargetKilled">Target eliminated! (&lt;current&gt;/&lt;needed&gt;)</string>
   <string name="ExtensionBHFailed">You failed to kill your target! Cooldown penalty applied.</string>
   <string name="ExtensionBHNoTargets">No valid targets available!</string>
+  <string name="ExtensionBHWinWithWinnersSelf">You have successfully completed your bounties as the &lt;color=#B0BEC5&gt;Bounty Hunter&lt;/color&gt;! You will now spectate and win with the winning team.</string>
+  <string name="ExtensionBHWinWithWinnersOthers">The &lt;color=#B0BEC5&gt;Bounty Hunter&lt;/color&gt;, &lt;player&gt;, has completed all their bounties!</string>
+  <string name="DiedToWinning">Victorious</string>
   <string name="ExtensionBountyHunterWins">Wins</string>
   
   <!-- Bounty Hunter Death Message -->
@@ -791,6 +801,15 @@
   <string name="DiedToPoisoner">Killed</string>
   <string name="DiedToPoisonerPoison">Poisoned</string>
   <string name="DiedToPoisonerVine">Squished</string>
+
+  <!-- Shroud Role -->
+  <string name="ExtensionRoleShroud">Shroud</string>
+  <string name="ExtensionRoleShroudIntroBlurb">Mark players and strike from the shadows.</string>
+  <string name="ExtensionRoleShroudTabDescription">Mark a player to shroud them.\%nl\%If they are killed or voted out, you win!\%nl\%You can also kill players directly.</string>
+  <string name="ExtensionRoleShroudWikiDescription">The Shroud is a Neutral Killing role. You can mark a player to shroud them. If your shrouded target dies, you win. You also have a normal kill ability.</string>
+  <string name="ExtensionRoleShroudAbility">Shroud</string>
+  <string name="ExtensionRoleShroudAbilityWikiDescription">Mark a player. If they die, you win.</string>
+  <string name="ExtensionRoleShroudShroudedPlayer">Shrouded Player</string>
   
   <!-- Bodyguard Role -->
   <string name="ExtensionRoleBodyguard">Bodyguard</string>
@@ -1071,5 +1090,8 @@ If &lt;b&gt;Merge Neutrals with Crew&lt;/b&gt; is enabled, &lt;color=#4DA6FF&gt;
   <!-- Mod Compatibility Options -->
   <string name="ExtensionOptionCompatibilityDuplicateWarnings">Show Duplicate Mod Warnings</string>
   <string name="ExtensionOptionCompatibilityDuplicateAutoKick">Auto-Kick If Duplicates Detected</string>
+  <!-- Draft Mode Options -->
+  <string name="ExtensionOptionDraftMinOtherNeutrals">Min Other Neutrals</string>
+  <string name="ExtensionOptionDraftMaxOtherNeutrals">Max Other Neutrals</string>
 </resources>
 

@@ -38,7 +38,7 @@ public sealed class LawyerTargetModifier : GameModifier, IWikiDiscoverable
 
     public override bool? DidWin(GameOverReason reason)
     {
-        if (reason == CustomGameOver.GameOverReason<LawyerGameOver>())
+        if (reason == CustomGameOver.GameOverReason<ExtensionNeutralGameOver>())
         {
             return true;
         }

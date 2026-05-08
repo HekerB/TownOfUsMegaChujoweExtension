@@ -19,6 +19,7 @@ using UnityEngine;
 using System.Reflection;
 using System.Collections;
 using MiraAPI.Hud;
+using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Buttons;
 
 namespace TouMegaChujoweExtension.Utilities;
@@ -86,10 +87,17 @@ public static class ShieldUtils
 
     private static SpriteRenderer? _localFlashRenderer;
 
+    public static float LastShieldTriggerTime = 0f;
+    public static byte LastShieldTargetId = 255;
+
     public static void TriggerShieldFlash(PlayerControl killer, ShieldType shieldType)
     {
         if (killer == null || !killer.AmOwner || shieldType == ShieldType.None || 
             shieldType == ShieldType.DeadlyQuota || shieldType == ShieldType.Child) return;
+
+        // Anti-spam guard for visual flash
+        // We use a small threshold to prevent double flashes from overlapping systems
+        if (Time.time - LastShieldTriggerTime < 0.05f) return;
 
         var color = GetFlashColor(shieldType);
         if (color != Color.clear)
@@ -122,11 +130,7 @@ public static class ShieldUtils
             _localFlashRenderer.gameObject.SetActive(false);
         }
     }
-
-    private static float _lastShieldTriggerTime;
-    private static byte _lastShieldTargetId = 255;
-
-    public static bool HandleButtonShieldClick(object? button, PlayerControl? target)
+    public static bool HandleButtonShieldClick(object button, PlayerControl target)
     {
         if (target == null) return false;
         if (!InternalHandleShieldHit(target, out float duration)) return false;
@@ -165,13 +169,13 @@ public static class ShieldUtils
         if (shieldType == ShieldType.None) return false;
 
         // Anti-multi-trigger guard
-        if (Time.time - _lastShieldTriggerTime < 0.1f && _lastShieldTargetId == target.PlayerId)
+        if (Time.time - LastShieldTriggerTime < 0.1f && LastShieldTargetId == target.PlayerId)
         {
             duration = 10f; // Default safety
             return true; 
         }
-        _lastShieldTriggerTime = Time.time;
-        _lastShieldTargetId = target.PlayerId;
+        LastShieldTriggerTime = Time.time;
+        LastShieldTargetId = target.PlayerId;
 
         Logger<TouMegaChujoweExtension.TouMegaChujoweExtensionPlugin>.Info($"[ShieldUtils] Button shield hit detected on {target.Data.PlayerName} (Shield: {shieldType})");
 
@@ -255,7 +259,42 @@ public static class ShieldUtils
 #pragma warning restore S3011
 
         if (target == null) return true;
+        if (!IsHarmfulInteraction(__instance, target)) return true;
 
         return !HandleButtonShieldClick(__instance, target);
+    }
+
+    public static bool IsHarmfulInteraction(object button, PlayerControl? target)
+    {
+        if (button == null || target == null) return false;
+        
+        // 1. Explicitly harmful button types
+        if (button is IKillButton) return true;
+        
+        var buttonType = button.GetType();
+        while (buttonType != null)
+        {
+            if (buttonType.Name.StartsWith("TownOfUsKillRoleButton")) return true;
+            buttonType = buttonType.BaseType;
+        }
+
+        // 2. Local player role alignment
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null || localPlayer.Data == null) return false;
+        
+        var role = localPlayer.Data.Role;
+        if (role == null) return false;
+
+        if (localPlayer.IsImpostor() || localPlayer.Is(RoleAlignment.NeutralKilling)) return true;
+        
+        // Special extension roles that are harmful but might not be NK alignment (depending on config)
+        if (role is PelicanRole or ShifterRole) return true;
+        
+        // Crewmate roles that can kill
+        if (localPlayer.IsRole<SheriffRole>() || 
+            localPlayer.IsRole<OfficerRole>() || 
+            localPlayer.IsRole<HunterRole>()) return true;
+
+        return false;
     }
 }

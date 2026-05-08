@@ -299,6 +299,29 @@
         "\n- <b>Role Menu Banners</b> - Assigned generic fallback banners to all remaining roles and updated configuration for the entire extension roster.",
         "\n- Optimized overall mod loading speed and fixed various minor UI bugs in the Lobby sidebar."
       ]
+    },
+    {
+      "Date": "2026-05-08T14:30:00Z",
+      "Number": "200010",
+      "ShortTitle": "TOUMCE v1.0.9",
+      "SubTitle": "Shifter, BH & Victory UI Fixes",
+      "Title": "TOU Mega Chujowe Extension v1.0.9",
+      "Text": [
+        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
+        "\n\n\r<b>Version 1.0.9 - Bounty Hunter & Victory UI Fixes</b>",
+        "\n\n\r<size=110%><b>★ Role Fixes & Reworks ★</b></size>",
+        "\n- <b>Bounty Hunter</b> - added <b>Weighted Targets</b> (10% higher bias towards non-crewmate roles). Fixed win-condition in <b>Win With Winners</b> mode (immediate death/spectator victory).",
+        "\n- <b>Shifter / Imitator</b> - FIXED a critical bug where players who had their role stolen by a Shifter retained their previous role. Ensured proper role cleanup and transition sync.",
+        "\n- <b>Win Notifications</b> - added localized chat alerts for all players when a Bounty Hunter achieves victory.",
+        "\n\n\r<size=110%><b>★ Universal Victory UI Fix ★</b></size>",
+        "\n- <b>Ejected Bug FIXED</b> - resolved a widespread bug where custom neutral winners (Pelican, BH, Vulture, etc.) were incorrectly labeled as <b>\"Ejected\"</b> on the end-game screen.",
+        "\n- <b>Summary Integration</b> - added <b>\"Victorious\"</b> labels to the end-game summary sidebar records for all extension winners.",
+        "\n- <b>Themed Status Labels</b> - statuses above player heads now use the <b>role's specific team color</b> and preserve gold nickname colors for winners.",
+        "\n\n\r<size=110%><b>★ Anti-Cheat & Stability ★</b></size>",
+        "\n- <b>Duplicate Guard Alerts</b> - fixed the system notification for duplicated mod files. The Host now reliably receives a styled black 'System' bubble without UI errors.",
+        "\n- <b>RPC & Networking Fixes</b> - handled edge cases for Host-side duplicate mod detection and rapid player disconnections.",
+        "\n- <b>Localization</b> - updated Polish and English strings for all new victory scenarios, notifications, and end-game statuses."
+      ]
     }
   ]
 }

@@ -36,27 +36,22 @@ public sealed class DraftModeOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
-    public ModdedToggleOption MergeNeutralsWithCrew { get; } = new("Merge Neutrals with Crew", false)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    public ModdedNumberOption NeutralMergeChance { get; } = new("Neutral Merge Chance", 15f, 5f, 50f, 5f, MiraNumberSuffixes.Percent)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.MergeNeutralsWithCrew.Value && OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    public ModdedNumberOption MaxNeutralsInMerge { get; } = new("Max Neutrals in Merge", 1f, 1f, 3f, 1f, MiraNumberSuffixes.None)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.MergeNeutralsWithCrew.Value && OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
     public ModdedNumberOption RolesToShow { get; } = new("Roles To Show", 3f, 1f, 8f, 1f, MiraNumberSuffixes.None)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
     public ModdedNumberOption TimeToChoose { get; } = new("Time To Choose", 10f, 3f, 67f, 1f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
+    };
+
+    public ModdedNumberOption MinOtherNeutralsPerChoice { get; } = new("Min Neutrals Per Choice", 1f, 0f, 3f, 1f, MiraNumberSuffixes.None)
+    {
+        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
+    };
+
+    public ModdedNumberOption MaxOtherNeutralsPerChoice { get; } = new("Max Neutrals Per Choice", 2f, 0f, 3f, 1f, MiraNumberSuffixes.None)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
@@ -78,24 +73,12 @@ public sealed class DraftModeOptions : AbstractOptionGroup
 
 
 
-    // === FACTION COUNTS ===
-
-    public ModdedNumberOption MinNeutralBenign { get; } = new("Min Neutral Benign", 0f, 0f, 5f, 1f, MiraNumberSuffixes.None)
+    public ModdedNumberOption MinOtherNeutrals { get; } = new("Min Other Neutrals", 0f, 0f, 10f, 1f, MiraNumberSuffixes.None)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
-    public ModdedNumberOption MaxNeutralBenign { get; } = new("Max Neutral Benign", 0f, 0f, 5f, 1f, MiraNumberSuffixes.None)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    public ModdedNumberOption MinNeutralEvil { get; } = new("Min Neutral Evil", 0f, 0f, 5f, 1f, MiraNumberSuffixes.None)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    public ModdedNumberOption MaxNeutralEvil { get; } = new("Max Neutral Evil", 0f, 0f, 5f, 1f, MiraNumberSuffixes.None)
+    public ModdedNumberOption MaxOtherNeutrals { get; } = new("Max Other Neutrals", 3f, 0f, 10f, 1f, MiraNumberSuffixes.None)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
@@ -106,16 +89,6 @@ public sealed class DraftModeOptions : AbstractOptionGroup
     };
 
     public ModdedNumberOption MaxNeutralKilling { get; } = new("Max Neutral Killing", 0f, 0f, 5f, 1f, MiraNumberSuffixes.None)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    public ModdedNumberOption MinRandomNeutral { get; } = new("Min Random Neutral", 0f, 0f, 5f, 1f, MiraNumberSuffixes.None)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    public ModdedNumberOption MaxRandomNeutral { get; } = new("Max Random Neutral", 0f, 0f, 5f, 1f, MiraNumberSuffixes.None)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };

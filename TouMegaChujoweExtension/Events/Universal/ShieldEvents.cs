@@ -25,8 +25,7 @@ namespace TouMegaChujoweExtension.Events.Universal;
 
 public static class ShieldEvents
 {
-    private static float _lastShieldTriggerTime;
-    private static byte _lastShieldTargetId = 255;
+
 
     [RegisterEvent(Priority.Last)]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
@@ -40,13 +39,13 @@ public static class ShieldEvents
         if (shieldType == ShieldType.None) return;
 
         // Anti-multi-trigger guard
-        if (Time.time - _lastShieldTriggerTime < 0.2f && _lastShieldTargetId == target.PlayerId)
+        if (Time.time - ShieldUtils.LastShieldTriggerTime < 0.2f && ShieldUtils.LastShieldTargetId == target.PlayerId)
         {
             @event.Cancel(); // Still cancel to be safe
             return;
         }
-        _lastShieldTriggerTime = Time.time;
-        _lastShieldTargetId = target.PlayerId;
+        ShieldUtils.LastShieldTriggerTime = Time.time;
+        ShieldUtils.LastShieldTargetId = target.PlayerId;
 
         Logger<TouMegaChujoweExtensionPlugin>.Info($"[ShieldEvents] Murder from {source.Data.PlayerName} blocked by {shieldType} on {target.Data.PlayerName}");
 

@@ -108,7 +108,7 @@ public sealed class PopeJudgementSystem(nint cppPtr) : Il2CppSystem.Object(cppPt
 
                         if (winners.Length > 0)
                         {
-                            CustomGameOver.Trigger<PopeGameOver>(winners);
+                            CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners);
                         }
                     }
                     break;

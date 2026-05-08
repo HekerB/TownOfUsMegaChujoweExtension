@@ -674,7 +674,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             return false;
         }
 
-        if (gameOverReason == CustomGameOver.GameOverReason<LawyerGameOver>())
+        if (gameOverReason == CustomGameOver.GameOverReason<ExtensionNeutralGameOver>())
         {
             return true;
         }

@@ -218,7 +218,8 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
                 TimeLordEventHandlers.RecordBodyCleaned(scavenger, body, body.transform.position, 
                     TimeLordBodyManager.CleanedBodySource.Janitor);
             }
-            Coroutines.Start(TimeLordBodyManager.CoHideBodyForTimeLord(body, (dynamic)1)); 
+            var destroyBody = (BodyVitalsMode)OptionGroupSingleton<GameMechanicOptions>.Instance.CleanedBodiesAppearance.Value;
+            Coroutines.Start(TimeLordBodyManager.CoHideBodyForTimeLord(body, destroyBody)); 
         }
         else
         {
