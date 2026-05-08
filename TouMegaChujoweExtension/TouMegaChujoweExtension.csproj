@@ -3,6 +3,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <DebugType>embedded</DebugType>
+        <Nullable>enable</Nullable>
         <RootNamespace>TouMegaChujoweExtension</RootNamespace>
         <Description>Fork of Rewalo's Town Of Us Mira Roles Extension, adds draft mode and a bunch of new roles and modifiers.</Description>
         <NoWarn>$(NoWarn);1591;NU1601</NoWarn>

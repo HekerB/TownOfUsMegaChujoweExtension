@@ -16,8 +16,7 @@ namespace TouMegaChujoweExtension.Events.Crewmate;
 
 public static class MirageEvents
 {
-    private static int ActiveTaskCount;
-    private static uint LastTaskId = uint.MaxValue;
+
 
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
@@ -27,8 +26,7 @@ public static class MirageEvents
             return;
         }
 
-        ActiveTaskCount = 0;
-        LastTaskId = uint.MaxValue;
+
 
         if (PlayerControl.LocalPlayer?.Data?.Role is not MirageRole)
         {

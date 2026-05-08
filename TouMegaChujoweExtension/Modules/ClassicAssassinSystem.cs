@@ -481,12 +481,12 @@ public static class ClassicAssassinSystem
                                 modifiers.Add(prototype);
                             }
                         }
-                        catch { }
+                        catch { /* fallback to next instantiator */ }
                     }
                 }
             }
         }
-        catch { }
+        catch { /* ignore dynamic discovery errors */ }
 
         return modifiers;
     }
@@ -1071,7 +1071,7 @@ public static class ClassicAssassinSystem
                     {
                         HideSingle(targetId);
                     }
-                    continue;
+
                 }
                 
                 // If we reach here, it means they are a guesser (e.g. Jailor) but we don't have custom logic for them yet

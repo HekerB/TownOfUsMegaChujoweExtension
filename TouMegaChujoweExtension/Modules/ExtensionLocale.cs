@@ -87,9 +87,9 @@ public static class ExtensionLocale
                 }
             }
         }
-        catch (System.Exception ex)
+        catch (System.Exception)
         {
-            // LocaleLogger.LogError($"XML parsing error: {ex.Message}");
+            // LocaleLogger.LogError($"XML parsing error");
         }
     }
 }

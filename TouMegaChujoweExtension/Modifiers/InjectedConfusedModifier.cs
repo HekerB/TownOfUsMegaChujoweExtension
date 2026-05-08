@@ -20,8 +20,8 @@ public sealed class InjectedConfusedModifier : DisabledModifier, IInjectedModifi
     public override LoadableAsset<Sprite>? ModifierIcon => null;
     public override bool CanReport => false;
 
-    private float _duration;
-    private InjectorEffectDurationType _durationType;
+    private readonly float _duration;
+    private readonly InjectorEffectDurationType _durationType;
 
     public InjectedConfusedModifier(float duration, InjectorEffectDurationType durationType)
     {

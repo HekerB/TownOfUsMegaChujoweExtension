@@ -54,7 +54,6 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
     private float _killTimer;
     private bool _timerActive;
     private GameObject? _notePickup;
-    private bool _spawned;
     private bool _soundPlayed;
 
     public bool IsUsed => _used;
@@ -120,7 +119,6 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
         _cursedTarget = null;
         _killTimer = 0f;
         _timerActive = false;
-        _spawned = false;
         _soundPlayed = false;
         _notePickup = null;
 
@@ -157,7 +155,6 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
         var behaviour = _notePickup.AddComponent<DeathNotePickupBehaviour>();
         behaviour.Initialize(this);
 
-        _spawned = true;
     }
 
     public override void FixedUpdate()

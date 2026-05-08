@@ -49,7 +49,7 @@ public static class ExtensionSymbolsPatch
         }
 
         // --- DEATH NOTE (♡) ---
-        if (TryGetDeathNoteTarget(out var dnTarget) && dnTarget.PlayerId == player.PlayerId)
+        if (TryGetDeathNoteTarget(out var dnTarget) && dnTarget != null && dnTarget.PlayerId == player.PlayerId)
         {
             if (!__result.Contains("♡"))
             {
@@ -93,7 +93,8 @@ public static class ExtensionSymbolsPatch
         // --- BODYGUARD (Σ) ---
         if (!__result.Contains("Σ"))
         {
-            bool isProtectedByLocal = player.TryGetModifier<BodyguardShieldModifier>(out var bgMod) && bgMod.Bodyguard.PlayerId == local.PlayerId;
+            bool isProtectedByLocal = player.TryGetModifier<BodyguardShieldModifier>(out var bgMod) && 
+                                     bgMod != null && bgMod.Bodyguard != null && bgMod.Bodyguard.PlayerId == local.PlayerId;
             bool isBodyguard = local.IsRole<BodyguardRole>();
             bool isAnyProtected = player.HasModifier<BodyguardShieldModifier>();
 
@@ -140,7 +141,7 @@ public static class ExtensionSymbolsPatch
         }
     }
 
-    private static bool TryGetDeathNoteTarget(out PlayerControl target)
+    private static bool TryGetDeathNoteTarget(out PlayerControl? target)
     {
         target = null;
         foreach (var pc in PlayerControl.AllPlayerControls)

@@ -11,8 +11,8 @@ namespace TouMegaChujoweExtension.Modules;
 public class DeathNotePickupBehaviour : MonoBehaviour
 {
 public static readonly List<DeathNotePickupBehaviour> Instances = new();
-    private DeathNoteModifier _modifier;
-    private SpriteRenderer _renderer;
+    private DeathNoteModifier? _modifier;
+    private SpriteRenderer? _renderer;
     private const float PickupRange = 0.75f;
     private const float FadeSpeed = 12f;
     private const bool OwnerOnly = true;
@@ -46,14 +46,14 @@ public static readonly List<DeathNotePickupBehaviour> Instances = new();
             int score = 0;
             if (r.maskInteraction != SpriteMaskInteraction.None) score += 100;
             var sl = r.sortingLayerName ?? string.Empty;
-            if (sl.IndexOf("Player", StringComparison.OrdinalIgnoreCase) >= 0) score += 50;
-            if (sl.IndexOf("UI", StringComparison.OrdinalIgnoreCase) >= 0) score -= 200;
+            if (sl.Contains("Player", StringComparison.OrdinalIgnoreCase)) score += 50;
+            if (sl.Contains("UI", StringComparison.OrdinalIgnoreCase)) score -= 200;
 
             var nm = r.name ?? string.Empty;
 
-            if (nm.IndexOf("Body", StringComparison.OrdinalIgnoreCase) >= 0) score += 40;
-            if (nm.IndexOf("Sprite", StringComparison.OrdinalIgnoreCase) >= 0) score += 20;
-            if (nm.IndexOf("Name", StringComparison.OrdinalIgnoreCase) >= 0) score -= 100;
+            if (nm.Contains("Body", StringComparison.OrdinalIgnoreCase)) score += 40;
+            if (nm.Contains("Sprite", StringComparison.OrdinalIgnoreCase)) score += 20;
+            if (nm.Contains("Name", StringComparison.OrdinalIgnoreCase)) score -= 100;
 
             score += Mathf.Clamp(r.sortingOrder, -50, 50);
 

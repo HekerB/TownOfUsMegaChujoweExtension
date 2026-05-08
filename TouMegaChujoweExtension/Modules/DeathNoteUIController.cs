@@ -9,17 +9,17 @@ namespace TouMegaChujoweExtension.Modules;
 [RegisterInIl2Cpp]
 public class DeathNoteUIController : MonoBehaviour
 {
-    public static DeathNoteUIController Instance;
-    private static DeathNoteModifier _activeModifier;
+    public static DeathNoteUIController? Instance;
+    private static DeathNoteModifier? _activeModifier;
     private static string _currentInput = "";
 
     private float _statusTimer;
     private bool _movableWasCached;
     private bool _cachedMovable;
 
-    private GameObject _background;
-    private TMPro.TextMeshPro _inputText;
-    private TMPro.TextMeshPro _statusText;
+    private GameObject _background = null!;
+    private TMPro.TextMeshPro _inputText = null!;
+    private TMPro.TextMeshPro _statusText = null!;
 
     public DeathNoteUIController(IntPtr ptr) : base(ptr)
     {

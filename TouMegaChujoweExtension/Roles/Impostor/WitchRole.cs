@@ -75,7 +75,6 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
     {
         if (witch.Data.Role is not WitchRole)
         {
-            // ("RpcWitchSpell - Invalid witch");
             return;
         }
 
@@ -209,7 +208,7 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         {
 
             var sp = newlySpellboundPlayers[0];
-            if (sp?.Player?.Data == null) return;
+            if (sp == null || sp.Player == null || sp.Player.Data == null) return;
             var remainingInt = Mathf.RoundToInt(sp.MeetingsRemaining);
             var baseMessage = TouLocale.GetParsed("ExtensionWitchSpellNotification",
                 $"&lt;player&gt; has been cursed! They have &lt;meetings&gt; meeting(s) left. Vote out or kill the Witch to save them!");

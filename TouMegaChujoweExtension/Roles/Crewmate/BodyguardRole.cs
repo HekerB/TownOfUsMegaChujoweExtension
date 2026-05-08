@@ -78,7 +78,6 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
         {
             if (_backlashReady && !value)
             {
-                // ($"[BG-Role] BacklashReady CLEARED! Caller:\n{System.Environment.StackTrace}");
             }
             _backlashReady = value;
         }
@@ -100,7 +99,6 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (Guarded != null && Guarded.HasDied())
         {
-            // ("[BG-Role] Guarded player died - calling Clear()");
             Clear();
         }
 
@@ -109,7 +107,6 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
             BacklashTimer -= Time.fixedDeltaTime;
             if (BacklashTimer <= 0f)
             {
-                // ("[BG-Role] BacklashTimer expired");
                 BacklashReady = false;
                 LastAttacker = null;
                 MarkedAttackerDot = false;
@@ -130,7 +127,6 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
                 if (Player.AmOwner && !Player.HasDied())
                 {
-                    // ("[BG-Role] Kill mode expired - bodyguard dies");
                     Player.RpcSpecialMurder(Player,
                         createDeadBody: true,
                         teleportMurderer: false,
@@ -184,7 +180,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
     public void Clear()
     {
-        // ("[BG-Role] Clear() called");
+
 
         RemoveBacklashArrow();
 
@@ -223,7 +219,6 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
     public void OnGuardedAttacked(PlayerControl attacker)
     {
-        // ($"[BG-Role] OnGuardedAttacked by {attacker?.Data?.PlayerName}");
         LastAttacker = attacker;
         BacklashReady = true;
         BacklashTimer = OptionGroupSingleton<BodyguardOptions>.Instance.BacklashWindow;
@@ -246,7 +241,6 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
     public void ActivateKillMode()
     {
-        // ("[BG-Role] ActivateKillMode()");
         BacklashReady = false;
         KillModeActive = true;
         KillModeTimer = OptionGroupSingleton<BodyguardOptions>.Instance.KillWindow;
@@ -290,7 +284,6 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         if (bodyguard.Data.Role is not BodyguardRole role)
         {
-            // ("RpcBodyguardGuard - Invalid bodyguard");
             return;
         }
 
@@ -302,7 +295,6 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         if (bodyguard.Data.Role is not BodyguardRole role)
         {
-            // ("RpcBodyguardClearGuard - Invalid bodyguard");
             return;
         }
 
@@ -331,7 +323,6 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         if (bodyguard.Data.Role is not BodyguardRole role)
         {
-            // ("RpcBodyguardBacklash - Invalid bodyguard");
             return;
         }
 
@@ -343,13 +334,11 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         if (bodyguard.Data.Role is not BodyguardRole role)
         {
-            // ("RpcBodyguardKill - Invalid bodyguard");
             return;
         }
 
         if (!role.KillModeActive)
         {
-            // ("[BG-Role] RpcBodyguardKill called but KillModeActive=false, ignoring");
             return;
         }
 
@@ -374,7 +363,6 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (OptionGroupSingleton<BodyguardOptions>.Instance.DiesAfterKill && !bodyguard.HasDied())
         {
-            // Bodyguard sacrifice is absolute - no shield (Warden, Medic, etc.) can prevent it
             bodyguard.RpcSpecialMurder(bodyguard,
                 isIndirect: true,
                 ignoreShield: true,

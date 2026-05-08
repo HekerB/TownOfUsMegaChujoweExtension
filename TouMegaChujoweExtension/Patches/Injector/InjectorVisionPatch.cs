@@ -58,7 +58,7 @@ public static class InjectorVisionPatch
             }
         }
 
-        if (visionFactor != 1f)
+        if (!Mathf.Approximately(visionFactor, 1f))
         {
             __result *= visionFactor;
         }

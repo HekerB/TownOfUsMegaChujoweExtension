@@ -60,9 +60,9 @@ public static class TouExtensionFonts
             // // BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogInfo("Chewy font loaded successfully");
             return tmpFont;
         }
-        catch (System.Exception ex)
+        catch (System.Exception)
         {
-            // // BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogError($"Failed to load Chewy font: {ex}");
+            // // BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogError($"Failed to load Chewy font");
             return null;
         }
     }

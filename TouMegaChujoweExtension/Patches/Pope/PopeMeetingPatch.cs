@@ -32,13 +32,13 @@ public static class PopeMeetingPatch
 
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
         bool isGhost = local.Data.IsDead;
-        bool deadKnow = isGhost && genOpt.TheDeadKnow;
+
 
         foreach (var pva in __instance.playerStates)
         {
             if (pva?.NameText == null) continue;
             var target = MiscUtils.PlayerById(pva.TargetPlayerId);
-            if (target == null) continue;
+
 
             // Symbols are now handled by UpdateRoleNameText calling UpdateTargetSymbols/UpdateProtectionSymbols
             // every frame. We don't need to append them here, which was causing flickering due to the 0.2s timer

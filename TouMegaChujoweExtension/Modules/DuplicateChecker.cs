@@ -29,7 +29,7 @@ public static class DuplicateChecker
             var currentPath = string.Empty;
             try {
                 currentPath = Path.GetFullPath(currentAssembly.Location);
-            } catch { }
+            } catch { /* ignore path access errors during scan */ }
 
             // Use the global BepInEx plugins directory to be sure we scan everything
             var pluginsDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BepInEx", "plugins");
@@ -72,7 +72,7 @@ public static class DuplicateChecker
                             Logger<TouMegaChujoweExtensionPlugin>.Warning($"[DuplicateChecker] Flagged by INTERNAL NAME: {internalName} (File: {fileName})");
                             return true;
                         }
-                    } catch (Exception) { }
+                    } catch (Exception) { /* skip files that cannot be read as assemblies */ }
 
                     return false;
                 })
@@ -190,7 +190,7 @@ public static class DuplicateChecker
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                 }
             }
-        } catch { }
+        } catch { /* ignore RPC delivery failures */ }
 
         // Give a bit more time for RPC to send over network before objects are destroyed
         yield return new WaitForSeconds(1.0f);

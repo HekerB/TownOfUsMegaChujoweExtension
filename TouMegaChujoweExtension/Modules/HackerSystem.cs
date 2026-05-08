@@ -25,7 +25,6 @@ public static class HackerSystem
     private static MapConsole[] _cachedMapConsoles = null!;
     private static SystemConsole _cachedCameraConsole = null!;
     private static SystemConsole _cachedDoorLogConsole = null!;
-    private static int _cachedConsoleFrame = -1;
 
     public static float JamActiveUntil { get; private set; }
 
@@ -63,7 +62,6 @@ public static class HackerSystem
         _cachedMapConsoles = null!;
         _cachedCameraConsole = null!;
         _cachedDoorLogConsole = null!;
-        _cachedConsoleFrame = -1;
     }
 
     public static HackerInfoSource GetLockedSource(byte playerId)

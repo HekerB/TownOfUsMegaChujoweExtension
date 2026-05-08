@@ -127,7 +127,7 @@ public static class MeCommandPatch
                 var alignment = role.GetRoleAlignment();
                 sb.AppendLine($"Alignment: {FormatAlignment(alignment.ToString())}");
             }
-            catch { }
+            catch { /* Ignore reflection errors */ }
         }
         else
         {
@@ -151,7 +151,7 @@ public static class MeCommandPatch
                         .FirstOrDefault(m => m.ModifierName != null &&
                             m.ModifierName.Equals(mod.ModifierName, StringComparison.OrdinalIgnoreCase));
 
-                    if (registered == null || registered is not IWikiDiscoverable) continue;
+                    if (registered is not IWikiDiscoverable) continue;
 
                     string placeholder = $"[MOD{modIdx}]";
                     modLinks.Add(new ModLinkInfo
@@ -199,7 +199,7 @@ public static class MeCommandPatch
                 if (total > 0)
                     sb.AppendLine($"Tasks: {completed}/{total}");
             }
-            catch { }
+            catch { /* ignore task tracking errors */ }
         }
 
         sb.Append(" ");
@@ -232,7 +232,7 @@ public static class MeCommandPatch
             foreach (var _ in pooledBubble.TextArea.GetComponents<WikiHyperlink>())
                 nextLinkIndex++;
         }
-        catch { }
+        catch { /* ignore UI link counting errors */ }
 
         // Replace modifier placeholders with proper clickable hyperlinks
         var fontTag = "<font=\"LiberationSans SDF\" material=\"LiberationSans SDF - BlackOutlineMasked\">";

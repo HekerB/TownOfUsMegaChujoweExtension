@@ -106,13 +106,13 @@ public static class WraithLanternSystem
             int score = 0;
             if (r.maskInteraction != SpriteMaskInteraction.None) score += 100;
             var sl = r.sortingLayerName ?? string.Empty;
-            if (sl.IndexOf("Player", StringComparison.OrdinalIgnoreCase) >= 0) score += 50;
-            if (sl.IndexOf("UI", StringComparison.OrdinalIgnoreCase) >= 0) score -= 200;
+            if (sl.Contains("Player", StringComparison.OrdinalIgnoreCase)) score += 50;
+            if (sl.Contains("UI", StringComparison.OrdinalIgnoreCase)) score -= 200;
 
             var nm = r.name ?? string.Empty;
-            if (nm.IndexOf("Body", StringComparison.OrdinalIgnoreCase) >= 0) score += 40;
-            if (nm.IndexOf("Sprite", StringComparison.OrdinalIgnoreCase) >= 0) score += 20;
-            if (nm.IndexOf("Name", StringComparison.OrdinalIgnoreCase) >= 0) score -= 100;
+            if (nm.Contains("Body", StringComparison.OrdinalIgnoreCase)) score += 40;
+            if (nm.Contains("Sprite", StringComparison.OrdinalIgnoreCase)) score += 20;
+            if (nm.Contains("Name", StringComparison.OrdinalIgnoreCase)) score -= 100;
 
             score += Mathf.Clamp(r.sortingOrder, -50, 50);
 
@@ -187,7 +187,7 @@ public static class WraithLanternSystem
             sr.sprite = TouExtensionAssets.LanternSprite.LoadAsset();
             sr.color = new Color(1f, 1f, 1f, 0.65f);
             
-            ConfigureVisionMask(go, sr, out var z);
+            ConfigureVisionMask(go, sr, out _);
             
             go.transform.localScale = new Vector3(LanternScale, LanternScale, 1f);
             ActiveVisuals[wraithId] = go;

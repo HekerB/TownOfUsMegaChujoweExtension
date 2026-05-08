@@ -52,8 +52,7 @@ public static class DraftNetworking
         DraftSystem.IsRunning = true;
 
         var myId = PlayerControl.LocalPlayer?.PlayerId ?? 255;
-        var isImp = impostorIds.Contains(myId);
-        // Info($"[DraftNetworking] Draft started. I am {(isImp ? "IMPOSTOR" : "CREWMATE")}");
+        // Info($"[DraftNetworking] Draft started. I am {(impostorIds.Contains(myId) ? "IMPOSTOR" : "CREWMATE")}");
 
         DraftLobbyPatch.ShowSystemMessage("<color=#FF0000>Draft Mode</color> has Started. Be Ready to Pick Your Role!");
     }
@@ -108,8 +107,7 @@ public static class DraftNetworking
         DraftSystem.RegisterPick(playerId, roleId);
 
         var role = RoleManager.Instance.GetRole((RoleTypes)roleId);
-        var roleName = role?.GetRoleName() ?? $"Unknown({roleId})";
-        // Info($"[DraftNetworking] Player {playerId} picked {roleName}");
+        // Info($"[DraftNetworking] Player {playerId} picked {role?.GetRoleName() ?? $"Unknown({roleId})"}");
 
         DraftLobbyPatch.OnPickReceived(playerId, roleId);
     }

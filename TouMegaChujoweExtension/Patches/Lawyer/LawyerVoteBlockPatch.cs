@@ -13,7 +13,7 @@ namespace TouMegaChujoweExtension.Patches.Lawyer;
 [HarmonyPatch(typeof(PlayerVoteArea))]
 public static class LawyerVoteBlockPatch
 {
-    // // private static readonly ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("LawyerEvents");
+
 
     private static readonly Dictionary<byte, byte> CurrentVotes = new();
 
@@ -51,18 +51,14 @@ public static class LawyerVoteBlockPatch
         var targetPlayerId = __instance.TargetPlayerId;
 
         var isObjected = LawyerEvents.IsObjectedVoter(localPlayerId);
-        // Logger.LogWarning($"[Lawyer] IsObjectedVoter({localPlayerId}): {isObjected}");
-        // Logger.LogWarning($"[Lawyer] CurrentVotes count: {CurrentVotes.Count}, ObjectedVoterOriginalVotes count: {LawyerEvents.ObjectedVoterOriginalVotes.Count}");
         
         if (isObjected)
         {
             if (LawyerEvents.TryGetOriginalVote(localPlayerId, out var originalVote))
             {
-                // Logger.LogWarning($"[Lawyer] Objected player {localPlayerId} - Original vote: {originalVote}, Current target: {targetPlayerId}, Match: {originalVote == targetPlayerId}");
                 
                 if (originalVote == targetPlayerId)
                 {
-                    // Logger.LogWarning($"[Lawyer] BLOCKING VOTE - Same person!");
                     var msg = TouLocale.Get("ExtensionLawyerCannotVoteSamePerson");
 
                     var notif = Helpers.CreateAndShowNotification(
@@ -77,12 +73,10 @@ public static class LawyerVoteBlockPatch
             }
             else
             {
-                // Logger.LogWarning($"[Lawyer] IsObjectedVoter returned true but TryGetOriginalVote failed for player {localPlayerId}");
             }
         }
 
         CurrentVotes[localPlayerId] = targetPlayerId;
-        // Logger.LogWarning($"[Lawyer] Tracking vote - Player {localPlayerId} voting for {targetPlayerId}");
 
         return true;
     }

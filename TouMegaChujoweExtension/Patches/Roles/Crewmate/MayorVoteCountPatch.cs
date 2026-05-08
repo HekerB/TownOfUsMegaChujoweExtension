@@ -37,10 +37,10 @@ public static class MayorVoteCountPatch
             foreach (var name in names)
             {
                 var field = AccessTools.Field(typeof(MayorRole), name);
-                if (field != null) try { field.SetValue(__instance, count); } catch { }
+                if (field != null) try { field.SetValue(__instance, count); } catch { /* ignore reflection field errors */ }
                 
                 var prop = AccessTools.Property(typeof(MayorRole), name);
-                if (prop != null && prop.CanWrite) try { prop.SetValue(__instance, count); } catch { }
+                if (prop != null && prop.CanWrite) try { prop.SetValue(__instance, count); } catch { /* ignore reflection property errors */ }
             }
         }
     }
@@ -114,7 +114,7 @@ public static class MayorVoteCountPatch
             }
         }
         // --- PRESIDENT UI ---
-        else if (PlayerControl.LocalPlayer.Data.Role is PresidentRole president)
+        else if (PlayerControl.LocalPlayer.Data.Role is PresidentRole)
         {
             var voteData = PlayerControl.LocalPlayer.GetVoteData();
             if (voteData == null) return;

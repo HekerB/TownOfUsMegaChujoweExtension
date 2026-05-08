@@ -172,16 +172,16 @@ internal sealed class ToBecomeVampireHunterModifier : ExcludedGameModifier
                 if (m == null) continue;
 
                 var name = m.GetType().Name ?? string.Empty;
-                if (name.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0)
+                if (name.Contains(token, StringComparison.OrdinalIgnoreCase))
                     return true;
 
                 var mnProp = m.GetType().GetProperty("ModifierName", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                 var mn = mnProp?.GetValue(m)?.ToString() ?? string.Empty;
-                if (mn.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0)
+                if (mn.Contains(token, StringComparison.OrdinalIgnoreCase))
                     return true;
             }
         }
-        catch { }
+        catch { /* ignore reflection errors during modifier lookup */ }
 
         return false;
     }

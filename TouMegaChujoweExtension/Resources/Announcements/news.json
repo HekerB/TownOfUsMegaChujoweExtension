@@ -320,30 +320,19 @@
         "\n\n\r<size=110%><b>★ Anti-Cheat & Stability ★</b></size>",
         "\n- <b>Duplicate Guard Alerts</b> - fixed the system notification for duplicated mod files. The Host now reliably receives a styled black 'System' bubble without UI errors.",
         "\n- <b>RPC & Networking Fixes</b> - handled edge cases for Host-side duplicate mod detection and rapid player disconnections.",
-        "\n- <b>Localization</b> - updated Polish and English strings for all new victory scenarios, notifications, and end-game statuses."
-      ]
-    },
-     {
-      "Date": "2026-05-08T14:30:00Z",
-      "Number": "200010",
-      "ShortTitle": "TOUMCE v1.10.9",
-      "SubTitle": "Stability patch",
-      "Title": "TOU Mega Chujowe Extension v1.0.9",
-      "Text": [
-        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
-        "\n\n\r<b>Version 1.0.9 - Bounty Hunter & Victory UI Fixes</b>",
-        "\n\n\r<size=110%><b>★ Role Fixes & Reworks ★</b></size>",
-        "\n- <b>Bounty Hunter</b> - added <b>Weighted Targets</b> (10% higher bias towards non-crewmate roles). Fixed win-condition in <b>Win With Winners</b> mode (immediate death/spectator victory).",
-        "\n- <b>Shifter / Imitator</b> - FIXED a critical bug where players who had their role stolen by a Shifter retained their previous role. Ensured proper role cleanup and transition sync.",
-        "\n- <b>Win Notifications</b> - added localized chat alerts for all players when a Bounty Hunter achieves victory.",
-        "\n\n\r<size=110%><b>★ Universal Victory UI Fix ★</b></size>",
-        "\n- <b>Ejected Bug FIXED</b> - resolved a widespread bug where custom neutral winners (Pelican, BH, Vulture, etc.) were incorrectly labeled as <b>\"Ejected\"</b> on the end-game screen.",
-        "\n- <b>Summary Integration</b> - added <b>\"Victorious\"</b> labels to the end-game summary sidebar records for all extension winners.",
-        "\n- <b>Themed Status Labels</b> - statuses above player heads now use the <b>role's specific team color</b> and preserve gold nickname colors for winners.",
-        "\n\n\r<size=110%><b>★ Anti-Cheat & Stability ★</b></size>",
-        "\n- <b>Duplicate Guard Alerts</b> - fixed the system notification for duplicated mod files. The Host now reliably receives a styled black 'System' bubble without UI errors.",
-        "\n- <b>RPC & Networking Fixes</b> - handled edge cases for Host-side duplicate mod detection and rapid player disconnections.",
-        "\n- <b>Localization</b> - updated Polish and English strings for all new victory scenarios, notifications, and end-game statuses."
+        "\n- <b>Localization</b> - updated Polish and English strings for all new victory scenarios, notifications, and end-game statuses.",
+        "\n\n\r<size=110%><b>★ Draft Mode Overhaul ★</b></size>",
+        "\n- <b>Global Neutral Limits</b> - Added global Min/Max limits for Neutral roles, providing better control over game balance.",
+        "\n- <b>Smart Distribution</b> - Implemented 70/30 probability bias for neutral roles and forced neutral selection when minimum game requirements are met.",
+        "\n- <b>Unified UI</b> - Streamlined lobby configuration for Draft Mode with a more intuitive layout.",
+        "\n\n\r<size=110%><b>★ Shield & Role Updates ★</b></size>",
+        "\n- <b>Shield Bypass</b> - <b>Plaguebearer (Plague)</b> now correctly bypasses all shields when performing an infect action.",
+        "\n- <b>Shield Consistency</b> - Unified shield logic to ensure Warden and Cleric interactions are correctly handled for all roles.",
+        "\n- <b>Chef Fixes</b> - Fixed Chef's \"Cook\" ability proximity targeting and stabilized role-switching with Imitator.",
+        "\n- <b>Jailor Fixes</b> - Resolved meeting UI stability issues and interaction bugs for the Jailor.",
+        "\n\n\r<size=110%><b>★ Stability & Security ★</b></size>",
+        "\n- <b>Duplicate Mod Guard</b> - Optimized duplicate detection to use Host-only RPCs and custom 'System' chat alerts, preventing crashes and UI clutter.",
+        "\n- <b>Meeting Stability</b> - Fixed various UI flickering and lag spikes during meeting transitions."
       ]
     }
   ]

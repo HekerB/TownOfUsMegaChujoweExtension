@@ -36,8 +36,7 @@ public static class PirateDuelMeetingPatch
     private static readonly Color PirateTargetColor = Color.yellow;
     private static readonly List<(TMP_Text Text, string OriginalText, Color OriginalColor)> _modifiedNames = new();
 
-    // // private static readonly BepInEx.Logging.ManualLogSource Log =
-        // // BepInEx.Logging.Logger.CreateLogSource("PirateDuel");
+
 
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
     [HarmonyPostfix]
@@ -160,9 +159,9 @@ public static class PirateDuelMeetingPatch
                 LoadSprites();
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // Log.LogError($"MeetingStart error: {ex}");
+            /* Error during meeting start duel initialization */
         }
     }
 
@@ -183,9 +182,9 @@ public static class PirateDuelMeetingPatch
             CreateDuelButton(__instance);
             _buttonCreated = true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // Log.LogError($"CreateDuelButton error: {ex}");
+            /* Error creating duel button */
             _buttonCreated = true;
         }
     }
@@ -247,7 +246,7 @@ public static class PirateDuelMeetingPatch
         catch
         {
             _sprites = null;
-            // Log.LogError("Failed to load duel sprites");
+            /* Failed to load duel sprites - duel will not be possible */
         }
     }
 
@@ -344,9 +343,9 @@ public static class PirateDuelMeetingPatch
         {
             PirateRole.RpcDuelChoice(PlayerControl.LocalPlayer, _piratePlayerId, _localChoice);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // Log.LogError($"RpcDuelChoice error: {ex}");
+            /* Error sending duel choice RPC */
         }
     }
 
@@ -373,9 +372,9 @@ public static class PirateDuelMeetingPatch
 
             ResolveDuel();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // Log.LogError($"VotingComplete error: {ex}");
+            /* Error during voting complete duel handling */
         }
     }
 
@@ -437,9 +436,9 @@ public static class PirateDuelMeetingPatch
                 spr: TouExtensionIcons.PirateRoleIcon.LoadAsset());
             notif?.AdjustNotification();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // Log.LogError($"Notification error: {ex}");
+            /* Failed to show duel notification */
         }
     }
 
@@ -455,9 +454,9 @@ public static class PirateDuelMeetingPatch
                 spr: TouExtensionIcons.PirateRoleIcon.LoadAsset());
             notif?.AdjustNotification();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // Log.LogError($"Jailed notification error: {ex}");
+            /* Failed to show jailed notification */
         }
     }
 
@@ -473,9 +472,9 @@ public static class PirateDuelMeetingPatch
                 spr: TouExtensionIcons.PirateRoleIcon.LoadAsset());
             notif?.AdjustNotification();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // Log.LogError($"Target jailed notification error: {ex}");
+            /* Failed to show target jailed notification */
         }
     }
 

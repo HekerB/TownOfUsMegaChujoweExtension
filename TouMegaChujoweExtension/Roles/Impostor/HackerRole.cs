@@ -38,10 +38,11 @@ public sealed class HackerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
 
         try
         {
-            return player.Data.Role.Role == (RoleTypes)RoleId.Get<HackerRole>();
+            return player.Data.Role != null && player.Data.Role.Role == (RoleTypes)RoleId.Get<HackerRole>();
         }
         catch
         {
+            /* Error during role type verification - safe to return false */
             return false;
         }
     }

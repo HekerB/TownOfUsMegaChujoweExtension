@@ -26,7 +26,7 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
     public override bool IsComplete => _isComplete;
     private bool _isComplete;
     private bool _triggeredJudgement;
-    private PopeJudgementSystem _sabotage;
+    private PopeJudgementSystem _sabotage = null!;
     private Coroutine? _flash;
 
     public override bool ValidConsole(Console console) => false;
@@ -72,8 +72,7 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
         var playSound = false;
 
         // Golden color for Pope
-        var goldFlashHigh = new Color(1f, 0.84f, 0f, 0.34f);   // bright gold
-        var goldFlashLow = new Color(1f, 0.84f, 0f, 0.18f);    // dim gold
+
         var goldBg = new Color(1f, 0.84f, 0f, 0.37254903f);
 
         while (_sabotage.IsActive)

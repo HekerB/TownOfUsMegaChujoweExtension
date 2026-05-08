@@ -267,10 +267,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public bool WinConditionMet()
     {
-
-
-
-
+        /* Win condition depends on Client's survival and AboutToWin status */
         if (Player.HasDied() || !AboutToWin)
         {
             return false;
@@ -572,9 +569,9 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // ($"[Lawyer] Failed to update chat avatar: {ex.Message}");
+            /* Failed to update chat avatar - non-critical UI error */
         }
 
         var meeting = MeetingHud.Instance;
@@ -590,16 +587,13 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             try
             {
                 settingEnabled = lawyerOptions.ObjectionPreventsSameVote;
-                // ($"[Lawyer] RpcObjectVotes - Successfully read option value: {settingEnabled}");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // ($"[Lawyer] RpcObjectVotes - Failed to read option: {ex.Message}");
             }
         }
         else
         {
-            // ($"[Lawyer] RpcObjectVotes - Options instance is null!");
         }
 
         foreach (var voteArea in meeting.playerStates)
@@ -613,7 +607,6 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                 }
 
                 var originalVote = voteArea.VotedFor;
-                // ($"[Lawyer] Processing vote area - Voter: {voteArea.TargetPlayerId}, VotedFor: {originalVote}, IsLocalPlayer: {voter.AmOwner}");
                 voteArea.UnsetVote();
 
                 var voteData = voter.GetVoteData();
@@ -637,25 +630,18 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                         if (trackedVote.HasValue && trackedVote.Value != 255)
                         {
                             voteToStore = trackedVote.Value;
-                            // ($"[Lawyer] Objection - Local player {voteArea.TargetPlayerId} - Using tracked vote: {voteToStore}");
                         }
                         else
                         {
-                            // ($"[Lawyer] Objection - Local player {voteArea.TargetPlayerId} - Tracked vote not available, using originalVote: {originalVote}");
                         }
                     }
                     
                     if (voteToStore != 255)
                     {
-                        // ($"[Lawyer] Objection - Voter: {voteArea.TargetPlayerId}, Storing vote: {voteToStore}");
-                        
                         LawyerEvents.AddObjectedVoter(voteArea.TargetPlayerId, voteToStore);
-                        
-                        // ($"[Lawyer] After adding - Dictionary count: {LawyerEvents.ObjectedVoterOriginalVotes.Count}");
                     }
                     else
                     {
-                        // ($"[Lawyer] Objection - Voter: {voteArea.TargetPlayerId} has invalid vote (255), skipping");
                     }
                 }
 
@@ -723,7 +709,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             }
             catch
             {
-                // ignore
+                /* ignore win-check failure for client role */
             }
 
             try
@@ -735,7 +721,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             }
             catch
             {
-                // ignore
+                /* ignore win-check failure for client modifiers */
             }
         }
 
@@ -814,7 +800,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     {
         if (player.Data.Role is not LawyerRole)
         {
-            // ("RpcSetLawyerClient - Invalid lawyer");
+
             return;
         }
 

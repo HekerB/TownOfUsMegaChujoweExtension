@@ -92,7 +92,7 @@ public static class PelicanSystem
             if (player != null && player.TryGetModifier<FootstepsModifier>(out var footsteps))
                 player.RemoveModifier(footsteps);
         }
-        catch { }
+        catch { /* ignore modifier removal errors */ }
     }
 
     private static void RestoreFootstepsIfNeeded(PlayerControl player)
@@ -106,7 +106,7 @@ public static class PelicanSystem
             if (!player.HasModifier<FootstepsModifier>())
                 player.AddModifier<FootstepsModifier>();
         }
-        catch { }
+        catch { /* ignore modifier restoration errors */ }
     }
 
     // ==================== PRE-WIN DIGEST ====================
@@ -131,10 +131,7 @@ public static class PelicanSystem
 
         if (nonSwallowedAliveOthers > 0) return false;
 
-        Logger<TouMegaChujoweExtensionPlugin>.Info($"[PelicanSystem] Win condition met (others: {nonSwallowedAliveOthers}), triggering digest for win!");
-        
-        // TEMPORARILY DISABLED to test if this is the cause of instant ghosts
-        // PelicanRole.RpcPelicanDigest(pelican);
+        // Win condition met, triggering digest for win!
         return false;
     }
 
@@ -153,6 +150,7 @@ public static class PelicanSystem
         switch (shieldType)
         {
             case ShieldType.FirstDead:
+                /* No special handling needed for first dead shield beyond flash */
                 break;
 
             case ShieldType.Bodyguard:
@@ -160,6 +158,7 @@ public static class PelicanSystem
                 break;
 
             case ShieldType.Child:
+                /* Child shield is handled by flash and blocking swallow */
                 break;
 
             case ShieldType.Medic:
@@ -340,7 +339,7 @@ public static class PelicanSystem
                 bgRole.MarkedAttackerDot = false;
             }
         }
-        catch { }
+        catch { /* ignore role-specific state cleanup errors */ }
     }
 
     private static void EndExternalControl(PlayerControl victim)
@@ -354,7 +353,7 @@ public static class PelicanSystem
                     TownOfUs.Roles.Impostor.ParasiteRole.RpcParasiteEndControl(parasite, victim);
             }
         }
-        catch { }
+        catch { /* ignore Parasite/Puppeteer state errors */ }
 
         try
         {
@@ -365,21 +364,21 @@ public static class PelicanSystem
                     TownOfUs.Roles.Impostor.PuppeteerRole.RpcPuppeteerEndControl(puppeteer, victim);
             }
         }
-        catch { }
+        catch { /* ignore Puppeteer state errors */ }
 
         try
         {
             if (victim.Data?.Role is TownOfUs.Roles.Impostor.ParasiteRole parasiteRole && parasiteRole.Controlled != null)
                 TownOfUs.Roles.Impostor.ParasiteRole.RpcParasiteEndControl(victim, parasiteRole.Controlled);
         }
-        catch { }
+        catch { /* ignore Parasite role state errors */ }
 
         try
         {
             if (victim.Data?.Role is TownOfUs.Roles.Impostor.PuppeteerRole puppeteerRole && puppeteerRole.Controlled != null)
                 TownOfUs.Roles.Impostor.PuppeteerRole.RpcPuppeteerEndControl(victim, puppeteerRole.Controlled);
         }
-        catch { }
+        catch { /* ignore Puppeteer role state errors */ }
     }
 
     public static void DigestAll(byte pelicanId)
@@ -412,7 +411,7 @@ public static class PelicanSystem
 
                 if (!victim.HasModifier<DeathHandlerModifier>())
                 {
-                    try { victim.AddModifier<DeathHandlerModifier>(); } catch { }
+                    try { victim.AddModifier<DeathHandlerModifier>(); } catch { /* ignore death handler addition failure */ }
                 }
 
                 try
@@ -430,7 +429,7 @@ public static class PelicanSystem
                         lockInfo: DeathHandlerOverride.SetTrue
                     );
                 }
-                catch { }
+                catch { /* ignore death handler update errors */ }
             }
 
             if (victim != null)
@@ -485,7 +484,7 @@ public static class PelicanSystem
                 HudManager.Instance.SetHudActive(false);
                 HudManager.Instance.SetHudActive(true);
             }
-            catch { }
+            catch { /* ignore HUD refresh errors */ }
         }
     }
 
@@ -549,7 +548,7 @@ public static class PelicanSystem
                     if (victim.TryGetModifier<DeathHandlerModifier>(out var dhMod))
                         victim.RemoveModifier(dhMod);
                 }
-                catch { }
+                catch { /* ignore death handler removal errors */ }
 
                 if (!victim.HasDied())
                 {
@@ -621,7 +620,7 @@ public static class PelicanSystem
                 if (IsPositionSafe(spawn, spawn)) return spawn;
             }
         }
-        catch { }
+        catch { /* ignore ship status center errors */ }
 
         return targetPosition;
     }
@@ -643,7 +642,7 @@ public static class PelicanSystem
 
             return true;
         }
-        catch { return true; }
+        catch { /* fallback to safe default on error */ return true; }
     }
 
     private static void RemoveSwallowedModifier(PlayerControl player)
@@ -720,13 +719,13 @@ public static class PelicanSystem
             if (notif != null)
             {
                 _swallowedNotificationObject = notif.gameObject;
-                try { notif.AdjustNotification(); } catch { }
+                try { notif.AdjustNotification(); } catch { /* ignore adjustment errors */ }
                 try
                 {
                     var canvasGroup = notif.GetComponent<CanvasGroup>();
                     if (canvasGroup != null) canvasGroup.alpha = 1f;
                 }
-                catch { }
+                catch { /* ignore alpha setting errors */ }
             }
         }
         catch (System.Exception ex)

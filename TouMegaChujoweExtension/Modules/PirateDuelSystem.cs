@@ -96,9 +96,9 @@ public static class PirateDuelSystem
                 Coroutines.Start(coroutine);
             }
         }
-        catch (System.Exception ex)
+        catch (System.Exception)
         {
-            // Log.LogError($"Failed to invoke CoAnimateDeath: {ex}");
+            // Log.LogError($"Failed to invoke CoAnimateDeath");
             voteArea.AmDead = true;
             voteArea.Overlay.gameObject.SetActive(true);
             voteArea.XMark.gameObject.SetActive(true);

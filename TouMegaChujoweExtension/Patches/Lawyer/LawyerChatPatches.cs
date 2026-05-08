@@ -73,9 +73,9 @@ public static class LawyerChatPatches
         {
             var chats = TeamChatPatches.TeamChatManager.GetAllAvailableChats();
             var hasForcedChat = chats.Any(c => c.IsForced);
-            var currentChat = TeamChatPatches.CurrentChatIndex >= 0 && TeamChatPatches.CurrentChatIndex < chats.Count
-? chats[TeamChatPatches.CurrentChatIndex]
-: null;
+            var currentChat = (TeamChatPatches.CurrentChatIndex >= 0 && TeamChatPatches.CurrentChatIndex < chats.Count)
+                ? chats[TeamChatPatches.CurrentChatIndex]
+                : null;
             if ((!TeamChatPatches.TeamChatActive || currentChat == null || currentChat.Priority != 50) && !hasForcedChat)
             {
                 TeamChatPatches.TeamChatManager.MarkChatAsUnread(50);

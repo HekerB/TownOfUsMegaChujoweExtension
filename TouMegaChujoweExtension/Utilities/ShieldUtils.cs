@@ -21,6 +21,8 @@ using System.Collections;
 using MiraAPI.Hud;
 using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Buttons;
+using TownOfUs.Options.Roles.Crewmate;
+using TownOfUs;
 
 namespace TouMegaChujoweExtension.Utilities;
 
@@ -37,7 +39,8 @@ public enum ShieldType
     Mercenary,
     Oracle,
     DeadlyQuota,
-    Cleric
+    Cleric,
+    Monarch
 }
 
 public static class ShieldUtils
@@ -64,6 +67,11 @@ public static class ShieldUtils
             if (hasShieldOpt && underQuota) return ShieldType.DeadlyQuota;
         }
         if (player.HasModifier<ClericBarrierModifier>()) return ShieldType.Cleric;
+        
+        if (player.HasModifier<OracleBlessedModifier>()) return ShieldType.Oracle;
+        
+        if (player.HasModifier<KnightedModifier>() && 
+            OptionGroupSingleton<MonarchOptions>.Instance.CrewKnightsGrantKillImmunity) return ShieldType.Monarch;
 
         return ShieldType.None;
     }
@@ -81,11 +89,12 @@ public static class ShieldUtils
             ShieldType.Mercenary => TouExtensionColors.ShieldFlashes.Mercenary,
             ShieldType.Oracle => TouExtensionColors.ShieldFlashes.Oracle,
             ShieldType.Cleric => TouExtensionColors.ShieldFlashes.Cleric,
+            ShieldType.Monarch => TownOfUsColors.Monarch,
             _ => Color.clear
         };
     }
 
-    private static SpriteRenderer _localFlashRenderer;
+    private static SpriteRenderer _localFlashRenderer = null!;
 
     public static float LastShieldTriggerTime = 0f;
     public static byte LastShieldTargetId = 255;
@@ -252,36 +261,42 @@ public static class ShieldUtils
         return !HandleButtonShieldClick(__instance, target);
     }
 
-    public static bool IsHarmfulInteraction(object button, PlayerControl? target)
+    public static bool IsHarmfulInteraction(object? button, PlayerControl? target)
     {
         if (button == null || target == null) return false;
         
+        var buttonType = button.GetType();
+        var buttonName = buttonType.Name;
+        
+        // Whitelist non-lethal interactions that should bypass shields
+        if (buttonName.Contains("Infect") || buttonName.Contains("Douse")) return false;
+
         // 1. Explicitly harmful button types
         if (button is IKillButton) return true;
         
-        var buttonType = button.GetType();
         while (buttonType != null)
         {
             if (buttonType.Name.StartsWith("TownOfUsKillRoleButton")) return true;
             buttonType = buttonType.BaseType;
         }
 
-        // 2. Local player role alignment
+        // 2. Specific role/alignment checks (moved to end as fallback)
         var localPlayer = PlayerControl.LocalPlayer;
         if (localPlayer == null || localPlayer.Data == null) return false;
         
         var role = localPlayer.Data.Role;
         if (role == null) return false;
 
-        if (localPlayer.IsImpostor() || localPlayer.Is(RoleAlignment.NeutralKilling)) return true;
-        
-        // Special extension roles that are harmful but might not be NK alignment (depending on config)
+        // Special extension roles that are harmful but might not be NK alignment
         if (role is PelicanRole or ShifterRole) return true;
         
         // Crewmate roles that can kill
         if (localPlayer.IsRole<SheriffRole>() || 
             localPlayer.IsRole<OfficerRole>() || 
             localPlayer.IsRole<HunterRole>()) return true;
+            
+        // Final alignment check
+        if (localPlayer.IsImpostor() || localPlayer.Is(RoleAlignment.NeutralKilling)) return true;
 
         return false;
     }
