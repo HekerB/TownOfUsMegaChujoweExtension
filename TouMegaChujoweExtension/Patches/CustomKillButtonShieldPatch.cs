@@ -27,7 +27,10 @@ public static class CustomKillButtonShieldPatch
     public static bool TownOfUsClickHandlerPrefix(TownOfUsButton __instance)
     {
         if (__instance == null) return true;
-        return !ShieldUtils.HandleButtonShieldClick(__instance, GetTarget(__instance));
+        var target = GetTarget(__instance);
+        if (!ShieldUtils.IsHarmfulInteraction(__instance, target)) return true;
+        
+        return !ShieldUtils.HandleButtonShieldClick(__instance, target);
     }
 
     [HarmonyPatch(typeof(TownOfUsTargetButton<PlayerControl>), nameof(TownOfUsTargetButton<PlayerControl>.ClickHandler))]
@@ -35,6 +38,8 @@ public static class CustomKillButtonShieldPatch
     public static bool TargetClickHandlerPrefix(TownOfUsTargetButton<PlayerControl> __instance)
     {
         if (__instance == null) return true;
+        if (!ShieldUtils.IsHarmfulInteraction(__instance, __instance.Target)) return true;
+        
         return !ShieldUtils.HandleButtonShieldClick(__instance, __instance.Target);
     }
 
@@ -49,18 +54,26 @@ public static class CustomKillButtonShieldPatch
         var target = targetProp?.GetValue(__instance) as PlayerControl;
 
         if (target == null) return true;
+        if (!ShieldUtils.IsHarmfulInteraction(__instance, target)) return true;
 
         return !ShieldUtils.HandleButtonShieldClick(__instance, target);
     }
 
-    private static PlayerControl GetTarget(TownOfUsButton button)
+    private static PlayerControl? GetTarget(TownOfUsButton button)
     {
+        if (button == null) return null;
         if (button is IAftermathablePlayerButton playerButton) return playerButton.Target;
         
-        var bindingFlags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
-        return (button.GetType().GetProperty("Target", bindingFlags)?.GetValue(button) ?? 
-                button.GetType().GetField("Target", bindingFlags)?.GetValue(button) ??
-                button.GetType().GetField("_target", bindingFlags)?.GetValue(button)) as PlayerControl;
+        try 
+        {
+            var bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            var targetObj = button.GetType().GetProperty("Target", bindingFlags)?.GetValue(button) ?? 
+                           button.GetType().GetField("Target", bindingFlags)?.GetValue(button) ??
+                           button.GetType().GetField("_target", bindingFlags)?.GetValue(button);
+            
+            return targetObj as PlayerControl;
+        }
+        catch { return null; }
     }
 
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]

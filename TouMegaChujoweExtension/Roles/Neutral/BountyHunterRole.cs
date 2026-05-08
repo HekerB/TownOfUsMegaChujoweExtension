@@ -72,10 +72,13 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         var stringB = ITownOfUsRole.SetNewTabText(this);
         var needed = (int)OptionGroupSingleton<BountyHunterOptions>.Instance.TargetsToKill.Value;
         var done = BountyHunterSystem.KillsDone;
-        stringB.AppendLine(TownOfUsPlugin.Culture, $"Targets Killed: {done} / {needed}");
+        
+        stringB.Append(TownOfUsPlugin.Culture, 
+            $"\n{TouLocale.GetParsed("ExtensionBHTabTargetsKilled", "Targets Killed: {0} / {1}").Replace("{0}", done.ToString()).Replace("{1}", needed.ToString())}");
+
         if (BountyHunterSystem.CurrentTarget != null && BountyHunterSystem.Hunting)
-            stringB.AppendLine(TownOfUsPlugin.Culture,
-                $"Current Target: {BountyHunterSystem.CurrentTarget.Data.PlayerName}");
+            stringB.Append(TownOfUsPlugin.Culture,
+                $"\n{TouLocale.GetParsed("ExtensionBHTabCurrentTarget", "Current Target: {0}").Replace("{0}", BountyHunterSystem.CurrentTarget.Data.PlayerName)}");
         return stringB;
     }
 

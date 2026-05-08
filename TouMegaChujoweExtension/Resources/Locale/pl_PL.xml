@@ -187,7 +187,11 @@
   <string name="ExtensionOptionShifterWinsWithCrew">Wygrywa z Crew</string>
   
   <!-- Lawyer Win -->
+  <string name="ExtensionLawyerWins">Prawnik i Klient wygrywaja</string>
   <string name="ExtensionLawyerWin">Wygrywa</string>
+  
+  <!-- Neutral Win Format -->
+  <string name="ExtensionNeutralWinsFormat">{0} Wygrywa</string>
   
   <!-- Lawyer Client Info -->
   <string name="ExtensionRoleLawyerClientDescription">Twoim prawnikiem jest &lt;lawyer&gt;.</string>
@@ -745,12 +749,18 @@
   <string name="ExtensionOptionBHWinModeEnumSoloWin">Samotna wygrana (konczy gre)</string>
   <string name="ExtensionOptionBHWinModeEnumWinWithWinners">Wygrywa ze zwyciezcami</string>
   
+  <string name="ExtensionBHTabTargetsKilled">Zabite cele: {0} / {1}</string>
+  <string name="ExtensionBHTabCurrentTarget">Aktualny cel: {0}</string>
+  
   <!-- Bounty Hunter Notifications -->
   <string name="ExtensionBHYourNextTarget">Twoj nastepny cel</string>
   <string name="ExtensionBHNewTarget">Nowy cel: &lt;player&gt;</string>
   <string name="ExtensionBHTargetKilled">Cel wyeliminowany! (&lt;current&gt;/&lt;needed&gt;)</string>
   <string name="ExtensionBHFailed">Nie udalo ci sie zabic swojego celu! Nalozono kare do cooldownu.</string>
   <string name="ExtensionBHNoTargets">Brak poprawnych dostepnych celow!</string>
+  <string name="ExtensionBHWinWithWinnersSelf">Ukonczyles pomyslnie polowania jako &lt;color=#B0BEC5&gt;Bounty Hunter&lt;/color&gt;! Od teraz bedziesz obserwowac i wygrasz wraz ze zwycieska druzyna.</string>
+  <string name="ExtensionBHWinWithWinnersOthers">&lt;color=#B0BEC5&gt;Bounty Hunter&lt;/color&gt;, &lt;player&gt;, ukonczyl wszystkie swoje polowania!</string>
+  <string name="DiedToWinning">Zwycięzca</string>
   <string name="ExtensionBountyHunterWins">Wygrywa</string>
   
   <!-- Bounty Hunter Death Message -->
@@ -780,6 +790,15 @@
   <string name="DiedToPoisoner">Zabity</string>
   <string name="DiedToPoisonerPoison">Zatrucie</string>
   <string name="DiedToPoisonerVine">Zgnieciony</string>
+
+  <!-- Shroud Role -->
+  <string name="ExtensionRoleShroud">Shroud</string>
+  <string name="ExtensionRoleShroudIntroBlurb">Oznaczaj graczy i uderzaj z cienia.</string>
+  <string name="ExtensionRoleShroudTabDescription">Oznacz gracza, aby go spowic (shroud).\%nl\%Jesli zostanie zabity lub wyrzucony, wygrywasz!\%nl\%Mozesz takze zabijac graczy bezposrednio.</string>
+  <string name="ExtensionRoleShroudWikiDescription">Shroud to rola Neutral Killing. Mozesz oznaczyc gracza, aby go spowic. Jesli twoj oznaczony cel umrze, wygrywasz. Masz takze normalna umiejetnosc zabijania.</string>
+  <string name="ExtensionRoleShroudAbility">Shroud</string>
+  <string name="ExtensionRoleShroudAbilityWikiDescription">Oznacz gracza. Jesli umrze, wygrywasz.</string>
+  <string name="ExtensionRoleShroudShroudedPlayer">Spowity gracz</string>
   
   <!-- Bodyguard Role -->
   <string name="ExtensionRoleBodyguard">Bodyguard</string>
@@ -1064,5 +1083,8 @@ Jesli opcja &lt;b&gt;Mieszaj Neutralnych z Zalogantami&lt;/b&gt; jest wlaczona, 
   <!-- Mod Compatibility Options -->
   <string name="ExtensionOptionCompatibilityDuplicateWarnings">Pokazuj ostrzezenia o duplikatach</string>
   <string name="ExtensionOptionCompatibilityDuplicateAutoKick">Automatyczne wyrzucanie przy duplikatach</string>
+  <!-- Draft Mode Options -->
+  <string name="ExtensionOptionDraftMinOtherNeutrals">Min Innych Neutrali</string>
+  <string name="ExtensionOptionDraftMaxOtherNeutrals">Max Innych Neutrali</string>
 </resources>
 

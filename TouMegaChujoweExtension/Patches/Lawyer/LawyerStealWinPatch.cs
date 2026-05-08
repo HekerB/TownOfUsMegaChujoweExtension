@@ -38,7 +38,7 @@ public static class LawyerStealWinPatch
         }
 
 
-        if (InProgress || endReason == CustomGameOver.GameOverReason<LawyerGameOver>())
+        if (InProgress || endReason == CustomGameOver.GameOverReason<ExtensionNeutralGameOver>())
         {
             return true;
         }
@@ -97,7 +97,7 @@ public static class LawyerStealWinPatch
         try
         {
             InProgress = true;
-            CustomGameOver.Trigger<LawyerGameOver>(winners.ToArray());
+            CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners.ToArray());
         }
         finally
         {

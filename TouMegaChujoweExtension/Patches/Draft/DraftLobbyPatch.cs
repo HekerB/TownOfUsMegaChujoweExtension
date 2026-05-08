@@ -609,10 +609,10 @@ public static class DraftLobbyPatch
         }
 
         DraftSystem.ImpostorPlayerIds = impostors;
+        DraftSystem.AssignFactions(allPlayers, impostors);
         DraftSystem.GeneratePickOrder(allPlayers);
         _originalPickOrder.Clear();
         _originalPickOrder.AddRange(DraftSystem.PickOrder);
-        DraftSystem.AssignFactions(allPlayers, impostors);
         // Info($"[Draft] PickOrder generated: {string.Join(",", DraftSystem.PickOrder)}");
 
         DraftNetworking.SendDraftStart(impostors);

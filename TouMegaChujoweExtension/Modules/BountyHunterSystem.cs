@@ -1,6 +1,9 @@
 using System.Linq;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
+using MiraAPI.Roles;
+using TownOfUs.Roles;
+using TownOfUs.Utilities;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Modifiers.Universal;
@@ -56,7 +59,26 @@ public static class BountyHunterSystem
             return;
         }
 
-        CurrentTarget = candidates[UnityEngine.Random.Range(0, candidates.Count)];
+        // Implement weighted selection: Neutrals and Impostors have 10% more chance
+        var weightedCandidates = new List<PlayerControl>();
+        foreach (var p in candidates)
+        {
+            int weight = 100;
+            var role = p.GetTownOfUsRole();
+            if (p.IsImpostorAligned() || (role != null && (role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralKilling || 
+                                                           role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralEvil || 
+                                                           role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralBenign)))
+            {
+                weight = 110; // 10% more
+            }
+
+            for (int i = 0; i < weight; i++)
+            {
+                weightedCandidates.Add(p);
+            }
+        }
+
+        CurrentTarget = weightedCandidates[UnityEngine.Random.Range(0, weightedCandidates.Count)];
         LastTargetPlayerId = CurrentTarget.PlayerId;
         TargetKilledThisRound = false;
 
