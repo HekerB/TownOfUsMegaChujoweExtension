@@ -278,6 +278,24 @@ public static class DraftSystem
         return WeightedShuffle(roles, r => Mathf.Max(0.1f, MiscUtils.GetAssignData(r.Role).Chance));
     }
 
+    // === ROLE MIXING HELPERS ===
+    private static int GetCurrentOtherNeutralCount()
+    {
+        int count = 0;
+        foreach (var roleId in DraftPicks.Values)
+        {
+            if (IsOtherNeutral((RoleTypes)roleId)) count++;
+        }
+        return count;
+    }
+
+    private static bool IsOtherNeutral(RoleTypes roleId)
+    {
+        return MiscUtils.GetRegisteredRoles(RoleAlignment.NeutralBenign).Any(r => r.Role == roleId) ||
+               MiscUtils.GetRegisteredRoles(RoleAlignment.NeutralEvil).Any(r => r.Role == roleId) ||
+               MiscUtils.GetRegisteredRoles(RoleAlignment.NeutralOutlier).Any(r => r.Role == roleId);
+    }
+
     public static List<RoleBehaviour> SelectRolesToOffer(bool isImpostor)
     {
         var myId = PlayerControl.LocalPlayer?.PlayerId ?? 255;
@@ -293,9 +311,6 @@ public static class DraftSystem
         var enabledAlignments = GetAlignmentsForFaction(faction);
         if (enabledAlignments.Count == 0) return new List<RoleBehaviour>();
 
-        bool respectChances;
-        try { respectChances = OptionGroupSingleton<DraftModeOptions>.Instance.RespectRoleChances.Value; }
-        catch { respectChances = false; }
         var roleCount = RolesToShow;
 
         // Unified Crewmate/Neutral Mix Logic
@@ -304,29 +319,12 @@ public static class DraftSystem
             var options = OptionGroupSingleton<DraftModeOptions>.Instance;
             var crewPool = GetRolesForAlignments(enabledAlignments);
 
-            // Calculate neutrals to mix in
-            int currentNeutrals = 0;
-            foreach (var pick in DraftPicks.Values)
-            {
-                var role = RoleManager.Instance.GetRole((RoleTypes)pick);
-                if (role != null)
-                {
-                    bool isNeutral = MiscUtils.GetRegisteredRoles(RoleAlignment.NeutralBenign).Any(r => r.Role == role.Role) ||
-                                     MiscUtils.GetRegisteredRoles(RoleAlignment.NeutralEvil).Any(r => r.Role == role.Role) ||
-                                     MiscUtils.GetRegisteredRoles(RoleAlignment.NeutralOutlier).Any(r => r.Role == role.Role);
-                    if (isNeutral) currentNeutrals++;
-                }
-            }
-
-            int remainingPlayers = PickOrder.Count;
-            
-            // Logic: How many more neutrals do we NEED to hit the target?
+            int currentNeutrals = GetCurrentOtherNeutralCount();
+            int remainingEligiblePlayers = PickOrder.Count(id => PlayerFactions.TryGetValue(id, out var f) && f == DraftFaction.CrewOther);
             int neutralsNeeded = Mathf.Max(0, TargetOtherNeutralCount - currentNeutrals);
             
-            // If we MUST have more neutrals and we are running out of players, force neutrals
-            bool forceNeutrals = neutralsNeeded >= remainingPlayers;
-            
-            // If we already hit the global target, don't show any more neutrals
+            // Logic: Do we MUST have more neutrals to hit the target?
+            bool forceNeutrals = neutralsNeeded >= remainingEligiblePlayers && remainingEligiblePlayers > 0;
             bool limitReached = currentNeutrals >= TargetOtherNeutralCount;
             
             int wantedNeutrals = 0;
@@ -338,13 +336,18 @@ public static class DraftSystem
                 }
                 else
                 {
-                    // Random choice 60/40
-                    wantedNeutrals = (Random.Range(0f, 100f) < 60f) ? (int)options.MinOtherNeutralsPerChoice.Value : (int)options.MaxOtherNeutralsPerChoice.Value;
+                    // Randomly decide if this player should see neutrals to spread them out
+                    float offerChance = (float)neutralsNeeded / remainingEligiblePlayers;
+                    if (UnityEngine.Random.Range(0f, 1f) < offerChance)
+                    {
+                        // If selected, use the per-choice options
+                        wantedNeutrals = (UnityEngine.Random.Range(0f, 100f) < 60f) ? (int)options.MinOtherNeutralsPerChoice.Value : (int)options.MaxOtherNeutralsPerChoice.Value;
+                        // Cap by needed to avoid exceeding global target early
+                        wantedNeutrals = Mathf.Min(wantedNeutrals, neutralsNeeded);
+                    }
                 }
             }
 
-            // Constrain wantedNeutrals by global target and pool size
-            wantedNeutrals = Mathf.Min(wantedNeutrals, neutralsNeeded > 0 ? neutralsNeeded : (limitReached ? 0 : 99));
             wantedNeutrals = Mathf.Min(wantedNeutrals, roleCount);
 
             var finalPool = new List<RoleBehaviour>();
@@ -355,23 +358,16 @@ public static class DraftSystem
                 finalPool.AddRange(allNeutrals.Take(wantedNeutrals));
             }
 
-            // Fill remaining with Crewmates (only if not forcing neutrals)
-            if (!forceNeutrals)
-            {
-                finalPool.AddRange(OrderRoles(crewPool).Take(roleCount - finalPool.Count));
-            }
-
-            // Pad if necessary
+            // Fill remaining with Crewmates (only if not forcing neutrals or if we didn't have enough neutrals)
             if (finalPool.Count < roleCount)
             {
-                var fallback = GetRolesForAlignments(enabledAlignments).Where(r => !finalPool.Any(p => p.Role == r.Role)).ToList();
-                finalPool.AddRange(OrderRoles(fallback).Take(roleCount - finalPool.Count));
+                finalPool.AddRange(OrderRoles(crewPool).Take(roleCount - finalPool.Count));
             }
 
             return finalPool.OrderBy(_ => Random.Range(0f, 1f)).ToList();
         }
 
-        // Standard flow for others (Impostor, NeutralKilling) - always All Classes
+        // Standard flow for others (Impostor, NeutralKilling)
         var allRoles = GetRolesForAlignments(enabledAlignments);
         if (allRoles.Count == 0) return new List<RoleBehaviour>();
 
@@ -401,26 +397,13 @@ public static class DraftSystem
         {
             var options = OptionGroupSingleton<DraftModeOptions>.Instance;
             
-            // Calculate current neutrals picked
-            int currentNeutrals = 0;
-            foreach (var pick in DraftPicks.Values)
-            {
-                var role = RoleManager.Instance.GetRole((RoleTypes)pick);
-                if (role != null)
-                {
-                    bool isNeutral = MiscUtils.GetRegisteredRoles(RoleAlignment.NeutralBenign).Any(r => r.Role == role.Role) ||
-                                     MiscUtils.GetRegisteredRoles(RoleAlignment.NeutralEvil).Any(r => r.Role == role.Role) ||
-                                     MiscUtils.GetRegisteredRoles(RoleAlignment.NeutralOutlier).Any(r => r.Role == role.Role);
-                    if (isNeutral) currentNeutrals++;
-                }
-            }
-
-            int remainingPlayers = PickOrder.Count;
+            int currentNeutrals = GetCurrentOtherNeutralCount();
+            int remainingEligiblePlayers = PickOrder.Count(id => PlayerFactions.TryGetValue(id, out var f) && f == DraftFaction.CrewOther);
             int neutralsNeeded = Mathf.Max(0, TargetOtherNeutralCount - currentNeutrals);
-            bool forceNeutrals = neutralsNeeded >= remainingPlayers;
+            
+            bool forceNeutrals = neutralsNeeded >= remainingEligiblePlayers && remainingEligiblePlayers > 0;
             bool limitReached = currentNeutrals >= TargetOtherNeutralCount;
 
-            // Determine if this random pick should be a Neutral
             bool shouldBeNeutral = false;
             if (!limitReached)
             {
@@ -430,15 +413,17 @@ public static class DraftSystem
                 }
                 else
                 {
-                    // Calculate a probability to pick a Neutral randomly if they were possible in choices
-                    // We use the 60/40 logic to see if neutrals WERE in the choices, and then roll
-                    int wantedNeutrals = (Random.Range(0f, 100f) < 60f) ? (int)options.MinOtherNeutralsPerChoice.Value : (int)options.MaxOtherNeutralsPerChoice.Value;
-                    
-                    if (wantedNeutrals > 0)
+                    float offerChance = (float)neutralsNeeded / remainingEligiblePlayers;
+                    if (UnityEngine.Random.Range(0f, 1f) < offerChance)
                     {
-                        // Proportional chance: if 1/3 roles are neutral, 33% chance. If 2/3, 66% chance.
-                        float ratio = (float)wantedNeutrals / RolesToShow;
-                        shouldBeNeutral = Random.Range(0f, 1f) < ratio;
+                        int wantedNeutrals = (UnityEngine.Random.Range(0f, 100f) < 60f) ? (int)options.MinOtherNeutralsPerChoice.Value : (int)options.MaxOtherNeutralsPerChoice.Value;
+                        wantedNeutrals = Mathf.Min(wantedNeutrals, neutralsNeeded);
+
+                        if (wantedNeutrals > 0)
+                        {
+                            float ratio = (float)wantedNeutrals / RolesToShow;
+                            shouldBeNeutral = UnityEngine.Random.Range(0f, 1f) < ratio;
+                        }
                     }
                 }
             }
