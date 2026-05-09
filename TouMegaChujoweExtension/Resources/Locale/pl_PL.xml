@@ -12,6 +12,13 @@
    <!-- Use Polish Language -->
   <string name="ExtensionLocalSettingUsePolishLanguage">Uzyj jezyka polskiego</string>
   
+  <!-- Draft Alert Local Settings -->
+  <string name="ExtensionLocalSettingDraftAlert">Powiadomienie o Draftcie</string>
+  <string name="DraftAlertOff">Wylaczone</string>
+  <string name="DraftAlertStartOnly">Tylko na poczatku</string>
+  <string name="DraftAlertEndOnly">Tylko na koncu</string>
+  <string name="DraftAlertStartAndEnd">Na poczatku i koncu</string>
+  
   <!-- Joker PiP Local Settings -->
   <string name="JokerPiPLocation">Polozenie okna PiP Jokera</string>
   <string name="JokerPiPSize">Rozmiar okna PiP Jokera</string>
@@ -1002,22 +1009,21 @@
 • Gracze sa przypisywani do strony (&lt;color=#4DA6FF&gt;&lt;b&gt;Zloga&lt;/b&gt;&lt;/color&gt;, &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt;, lub &lt;color=#7F7F7F&gt;&lt;b&gt;Neutralni&lt;/b&gt;&lt;/color&gt;), a nastepnie wybieraja role w losowej kolejnosci tur.
 • Kazdy gracz otrzymuje do wyboru 3 unikalne role. Widzowie sa wykluczeni z procesu.
 • Jesli nie wybierzesz roli w wyznaczonym czasie, zostanie ona przydzielona automatycznie.
-• Domyslnie &lt;color=#4DA6FF&gt;&lt;b&gt;Zloganci&lt;/b&gt;&lt;/color&gt; i &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybieraja ze specjalistycznych kategorii.</string>
+• Domyslnie wszyscy gracze wybieraja z pelnej puli dostepnych rol dla swojej strony (Zloga, Impostorzy, Neutralni). Nie ma juz restrykcyjnych kategorii.</string>
 
   <!-- TOUMCE Wiki Terms - Draft Factions -->
   <string name="TOUMCETermsDraftFactionsTitle">Frakcje Draftu</string>
   <string name="TOUMCETermsDraftFactionsInfo">Przed rozpoczeciem draftu gracze zostaja przypisani do frakcji:
-• &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybieraja sposrod roznych kategorii Impostora.
-• &lt;color=#4DA6FF&gt;&lt;b&gt;Zaloganci&lt;/b&gt;&lt;/color&gt; dokonuja wyboru z grup takich jak Investigative czy Protective.
-• &lt;color=#FFD700&gt;&lt;b&gt;Random Neutral&lt;/b&gt;&lt;/color&gt; oferuje zestaw rol Neutralnych. Domyslnie masz 70% szans na 2 role &lt;b&gt;Neutral Benign&lt;/b&gt;, 15% na &lt;b&gt;Neutral Outlier&lt;/b&gt; oraz 15% na &lt;b&gt;Neutral Evil&lt;/b&gt;.
+• &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybieraja z pelnej puli dostepnych rol Impostora.
+• &lt;color=#4DA6FF&gt;&lt;b&gt;Zaloganci&lt;/b&gt;&lt;/color&gt; wybieraja z pelnej puli dostepnych rol Zaloganta. Jesli <b>Inni Neutralni</b> (Benign, Evil lub Outlier) sa wlaczeni w lobby, moga oni pojawic sie w puli wyboru Zaloganta, dopoki globalne cele nie zostana osiagniete.
+• &lt;color=#FFD700&gt;&lt;b&gt;Neutral Killing&lt;/b&gt;&lt;/color&gt; wybiera sposrod dostepnych frakcji zabijajacych.
  
-• Ustawienia &lt;b&gt;Neutral&lt;/b&gt; w lobby kontroluja &lt;b&gt;Maksymalna&lt;/b&gt; liczbe graczy przypisanych do frakcji Benign, Evil oraz Killing.
+• <b>Globalne Cele</b> - Ustawienia lobby kontroluja <b>Min/Max</b> liczbe graczy przypisanych do frakcji Neutral Killing oraz Innych Neutralnych (Benign/Evil/Outlier).
+• <b>Logika 60/40</b> - System uzywa wazonego prawdopodobienstwa, aby preferowac minimalne cele, ale czasami losowac maksymalne dla wiekszej nieprzewidywalnosci.
  
-Jesli opcja &lt;color=#FF3B3B&gt;&lt;b&gt;Dowolne klasy (Imp)&lt;/b&gt;&lt;/color&gt; lub &lt;color=#4DA6FF&gt;&lt;b&gt;Dowolne klasy (Crew)&lt;/b&gt;&lt;/color&gt; jest wlaczona, gracze moga wybierac z dowolnej dostepnej kategorii.
+Draft moze rowniez brac pod uwage szanse rol (Uzyj szans rol), przez co role pojawiaja sie zgodnie z ich szansami w lobby (Weighted Shuffle).
  
-Draft moze rowniez brac pod uwage szanse rol (Uzyj szans rol), przez co role pojawiaja sie zgodnie z ich szansami w lobby.
- 
-Jesli opcja &lt;b&gt;Mieszaj Neutralnych z Zalogantami&lt;/b&gt; jest wlaczona, &lt;color=#4DA6FF&gt;&lt;b&gt;Zaloganci&lt;/b&gt;&lt;/color&gt; maja szanse wylosowac role Neutralne (Benign, Evil lub Outlier) w swojej puli wyboru.</string>
+Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe ról Neutralnych pojawiajacych sie w kazdej turze (opcja ta dotyczy <b>tylko Zalogantów</b>).</string>
 
   <!-- TOUMCE Wiki Terms - Role Extensions -->
   <string name="TOUMCETermsRoleExtensionsTitle">Better Roles/Modifiers</string>
@@ -1031,26 +1037,23 @@ Jesli opcja &lt;b&gt;Mieszaj Neutralnych z Zalogantami&lt;/b&gt; jest wlaczona, 
   <!-- TOUMCE Wiki Terms - Game Settings -->
   <string name="TOUMCETermsGameSettingsTitle">Ustawienia Gry</string>
   <string name="TOUMCETermsGameSettingsInfo">TOUMCE wprowadza globalne ustawienia zmieniajace przebieg gry:
-• &lt;b&gt;Blokada Lobby podczas Draftu&lt;/b&gt; - Zapobiega dolaczaniu nowych graczy w trakcie wyboru rol.
-• &lt;b&gt;Uzyj szans rol&lt;/b&gt; - Jesli wlaczone, prawdopodobienstwo wystapienia roli w drafcie opiera sie na jej ustawieniach szans w lobby.
-• &lt;b&gt;Mieszaj Neutralnych z Zalogantami&lt;/b&gt; - Istnieje szansa, ze role Neutral Benign/Evil/Outlier pojawia sie w puli wyboru dla Zalogantow.
-• &lt;b&gt;Czas Draftu&lt;/b&gt; - Okresla, ile sekund ma kazdy gracz na dokonanie wyboru.
-• &lt;b&gt;Zredukuj streak zabojcy&lt;/b&gt; - Zmniejsza szanse na bycie rola zabijajaca pod rzad.
-• &lt;b&gt;Impostor&lt;/b&gt; - Szansa na redukcje dla Impostorow.
-• &lt;b&gt;Neutral Killing&lt;/b&gt; - Szansa na redukcje dla rol Neutral Killing.</string>
+• &lt;b&gt;Blokada Lobby podczas Draftu&lt;/b&gt; - Zapobiega dolaczaniu nowych graczy w trakcie wyboru rol dla stabilnosci gry.
+• <b>System Trzecich</b> - Zbalansowana kolejnosc wyboru, ktora rozdziela Impostorow i Neutralnych rownomiernie na poczatku, srodku i koncu fazy draftu.
+• <b>Uzyj szans rol</b> - Jesli wlaczone, prawdopodobienstwo roli w drafcie opiera sie na jej szansach w lobby.
+• <b>Neutralni na wybor</b> - Kontroluje, ile rol Neutralnych jest mieszanych w puli wyboru kazdego Zaloganta.
+• <b>Globalne Limity Neutralnych</b> - Sztywne limity dla calkowitej liczby rol Neutralnych (NK i inne) dozwolonych w rundzie.
+• <b>Zredukuj streak zabojcy</b> - Zmniejsza szanse na ponowne otrzymanie roli zabijajacej, jesli gracz mial ja w poprzedniej rundzie.
+• <b>Impostor / Neutral Killing</b> - Specyficzne szanse na redukcje dla kazdej glownej frakcji zabijajacej.</string>
 
 
 
 
-  <string name="All Classes (Imp)">Dowolne klasy (Imp)</string>
-  <string name="All Classes (Crew)">Dowolne klasy (Crew)</string>
+  <string name="Enable Draft Mode">Wlacz Tryb Draftu</string>
+  <string name="Lock Lobby During Draft">Zablokuj lobby podczas draftu</string>
   <string name="Use Role Chances">Uzyj szans rol</string>
-  <string name="Merge Neutrals with Crew">Mieszaj Neutralnych z Zalogantami</string>
-  <string name="Neutral Merge Chance">Szansa na Neutralnych</string>
-  <string name="Max Neutrals in Merge">Maks. liczba Neutralnych (Mieszanie)</string>
   <string name="Reduce Killing Streak">Zredukuj streak zabojcy</string>
   <string name="Impostor">Impostor</string>
-  <string name="Neutral">Neutral Killing</string>
+  <string name="Neutral Killing">Neutral Killing</string>
 
   <!-- Better Sonar Options -->
   <string name="ExtensionOptionBetterSonar">Lepszy Sonar</string>
@@ -1084,7 +1087,14 @@ Jesli opcja &lt;b&gt;Mieszaj Neutralnych z Zalogantami&lt;/b&gt; jest wlaczona, 
   <string name="ExtensionOptionCompatibilityDuplicateWarnings">Pokazuj ostrzezenia o duplikatach</string>
   <string name="ExtensionOptionCompatibilityDuplicateAutoKick">Automatyczne wyrzucanie przy duplikatach</string>
   <!-- Draft Mode Options -->
-  <string name="ExtensionOptionDraftMinOtherNeutrals">Min Innych Neutrali</string>
-  <string name="ExtensionOptionDraftMaxOtherNeutrals">Max Innych Neutrali</string>
+  <string name="Roles To Show">Liczba rol do wyboru</string>
+  <string name="Time To Choose">Czas na wybor</string>
+  <string name="Min Neutrals Per Choice">Min Neutralnych na wybor</string>
+  <string name="Max Neutrals Per Choice">Max Neutralnych na wybor</string>
+  <string name="Min Other Neutrals">Min Innych Neutrali</string>
+  <string name="Max Other Neutrals">Max Innych Neutrali</string>
+  <string name="Min Neutral Killing">Min Neutral Killing</string>
+  <string name="Max Neutral Killing">Max Neutral Killing</string>
+  <string name="Neutral Killing">Neutral Killing</string>
 </resources>
 

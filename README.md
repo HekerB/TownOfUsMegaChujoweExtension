@@ -16,6 +16,7 @@
 </div>
 <br/>
 
+
 An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira) that adds new roles, modifiers, features, and an advanced Draft Mode!
 
 > [!IMPORTANT]
@@ -289,7 +290,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 
 1. **Pre-Game Setup** - Host enables Draft Mode in the lobby options
 2. **Draft Phase** - When the game starts, instead of random role assignment, a draft UI appears
-3. **Turn-Based Picking** - Players take turns selecting their desired role from a pool of available roles
+3. **Unified Picking** - Players select their role from a comprehensive pool of available roles for their assigned side (Crewmate, Impostor, or Neutral).
 4. **Timer** - Each player has limited time to pick (configurable by host)
 5. **Random Fallback** - If a player doesn't pick in time, a random role is assigned
 6. **Game Start** - Once all players have picked, the game begins with chosen roles.
@@ -300,7 +301,11 @@ Draft Mode is a special game feature that lets players take turns choosing their
 ## Features
 
 - **Visual Draft UI** - Clean interface showing available roles, current picker, and time remaining
-- **Role Categories** - Roles organized by alignment (Crewmate, Impostor, Neutral)
+- **Unified Role Pool** - No more restrictive categories! Players choose from all enabled roles for their side.
+- **Unified Neutral Distribution** - Intelligent mixing of Neutral roles into the Crewmate pool based on global targets and per-choice limits.
+- **60/40 Probability Logic** - Balanced distribution that favors minimum targets but occasionally spikes to maximums for variety.
+- **Balanced Pick Order (System of Thirds)** - Ensures Impostors and Neutrals are evenly spread across the start, middle, and end of the draft.
+- **Streak Reduction** - Robust protection against players getting the same killing faction (Impostor or NK) multiple games in a row.
 - **Pick Order Display** - See how many turns until your pick
 - **Audio Cues** - Alert on draft complete, your turn, and pick confirmation
 - **Random Button** - Can't decide? Pick a random role from your side
@@ -312,16 +317,14 @@ Draft Mode is a special game feature that lets players take turns choosing their
 |--------|-------------|
 | Enable Draft Mode | Toggle draft mode on/off |
 | Lock Lobby During Draft | Prevent players from joining mid-draft |
-| All Classes (Imp) | Allow Impostors to pick from all available Impostor roles |
-| All Classes (Crew) | Allow Crewmates to pick from all available Crewmate roles |
-| Reduce Killing Streak | Lower the chance of players being Impostors multiple times in a row |
-| Reduction Chance | Configure the streak reduction probability (0-100%) |
-| Merge Neutrals with Crew | Neutral roles can appear in the Crewmate pick pool |
-| Min Neutral Roles | Minimum number of Neutral roles available in the draft |
-| Max Neutral Roles | Maximum number of Neutral roles available in the draft |
-| Time To Choose | Seconds each player has to pick |
-| Roles To Show | Number of role options displayed |
-| Respect Role Chances | Draft pool follows lobby spawn probabilities |
+| Roles To Show | Number of role options displayed for each player |
+| Time To Choose | Seconds each player has to pick (3s - 67s) |
+| Min/Max Neutrals Per Choice | Number of Neutral roles mixed into Crewmate choices (60/40 weighted) |
+| Reduce Killing Streak | Lower the chance of players being killing roles multiple times in a row |
+| Impostor / Neutral Killing | Configure streak reduction probability (0-100%) for specific factions |
+| Min/Max Other Neutrals | Global target range for Neutral Benign/Evil/Outlier roles in the game |
+| Min/Max Neutral Killing | Global target range for Neutral Killing roles in the game |
+| Use Role Chances | Draft pool follows lobby spawn probabilities (Weighted Shuffle) |
 
 ## Showcase
 

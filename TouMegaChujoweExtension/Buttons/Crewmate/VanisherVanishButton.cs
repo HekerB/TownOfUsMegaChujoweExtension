@@ -38,7 +38,6 @@ public sealed class VanisherVanishButton : TownOfUsRoleButton<VanisherRole>
         }
 
         OnClick();
-        Button?.SetDisabled();
         if (EffectActive)
         {
             Timer = Cooldown;

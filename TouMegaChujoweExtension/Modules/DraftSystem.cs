@@ -35,6 +35,7 @@ public static class DraftSystem
     public static bool DraftActiveThisRound { get; set; }
     public static List<RoleBehaviour>? CurrentOfferedRoles { get; set; }
     public static RoleAlignment? SelectedAlignment { get; set; }
+    public static int TargetOtherNeutralCount { get; set; } // Global target for benign/evil/outliers
 
     // === FACTION ASSIGNMENTS ===
     public static Dictionary<byte, DraftFaction> PlayerFactions { get; } = new();
@@ -60,30 +61,6 @@ public static class DraftSystem
         }
     }
 
-    private static bool ShouldImpostorsPickFromAllClasses()
-    {
-        try
-        {
-            return OptionGroupSingleton<DraftModeOptions>.Instance.ImpostorsPickFromAllClasses.Value;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    private static bool ShouldCrewmatesPickFromAllClasses()
-    {
-        try
-        {
-            return OptionGroupSingleton<DraftModeOptions>.Instance.CrewmatesPickFromAllClasses.Value;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
     // === FACTION ASSIGNMENT ===
 
     public static void AssignFactions(List<byte> allPlayerIds, HashSet<byte> impostorIds)
@@ -99,12 +76,20 @@ public static class DraftSystem
 
         int GetSafeCount(float min, float max)
         {
-            int minVal = Mathf.Min((int)min, (int)max);
-            int maxVal = Mathf.Max((int)min, (int)max);
-            return Random.Range(minVal, maxVal + 1);
+            if (min == max) return (int)min;
+            return (Random.Range(0f, 100f) < 60f) ? (int)min : (int)max;
         }
 
         int neutralKillingCount = GetSafeCount(options.MinNeutralKilling.Value, options.MaxNeutralKilling.Value);
+        TargetOtherNeutralCount = GetSafeCount(options.MinOtherNeutrals.Value, options.MaxOtherNeutrals.Value);
+
+        if (neutralKillingCount + TargetOtherNeutralCount > remaining.Count)
+        {
+             // Adjust if we have more special roles than players
+             float ratio = (float)remaining.Count / (neutralKillingCount + TargetOtherNeutralCount);
+             neutralKillingCount = Mathf.FloorToInt(neutralKillingCount * ratio);
+             TargetOtherNeutralCount = Mathf.FloorToInt(TargetOtherNeutralCount * ratio);
+        }
 
         if (neutralKillingCount > remaining.Count)
             neutralKillingCount = remaining.Count;
@@ -180,28 +165,51 @@ public static class DraftSystem
         return alignments;
     }
 
-    // === ROLE POOL ===
+    // === ROLE POOL CACHE ===
+    private static readonly Dictionary<RoleAlignment, List<RoleBehaviour>> _roleCache = new();
+    private static bool _roleCacheDirty = true;
+
+    public static void InvalidateRoleCache()
+    {
+        _roleCacheDirty = true;
+        _roleCache.Clear();
+    }
+
+    private static void EnsureRoleCacheBuilt()
+    {
+        if (!_roleCacheDirty && _roleCache.Count > 0) return;
+        _roleCache.Clear();
+
+        var allAlignments = (RoleAlignment[])Enum.GetValues(typeof(RoleAlignment));
+        foreach (var alignment in allAlignments)
+        {
+            var roles = new List<RoleBehaviour>();
+            foreach (var role in MiscUtils.GetRegisteredRoles(alignment))
+            {
+                if (role.IsDead) continue;
+                if (!CustomRoleUtils.CanSpawnOnCurrentMode(role)) continue;
+                if (roles.Any(r => r.Role == role.Role)) continue;
+
+                var assignData = MiscUtils.GetAssignData(role.Role);
+                if (assignData.Chance <= 0 || assignData.Count <= 0) continue;
+
+                roles.Add(role);
+            }
+            _roleCache[alignment] = roles;
+        }
+        _roleCacheDirty = false;
+    }
 
     private static List<RoleBehaviour> GetRolesForAlignment(RoleAlignment alignment)
     {
-        var result = new List<RoleBehaviour>();
-        foreach (var role in MiscUtils.GetRegisteredRoles(alignment))
-        {
-            if (role.IsDead) continue;
-            if (!CustomRoleUtils.CanSpawnOnCurrentMode(role)) continue;
+        EnsureRoleCacheBuilt();
+        if (!_roleCache.TryGetValue(alignment, out var cached)) return new List<RoleBehaviour>();
 
-            var assignData = MiscUtils.GetAssignData(role.Role);
-            if (assignData.Chance <= 0 || assignData.Count <= 0) continue;
-
-            if (AlreadyPicked.Contains((ushort)role.Role) &&
-                role.Role != RoleTypes.Crewmate &&
-                role.Role != RoleTypes.Impostor)
-                continue;
-
-            if (result.Any(r => r.Role == role.Role)) continue;
-            result.Add(role);
-        }
-        return result;
+        return cached.Where(r =>
+            !AlreadyPicked.Contains((ushort)r.Role) ||
+            r.Role == RoleTypes.Crewmate ||
+            r.Role == RoleTypes.Impostor
+        ).ToList();
     }
 
     private static List<RoleBehaviour> GetRolesForAlignments(List<RoleAlignment> alignments)
@@ -291,12 +299,12 @@ public static class DraftSystem
         var roleCount = RolesToShow;
 
         // Unified Crewmate/Neutral Mix Logic
-        if (faction == DraftFaction.CrewOther && !ShouldCrewmatesPickFromAllClasses())
+        if (faction == DraftFaction.CrewOther)
         {
             var options = OptionGroupSingleton<DraftModeOptions>.Instance;
-            var crewRoles = GetRolesForAlignments(enabledAlignments);
+            var crewPool = GetRolesForAlignments(enabledAlignments);
 
-            // Count how many neutrals have already been picked
+            // Calculate neutrals to mix in
             int currentNeutrals = 0;
             foreach (var pick in DraftPicks.Values)
             {
@@ -310,177 +318,69 @@ public static class DraftSystem
                 }
             }
 
-            int globalMin = (int)options.MinOtherNeutrals.Value;
-            int globalMax = (int)options.MaxOtherNeutrals.Value;
             int remainingPlayers = PickOrder.Count;
             
+            // Logic: How many more neutrals do we NEED to hit the target?
+            int neutralsNeeded = Mathf.Max(0, TargetOtherNeutralCount - currentNeutrals);
+            
             // If we MUST have more neutrals and we are running out of players, force neutrals
-            bool forceNeutrals = (globalMin - currentNeutrals) >= remainingPlayers;
-            int neutralSlotsAvailable = Mathf.Max(0, globalMax - currentNeutrals);
+            bool forceNeutrals = neutralsNeeded >= remainingPlayers;
             
-            int wantedNeutrals;
-            if (forceNeutrals)
-            {
-                wantedNeutrals = roleCount; // Offer as many as possible
-            }
-            else
-            {
-                int minP = (int)options.MinOtherNeutralsPerChoice.Value;
-                int maxP = (int)options.MaxOtherNeutralsPerChoice.Value;
-                wantedNeutrals = (Random.Range(0f, 100f) < 30f) ? maxP : minP;
-            }
-
-            // Constrain wantedNeutrals by global limit and pool size
-            wantedNeutrals = Mathf.Min(wantedNeutrals, neutralSlotsAvailable);
-            wantedNeutrals = Mathf.Min(wantedNeutrals, roleCount);
-
-            var finalPool = new List<RoleBehaviour>();
+            // If we already hit the global target, don't show any more neutrals
+            bool limitReached = currentNeutrals >= TargetOtherNeutralCount;
             
-            if (wantedNeutrals > 0)
+            int wantedNeutrals = 0;
+            if (!limitReached)
             {
-                var benignPool = OrderRoles(GetRolesForAlignment(RoleAlignment.NeutralBenign)).ToList();
-                var evilPool = OrderRoles(GetRolesForAlignment(RoleAlignment.NeutralEvil)).ToList();
-                var outlierPool = OrderRoles(GetRolesForAlignment(RoleAlignment.NeutralOutlier)).ToList();
-                
-                // Mix in neutrals
-                int nShown = 0;
-                int bIdx = 0, eIdx = 0, oIdx = 0;
-                while (nShown < wantedNeutrals)
+                if (forceNeutrals)
                 {
-                    bool added = false;
-                    if (bIdx < benignPool.Count && nShown < wantedNeutrals) { finalPool.Add(benignPool[bIdx++]); nShown++; added = true; }
-                    if (eIdx < evilPool.Count && nShown < wantedNeutrals) { finalPool.Add(evilPool[eIdx++]); nShown++; added = true; }
-                    if (oIdx < outlierPool.Count && nShown < wantedNeutrals) { finalPool.Add(outlierPool[oIdx++]); nShown++; added = true; }
-                    if (!added) break;
-                }
-            }
-
-            // If we are forcing neutrals, and couldn't find enough, we should still not offer Crew
-            if (forceNeutrals && finalPool.Count > 0)
-            {
-                SelectedAlignment = null;
-                return finalPool.OrderBy(_ => Random.Range(0f, 1f)).ToList();
-            }
-
-            // Fill remaining with Crewmates
-            var chosenCrew = OrderRoles(crewRoles).Take(roleCount - finalPool.Count).ToList();
-            finalPool.AddRange(chosenCrew);
-
-            // Pad if still empty
-            if (finalPool.Count < roleCount)
-            {
-                var fallback = crewRoles.Where(r => !finalPool.Contains(r)).ToList();
-                finalPool.AddRange(OrderRoles(fallback).Take(roleCount - finalPool.Count));
-            }
-
-            SelectedAlignment = null;
-            return finalPool.OrderBy(_ => Random.Range(0f, 1f)).ToList();
-        }
-
-        // Guaranteed 100% Roles Logic
-        if (respectChances)
-        {
-            var guaranteedRoles = GetRolesForAlignments(enabledAlignments)
-                .Where(r => MiscUtils.GetAssignData(r.Role).Chance >= 100)
-                .ToList();
-
-            if (guaranteedRoles.Count > 0)
-            {
-                SelectedAlignment = null;
-                
-                if (guaranteedRoles.Count >= roleCount)
-                {
-                    return guaranteedRoles.OrderBy(_ => Random.Range(0f, 1f)).Take(roleCount).ToList();
+                    wantedNeutrals = roleCount; // Force as many as possible
                 }
                 else
                 {
-                    var finalRoles = new List<RoleBehaviour>(guaranteedRoles);
-                    var otherRoles = GetRolesForAlignments(enabledAlignments)
-                        .Where(x => !guaranteedRoles.Contains(x))
-                        .ToList();
-                        
-                    var padRoles = OrderRoles(otherRoles)
-                        .Take(roleCount - finalRoles.Count)
-                        .ToList();
-                        
-                    finalRoles.AddRange(padRoles);
-                    return finalRoles.OrderBy(_ => Random.Range(0f, 1f)).ToList();
+                    // Random choice 60/40
+                    wantedNeutrals = (Random.Range(0f, 100f) < 60f) ? (int)options.MinOtherNeutralsPerChoice.Value : (int)options.MaxOtherNeutralsPerChoice.Value;
                 }
             }
-        }
 
-        // Impostor special flow - all classes
-        if (faction == DraftFaction.Impostor && ShouldImpostorsPickFromAllClasses())
-        {
-            var allImpRoles = GetRolesForAlignments(enabledAlignments);
-            if (allImpRoles.Count == 0)
-                return new List<RoleBehaviour>();
+            // Constrain wantedNeutrals by global target and pool size
+            wantedNeutrals = Mathf.Min(wantedNeutrals, neutralsNeeded > 0 ? neutralsNeeded : (limitReached ? 0 : 99));
+            wantedNeutrals = Mathf.Min(wantedNeutrals, roleCount);
 
-            SelectedAlignment = null;
-
-            if (allImpRoles.Count <= roleCount)
-                return allImpRoles.OrderBy(_ => Random.Range(0f, 1f)).ToList();
-
-            return OrderRoles(allImpRoles)
-                .Take(roleCount)
-                .OrderBy(_ => Random.Range(0f, 1f))
-                .ToList();
-        }
-
-        // Crewmate special flow - all classes
-        if (faction == DraftFaction.CrewOther && ShouldCrewmatesPickFromAllClasses())
-        {
-            var allCrewRoles = GetRolesForAlignments(enabledAlignments);
-            if (allCrewRoles.Count == 0)
-                return new List<RoleBehaviour>();
-
-            SelectedAlignment = null;
-
-            if (allCrewRoles.Count <= roleCount)
-                return allCrewRoles.OrderBy(_ => Random.Range(0f, 1f)).ToList();
-
-            return OrderRoles(allCrewRoles)
-                .Take(roleCount)
-                .OrderBy(_ => Random.Range(0f, 1f))
-                .ToList();
-        }
-
-        // Standard flow
-        var shuffledAlignments = enabledAlignments.OrderBy(_ => Random.Range(0f, 1f)).ToList();
-        
-        if (respectChances)
-        {
-            shuffledAlignments = WeightedShuffle(enabledAlignments, a => 
+            var finalPool = new List<RoleBehaviour>();
+            if (wantedNeutrals > 0)
             {
-                var rolesInA = GetRolesForAlignment(a);
-                if (rolesInA.Count == 0) return 0f;
-                return rolesInA.Sum(r => Mathf.Max(0.1f, MiscUtils.GetAssignData(r.Role).Chance));
-            }).ToList();
-        }
-        
-        List<RoleBehaviour> rolesFromAlignment = null;
-        RoleAlignment chosenAlignment = default;
-
-        foreach (var alignment in shuffledAlignments)
-        {
-            var roles = GetRolesForAlignment(alignment);
-            if (roles.Count > 0)
-            {
-                rolesFromAlignment = roles;
-                chosenAlignment = alignment;
-                break;
+                var neutralPool = new List<RoleAlignment> { RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralOutlier };
+                var allNeutrals = OrderRoles(GetRolesForAlignments(neutralPool)).ToList();
+                finalPool.AddRange(allNeutrals.Take(wantedNeutrals));
             }
+
+            // Fill remaining with Crewmates (only if not forcing neutrals)
+            if (!forceNeutrals)
+            {
+                finalPool.AddRange(OrderRoles(crewPool).Take(roleCount - finalPool.Count));
+            }
+
+            // Pad if necessary
+            if (finalPool.Count < roleCount)
+            {
+                var fallback = GetRolesForAlignments(enabledAlignments).Where(r => !finalPool.Any(p => p.Role == r.Role)).ToList();
+                finalPool.AddRange(OrderRoles(fallback).Take(roleCount - finalPool.Count));
+            }
+
+            return finalPool.OrderBy(_ => Random.Range(0f, 1f)).ToList();
         }
 
-        if (rolesFromAlignment == null || rolesFromAlignment.Count == 0)
-            return new List<RoleBehaviour>();
+        // Standard flow for others (Impostor, NeutralKilling) - always All Classes
+        var allRoles = GetRolesForAlignments(enabledAlignments);
+        if (allRoles.Count == 0) return new List<RoleBehaviour>();
 
-        SelectedAlignment = chosenAlignment;
+        SelectedAlignment = null;
 
-        if (rolesFromAlignment.Count <= roleCount)
-            return rolesFromAlignment;
+        if (allRoles.Count <= roleCount)
+            return allRoles.OrderBy(_ => Random.Range(0f, 1f)).ToList();
 
-        return OrderRoles(rolesFromAlignment)
+        return OrderRoles(allRoles)
             .Take(roleCount)
             .OrderBy(_ => Random.Range(0f, 1f))
             .ToList();
@@ -494,99 +394,81 @@ public static class DraftSystem
         if (!PlayerFactions.TryGetValue(myId, out faction))
             faction = isImpostor ? DraftFaction.Impostor : DraftFaction.CrewOther;
 
-        // OtherNeutral was removed, so we fallback to normal logic
         var enabledAlignments = GetAlignmentsForFaction(faction);
-        bool respectChances;
-        try { respectChances = OptionGroupSingleton<DraftModeOptions>.Instance.RespectRoleChances.Value; }
-        catch { respectChances = false; }
-
-        if (respectChances)
+        
+        // --- Crewmate/Neutral Mixing Logic for Random Pick ---
+        if (faction == DraftFaction.CrewOther)
         {
-            var guaranteedRoles = GetRolesForAlignments(enabledAlignments)
-                .Where(r => MiscUtils.GetAssignData(r.Role).Chance >= 100)
-                .ToList();
-
-            if (excludeOffered != null && excludeOffered.Count > 0)
+            var options = OptionGroupSingleton<DraftModeOptions>.Instance;
+            
+            // Calculate current neutrals picked
+            int currentNeutrals = 0;
+            foreach (var pick in DraftPicks.Values)
             {
-                var offeredIds = excludeOffered.Select(r => r.Role).ToHashSet();
-                guaranteedRoles = guaranteedRoles.Where(r => !offeredIds.Contains(r.Role)).ToList();
+                var role = RoleManager.Instance.GetRole((RoleTypes)pick);
+                if (role != null)
+                {
+                    bool isNeutral = MiscUtils.GetRegisteredRoles(RoleAlignment.NeutralBenign).Any(r => r.Role == role.Role) ||
+                                     MiscUtils.GetRegisteredRoles(RoleAlignment.NeutralEvil).Any(r => r.Role == role.Role) ||
+                                     MiscUtils.GetRegisteredRoles(RoleAlignment.NeutralOutlier).Any(r => r.Role == role.Role);
+                    if (isNeutral) currentNeutrals++;
+                }
             }
 
-            if (guaranteedRoles.Count > 0)
-                return guaranteedRoles.OrderBy(_ => Random.Range(0f, 1f)).First();
-        }
+            int remainingPlayers = PickOrder.Count;
+            int neutralsNeeded = Mathf.Max(0, TargetOtherNeutralCount - currentNeutrals);
+            bool forceNeutrals = neutralsNeeded >= remainingPlayers;
+            bool limitReached = currentNeutrals >= TargetOtherNeutralCount;
 
-        // Impostor all-classes random pick
-        if (isImpostor && ShouldImpostorsPickFromAllClasses())
-        {
-            DraftFaction impFaction;
-
-            if (PlayerFactions.TryGetValue(myId, out var assignedFaction))
-                impFaction = assignedFaction;
-            else
-                impFaction = DraftFaction.Impostor;
-
-            if (impFaction == DraftFaction.Impostor)
+            // Determine if this random pick should be a Neutral
+            bool shouldBeNeutral = false;
+            if (!limitReached)
             {
-                var alignments = GetAlignmentsForFaction(DraftFaction.Impostor);
-                var pool = GetRolesForAlignments(alignments);
-
-                if (excludeOffered != null && excludeOffered.Count > 0)
+                if (forceNeutrals) 
                 {
-                    var offeredIds = excludeOffered.Select(r => r.Role).ToHashSet();
-                    var notOffered = pool.Where(r => !offeredIds.Contains(r.Role)).ToList();
-                    if (notOffered.Count > 0)
-                        return OrderRoles(notOffered).First();
+                    shouldBeNeutral = true;
                 }
-
-                if (pool.Count > 0)
-                    return OrderRoles(pool).First();
+                else
+                {
+                    // Calculate a probability to pick a Neutral randomly if they were possible in choices
+                    // We use the 60/40 logic to see if neutrals WERE in the choices, and then roll
+                    int wantedNeutrals = (Random.Range(0f, 100f) < 60f) ? (int)options.MinOtherNeutralsPerChoice.Value : (int)options.MaxOtherNeutralsPerChoice.Value;
+                    
+                    if (wantedNeutrals > 0)
+                    {
+                        // Proportional chance: if 1/3 roles are neutral, 33% chance. If 2/3, 66% chance.
+                        float ratio = (float)wantedNeutrals / RolesToShow;
+                        shouldBeNeutral = Random.Range(0f, 1f) < ratio;
+                    }
+                }
             }
-        }
 
-        // Crewmate all-classes random pick
-        if (!isImpostor && ShouldCrewmatesPickFromAllClasses())
-        {
-            DraftFaction crewFaction;
-
-            if (PlayerFactions.TryGetValue(myId, out var assignedFaction))
-                crewFaction = assignedFaction;
-            else
-                crewFaction = DraftFaction.CrewOther;
-
-            if (crewFaction == DraftFaction.CrewOther)
+            if (shouldBeNeutral)
             {
-                var alignments = GetAlignmentsForFaction(DraftFaction.CrewOther);
-                var pool = GetRolesForAlignments(alignments);
-
-                if (excludeOffered != null && excludeOffered.Count > 0)
+                var neutralPool = new List<RoleAlignment> { RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralOutlier };
+                var roles = GetRolesForAlignments(neutralPool);
+                if (excludeOffered != null)
                 {
                     var offeredIds = excludeOffered.Select(r => r.Role).ToHashSet();
-                    var notOffered = pool.Where(r => !offeredIds.Contains(r.Role)).ToList();
-                    if (notOffered.Count > 0)
-                        return OrderRoles(notOffered).First();
+                    roles = roles.Where(r => !offeredIds.Contains(r.Role)).ToList();
                 }
-
-                if (pool.Count > 0)
-                    return OrderRoles(pool).First();
+                if (roles.Count > 0) return OrderRoles(roles).First();
             }
         }
 
         // Standard flow
-        if (SelectedAlignment.HasValue)
-        {
-            var pool = GetRolesForAlignment(SelectedAlignment.Value);
-            if (excludeOffered != null && excludeOffered.Count > 0)
-            {
-                var offeredIds = excludeOffered.Select(r => r.Role).ToHashSet();
-                var notOffered = pool.Where(r => !offeredIds.Contains(r.Role)).ToList();
-                if (notOffered.Count > 0)
-                    return OrderRoles(notOffered).First();
-            }
+        var pool = GetRolesForAlignments(enabledAlignments);
 
-            if (pool.Count > 0)
-                return OrderRoles(pool).First();
+        if (excludeOffered != null && excludeOffered.Count > 0)
+        {
+            var offeredIds = excludeOffered.Select(r => r.Role).ToHashSet();
+            var notOffered = pool.Where(r => !offeredIds.Contains(r.Role)).ToList();
+            if (notOffered.Count > 0)
+                return OrderRoles(notOffered).First();
         }
+
+        if (pool.Count > 0)
+            return OrderRoles(pool).First();
 
         return isImpostor
             ? RoleManager.Instance.GetRole(RoleTypes.Impostor)
@@ -609,6 +491,7 @@ public static class DraftSystem
         PickTimer = 0f;
         CurrentOfferedRoles = null;
         SelectedAlignment = null;
+        InvalidateRoleCache();
     }
 
     public static void GeneratePickOrder(List<byte> validPlayerIds = null)

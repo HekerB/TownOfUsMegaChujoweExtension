@@ -33,6 +33,8 @@ public static class DraftNetworking
             writer.Write((byte)kvp.Value);
         }
 
+        writer.Write((byte)DraftSystem.TargetOtherNeutralCount);
+
         AmongUsClient.Instance.FinishRpcImmediately(writer);
 
         ReceiveDraftStart(impostorIds);
@@ -78,7 +80,9 @@ public static class DraftNetworking
             DraftSystem.PlayerFactions[playerId] = faction;
         }
 
-        // Info($"[DraftNetworking] Received combined draft data: {orderCount} players, {factionCount} factions.");
+        DraftSystem.TargetOtherNeutralCount = reader.ReadByte();
+
+        // Info($"[DraftNetworking] Received combined draft data: {orderCount} players, {factionCount} factions, targetNeutrals={DraftSystem.TargetOtherNeutralCount}");
 
         ReceiveDraftStart(impostorIds);
         DraftSystem.DraftActiveThisRound = true;

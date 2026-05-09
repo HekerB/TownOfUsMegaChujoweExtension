@@ -33,6 +33,7 @@ public static class DraftLobbyPatch
     private static Sprite _cachedRoundedSprite = null!;
     private static Sprite _cachedRandomIcon = null!;
     private static readonly List<GameObject> _roleButtonObjects = new();
+    private static GameObject? _randomButtonContainer;
     private static readonly System.Text.StringBuilder _playerListBuilder = new();
 
     // === BUTTON REFS ===
@@ -479,6 +480,7 @@ public static class DraftLobbyPatch
         _lastTimeLeftInt = -1;
         _forceUpdatePlayerList = true;
 
+        _titleRandomOffset = UnityEngine.Random.Range(0f, 60f);
         DraftSystem.Reset();
 
         var options = OptionGroupSingleton<DraftModeOptions>.Instance;
@@ -596,6 +598,7 @@ public static class DraftLobbyPatch
         _lastAlertedPicker = null;
         _lastTimeLeftInt = -1;
         _forceUpdatePlayerList = true;
+        _titleRandomOffset = UnityEngine.Random.Range(0f, 60f);
 
         DraftSystem.DraftPicks.Clear();
         DraftSystem.AlreadyPicked.Clear();
@@ -1082,9 +1085,16 @@ public static class DraftLobbyPatch
         var titleText = CreateTMP("DraftTitle", _draftContainer.transform,
             new Vector3(2.23f, 2.15f, -510f), 1.8f, TextAlignmentOptions.Center, true);
         
-        _titleRandomOffset = UnityEngine.Random.Range(0f, 1000f);
-        bool startWithHeker = ((int)((Time.time + _titleRandomOffset) / 20f) % 2) == 0;
-        titleText.text = $"<size=130%><b>DRAFT MODE</b></size>\nBY {(startWithHeker ? "HEKER" : "MARZECOOO")}";
+        // Randomize the starting author (33% each)
+        _titleRandomOffset = UnityEngine.Random.Range(0f, 60f);
+        int cycle = (int)((Time.time + _titleRandomOffset) / 20f) % 3;
+        string startAuthor = cycle switch {
+            0 => "HEKER",
+            1 => "MARZECOOO",
+            2 => "KAJOJAJO",
+            _ => "HEKER"
+        };
+        titleText.text = $"<size=130%><b>DRAFT MODE</b></size>\nBY {startAuthor}";
         _draftTitleText = titleText;
         if (!_isTitleAnimRunning) Coroutines.Start(CoAnimateDraftTitle());
 
@@ -2231,15 +2241,27 @@ public static class DraftLobbyPatch
         labelObj.transform.localPosition = new Vector3(0.15f, 0f, -0.02f);
         labelObj.layer = LayerMask.NameToLayer("UI");
 
+        string labelText = isRandom ? "RANDOM" : role.GetRoleName().ToUpper();
+        if (!isRandom && role != null)
+        {
+            try
+            {
+                var assignData = TownOfUs.Utilities.MiscUtils.GetAssignData(role.Role);
+                if (assignData.Chance < 30f)
+                    labelText = labelText + " ☆";
+            }
+            catch { }
+        }
+
         var label = labelObj.AddComponent<TextMeshPro>();
-        label.text = isRandom ? "RANDOM" : role.GetRoleName().ToUpper();
+        label.text = labelText;
         label.fontSize = 2.2f;
         label.alignment = TextAlignmentOptions.Center;
         label.sortingOrder = 25;
         label.color = labelColor;
         label.fontStyle = FontStyles.Bold;
-        label.outlineWidth = 0.1f;
-        label.outlineColor = new Color32(0, 0, 0, 120);
+        label.outlineWidth = 0.08f;
+        label.outlineColor = Color.black;
         label.rectTransform.sizeDelta = new Vector2(2.4f, 0.65f);
         ApplyFont(label);
 
@@ -2315,6 +2337,7 @@ public static class DraftLobbyPatch
         }));
         if (isRandom)
         {
+            _randomButtonContainer = container;
             var offered = DraftSystem.CurrentOfferedRoles;
             var capContainer = container;
             btn.OnClick.AddListener((System.Action)(() =>
@@ -2536,9 +2559,15 @@ public static class DraftLobbyPatch
             if (_draftTitleText == null) yield break;
 
             // Check what name SHOULD be displayed now
-            bool isHekerTime = ((int)((Time.time + _titleRandomOffset) / interval) % 2) == 0;
+            int cycle = (int)((Time.time + _titleRandomOffset) / interval) % 3;
             string currentText = _draftTitleText.text;
-            string targetAuthor = isHekerTime ? "HEKER" : "MARZECOOO";
+            string targetAuthor = cycle switch
+            {
+                0 => "HEKER",
+                1 => "MARZECOOO",
+                2 => "KAJOJAJO",
+                _ => "HEKER"
+            };
 
             // If the current name doesn't match the desired one, trigger transition
             if (!currentText.Contains(targetAuthor))
@@ -2632,10 +2661,10 @@ public static class DraftLobbyPatch
             _timerText.gameObject.SetActive(iAmPickingNow);
             if (iAmPickingNow)
             {
-                var color = timeLeft < 5f ? "#FF4444" : "#ffffff";
-                _timerText.text = $"<color={color}>Time Left: {(int)timeLeft}s</color>";
+                var color = timeLeft <= 4.0f ? "#FF4444" : "#ffffff";
+                _timerText.text = $"<color={color}>Time Left: {Mathf.CeilToInt(timeLeft)}s</color>";
 
-                if (timeLeft < 5f)
+                if (timeLeft <= 4.0f)
                 {
                     float pulse = 1f + Mathf.Abs(Mathf.Sin(Time.time * 12f)) * 0.12f;
                     _timerText.transform.localScale = new Vector3(pulse, pulse, 1f);
@@ -2693,11 +2722,17 @@ public static class DraftLobbyPatch
 
         if (DraftSystem.IsMyTurn && !_pickLocked && _pickTimer >= maxTime)
         {
-            LockRoleButtons(null);
             var localId = PlayerControl.LocalPlayer.PlayerId;
             var isImp = DraftSystem.ImpostorPlayerIds.Contains(localId);
             var rr = DraftSystem.PickRandomRole(isImp, DraftSystem.CurrentOfferedRoles);
-            if (rr != null) OnLocalPlayerPick((ushort)rr.Role);
+            
+            GameObject selected = (rr != null) ? _randomButtonContainer : null;
+            LockRoleButtons(selected);
+            
+            if (rr != null)
+            {
+                OnLocalPlayerPick((ushort)rr.Role);
+            }
         }
 
         UpdatePlayerList();
@@ -2714,6 +2749,7 @@ public static class DraftLobbyPatch
             if (obj != null) Object.Destroy(obj);
         _roleButtonObjects.Clear();
         _buttonRefs.Clear();
+        _randomButtonContainer = null;
         _pickLocked = false;
     }
 
@@ -2875,4 +2911,3 @@ public static class DraftLobbyPatch
         }
     }
 }
-

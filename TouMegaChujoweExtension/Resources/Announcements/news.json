@@ -332,7 +332,13 @@
         "\n- <b>Jailor Fixes</b> - Resolved meeting UI stability issues and interaction bugs for the Jailor.",
         "\n\n\r<size=110%><b>★ Stability & Security ★</b></size>",
         "\n- <b>Duplicate Mod Guard</b> - Optimized duplicate detection to use Host-only RPCs and custom 'System' chat alerts, preventing crashes and UI clutter.",
-        "\n- <b>Meeting Stability</b> - Fixed various UI flickering and lag spikes during meeting transitions."
+        "\n- <b>Meeting Stability</b> - Fixed various UI flickering and lag spikes during meeting transitions.",
+        "\n\n\r<size=110%><b>★ Major Draft Neutral Distribution Rework ★</b></size>",
+        "\n- <b>Two-Tier Distribution</b> - Separated global neutral game limits from the number of roles shown in the individual pick menus.",
+        "\n- <b>Global Target (60/40)</b> - The game pre-rolls a fixed number of neutrals for the entire round at the start (60% chance for Min / 40% for Max).",
+        "\n- <b>Choice Mixing (60/40)</b> - The number of neutral roles visible to a player (e.g., 1 or 2 out of 8) is now rolled independently for each picker.",
+        "\n- <b>Guaranteed Selection</b> - If the global target hasn't been met, the system will force only neutral roles for the last players, ensuring lobby balance.",
+        "\n- <b>Optimization & All-Classes</b> - Removed redundant toggles, unified 'All Classes' as the default standard, and eliminated draft lag with a new caching system."
       ]
     }
   ]

@@ -12,6 +12,14 @@
   <!-- Use Polish Language -->
   <string name="ExtensionLocalSettingUsePolishLanguage">Use Polish Language</string>
   
+  <!-- Draft Alert Local Settings -->
+  <string name="ExtensionLocalSettingDraftAlert">Draft Alert Notification</string>
+  <string name="DraftAlertOff">Off</string>
+  <string name="DraftAlertStartOnly">Start Only</string>
+  <string name="DraftAlertEndOnly">End Only</string>
+  <string name="DraftAlertStartAndEnd">Start and End</string>
+
+  
   <!-- Joker PiP Local Settings  -->
   <string name="JokerPiPLocation">Joker PiP Location</string>
   <string name="JokerPiPSize">Joker PiP Size</string>
@@ -1006,22 +1014,21 @@
 • Players are assigned a side (&lt;color=#4DA6FF&gt;&lt;b&gt;Crewmate&lt;/b&gt;&lt;/color&gt;, &lt;color=#FF3B3B&gt;&lt;b&gt;Impostor&lt;/b&gt;&lt;/color&gt;, or &lt;color=#7F7F7F&gt;&lt;b&gt;Neutral&lt;/b&gt;&lt;/color&gt;) and then choose their specific role in a randomized turn order.
 • Each player is offered 3 unique roles. Spectators are excluded from the process and do not take up pick slots.
 • If you do not pick in time, a role will be automatically assigned to you based on your assigned side.
-• By default, &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates&lt;/b&gt;&lt;/color&gt; and &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors&lt;/b&gt;&lt;/color&gt; draft from specialized sub-categories (e.g., Investigative, Power, Killing).</string>
+• By default, all players draft from the complete pool of enabled roles for their side (Crewmate, Impostor, or Neutral). Restrictive categories have been removed for a more flexible experience.</string>
 
   <!-- TOUMCE Wiki Terms - Draft Factions -->
   <string name="TOUMCETermsDraftFactionsTitle">Draft Factions</string>
   <string name="TOUMCETermsDraftFactionsInfo">Before the draft begins, players are assigned a faction that determines their available role pool.
-• &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors&lt;/b&gt;&lt;/color&gt; draft from various specialized Impostor categories.
-• &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates&lt;/b&gt;&lt;/color&gt; choose from diverse Crewmate sub-groups (e.g., Investigative, Protective, Power).
-• &lt;color=#FFD700&gt;&lt;b&gt;Random Neutral&lt;/b&gt;&lt;/color&gt; offers a balanced set of roles. By default, there is a 70% chance for 2 &lt;b&gt;Neutral Benign&lt;/b&gt; roles, 15% for &lt;b&gt;Neutral Outliner&lt;/b&gt;, and 15% for &lt;b&gt;Neutral Evil&lt;/b&gt;.
+• &lt;color=#FF3B3B&gt;&lt;b&gt;Impostors&lt;/b&gt;&lt;/color&gt; draft from the full pool of available Impostor roles.
+• &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates&lt;/b&gt;&lt;/color&gt; choose from the full pool of available Crewmate roles. If <b>Other Neutrals</b> (Benign, Evil, or Outlier) are enabled in the lobby, these roles will be mixed into the Crewmate's choice pool until global targets are met.
+• &lt;color=#FFD700&gt;&lt;b&gt;Neutral Killing&lt;/b&gt;&lt;/color&gt; draft from available killing factions.
  
-• &lt;b&gt;Neutral&lt;/b&gt; lobby settings control the &lt;b&gt;Max&lt;/b&gt; number of players assigned to the Benign, Evil, and Killing factions.
+• <b>Global Targets</b> - Lobby settings control the <b>Min/Max</b> number of players assigned to Neutral Killing and Other Neutral (Benign/Evil/Outlier) factions.
+• <b>60/40 Logic</b> - The system uses a weighted probability to favor minimum targets while allowing for occasional maximums to keep games unpredictable.
  
-If &lt;color=#FF3B3B&gt;&lt;b&gt;All Classes (Imp)&lt;/b&gt;&lt;/color&gt; or &lt;color=#4DA6FF&gt;&lt;b&gt;All Classes (Crew)&lt;/b&gt;&lt;/color&gt; is enabled, players can choose from any available category for their side.
+Drafting follows individual role chances if "Use Role Chances" is enabled, using a Weighted Shuffle.
  
-Drafting can also use individual role chances (Use Role Chances), causing roles to appear based on their lobby probabilities.
- 
-If &lt;b&gt;Merge Neutrals with Crew&lt;/b&gt; is enabled, &lt;color=#4DA6FF&gt;&lt;b&gt;Crewmates&lt;/b&gt;&lt;/color&gt; have a chance to see Neutral roles (Benign, Evil, or Outlier) in their draft pool.</string>
+If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown per turn can be strictly limited (this setting applies to <b>Crewmates only</b>).</string>
 
   <!-- TOUMCE Wiki Terms - Role Extensions -->
   <string name="TOUMCETermsRoleExtensionsTitle">Better Roles/Modifiers</string>
@@ -1035,21 +1042,13 @@ If &lt;b&gt;Merge Neutrals with Crew&lt;/b&gt; is enabled, &lt;color=#4DA6FF&gt;
   <!-- TOUMCE Wiki Terms - Game Settings -->
   <string name="TOUMCETermsGameSettingsTitle">Game Settings</string>
   <string name="TOUMCETermsGameSettingsInfo">TOUMCE introduces several global settings that change the game flow:
-• &lt;b&gt;Lock Lobby During Draft&lt;/b&gt; - Prevents new players from joining while a draft is in progress to ensure stability.
-• &lt;b&gt;Use Role Chances&lt;/b&gt; - If enabled, the probability of roles appearing in the Draft will be based on their individual 'Chance' settings in the lobby.
-• &lt;b&gt;Merge Neutrals with Crew&lt;/b&gt; - There is a chance that Neutral Benign/Evil/Outlier roles will appear in the Crewmate selection pool.
-• &lt;b&gt;Draft Timer&lt;/b&gt; - Defines how much time each player has to make their strategic selection.
-• &lt;b&gt;Reduce Killing Streak&lt;/b&gt; - Decreases the chance of players becoming a killing role again if they were one in the previous round.
-• &lt;b&gt;Impostor&lt;/b&gt; - Reduction chance for Impostors.
-• &lt;b&gt;Neutral&lt;/b&gt; - Reduction chance for Neutral Killing roles.</string>
-
-
-  <string name="All Classes (Imp)">All Classes (Imp)</string>
-  <string name="All Classes (Crew)">All Classes (Crew)</string>
-  <string name="Use Role Chances">Use Role Chances</string>
-  <string name="Merge Neutrals with Crew">Merge Neutrals with Crew</string>
-  <string name="Neutral Merge Chance">Neutral Merge Chance</string>
-  <string name="Max Neutrals in Merge">Max Neutrals in Merge</string>
+• <b>Lock Lobby During Draft</b> - Prevents new players from joining while a draft is in progress to ensure stability.
+• <b>System of Thirds</b> - A balanced pick order that distributes Impostors and Neutrals evenly across the beginning, middle, and end of the draft phase.
+• <b>Use Role Chances</b> - If enabled, the probability of roles appearing in the Draft will be based on their individual 'Chance' settings in the lobby.
+• <b>Neutrals Per Choice</b> - Controls how many Neutral roles are mixed into each Crewmate's selection pool.
+• <b>Global Neutral Limits</b> - Hard limits for the total number of Neutral roles (NK and others) allowed in a single round.
+• <b>Reduce Killing Streak</b> - Decreases the chance of players becoming a killing role again if they were one in the previous round.
+• <b>Impostor / Neutral Killing</b> - Specific reduction chances for each major killing faction.</string>
 
   <!-- Better Sonar Options -->
   <string name="ExtensionOptionBetterSonar">Better Sonar</string>
@@ -1084,7 +1083,17 @@ If &lt;b&gt;Merge Neutrals with Crew&lt;/b&gt; is enabled, &lt;color=#4DA6FF&gt;
   <string name="ExtensionOptionCompatibilityDuplicateWarnings">Show Duplicate Mod Warnings</string>
   <string name="ExtensionOptionCompatibilityDuplicateAutoKick">Auto-Kick If Duplicates Detected</string>
   <!-- Draft Mode Options -->
-  <string name="ExtensionOptionDraftMinOtherNeutrals">Min Other Neutrals</string>
-  <string name="ExtensionOptionDraftMaxOtherNeutrals">Max Other Neutrals</string>
+  <string name="Roles To Show">Roles To Show</string>
+  <string name="Time To Choose">Time To Choose</string>
+  <string name="Min Neutrals Per Choice">Min Neutrals Per Choice</string>
+  <string name="Max Neutrals Per Choice">Max Neutrals Per Choice</string>
+  <string name="Min Other Neutrals">Min Other Neutrals</string>
+  <string name="Max Other Neutrals">Max Other Neutrals</string>
+  <string name="Min Neutral Killing">Min Neutral Killing</string>
+  <string name="Max Neutral Killing">Max Neutral Killing</string>
+  <string name="Neutral Killing">Neutral Killing</string>
+  <string name="Enable Draft Mode">Enable Draft Mode</string>
+  <string name="Lock Lobby During Draft">Lock Lobby During Draft</string>
+  <string name="Use Role Chances">Use Role Chances</string>
 </resources>
 
