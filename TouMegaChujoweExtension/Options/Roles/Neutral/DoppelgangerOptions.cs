@@ -19,17 +19,3 @@ public sealed class DoppelgangerOptions : AbstractOptionGroup<DoppelgangerRole>
     [ModdedToggleOption("ExtensionOptionDoppelgangerCanVent")]
     public bool CanVent { get; set; } = true;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

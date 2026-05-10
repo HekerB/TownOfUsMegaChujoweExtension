@@ -472,7 +472,7 @@ public static class PelicanSystem
                 if (victim.TryGetModifier<DeathHandlerModifier>(out var dhMod))
                     victim.RemoveModifier(dhMod);
             }
-            catch { }
+            catch { /* ignore death handler removal errors */ }
 
             if (!victim.HasDied())
             {
@@ -513,11 +513,9 @@ public static class PelicanSystem
     {
         if (targetPosition.x < -500f || targetPosition.y < -500f)
         {
-            foreach (var kvp in OriginalPositions)
-            {
-                if (IsPositionSafe(kvp.Value, kvp.Value)) return kvp.Value;
-            }
-            return Vector2.zero;
+        var safePos = OriginalPositions.Values.FirstOrDefault(pos => IsPositionSafe(pos, pos));
+        if (safePos != default) return safePos;
+        return Vector2.zero;
         }
 
         if (IsPositionSafe(targetPosition, targetPosition)) return targetPosition;
@@ -536,10 +534,8 @@ public static class PelicanSystem
             }
         }
 
-        foreach (var kvp in OriginalPositions)
-        {
-            if (IsPositionSafe(kvp.Value, kvp.Value)) return kvp.Value;
-        }
+        var fallbackPos = OriginalPositions.Values.FirstOrDefault(pos => IsPositionSafe(pos, pos));
+        if (fallbackPos != default) return fallbackPos;
 
         try
         {
@@ -756,11 +752,11 @@ public static class PelicanSystem
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player == null) continue;
-            try { RemoveSwallowedModifier(player); } catch { }
+            try { RemoveSwallowedModifier(player); } catch { /* ignore cleanup error */ }
             player.Visible = true;
             player.moveable = true;
             RestoreFootstepsIfNeeded(player);
-            try { player.NetTransform.Halt(); } catch { }
+            try { player.NetTransform.Halt(); } catch { /* ignore halt error */ }
         }
 
         SwallowedPlayers.Clear();

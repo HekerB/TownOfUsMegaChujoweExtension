@@ -60,11 +60,11 @@ public static class FortellerObserveHintCapPatch
 
             if (hint.Contains("STRMISS"))
             {
-                reportBuilder.AppendLine($"{fallback.Replace("<player>", playerInfo.PlayerName)}\n");
+                reportBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"{fallback.Replace("<player>", playerInfo.PlayerName)}\n");
             }
             else
             {
-                reportBuilder.AppendLine($"{hint.Replace("<player>", playerInfo.PlayerName)}\n");
+                reportBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"{hint.Replace("<player>", playerInfo.PlayerName)}\n");
             }
 
             List<RoleBehaviour> roles;
@@ -91,14 +91,14 @@ public static class FortellerObserveHintCapPatch
 
             if (roles.Count != 0)
             {
-                reportBuilder.Append("(");
+                reportBuilder.Append('(');
                 for (int i = 0; i < roles.Count; i++)
                 {
                     reportBuilder.Append(MiscUtils.GetHyperlinkText(roles[i]));
                     if (i < roles.Count - 1)
                         reportBuilder.Append(", ");
                     else
-                        reportBuilder.Append(")");
+                        reportBuilder.Append(')');
                 }
             }
 

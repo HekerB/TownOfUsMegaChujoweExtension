@@ -69,9 +69,7 @@ public static class LawyerVoteBlockPatch
                     return false;
                 }
             }
-            else
-            {
-            }
+
         }
 
         CurrentVotes[localPlayerId] = targetPlayerId;

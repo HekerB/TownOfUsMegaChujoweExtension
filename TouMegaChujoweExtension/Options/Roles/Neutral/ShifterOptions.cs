@@ -41,17 +41,3 @@ public enum ShiftedBecomesOption
     Crewmate,
     Shifter
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

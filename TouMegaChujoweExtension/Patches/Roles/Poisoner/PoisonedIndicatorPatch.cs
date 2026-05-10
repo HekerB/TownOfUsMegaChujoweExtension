@@ -25,7 +25,7 @@ public static class PoisonedIndicatorPatch
             if (player.cosmetics != null && player.cosmetics.nameText != null)
             {
                 var name = player.cosmetics.nameText.text;
-                if (!name.Contains("%"))
+                if (!name.Contains('%'))
                 {
                     player.cosmetics.nameText.text = "<color=#00FF00>" + name + " %</color>";
                 }
@@ -39,7 +39,7 @@ public static class PoisonedIndicatorPatch
                     if (pva.NameText == null) continue;
 
                     var meetName = pva.NameText.text;
-                    if (!meetName.Contains("%"))
+                    if (!meetName.Contains('%'))
                     {
                         pva.NameText.text = "<color=#00FF00>" + meetName + " %</color>";
                     }

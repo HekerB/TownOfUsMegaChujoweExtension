@@ -109,7 +109,7 @@ public sealed class InjectedConfusedModifier : DisabledModifier, IInjectedModifi
         }
     }
 
-    private void RemoveHallucinatoryEffects()
+    private static void RemoveHallucinatoryEffects()
     {
         foreach (var player in PlayerControl.AllPlayerControls.ToArray().Where(x => !x.HasDied()))
         {

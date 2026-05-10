@@ -71,9 +71,8 @@ public static class PoisonDeathAnimSystem
 
         visualClone.SetActive(true);
         
-        if (ActiveClones.ContainsKey(targetId))
+        if (ActiveClones.TryGetValue(targetId, out var old))
         {
-            var old = ActiveClones[targetId];
             if (old != null) UnityEngine.Object.Destroy(old);
         }
         ActiveClones[targetId] = visualClone;
@@ -98,9 +97,9 @@ public static class PoisonDeathAnimSystem
 
     public static void CleanupAll()
     {
-        foreach (var kvp in ActiveClones)
+        foreach (var clone in ActiveClones.Values)
         {
-            if (kvp.Value != null) UnityEngine.Object.Destroy(kvp.Value);
+            if (clone != null) UnityEngine.Object.Destroy(clone);
         }
         ActiveClones.Clear();
     }

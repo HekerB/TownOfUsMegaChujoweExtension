@@ -47,19 +47,3 @@ public enum ReportRangeType
     VeryShort = 1,
     Short = 2
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

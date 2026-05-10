@@ -245,25 +245,16 @@ public static class SonarBetterSonarPatch
             .Where(mod => mod.Owner == PlayerControl.LocalPlayer)
             .ToList();
 
-        foreach (var tracker in localTrackers)
-        {
-            if (tracker != null)
-            {
-                tracker.Owner.RemoveModifier(tracker);
-            }
-        }
+        localTrackers.ForEach(tracker => tracker?.Owner.RemoveModifier(tracker));
 
         ClearIcons();
     }
 
     public static void ClearIcons()
     {
-        foreach (var icon in TrackerIcons.Values)
+        foreach (var icon in TrackerIcons.Values.Where(icon => icon != null))
         {
-            if (icon != null)
-            {
-                Object.Destroy(icon);
-            }
+            Object.Destroy(icon);
         }
         TrackerIcons.Clear();
         PositionHistory.Clear();

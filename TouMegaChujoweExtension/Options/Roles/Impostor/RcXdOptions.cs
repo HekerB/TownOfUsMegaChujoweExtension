@@ -35,18 +35,3 @@ public sealed class RcXdOptions : AbstractOptionGroup<RcXdRole>
     public bool CanVent { get; set; } = true;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -50,18 +50,3 @@ public sealed class HackerOptions : AbstractOptionGroup<HackerRole>
 
     public bool JamEnabled => InitialJamCharges > 0f;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

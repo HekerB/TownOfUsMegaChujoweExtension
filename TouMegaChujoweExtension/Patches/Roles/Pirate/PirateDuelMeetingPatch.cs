@@ -87,48 +87,36 @@ public static class PirateDuelMeetingPatch
 
             var piratePlayer = activePirate.Player;
             var modifierComponent = piratePlayer.GetComponent<ModifierComponent>();
-            if (modifierComponent != null)
+            if (modifierComponent != null && modifierComponent.ActiveModifiers.Any(mod => mod is JailedModifier))
             {
-                foreach (var mod in modifierComponent.ActiveModifiers)
+                activePirate.DuelTargetId = byte.MaxValue;
+                activePirate.ResetDuelState();
+
+                if (piratePlayer.AmOwner)
                 {
-                    if (mod is JailedModifier)
-                    {
-                        activePirate.DuelTargetId = byte.MaxValue;
-                        activePirate.ResetDuelState();
-
-                        if (piratePlayer.AmOwner)
-                        {
-                            PirateDuelSystem.FlashScreen(Color.gray, 0.5f, 0.3f);
-                            Coroutines.Start(ShowJailedNotification());
-                        }
-
-                        return;
-                    }
+                    PirateDuelSystem.FlashScreen(Color.gray, 0.5f, 0.3f);
+                    Coroutines.Start(ShowJailedNotification());
                 }
+
+                return;
             }
 
             var duelTarget = MiscUtils.PlayerById(activePirate.DuelTargetId);
             if (duelTarget != null)
             {
                 var targetModComponent = duelTarget.GetComponent<ModifierComponent>();
-                if (targetModComponent != null)
+                if (targetModComponent != null && targetModComponent.ActiveModifiers.Any(mod => mod is JailedModifier))
                 {
-                    foreach (var mod in targetModComponent.ActiveModifiers)
+                    activePirate.DuelTargetId = byte.MaxValue;
+                    activePirate.ResetDuelState();
+
+                    if (piratePlayer.AmOwner)
                     {
-                        if (mod is JailedModifier)
-                        {
-                            activePirate.DuelTargetId = byte.MaxValue;
-                            activePirate.ResetDuelState();
-
-                            if (piratePlayer.AmOwner)
-                            {
-                                PirateDuelSystem.FlashScreen(Color.gray, 0.5f, 0.3f);
-                                Coroutines.Start(ShowTargetJailedNotification());
-                            }
-
-                            return;
-                        }
+                        PirateDuelSystem.FlashScreen(Color.gray, 0.5f, 0.3f);
+                        Coroutines.Start(ShowTargetJailedNotification());
                     }
+
+                    return;
                 }
             }
 
@@ -201,7 +189,7 @@ public static class PirateDuelMeetingPatch
 
             area.NameText.color = PirateTargetColor;
 
-            if (!area.NameText.text.StartsWith("☠ "))
+            if (!area.NameText.text.StartsWith("☠ ", StringComparison.Ordinal))
             {
                 area.NameText.text = "☠ " + area.NameText.text;
             }

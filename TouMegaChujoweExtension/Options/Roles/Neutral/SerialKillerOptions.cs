@@ -67,17 +67,3 @@ public enum VentKillTargets
     ImpNeutrals,
     Any
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

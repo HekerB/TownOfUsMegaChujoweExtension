@@ -25,15 +25,3 @@ public static class DraftGameModePatch
     {
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

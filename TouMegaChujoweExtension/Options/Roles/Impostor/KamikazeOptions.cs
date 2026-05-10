@@ -26,18 +26,3 @@ public class KamikazeOptions : AbstractOptionGroup<KamikazeRole>
     public bool CanVent { get; set; } = true;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

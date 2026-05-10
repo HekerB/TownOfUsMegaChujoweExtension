@@ -22,13 +22,3 @@ public sealed class ImpostorModifierOptions : AbstractOptionGroup
             Visible = () => OptionGroupSingleton<ImpostorModifierOptions>.Instance.LuckyAmount > 0
         };
 }
-
-
-
-
-
-
-
-
-
-

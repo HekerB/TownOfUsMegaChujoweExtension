@@ -30,14 +30,3 @@ public sealed class VampireExtendedOptions : AbstractOptionGroup<VampireRole>
     };
     public bool OnlyOgCanSabotage => OnlyOgCanSabotageOption.Value;
 }
-
-
-
-
-
-
-
-
-
-
-

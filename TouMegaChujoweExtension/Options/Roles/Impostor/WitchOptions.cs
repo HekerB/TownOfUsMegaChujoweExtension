@@ -25,18 +25,3 @@ public sealed class WitchOptions : AbstractOptionGroup<WitchRole>
     [ModdedToggleOption("ExtensionOptionWitchCanSpellFirstRound")]
     public bool CanSpellFirstRound { get; set; } = true;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

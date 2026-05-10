@@ -49,17 +49,3 @@ public enum LawyerWinMode
     WinWithClient,
     StealWin
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

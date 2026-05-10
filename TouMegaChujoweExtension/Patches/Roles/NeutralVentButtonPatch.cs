@@ -31,12 +31,9 @@ public static class NeutralVentButtonPatch
             customSprite = TownOfUs.Assets.TouNeutAssets.WerewolfVentSprite.LoadAsset();
         }
 
-        if (customSprite != null && __instance.graphic != null)
+        if (customSprite != null && __instance.graphic != null && __instance.graphic.sprite != customSprite)
         {
-            if (__instance.graphic.sprite != customSprite)
-            {
-                __instance.graphic.sprite = customSprite;
-            }
+            __instance.graphic.sprite = customSprite;
         }
     }
 

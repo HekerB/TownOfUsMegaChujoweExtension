@@ -71,16 +71,3 @@ private static void ApplyDraftRoles()
     DraftSystem.DraftActiveThisRound = false;
 }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

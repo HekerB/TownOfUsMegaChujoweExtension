@@ -19,18 +19,3 @@ public sealed class OutlawOptions : AbstractOptionGroup<OutlawRole>
     [ModdedNumberOption("ExtensionOptionOutlawBonusKills", 1f, 5f, 1f, MiraNumberSuffixes.None)]
     public float BonusKills { get; set; } = 1f;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

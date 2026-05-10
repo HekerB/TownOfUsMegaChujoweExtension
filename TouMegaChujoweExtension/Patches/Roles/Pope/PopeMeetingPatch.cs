@@ -24,14 +24,13 @@ public static class PopeMeetingPatch
         var local = PlayerControl.LocalPlayer;
         if (local == null || local.Data == null) return;
 
-        var genOpt = OptionGroupSingleton<ExtensionGeneralOptions>.Instance;
-        bool isGhost = local.Data.IsDead;
+
 
 
         foreach (var pva in __instance.playerStates)
         {
             if (pva?.NameText == null) continue;
-            var target = MiscUtils.PlayerById(pva.TargetPlayerId);
+
 
 
             // Symbols are now handled by UpdateRoleNameText calling UpdateTargetSymbols/UpdateProtectionSymbols

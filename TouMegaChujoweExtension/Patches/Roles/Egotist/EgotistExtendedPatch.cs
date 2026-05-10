@@ -152,7 +152,7 @@ public static class EgotistExtendedPatch
         if (timerText == null || timerText.gameObject == null) return;
         timerText.gameObject.SetActive(true);
         timerText.enabled = true;
-        timerText.text = Mathf.CeilToInt(seconds).ToString();
+        timerText.text = Mathf.CeilToInt(seconds).ToString(System.Globalization.CultureInfo.InvariantCulture);
         timerText.color = Color.white;
     }
 

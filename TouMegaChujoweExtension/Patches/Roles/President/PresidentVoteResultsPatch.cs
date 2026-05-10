@@ -18,10 +18,7 @@ public static class PresidentVoteResultsHandler
             }
         }
 
-        if (presidentPlayers.Count == 0)
-        {
-            return;
-        }
+
     }
 }
 

@@ -37,18 +37,3 @@ public sealed class WraithOptions : AbstractOptionGroup<WraithRole>
         Visible = () => OptionGroupSingleton<WraithOptions>.Instance.LanternEnabled
     };
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

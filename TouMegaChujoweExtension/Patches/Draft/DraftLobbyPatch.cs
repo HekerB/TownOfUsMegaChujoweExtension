@@ -1276,8 +1276,8 @@ public static class DraftLobbyPatch
             yield return null;
         }
 
-        foreach (var data in buttonData)
-            if (data.obj != null) Object.Destroy(data.obj);
+        foreach (var obj in buttonData.Select(data => data.obj).Where(obj => obj != null))
+            Object.Destroy(obj);
             
         _roleButtonObjects.Clear();
         _buttonRefs.Clear();
@@ -1763,7 +1763,7 @@ public static class DraftLobbyPatch
                 float jump = Mathf.Abs(Mathf.Sin(Time.time * 10f)) * 0.15f;
                 string voffset = $"<voffset={jump:F2}em>";
 
-                _playerListBuilder.Append("<color=").Append(timerColor).Append(">").Append(voffset).Append(">>").Append((int)timeLeft).Append("</voffset></color>")
+                _playerListBuilder.Append("<color=").Append(timerColor).Append('>').Append(voffset).Append(">>").Append((int)timeLeft).Append("</voffset></color>")
                                  .Append("<pos=12%><color=#FFFFFF>").Append(name).Append("</color><pos=35%>: <color=").Append(timerColor).Append(">PICKING").Append(dots).Append("</color>\n");
             }
             else
@@ -1817,11 +1817,7 @@ public static class DraftLobbyPatch
         float duration = 0.5f;
         float elapsed = 0f;
 
-        var others = new List<GameObject>();
-        foreach (var obj in _roleButtonObjects)
-        {
-            if (obj != selected && obj != null) others.Add(obj);
-        }
+        var others = _roleButtonObjects.Where(obj => obj != selected && obj != null).ToList();
 
         // Store original data for the selected button
         ButtonRefs selectedRefs = null;
@@ -2084,8 +2080,13 @@ public static class DraftLobbyPatch
             for (int y = 0; y < h; y++)
             {
                 float alpha = 1f;
-                float cx = (x < radius) ? radius : (x > w - radius - 1) ? w - radius - 1 : x;
-                float cy = (y < radius) ? radius : (y > h - radius - 1) ? h - radius - 1 : y;
+                float cx = x;
+                if (x < radius) cx = radius;
+                else if (x > w - radius - 1) cx = (float)w - radius - 1;
+
+                float cy = y;
+                if (y < radius) cy = radius;
+                else if (y > h - radius - 1) cy = (float)h - radius - 1;
                 
                 if (x < radius || x > w - radius - 1 || y < radius || y > h - radius - 1)
                 {
@@ -2118,7 +2119,7 @@ public static class DraftLobbyPatch
             if (role?.RoleIconSolid != null)
                 return role.RoleIconSolid;
         }
-        catch { }
+        catch (System.Exception) { /* ignore icon loading error */ }
         return null;
     }
 
@@ -2240,7 +2241,7 @@ public static class DraftLobbyPatch
         labelObj.transform.localPosition = new Vector3(0.15f, 0f, -0.02f);
         labelObj.layer = LayerMask.NameToLayer("UI");
 
-        string labelText = isRandom ? "RANDOM" : role.GetRoleName().ToUpper();
+        string labelText = isRandom ? "RANDOM" : role.GetRoleName().ToUpper(System.Globalization.CultureInfo.InvariantCulture);
         if (!isRandom && role != null)
         {
             try
@@ -2454,7 +2455,7 @@ public static class DraftLobbyPatch
  
     private static void PlayPickSound()
     {
-        try { SoundManager.Instance.PlaySound(TouExtensionAudio.DraftPickSound.LoadAsset(), false); } catch { }
+        try { SoundManager.Instance.PlaySound(TouExtensionAudio.DraftPickSound.LoadAsset(), false); } catch (System.Exception) { /* ignore sound error */ }
     }
 
     private static AudioClip FindHoverSound()
@@ -2465,7 +2466,7 @@ public static class DraftLobbyPatch
         foreach (var obj in allClips)
         {
             var clip = obj.Cast<AudioClip>();
-            string n = clip.name.ToLower();
+            string n = clip.name.ToLower(System.Globalization.CultureInfo.InvariantCulture);
             
             // "rollover" is the standard name for hover sounds in AU
             if (n.Contains("rollover") || n.Contains("buttonhover") || n.Contains("ui_hover"))
@@ -2756,8 +2757,8 @@ public static class DraftLobbyPatch
 
     private static void ClearRoleButtons()
     {
-        foreach (var obj in _roleButtonObjects)
-            if (obj != null) Object.Destroy(obj);
+        foreach (var obj in _roleButtonObjects.Where(obj => obj != null))
+            Object.Destroy(obj);
         _roleButtonObjects.Clear();
         _buttonRefs.Clear();
         _randomButtonContainer = null;
@@ -2913,26 +2914,9 @@ public static class DraftLobbyPatch
     [HarmonyPrefix]
     public static void ChatControllerUpdatePrefix(ChatController __instance)
     {
-        if (_draftInProgress && Input.GetKeyDown(KeyCode.Return))
+        if (_draftInProgress && Input.GetKeyDown(KeyCode.Return) && !__instance.IsOpenOrOpening)
         {
-            if (!__instance.IsOpenOrOpening)
-            {
-                __instance.SetVisible(true);
-            }
+            __instance.SetVisible(true);
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

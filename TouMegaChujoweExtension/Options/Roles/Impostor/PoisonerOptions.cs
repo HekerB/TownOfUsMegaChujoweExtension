@@ -28,18 +28,3 @@ public sealed class PoisonerOptions : AbstractOptionGroup<PoisonerRole>
     [ModdedNumberOption("ExtensionOptionPoisonerVineRange", 1f, 15f, 0.5f, MiraNumberSuffixes.None)]
     public float VineRange { get; set; } = 5f;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -31,13 +31,3 @@ public sealed class NeutralModifierOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<NeutralModifierOptions>.Instance.DeathNoteAmount > 0
     };
 }
-
-
-
-
-
-
-
-
-
-

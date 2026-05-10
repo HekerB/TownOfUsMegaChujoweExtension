@@ -40,17 +40,3 @@ public sealed class VultureOptions : AbstractOptionGroup<VultureRole>
         new("ExtensionOptionVultureOnLoseBecomes", (int)BecomeOptions.Crew, typeof(BecomeOptions),
             ["CrewmateKeyword", "TouRoleAmnesiac", "TouRoleSurvivor", "TouRoleMercenary", "TouRoleJester"]);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

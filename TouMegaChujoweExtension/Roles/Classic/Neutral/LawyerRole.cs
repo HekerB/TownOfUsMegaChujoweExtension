@@ -572,19 +572,16 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         }
 
         var lawyerOptions = OptionGroupSingleton<LawyerOptions>.Instance;
-        bool settingEnabled = false;
         if (lawyerOptions != null)
         {
             try
             {
-                settingEnabled = lawyerOptions.ObjectionPreventsSameVote;
+                _ = lawyerOptions.ObjectionPreventsSameVote;
             }
             catch (Exception)
             {
+                /* Option access failed - non-critical */
             }
-        }
-        else
-        {
         }
 
         foreach (var voteArea in meeting.playerStates)
@@ -624,6 +621,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                         }
                         else
                         {
+                            /* Current vote not found */
                         }
                     }
                     
@@ -633,6 +631,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                     }
                     else
                     {
+                        /* Vote to store was skip/null */
                     }
                 }
 

@@ -33,17 +33,3 @@ public enum PirateWinMode
     PirateWins,
     PirateWinsWithOthers
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -34,13 +34,10 @@ public static class RcXdPlayerControlPatch
         if (!__instance.AmOwner) return;
         if (__instance.Data?.Role is not RcXdRole role) return;
 
-        if (role.ActiveCar != null && role.ActiveCar.IsDriving)
+        if (role.ActiveCar != null && role.ActiveCar.IsDriving && __instance.moveable)
         {
-            if (__instance.moveable)
-            {
-                __instance.moveable = false;
-                _weSetMoveable = true;
-            }
+            __instance.moveable = false;
+            _weSetMoveable = true;
         }
     }
 
@@ -50,13 +47,10 @@ public static class RcXdPlayerControlPatch
         if (!__instance.AmOwner) return;
         if (__instance.Data?.Role is not RcXdRole role) return;
 
-        if (role.ActiveCar == null || !role.ActiveCar.IsDriving)
+        if ((role.ActiveCar == null || !role.ActiveCar.IsDriving) && _weSetMoveable)
         {
-            if (_weSetMoveable)
-            {
-                __instance.moveable = true;
-                _weSetMoveable = false;
-            }
+            __instance.moveable = true;
+            _weSetMoveable = false;
         }
     }
 }

@@ -47,13 +47,3 @@ public sealed class UniversalModifierOptions : AbstractOptionGroup
             Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.ChildAmount > 0
         };
 }
-
-
-
-
-
-
-
-
-
-

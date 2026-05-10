@@ -14,14 +14,3 @@ public sealed class ExtensionGeneralOptions : AbstractOptionGroup
     [ModdedToggleOption("ExtensionOptionGeneralLoversChat")]
     public bool LoversChat { get; set; } = true;
 }
-
-
-
-
-
-
-
-
-
-
-

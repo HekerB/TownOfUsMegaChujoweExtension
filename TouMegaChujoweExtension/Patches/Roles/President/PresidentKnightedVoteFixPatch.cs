@@ -18,15 +18,7 @@ public static class PresidentKnightedVoteFixPatch
         if (@event.VoteData.Owner.Data.Role is PresidentRole president)
         {
             // Robust check for the Knighted modifier
-            bool isKnight = false;
-            foreach (var mod in @event.VoteData.Owner.GetModifiers<BaseModifier>()) 
-            {
-                if (mod.GetType().Name.Contains("KnightedModifier")) 
-                {
-                    isKnight = true;
-                    break;
-                }
-            }
+            bool isKnight = @event.VoteData.Owner.GetModifiers<BaseModifier>().Any(mod => mod.GetType().Name.Contains("KnightedModifier"));
 
             // If the President is a Knight AND hasn't used their bonus yet this meeting
             if (isKnight && !president.HasCastKnightedVote)

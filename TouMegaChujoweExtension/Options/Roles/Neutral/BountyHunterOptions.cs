@@ -37,17 +37,3 @@ public enum BountyHunterWinMode
     SoloWin,
     WinWithWinners
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

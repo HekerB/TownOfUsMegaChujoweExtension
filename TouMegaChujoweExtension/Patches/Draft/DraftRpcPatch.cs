@@ -36,16 +36,3 @@ public static class DraftRpcPatch
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

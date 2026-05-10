@@ -60,6 +60,17 @@ public sealed class AstralPhaseModifier : ConcealedModifier, IVisualAppearance
 
     public override void OnMeetingStart()
     {
+        if (Player.AmOwner && !Player.Data.IsDead)
+        {
+            var options = OptionGroupSingleton<AstralOptions>.Instance;
+            var astralRole = Player.Data.Role as TouMegaChujoweExtension.Roles.Classic.Impostor.AstralRole;
+            bool killMade = astralRole != null && astralRole.KillMadeDuringPhase;
+
+            if (options.DieIfNoKillDuringPhase && !killMade)
+            {
+                Player.RpcSpecialMurder(Player, causeOfDeath: "AstralShatter");
+            }
+        }
         Player.RemoveModifier(this);
     }
 }

@@ -14,7 +14,7 @@ public static class PelicanFootstepsPatch
             if (__instance.Player != null && PelicanSystem.IsSwallowed(__instance.Player.PlayerId))
                 return false;
         }
-        catch { }
+        catch { /* ignore */ }
 
         return true;
     }

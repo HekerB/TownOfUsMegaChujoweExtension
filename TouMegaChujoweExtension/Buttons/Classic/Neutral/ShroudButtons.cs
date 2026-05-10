@@ -63,6 +63,7 @@ public sealed class ShroudKillButton : TownOfUsKillRoleButton<ShroudRole, Player
         player.RpcSpecialMurder(Target, causeOfDeath: "Shroud");
 
         player.SetKillTimer(Cooldown);
+        
         if (OptionGroupSingleton<ShroudOptions>.Instance.SharedCooldown)
             ShroudAbilityButton.SyncInternalTimer(Cooldown);
     }
@@ -180,20 +181,3 @@ public sealed class ShroudAbilityButton : TownOfUsKillRoleButton<ShroudRole, Pla
             instance.Timer = timer;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

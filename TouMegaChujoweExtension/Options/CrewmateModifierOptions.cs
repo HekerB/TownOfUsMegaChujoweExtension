@@ -31,13 +31,3 @@ public sealed class CrewmateModifierOptions : AbstractOptionGroup
             Visible = () => OptionGroupSingleton<CrewmateModifierOptions>.Instance.PublicityAmount > 0
         };
 }
-
-
-
-
-
-
-
-
-
-

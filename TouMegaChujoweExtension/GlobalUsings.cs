@@ -1,3 +1,4 @@
+global using System.Linq;
 global using TouMegaChujoweExtension.Assets;
 global using TouMegaChujoweExtension.Buttons.Classic.Crewmate;
 global using TouMegaChujoweExtension.Buttons.Classic.Impostor;

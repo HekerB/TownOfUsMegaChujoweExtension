@@ -18,17 +18,3 @@ public sealed class PelicanOptions : AbstractOptionGroup<PelicanRole>
     [ModdedToggleOption("ExtensionOptionPelicanCanVent")]
     public bool CanVent { get; set; } = false;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

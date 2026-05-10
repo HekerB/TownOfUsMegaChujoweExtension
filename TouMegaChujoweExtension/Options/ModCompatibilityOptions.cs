@@ -14,13 +14,3 @@ public sealed class ModCompatibilityOptions : AbstractOptionGroup
     [ModdedToggleOption("ExtensionOptionCompatibilityDuplicateAutoKick")]
     public bool DuplicateAutoKick { get; set; } = true;
 }
-
-
-
-
-
-
-
-
-
-

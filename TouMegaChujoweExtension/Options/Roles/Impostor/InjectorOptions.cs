@@ -284,18 +284,3 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
         return new[] { $"Effect Chances: {string.Join(", ", enabledEffects)}" };
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

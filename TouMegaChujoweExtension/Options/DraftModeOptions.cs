@@ -81,13 +81,3 @@ public sealed class DraftModeOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 }
-
-
-
-
-
-
-
-
-
-

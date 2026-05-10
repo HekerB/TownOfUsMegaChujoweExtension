@@ -1057,13 +1057,9 @@ public static class ClassicAssassinSystem
                     continue;
                 }
 
-                if (local.Data.Role is DoomsayerRole doomsayer)
+                if (local.Data.Role is DoomsayerRole doomsayer && IsExempt(voteArea, doomsayer))
                 {
-                    if (IsExempt(voteArea, doomsayer))
-                    {
-                        HideSingle(targetId);
-                    }
-
+                    HideSingle(targetId);
                 }
                 
                 // If we reach here, it means they are a guesser (e.g. Jailor) but we don't have custom logic for them yet
@@ -1110,6 +1106,7 @@ public static class ClassicAssassinSystem
             {
                 if (!_screenFields.TryGetValue(type, out var field))
                 {
+                    // Accessibility bypass is safe here as we are interacting with custom role classes in the same mod or base mod
                     field = type.GetField("guessingScreen", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                     if (field != null) _screenFields[type] = field;
                 }
@@ -1130,6 +1127,7 @@ public static class ClassicAssassinSystem
                 // Force an update of the guessing screen using cached methods
                 if (!_refreshMethods.TryGetValue(screenType, out var methods))
                 {
+                    // Accessibility bypass is safe here to ensure all potential refresh methods are triggered for UI sync
                     var flags = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
                     var list = new List<MethodInfo>();
                     string[] names = { "UpdatePlayers", "UpdateButtons", "Update", "OnEnable" };

@@ -56,12 +56,9 @@ public static class SerialKillerVentPatches
             if (SerialKillerVentKillSystem.TryConsumeEscapeVentUsage(player.PlayerId))
             {
                 // If we have no more usages left, we lose the ability to vent
-                if (!SerialKillerVentKillSystem.HasEscapeVentUsages(player.PlayerId))
+                if (!SerialKillerVentKillSystem.HasEscapeVentUsages(player.PlayerId) && !player.HasModifier<SerialKillerNoVentModifier>())
                 {
-                    if (!player.HasModifier<SerialKillerNoVentModifier>())
-                    {
-                        player.AddModifier<SerialKillerNoVentModifier>();
-                    }
+                    player.AddModifier<SerialKillerNoVentModifier>();
                 }
             }
         }
