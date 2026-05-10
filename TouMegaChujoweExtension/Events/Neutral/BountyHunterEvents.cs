@@ -1,15 +1,11 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Modules;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Roles.Neutral;
-using TownOfUs.Modifiers;
-using TownOfUs.Utilities;
 using TownOfUs.Events;
+using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Events.Neutral;
@@ -82,3 +78,16 @@ public static class BountyHunterEvents
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

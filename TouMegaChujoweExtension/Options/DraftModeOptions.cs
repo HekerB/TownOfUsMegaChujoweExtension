@@ -1,6 +1,6 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 
 namespace TouMegaChujoweExtension.Options;
@@ -81,3 +81,13 @@ public sealed class DraftModeOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 }
+
+
+
+
+
+
+
+
+
+

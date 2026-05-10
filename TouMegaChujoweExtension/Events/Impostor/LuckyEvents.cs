@@ -1,7 +1,6 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Modifiers.Impostor;
 
 namespace TouMegaChujoweExtension.Events.Impostor;
 
@@ -22,3 +21,15 @@ public static class LuckyEvents
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

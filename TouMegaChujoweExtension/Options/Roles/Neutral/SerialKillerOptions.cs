@@ -1,8 +1,7 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
@@ -17,12 +16,12 @@ public sealed class SerialKillerOptions : AbstractOptionGroup<SerialKillerRole>
     [ModdedToggleOption("ExtensionOptionSerialKillerManiacMode")]
     public bool ManiacMode { get; set; } = true;
 
-    public ModdedNumberOption ManiacTimer { get; } = new("ExtensionOptionSerialKillerManiacTimer", 40f, 5f, 60f, 5f, MiraNumberSuffixes.Seconds, "0.0")
+    public ModdedNumberOption ManiacTimer { get; } = new("ExtensionOptionSerialKillerManiacTimer", 45f, 5f, 60f, 5f, MiraNumberSuffixes.Seconds, "0.0")
     {
         Visible = () => OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacMode
     };
 
-    public ModdedNumberOption ManiacCooldown { get; } = new("ExtensionOptionSerialKillerManiacCooldown", 19f, 0f, 30f, 0.5f, MiraNumberSuffixes.Seconds, "0.0")
+    public ModdedNumberOption ManiacCooldown { get; } = new("ExtensionOptionSerialKillerManiacCooldown", 20f, 0f, 30f, 0.5f, MiraNumberSuffixes.Seconds, "0.0")
     {
         Visible = () => OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacMode
     };
@@ -48,7 +47,7 @@ public sealed class SerialKillerOptions : AbstractOptionGroup<SerialKillerRole>
         Visible = () => OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacMode && OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacTimerReductionEnabled
     };
 
-    public ModdedNumberOption ManiacTimerLimit { get; } = new("ExtensionOptionSerialKillerManiacTimerLimit", 30f, 15f, 60f, 1f, MiraNumberSuffixes.Seconds)
+    public ModdedNumberOption ManiacTimerLimit { get; } = new("ExtensionOptionSerialKillerManiacTimerLimit", 27.5f, 15f, 60f, 1f, MiraNumberSuffixes.Seconds)
     {
         Visible = () => OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacMode && OptionGroupSingleton<SerialKillerOptions>.Instance.ManiacTimerReductionEnabled
     };
@@ -68,3 +67,17 @@ public enum VentKillTargets
     ImpNeutrals,
     Any
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

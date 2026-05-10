@@ -1,16 +1,11 @@
 using MiraAPI.GameEnd;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.GameOver;
-using TouMegaChujoweExtension.Modules;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Roles.Neutral;
-using TouMegaChujoweExtension.Utilities;
+using TownOfUs.GameOver;
 using TownOfUs.Interfaces;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
-using TownOfUs.GameOver;
 
 namespace TouMegaChujoweExtension.Patches.WinConditions;
 
@@ -256,3 +251,17 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
 
     #endregion
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

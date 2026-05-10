@@ -1,16 +1,14 @@
-using HarmonyLib;
 using AmongUs.GameOptions;
+using HarmonyLib;
 using MiraAPI.GameOptions;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
+using MiraAPI.Modifiers;
+using MiraAPI.Utilities;
+using System.Linq;
+using TownOfUs.Extensions;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
-using TownOfUs.Extensions;
-using MiraAPI.Utilities;
-using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Patches.Neutral;
 using UnityEngine;
-using System.Linq;
 
 namespace TouMegaChujoweExtension.Patches.UI;
 
@@ -147,3 +145,16 @@ public static class RoleUIExtensionPatch
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

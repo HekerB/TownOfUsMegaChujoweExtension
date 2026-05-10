@@ -1,10 +1,9 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Modifiers.Impostor;
 using UnityEngine;
 
-namespace TouMegaChujoweExtension.Options.Modifiers;
+namespace TouMegaChujoweExtension.Options.Modifiers.Impostor;
 
 public sealed class LuckyModifierOptions : AbstractOptionGroup<LuckyModifier>
 {
@@ -19,3 +18,16 @@ public sealed class LuckyModifierOptions : AbstractOptionGroup<LuckyModifier>
     public ModdedNumberOption LuckyMaxCooldown { get; } =
         new("ExtensionModifierLuckyMaxCooldown", 50f, 0f, 60f, 1f, MiraNumberSuffixes.Seconds);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,10 +1,7 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -60,3 +57,15 @@ public static class PirateEvents
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -96,3 +96,13 @@ public static class TouExtensionAnims
     "TouMegaChujoweExtension.Resources.Anims.Joker_PIP_Border.png",
     3, 1, 100f);
 }
+
+
+
+
+
+
+
+
+
+

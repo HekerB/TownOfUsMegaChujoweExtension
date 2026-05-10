@@ -1,11 +1,8 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Player;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Assets;
 using TownOfUs.Events;
 using TownOfUs.Modifiers;
@@ -111,15 +108,29 @@ public static class DoppelgangerEvents
                 player.RemoveModifier(disguise);
             }
 
-            if (OptionGroupSingleton<DoppelgangerOptions>.Instance.StealsPerRound)
+            var role = player.GetRole<DoppelgangerRole>();
+            if (role != null)
             {
-                var role = player.GetRole<DoppelgangerRole>();
-                if (role != null)
-                {
-                    var maxSteals = (int)OptionGroupSingleton<DoppelgangerOptions>.Instance.MaxSteals;
-                    role.RemainingIdentityThefts = maxSteals == 0 ? -1 : maxSteals;
-                }
+                var maxSteals = (int)OptionGroupSingleton<DoppelgangerOptions>.Instance.MaxSteals;
+                role.RemainingIdentityThefts = maxSteals == 0 ? -1 : maxSteals;
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

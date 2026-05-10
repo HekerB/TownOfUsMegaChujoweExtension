@@ -60,6 +60,7 @@
   <string name="ExtensionRoleTrapperPlaced">Trapped a vent in &lt;room&gt;!</string>
   <string name="ExtensionRoleTrapperTriggered">Your trap was triggered in &lt;room&gt;!</string>
   <string name="ExtensionRoleTrapperCaught">You were caught in a trap in &lt;room&gt;!</string>
+  <string name="ExtensionRoleTrapperTabHeader">Active Traps:</string>
 
   <!-- Trapper Options -->
   <string name="ExtensionOptionTrapperTrapCooldown">Trap Cooldown</string>
@@ -461,13 +462,13 @@
   
   <!-- RC-XD Role -->
   <string name="ExtensionRoleRcXd">RC-XD</string>
-  <string name="ExtensionRoleRcXdIntroBlurb">Steer a bomb-car and destroy the crew.</string>
-  <string name="ExtensionRoleRcXdTabDescription">Deploy an RC car, steer it with arrow names, and detonate it near enemies.</string>
-  <string name="ExtensionRoleRcXdWikiDescription">As an RC-XD, you can launch a mini car from CALL OF DUTY. This car is a bomb you control, and you can detonate it at any moment.</string>
+  <string name="ExtensionRoleRcXdIntroBlurb">Steer a bomb-car to destroy the crew.</string>
+  <string name="ExtensionRoleRcXdTabDescription">Deploy an RC car and detonate it near enemies.</string>
+  <string name="ExtensionRoleRcXdWikiDescription">The RC-XD is an Impostor Power role that can deploy and detonate an RC-XD car to kill players around the map. Use arrow keys to steer it and detonate near enemies.</string>
   <string name="ExtensionRoleRcXdDeploy">Deploy</string>
-  <string name="ExtensionRoleRcXdDeployWikiDescription">Deploy remote controlled car, then you can drive it using arrows nearby enemies and detonate it!</string>
+  <string name="ExtensionRoleRcXdDeployWikiDescription">Deploy an RC car to steer it towards targets.</string>
   <string name="ExtensionRoleRcXdDetonate">Detonate</string>
-  <string name="ExtensionRoleRcXdDetonateWikiDescription">Detonate your RC car nearby players to kill them.</string>
+  <string name="ExtensionRoleRcXdDetonateWikiDescription">Detonate your RC car to kill nearby players.</string>
 
   <!-- RC-XD Options -->
   <string name="ExtensionOptionRcXdDeployCooldown">Deploy Cooldown</string>
@@ -479,6 +480,30 @@
   <string name="ExtensionOptionRcXdCanVent">Can Vent</string>
   <string name="ExtensionOptionRcXdMaxDeploys">Max Deploys</string>
   <string name="ExtensionOptionRcXdCanUseInFirstRound">Can use in first round</string>
+  <string name="ExtensionOptionRcXdAllowEarlyDetonation">Allow Early Detonation</string>
+
+  <!-- Astral Role -->
+  <string name="ExtensionRoleAstral">Astral</string>
+  <string name="ExtensionRoleAstralIntroBlurb">Phase through walls and return to your start position.</string>
+  <string name="ExtensionRoleAstralTabDescription">Phase through walls and teleport back. You must kill someone to survive!</string>
+  <string name="ExtensionRoleAstralWikiDescription">The Astral is an Impostor Concealing role that can enter an astral state. In this state, you can walk through walls. When the phase ends, you are teleported back to where you started. If configured, failing to kill someone during the phase will result in your death.</string>
+  <string name="ExtensionRoleAstralPhase">Phase</string>
+  <string name="ExtensionRoleAstralPhaseWikiDescription">Phase through walls.</string>
+  <string name="ExtensionRoleAstralMaterialize">Materialize</string>
+  <string name="ExtensionRoleAstralMaterializeWikiDescription">Return to your start position.</string>
+
+  <!-- Astral Options -->
+  <string name="ExtensionOptionAstralPhaseCooldown">Phase Cooldown</string>
+  <string name="ExtensionOptionAstralPhaseDuration">Phase Duration</string>
+  <string name="ExtensionOptionAstralTeleportInvisibilityEnabled">Invisibility after Teleport</string>
+  <string name="ExtensionOptionAstralTeleportInvisibilityDuration">Invisibility Duration</string>
+  <string name="ExtensionOptionAstralDieIfNoKillDuringPhase">Die if no kill during Phase</string>
+  <string name="ExtensionOptionAstralCanVent">Can Vent</string>
+  <string name="DiedToAstralShatter">Shattered</string>
+  <string name="DiedToAstralVoid">Voided</string>
+  <string name="ExtensionDiedToAstralShatter">Shattered</string>
+  <string name="ExtensionDiedToAstralVoid">Voided</string>
+  <string name="ExtensionDiedToEvokerAstralShatter">Evoker shattered.</string>
 
   <!-- Forestaller Role -->
   <string name="ExtensionRoleForestaller">Forestaller</string>
@@ -502,8 +527,10 @@
   <string name="ExtensionRoleEvokerTabDescription">Activate Blind to flash all killing roles. Verify players to check if they are killers.</string>
   <string name="ExtensionRoleEvokerWikiDescription">Your ability allows you to blind all killing roles making them unable to kill, and making everybody look the same. During Evoke you can may verify if a person is in fact a killer or not.</string>
   <string name="ExtensionRoleEvokerBlind">Blind</string>
-  <string name="ExtensionRoleEvokerBlindWikiDescription">Blind all killers. They won't be able to see or use any skills, including killing.</string>
   <string name="ExtensionRoleEvokerVerify">Verify</string>
+  <string name="ExtensionRoleTrapperTabHeader">Active Traps:</string>
+  <string name="ExtensionRolePlumberTabHeader">Active Vents:</string>
+  <string name="ExtensionRoleEvokerBlindWikiDescription">Blind all killers. They won't be able to see or use any skills, including killing.</string>
   <string name="ExtensionRoleEvokerVerifyWikiDescription">While Flash is activated u may verify players. If your screen flashes red this person is killing role. </string>
 
   <!-- Evoker Options -->
@@ -907,9 +934,8 @@
 
   <!-- Doppelganger Options -->
   <string name="ExtensionOptionDoppelgangerKillCooldown">Kill Cooldown</string>
-  <string name="ExtensionOptionDoppelgangerMaxSteals">Max Identity Thefts</string>
+  <string name="ExtensionOptionDoppelgangerMaxSteals">Max Identity Thefts Per Round</string>
   <string name="ExtensionOptionDoppelgangerCanVent">Can Vent</string>
-  <string name="ExtensionOptionDoppelgangerStealsPerRound">Reset Steals Each Round</string>
 
   <!-- Doppelganger Death Message -->
   <string name="DiedToDoppelganger">Identity Stolen</string>
@@ -964,6 +990,7 @@
   <string name="ExtensionOptionVHCanStakeRoundOne">Can Stake Round One</string>
   <string name="ExtensionOptionVHSelfKillOnFailure">Self Kill On All Stakes Failed</string>
   <string name="ExtensionOptionVHBecomesOnVampDeath">Becomes On Vampire Death</string>
+  <string name="DiedToExtensionRoleVampireHunterStaked">Staked</string>
   <string name="ExtensionOptionVHCanSelfReport">Can Self Report</string>
   <string name="ExtensionOptionVHMinVampires">Min Vampires To Spawn</string>
   <string name="ExtensionOptionVHEnabled">Vampire Hunter Enabled</string>

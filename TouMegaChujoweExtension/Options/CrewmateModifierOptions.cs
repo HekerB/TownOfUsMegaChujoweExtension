@@ -1,10 +1,10 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using UnityEngine;
 
-namespace TouMegaChujoweExtension.Options.Modifiers;
+namespace TouMegaChujoweExtension.Options;
 
 public sealed class CrewmateModifierOptions : AbstractOptionGroup
 {
@@ -31,3 +31,13 @@ public sealed class CrewmateModifierOptions : AbstractOptionGroup
             Visible = () => OptionGroupSingleton<CrewmateModifierOptions>.Instance.PublicityAmount > 0
         };
 }
+
+
+
+
+
+
+
+
+
+

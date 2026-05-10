@@ -1,11 +1,9 @@
-using System.Collections.Generic;
 using AmongUs.GameOptions;
 using Hazel;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Networking;
-using TouMegaChujoweExtension.Patches.Draft;
+using System.Collections.Generic;
 
-namespace TouMegaChujoweExtension.Modules;
+namespace TouMegaChujoweExtension.Networking;
 
 public static class DraftNetworking
 {
@@ -162,3 +160,14 @@ public static class DraftNetworking
         DraftLobbyPatch.ShowSystemMessage("<color=#FF4444>Draft Cancelled</color> by the Host.");
     }
 }
+
+
+
+
+
+
+
+
+
+
+

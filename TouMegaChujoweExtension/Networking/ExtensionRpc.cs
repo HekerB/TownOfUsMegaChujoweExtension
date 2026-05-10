@@ -1,3 +1,4 @@
+
 namespace TouMegaChujoweExtension.Networking;
 
 public enum ExtensionRpc : uint
@@ -79,3 +80,13 @@ public enum ExtensionRpc : uint
     DeathNoteLaugh = 74,
     DuplicateModKick = 75,
 }
+
+
+
+
+
+
+
+
+
+

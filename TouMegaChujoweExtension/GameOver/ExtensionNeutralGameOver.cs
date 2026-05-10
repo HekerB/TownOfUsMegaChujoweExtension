@@ -1,12 +1,11 @@
 using MiraAPI.GameEnd;
 using MiraAPI.Utilities;
+using Object = UnityEngine.Object;
 using Reactor.Utilities.Extensions;
-using TouMegaChujoweExtension.Roles.Neutral;
-using TownOfUs.Modules;
 using TownOfUs.Modules.Localization;
+using TownOfUs.Modules;
 using TownOfUs.Roles;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TouMegaChujoweExtension.GameOver;
 
@@ -63,3 +62,15 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
         text.transform.localPosition = pos;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,8 +1,7 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Impostor;
 using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
@@ -29,3 +28,18 @@ public sealed class PoisonerOptions : AbstractOptionGroup<PoisonerRole>
     [ModdedNumberOption("ExtensionOptionPoisonerVineRange", 1f, 15f, 0.5f, MiraNumberSuffixes.None)]
     public float VineRange { get; set; } = 5f;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

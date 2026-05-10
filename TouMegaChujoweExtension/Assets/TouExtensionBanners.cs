@@ -28,3 +28,11 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> WraithBanner { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Banners.Wraith_Banner.png", 300f);
     }
 }
+
+
+
+
+
+
+
+

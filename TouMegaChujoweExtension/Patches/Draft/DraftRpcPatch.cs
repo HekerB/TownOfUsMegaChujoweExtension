@@ -1,7 +1,5 @@
 using HarmonyLib;
 using Hazel;
-using TouMegaChujoweExtension.Modules;
-using TouMegaChujoweExtension.Networking;
 
 namespace TouMegaChujoweExtension.Patches.Draft;
 
@@ -38,3 +36,16 @@ public static class DraftRpcPatch
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

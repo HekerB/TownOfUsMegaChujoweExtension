@@ -1,14 +1,13 @@
-using System;
+using HarmonyLib;
+using MiraAPI.GameOptions;
+using Object = UnityEngine.Object;
+using Reactor.Utilities;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using HarmonyLib;
-using Reactor.Utilities;
-using UnityEngine;
+using System;
 using TownOfUs.Options;
-using MiraAPI.GameOptions;
-using TouMegaChujoweExtension.Options;
-using Object = UnityEngine.Object;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -230,3 +229,16 @@ public static class DuplicateChecker
         TownOfUs.Utilities.MiscUtils.AddFakeChat(player.Data, systemName, msg, true, true);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

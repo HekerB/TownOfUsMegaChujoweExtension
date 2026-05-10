@@ -1,12 +1,12 @@
 using HarmonyLib;
-using TownOfUs.Roles.Crewmate;
-using TownOfUs.Modifiers.Crewmate;
-using TownOfUs;
-using TownOfUs.Utilities;
-using TownOfUs.Extensions;
 using MiraAPI.Modifiers;
-using System.Linq;
 using Reactor.Utilities;
+using System.Linq;
+using TownOfUs.Extensions;
+using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Roles.Crewmate;
+using TownOfUs.Utilities;
+using TownOfUs;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Crewmate;
@@ -20,7 +20,8 @@ public static class OracleFlashPatch
         if (mod != null)
         {
             // Trigger the Oracle flash for everyone when a player is saved from exile
-            Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Oracle));
+            // Use 0.5f alpha for better visibility
+            Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Oracle, alpha: 0.5f));
         }
     }
 
@@ -28,10 +29,21 @@ public static class OracleFlashPatch
     [HarmonyPostfix]
     public static void NotifyPostfix(PlayerControl oracle, PlayerControl source, PlayerControl target)
     {
-        // Ensure the target also sees the flash when they are saved from a guess/kill
-        if (target.AmOwner && !oracle.AmOwner && !source.AmOwner)
+        // Ensure EVERYONE involved sees a bright flash (alpha 0.5f)
+        // Base mod uses 0.3f which might be too faint, so we overwrite/trigger it here
+        if (target.AmOwner || oracle.AmOwner || source.AmOwner)
         {
-            Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Oracle));
+            Coroutines.Start(MiscUtils.CoFlash(TownOfUsColors.Oracle, alpha: 0.5f));
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

@@ -1,25 +1,20 @@
-using System;
-using System.Collections;
-using System.Linq;
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Player;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
+using Random = UnityEngine.Random;
 using Reactor.Utilities;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Buttons.Impostor;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Options.Roles.Impostor;
-using TouMegaChujoweExtension.Roles.Impostor;
+using System.Collections;
+using System.Linq;
+using System;
 using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace TouMegaChujoweExtension.Events.Impostor;
 
@@ -321,7 +316,7 @@ public static class InjectorEvents
         }
     }
 
-    private class PendingInjection
+    private sealed class PendingInjection
     {
         public PlayerControl? Injector { get; set; }
         public PlayerControl? Target { get; set; }
@@ -330,3 +325,21 @@ public static class InjectorEvents
         public Guid InjectionId { get; set; }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

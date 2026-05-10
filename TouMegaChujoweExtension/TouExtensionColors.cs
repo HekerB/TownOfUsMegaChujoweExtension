@@ -35,6 +35,7 @@ public static class TouExtensionColors
     public static Color Charlatan => Palette.ImpostorRed;
     public static Color Outlaw => Palette.ImpostorRed;
     public static Color RcXd => Palette.ImpostorRed;
+    public static Color Astral => Palette.ImpostorRed;
     public static Color BountyHunter => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(0, 18, 97, 255);
 
     // Shield Flash Colors
@@ -56,3 +57,12 @@ public static class TouExtensionColors
     public static Color Publicity => new Color32(51, 179, 179, 255);
     public static Color DeathNote => new Color32(42, 10, 42, 255);
 }
+
+
+
+
+
+
+
+
+

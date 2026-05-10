@@ -1,15 +1,13 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Options.Modifiers;
 using TownOfUs.Interfaces;
-using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
+using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
-using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -52,3 +50,17 @@ public sealed class PublicityModifier : TouGameModifier, IWikiDiscoverable, ICol
         return true;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

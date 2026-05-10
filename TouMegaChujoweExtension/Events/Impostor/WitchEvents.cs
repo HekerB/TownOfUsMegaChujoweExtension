@@ -1,19 +1,15 @@
 using BepInEx.Logging;
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Player;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using Reactor.Utilities;
 using System.Collections;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Options.Roles.Impostor;
-using TouMegaChujoweExtension.Roles.Impostor;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Networking;
 using TownOfUs.Utilities;
-using TouMegaChujoweExtension.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Events.Impostor;
@@ -305,3 +301,21 @@ public static class WitchEvents
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

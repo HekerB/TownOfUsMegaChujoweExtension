@@ -1,15 +1,11 @@
-using System;
 using HarmonyLib;
 using MiraAPI.GameOptions;
-using TouMegaChujoweExtension.Options.Roles.Crewmate;
-using TouMegaChujoweExtension.Options.Roles.Impostor;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Options.Modifiers;
+using System;
+using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Roles.Neutral;
-using TownOfUs.Modifiers.Game.Alliance;
-using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Patches.Wiki;
@@ -105,3 +101,18 @@ public static class WikiAppendOptionsPatch
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,7 +1,6 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Crewmate;
 using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
@@ -41,3 +40,17 @@ public sealed class VampireHunterOptions : AbstractOptionGroup<VampireHunterRole
     [ModdedNumberOption("ExtensionOptionVHMinVampires", 1f, 5f, 1f, MiraNumberSuffixes.None)]
     public float MinVampiresForSpawn { get; set; } = 2f;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,5 @@
 using HarmonyLib;
 using MiraAPI.GameOptions;
-using TouMegaChujoweExtension.Options;
 using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Patches.Draft;
@@ -26,3 +25,15 @@ public static class DraftGameModePatch
     {
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

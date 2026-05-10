@@ -1,8 +1,8 @@
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using System.IO;
 using TMPro;
-using UnityEngine;
 using UnityEngine.TextCore.LowLevel;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Assets;
 
@@ -67,3 +67,13 @@ public static class TouExtensionFonts
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

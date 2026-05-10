@@ -1,16 +1,12 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Options.Roles.Crewmate;
-using TouMegaChujoweExtension.Roles.Crewmate;
+using Random = UnityEngine.Random;
 using TownOfUs.Extensions;
 using TownOfUs.Roles;
-using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
+using TownOfUs.Utilities;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -246,3 +242,22 @@ public static class EvokerSystem
         _playerEffects.Clear();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

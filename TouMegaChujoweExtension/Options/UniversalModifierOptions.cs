@@ -1,9 +1,9 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 
-namespace TouMegaChujoweExtension.Options.Modifiers;
+namespace TouMegaChujoweExtension.Options;
 
 public sealed class UniversalModifierOptions : AbstractOptionGroup
 {
@@ -47,3 +47,13 @@ public sealed class UniversalModifierOptions : AbstractOptionGroup
             Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.ChildAmount > 0
         };
 }
+
+
+
+
+
+
+
+
+
+

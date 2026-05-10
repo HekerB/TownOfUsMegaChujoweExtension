@@ -1,8 +1,7 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Impostor;
 using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
@@ -20,3 +19,18 @@ public sealed class OutlawOptions : AbstractOptionGroup<OutlawRole>
     [ModdedNumberOption("ExtensionOptionOutlawBonusKills", 1f, 5f, 1f, MiraNumberSuffixes.None)]
     public float BonusKills { get; set; } = 1f;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

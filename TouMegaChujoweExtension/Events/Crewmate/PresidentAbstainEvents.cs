@@ -1,8 +1,7 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Crewmate;
 using TownOfUs.Modifiers.Impostor;
 using TownOfUs.Utilities;
 
@@ -112,3 +111,15 @@ public static class PresidentAbstainEvents
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

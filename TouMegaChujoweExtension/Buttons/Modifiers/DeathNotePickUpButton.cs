@@ -1,11 +1,8 @@
-using System.Linq;
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Modifiers.Neutral;
-using TouMegaChujoweExtension.Modules;
+using System.Linq;
 using TownOfUs.Buttons;
 using UnityEngine;
 
@@ -73,3 +70,17 @@ public sealed class DeathNotePickUpButton : TownOfUsButton
         controller.Initialize(dnMod);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

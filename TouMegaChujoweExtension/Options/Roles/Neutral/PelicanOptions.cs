@@ -1,7 +1,6 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
@@ -19,3 +18,17 @@ public sealed class PelicanOptions : AbstractOptionGroup<PelicanRole>
     [ModdedToggleOption("ExtensionOptionPelicanCanVent")]
     public bool CanVent { get; set; } = false;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

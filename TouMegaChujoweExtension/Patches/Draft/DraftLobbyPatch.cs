@@ -1,20 +1,15 @@
-using System.Collections.Generic;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using Il2CppInterop.Runtime;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Modules;
-using TouMegaChujoweExtension.Options;
-using TMPro;
-using UnityEngine;
-using Reactor.Utilities;
-
 using Object = UnityEngine.Object;
-using Il2CppInterop.Runtime;
+using Reactor.Utilities;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Draft;
 
@@ -37,7 +32,7 @@ public static class DraftLobbyPatch
     private static readonly System.Text.StringBuilder _playerListBuilder = new();
 
     // === BUTTON REFS ===
-    private class ButtonRefs
+    private sealed class ButtonRefs
     {
         public SpriteRenderer BG = null!;
         public SpriteRenderer Border = null!;
@@ -468,7 +463,7 @@ public static class DraftLobbyPatch
 
     // === START DRAFT (HOST) ===
 
-    public static void StartDraft(GameStartManager gsm = null)
+    public static void StartDraft(GameStartManager? gsm = null)
     {
         if (gsm == null) gsm = Object.FindObjectOfType<GameStartManager>();
         if (gsm == null) return;
@@ -2227,7 +2222,11 @@ public static class DraftLobbyPatch
                     }
                 }
             }
-            catch { }
+                catch (System.Exception ex)
+                {
+                    Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"Draft error: {ex.Message}");
+                }
+
         }
 
         Color labelColor;
@@ -2247,10 +2246,14 @@ public static class DraftLobbyPatch
             try
             {
                 var assignData = TownOfUs.Utilities.MiscUtils.GetAssignData(role.Role);
-                if (assignData.Chance < 30f)
+                if (assignData.Chance > 0f && assignData.Chance < 30f)
                     labelText = labelText + " ☆";
             }
-            catch { }
+            catch (System.Exception ex)
+            {
+                Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"Draft label setup error: {ex.Message}");
+            }
+
         }
 
         var label = labelObj.AddComponent<TextMeshPro>();
@@ -2482,7 +2485,11 @@ public static class DraftLobbyPatch
             if (clip != null)
                 SoundManager.Instance.PlaySound(clip, false, 0.5f);
         }
-        catch { }
+        catch (System.Exception ex)
+        {
+            Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"Draft hover sound error: {ex.Message}");
+        }
+
     }
 
     // === PICK HANDLING ===
@@ -2710,7 +2717,11 @@ public static class DraftLobbyPatch
                         GameManagerCreator.Instance.HideAndSeekManagerPrefab.FinalHideCountdownSFX,
                         false, 1f, pitch, SoundManager.Instance.SfxChannel);
                 }
-                catch { }
+                catch (System.Exception ex)
+                {
+                    Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"Draft countdown sound error: {ex.Message}");
+                }
+
 
                 _countdownSoundTimer = 1f;
             }
@@ -2911,3 +2922,17 @@ public static class DraftLobbyPatch
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,21 +1,19 @@
-using System.Collections;
 using AmongUs.Data;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
+using Object = UnityEngine.Object;
 using Reactor.Utilities.Attributes;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TownOfUs;
+using System.Collections;
 using TownOfUs.Assets;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modules.Anims;
-using TownOfUs.Utilities;
 using TownOfUs.Modules.Localization;
+using TownOfUs.Utilities;
+using TownOfUs;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -246,3 +244,17 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
         PlayerControl.LocalPlayer.RemoveTask(this);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

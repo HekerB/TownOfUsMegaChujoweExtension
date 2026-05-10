@@ -1,8 +1,7 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using TownOfUs.Modules.Localization;
-using TouMegaChujoweExtension.Roles.Neutral;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
@@ -22,3 +21,17 @@ public sealed class PopeOptions : AbstractOptionGroup<PopeRole>
     [ModdedNumberOption("ExtensionOptionPopeJudgementDuration", 30f, 180f, 5f, MiraNumberSuffixes.Seconds)]
     public float JudgementDuration { get; set; } = 120f;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

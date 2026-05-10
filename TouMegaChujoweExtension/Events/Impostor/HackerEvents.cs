@@ -1,12 +1,9 @@
 using AmongUs.GameOptions;
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
-using TouMegaChujoweExtension.Modules;
-using TouMegaChujoweExtension.Options.Roles.Impostor;
-using TouMegaChujoweExtension.Roles.Impostor;
 
 namespace TouMegaChujoweExtension.Events.Impostor;
 
@@ -65,3 +62,17 @@ public static class HackerEvents
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

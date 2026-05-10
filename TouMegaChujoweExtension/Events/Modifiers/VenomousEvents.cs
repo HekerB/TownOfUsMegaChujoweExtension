@@ -1,14 +1,12 @@
+using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events;
+using MiraAPI.Modifiers;
+using Object = UnityEngine.Object;
+using Reactor.Utilities;
 using System.Collections;
 using System.Reflection;
-using MiraAPI.Events;
-using MiraAPI.Events.Vanilla.Gameplay;
-using MiraAPI.Modifiers;
-using Reactor.Utilities;
-using TouMegaChujoweExtension.Modifiers.Neutral;
-using TouMegaChujoweExtension.Patches.Neutral;
 using TownOfUs.Modifiers.Game.Crewmate;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TouMegaChujoweExtension.Events.Modifiers;
 
@@ -68,3 +66,15 @@ public static class VenomousEvents
             Coroutines.Start(coroutine2);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

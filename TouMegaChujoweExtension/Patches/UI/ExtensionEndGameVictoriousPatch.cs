@@ -1,14 +1,13 @@
 using HarmonyLib;
-using TouMegaChujoweExtension.Roles.Neutral;
-using TownOfUs.Extensions;
-using TownOfUs.Modules.Localization;
-using TownOfUs.Roles;
-using TownOfUs.Patches;
-using TownOfUs.Utilities;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using TMPro;
+using TownOfUs.Extensions;
+using TownOfUs.Modules.Localization;
+using TownOfUs.Patches;
+using TownOfUs.Roles;
+using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.UI;
 
@@ -85,3 +84,16 @@ public static class ExtensionEndGameVictoriousPatch
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

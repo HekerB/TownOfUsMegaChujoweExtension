@@ -1,11 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Impostor;
+using System.Collections.Generic;
+using System.Linq;
 using TownOfUs.Interfaces;
 using TownOfUs.Modules.Localization;
 
@@ -285,3 +284,18 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
         return new[] { $"Effect Chances: {string.Join(", ", enabledEffects)}" };
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -23,3 +23,11 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> DoppelgangerKillButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Doppelganger_Kill_Button.png", 100f);
     }
 }
+
+
+
+
+
+
+
+

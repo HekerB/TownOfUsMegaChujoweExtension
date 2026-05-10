@@ -1,12 +1,8 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Mira;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Buttons.Neutral;
-using TouMegaChujoweExtension.Modifiers.Neutral;
-using TouMegaChujoweExtension.Patches.Neutral;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Events.Neutral;
@@ -69,3 +65,16 @@ public static class ShroudEvents
         ShroudInteractionPatches.ExecuteShroudRetaliation(source, shroudMod);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

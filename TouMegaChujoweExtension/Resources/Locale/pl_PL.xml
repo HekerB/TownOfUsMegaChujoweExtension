@@ -59,6 +59,7 @@
   <string name="ExtensionRoleTrapperPlaced">Zastawiono pulapke na wentylacje w &lt;room&gt;!</string>
   <string name="ExtensionRoleTrapperTriggered">Twoja pulapka zostala uruchomiona w &lt;room&gt;!</string>
   <string name="ExtensionRoleTrapperCaught">Zostales zlapany w pulapke w &lt;room&gt;!</string>
+  <string name="ExtensionRoleTrapperTabHeader">Aktywne pulapki:</string>
 
   <!-- Trapper Options -->
   <string name="ExtensionOptionTrapperTrapCooldown">Czas odnowienia pulapki</string>
@@ -458,14 +459,14 @@
   
   <!-- RC-XD Role -->
   <string name="ExtensionRoleRcXd">RC-XD</string>
-  <string name="ExtensionRoleRcXdIntroBlurb">Steruj wybuchowym autkiem i niszcz zaloge.</string>
-  <string name="ExtensionRoleRcXdTabDescription">Wypusc auto RC, steruj nim za pomoca strzalek i zdetonuj je w poblizu wrogow.</string>
-  <string name="ExtensionRoleRcXdWikiDescription">Jako RC-XD mozesz wypuscic mini auto z CALL OF DUTY. To auto jest bomba, ktora kontrolujesz i mozesz zdetonowac w dowolnym momencie.</string>
-  <string name="ExtensionRoleRcXdDeploy">Wypusc</string>
-  <string name="ExtensionRoleRcXdDeployWikiDescription">Wypusc zdalnie sterowane auto, a potem mozesz nim jezdzic za pomoca strzalek przy wrogach i je zdetonowac!</string>
-  <string name="ExtensionRoleRcXdDetonate">Detonuj</string>
-  <string name="ExtensionRoleRcXdDetonateWikiDescription">Zdetonuj swoje auto RC w poblizu graczy, aby ich zabic.</string>
-
+  <string name="ExtensionRoleRcXdIntroBlurb">Steruj samochodem-bombą, aby zniszczyć załogę.</string>
+  <string name="ExtensionRoleRcXdTabDescription">Wypuść samochodzik RC i zdetonuj go obok wrogów.</string>
+  <string name="ExtensionRoleRcXdWikiDescription">RC-XD to rola Impostor Power, która może wypuszczać i detonować zdalnie sterowany samochodzik, aby zabijać graczy na mapie. Używaj strzałek, aby nim sterować i detonuj go blisko wrogów.</string>
+  <string name="ExtensionRoleRcXdDeploy">Wypuść</string>
+  <string name="ExtensionRoleRcXdDeployWikiDescription">Wypuść samochodzik RC, aby skierować go na cel.</string>
+  <string name="ExtensionRoleRcXdDetonate">Detonacja</string>
+  <string name="ExtensionRoleRcXdDetonateWikiDescription">Zdetonuj swój samochodzik, aby zabić pobliskich graczy.</string>
+  
   <!-- RC-XD Options -->
   <string name="ExtensionOptionRcXdDeployCooldown">Cooldown wypuszczenia</string>
   <string name="ExtensionOptionRcXdDriveTime">Czas jazdy</string>
@@ -475,7 +476,31 @@
   <string name="ExtensionOptionRcXdMaxKills">Maksymalna liczba zabojstw na detonacje</string>
   <string name="ExtensionOptionRcXdCanVent">Moze uzywac wentylacji</string>
   <string name="ExtensionOptionRcXdMaxDeploys">Maksymalna liczba wypuszczen</string>
-  <string name="ExtensionOptionRcXdCanUseInFirstRound">Moze uzywac w pierwszej rundzie</string>
+  <string name="ExtensionOptionRcXdCanUseInFirstRound">Można używać w pierwszej rundzie</string>
+  <string name="ExtensionOptionRcXdAllowEarlyDetonation">Pozwalaj na wczesną detonację</string>
+
+  <!-- Astral Role -->
+  <string name="ExtensionRoleAstral">Astral</string>
+  <string name="ExtensionRoleAstralIntroBlurb">Przechodź przez ściany i wracaj na pozycję startową.</string>
+  <string name="ExtensionRoleAstralTabDescription">Przechodź przez ściany i teleportuj się z powrotem. Musisz kogoś zabić, aby przeżyć!</string>
+  <string name="ExtensionRoleAstralWikiDescription">Astral to rola Impostor Concealing, która może wejść w stan astralny. W tym stanie możesz przechodzić przez ściany. Gdy faza się kończy, zostajesz teleportowany z powrotem do miejsca startu. Jeśli jest to skonfigurowane, brak zabójstwa podczas fazy skutkuje Twoją śmiercią.</string>
+  <string name="ExtensionRoleAstralPhase">Faza</string>
+  <string name="ExtensionRoleAstralPhaseWikiDescription">Przechodź przez ściany.</string>
+  <string name="ExtensionRoleAstralMaterialize">Materializacja</string>
+  <string name="ExtensionRoleAstralMaterializeWikiDescription">Wróć na pozycję startową.</string>
+
+  <!-- Astral Options -->
+  <string name="ExtensionOptionAstralPhaseCooldown">Cooldown Fazy</string>
+  <string name="ExtensionOptionAstralPhaseDuration">Czas trwania Fazy</string>
+  <string name="ExtensionOptionAstralTeleportInvisibilityEnabled">Niewidzialność po Teleporcie</string>
+  <string name="ExtensionOptionAstralTeleportInvisibilityDuration">Czas Niewidzialności</string>
+  <string name="ExtensionOptionAstralDieIfNoKillDuringPhase">Śmierć przy braku killa w Fazie</string>
+  <string name="ExtensionOptionAstralCanVent">Może używać wentów</string>
+  <string name="DiedToAstralShatter">Rozpadł się.</string>
+  <string name="DiedToAstralVoid">Wciągnięty w pustkę.</string>
+  <string name="ExtensionDiedToAstralShatter">Rozpadł się.</string>
+  <string name="ExtensionDiedToAstralVoid">Wciągnięty w pustkę.</string>
+  <string name="ExtensionDiedToEvokerAstralShatter">Evoker się rozpadł.</string>
 
   <!-- Forestaller Role -->
   <string name="ExtensionRoleForestaller">Forestaller</string>
@@ -499,8 +524,10 @@
   <string name="ExtensionRoleEvokerTabDescription">Aktywuj Blind, aby oslepic i ogluszyc (Nausea) zabojcow. Verify graczy, aby sprawdzic ich role.</string>
   <string name="ExtensionRoleEvokerWikiDescription">Twoja umiejetnosc pozwala oslepic i ogluszyc (efekt Nausea) wszystkie role zabijajace. Podczas Blind mozesz sprawdzac (Verify), czy dana osoba jest zabojca. Calosc jest zoptymalizowana dla maksymalnej wydajnosci FPS.</string>
   <string name="ExtensionRoleEvokerBlind">Blind</string>
-  <string name="ExtensionRoleEvokerBlindWikiDescription">Oslep zabojcow. Nie beda nic widziec i nie beda mogli nikogo zabic ani uzyc skilli.</string>
   <string name="ExtensionRoleEvokerVerify">Verify</string>
+  <string name="ExtensionRoleTrapperTabHeader">Aktywne pulapki:</string>
+  <string name="ExtensionRolePlumberTabHeader">Aktywne wentylacje:</string>
+  <string name="ExtensionRoleEvokerBlindWikiDescription">Oslep zabojcow. Nie beda nic widziec i nie beda mogli nikogo zabic ani uzyc skilli.</string>
   <string name="ExtensionRoleEvokerVerifyWikiDescription">Gdy Flash jest aktywny, mozesz sprawdzac graczy. Jesli twoj ekran mignie na czerwono, ta osoba jest rola zabijajaca.</string>
 
   <!-- Evoker Options -->
@@ -903,9 +930,8 @@
 
   <!-- Doppelganger Options -->
   <string name="ExtensionOptionDoppelgangerKillCooldown">Cooldown zabojstwa</string>
-  <string name="ExtensionOptionDoppelgangerMaxSteals">Maksymalna liczba kradziezy tozsamosci</string>
+  <string name="ExtensionOptionDoppelgangerMaxSteals">Maksymalna liczba kradziezy na runde</string>
   <string name="ExtensionOptionDoppelgangerCanVent">Moze uzywac wentylacji</string>
-  <string name="ExtensionOptionDoppelgangerStealsPerRound">Resetuj kradzieze co runde</string>
 
   <!-- Doppelganger Death Message -->
   <string name="DiedToDoppelganger">Skradziona tozsamosc</string>
@@ -950,6 +976,7 @@
   <string name="ExtensionRoleVampireHunterTabDescription">Uzyj kolka, aby zabijac Vampires.\%nl\%Nieudane przebicia na nie-Vampires sa marnowane.\%nl\%Gdy wszystkie Vampires zgina, stajesz sie nowa rola.</string>
   <string name="ExtensionRoleVampireHunterWikiDescription">Vampire Hunter pojawia sie tylko wtedy, gdy w grze sa Vampires. Po pierwszym spotkaniu losowy Crewmate zostaje zamieniony w Vampire Hunter. Moze przebijac graczy - jesli gracz jest Vampire, ginie. Jesli nie, kolek zostaje zuzyty. Gdy wszystkie Vampires zostana wyeliminowane, Vampire Hunter zamienia sie w inna role Crewmate.</string>
   <string name="ExtensionRoleVampireHunterStake">Stake</string>
+  <string name="DiedToExtensionRoleVampireHunterStaked">Przebity</string>
   <string name="ExtensionRoleVampireHunterStakeWikiDescription">Przebij pobliskiego gracza kolkiem. Jesli jest Vampire, ginie. Jesli nie, marnujesz jedno uzycie kolka.</string>
 
   <!-- Vampire Hunter Options -->

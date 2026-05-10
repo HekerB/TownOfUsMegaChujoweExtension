@@ -1,8 +1,7 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Impostor;
 using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
@@ -48,4 +47,19 @@ public enum ReportRangeType
     VeryShort = 1,
     Short = 2
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -31,3 +31,13 @@ public static class TouExtensionAudio
 	public static LoadableAsset<AudioClip> DeathNoteLaughSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.light_laughing.wav");
 	public static LoadableAsset<AudioClip> KamikazeExplodeSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.allahu_akbar.wav");    // by radzik360
 }
+
+
+
+
+
+
+
+
+
+

@@ -1,14 +1,12 @@
 using AmongUs.GameOptions;
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Player;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Options.Roles.Neutral;
-using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Roles;
 using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Events.Neutral;
@@ -52,3 +50,15 @@ public static class VultureEvents
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

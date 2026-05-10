@@ -1,8 +1,7 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
@@ -38,3 +37,17 @@ public enum BountyHunterWinMode
     SoloWin,
     WinWithWinners
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

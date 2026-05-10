@@ -1,7 +1,6 @@
 using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Options.Roles.Crewmate;
 using TownOfUs.Extensions;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Roles.Crewmate;
@@ -70,3 +69,15 @@ public static class MirrorCasterMovePatch
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

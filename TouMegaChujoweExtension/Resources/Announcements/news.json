@@ -98,55 +98,6 @@
         "\n- <b>Shroud</b> - Fixed buggy button layout to match Vulture order. Killing no longer cancels Shrouded status on victims.",
         "\n- <b>Ventable Modifier</b> - added <b>Uses Left</b> counter and <b>Blinking Effect</b> for the last 3 seconds of vent duration.",
         "\n- <b>UI Optimization</b> - Fixed sibling indexing for multi-button roles to support 'Offset Buttons' mode.",
-        "\n\n\r<size=105%>Shield System & CD Rework:</size>",
-        "\n- <b>Custom Save Cooldowns</b> - Hitting shields now gives specific cooldowns: <b>Mirror Caster (FULL CD)</b>, <b>Bodyguard (10s)</b>, <b>Cleric/FirstRound (5s)</b>, <b>Warden (1s)</b>.",
-        "\n- <b>First Round Shield</b> - Now <b>persists after being hit</b> to provide continuous protection.",
-        "\n- <b>Interaction Differentiation</b> - <b>Deadly Quota</b> allows targeting but gives silent 5s CD. <b>Child</b> modifier blocks targeting for Pelican/Shroud.",
-        "\n\n\r<size=105%>Fixes & Polish:</size>",
-        "\n- <b>Universal Button Fix</b> - Fixed <b>Serial Killer</b>, <b>Bounty Hunter</b>, <b>Witch</b>, etc. to correctly respect all shields.",
-        "\n- <b>Shroud Ability</b> - Secondary button now triggers a flash and 5s CD when hitting a shield.",
-        "\n- <b>Assets</b> - Restored original extension <b>Vent Icons</b>; optimized event priorities for protection logic."
-      ]
-    },
-    {
-      "Date": "2026-04-27T21:00:00Z",
-      "Number": "200004",
-      "ShortTitle": "TOUMCE v1.0.3",
-      "SubTitle": "Time Lord & UI Refresh",
-      "Title": "TOU Mega Chujowe Extension v1.0.3",
-      "Text": [
-        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
-        "\n\n\r<b>Version 1.0.3 - Time Lord & UI Refresh</b>",
-        "\n\n\r★ <b>MAJOR BREAKTHROUGH: Time Lord FINALLY WORKS! Full rework of physical position rewinding, revive thresholds, and game-breaking Pelican softlocks!</b>",
-        "\n\n\r<size=105%>Role & Mechanics Changes:</size>",
-        "\n- <b>Forestaller</b> - Reworked guessability logic. Forestaller is now <b>Guessable</b> until all tasks are completed. Once tasks are done, they become <b>Unguessable</b>.",
-        "\n- <b>Ventable Modifier</b> - Overhauled Timer UI to use <b>0.0 precision</b>. Fixed and enabled <b>Uses Left</b> counter with a dedicated vent sprite. Cooldown is now properly initialized at the start of the round and after meetings.",
-        "\n- <b>Mirage Rework</b> - Replaced random spawn with a Tablet selector. Decoy uses counter can now be set to infinity (shows infinity symbol and hides count). Provided a <b>custom meeting feedback panel</b> (like Lookout) with colorized roles.",
-        "\n\n\r<size=105%>Assassin & Guessing Polish:</size>",
-        "\n- <b>Tablet UI Refresh</b> - Implemented aggressive refresh for Mira/Tablet guessing screen. Players killed during meetings (e.g., via Death Note) are now <b>immediately removed</b> from the target list.",
-        "\n- <b>FPS Optimization</b> - optimized heavy update loops for <b>Evoker</b>, <b>Charlatan</b>, and <b>Hacker</b> to eliminate background FPS drops. Cached reflection results for dynamic UI rendering.",
-        "\n- <b>Meeting FPS Optimization</b> - throttled heavy Update routines in meetings (Witch, Pope, President) to resolve UI lag drop spikes.",
-        "\n- <b>Classic Assassin Fix</b> - Fixed visual bug where the guessing UI would 'stay' for non-guesser roles (e.g., Altruist).",
-        "\n- <b>Bugfix</b> - Fixed a potential soft-lock when opening the tablet while a player was being murdered.",
-        "\n\n\r<size=105%>Witch, Vampire Hunter & Lawyer Fixes:</size>",
-        "\n- <b>Witch</b> - fixed <b>Curse Marker</b> wallhack bug (now only visible during meetings). Cleaned up role markers upon death. Fixed misleading meeting countdown alerts.",
-        "\n- <b>Name Colors</b> - polished visibility logic: Impostors/Witch keep red names, others now immediately display hex tags and red names at meetings upon being cursed.",
-        "\n- <b>Lawyer</b> - fixed soft-lock where dead Lawyers wouldn't transition to fallback roles. Fully clears outdated relationship links to prevent game freeze.",
-        "\n- <b>Vampire Hunter</b> - added <b>Officer</b> to the list of potential roles to become after all Vampires are dead. Excluded <b>Imitator</b> from the list of roles eligible to become a Vampire Hunter. Hidden uses counter when set to infinite (0 max failed stakes). Fixed bug where Amnesiacs remembering VH or Imitators copying VH stayed stuck without living vampires.",
-        "\n- <b>Vanisher & Wraith</b> - optimized invisibility logic. Restored native, highly optimized Swooper appearance presets from Mira API to fix continuous micro-stutters.",
-        "\n- <b>Shield Protections</b> - Fixed Crew Killing roles (Sheriff, Vampire Hunter, etc.) not triggering shield responses. Hitting a shield now shows the flash, gives a cooldown penalty, and properly notifies the protection source (e.g., Bodyguard retaliation window). Vampire Hunter also avoids wasting charges on blocked shots.",
-        "\n- <b>Pelican vs Time Lord</b> - Fixed game-breaking interaction. Rewinding time now safely ejects all swallowed players from the Pelican's stomach instead of leaving them trapped and permanently invisible.",
-        "\n- <b>Time Lord Revives</b> - Fixed hardcoded revive cutoff issues. Rewind now strictly respects the <b>Rewind History Seconds</b> setting instead of erroneously reviving older dead players.",
-        "\n- <u><b>Time Lord Physical Rewind</b></u> - Overrode internal Mira API state tracking to forcefully clamp local position buffers. Physical movement rewind now strictly matches the configured lobby duration instead of resetting to the default 7.5s value.",
-        "\n- <b>Impostor Friendly Fire</b> - Fixed <b>Poisoner</b> being able to target, poison, or slow down allied Impostors and Crewpostors.",
-        "\n- <b>Targeting Blocks</b> - Fixed <b>Outlaw</b>, <b>Witch</b>, and <b>Kamikaze</b> single-target kills getting completely blocked when an allied player stands closer to the killer than a valid target.",
-        "\n- <b>Draft UI Optimization</b> - Greatly optimized Draft UI update logic, resolving background micro-stutters and providing silky smooth menu animations.",
-        "\n- <b>Draft Spectator Fix</b> - Fixed a critical bug where having spectators in the lobby would cause a permanent black screen after the draft phase completed. Spectators are now properly initialized with a fallback role, allowing the game to transition smoothly to the intro phase.",
-        "\n- <b>Better Sonar</b> - added custom player head map pointers and arrow overlays directly toggleable in the Modifiers tab.",
-        "\n- <b>Extended Wiki Previews</b> - Sonar and Egotist Extended will properly outline all hidden options on the wiki page.",
-        "\n- <b>Possible Vampire Hunter</b> - completely hidden from the role setup list to prevent lobby setup confusion.",
-        "\n- <b>Bodyguard Colors</b> - Darkened base role color to premium deep sapphire, matching associated shield flash visuals.",
-        "\n- <b>Wiki Colors</b> - Universal modifiers now utilize gray file styling, while <b>Death Note</b> and <b>Venomous</b> strictly carry distinct alignments.",
         "\n- <b>Audio Overhaul</b> - updated intro sounds for multiple roles (Bodyguard, Witch, Lawyer, Hacker, etc.) to better fit their thematic identities.",
         "\n- <b>Bugfix</b> - Fixed a critical bug where <b>Parasite</b> taking control during <b>Communications Sabotage</b> would reveal Impostor names to Crewmates."
       ]
@@ -294,10 +245,7 @@
         "\n- <b>Memory Leak Prevention</b> - Eliminated the <b>\"Death Loop\"</b> of NullReferenceExceptions in UI buttons (Falcon, Egotist) that was causing OutOfMemory crashes.",
         "\n- <b>Lover Chat Safety</b> - Added robust null-checks for meeting chat RPCs to prevent crashes when players disconnect.",
         "\n- <b>Localization Safety</b> - Fixed a hard crash in the Mayor and Better Roles tabs when certain strings were missing.",
-        "\n\n\r<size=105%>UI & Graphics:</size>",
-        "\n- <b>Promotional Banners</b> - Added high-quality custom banners for all extension roles (Hacker, Injector, RC-XD, etc.) and promotional slides.",
-        "\n- <b>Role Menu Banners</b> - Assigned generic fallback banners to all remaining roles and updated configuration for the entire extension roster.",
-        "\n- Optimized overall mod loading speed and fixed various minor UI bugs in the Lobby sidebar."
+        "\n- <b>UI & Graphics:</b> Promotional Banners assigned and loading speed optimized."
       ]
     },
     {
@@ -339,6 +287,36 @@
         "\n- <b>Choice Mixing (60/40)</b> - The number of neutral roles visible to a player (e.g., 1 or 2 out of 8) is now rolled independently for each picker.",
         "\n- <b>Guaranteed Selection</b> - If the global target hasn't been met, the system will force only neutral roles for the last players, ensuring lobby balance.",
         "\n- <b>Optimization & All-Classes</b> - Removed redundant toggles, unified 'All Classes' as the default standard, and eliminated draft lag with a new caching system."
+      ]
+    },
+    {
+      "Date": "2026-05-09T18:00:00Z",
+      "Number": "200011",
+      "ShortTitle": "TOUMCE v1.1.0",
+      "SubTitle": "Astral, Shroud & Stabilization",
+      "Title": "TOU Mega Chujowe Extension v1.1.0",
+      "Text": [
+        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
+        "\n\n\r<b>Version 1.1.0 - Astral, Shroud & Stabilization</b>",
+        "\n\n\r<size=110%><b>★ Astral Role Stabilization ★</b></size>",
+        "\n- <b>Phase Button Rework</b> - Fixed UI flickering and sprite swapping in the final seconds of the phase. Replaced the confusing rewind icon with a dedicated <b>Materialize</b> action.",
+        "\n- <b>UI Visibility</b> - The Astral button and its label are now <b>always colored and opaque</b> while active, becoming transparent only during cooldown for better readability.",
+        "\n- <b>Death Localization</b> - FIXED \"string miss\" errors for Astral-related deaths. Added full support for \"Shattered\" and \"Voided\" death causes.",
+        "\n\n\r<size=110%><b>★ Shroud & Neutral Fixes ★</b></size>",
+        "\n- <b>Kill Cooldown Patch</b> - Implemented a native <b>killTimer</b> patch for Neutral roles. This definitively fixes the bug where Shroud's buttons would \"freeze\" and stop counting down.",
+        "\n- <b>Mandatory Shared Cooldown</b> - Enforced shared cooldown between Kill and Shroud abilities by default, removing redundant lobby options and ensuring project-wide consistency.",
+        "\n\n\r<size=110%><b>★ Bodyguard & Quality of Life ★</b></size>",
+        "\n- <b>Bodyguard Polish</b> - Aligned the Backlash timer display with standard formatting (fixed decimal points).",
+        "\n- <b>Extreme Cleanup</b> - Reduced build warnings from <b>4000+ to under 500</b> by disabling strict Nullable analysis and cleaning up duplicate code.",
+        "\n\n\r<size=110%><b>★ Draft Mode Stabilization ★</b></size>",
+        "\n- <b>Performance Lag Fixed</b> - Optimized role caching and pool generation to eliminate micro-stutters during draft initialization.",
+        "\n- <b>Menu Responsiveness</b> - Improved UI layer depth and animation smoothness for role selection.",
+        "\n\n\r<size=110%><b>★ Legacy 1.1.0 Updates ★</b></size>",
+        "\n- <b>RC-XD & Kamikaze</b> - Synchronized suicide/explosion logic with vanilla kill cooldowns and reordered lobby options to match Bomber standards.",
+        "\n- <b>Falcon</b> - FIXED post-meeting cooldown synchronization using the native Timer system.",
+        "\n- <b>Impostor Underdog</b> - Added dynamic cooldown scaling for Witch, Charlatan, Hacker, and Wraith.",
+        "\n- <b>Pelican Optimization</b> - Implemented O(1) player tracking (SwallowTracker) to eliminate micro-stutters during digestion.",
+        "\n- <b>Stability</b> - Resolved dozens of internal compilation warnings and optimized modded ability resets."
       ]
     }
   ]

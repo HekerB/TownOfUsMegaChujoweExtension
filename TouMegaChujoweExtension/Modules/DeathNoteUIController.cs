@@ -1,7 +1,5 @@
 using Il2CppInterop.Runtime.Attributes;
 using Reactor.Utilities.Attributes;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Modifiers.Neutral;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
@@ -218,6 +216,20 @@ public class DeathNoteUIController : MonoBehaviour
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

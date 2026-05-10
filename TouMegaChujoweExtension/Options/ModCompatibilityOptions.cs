@@ -1,5 +1,5 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions;
 
 namespace TouMegaChujoweExtension.Options;
 
@@ -14,3 +14,13 @@ public sealed class ModCompatibilityOptions : AbstractOptionGroup
     [ModdedToggleOption("ExtensionOptionCompatibilityDuplicateAutoKick")]
     public bool DuplicateAutoKick { get; set; } = true;
 }
+
+
+
+
+
+
+
+
+
+

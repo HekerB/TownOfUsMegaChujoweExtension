@@ -1,9 +1,6 @@
-using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Roles.Neutral;
-using TownOfUs.Utilities;
-
 using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.Modifiers;
+using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Utilities;
 
@@ -154,3 +151,20 @@ public static class LawyerUtils
                lawyerRole.Client.PlayerId == client.PlayerId;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

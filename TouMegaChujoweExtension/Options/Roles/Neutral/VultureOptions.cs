@@ -1,8 +1,7 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Options.Roles.Neutral;
 
@@ -41,3 +40,17 @@ public sealed class VultureOptions : AbstractOptionGroup<VultureRole>
         new("ExtensionOptionVultureOnLoseBecomes", (int)BecomeOptions.Crew, typeof(BecomeOptions),
             ["CrewmateKeyword", "TouRoleAmnesiac", "TouRoleSurvivor", "TouRoleMercenary", "TouRoleJester"]);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

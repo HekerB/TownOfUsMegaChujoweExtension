@@ -1,28 +1,24 @@
-using MiraAPI.Modifiers;
 using MiraAPI.GameOptions;
+using MiraAPI.Hud;
+using MiraAPI.Modifiers;
 using Reactor.Utilities;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Modifiers.Universal;
-using TouMegaChujoweExtension.Roles.Crewmate;
-using TownOfUs.Modifiers;
-using TownOfUs.Modifiers.Neutral;
-using TownOfUs.Utilities;
+using System.Collections;
+using System.Reflection;
+using TownOfUs.Buttons;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Crewmate;
 using TownOfUs.Modifiers.Game.Impostor;
+using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Modifiers;
 using TownOfUs.Options.Modifiers.Impostor;
+using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Options;
-using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
-using UnityEngine;
-using System.Reflection;
-using System.Collections;
-using MiraAPI.Hud;
-using TouMegaChujoweExtension.Roles.Neutral;
-using TownOfUs.Buttons;
-using TownOfUs.Options.Roles.Crewmate;
+using TownOfUs.Roles;
+using TownOfUs.Utilities;
 using TownOfUs;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Utilities;
 
@@ -68,7 +64,6 @@ public static class ShieldUtils
         }
         if (player.HasModifier<ClericBarrierModifier>()) return ShieldType.Cleric;
         
-        if (player.HasModifier<OracleBlessedModifier>()) return ShieldType.Oracle;
         
         if (player.HasModifier<KnightedModifier>() && 
             OptionGroupSingleton<MonarchOptions>.Instance.CrewKnightsGrantKillImmunity) return ShieldType.Monarch;
@@ -189,7 +184,7 @@ public static class ShieldUtils
         HandleShieldRpc(attacker, target, shieldType);
 
         // Calculate cooldown
-        var saveCd = OptionGroupSingleton<GeneralOptions>.Instance.TempSaveCdReset;
+        var saveCd = OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance.TempSaveCdReset;
         duration = saveCd;
         switch (shieldType)
         {
@@ -301,3 +296,22 @@ public static class ShieldUtils
         return false;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

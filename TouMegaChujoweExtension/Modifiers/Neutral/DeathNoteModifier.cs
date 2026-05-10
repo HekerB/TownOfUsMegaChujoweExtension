@@ -1,13 +1,12 @@
-using System.Collections;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
+using MiraAPI.Utilities;
+using Reactor.Networking.Attributes;
+using Reactor.Networking.Rpc;
 using Reactor.Utilities;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Modules;
-using TouMegaChujoweExtension.Options.Modifiers;
+using System.Collections;
 using TownOfUs.Interfaces;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Localization;
@@ -15,8 +14,6 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
-using Reactor.Networking.Attributes;
-using Reactor.Networking.Rpc;
 
 namespace TouMegaChujoweExtension.Modifiers.Neutral;
 
@@ -350,6 +347,21 @@ public enum DeathNoteSubmitResult
     NotFound,
     SelfTarget
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

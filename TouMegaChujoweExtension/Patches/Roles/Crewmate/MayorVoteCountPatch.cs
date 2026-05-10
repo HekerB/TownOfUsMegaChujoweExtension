@@ -1,15 +1,13 @@
 using HarmonyLib;
-using MiraAPI.GameOptions;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
+using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Options.Roles.Crewmate;
-using TouMegaChujoweExtension.Roles.Crewmate;
+using TMPro;
 using TownOfUs.Events.Crewmate;
-using TownOfUs.Roles.Crewmate;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
-using MiraAPI.Modifiers;
-using TMPro;
+using TownOfUs.Roles.Crewmate;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Crewmate;
 
@@ -177,3 +175,15 @@ public static class MayorVoteCountPatch
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Options;
+using Random = UnityEngine.Random;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -191,7 +190,7 @@ public static class DraftSystem
                 if (roles.Any(r => r.Role == role.Role)) continue;
 
                 var assignData = MiscUtils.GetAssignData(role.Role);
-                if (assignData.Chance <= 0 || assignData.Count <= 0) continue;
+                if (assignData.Count <= 0) continue;
 
                 roles.Add(role);
             }
@@ -275,7 +274,37 @@ public static class DraftSystem
         if (!respectChances)
             return roles.OrderBy(_ => Random.Range(0f, 1f));
 
-        return WeightedShuffle(roles, r => Mathf.Max(0.1f, MiscUtils.GetAssignData(r.Role).Chance));
+        var roleList = roles.ToList();
+        var guaranteed = new List<RoleBehaviour>();
+        var passed = new List<RoleBehaviour>();
+        var failed = new List<RoleBehaviour>();
+
+        foreach (var r in roleList)
+        {
+            int chance = (int)MiscUtils.GetAssignData(r.Role).Chance;
+            
+            // Traktujemy role bez suwaka (0%) jako 100%
+            if (chance <= 0) chance = 30;
+
+            if (chance >= 100)
+            {
+                guaranteed.Add(r);
+            }
+            else if (Random.Range(0, 101) < chance)
+            {
+                passed.Add(r);
+            }
+            else
+            {
+                failed.Add(r);
+            }
+        }
+
+        guaranteed.Shuffle();
+        passed.Shuffle();
+        failed.Shuffle();
+
+        return guaranteed.Concat(passed).Concat(failed);
     }
 
     // === ROLE MIXING HELPERS ===
@@ -382,8 +411,15 @@ public static class DraftSystem
             .ToList();
     }
 
-    public static RoleBehaviour? PickRandomRole(bool isImpostor, List<RoleBehaviour>? excludeOffered = null)
+    public static RoleBehaviour? PickRandomRole(bool isImpostor, List<RoleBehaviour>? offeredPool = null)
     {
+        // Jeśli mamy listę ról, które gracz widział na ekranie, wybieramy z nich!
+        // To realizuje zasadę 33%/66%/100% szansy na neutrala (zależnie od tego ile ich było w ofercie).
+        if (offeredPool != null && offeredPool.Count > 0)
+        {
+            return offeredPool[UnityEngine.Random.Range(0, offeredPool.Count)];
+        }
+
         var myId = PlayerControl.LocalPlayer?.PlayerId ?? 255;
         
         DraftFaction faction;
@@ -392,72 +428,11 @@ public static class DraftSystem
 
         var enabledAlignments = GetAlignmentsForFaction(faction);
         
-        // --- Crewmate/Neutral Mixing Logic for Random Pick ---
-        if (faction == DraftFaction.CrewOther)
-        {
-            var options = OptionGroupSingleton<DraftModeOptions>.Instance;
-            
-            int currentNeutrals = GetCurrentOtherNeutralCount();
-            int remainingEligiblePlayers = PickOrder.Count(id => PlayerFactions.TryGetValue(id, out var f) && f == DraftFaction.CrewOther);
-            int neutralsNeeded = Mathf.Max(0, TargetOtherNeutralCount - currentNeutrals);
-            
-            bool forceNeutrals = neutralsNeeded >= remainingEligiblePlayers && remainingEligiblePlayers > 0;
-            bool limitReached = currentNeutrals >= TargetOtherNeutralCount;
+        // Fallback w razie braku puli ofert (np. błąd UI)
+        var allRoles = GetRolesForAlignments(enabledAlignments);
+        if (allRoles.Count == 0) return null;
 
-            bool shouldBeNeutral = false;
-            if (!limitReached)
-            {
-                if (forceNeutrals) 
-                {
-                    shouldBeNeutral = true;
-                }
-                else
-                {
-                    float offerChance = (float)neutralsNeeded / remainingEligiblePlayers;
-                    if (UnityEngine.Random.Range(0f, 1f) < offerChance)
-                    {
-                        int wantedNeutrals = (UnityEngine.Random.Range(0f, 100f) < 60f) ? (int)options.MinOtherNeutralsPerChoice.Value : (int)options.MaxOtherNeutralsPerChoice.Value;
-                        wantedNeutrals = Mathf.Min(wantedNeutrals, neutralsNeeded);
-
-                        if (wantedNeutrals > 0)
-                        {
-                            float ratio = (float)wantedNeutrals / RolesToShow;
-                            shouldBeNeutral = UnityEngine.Random.Range(0f, 1f) < ratio;
-                        }
-                    }
-                }
-            }
-
-            if (shouldBeNeutral)
-            {
-                var neutralPool = new List<RoleAlignment> { RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralOutlier };
-                var roles = GetRolesForAlignments(neutralPool);
-                if (excludeOffered != null)
-                {
-                    var offeredIds = excludeOffered.Select(r => r.Role).ToHashSet();
-                    roles = roles.Where(r => !offeredIds.Contains(r.Role)).ToList();
-                }
-                if (roles.Count > 0) return OrderRoles(roles).First();
-            }
-        }
-
-        // Standard flow
-        var pool = GetRolesForAlignments(enabledAlignments);
-
-        if (excludeOffered != null && excludeOffered.Count > 0)
-        {
-            var offeredIds = excludeOffered.Select(r => r.Role).ToHashSet();
-            var notOffered = pool.Where(r => !offeredIds.Contains(r.Role)).ToList();
-            if (notOffered.Count > 0)
-                return OrderRoles(notOffered).First();
-        }
-
-        if (pool.Count > 0)
-            return OrderRoles(pool).First();
-
-        return isImpostor
-            ? RoleManager.Instance.GetRole(RoleTypes.Impostor)
-            : RoleManager.Instance.GetRole(RoleTypes.Crewmate);
+        return OrderRoles(allRoles).FirstOrDefault();
     }
 
     // === LIFECYCLE ===
@@ -479,7 +454,7 @@ public static class DraftSystem
         InvalidateRoleCache();
     }
 
-    public static void GeneratePickOrder(List<byte> validPlayerIds = null)
+    public static void GeneratePickOrder(List<byte>? validPlayerIds = null)
     {
         PickOrder.Clear();
 
@@ -594,3 +569,16 @@ public static class DraftSystem
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

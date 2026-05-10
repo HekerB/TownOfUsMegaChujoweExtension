@@ -1,21 +1,17 @@
-using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
+using BepInEx;
 using HarmonyLib;
-using MiraAPI;
 using MiraAPI.PluginLoading;
-using Reactor;
-using Reactor.Networking;
+using MiraAPI;
 using Reactor.Networking.Attributes;
+using Reactor.Networking;
 using Reactor.Utilities;
+using Reactor;
 using System.Globalization;
 using System.Reflection;
-using TouMegaChujoweExtension.Patches;
-using TouMegaChujoweExtension.Patches.WinConditions;
-using TouMegaChujoweExtension.Utilities;
-using TouMegaChujoweExtension.Modules;
-using TownOfUs;
 using TownOfUs.Patches;
+using TownOfUs;
 
 namespace TouMegaChujoweExtension;
 
@@ -57,7 +53,7 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 		ReactorCredits.Register("Tou Mega Chujowe Extension", Version, IsDevBuild, ReactorCredits.AlwaysShow);
 		IL2CPPChainloader.Instance.Finished += Modules.ExtensionLocale.SearchInternalLocale;
 		IL2CPPChainloader.Instance.Finished += LawyerTeamChatRegistration.Register;
-		IL2CPPChainloader.Instance.Finished += Patches.Lovers.LoverMeetingChatRegistration.Register;
+		IL2CPPChainloader.Instance.Finished += Patches.Roles.Lovers.LoverMeetingChatRegistration.Register;
 		IL2CPPChainloader.Instance.Finished += () => ExtensionModNewsFetcher.CheckForNews();
 	
 		PatchAllWithErrorHandling();
@@ -146,3 +142,17 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

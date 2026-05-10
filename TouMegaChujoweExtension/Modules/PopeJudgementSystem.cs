@@ -1,15 +1,13 @@
 using Hazel;
 using Il2CppInterop.Runtime.Injection;
+using MiraAPI.GameEnd;
 using MiraAPI.Roles;
 using Reactor.Utilities.Attributes;
-using TouMegaChujoweExtension.Roles.Neutral;
-using TownOfUs;
 using TownOfUs.Events;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
-using MiraAPI.GameEnd;
-using TouMegaChujoweExtension.GameOver;
+using TownOfUs;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -185,3 +183,17 @@ public enum PopeJudgementStage
     PopeDead,
     Ending,
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

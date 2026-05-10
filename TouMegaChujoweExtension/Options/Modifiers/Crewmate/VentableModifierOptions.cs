@@ -1,10 +1,9 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Modifiers.Crewmate;
 using UnityEngine;
 
-namespace TouMegaChujoweExtension.Options.Modifiers;
+namespace TouMegaChujoweExtension.Options.Modifiers.Crewmate;
 
 public sealed class VentableModifierOptions : AbstractOptionGroup<VentableModifier>
 {
@@ -22,3 +21,16 @@ public sealed class VentableModifierOptions : AbstractOptionGroup<VentableModifi
     public ModdedNumberOption VentDuration { get; } =
         new("ExtensionModifierVentableVentDuration", 10f, 1f, 30f, 1f, MiraNumberSuffixes.Seconds);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

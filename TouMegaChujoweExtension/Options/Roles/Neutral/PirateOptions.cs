@@ -1,8 +1,7 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
@@ -21,7 +20,7 @@ public sealed class PirateOptions : AbstractOptionGroup<PirateRole>
     public bool CantDuelSamePersonTwiceInARow { get; set; } = false;
 
     public ModdedNumberOption DuelsToWin { get; } =
-        new("ExtensionOptionPirateDuelsToWin", 2f, 1f, 5f, 1f, MiraNumberSuffixes.None, "0");
+        new("ExtensionOptionPirateDuelsToWin", 3f, 1f, 5f, 1f, MiraNumberSuffixes.None, "0");
 
     [ModdedEnumOption("ExtensionOptionPirateWinMode", typeof(PirateWinMode),
         ["ExtensionOptionPirateWinModePirateWins",
@@ -34,3 +33,17 @@ public enum PirateWinMode
     PirateWins,
     PirateWinsWithOthers
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

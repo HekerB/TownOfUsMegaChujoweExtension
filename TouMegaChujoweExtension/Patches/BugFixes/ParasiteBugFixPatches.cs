@@ -1,14 +1,14 @@
 using HarmonyLib;
-using TownOfUs.Utilities.Appearances;
-using TownOfUs.Modifiers.Impostor;
-using TownOfUs.Patches;
-using TownOfUs.Utilities;
-using TownOfUs.Options.Roles.Impostor;
-using TownOfUs.Options.Maps;
-using TownOfUs.Options;
-using UnityEngine;
-using MiraAPI.Utilities;
 using MiraAPI.GameOptions;
+using MiraAPI.Utilities;
+using TownOfUs.Modifiers.Impostor;
+using TownOfUs.Options.Maps;
+using TownOfUs.Options.Roles.Impostor;
+using TownOfUs.Options;
+using TownOfUs.Patches;
+using TownOfUs.Utilities.Appearances;
+using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.BugFixes;
 
@@ -56,3 +56,14 @@ public static class ParasiteBugFixPatches
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+

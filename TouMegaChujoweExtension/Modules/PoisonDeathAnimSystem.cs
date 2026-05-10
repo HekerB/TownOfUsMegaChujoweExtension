@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using Il2CppInterop.Runtime;
+using MiraAPI.GameOptions;
 using PowerTools;
 using Reactor.Utilities;
-using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
 using TownOfUs.Utilities;
-using MiraAPI.GameOptions;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -114,3 +114,15 @@ public static class PoisonDeathAnimSystem
         return null;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

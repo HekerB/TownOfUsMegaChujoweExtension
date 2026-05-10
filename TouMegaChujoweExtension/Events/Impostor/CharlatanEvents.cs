@@ -1,16 +1,12 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
-using TouMegaChujoweExtension.Buttons.Impostor;
-using TouMegaChujoweExtension.Modules;
-using TouMegaChujoweExtension.Options.Roles.Impostor;
-using TouMegaChujoweExtension.Roles.Impostor;
+using Object = UnityEngine.Object;
 using TownOfUs.Buttons;
 using TownOfUs.Modules;
 using TownOfUs.Utilities;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TouMegaChujoweExtension.Events.Impostor;
 
@@ -77,3 +73,17 @@ public static class CharlatanEvents
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

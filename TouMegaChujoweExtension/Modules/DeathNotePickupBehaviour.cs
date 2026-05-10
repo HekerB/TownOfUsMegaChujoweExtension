@@ -1,9 +1,8 @@
-using System;
 using Il2CppInterop.Runtime.Attributes;
-using Reactor.Utilities.Attributes;
-using TouMegaChujoweExtension.Modifiers.Neutral;
-using UnityEngine;
 using Object = UnityEngine.Object;
+using Reactor.Utilities.Attributes;
+using System;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -204,3 +203,17 @@ public static readonly List<DeathNotePickupBehaviour> Instances = new();
         _modifier = null;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

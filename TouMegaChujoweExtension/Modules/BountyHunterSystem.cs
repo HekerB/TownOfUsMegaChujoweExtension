@@ -1,13 +1,9 @@
-using System.Linq;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using System.Linq;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Modifiers.Universal;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
@@ -140,3 +136,22 @@ public static class BountyHunterSystem
         ClearArrowModifiers();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

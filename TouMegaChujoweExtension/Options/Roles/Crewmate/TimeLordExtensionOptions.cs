@@ -1,10 +1,10 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TownOfUs;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
@@ -20,3 +20,14 @@ public sealed class TimeLordExtensionOptions : AbstractOptionGroup
     [ModdedNumberOption("ExtensionOptionTimeLordRewindSpeed", 0.5f, 5.0f, 0.5f, MiraNumberSuffixes.None)]
     public float RewindSpeed { get; set; } = 1.0f;
 }
+
+
+
+
+
+
+
+
+
+
+

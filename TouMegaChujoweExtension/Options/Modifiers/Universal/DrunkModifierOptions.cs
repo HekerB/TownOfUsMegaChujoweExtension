@@ -1,10 +1,9 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Modifiers.Universal;
 using UnityEngine;
 
-namespace TouMegaChujoweExtension.Options.Modifiers;
+namespace TouMegaChujoweExtension.Options.Modifiers.Universal;
 
 public sealed class DrunkModifierOptions : AbstractOptionGroup<DrunkModifier>
 {
@@ -16,3 +15,16 @@ public sealed class DrunkModifierOptions : AbstractOptionGroup<DrunkModifier>
     public ModdedNumberOption DrunkDuration { get; } =
         new("ExtensionModifierDrunkDuration", 3f, 1f, 20f, 1f, MiraNumberSuffixes.None);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

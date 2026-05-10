@@ -1,6 +1,6 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using TownOfUs;
 using UnityEngine;
@@ -39,3 +39,15 @@ public sealed class SonarExtendedOptions : AbstractOptionGroup
 
     public SonarDisplayMode Mode => (SonarDisplayMode)ModeOption.Value;
 }
+
+
+
+
+
+
+
+
+
+
+
+

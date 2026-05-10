@@ -1,10 +1,10 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TownOfUs;
-using TownOfUs.Roles.Neutral;
 using TownOfUs.Modules.Localization;
+using TownOfUs.Roles.Neutral;
+using TownOfUs;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
@@ -30,3 +30,14 @@ public sealed class VampireExtendedOptions : AbstractOptionGroup<VampireRole>
     };
     public bool OnlyOgCanSabotage => OnlyOgCanSabotageOption.Value;
 }
+
+
+
+
+
+
+
+
+
+
+

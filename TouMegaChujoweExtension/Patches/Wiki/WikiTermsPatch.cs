@@ -1,16 +1,11 @@
-using System;
-using System.Reflection;
 using HarmonyLib;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Options.Roles.Crewmate;
-using TouMegaChujoweExtension.Options.Roles.Impostor;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Options.Modifiers;
-using TownOfUs.Assets;
-using System.Collections.Generic;
 using MiraAPI.GameOptions;
-using TownOfUs.Options;
+using System.Collections.Generic;
+using System.Reflection;
+using System;
+using TownOfUs.Assets;
 using TownOfUs.Options.Maps;
+using TownOfUs.Options;
 
 namespace TouMegaChujoweExtension.Patches.Wiki;
 
@@ -160,3 +155,18 @@ public static class WikiSettingsPatch
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

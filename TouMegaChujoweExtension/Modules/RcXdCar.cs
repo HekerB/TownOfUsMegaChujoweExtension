@@ -1,19 +1,16 @@
-using System;
-using System.Collections;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Utilities;
-using Reactor.Utilities;
+using Object = UnityEngine.Object;
 using Reactor.Utilities.Extensions;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Options.Roles.Impostor;
-using TouMegaChujoweExtension.Roles.Impostor;
+using Reactor.Utilities;
+using System.Collections;
+using System;
 using TownOfUs.Assets;
 using TownOfUs.Modifiers;
 using TownOfUs.Utilities;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -28,7 +25,6 @@ public sealed class RcXdCar : IDisposable
     private bool _isOwner;
 
     private float _speed;
-    private float _acceleration;
     private Vector2 _velocity;
 
     private Transform? _lightTransformParent;
@@ -156,13 +152,11 @@ public sealed class RcXdCar : IDisposable
     public static RcXdCar Create(PlayerControl owner, Vector2 position)
     {
         var opts = OptionGroupSingleton<RcXdOptions>.Instance;
-
         var car = new RcXdCar
         {
             _owner = owner,
             _isOwner = owner.AmOwner,
             _speed = opts.CarSpeed,
-            _acceleration = opts.CarAcceleration,
             _velocity = Vector2.zero,
 
             _netPos = position,
@@ -193,6 +187,7 @@ public sealed class RcXdCar : IDisposable
         car._audio = car._go.AddComponent<AudioSource>();
         car._audio.clip = TouExtensionAudio.RcSound.LoadAsset();
         car._audio.loop = true;
+        car._audio.spatialBlend = 0f;
         car._audio.volume = 0f;
         car._audio.Play();
 
@@ -314,7 +309,6 @@ public sealed class RcXdCar : IDisposable
         }
 
         var syncTimer = 0f;
-        var deceleration = _acceleration * 0.8f;
 
         while (!_detonated && _go != null)
         {
@@ -333,19 +327,18 @@ public sealed class RcXdCar : IDisposable
             if (Input.GetKey(KeyCode.RightArrow)) inputDir.x += 1f;
             if (inputDir != Vector2.zero) inputDir = inputDir.normalized;
 
+            var gameSpeed = GameOptionsManager.Instance != null ? GameOptionsManager.Instance.currentNormalGameOptions.PlayerSpeedMod : 1f;
+            var targetSpeed = _speed * gameSpeed;
+
             if (inputDir != Vector2.zero)
             {
                 var currentDir = _velocity.magnitude > 0.1f ? _velocity.normalized : inputDir;
                 var newDir = Vector2.Lerp(currentDir, inputDir, TurnSpeed * dt).normalized;
-                var currentSpeed = _velocity.magnitude;
-                var newSpeed = Mathf.MoveTowards(currentSpeed, _speed, _acceleration * dt);
-                _velocity = newDir * newSpeed;
+                _velocity = newDir * targetSpeed;
             }
             else
             {
-                var currentSpeed = _velocity.magnitude;
-                var newSpeed = Mathf.MoveTowards(currentSpeed, 0f, deceleration * dt);
-                _velocity = newSpeed > 0.02f ? _velocity.normalized * newSpeed : Vector2.zero;
+                _velocity = Vector2.zero;
             }
 
             if (_velocity.magnitude < 0.02f)
@@ -409,7 +402,7 @@ public sealed class RcXdCar : IDisposable
 
             if (_audio != null)
             {
-                var speedRatio = _speed <= 0.001f ? 0f : Mathf.Clamp01(_velocity.magnitude / _speed);
+                var speedRatio = targetSpeed <= 0.001f ? 0f : Mathf.Clamp01(_velocity.magnitude / targetSpeed);
                 _audio.pitch = Mathf.Lerp(0.6f, 1.3f, speedRatio);
             }
 
@@ -434,7 +427,7 @@ public sealed class RcXdCar : IDisposable
 
         if (_isOwner)
         {
-            _audio.volume = 0.4f;
+            _audio.volume = 0.9f;
             return;
         }
 
@@ -445,7 +438,7 @@ public sealed class RcXdCar : IDisposable
         }
 
         var dist = Vector2.Distance(_go.transform.position, PlayerControl.LocalPlayer.transform.position);
-        _audio.volume = dist > AudioHearRadius ? 0f : Mathf.Clamp01(1f - (dist / AudioHearRadius)) * 0.35f;
+        _audio.volume = dist > AudioHearRadius ? 0f : Mathf.Clamp01(1f - (dist / AudioHearRadius)) * 0.9f;
     }
 
     public void UpdatePosition(Vector2 pos, bool flipX)
@@ -522,7 +515,7 @@ public sealed class RcXdCar : IDisposable
             var validTargets = allNear.Where(x => 
                 x != null && 
                 !x.HasDied() && 
-                x.PlayerId != _owner.PlayerId && // Don't kill the owner themselves
+                // x.PlayerId != _owner.PlayerId && // Removed to allow RC-XD to kill themselves
                 !(x.HasModifier<BaseShieldModifier>() && x.AmOwner) && 
                 !(x.HasModifier<FirstDeadShield>() && x.AmOwner)
             ).ToList();
@@ -563,17 +556,10 @@ public sealed class RcXdCar : IDisposable
         var localPos = (Vector2)PlayerControl.LocalPlayer.transform.position;
         var dist = Vector2.Distance(explosionPos, localPos);
 
-        var opts = OptionGroupSingleton<RcXdOptions>.Instance;
-        var blastRadius = opts.DetonateRadius * ShipStatus.Instance.MaxLightRadius;
-
-        var isInBlastRadius = dist <= blastRadius;
-        var isImpostorNearby = PlayerControl.LocalPlayer.Data.Role.IsImpostor && dist <= blastRadius * 3f;
-
-        if (isInBlastRadius || isImpostorNearby || _isOwner)
+        const float maxDist = 20f;
+        if (dist <= maxDist || _isOwner)
         {
-            var volume = isInBlastRadius || _isOwner
-                ? 0.8f
-                : Mathf.Clamp01(1f - (dist / (blastRadius * 3f))) * 0.6f;
+            var volume = _isOwner ? 1.0f : Mathf.Clamp01(1f - (dist / maxDist)) * 0.9f;
             SoundManager.Instance.PlaySound(TouExtensionAudio.RcExplosionSound.LoadAsset(), false, volume);
         }
     }
@@ -581,7 +567,7 @@ public sealed class RcXdCar : IDisposable
     private void PlayDisconnectSound()
     {
         if (!_isOwner) return;
-        SoundManager.Instance.PlaySound(TouAudio.TrackerDeactivateSound.LoadAsset(), false, 0.7f);
+        SoundManager.Instance.PlaySound(TouAudio.TrackerDeactivateSound.LoadAsset(), false, 1.0f);
     }
 
     private static IEnumerator DestroyObjAfter(GameObject obj, float delay)
@@ -668,3 +654,18 @@ public sealed class RcXdCar : IDisposable
         DoDestroy();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

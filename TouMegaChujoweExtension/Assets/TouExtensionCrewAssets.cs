@@ -19,3 +19,11 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> StakeButtonIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.VH_Stake_Button.png", 350f);
     }
 }
+
+
+
+
+
+
+
+

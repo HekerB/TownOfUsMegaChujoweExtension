@@ -1,8 +1,6 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Options.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
@@ -68,3 +66,17 @@ public sealed class LuckyModifier : TouGameModifier, IWikiDiscoverable
         return UnityEngine.Random.Range(min, max);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

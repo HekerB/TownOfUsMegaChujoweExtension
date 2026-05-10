@@ -1,27 +1,23 @@
+using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
-using MiraAPI.Events;
-using MiraAPI.Events.Vanilla.Gameplay;
 using Reactor.Utilities;
 using System.Collections;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Roles.Crewmate;
-using TouMegaChujoweExtension.Roles.Neutral;
-using TownOfUs.Modifiers;
+using TownOfUs.Events;
 using TownOfUs.Modifiers.Crewmate;
-using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Game.Crewmate;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers.Neutral;
-using TownOfUs.Modules;
+using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
+using TownOfUs.Modules;
 using TownOfUs.Networking;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
-using TownOfUs.Events;
-using TouMegaChujoweExtension.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
@@ -61,13 +57,17 @@ public static class PelicanSystem
         return SwallowedPlayers.TryGetValue(pelicanId, out var set) ? set : new HashSet<byte>();
     }
 
+    private static readonly Dictionary<byte, byte> SwallowTracker = new();
+    private static readonly Dictionary<byte, DateTime> SwallowTimes = new();
+
+    public static DateTime? GetSwallowTime(byte victimId)
+    {
+        return SwallowTimes.TryGetValue(victimId, out var time) ? time : null;
+    }
+
     public static byte? GetPelicanOf(byte victimId)
     {
-        foreach (var kvp in SwallowedPlayers)
-        {
-            if (kvp.Value.Contains(victimId)) return kvp.Key;
-        }
-        return null;
+        return SwallowTracker.TryGetValue(victimId, out var pelicanId) ? pelicanId : null;
     }
 
     public static void UpdatePelicanPosition(byte pelicanId, Vector2 position)
@@ -282,6 +282,8 @@ public static class PelicanSystem
 
         set.Add(victimId);
         AllSwallowed.Add(victimId);
+        SwallowTracker[victimId] = pelicanId;
+        SwallowTimes[victimId] = DateTime.UtcNow;
 
         var victim = MiscUtils.PlayerById(victimId);
         if (victim != null)
@@ -392,6 +394,8 @@ public static class PelicanSystem
             if (victim != null && !victim.HasDied())
             {
                 AllSwallowed.Remove(victimId);
+                SwallowTracker.Remove(victimId);
+            SwallowTimes.Remove(victimId);
                 OriginalPositions.Remove(victimId);
 
                 DigestKillVictims.Add(victimId);
@@ -447,6 +451,8 @@ public static class PelicanSystem
             }
 
             AllSwallowed.Remove(victimId);
+            SwallowTracker.Remove(victimId);
+            SwallowTimes.Remove(victimId);
             OriginalPositions.Remove(victimId);
 
             // Host assigns the proper Ghost role so the player gets ghost abilities (like Haunt)
@@ -572,12 +578,65 @@ public static class PelicanSystem
             }
 
             AllSwallowed.Remove(victimId);
+            SwallowTracker.Remove(victimId);
+            SwallowTimes.Remove(victimId);
             OriginalPositions.Remove(victimId);
         }
 
         victims.Clear();
         SwallowedPlayers.Remove(pelicanId);
         LastPelicanPositions.Remove(pelicanId);
+    }
+
+    public static void ReleaseSinglePlayer(byte victimId)
+    {
+        if (!SwallowTracker.TryGetValue(victimId, out var pelicanId)) return;
+        if (!SwallowedPlayers.TryGetValue(pelicanId, out var victims)) return;
+
+        var victim = MiscUtils.PlayerById(victimId);
+        if (victim != null)
+        {
+            RemoveSwallowedModifier(victim);
+            try
+            {
+                if (victim.TryGetModifier<DeathHandlerModifier>(out var dhMod))
+                    victim.RemoveModifier(dhMod);
+            }
+            catch { }
+
+            if (!victim.HasDied())
+            {
+                victim.Visible = true;
+                victim.moveable = true;
+
+                if (OriginalPositions.TryGetValue(victimId, out var origPos))
+                {
+                    victim.transform.position = new Vector3(origPos.x, origPos.y, 0f);
+                    victim.NetTransform.SnapTo(origPos);
+                }
+
+                RestoreFootstepsIfNeeded(victim);
+            }
+
+            if (victim.AmOwner)
+            {
+                StopSpectatingPelican();
+                HideSwallowedNotification();
+                if (!victim.HasDied()) ShowReleaseNotification();
+            }
+        }
+
+        victims.Remove(victimId);
+        AllSwallowed.Remove(victimId);
+        SwallowTracker.Remove(victimId);
+        SwallowTimes.Remove(victimId);
+        OriginalPositions.Remove(victimId);
+
+        if (victims.Count == 0)
+        {
+            SwallowedPlayers.Remove(pelicanId);
+            LastPelicanPositions.Remove(pelicanId);
+        }
     }
 
     private static Vector2 FindSafePosition(Vector2 targetPosition)
@@ -773,6 +832,8 @@ public static class PelicanSystem
                 }
 
                 AllSwallowed.Remove(victimId);
+                SwallowTracker.Remove(victimId);
+            SwallowTimes.Remove(victimId);
                 OriginalPositions.Remove(victimId);
             }
 
@@ -807,6 +868,8 @@ public static class PelicanSystem
 
         SwallowedPlayers.Clear();
         AllSwallowed.Clear();
+        SwallowTracker.Clear();
+        SwallowTimes.Clear();
         OriginalPositions.Clear();
         LastPelicanPositions.Clear();
         PendingDigestVictims.Clear();
@@ -832,6 +895,8 @@ public static class PelicanSystem
 
         SwallowedPlayers.Clear();
         AllSwallowed.Clear();
+        SwallowTracker.Clear();
+        SwallowTimes.Clear();
         OriginalPositions.Clear();
         LastPelicanPositions.Clear();
         PendingDigestVictims.Clear();
@@ -840,3 +905,22 @@ public static class PelicanSystem
         _preWinDigestDone = false;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
