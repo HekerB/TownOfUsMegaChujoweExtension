@@ -8,6 +8,7 @@ using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 using Reactor.Utilities.Extensions;
 using Reactor.Utilities;
+using System.Collections;
 using System.Text;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
@@ -223,7 +224,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (Player.AmOwner)
         {
-            ShieldUtils.TriggerShieldFlash(Player, ShieldType.Bodyguard);
+            TriggerBodyguardFlash(Player);
             
             var notif = Helpers.CreateAndShowNotification(
                 TouLocale.Get("ExtensionRoleBodyguardShieldAttacked"),
@@ -309,7 +310,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
         // Notify attacker too if they are the local player
         if (attacker != null && attacker.AmOwner)
         {
-            ShieldUtils.TriggerShieldFlash(attacker, ShieldType.Bodyguard);
+            TriggerBodyguardFlash(attacker);
         }
     }
 
@@ -366,6 +367,40 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
                 showKillAnim: true,
                 playKillSound: false,
                 causeOfDeath: "Bodyguard");
+        }
+    }
+
+    private static SpriteRenderer? _flashRenderer;
+
+    public static void TriggerBodyguardFlash(PlayerControl player)
+    {
+        if (player == null || !player.AmOwner) return;
+        var color = TouExtensionColors.ShieldFlashes.Bodyguard;
+        Logger<TouMegaChujoweExtensionPlugin>.Info($"[Bodyguard] Triggering shield flash for {player.Data.PlayerName}");
+        Coroutines.Start(CoFlash(color));
+    }
+
+    private static IEnumerator CoFlash(Color color)
+    {
+        if (HudManager.Instance == null || HudManager.Instance.FullScreen == null) yield break;
+
+        if (_flashRenderer == null)
+        {
+            _flashRenderer = UnityEngine.Object.Instantiate(HudManager.Instance.FullScreen, HudManager.Instance.FullScreen.transform.parent);
+            _flashRenderer.transform.localScale *= 25f;
+            _flashRenderer.name = "BodyguardFlashRenderer";
+        }
+
+        var flashColor = color;
+        flashColor.a = 0.5f;
+        _flashRenderer.color = flashColor;
+        _flashRenderer.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        if (_flashRenderer != null)
+        {
+            _flashRenderer.gameObject.SetActive(false);
         }
     }
 }

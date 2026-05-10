@@ -11,12 +11,10 @@ using TownOfUs.Events;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Crewmate;
 using TownOfUs.Modifiers.Game;
-using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules;
 using TownOfUs.Networking;
-using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -136,139 +134,11 @@ public static class PelicanSystem
     }
 
     // ==================== SHIELD CHECKING ====================
+    // Shield checks are now handled by the MiraAPI BeforeMurderEvent system.
+    // PelicanSwallowButton.ClickHandler() fires BeforeMurderEvent before calling OnClick/RpcPelicanSwallow.
+    // Native TOU-Mira event handlers (MedicEvents, WardenEvents, etc.) and BodyguardShieldEvents
+    // will cancel the event if the target is shielded, preventing the swallow from happening.
 
-    public static ShieldType CheckAllShields(PlayerControl pelican, PlayerControl target)
-    {
-        return target.GetShieldType();
-    }
-
-    public static bool HandleShieldCheck(PlayerControl pelican, PlayerControl target)
-    {
-        var shieldType = CheckAllShields(pelican, target);
-        if (shieldType == ShieldType.None) return false;
-
-        switch (shieldType)
-        {
-            case ShieldType.FirstDead:
-                /* No special handling needed for first dead shield beyond flash */
-                break;
-
-            case ShieldType.Bodyguard:
-                HandleBodyguardShieldHit(pelican, target);
-                break;
-
-            case ShieldType.Child:
-                /* Child shield is handled by flash and blocking swallow */
-                break;
-
-            case ShieldType.Medic:
-                HandleMedicShieldHit(pelican, target);
-                break;
-
-            case ShieldType.Warden:
-                HandleWardenFortifiedHit(pelican, target);
-                break;
-
-            case ShieldType.Mirrorcaster:
-                HandleMagicMirrorHit(pelican, target);
-                break;
-
-            case ShieldType.Fairy:
-                return true;
-
-            case ShieldType.Mercenary:
-                return true;
-
-            case ShieldType.DeadlyQuota:
-                return true;
-
-            case ShieldType.Oracle:
-                HandleOracleBlessHit(pelican, target);
-                break;
-        }
-
-        if (pelican.AmOwner)
-        {
-            ShieldUtils.TriggerShieldFlash(pelican, shieldType);
-        }
-
-        Logger<TouMegaChujoweExtensionPlugin>.Info(
-            $"[PelicanSystem] Swallow blocked by {shieldType} on player {target.PlayerId}");
-        return true;
-    }
-
-    private static void HandleBodyguardShieldHit(PlayerControl pelican, PlayerControl target)
-    {
-        try
-        {
-            if (target.TryGetModifier<BodyguardShieldModifier>(out var shieldMod))
-            {
-                var bodyguard = shieldMod.Bodyguard;
-                if (bodyguard != null)
-                {
-                    BodyguardRole.RpcBodyguardShieldAttacked(bodyguard, pelican, target);
-                    return;
-                }
-            }
-        }
-        catch (System.Exception ex)
-        {
-            Logger<TouMegaChujoweExtensionPlugin>.Error(
-                $"[PelicanSystem] Error handling Bodyguard shield: {ex.Message}");
-        }
-    }
-
-    private static void HandleMedicShieldHit(PlayerControl pelican, PlayerControl target)
-    {
-        try
-        {
-            if (target.TryGetModifier<MedicShieldModifier>(out var medicMod))
-                MedicRole.RpcMedicShieldAttacked(medicMod.Medic, pelican, target);
-        }
-        catch (System.Exception ex)
-        {
-            Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Error handling Medic shield: {ex.Message}");
-        }
-    }
-
-    private static void HandleWardenFortifiedHit(PlayerControl pelican, PlayerControl target)
-    {
-        try
-        {
-            if (target.TryGetModifier<WardenFortifiedModifier>(out var wardenMod))
-                WardenRole.RpcWardenNotify(wardenMod.Warden, pelican, target);
-        }
-        catch (System.Exception ex)
-        {
-            Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Error handling Warden shield: {ex.Message}");
-        }
-    }
-
-    private static void HandleMagicMirrorHit(PlayerControl pelican, PlayerControl target)
-    {
-        try
-        {
-            if (target.TryGetModifier<MagicMirrorModifier>(out var mirrorMod))
-                MirrorcasterRole.RpcMagicMirrorAttacked(mirrorMod.Mirrorcaster, pelican, target);
-        }
-        catch (System.Exception ex)
-        {
-            Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Error handling Mirrorcaster shield: {ex.Message}");
-        }
-    }
-
-    private static void HandleOracleBlessHit(PlayerControl pelican, PlayerControl target)
-    {
-        try
-        {
-            if (target.TryGetModifier<TownOfUs.Modifiers.Crewmate.OracleBlessedModifier>(out var oracleMod))
-                OracleRole.RpcOracleBlessNotify(pelican, oracleMod.Oracle, target);
-        }
-        catch (System.Exception ex)
-        {
-            Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Error handling Oracle blessing: {ex.Message}");
-        }
-    }
 
     // ==================== SWALLOW / DIGEST / RELEASE ====================
 

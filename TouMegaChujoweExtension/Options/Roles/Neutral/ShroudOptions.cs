@@ -17,6 +17,9 @@ public sealed class ShroudOptions : AbstractOptionGroup<ShroudRole>
     [ModdedToggleOption("Can Vent")]
     public bool CanVent { get; set; } = false;
 
+    [ModdedToggleOption("Shared Cooldown (Kill & Shroud)")]
+    public bool SharedCooldown { get; set; } = false;
+
 
 }
 

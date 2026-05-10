@@ -108,38 +108,6 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
             throw new System.InvalidOperationException($"Failed to apply any Harmony patches. {failCount} patch classes failed. See log for details.");
         }
 
-        // Apply manual patches for Town of Us role buttons that need special handling
-        PatchToURoleButtons();
-    }
-
-    private void PatchToURoleButtons()
-    {
-        try
-        {
-            var assembly = typeof(TownOfUsPlugin).Assembly;
-            var types = assembly.GetTypes();
-            var prefix = new HarmonyMethod(typeof(ShieldUtils).GetMethod(nameof(ShieldUtils.HandleToURoleButtonPrefix)));
-
-            foreach (var type in types)
-            {
-                // Specifically target roles that have hardcoded shield checks in their OnClick
-                if (type.Name == "SheriffShootButton" || 
-                    type.Name == "OfficerShootButton" || 
-                    type.Name == "HunterKillButton")
-                {
-                    var method = type.GetMethod("OnClick", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (method != null)
-                    {
-                        Info($"[ManualPatch] Patching {type.Name}.OnClick");
-                        Harmony.Patch(method, prefix: prefix);
-                    }
-                }
-            }
-        }
-        catch (System.Exception ex)
-        {
-            Error($"[ManualPatch] Critical failure during manual patching: {ex.Message}");
-        }
     }
 }
 

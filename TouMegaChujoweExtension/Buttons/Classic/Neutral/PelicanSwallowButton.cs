@@ -109,7 +109,8 @@ public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, Playe
         if (PelicanSystem.IsSwallowed(target.PlayerId)) return false;
 
         // Block targeting ONLY for Child.
-        if (target.GetShieldType() == ShieldType.Child) return false;
+        var child = target.GetModifiers<ChildModifier>().FirstOrDefault();
+        if (child != null && !child.IsAdult) return false;
 
         return base.IsTargetValid(target);
     }

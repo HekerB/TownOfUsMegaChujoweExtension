@@ -210,8 +210,15 @@ public static class WitchEvents
 
                 var shouldDie = true;
 
-                var shieldType = player.GetShieldType();
-                if (shieldType != ShieldType.None)
+                var isShielded = player.HasModifier<TownOfUs.Modifiers.Crewmate.MedicShieldModifier>() ||
+                                 player.HasModifier<TownOfUs.Modifiers.Crewmate.WardenFortifiedModifier>() ||
+                                 player.HasModifier<TownOfUs.Modifiers.Crewmate.MagicMirrorModifier>() ||
+                                 player.HasModifier<BodyguardShieldModifier>() ||
+                                 player.HasModifier<TownOfUs.Modifiers.FirstDeadShield>() ||
+                                 player.HasModifier<TownOfUs.Modifiers.Neutral.GuardianAngelProtectModifier>() ||
+                                 player.HasModifier<TownOfUs.Modifiers.Crewmate.ClericBarrierModifier>();
+
+                if (isShielded)
                 {
                     shouldDie = false;
                 }

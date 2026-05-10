@@ -1,3 +1,5 @@
+using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
@@ -54,7 +56,6 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
             return false;
         }
 
-        // Targeting allowed, shield handled in OnClick
         if (target.HasModifier<FirstDeadShield>())
         {
             return false;
@@ -66,6 +67,26 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
     public override PlayerControl? GetTarget()
     {
         return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+    }
+
+    public override void ClickHandler()
+    {
+        if (!CanClick()) return;
+        if (Target == null) return;
+
+        var player = PlayerControl.LocalPlayer;
+        if (player == null) return;
+
+        var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
+        MiraEventManager.InvokeEvent(beforeMurderEvent);
+        
+        if (beforeMurderEvent.IsCancelled)
+        {
+            return;
+        }
+
+        OnClick();
+        Timer = Cooldown;
     }
 
     protected override void OnClick()
@@ -83,18 +104,6 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
             return;
         }
 
-        var shieldType = ShieldUtils.GetShieldType(Target);
-        if (shieldType != ShieldType.None)
-        {
-            ShieldUtils.TriggerShieldFlash(player, shieldType);
-            if (OptionGroupSingleton<InjectorOptions>.Instance.SharedCooldown)
-            {
-                player.SetKillTimer(player.GetKillCooldown());
-            }
-            Timer = Cooldown;
-            return;
-        }
-
         InjectorRole.RpcInjectorInject(player, Target);
         
         if (OptionGroupSingleton<InjectorOptions>.Instance.SharedCooldown)
@@ -103,18 +112,3 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

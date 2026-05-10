@@ -59,7 +59,6 @@ global using TouMegaChujoweExtension.Patches.Roles.Venomous;
 global using TouMegaChujoweExtension.Patches.Roles.Ventable;
 global using TouMegaChujoweExtension.Patches.Roles.Witch;
 global using TouMegaChujoweExtension.Patches.Roles.Wraith;
-global using TouMegaChujoweExtension.Patches.Shields;
 global using TouMegaChujoweExtension.Patches.UI;
 global using TouMegaChujoweExtension.Patches.Wiki;
 global using TouMegaChujoweExtension.Patches.WinConditions;
@@ -67,8 +66,6 @@ global using TouMegaChujoweExtension.Roles.Classic.Crewmate;
 global using TouMegaChujoweExtension.Roles.Classic.Impostor;
 global using TouMegaChujoweExtension.Roles.Classic.Neutral;
 global using TouMegaChujoweExtension.Utilities;
-
-// Ambiguity Resolvers
 global using HackerRole = TouMegaChujoweExtension.Roles.Classic.Impostor.HackerRole;
 global using TrapperRole = TouMegaChujoweExtension.Roles.Classic.Crewmate.TrapperRole;
 global using VultureRole = TouMegaChujoweExtension.Roles.Classic.Neutral.VultureRole;
@@ -83,7 +80,6 @@ global using WitchRole = TouMegaChujoweExtension.Roles.Classic.Impostor.WitchRol
 global using WitchOptions = TouMegaChujoweExtension.Options.Roles.Impostor.WitchOptions;
 global using WitchEvents = TouMegaChujoweExtension.Events.Impostor.WitchEvents;
 global using WitchSpellboundModifier = TouMegaChujoweExtension.Modifiers.Impostor.WitchSpellboundModifier;
-
 global using static Reactor.Utilities.Logger<TouMegaChujoweExtension.TouMegaChujoweExtensionPlugin>;
 global using TownOfUs.Networking;
 global using MiraAPI.Networking;

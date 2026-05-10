@@ -157,8 +157,10 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
             return;
         }
 
-        var shieldType = target.GetShieldType();
-        if (shieldType == ShieldType.Warden || shieldType == ShieldType.FirstDead || shieldType == ShieldType.Cleric)
+        // Block shift against protective shields (Warden, FirstDead, Cleric)
+        if (target.HasModifier<TownOfUs.Modifiers.Crewmate.WardenFortifiedModifier>() ||
+            target.HasModifier<TownOfUs.Modifiers.FirstDeadShield>() ||
+            target.HasModifier<TownOfUs.Modifiers.Crewmate.ClericBarrierModifier>())
         {
             RpcCancelShift(Player);
             return;

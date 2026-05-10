@@ -14,6 +14,7 @@ using System;
 using TownOfUs.Buttons;
 using TownOfUs.Events;
 using TownOfUs.Modifiers;
+using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Utilities;
@@ -62,7 +63,8 @@ public sealed class ShroudKillButton : TownOfUsKillRoleButton<ShroudRole, Player
         player.RpcSpecialMurder(Target, causeOfDeath: "Shroud");
 
         player.SetKillTimer(Cooldown);
-        ShroudAbilityButton.SyncInternalTimer(Cooldown);
+        if (OptionGroupSingleton<ShroudOptions>.Instance.SharedCooldown)
+            ShroudAbilityButton.SyncInternalTimer(Cooldown);
     }
 
     protected override void FixedUpdate(PlayerControl playerControl)
@@ -122,7 +124,8 @@ public sealed class ShroudAbilityButton : TownOfUsKillRoleButton<ShroudRole, Pla
         if (target == null || target.HasDied() || target == PlayerControl.LocalPlayer) return false;
 
         // Block targeting ONLY for Child
-        if (target.GetShieldType() == ShieldType.Child) return false;
+        var child = target.GetModifiers<ChildModifier>().FirstOrDefault();
+        if (child != null && !child.IsAdult) return false;
 
         if (target.TryGetModifier<ShroudedModifier>(out var mod) && mod.ShroudOwnerId == PlayerControl.LocalPlayer.PlayerId)
             return false;
@@ -135,22 +138,8 @@ public sealed class ShroudAbilityButton : TownOfUsKillRoleButton<ShroudRole, Pla
         var player = PlayerControl.LocalPlayer;
         if (player == null || Target == null) return;
 
-        // Check for shields (excluding Child which is blocked in targeting)
-        var shieldType = Target.GetShieldType();
-        if (shieldType != ShieldType.None)
-        {
-            // Blocked by shield. Trigger flash only if it's NOT DeadlyQuota.
-            if (shieldType != ShieldType.DeadlyQuota)
-            {
-                ShieldUtils.TriggerShieldFlash(player, shieldType);
-            }
-            
-            var newTimer = (shieldType == ShieldType.FirstDead) ? 0.1f : OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance.TempSaveCdReset;
-            Timer = newTimer;
-            player.SetKillTimer(newTimer);
-            ShroudKillButton.SyncInternalTimer(newTimer);
-            return;
-        }
+        // Shroud ability (hexing) is not a kill - no shield checks needed.
+        // Kill button already goes through BeforeMurderEvent, which native handlers will block.
 
         if (Target.TryGetModifier<ShroudedModifier>(out var existingMod) && existingMod.ShroudOwnerId == player.PlayerId)
             return;
@@ -165,8 +154,11 @@ public sealed class ShroudAbilityButton : TownOfUsKillRoleButton<ShroudRole, Pla
 
         Target.RpcAddModifier<ShroudedModifier>(player);
 
-        player.SetKillTimer(Cooldown);
-        ShroudKillButton.SyncInternalTimer(Cooldown);
+        if (OptionGroupSingleton<ShroudOptions>.Instance.SharedCooldown)
+        {
+            player.SetKillTimer(Cooldown);
+            ShroudKillButton.SyncInternalTimer(Cooldown);
+        }
         
         Timer = Cooldown;
     }
@@ -174,8 +166,11 @@ public sealed class ShroudAbilityButton : TownOfUsKillRoleButton<ShroudRole, Pla
     protected override void FixedUpdate(PlayerControl playerControl)
     {
         base.FixedUpdate(playerControl);
-        if (playerControl.killTimer > Timer) Timer = playerControl.killTimer;
-        else if (Timer > playerControl.killTimer) playerControl.SetKillTimer(Timer);
+        if (OptionGroupSingleton<ShroudOptions>.Instance.SharedCooldown)
+        {
+            if (playerControl.killTimer > Timer) Timer = playerControl.killTimer;
+            else if (Timer > playerControl.killTimer) playerControl.SetKillTimer(Timer);
+        }
     }
 
     public static void SyncInternalTimer(float timer)

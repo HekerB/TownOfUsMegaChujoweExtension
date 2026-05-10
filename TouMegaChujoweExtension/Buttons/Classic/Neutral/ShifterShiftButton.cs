@@ -5,6 +5,7 @@ using MiraAPI.Utilities.Assets;
 using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Modifiers;
+using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -61,10 +62,11 @@ public sealed class ShifterShiftButton : TownOfUsKillRoleButton<ShifterRole, Pla
         if (player.Data?.Role is not ShifterRole)
             return;
 
-        var shieldType = Target.GetShieldType();
-        if (shieldType == ShieldType.Warden || shieldType == ShieldType.FirstDead || shieldType == ShieldType.Cleric)
+        // Block shift against protective shields (Warden, FirstDead, Cleric)
+        if (Target.HasModifier<WardenFortifiedModifier>() ||
+            Target.HasModifier<FirstDeadShield>() ||
+            Target.HasModifier<ClericBarrierModifier>())
         {
-            ShieldUtils.TriggerShieldFlash(player, shieldType);
             Timer = Cooldown;
             return;
         }
@@ -101,17 +103,3 @@ public sealed class ShifterShiftButton : TownOfUsKillRoleButton<ShifterRole, Pla
         base.FixedUpdate(playerControl);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

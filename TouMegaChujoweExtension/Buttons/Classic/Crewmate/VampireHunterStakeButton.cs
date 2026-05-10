@@ -60,8 +60,10 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IKillBu
         var player = PlayerControl.LocalPlayer;
         if (player == null) return;
 
-        // Use centralized shield interaction handler
-        if (ShieldUtils.HandleButtonShieldClick(this, _target))
+        var beforeMurderEvent = new BeforeMurderEvent(player, _target, MeetingCheck.OutsideMeeting);
+        MiraEventManager.InvokeEvent(beforeMurderEvent);
+        
+        if (beforeMurderEvent.IsCancelled)
         {
             return;
         }

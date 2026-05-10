@@ -184,7 +184,6 @@ public sealed class PelicanRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         var victim = MiscUtils.PlayerById(victimId);
         if (victim == null || victim.HasDied()) return;
 
-        if (PelicanSystem.HandleShieldCheck(pelican, victim)) return;
 
         if (AmongUsClient.Instance.AmClient && pelican.AmOwner)
         {
