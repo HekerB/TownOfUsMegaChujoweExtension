@@ -303,17 +303,6 @@ public static class InjectorEvents
         {
             injectButton.Timer = injectButton.Cooldown;
         }
-
-        if (options.UsesPerKill <= 0)
-        {
-            return;
-        }
-
-        if (injectButton != null && injectButton.LimitedUses)
-        {
-            injectButton.UsesLeft += (int)options.UsesPerKill;
-            injectButton.SetUses(injectButton.UsesLeft);
-        }
     }
 
     private sealed class PendingInjection

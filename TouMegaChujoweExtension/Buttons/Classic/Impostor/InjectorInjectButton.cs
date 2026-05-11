@@ -33,6 +33,14 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
     public override int MaxUses => (int)OptionGroupSingleton<InjectorOptions>.Instance.InitialUses;
 
     public override bool ZeroIsInfinite { get; set; } = true;
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        if (Button != null)
+        {
+            Button.usesRemainingSprite.gameObject.SetActive(MaxUses > 0);
+        }
+    }
 
     public override bool IsTargetValid(PlayerControl? target)
     {

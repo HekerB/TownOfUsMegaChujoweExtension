@@ -15,8 +15,6 @@ using TownOfUs.Assets;
 using TownOfUs;
 using UnityEngine.Networking;
 using UnityEngine;
-using AmongUs.Data;
-using AmongUs.Data.Player;
 
 namespace TouMegaChujoweExtension.Patches.UI;
 
