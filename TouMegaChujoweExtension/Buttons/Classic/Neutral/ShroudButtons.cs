@@ -46,7 +46,7 @@ public sealed class ShroudKillButton : TownOfUsKillRoleButton<ShroudRole, Player
 
         var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
         MiraEventManager.InvokeEvent(beforeMurderEvent);
-        
+
         if (beforeMurderEvent.IsCancelled)
         {
             return;
@@ -64,7 +64,7 @@ public sealed class ShroudKillButton : TownOfUsKillRoleButton<ShroudRole, Player
         player.RpcSpecialMurder(Target, causeOfDeath: "Shroud");
 
         player.SetKillTimer(Cooldown);
-        
+
         if (OptionGroupSingleton<ShroudOptions>.Instance.SharedCooldown)
             ShroudAbilityButton.SyncInternalTimer(Cooldown);
     }
@@ -142,6 +142,12 @@ public sealed class ShroudAbilityButton : TownOfUsKillRoleButton<ShroudRole, Pla
 
         if (Target.HasModifier<BaseShieldModifier>() || Target.HasModifier<MercenaryGuardModifier>())
         {
+            Timer = 5f;
+            if (OptionGroupSingleton<ShroudOptions>.Instance.SharedCooldown)
+            {
+                player.SetKillTimer(5f);
+                ShroudKillButton.SyncInternalTimer(5f);
+            }
             return;
         }
 
@@ -163,7 +169,7 @@ public sealed class ShroudAbilityButton : TownOfUsKillRoleButton<ShroudRole, Pla
             player.SetKillTimer(Cooldown);
             ShroudKillButton.SyncInternalTimer(Cooldown);
         }
-        
+
         Timer = Cooldown;
     }
 
