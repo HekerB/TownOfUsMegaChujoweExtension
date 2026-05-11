@@ -23,20 +23,6 @@ public static class PopeMeetingPatch
         _lastUpdate = UnityEngine.Time.time;
         var local = PlayerControl.LocalPlayer;
         if (local == null || local.Data == null) return;
-
-
-
-
-        foreach (var pva in __instance.playerStates)
-        {
-            if (pva?.NameText == null) continue;
-
-
-
-            // Symbols are now handled by UpdateRoleNameText calling UpdateTargetSymbols/UpdateProtectionSymbols
-            // every frame. We don't need to append them here, which was causing flickering due to the 0.2s timer
-            // fighting with the per-frame resets in HudManagerPatches.
-        }
     }
 
     private static PlayerControl? GetDeathNoteTarget()

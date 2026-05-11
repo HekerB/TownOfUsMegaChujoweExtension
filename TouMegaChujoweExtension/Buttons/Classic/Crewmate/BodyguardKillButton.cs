@@ -152,22 +152,3 @@ public sealed class BodyguardKillButton : TownOfUsRoleButton<BodyguardRole, Play
         BodyguardRole.RpcBodyguardKill(PlayerControl.LocalPlayer, Target);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

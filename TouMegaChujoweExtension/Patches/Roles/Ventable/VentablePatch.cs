@@ -1,3 +1,4 @@
+using System.Globalization;
 using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
@@ -175,9 +176,8 @@ public static class VentablePatch
         if (usesCounter != null)
         {
             usesCounter.spriteRenderer.sprite = TouAssets.AbilityCounterVentSprite.LoadAsset();
-            usesCounter.textMesh.text = mod.VentsRemaining.ToString();
+            usesCounter.textMesh.text = mod.VentsRemaining.ToString(CultureInfo.InvariantCulture);
             
-            // Show only if MaxVentUses > 1 (as requested "dependent on settings")
             bool showCounter = OptionGroupSingleton<VentableModifierOptions>.Instance.MaxVentUses.Value > 1f;
             usesCounter.gameObject.SetActive(showCounter);
         }
@@ -250,11 +250,11 @@ public static class VentablePatch
         {
             int whole = Mathf.FloorToInt(seconds);
             int frac = Mathf.FloorToInt((seconds - whole) * 10f);
-            timerText.text = $"{whole}.{frac}";
+            timerText.text = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", whole, frac);
         }
         else
         {
-            timerText.text = Mathf.CeilToInt(seconds).ToString();
+            timerText.text = Mathf.CeilToInt(seconds).ToString(CultureInfo.InvariantCulture);
         }
 
         timerText.color = Color.white;

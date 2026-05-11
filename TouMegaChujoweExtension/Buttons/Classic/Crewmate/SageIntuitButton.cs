@@ -59,17 +59,3 @@ public sealed class SageIntuitButton : TownOfUsRoleButton<SageRole, PlayerContro
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

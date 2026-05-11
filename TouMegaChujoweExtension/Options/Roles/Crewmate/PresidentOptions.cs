@@ -19,17 +19,3 @@ public sealed class PresidentOptions : AbstractOptionGroup<PresidentRole>
     [ModdedNumberOption("ExtensionOptionPresidentAbstainBonus", 1f, 5f, 1f, MiraNumberSuffixes.None)]
     public float AbstainBonus { get; set; } = 1f;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

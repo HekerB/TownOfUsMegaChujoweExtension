@@ -59,17 +59,3 @@ public sealed class SageGazeButton : TownOfUsRoleButton<SageRole, PlayerControl>
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

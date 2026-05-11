@@ -20,17 +20,3 @@ public sealed class SageOptions : AbstractOptionGroup<SageRole>
     public ModdedToggleOption EvilShowFriendly { get; set; } = new("ExtensionOptionSageNeutralEvilFriendly", false);
     public ModdedToggleOption OutlierShowFriendly { get; set; } = new("ExtensionOptionSageNeutralOutlierFriendly", false);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -71,9 +71,9 @@ public static class PoisonDeathAnimSystem
 
         visualClone.SetActive(true);
         
-        if (ActiveClones.TryGetValue(targetId, out var old))
+        if (ActiveClones.TryGetValue(targetId, out var old) && old != null)
         {
-            if (old != null) UnityEngine.Object.Destroy(old);
+            UnityEngine.Object.Destroy(old);
         }
         ActiveClones[targetId] = visualClone;
     }
@@ -82,7 +82,10 @@ public static class PoisonDeathAnimSystem
     {
         if (ActiveClones.TryGetValue(playerId, out var clone))
         {
-            if (clone != null) UnityEngine.Object.Destroy(clone);
+            if (clone != null)
+            {
+                UnityEngine.Object.Destroy(clone);
+            }
             ActiveClones.Remove(playerId);
         }
 
@@ -97,20 +100,16 @@ public static class PoisonDeathAnimSystem
 
     public static void CleanupAll()
     {
-        foreach (var clone in ActiveClones.Values)
+        foreach (var clone in ActiveClones.Values.Where(clone => clone != null))
         {
-            if (clone != null) UnityEngine.Object.Destroy(clone);
+            UnityEngine.Object.Destroy(clone);
         }
         ActiveClones.Clear();
     }
 
     private static DeadBody? GetBodyById(byte playerId)
     {
-        foreach (var body in UnityEngine.Object.FindObjectsOfType<DeadBody>())
-        {
-            if (body.ParentId == playerId) return body;
-        }
-        return null;
+        return UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(body => body.ParentId == playerId);
     }
 }
 

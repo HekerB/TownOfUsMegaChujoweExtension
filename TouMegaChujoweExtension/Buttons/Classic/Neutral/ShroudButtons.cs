@@ -15,6 +15,7 @@ using TownOfUs.Buttons;
 using TownOfUs.Events;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
+using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules;
 using TownOfUs.Options;
 using TownOfUs.Utilities;
@@ -139,8 +140,10 @@ public sealed class ShroudAbilityButton : TownOfUsKillRoleButton<ShroudRole, Pla
         var player = PlayerControl.LocalPlayer;
         if (player == null || Target == null) return;
 
-        // Shroud ability (hexing) is not a kill - no shield checks needed.
-        // Kill button already goes through BeforeMurderEvent, which native handlers will block.
+        if (Target.HasModifier<BaseShieldModifier>() || Target.HasModifier<MercenaryGuardModifier>())
+        {
+            return;
+        }
 
         if (Target.TryGetModifier<ShroudedModifier>(out var existingMod) && existingMod.ShroudOwnerId == player.PlayerId)
             return;

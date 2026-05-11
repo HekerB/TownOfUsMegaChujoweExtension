@@ -142,17 +142,3 @@ public sealed class ChildModifier : UniversalGameModifier, IWikiDiscoverable
         Player.transform.localScale = new Vector3(size, size, 1f);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

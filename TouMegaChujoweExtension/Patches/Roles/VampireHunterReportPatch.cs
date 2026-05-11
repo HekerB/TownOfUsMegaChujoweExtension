@@ -26,14 +26,10 @@ public static class VampireHunterReportPatch
             Vector2 bodyPos = body.TruePosition + BodyOffset;
             float distance = Vector2.Distance(playerPos, bodyPos);
             
-            if (distance < closestDistance)
+            if (distance < closestDistance && (distance < 0.5f || !PhysicsHelpers.AnythingBetween(playerPos, body.TruePosition, Constants.ShipAndObjectsMask, false)))
             {
-                // Wall check - 0.5f threshold where walls don't matter (standard Among Us logic)
-                if (distance < 0.5f || !PhysicsHelpers.AnythingBetween(playerPos, body.TruePosition, Constants.ShipAndObjectsMask, false))
-                {
-                    closestDistance = distance;
-                    closestBody = body;
-                }
+                closestDistance = distance;
+                closestBody = body;
             }
         }
         return closestBody;

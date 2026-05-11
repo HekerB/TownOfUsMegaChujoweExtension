@@ -10,9 +10,6 @@ namespace TouMegaChujoweExtension.Modules;
 
 public static class PirateDuelSystem
 {
-    // // private static readonly BepInEx.Logging.ManualLogSource Log =
-        // // BepInEx.Logging.Logger.CreateLogSource("PirateDuelSystem");
-
     private static MethodInfo? _coAnimateDeathMethod;
 
     public static int GetDuelResult(int pirateChoice, int targetChoice)
@@ -53,23 +50,17 @@ public static class PirateDuelSystem
         return target != null && !target.HasDied();
     }
 
-    /// <summary>
-    /// Plays the TownOfUs meeting death animation via reflection on the private CoAnimateDeath method.
-    /// </summary>
     public static void AnimateMeetingDeath(byte targetId)
     {
         if (MeetingHud.Instance == null) return;
 
         var voteArea = MeetingHud.Instance.playerStates
-            .ToArray().FirstOrDefault(x => x.TargetPlayerId == targetId);
+            .FirstOrDefault(x => x.TargetPlayerId == targetId);
 
         if (voteArea == null)
         {
-            // Log.LogError($"Could not find vote area for player {targetId}");
             return;
         }
-
-        // Cache the reflection lookup
         if (_coAnimateDeathMethod == null)
         {
             _coAnimateDeathMethod = typeof(TownOfUsEventHandlers).GetMethod(
@@ -78,8 +69,6 @@ public static class PirateDuelSystem
 
             if (_coAnimateDeathMethod == null)
             {
-                // Log.LogError("Could not find CoAnimateDeath method via reflection");
-                // Fallback - just show dead overlay
                 voteArea.AmDead = true;
                 voteArea.Overlay.gameObject.SetActive(true);
                 voteArea.XMark.gameObject.SetActive(true);
@@ -97,24 +86,9 @@ public static class PirateDuelSystem
         }
         catch (System.Exception)
         {
-            // Log.LogError($"Failed to invoke CoAnimateDeath");
             voteArea.AmDead = true;
             voteArea.Overlay.gameObject.SetActive(true);
             voteArea.XMark.gameObject.SetActive(true);
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

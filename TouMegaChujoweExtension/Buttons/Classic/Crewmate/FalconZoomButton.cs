@@ -231,17 +231,3 @@ public sealed class FalconZoomButton : TownOfUsRoleButton<FalconRole>
         base.ResetCooldownAndOrEffect();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

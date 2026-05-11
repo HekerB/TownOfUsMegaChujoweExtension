@@ -83,18 +83,3 @@ public sealed class TrapperTrapButton : TownOfUsRoleButton<TrapperRole, Vent>
         TrapperRole.RpcTrapperPlaceTrap(PlayerControl.LocalPlayer, Target.Id);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

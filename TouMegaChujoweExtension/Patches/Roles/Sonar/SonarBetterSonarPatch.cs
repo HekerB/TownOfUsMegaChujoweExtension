@@ -38,19 +38,16 @@ public static class SonarBetterSonarPatch
                     if (instance != null)
                     {
                         var props = type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-                        foreach (var prop in props)
+                        foreach (var prop in props.Where(p => p.Name.Contains("Reset", System.StringComparison.OrdinalIgnoreCase)))
                         {
-                            if (prop.Name.Contains("Reset", System.StringComparison.OrdinalIgnoreCase))
-                            {
-                                var val = prop.GetValue(instance);
-                                if (val is bool b) return b;
+                            var val = prop.GetValue(instance);
+                            if (val is bool b) return b;
 
-                                var valueProp = prop.PropertyType.GetProperty("Value");
-                                if (valueProp != null)
-                                {
-                                    var optVal = valueProp.GetValue(val);
-                                    if (optVal is bool b2) return b2;
-                                }
+                            var valueProp = prop.PropertyType.GetProperty("Value");
+                            if (valueProp != null)
+                            {
+                                var optVal = valueProp.GetValue(val);
+                                if (optVal is bool b2) return b2;
                             }
                         }
                     }
@@ -84,23 +81,20 @@ public static class SonarBetterSonarPatch
                     if (instance != null)
                     {
                         var props = type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-                        foreach (var prop in props)
+                        foreach (var prop in props.Where(p => p.Name.Contains("Delay", System.StringComparison.OrdinalIgnoreCase) ||
+                                                             p.Name.Contains("Interval", System.StringComparison.OrdinalIgnoreCase)))
                         {
-                            if (prop.Name.Contains("Delay", System.StringComparison.OrdinalIgnoreCase) ||
-                                prop.Name.Contains("Interval", System.StringComparison.OrdinalIgnoreCase))
+                            var val = prop.GetValue(instance);
+                            if (val is float f) return f;
+                            if (val is int i) return i;
+                            if (val is double d) return (float)d;
+                            
+                            var valueProp = prop.PropertyType.GetProperty("Value");
+                            if (valueProp != null)
                             {
-                                var val = prop.GetValue(instance);
-                                if (val is float f) return f;
-                                if (val is int i) return i;
-                                if (val is double d) return (float)d;
-                                
-                                var valueProp = prop.PropertyType.GetProperty("Value");
-                                if (valueProp != null)
-                                {
-                                    var optVal = valueProp.GetValue(val);
-                                    if (optVal is float f2) return f2;
-                                    if (optVal is int i2) return i2;
-                                }
+                                var optVal = valueProp.GetValue(val);
+                                if (optVal is float f2) return f2;
+                                if (optVal is int i2) return i2;
                             }
                         }
                     }
@@ -119,12 +113,9 @@ public static class SonarBetterSonarPatch
     public static void TrackerArrowOnActivatePostfix(TrackerArrowTargetModifier __instance)
     {
         var opts = OptionGroupSingleton<SonarExtendedOptions>.Instance;
-        if (opts.BetterSonar && opts.Mode == SonarDisplayMode.MapOnly)
+        if (opts.BetterSonar && opts.Mode == SonarDisplayMode.MapOnly && __instance.Arrow != null)
         {
-            if (__instance.Arrow != null)
-            {
-                __instance.Arrow.gameObject.SetActive(false);
-            }
+            __instance.Arrow.gameObject.SetActive(false);
         }
     }
 
@@ -157,7 +148,6 @@ public static class SonarBetterSonarPatch
         }
 
         var localTrackers = ModifierUtils.GetActiveModifiers<TrackerArrowTargetModifier>()
-            .ToArray()
             .Where(mod => mod.Owner == PlayerControl.LocalPlayer)
             .ToList();
 

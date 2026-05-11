@@ -7,6 +7,9 @@ using TownOfUs.Events;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
+using TownOfUs.Modifiers.Game.Universal;
+using TouMegaChujoweExtension.Roles.Classic.Neutral;
+using TouMegaChujoweExtension.Modifiers.Game;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Pelican;
@@ -172,17 +175,6 @@ public static class PelicanInteractionPatches
     {
         if (__instance == null || __instance.Data == null) return;
 
-        if (__instance.Data.Role is PelicanRole && !__instance.HasDied())
-        {
-            var pos = __instance.GetTruePosition();
-            if (pos.x > -500f && pos.y > -500f) PelicanSystem.UpdatePelicanPosition(__instance.PlayerId, pos);
-
-            if (__instance.AmOwner)
-            {
-                PelicanSystem.CheckAndDigestForWin(__instance);
-            }
-        }
-
         if (PelicanSystem.IsSwallowed(__instance.PlayerId) && !__instance.HasDied())
         {
             if (__instance.Visible) __instance.Visible = false;
@@ -287,24 +279,20 @@ public static class PelicanInteractionPatches
     {
         PelicanSystem.ForceResetAllPlayers();
     }
+
+    // ==================== MODIFIER EXCLUSIONS ====================
+    
+    [HarmonyPatch(typeof(MiniModifier), nameof(MiniModifier.IsModifierValidOn))]
+    [HarmonyPostfix]
+    public static void MiniModifierIsModifierValidOnPostfix(ref bool __result, RoleBehaviour role)
+    {
+        if (role is PelicanRole) __result = false;
+    }
+
+    [HarmonyPatch(typeof(ChildModifier), nameof(ChildModifier.IsModifierValidOn))]
+    [HarmonyPostfix]
+    public static void ChildModifierIsModifierValidOnPostfix(ref bool __result, RoleBehaviour role)
+    {
+        if (role is PelicanRole) __result = false;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

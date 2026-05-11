@@ -53,13 +53,11 @@ public static class SerialKillerVentPatches
             }
 
             // If they have escape vent usages, consume one and give them the no vent modifier
-            if (SerialKillerVentKillSystem.TryConsumeEscapeVentUsage(player.PlayerId))
+            if (SerialKillerVentKillSystem.TryConsumeEscapeVentUsage(player.PlayerId) && 
+                !SerialKillerVentKillSystem.HasEscapeVentUsages(player.PlayerId) && 
+                !player.HasModifier<SerialKillerNoVentModifier>())
             {
-                // If we have no more usages left, we lose the ability to vent
-                if (!SerialKillerVentKillSystem.HasEscapeVentUsages(player.PlayerId) && !player.HasModifier<SerialKillerNoVentModifier>())
-                {
-                    player.AddModifier<SerialKillerNoVentModifier>();
-                }
+                player.AddModifier<SerialKillerNoVentModifier>();
             }
         }
 

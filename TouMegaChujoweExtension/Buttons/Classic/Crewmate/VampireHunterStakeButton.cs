@@ -189,19 +189,3 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IKillBu
     public static void ResetFirstRound() => _firstRound = true;
     public static void EndFirstRound() => _firstRound = false;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

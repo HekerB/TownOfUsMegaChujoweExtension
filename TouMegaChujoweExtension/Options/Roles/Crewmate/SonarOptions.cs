@@ -39,15 +39,3 @@ public sealed class SonarExtendedOptions : AbstractOptionGroup
 
     public SonarDisplayMode Mode => (SonarDisplayMode)ModeOption.Value;
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -18,14 +18,3 @@ public sealed class MirrorCasterExtensionOptions : AbstractOptionGroup
     [ModdedToggleOption("ExtensionOptionMirrorCasterMoveWhileMenu")]
     public bool MoveWhileMenu { get; set; } = false;
 }
-
-
-
-
-
-
-
-
-
-
-

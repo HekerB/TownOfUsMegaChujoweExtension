@@ -29,48 +29,27 @@ public static class ExtensionSymbolsPatch
         bool deadKnow = isGhost && genOpt.TheDeadKnow && !hidden;
 
         // --- POPE (Θ) ---
-        if (player.HasModifier<PopeCanonizedModifier>())
+        if (player.HasModifier<PopeCanonizedModifier>() && !__result.Contains('Θ') && (local.Data.Role is PopeRole || deadKnow))
         {
-            if (!__result.Contains("Θ"))
-            {
-                bool isPope = local.Data.Role is PopeRole;
-                if (isPope || deadKnow)
-                {
-                    __result += " <color=#FFD700>Θ</color>";
-                }
-            }
+            __result += " <color=#FFD700>Θ</color>";
         }
 
         // --- DEATH NOTE (♡) ---
-        if (TryGetDeathNoteTarget(out var dnTarget) && dnTarget != null && dnTarget.PlayerId == player.PlayerId)
+        if (TryGetDeathNoteTarget(out var dnTarget) && dnTarget != null && dnTarget.PlayerId == player.PlayerId && !__result.Contains('♡') && (local.HasModifier<DeathNoteModifier>() || deadKnow))
         {
-            if (!__result.Contains("♡"))
-            {
-                bool hasDeathNote = local.HasModifier<DeathNoteModifier>();
-                if (hasDeathNote || deadKnow)
-                {
-                    __result += " <color=#8B00FF>♡</color>";
-                }
-            }
+            __result += " <color=#8B00FF>♡</color>";
         }
 
         // --- SHROUD (♢) ---
-        if (player.TryGetModifier<ShroudedModifier>(out var shroudMod))
+        if (player.TryGetModifier<ShroudedModifier>(out var shroudMod) && !__result.Contains('♢') && (local.IsRole<ShroudRole>() && shroudMod.ShroudOwnerId == local.PlayerId || deadKnow))
         {
-            if (!__result.Contains("♢"))
-            {
-                bool isShroud = local.IsRole<ShroudRole>() && shroudMod.ShroudOwnerId == local.PlayerId;
-                if (isShroud || deadKnow)
-                {
-                    __result += " <color=#6699FF>♢</color>";
-                }
-            }
+            __result += " <color=#6699FF>♢</color>";
         }
 
         // --- WITCH (Removed gray symbol) ---
 
         // --- LAWYER (§) ---
-        if (!__result.Contains("§"))
+        if (!__result.Contains('§'))
         {
             bool isClientOfLocal = LawyerUtils.IsClientOfLawyer(player, local.PlayerId);
             bool isLawyer = local.IsRole<LawyerRole>() && isClientOfLocal;
@@ -84,7 +63,7 @@ public static class ExtensionSymbolsPatch
         }
 
         // --- BODYGUARD (Σ) ---
-        if (!__result.Contains("Σ"))
+        if (!__result.Contains('Σ'))
         {
             bool isProtectedByLocal = player.TryGetModifier<BodyguardShieldModifier>(out var bgMod) && 
                                      bgMod != null && bgMod.Bodyguard != null && bgMod.Bodyguard.PlayerId == local.PlayerId;
@@ -110,27 +89,15 @@ public static class ExtensionSymbolsPatch
         bool deadKnow = local.HasDied() && genOpt.TheDeadKnow && !hidden;
 
         // --- POISONER (%) ---
-        if (PoisonSystem.IsTargetPoisonedByPoison(player.PlayerId))
+        if (PoisonSystem.IsTargetPoisonedByPoison(player.PlayerId) && !__result.Contains('%') && (local.IsImpostorAligned() || deadKnow))
         {
-            if (!__result.Contains("%"))
-            {
-                if (local.IsImpostorAligned() || deadKnow)
-                {
-                    __result += " <color=#00FF00>%</color>";
-                }
-            }
+            __result += " <color=#00FF00>%</color>";
         }
 
         // --- BODYGUARD (Σ) ---
-        if (player.TryGetModifier<BodyguardShieldModifier>(out var shieldMod))
+        if (player.TryGetModifier<BodyguardShieldModifier>(out var shieldMod) && !__result.Contains('Σ') && (shieldMod.VisibleSymbol || deadKnow))
         {
-            if (!__result.Contains("Σ"))
-            {
-                if (shieldMod.VisibleSymbol || deadKnow)
-                {
-                    __result += " <color=#003380>Σ</color>";
-                }
-            }
+            __result += " <color=#003380>Σ</color>";
         }
     }
 
