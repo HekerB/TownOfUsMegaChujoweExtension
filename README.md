@@ -24,6 +24,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
 
 | Among Us Version | TOU: Mira Version | Download Mira |
 |------------------|-------------------|---------------|
+| 17.3.x           | 1.6.2             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.2) |
 | 17.3.x           | 1.6.1             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.1) |
 | 17.3.x           | 1.6.0             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.0) |
 
@@ -370,7 +371,7 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 # Requirements
 
 - .NET 6.0
-- Town of Us: Mira 1.6.0 or later
+- Town of Us: Mira 1.6.2 or later
 - MiraAPI 0.4.0 or later
 - Reactor 2.5.0 or later
 
