@@ -9,6 +9,7 @@ using TownOfUs.Utilities;
 using TownOfUs.Interfaces;
 using UnityEngine;
 using TownOfUs.Roles;
+using TownOfUs.Assets;
 
 namespace TouMegaChujoweExtension.Modifiers.Impostor;
 
@@ -42,6 +43,11 @@ public sealed class AstralPhaseModifier : ConcealedModifier, IVisualAppearance
         
         // Noclip
         Player.gameObject.layer = LayerMask.NameToLayer("Ghost");
+
+        if (Player.AmOwner)
+        {
+            TouAudio.PlaySound(TouAudio.SwooperActivateSound);
+        }
     }
 
     public override void OnDeactivate()
@@ -51,6 +57,11 @@ public sealed class AstralPhaseModifier : ConcealedModifier, IVisualAppearance
         
         // Restore layer
         Player.gameObject.layer = LayerMask.NameToLayer("Players");
+
+        if (Player.AmOwner)
+        {
+            TouAudio.PlaySound(TouAudio.SwooperDeactivateSound);
+        }
     }
 
     public override void OnDeath(DeathReason reason)

@@ -48,6 +48,7 @@ public sealed class DoctorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     {
         Icon = TouExtensionIcons.DoctorRoleIcon,
         IntroSound = TouAudio.ScientistIntroSound,
+        OptionsScreenshot = TouBanners.CrewmateRoleBanner,
     };
 
     [HideFromIl2Cpp]

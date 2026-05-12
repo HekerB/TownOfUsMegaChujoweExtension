@@ -5,7 +5,9 @@ namespace TouMegaChujoweExtension.Assets
 {
     public static class TouExtensionBanners
     {
-        public static LoadableAsset<Sprite> EvokerBanner { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Banners.Bodyguard_Banner.png", 300f);
+        public static LoadableAsset<Sprite> EvokerBanner { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Banners.Evoker_Banner.png", 300f);
+        public static LoadableAsset<Sprite> AstralBanner { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Banners.Astral_Banner.png", 300f);
+        public static LoadableAsset<Sprite> SpeedyBanner { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Banners.Speedy_Banner.png", 300f);
         public static LoadableAsset<Sprite> TrapperBanner { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Banners.Bodyguard_Banner.png", 300f);
         public static LoadableAsset<Sprite> BodyguardBanner { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Banners.Bodyguard_Banner.png", 300f);
         public static LoadableAsset<Sprite> ShroudBanner { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Banners.Wraith_Banner.png", 300f);

@@ -505,6 +505,20 @@
   <string name="ExtensionDiedToAstralVoid">Voided</string>
   <string name="ExtensionDiedToEvokerAstralShatter">Evoker shattered.</string>
 
+  <!-- Speedy Role -->
+  <string name="ExtensionRoleSpeedy">Speedy</string>
+  <string name="ExtensionRoleSpeedyIntroBlurb">Speedy is an Impostor Concealing role that can become camouflaged and fast to kill Crewmates.</string>
+  <string name="ExtensionRoleSpeedyTabDescription">Use your ability to gain speed and camouflage yourself. Sneak up on Crewmates!</string>
+  <string name="ExtensionRoleSpeedyWikiDescription">Speedy is an Impostor Concealing role that can become camouflaged and fast to kill Crewmates.</string>
+  <string name="ExtensionRoleSpeedyAccelerate">Accelerate</string>
+  <string name="ExtensionRoleSpeedyAccelerateWikiDescription">Go fast and become camouflaged.</string>
+
+  <!-- Speedy Options -->
+  <string name="ExtensionOptionSpeedyAccelerateCooldown">Accelerate Cooldown</string>
+  <string name="ExtensionOptionSpeedyAccelerateDuration">Accelerate Duration</string>
+  <string name="ExtensionOptionSpeedyAccelerationBuff">Acceleration Buff</string>
+  <string name="ExtensionOptionSpeedyCanVent">Can Vent</string>
+
   <!-- Forestaller Role -->
   <string name="ExtensionRoleForestaller">Forestaller</string>
   <string name="ExtensionRoleForestallerIntroBlurb">Complete all tasks to disable sabotages.</string>

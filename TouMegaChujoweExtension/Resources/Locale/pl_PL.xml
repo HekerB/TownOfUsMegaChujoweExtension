@@ -501,6 +501,20 @@
   <string name="ExtensionDiedToAstralShatter">Rozpadł się.</string>
   <string name="ExtensionDiedToAstralVoid">Wciągnięty w pustkę.</string>
   <string name="ExtensionDiedToEvokerAstralShatter">Evoker się rozpadł.</string>
+  
+  <!-- Speedy Role -->
+  <string name="ExtensionRoleSpeedy">Speedy</string>
+  <string name="ExtensionRoleSpeedyIntroBlurb">Speedy to rola Impostora Concealing, która może stać się zakamuflowana i szybka, aby zabijać Załogantów.</string>
+  <string name="ExtensionRoleSpeedyTabDescription">Użyj swojej umiejętności, aby zyskać prędkość i zakamuflować się (szary ludzik). Zaskocz Załogantów!</string>
+  <string name="ExtensionRoleSpeedyWikiDescription">Speedy to rola Impostora Concealing, która może stać się zakamuflowana i szybka, aby zabijać Załogantów.</string>
+  <string name="ExtensionRoleSpeedyAccelerate">Przyspieszenie</string>
+  <string name="ExtensionRoleSpeedyAccelerateWikiDescription">Przyspiesz i zakamufluj się.</string>
+
+  <!-- Speedy Options -->
+  <string name="ExtensionOptionSpeedyAccelerateCooldown">Czas odnowienia przyspieszenia</string>
+  <string name="ExtensionOptionSpeedyAccelerateDuration">Czas trwania przyspieszenia</string>
+  <string name="ExtensionOptionSpeedyAccelerationBuff">Moc przyspieszenia</string>
+  <string name="ExtensionOptionSpeedyCanVent">Może używać ventów</string>
 
   <!-- Forestaller Role -->
   <string name="ExtensionRoleForestaller">Forestaller</string>

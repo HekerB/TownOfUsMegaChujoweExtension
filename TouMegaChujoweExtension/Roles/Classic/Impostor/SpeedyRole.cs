@@ -32,48 +32,44 @@ using TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
 
-public sealed class AstralRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class SpeedyRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
 {
-    public DoomableType DoomHintType => DoomableType.Hunter;
-    public string LocaleKey => "Astral";
-    public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Astral");
-    public string RoleDescription => TouLocale.Get($"ExtensionRole{LocaleKey}IntroBlurb", "Phase through walls and return to your start position.");
-    public string RoleLongDescription => TouLocale.Get($"ExtensionRole{LocaleKey}TabDescription", "Phase through walls and teleport back. You must kill someone to survive!");
+    public string LocaleKey => "Speedy";
+    public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
+    public string RoleDescription => TouLocale.Get($"ExtensionRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.Get($"ExtensionRole{LocaleKey}TabDescription");
 
-    public bool KillMadeDuringPhase { get; set; }
+    [HideFromIl2Cpp]
+    public int KillsCount { get; set; } = 0;
 
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"ExtensionRole{LocaleKey}WikiDescription") + MiscUtils.AppendOptionsText(GetType());
     }
 
-    public Color RoleColor => TouExtensionColors.Astral;
+    public Color RoleColor => TouExtensionColors.Speedy;
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorConcealing;
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        Icon = TouExtensionIcons.AstralRoleIcon,
-        IntroSound = TouAudio.PhantomIntroSound,
-        OptionsScreenshot = TouExtensionBanners.AstralBanner
+        Icon = TouExtensionIcons.SpeedyRoleIcon,
+        IntroSound = TouAudio.PhantomIntroSound, // Placeholder sound
+        CanUseVent = OptionGroupSingleton<SpeedyOptions>.Instance.CanVent,
+        OptionsScreenshot = TouExtensionBanners.SpeedyBanner
     };
 
     public List<CustomButtonWikiDescription> Abilities =>
     [
         new(
-            TouLocale.GetParsed($"ExtensionRole{LocaleKey}Phase", "Phase"),
-            TouLocale.GetParsed($"ExtensionRole{LocaleKey}PhaseWikiDescription"),
-            TouCrewAssets.RewindSprite),
-        new(
-            TouLocale.GetParsed($"ExtensionRole{LocaleKey}Materialize", "Materialize"),
-            TouLocale.GetParsed($"ExtensionRole{LocaleKey}MaterializeWikiDescription"),
-            TouCrewAssets.RewindSprite)
+            TouLocale.GetParsed($"ExtensionRole{LocaleKey}Accelerate", "Accelerate"),
+            TouLocale.GetParsed($"ExtensionRole{LocaleKey}AccelerateWikiDescription"),
+            TouExtensionImpAssets.SpeedyAbilitySprite)
     ];
 
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
-        KillMadeDuringPhase = false;
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)

@@ -24,13 +24,14 @@ public static class TouExtensionImpAssets
     public static LoadableAsset<Sprite> InjectorInjectButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Inject_Button.png");
     public static LoadableAsset<Sprite> DeceiveButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.DecieveButton.png");
     public static LoadableAsset<Sprite> ConcealButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.ConcealButton.png");
-	public static LoadableAsset<Sprite> RcCarSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.RC_Icon.png", 50f);
-	public static LoadableAsset<Sprite> RcXdDeployButton { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Deploy_Button.png", 370f);
-	public static LoadableAsset<Sprite> RcXdDetonateButton { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Detonate_Button.png", 250f);
+    public static LoadableAsset<Sprite> RcCarSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.RC_Icon.png", 50f);
+    public static LoadableAsset<Sprite> RcXdDeployButton { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Deploy_Button.png", 370f);
+    public static LoadableAsset<Sprite> RcXdDetonateButton { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Detonate_Button.png", 250f);
     public static LoadableAsset<Sprite> PoisonButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Poison_Button.png", 100f);
-	public static LoadableAsset<Sprite> VineButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Vine_Button.png", 100f);
-	public static LoadableAsset<Sprite> PoisonedButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Poisoned_Button.png", 100f);
-	public static LoadableAsset<Sprite> KamikazeSuicideButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Suicide_Button.png", 170f);
+    public static LoadableAsset<Sprite> VineButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Vine_Button.png", 100f);
+    public static LoadableAsset<Sprite> PoisonedButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Poisoned_Button.png", 100f);
+    public static LoadableAsset<Sprite> KamikazeSuicideButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Suicide_Button.png", 170f);
+    public static LoadableAsset<Sprite> SpeedyAbilitySprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Speedy_Ability.png");
 }
 
 

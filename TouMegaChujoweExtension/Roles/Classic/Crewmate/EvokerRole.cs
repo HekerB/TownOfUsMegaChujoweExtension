@@ -41,7 +41,7 @@ public sealed class EvokerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     {
         Icon = TouExtensionIcons.EvokerRoleIcon,
         IntroSound = TownOfUs.Assets.TouAudio.PhantomIntroSound,
-        OptionsScreenshot = TouBanners.CrewmateRoleBanner
+        OptionsScreenshot = TouExtensionBanners.EvokerBanner
     };
 
     public override void Initialize(PlayerControl player)

@@ -37,6 +37,7 @@ public static class TouExtensionColors
     public static Color Outlaw => Palette.ImpostorRed;
     public static Color RcXd => Palette.ImpostorRed;
     public static Color Astral => Palette.ImpostorRed;
+    public static Color Speedy => Palette.ImpostorRed;
     public static Color BountyHunter => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(0, 18, 97, 255);
 
     // Shield Flash Colors
