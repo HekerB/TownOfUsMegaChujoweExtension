@@ -32,6 +32,8 @@ public static class TouExtensionImpAssets
     public static LoadableAsset<Sprite> PoisonedButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Poisoned_Button.png", 100f);
     public static LoadableAsset<Sprite> KamikazeSuicideButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Suicide_Button.png", 170f);
     public static LoadableAsset<Sprite> SpeedyAbilitySprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Speedy_Ability.png");
+    public static LoadableAsset<Sprite> DetonatorAttachSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Attach_Button.png", 300f);
+    public static LoadableAsset<Sprite> DetonatorDetonateSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Detonator_Detonate_Button.png");
 }
 
 

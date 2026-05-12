@@ -27,6 +27,7 @@ public static class TouExtensionColors
     public static Color Pope => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(255, 215, 0, 255);
     public static Color Shroud => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(77, 153, 230, 255);
     public static Color Doppelganger => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(212, 176, 56, 255);
+    public static Color BountyHunter => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(0, 18, 97, 255);
     //impostors
     public static Color Witch => Palette.ImpostorRed;
     public static Color Wraith => Palette.ImpostorRed;
@@ -38,7 +39,8 @@ public static class TouExtensionColors
     public static Color RcXd => Palette.ImpostorRed;
     public static Color Astral => Palette.ImpostorRed;
     public static Color Speedy => Palette.ImpostorRed;
-    public static Color BountyHunter => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(0, 18, 97, 255);
+    public static Color Detonator => Palette.ImpostorRed;
+
 
     // Shield Flash Colors
     public static class ShieldFlashes

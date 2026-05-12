@@ -81,6 +81,11 @@ public enum ExtensionRpc : uint
     DuplicateModKick = 75,
     DoctorInject = 76,
     DoctorShieldAttacked = 77,
+    DetonatorAttach = 78,
+    DetonatorDetonate = 79,
+    DetonatorShowEffect = 80,
+    DetonatorPlayBeep = 81,
+    DetonatorPlayExplosion = 82,
 }
 
 

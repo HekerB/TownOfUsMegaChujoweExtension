@@ -10,6 +10,7 @@ using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using TownOfUs;
 using UnityEngine;
+using TouMegaChujoweExtension.Modules;
 
 namespace TouMegaChujoweExtension.Patches.UI;
 
@@ -74,6 +75,12 @@ public static class ExtensionSymbolsPatch
             {
                 __result += " <color=#003380>Σ</color>";
             }
+        }
+
+        // --- DETONATOR (λ) ---
+        if (DetonatorSystem.IsBombTarget(player.PlayerId) && !__result.Contains('λ') && (local.IsImpostorAligned() || deadKnow))
+        {
+            __result += " <color=#FF0000>λ</color>";
         }
     }
 

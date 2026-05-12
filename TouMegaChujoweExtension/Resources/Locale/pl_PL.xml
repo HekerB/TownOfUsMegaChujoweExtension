@@ -514,7 +514,25 @@
   <string name="ExtensionOptionSpeedyAccelerateCooldown">Czas odnowienia przyspieszenia</string>
   <string name="ExtensionOptionSpeedyAccelerateDuration">Czas trwania przyspieszenia</string>
   <string name="ExtensionOptionSpeedyAccelerationBuff">Moc przyspieszenia</string>
-  <string name="ExtensionOptionSpeedyCanVent">Może używać ventów</string>
+  <string name="ExtensionOptionSpeedyCanVent">Może używać wentów</string>
+  <string name="DiedToDetonated">Wyleciał w powietrze</string>
+
+  <!-- Detonator Role -->
+  <string name="ExtensionRoleDetonator">Detonator</string>
+  <string name="ExtensionRoleDetonatorIntroBlurb">Podkładaj bomby graczom i zdetonuj je w odpowiednim momencie.</string>
+  <string name="ExtensionRoleDetonatorTabDescription">Zakradnij się do graczy, aby podłożyć bombę. Możesz ją zdetonować ręcznie po krótkim opóźnieniu!</string>
+  <string name="ExtensionRoleDetonatorWikiDescription">Detonator to rola Impostora, która może podkładać bomby czasowe innym graczom. Po podłożeniu bomby Detonator może zdetonować ją ręcznie tym samym przyciskiem po określonym czasie. Eksplozja zabija cel oraz wszystkich graczy znajdujących się w promieniu wybuchu.</string>
+  <string name="ExtensionRoleDetonatorAttach">Podłóż bombę</string>
+  <string name="ExtensionRoleDetonatorAttachWikiDescription">Podłóż bombę pobliskiemu graczowi. Po podłożeniu możesz kliknąć przycisk ponownie (po opóźnieniu), aby zdetonować ją wcześniej. Eksplozja może zabić wiele osób, jeśli znajdują się blisko celu.</string>
+  <string name="ExtensionRoleDetonatorDetonate">Zdetonuj</string>
+  <string name="ExtensionRoleDetonatorDetonateWikiDescription">Ręcznie zdetonuj bombę podłożoną celowi. Powoduje natychmiastową eksplozję.</string>
+
+  <!-- Detonator Options -->
+  <string name="ExtensionOptionDetonatorAttachDuration">Czas podkładania</string>
+  <string name="ExtensionOptionDetonatorManualDetonateDelay">Opóźnienie ręcznej detonacji</string>
+  <string name="ExtensionOptionDetonatorDetonateRadius">Promień wybuchu</string>
+  <string name="ExtensionOptionDetonatorMaxKills">Maks. liczba zabójstw na wybuch</string>
+  <string name="ExtensionOptionDetonatorCanVent">Może używać wentów</string>
 
   <!-- Forestaller Role -->
   <string name="ExtensionRoleForestaller">Forestaller</string>
