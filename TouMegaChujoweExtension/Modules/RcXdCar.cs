@@ -11,6 +11,8 @@ using TownOfUs.Assets;
 using TownOfUs.Modifiers;
 using TownOfUs.Utilities;
 using UnityEngine;
+using System.Linq;
+using TouMegaChujoweExtension.Assets;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -46,7 +48,7 @@ public sealed class RcXdCar : IDisposable
     private bool _renderConfigured;
 
     private const float TurnSpeed = 12f;
-    private const float AudioHearRadius = 8f;
+    private const float AudioHearRadius = 4.5f;
 
     private const float NetSendInterval = 0.066f; // ~15 Hz
 
@@ -80,7 +82,6 @@ public sealed class RcXdCar : IDisposable
         return false;
     }
 
-    // --- VISION MASK CONFIG ---
     private static SpriteRenderer? FindBestMaskedRendererOnLocalPlayer()
     {
         var local = PlayerControl.LocalPlayer;
@@ -185,7 +186,12 @@ public sealed class RcXdCar : IDisposable
         car._renderer.enabled = true;
 
         car._audio = car._go.AddComponent<AudioSource>();
+        
+        // Pre-load audio to avoid lag/bugs during gameplay
         car._audio.clip = TouExtensionAudio.RcSound.LoadAsset();
+        TouExtensionAudio.RcExplosionSound.LoadAsset();
+        TouExtensionAudio.RcSound.LoadAsset();
+
         car._audio.loop = true;
         car._audio.spatialBlend = 0f;
         car._audio.volume = 0f;
@@ -289,8 +295,7 @@ public sealed class RcXdCar : IDisposable
     private void UpdateRemotePitch(float speedMag)
     {
         if (_audio == null) return;
-        var ratio = _speed <= 0.001f ? 0f : Mathf.Clamp01(speedMag / _speed);
-        _audio.pitch = Mathf.Lerp(0.6f, 1.3f, ratio);
+        _audio.pitch = 1.0f;
     }
 
     private IEnumerator CoDrive()
@@ -402,8 +407,7 @@ public sealed class RcXdCar : IDisposable
 
             if (_audio != null)
             {
-                var speedRatio = targetSpeed <= 0.001f ? 0f : Mathf.Clamp01(_velocity.magnitude / targetSpeed);
-                _audio.pitch = Mathf.Lerp(0.6f, 1.3f, speedRatio);
+                _audio.pitch = 1.0f;
             }
 
             UpdateAudio();
@@ -425,9 +429,11 @@ public sealed class RcXdCar : IDisposable
     {
         if (_audio == null || _go == null) return;
 
+        bool isMoving = _isOwner ? _velocity.magnitude > 0.05f : _netVel.magnitude > 0.05f && (Time.time - _netLastRecvTime) < 0.35f;
+
         if (_isOwner)
         {
-            _audio.volume = 0.9f;
+            _audio.volume = isMoving ? 0.7f : 0f;
             return;
         }
 
@@ -438,7 +444,8 @@ public sealed class RcXdCar : IDisposable
         }
 
         var dist = Vector2.Distance(_go.transform.position, PlayerControl.LocalPlayer.transform.position);
-        _audio.volume = dist > AudioHearRadius ? 0f : Mathf.Clamp01(1f - (dist / AudioHearRadius)) * 0.9f;
+        float baseVol = isMoving ? 0.7f : 0f;
+        _audio.volume = dist > AudioHearRadius ? 0f : Mathf.Clamp01(1f - (dist / AudioHearRadius)) * baseVol;
     }
 
     public void UpdatePosition(Vector2 pos, bool flipX)
@@ -550,17 +557,21 @@ public sealed class RcXdCar : IDisposable
 
     private void PlayExplosionSound()
     {
-        if (_go == null || PlayerControl.LocalPlayer == null) return;
+        if (_go == null) return;
 
+        var listenerPos = (Vector2)(Camera.main?.transform.position ?? Vector3.zero);
         var explosionPos = (Vector2)_go.transform.position;
-        var localPos = (Vector2)PlayerControl.LocalPlayer.transform.position;
-        var dist = Vector2.Distance(explosionPos, localPos);
+        var dist = Vector2.Distance(explosionPos, listenerPos);
 
-        const float maxDist = 20f;
+        const float maxDist = 15f;
         if (dist <= maxDist || _isOwner)
         {
+            var clip = TouExtensionAudio.RcExplosionSound.LoadAsset();
+            if (clip == null) return;
+
+            // Using SoundManager for 2D \"Stereo\" feel, basing volume on camera position
             var volume = _isOwner ? 1.0f : Mathf.Clamp01(1f - (dist / maxDist)) * 0.9f;
-            SoundManager.Instance.PlaySound(TouExtensionAudio.RcExplosionSound.LoadAsset(), false, volume);
+            SoundManager.Instance.PlaySound(clip, false, volume);
         }
     }
 
@@ -654,18 +665,3 @@ public sealed class RcXdCar : IDisposable
         DoDestroy();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -518,6 +518,24 @@
   <string name="ExtensionOptionSpeedyAccelerateDuration">Accelerate Duration</string>
   <string name="ExtensionOptionSpeedyAccelerationBuff">Acceleration Buff</string>
   <string name="ExtensionOptionSpeedyCanVent">Can Vent</string>
+  <string name="DiedToDetonated">Detonated</string>
+
+  <!-- Detonator Role -->
+  <string name="ExtensionRoleDetonator">Detonator</string>
+  <string name="ExtensionRoleDetonatorIntroBlurb">Attach bombs to players and detonate them at the right moment.</string>
+  <string name="ExtensionRoleDetonatorTabDescription">Sneak up on players to attach a bomb. You can detonate it manually after a short delay!</string>
+  <string name="ExtensionRoleDetonatorWikiDescription">The Detonator is an Impostor role that can attach time bombs to other players. After attaching a bomb, the Detonator can detonate it manually using the same button after a configurable delay. The explosion kills the target and anyone else within the blast radius.</string>
+  <string name="ExtensionRoleDetonatorAttach">Attach Bomb</string>
+  <string name="ExtensionRoleDetonatorAttachWikiDescription">Attach a bomb to a nearby player. Once attached, you can click the button again after the manual delay to detonate it. The explosion will kill multiple people if they are close enough.</string>
+  <string name="ExtensionRoleDetonatorDetonate">Detonate</string>
+  <string name="ExtensionRoleDetonatorDetonateWikiDescription">Manually detonate the bomb attached to your target. Triggers the explosion immediately.</string>
+
+  <!-- Detonator Options -->
+  <string name="ExtensionOptionDetonatorAttachDuration">Attach Duration</string>
+  <string name="ExtensionOptionDetonatorManualDetonateDelay">Manual Detonation Delay</string>
+  <string name="ExtensionOptionDetonatorDetonateRadius">Detonation Radius</string>
+  <string name="ExtensionOptionDetonatorMaxKills">Max Kills Per Explosion</string>
+  <string name="ExtensionOptionDetonatorCanVent">Can Vent</string>
 
   <!-- Forestaller Role -->
   <string name="ExtensionRoleForestaller">Forestaller</string>
