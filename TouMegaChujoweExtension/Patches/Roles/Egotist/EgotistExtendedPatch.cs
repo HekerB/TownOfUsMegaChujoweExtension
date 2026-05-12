@@ -64,10 +64,6 @@ public static class EgotistExtendedPatch
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.Data == null || player.Data.Role == null) return;
 
-        // Check if the player is an Engineer (vanilla or Tou)
-        bool isEngineer = player.Data.Role.Role == RoleTypes.Engineer ||
-                          player.Data.Role is EngineerRole ||
-                          player.Data.Role is EngineerTouRole;
 
         if (opts.CanVent)
         {
@@ -156,7 +152,9 @@ public static class EgotistExtendedPatch
             }
         }
 
-        var timerText = GetOrCreateTimerText(__instance.ImpostorVentButton);
+        var button = __instance.ImpostorVentButton;
+        if (button == null) return;
+        var timerText = GetOrCreateTimerText(button);
         if (timerText == null) return;
 
         if (player.inVent && opts.CanVent)
