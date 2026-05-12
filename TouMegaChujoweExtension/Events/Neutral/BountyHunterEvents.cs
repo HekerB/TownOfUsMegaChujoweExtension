@@ -18,26 +18,17 @@ public static class BountyHunterEvents
         var killer = @event.Source;
         var victim = @event.Target;
 
-        if (killer == null || victim == null || killer.Data?.Role is not BountyHunterRole)
+        if (killer.Data?.Role is not BountyHunterRole bh)
             return;
 
-        if (BountyHunterSystem.HasWon) return;
+        if (bh.HasWon) return;
 
-        BountyHunterSystem.KillsDone++;
-        BountyHunterSystem.TargetKilledThisRound = true;
+        bh.OnTargetKilled();
 
-        var needed = (int)OptionGroupSingleton<BountyHunterOptions>.Instance.TargetsToKill.Value;
         var isSolo = OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode == BountyHunterWinMode.SoloWin;
 
-        if (BountyHunterSystem.KillsDone >= needed)
+        if (bh.HasWon)
         {
-            BountyHunterSystem.HasWon = true;
-            BountyHunterSystem.GameEndedByBH = isSolo;
-            BountyHunterSystem.ClearArrowModifiers();
-
-            if (killer.Data?.Role is BountyHunterRole bh)
-                bh.HasWon = true;
-
             if (killer.AmOwner)
             {
                 BountyHunterRole.RpcBountyHunterWin(killer);
@@ -70,10 +61,6 @@ public static class BountyHunterEvents
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouExtensionIcons.BountyHunterRoleIcon.LoadAsset());
                 notif.AdjustNotification();
             }
-        }
-        else if (killer.AmOwner)
-        {
-            BountyHunterSystem.AssignNewTarget(killer);
         }
     }
 

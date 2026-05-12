@@ -11,6 +11,7 @@ public sealed class BountyHunterArrowModifier(PlayerControl owner, Color color)
     public override string ModifierName => "Bounty Hunter Arrow";
 
     private const float ArrowVisibleRange = 10f;
+    private GameObject? _targetPopup;
 
     public override void OnActivate()
     {
@@ -18,6 +19,7 @@ public sealed class BountyHunterArrowModifier(PlayerControl owner, Color color)
 
         var popup = GameManagerCreator.Instance.HideAndSeekManagerPrefab.DeathPopupPrefab;
         var item = Object.Instantiate(popup, HudManager.Instance.transform.parent);
+        _targetPopup = item.gameObject;
         item.Show(Player, 0);
         if (item.text.transform.TryGetComponent<TextTranslatorTMP>(out var tmp))
         {
@@ -57,6 +59,16 @@ public sealed class BountyHunterArrowModifier(PlayerControl owner, Color color)
     {
         base.OnMeetingStart();
         ModifierComponent!.RemoveModifier(this);
+    }
+
+    public override void OnDeactivate()
+    {
+        base.OnDeactivate();
+        if (_targetPopup != null)
+        {
+            Object.Destroy(_targetPopup);
+            _targetPopup = null;
+        }
     }
 }
 
