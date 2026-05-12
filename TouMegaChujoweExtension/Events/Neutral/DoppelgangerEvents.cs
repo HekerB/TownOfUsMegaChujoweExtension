@@ -44,6 +44,13 @@ public static class DoppelgangerEvents
         if (killer.TryGetModifier<DoppelgangerDisguiseModifier>(out var existing))
         {
             existing.UpdateTarget(victim);
+
+            // Hide First Dead Shield visual if the killer has it
+            if (killer.TryGetModifier<FirstDeadShield>(out var s1) && s1.FirstRoundShield != null)
+            {
+                s1.FirstRoundShield.SetActive(false);
+            }
+
             if (killer.AmOwner)
             {
                 TouAudio.PlaySound(TouAudio.MimicSound);
@@ -59,6 +66,11 @@ public static class DoppelgangerEvents
 
         TouAudio.PlaySound(TouAudio.MimicSound);
         killer.RpcAddModifier<DoppelgangerDisguiseModifier>(victim);
+
+        if (killer.TryGetModifier<FirstDeadShield>(out var s2) && s2.FirstRoundShield != null)
+        {
+            s2.FirstRoundShield.SetActive(false);
+        }
     }
 
     [RegisterEvent]

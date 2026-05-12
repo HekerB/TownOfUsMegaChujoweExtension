@@ -95,9 +95,9 @@ public static class LoverChatBubblePatch
         // If the bubble text contains "(Lover Chat)", apply pink bubble style
         if (rawText.Contains("(Lover Chat)"))
         {
-            __instance.Background.sprite = TownOfUs.Assets.TouChatAssets.LoveBubble.LoadAsset();
-            __instance.Background.color = Color.white;
-            __instance.TextArea.color = Color.black; 
+            // Use a vibrant pink background similar to how Jailor/Lawyer is styled
+            __instance.Background.color = new Color(0.85f, 0.1f, 0.5f, 0.95f);
+            __instance.TextArea.color = Color.white;
         }
         // Ensure Lawyer style remains intact as well
         else if (rawText.Contains("(Lawyer)"))
@@ -107,22 +107,3 @@ public static class LoverChatBubblePatch
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
