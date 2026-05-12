@@ -51,7 +51,7 @@ public sealed class SpeedyAccelerateButton : TownOfUsRoleButton<SpeedyRole>
     {
         if (!EffectActive)
         {
-            PlayerControl.LocalPlayer.AddModifier<SpeedyAccelerateModifier>();
+            PlayerControl.LocalPlayer.RpcAddModifier<SpeedyAccelerateModifier>();
         }
         else
         {
@@ -63,7 +63,7 @@ public sealed class SpeedyAccelerateButton : TownOfUsRoleButton<SpeedyRole>
     {
         if (PlayerControl.LocalPlayer.HasModifier<SpeedyAccelerateModifier>())
         {
-            PlayerControl.LocalPlayer.RemoveModifier<SpeedyAccelerateModifier>();
+            PlayerControl.LocalPlayer.RpcRemoveModifier<SpeedyAccelerateModifier>();
         }
         
         EffectActive = false;
