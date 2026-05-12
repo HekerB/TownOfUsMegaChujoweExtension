@@ -229,6 +229,10 @@ public static class DetonatorSystem
 
         // Show explosion range effect to Impostors and dead players
         DetonatorRole.RpcShowDetonationEffect(actualKiller, pos, options.DetonateRadius);
+        if (detonator != null)
+        {
+            DetonatorRole.RpcPlayExplosion(detonator);
+        }
 
         if (detonator != null)
         {

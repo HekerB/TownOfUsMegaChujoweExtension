@@ -85,6 +85,7 @@ public enum ExtensionRpc : uint
     DetonatorDetonate = 79,
     DetonatorShowEffect = 80,
     DetonatorPlayBeep = 81,
+    DetonatorPlayExplosion = 82,
 }
 
 

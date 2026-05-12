@@ -64,11 +64,16 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <img src="./Images/Groups/CrewProtect.png" align="center" />
   <a href="#bodyguard-protective"><img width="10%" src="./Images/Icons/Bodyguard_Icon.png" /></a>
   <img src="./Images/Groups/CrewSupport.png" align="center" />
+  <a href="#doctor-support"><img width="10%" src="./Images/Icons/Doctor_Role_Icon.png" /></a>
   <a href="#evoker-support"><img width="10%" src="./Images/Icons/Evoker_Role_Icon.png" /></a>
   <a href="#forestaller-support"><img width="10%" src="./Images/Icons/Forestaller_Role_Icon.png" /></a>
   <a href="#mirage-support"><img width="10%" src="./Images/Icons/Mirage_Role_Icon.png" /></a>
   <a href="#trapper-support"><img width="10%" src="./Images/Icons/Trapper_Role_Icon.png" /></a>
+  <img src="./Images/Groups/ImpConcealing.png" align="center" />
+  <a href="#astral-concealing"><img width="10%" src="./Images/Icons/Astral_Role_Icon.png" /></a>
+  <a href="#speedy-concealing"><img width="10%" src="./Images/Icons/Speedy_Role_Icon.png" /></a>
   <img src="./Images/Groups/ImpKilling.png" align="center" />
+  <a href="#detonator-killing"><img width="10%" src="./Images/Icons/Detonator_Role_Icon.png" /></a>
   <a href="#kamikaze-killing"><img width="10%" src="./Images/Icons/Kamikaze_Role_Icon.png" /></a>
   <a href="#outlaw-killing"><img width="10%" src="./Images/Icons/Outlaw_Role_Icon.png" /></a>
   <a href="#witch-killing"><img width="10%" src="./Images/Icons/Witch_Role_Icon.png" /></a>
@@ -132,6 +137,9 @@ Abstain from voting to bank votes, then spend them all at once in a future meeti
 ### Bodyguard (Crewmate Protective)
 Shield a player. When they're attacked, teleport to them and eliminate the attacker but you die too.
 
+### Doctor (Crewmate Support)
+Inject players with beneficial chemicals. After a short delay, they receive a random positive effect like a permanent shield, speed boost, or enhanced vision.
+
 ### Evoker (Crewmate Support)
 Activate Blind to Flash all killing roles are blinded they cannot use any abilities and can only see themselves. Depending on the host settings, the Evoker may verify whether players are killing roles or not.
 
@@ -145,6 +153,15 @@ Place a decoy with the appearance of yourself or a random player. If anyone inte
 Place traps on vents that immobilize players who use them. Get notifications when traps are triggered.
 
 ## Impostor Roles
+
+### Astral (Impostor Concealing)
+Phase through walls to bypass obstacles. Teleport back to your starting position after a delay. You must eliminate a target while phased to survive!
+
+### Speedy (Impostor Concealing)
+Gain a permanent speed boost each time you eliminate a player. Can be configured to stack or have a maximum limit.
+
+### Detonator (Impostor Killing)
+Attach a C4 bomb to a player. Detonate it manually to eliminate the target and anyone nearby.
 
 ### Kamikaze (Impostor Killing)
 Detonate yourself to kill all nearby players. You die in the process.
@@ -387,12 +404,12 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 > **Huge shoutout to Atony**, creator of Town of Us: Mira — roughly 70% of the art assets used in this mod originate from his work, various TOU Mira builds, and resources shared on the TOU Mira Discord. We are extremely grateful for his incredible contributions to the community.
 
 - **Asterisken** - Art for Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful and Objection Button
-- **Atony / Town of Us: Mira / Town Of Us Discord** - Art for Serial Killer, Lawyer, Witch, Wraith; Shifter role icon & button; Bodyguard role icon; Vampire Hunter role icon; Vanisher icon (recolored Swooper); Sage role icon (Seer button from TOU Mira); Sage ability buttons (Salem option buttons from Seer); Bodyguard shield animation (repainted Warden shield from TOU Mira 1.5.9); Poisoner role icon & all Poisoner button icons; Evoker Verify button icon; Shroud ability button icon; Drunk modifier icon (from TOU Mira Discord); Venomous modifier icon (flipped & recolored Rotting modifier from TOU Mira)
+- **Atony / Town of Us: Mira / Town Of Us Discord** - Art for Serial Killer, Lawyer, Witch, Wraith, Kamikaze, Detonator, Astral, Speedy, Doctor, RC-XD; Shifter role icon & button; Bodyguard role icon; Vampire Hunter role icon; Vanisher icon; Sage role icon (Seer button from TOU Mira); Sage ability buttons (Salem option buttons from Seer); Bodyguard shield animation (repainted Warden shield from TOU Mira 1.5.9); Poisoner role icon & all Poisoner button icons; Evoker Verify button icon; Shroud ability button icon; Drunk modifier icon (from TOU Mira Discord); Venomous modifier icon (flipped & recolored Rotting modifier from TOU Mira)
 - **Atony / TOU Mira Fusion** - Vampire Hunter stake button
 - **Stellar Roles** - Role ideas, some button art
 - **[Launchpad Reloaded](https://github.com/All-Of-Us-Mods/LaunchpadReloaded)** - Doppelganger role icon
 - **[All Of Us](https://github.com/All-Of-Us-Mods)** - Death Note modifier icons (from their Discord)
-- **Sidemen (YouTube)** - Kamikaze role icon (temporary, detonator icon); RC-XD Deploy & Detonate button icons
+- **Sidemen (YouTube)** - RC-XD Deploy & Detonate button icons
 - **[TOHE (Town of Host Enhanced)](https://github.com/0xDrMoe/TownofHost-Enhanced)** - Shroud role icon
 - **Star Wars** - Bounty Hunter role icon
 - **Our friend's girlfriend** - Publicity modifier icon
@@ -413,7 +430,7 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 - **[Syzyfowe TOU ](https://github.com/LimeShep/Town-Of-Us/)** - Evoker role concept; Pelican role concept
 - **Tajemniczy Among Us (Tajemniczy Typiarz)** - Pirate role concept
 - **[Town of Us WYGON ](https://github.com/wygon/Town-Of-Us-WYGON)** - Falcon role concept; Kamikaze role concept
-- **Sidemen (YouTube)** - RC-XD & Poisoner roles concept (recreated from their videos)
+- **Sidemen (YouTube)** - RC-XD, Detonator, Doctor, Astral, Speedy & Poisoner roles concept (recreated from their videos)
 - **Death Note (anime)** - Death Note modifier concept
 - **Our friend Weakpass** - Added Publicity modifier
 

@@ -165,6 +165,22 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         }
     }
 
+    [MethodRpc((uint)ExtensionRpc.DetonatorPlayExplosion)]
+    public static void RpcPlayExplosion(PlayerControl detonator)
+    {
+        if (PlayerControl.LocalPlayer == null || detonator == null) return;
+        
+        // Play only for the detonator (as requested)
+        if (PlayerControl.LocalPlayer.PlayerId == detonator.PlayerId)
+        {
+            var clip = TouExtensionAudio.RcExplosionSound.LoadAsset();
+            if (clip != null)
+            {
+                SoundManager.Instance.PlaySound(clip, false, 1f);
+            }
+        }
+    }
+
     private static IEnumerator CoDestroyObjAfter(GameObject? obj, float delay)
     {
         yield return new WaitForSeconds(delay);

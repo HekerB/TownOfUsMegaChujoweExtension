@@ -10,7 +10,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> TrapperRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Trapper_Role_Icon.png", 200f);
         public static LoadableAsset<Sprite> ForestallerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Forestaller_Role_Icon.png", 200f);
         public static LoadableAsset<Sprite> PresidentRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.President_Role_Icon.png", 200f);
-        public static LoadableAsset<Sprite> EvokerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Evoker_Role_Icon.png", 200f);
+        public static LoadableAsset<Sprite> EvokerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Evoker_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> VanisherRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Vanisher_Role_Icon.png", 200f);
         public static LoadableAsset<Sprite> BodyguardRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Bodyguard_Icon.png");
         public static LoadableAsset<Sprite> FalconRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Falcon_Role_Icon.png", 350f);

@@ -53,15 +53,20 @@ public sealed class DetonatorAttachButton : TownOfUsRoleButton<DetonatorRole, Pl
     {
         if (DetonatorSystem.HasAnyActiveBomb(PlayerControl.LocalPlayer.PlayerId)) return true;
         if (!base.IsTargetValid(target) || target == null) return false;
-        return target != PlayerControl.LocalPlayer && !target.IsImpostorAligned();
+        return target != PlayerControl.LocalPlayer;
     }
 
     public override bool CanClick()
     {
-        if (DetonatorSystem.HasAnyActiveBomb(PlayerControl.LocalPlayer.PlayerId))
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (DetonatorSystem.HasAnyActiveBomb(localPlayer.PlayerId))
         {
             return Timer <= 0;
         }
+
+        var target = GetTarget();
+        if (target != null && target.IsImpostorAligned()) return false;
+
         return base.CanClick();
     }
 
@@ -87,7 +92,7 @@ public sealed class DetonatorAttachButton : TownOfUsRoleButton<DetonatorRole, Pl
             return;
         }
 
-        if (Target == null) return;
+        if (Target == null || Target.IsImpostorAligned()) return;
         
         // Start "Witch-style" attaching
         _attachTarget = Target;
@@ -154,12 +159,15 @@ public sealed class DetonatorAttachButton : TownOfUsRoleButton<DetonatorRole, Pl
         
         if (Button == null) return;
 
-        bool hasTarget = GetTarget() != null;
+        var target = GetTarget();
+        bool hasTarget = target != null;
+        bool isTeammateTarget = target != null && target.IsImpostorAligned();
 
         // Update visuals based on target presence
         if (Button.graphic != null)
         {
-            bool shouldHighlight = hasBomb || hasTarget || _isAttaching;
+            // Disable (desaturate/dim) if target is a teammate
+            bool shouldHighlight = hasBomb || (hasTarget && !isTeammateTarget) || _isAttaching;
             Button.graphic.color = shouldHighlight ? Color.white : new Color(1f, 1f, 1f, 0.5f);
             Button.graphic.material.SetFloat("_Desat", shouldHighlight ? 0f : 1f);
         }
