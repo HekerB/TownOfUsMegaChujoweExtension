@@ -21,6 +21,16 @@ public sealed class SpeedyAccelerateModifier : ConcealedModifier, IVisualAppeara
     public override bool HideOnUi => true;
     public bool VisualPriority => true;
 
+    public override void OnDeath(DeathReason reason)
+    {
+        Player.RemoveModifier(this);
+    }
+
+    public override void OnMeetingStart()
+    {
+        Player.RemoveModifier(this);
+    }
+
     public override void OnActivate()
     {
         Player.RawSetAppearance(this);

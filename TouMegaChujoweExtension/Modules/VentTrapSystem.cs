@@ -1,5 +1,10 @@
 using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
+using System.Collections.Generic;
 using System.Linq;
+using TouMegaChujoweExtension.Options.Modifiers.Neutral;
+using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -107,13 +112,26 @@ public static class VentTrapSystem
         }
 
         var targets = OptionGroupSingleton<TrapperOptions>.Instance.TrapTargets;
-        return targets switch
+        var isTarget = targets switch
         {
             VentTrapTargets.Impostors => pc.IsImpostor(),
             VentTrapTargets.ImpostorsAndNeutrals => pc.IsImpostor() || pc.IsNeutral(),
             VentTrapTargets.All => true,
             _ => pc.IsImpostor() || pc.IsNeutral()
         };
+
+        if (isTarget) return true;
+
+        // Crewmates who can vent should also be eligible if they are using a vent
+        if (pc.Data?.Role is EngineerRole || pc.Data?.Role is EngineerTouRole) return true;
+
+        // Check for Egotist if they have venting enabled
+        if (pc.HasModifier<EgotistModifier>() && OptionGroupSingleton<EgotistExtendedOptions>.Instance.CanVent) return true;
+
+        // Dynamic check for any MiraAPI modifier that grants venting ability (Doctor's effect, etc.)
+        if (pc.GetModifiers<BaseModifier>().Any(m => m.CanVent() == true)) return true;
+
+        return false;
     }
 
     public static Vector2 GetVentTopPosition(Vent vent)

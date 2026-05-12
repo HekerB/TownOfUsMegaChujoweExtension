@@ -50,8 +50,15 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
     public bool HasImpostorVision => false;
     public bool HasWon { get; set; }
+    public PlayerControl? CurrentTarget { get; set; }
+    public byte? LastTargetPlayerId { get; set; }
+    public int KillsDone { get; set; }
+    public bool TargetKilledThisRound { get; set; }
+    public bool Hunting { get; set; }
+    public bool IntroFinished { get; set; }
+    public float IntroFinishTime { get; set; }
 
-    public bool MetWinCon => HasWon || BountyHunterSystem.HasWon;
+    public bool MetWinCon => HasWon;
 
     public bool ContinuesGame => !Player.HasDied()
         && OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode == BountyHunterWinMode.WinWithWinners
@@ -71,21 +78,21 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
         var needed = (int)OptionGroupSingleton<BountyHunterOptions>.Instance.TargetsToKill.Value;
-        var done = BountyHunterSystem.KillsDone;
+        var done = KillsDone;
         
         stringB.Append(TownOfUsPlugin.Culture, 
             $"\n{TouLocale.GetParsed("ExtensionBHTabTargetsKilled", "Targets Killed: {0} / {1}").Replace("{0}", done.ToString()).Replace("{1}", needed.ToString())}");
 
-        if (BountyHunterSystem.CurrentTarget != null && BountyHunterSystem.Hunting)
+        if (CurrentTarget != null && Hunting)
             stringB.Append(TownOfUsPlugin.Culture,
-                $"\n{TouLocale.GetParsed("ExtensionBHTabCurrentTarget", "Current Target: {0}").Replace("{0}", BountyHunterSystem.CurrentTarget.Data.PlayerName)}");
+                $"\n{TouLocale.GetParsed("ExtensionBHTabCurrentTarget", "Current Target: {0}").Replace("{0}", CurrentTarget.Data.PlayerName)}");
         return stringB;
     }
 
  [HideFromIl2Cpp]
 public bool WinConditionMet()
 {
-    if (!HasWon && !BountyHunterSystem.HasWon)
+    if (!HasWon)
         return false;
 
     if (OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode != BountyHunterWinMode.SoloWin)
@@ -104,9 +111,14 @@ public bool WinConditionMet()
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
-        BountyHunterSystem.Reset();
-        BountyHunterSystem.BountyHunterPlayerId = player.PlayerId;
         HasWon = false;
+        CurrentTarget = null;
+        LastTargetPlayerId = null;
+        KillsDone = 0;
+        TargetKilledThisRound = false;
+        Hunting = false;
+        IntroFinished = false;
+        IntroFinishTime = 0f;
         
         if (player.AmOwner)
         {
@@ -124,21 +136,116 @@ public bool WinConditionMet()
         {
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
+            ClearArrowModifiers();
         }
 
-        if (!Player.HasModifier<BasicGhostModifier>() && (HasWon || BountyHunterSystem.HasWon))
+        if (!Player.HasModifier<BasicGhostModifier>() && HasWon)
         {
             Player.AddModifier<BasicGhostModifier>();
         }
+    }
 
-        BountyHunterSystem.Reset();
+    public void ClearArrowModifiers()
+    {
+        var players = ModifierUtils.GetPlayersWithModifier<BountyHunterArrowModifier>();
+        foreach (var player in players)
+        {
+            if (player.TryGetModifier<BountyHunterArrowModifier>(out var arrow) && arrow.Owner == Player)
+            {
+                player.RemoveModifier(arrow);
+            }
+        }
+    }
+
+    public void AssignNewTarget()
+    {
+        ClearArrowModifiers();
+
+        if (Player == null || Player.Data == null || Player.Data.IsDead) return;
+
+        var candidates = PlayerControl.AllPlayerControls.ToArray()
+            .Where(p => p != null
+                        && p.Data != null
+                        && !p.Data.IsDead
+                        && !p.Data.Disconnected
+                        && p.PlayerId != Player.PlayerId
+                        && (!p.TryGetModifier<ChildModifier>(out var child) || child.IsAdult))
+            .ToList();
+
+        if (candidates.Count > 1 && CurrentTarget != null)
+        {
+            var filtered = candidates.Where(p => p.PlayerId != CurrentTarget.PlayerId).ToList();
+            if (filtered.Count > 0)
+                candidates = filtered;
+        }
+
+        if (candidates.Count == 0)
+        {
+            CurrentTarget = null;
+            LastTargetPlayerId = null;
+            return;
+        }
+
+        // Implement weighted selection: Neutrals and Impostors have 10% more chance
+        var weightedCandidates = new List<PlayerControl>();
+        foreach (var p in candidates)
+        {
+            int weight = 100;
+            var role = p.GetTownOfUsRole();
+            if (p.IsImpostorAligned() || (role != null && (role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralKilling || 
+                                                           role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralEvil || 
+                                                           role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralBenign)))
+            {
+                weight = 110; // 10% more
+            }
+
+            for (int i = 0; i < weight; i++)
+            {
+                weightedCandidates.Add(p);
+            }
+        }
+
+        CurrentTarget = weightedCandidates[UnityEngine.Random.Range(0, weightedCandidates.Count)];
+        LastTargetPlayerId = CurrentTarget.PlayerId;
+        TargetKilledThisRound = false;
+
+        if (Player.AmOwner && CurrentTarget != null)
+        {
+            CurrentTarget.AddModifier<BountyHunterArrowModifier>(Player, TouExtensionColors.BountyHunter);
+        }
+    }
+
+    public void OnTargetKilled()
+    {
+        if (HasWon) return;
+
+        KillsDone++;
+        TargetKilledThisRound = true;
+
+        var opts = OptionGroupSingleton<BountyHunterOptions>.Instance;
+        var needed = (int)opts.TargetsToKill.Value;
+
+        if (KillsDone >= needed)
+        {
+            HasWon = true;
+            BountyHunterSystem.HasWon = true; // Global flag for legacy patches if any
+            var isSolo = OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode == BountyHunterWinMode.SoloWin;
+            BountyHunterSystem.GameEndedByBH = isSolo;
+            ClearArrowModifiers();
+            return;
+        }
+
+        if (Player.AmOwner)
+        {
+            AssignNewTarget();
+        }
     }
 
     public override void OnDeath(DeathReason reason)
     {
         RoleBehaviourStubs.OnDeath(this, reason);
-        BountyHunterSystem.ClearArrowModifiers();
-        BountyHunterSystem.Hunting = false;
+        ClearArrowModifiers();
+        Hunting = false;
     }
 
     public override bool CanUse(IUsable usable)
@@ -150,7 +257,7 @@ public bool WinConditionMet()
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        if (!HasWon && !BountyHunterSystem.HasWon)
+        if (!HasWon)
             return false;
 
         var winMode = OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode;

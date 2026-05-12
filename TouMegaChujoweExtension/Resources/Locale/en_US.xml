@@ -507,7 +507,7 @@
 
   <!-- Speedy Role -->
   <string name="ExtensionRoleSpeedy">Speedy</string>
-  <string name="ExtensionRoleSpeedyIntroBlurb">Speedy is an Impostor Concealing role that can become camouflaged and fast to kill Crewmates.</string>
+  <string name="ExtensionRoleSpeedyIntroBlurb">Camouflage and accelerate to eliminate the Crew.</string>
   <string name="ExtensionRoleSpeedyTabDescription">Use your ability to gain speed and camouflage yourself. Sneak up on Crewmates!</string>
   <string name="ExtensionRoleSpeedyWikiDescription">Speedy is an Impostor Concealing role that can become camouflaged and fast to kill Crewmates.</string>
   <string name="ExtensionRoleSpeedyAccelerate">Accelerate</string>

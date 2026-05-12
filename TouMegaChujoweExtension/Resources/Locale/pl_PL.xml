@@ -504,7 +504,7 @@
   
   <!-- Speedy Role -->
   <string name="ExtensionRoleSpeedy">Speedy</string>
-  <string name="ExtensionRoleSpeedyIntroBlurb">Speedy to rola Impostora Concealing, która może stać się zakamuflowana i szybka, aby zabijać Załogantów.</string>
+  <string name="ExtensionRoleSpeedyIntroBlurb">Zakamufluj się i przyspiesz, by eliminować Załogę.</string>
   <string name="ExtensionRoleSpeedyTabDescription">Użyj swojej umiejętności, aby zyskać prędkość i zakamuflować się (szary ludzik). Zaskocz Załogantów!</string>
   <string name="ExtensionRoleSpeedyWikiDescription">Speedy to rola Impostora Concealing, która może stać się zakamuflowana i szybka, aby zabijać Załogantów.</string>
   <string name="ExtensionRoleSpeedyAccelerate">Przyspieszenie</string>

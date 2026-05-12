@@ -58,8 +58,11 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
 
     private void RefreshKillCounter()
     {
-        int remaining = Mathf.Clamp(MaxUses - BountyHunterSystem.KillsDone, 0, MaxUses);
-        SetUses(remaining);
+        if (PlayerControl.LocalPlayer?.Data?.Role is BountyHunterRole role)
+        {
+            int remaining = Mathf.Clamp(MaxUses - role.KillsDone, 0, MaxUses);
+            SetUses(remaining);
+        }
     }
 
     public override bool Enabled(RoleBehaviour? role)
@@ -73,15 +76,15 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
 
     public override PlayerControl? GetTarget()
     {
-        if (PlayerControl.LocalPlayer == null)
+        if (PlayerControl.LocalPlayer?.Data?.Role is not BountyHunterRole role)
             return null;
 
-        if (BountyHunterSystem.CurrentTarget == null)
+        if (role.CurrentTarget == null)
             return null;
 
-        if (BountyHunterSystem.CurrentTarget.Data == null ||
-            BountyHunterSystem.CurrentTarget.Data.IsDead ||
-            BountyHunterSystem.CurrentTarget.Data.Disconnected)
+        if (role.CurrentTarget.Data == null ||
+            role.CurrentTarget.Data.IsDead ||
+            role.CurrentTarget.Data.Disconnected)
             return null;
 
         var closest = PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
@@ -89,7 +92,7 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
         if (closest == null)
             return null;
 
-        if (closest.PlayerId != BountyHunterSystem.CurrentTarget.PlayerId)
+        if (closest.PlayerId != role.CurrentTarget.PlayerId)
             return null;
 
         if (closest.TryGetModifier<ChildModifier>(out var child) && !child.IsAdult)
@@ -131,19 +134,20 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
             return;
         }
 
-        if (BountyHunterSystem.CurrentTarget == null)
+        if (PlayerControl.LocalPlayer?.Data?.Role is not BountyHunterRole role)
+            return;
+
+        if (role.CurrentTarget == null)
         {
-            // Log.LogWarning("[BH-Button] OnClick: CurrentTarget is null");
             return;
         }
 
-        if (Target.PlayerId != BountyHunterSystem.CurrentTarget.PlayerId)
+        if (Target.PlayerId != role.CurrentTarget.PlayerId)
         {
-            // Log.LogWarning("[BH-Button] OnClick: Target mismatch!");
             return;
         }
 
-        BountyHunterSystem.LastTargetPlayerId = Target.PlayerId;
+        role.LastTargetPlayerId = Target.PlayerId;
 
         // Log.LogWarning($"[BH-Button] OnClick: Killing {Target.Data.PlayerName} (PlayerId={Target.PlayerId})");
 

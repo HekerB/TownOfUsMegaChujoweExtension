@@ -23,12 +23,12 @@ public static class BountyHunterMeetingPatch
     public static void Postfix()
     {
         var bh = PlayerControl.LocalPlayer;
-        if (bh == null || !bh.IsBountyHunter()) return;
-        if (BountyHunterSystem.HasWon) return;
-        if (!BountyHunterSystem.Hunting) return;
+        if (bh == null || bh.Data?.Role is not BountyHunterRole role) return;
+        if (role.HasWon) return;
+        if (!role.Hunting) return;
 
 
-        BountyHunterSystem.TargetKilledThisRound = false;
+        role.TargetKilledThisRound = false;
     }
 }
 
@@ -39,13 +39,13 @@ public static class BountyHunterMeetingEndPatch
     public static void Postfix()
     {
         var bh = PlayerControl.LocalPlayer;
-        if (bh == null || !bh.IsBountyHunter()) return;
-        if (bh.Data.IsDead || BountyHunterSystem.HasWon) return;
-        if (!BountyHunterSystem.Hunting) return;
+        if (bh == null || bh.Data?.Role is not BountyHunterRole role) return;
+        if (bh.Data.IsDead || role.HasWon) return;
+        if (!role.Hunting) return;
 
-        BountyHunterSystem.CurrentTarget = null;
-        BountyHunterSystem.LastTargetPlayerId = null;
-        BountyHunterSystem.AssignNewTarget(bh);
+        role.CurrentTarget = null;
+        role.LastTargetPlayerId = null;
+        role.AssignNewTarget();
     }
 }
 
@@ -56,50 +56,50 @@ public static class BountyHunterHudUpdatePatch
     public static void Postfix()
     {
         if (PlayerControl.LocalPlayer == null) return;
-        if (!PlayerControl.LocalPlayer.IsBountyHunter()) return;
+        if (PlayerControl.LocalPlayer.Data?.Role is not BountyHunterRole role) return;
 
         var player = PlayerControl.LocalPlayer;
 
         if (player.Data == null || player.Data.IsDead)
         {
-            BountyHunterSystem.ClearArrowModifiers();
+            role.ClearArrowModifiers();
             return;
         }
 
         if (!ShipStatus.Instance) return;
-        if (BountyHunterSystem.HasWon) return;
+        if (role.HasWon) return;
         if (MeetingHud.Instance || ExileController.Instance) return;
 
-        if (!BountyHunterSystem.IntroFinished)
+        if (!role.IntroFinished)
         {
             if (Object.FindObjectOfType<IntroCutscene>() != null)
                 return;
 
-            BountyHunterSystem.IntroFinished = true;
-            BountyHunterSystem.IntroFinishTime = Mathf.Max(Time.time, 0.001f);
+            role.IntroFinished = true;
+            role.IntroFinishTime = Mathf.Max(Time.time, 0.001f);
             return;
         }
 
-        if (!BountyHunterSystem.Hunting)
+        if (!role.Hunting)
         {
-            if (BountyHunterSystem.IntroFinishTime <= 0f)
+            if (role.IntroFinishTime <= 0f)
                 return;
 
-            if (Time.time - BountyHunterSystem.IntroFinishTime < 10f)
+            if (Time.time - role.IntroFinishTime < 10f)
                 return;
 
-            BountyHunterSystem.Hunting = true;
-            BountyHunterSystem.AssignNewTarget(player);
+            role.Hunting = true;
+            role.AssignNewTarget();
             return;
         }
 
-        if (!BountyHunterSystem.HasWon &&
-            (BountyHunterSystem.CurrentTarget == null ||
-             BountyHunterSystem.CurrentTarget.Data == null ||
-             BountyHunterSystem.CurrentTarget.Data.IsDead ||
-             BountyHunterSystem.CurrentTarget.Data.Disconnected))
+        if (!role.HasWon &&
+            (role.CurrentTarget == null ||
+             role.CurrentTarget.Data == null ||
+             role.CurrentTarget.Data.IsDead ||
+             role.CurrentTarget.Data.Disconnected))
         {
-            BountyHunterSystem.AssignNewTarget(player);
+            role.AssignNewTarget();
         }
     }
 }
