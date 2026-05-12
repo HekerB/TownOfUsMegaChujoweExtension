@@ -3,6 +3,7 @@ using MiraAPI.Modifiers.Types;
 using TouMegaChujoweExtension.Events.Crewmate;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
 using TownOfUs.Modules.Localization;
+using TownOfUs.Utilities.Appearances;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modifiers.Crewmate;
@@ -21,6 +22,8 @@ public sealed class DoctorVisionBoostModifier : TimedModifier
         _durationType = durationType;
     }
 
+    public float VisionPerc { get; set; } = 1.8f;
+
     public override float Duration
     {
         get
@@ -35,12 +38,17 @@ public sealed class DoctorVisionBoostModifier : TimedModifier
         }
     }
 
+    public override void OnMeetingStart()
+    {
+        if (_durationType == DoctorEffectDurationType.AllRound)
+        {
+            Player.RemoveModifier(this);
+        }
+    }
+
     public override void OnDeactivate()
     {
-        if (Player != null && Player.AmOwner)
-        {
-            DoctorEvents.ShowNotification(Player, "ExtensionDoctorNotificationWoreOffVisionBoost", "Vision boost wore off");
-        }
+        VisionPerc = 1f;
     }
 }
 
@@ -72,6 +80,14 @@ public sealed class DoctorRegenerationModifier : TimedModifier
         }
     }
 
+    public override void OnMeetingStart()
+    {
+        if (_durationType == DoctorEffectDurationType.AllRound)
+        {
+            Player.RemoveModifier(this);
+        }
+    }
+
     public override void FixedUpdate()
     {
         if (Player == null || !Player.AmOwner) return;
@@ -86,10 +102,5 @@ public sealed class DoctorRegenerationModifier : TimedModifier
 
     public override void OnDeactivate()
     {
-        if (Player != null && Player.AmOwner)
-        {
-            DoctorEvents.ShowNotification(Player, "ExtensionDoctorNotificationWoreOffRegeneration", "Regeneration wore off");
-        }
     }
 }
-

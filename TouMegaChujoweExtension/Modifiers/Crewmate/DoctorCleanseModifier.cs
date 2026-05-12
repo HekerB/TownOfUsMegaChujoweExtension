@@ -1,8 +1,10 @@
 using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using TouMegaChujoweExtension.Events.Crewmate;
+using TouMegaChujoweExtension.Modifiers.Impostor;
 using TownOfUs.Modules.Localization;
 using UnityEngine;
+using System.Linq;
 
 namespace TouMegaChujoweExtension.Modifiers.Crewmate;
 
@@ -18,7 +20,7 @@ public sealed class DoctorCleanseModifier : TimedModifier
         if (Player == null) return;
 
         // Remove negative modifiers
-        var modifiersToRemove = Player.GetModifiers<BaseModifier>().Where(m => 
+        var modifiersToRemove = Player.GetModifiers<BaseModifier>().Where(m =>
             m is InjectedInvertedControlsModifier ||
             m is InjectedLowVisionModifier ||
             m is InjectedSlownessModifier ||

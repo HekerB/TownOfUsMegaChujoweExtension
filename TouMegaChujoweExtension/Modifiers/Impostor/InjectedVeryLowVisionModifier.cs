@@ -52,10 +52,6 @@ public sealed class InjectedVeryLowVisionModifier : TimedModifier, IInjectedModi
     public override void OnDeactivate()
     {
         VisionPerc = 1f;
-        if (Player != null && Player.AmOwner)
-        {
-            InjectorEvents.ShowEffectWoreOffNotification(Player, "ExtensionInjectorNotificationWoreOffVeryLowVision");
-        }
     }
 
     public string GetEffectDescription()

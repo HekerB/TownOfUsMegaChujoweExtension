@@ -557,8 +557,8 @@
 
   <!-- Doctor Role -->
   <string name="ExtensionRoleDoctor">Doktor</string>
-  <string name="ExtensionRoleDoctorIntroBlurb">Wstrzykuj graczom pozytywne efekty, aby pomoc Zalodze.</string>
-  <string name="ExtensionRoleDoctorTabDescription">Wstrzykuj graczom pozytywne efekty.\nJesli tak skonfigurowano, wstrzykniecia moga czasem dac negatywny efekt.</string>
+  <string name="ExtensionRoleDoctorIntroBlurb">Wstrzykuj graczom pozytywne efekty,\%nl\%aby pomoc Zalodze.</string>
+  <string name="ExtensionRoleDoctorTabDescription">Wstrzykuj graczom pozytywne efekty.\%nl\%Jesli tak skonfigurowano, wstrzykniecia moga czasem dac negatywny efekt.</string>
   <string name="ExtensionRoleDoctorWikiDescription">Doktor to rola Crewmate, ktora moze wstrzykiwac graczom rozne pozytywne efekty. Efekty sa wybierane losowo i moga obejmowac przyspieszenie, zwiekszone widzenie, oczyszczenie z negatywnych efektow lub nalozenie jednorazowej tarczy ochronnej.</string>
   <string name="ExtensionRoleDoctorInject">Wstrzyknij</string>
   <string name="ExtensionRoleDoctorInjectWikiDescription">Wstrzyknij pobliskiemu graczowi losowy pozytywny efekt. Efekt aktywuje sie po skonfigurowanym opoznieniu.</string>

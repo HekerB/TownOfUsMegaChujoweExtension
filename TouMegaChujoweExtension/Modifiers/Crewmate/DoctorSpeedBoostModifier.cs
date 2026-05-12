@@ -39,13 +39,17 @@ public sealed class DoctorSpeedBoostModifier : TimedModifier, IVisualAppearance
 
     public override void OnActivate() => Player.RawSetAppearance(this);
 
+    public override void OnMeetingStart()
+    {
+        if (_durationType == DoctorEffectDurationType.AllRound)
+        {
+            Player.RemoveModifier(this);
+        }
+    }
+
     public override void OnDeactivate()
     {
         Player?.ResetAppearance(fullReset: true);
-        if (Player != null && Player.AmOwner)
-        {
-            DoctorEvents.ShowNotification(Player, "ExtensionDoctorNotificationWoreOffSpeedBoost", "Speed boost wore off");
-        }
     }
 
     public VisualAppearance GetVisualAppearance()

@@ -50,10 +50,6 @@ public sealed class InjectedSlownessModifier : TimedModifier, IVisualAppearance,
     public override void OnDeactivate()
     {
         Player?.ResetAppearance(fullReset: true);
-        if (Player != null && Player.AmOwner)
-        {
-            InjectorEvents.ShowEffectWoreOffNotification(Player, "ExtensionInjectorNotificationWoreOffSlowness");
-        }
     }
 
     public string GetEffectDescription()

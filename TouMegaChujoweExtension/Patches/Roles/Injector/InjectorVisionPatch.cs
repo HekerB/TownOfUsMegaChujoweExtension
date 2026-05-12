@@ -1,5 +1,7 @@
 using HarmonyLib;
 using MiraAPI.Modifiers;
+using TouMegaChujoweExtension.Modifiers.Crewmate;
+using TouMegaChujoweExtension.Modifiers.Impostor;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Injector;
@@ -48,12 +50,23 @@ public static class InjectorVisionPatch
         }
 
         // Check for vision boost modifier (applies multiplicatively if no reduction)
-        if (!hasVisionModifier && player.Object.HasModifier<InjectedVisionBoostModifier>())
+        if (!hasVisionModifier)
         {
-            var mod = player.Object.GetModifier<InjectedVisionBoostModifier>();
-            if (mod != null)
+            if (player.Object.HasModifier<InjectedVisionBoostModifier>())
             {
-                visionFactor = mod.VisionPerc;
+                var mod = player.Object.GetModifier<InjectedVisionBoostModifier>();
+                if (mod != null)
+                {
+                    visionFactor = mod.VisionPerc;
+                }
+            }
+            else if (player.Object.HasModifier<DoctorVisionBoostModifier>())
+            {
+                var mod = player.Object.GetModifier<DoctorVisionBoostModifier>();
+                if (mod != null)
+                {
+                    visionFactor = mod.VisionPerc;
+                }
             }
         }
 
@@ -63,22 +76,3 @@ public static class InjectorVisionPatch
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

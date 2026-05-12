@@ -53,10 +53,6 @@ public sealed class InjectedVisionBoostModifier : TimedModifier, IInjectedModifi
     public override void OnDeactivate()
     {
         VisionPerc = 1f;
-        if (Player != null && Player.AmOwner)
-        {
-            InjectorEvents.ShowEffectWoreOffNotification(Player, "ExtensionInjectorNotificationWoreOffVisionBoost");
-        }
     }
 
     public string GetEffectDescription()

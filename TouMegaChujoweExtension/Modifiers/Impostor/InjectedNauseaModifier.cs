@@ -74,10 +74,6 @@ public sealed class InjectedNauseaModifier : TimedModifier, IVisualAppearance, I
     {
         StopCameraShake();
         Player?.ResetAppearance(fullReset: true);
-        if (Player != null && Player.AmOwner)
-        {
-            InjectorEvents.ShowEffectWoreOffNotification(Player, "ExtensionInjectorNotificationWoreOffNausea");
-        }
     }
 
     public override void OnMeetingStart()

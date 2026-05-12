@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
@@ -5,6 +6,13 @@ using MiraAPI.Modifiers;
 using TMPro;
 using TownOfUs.Buttons;
 using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Roles;
+using TownOfUs.Roles.Crewmate;
+using TownOfUs.Extensions;
+using TownOfUs;
+using TownOfUs.Utilities;
+using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Egotist;
@@ -16,6 +24,18 @@ public static class EgotistExtendedPatch
     private static float _ventCooldownTimer;
     private static bool _onCooldown;
     private const string TimerTextName = "EgotistVentTimerText";
+
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
+    public static class EgotistGameEndPatch
+    {
+        public static void Postfix() => ResetVentState();
+    }
+
+    [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
+    public static class EgotistExileWrapUpPatch
+    {
+        public static void Postfix() => ResetVentState();
+    }
 
     public static void ResetVentState()
     {
@@ -40,9 +60,21 @@ public static class EgotistExtendedPatch
     public static void HudManagerUpdatePrefix()
     {
         if (!IsLocalEgotist(out var opts)) return;
-        if (!opts.CanVent) return;
 
-        PlayerControl.LocalPlayer.Data.Role.CanVent = !_onCooldown;
+        var player = PlayerControl.LocalPlayer;
+        if (player == null || player.Data == null || player.Data.Role == null) return;
+
+        // Check if the player is an Engineer (vanilla or Tou)
+        bool isEngineer = player.Data.Role.Role == RoleTypes.Engineer ||
+                          player.Data.Role is EngineerRole ||
+                          player.Data.Role is EngineerTouRole;
+
+        if (opts.CanVent)
+        {
+            // If Egotist can vent, we take control over Role.CanVent to suppress vanilla/other mod logic
+            // and use our own cooldown system.
+            player.Data.Role.CanVent = !_onCooldown;
+        }
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
@@ -53,16 +85,17 @@ public static class EgotistExtendedPatch
         if (!IsLocalEgotist(out var opts)) return;
 
         var player = PlayerControl.LocalPlayer;
-        if (player == null) return;
+        if (player == null || player.Data == null || player.Data.Role == null) return;
+
+        // Check if the player is an Engineer (vanilla or Tou)
+        bool isEngineer = player.Data.Role.Role == RoleTypes.Engineer ||
+                          player.Data.Role is EngineerRole ||
+                          player.Data.Role is EngineerTouRole;
 
         if (MeetingHud.Instance != null)
         {
-            try
-            {
-                if (__instance.ImpostorVentButton != null)
-                    __instance.ImpostorVentButton.gameObject.SetActive(false);
-            }
-            catch { }
+            if (__instance.ImpostorVentButton != null)
+                __instance.ImpostorVentButton.gameObject.SetActive(false);
             return;
         }
 
@@ -70,14 +103,47 @@ public static class EgotistExtendedPatch
         {
             PlayerControl.LocalPlayer.Data.Role.CanVent = !_onCooldown;
 
-            try { CustomButtonSingleton<FakeVentButton>.Instance.Show = false; } catch { }
+            var fakeVent = CustomButtonSingleton<FakeVentButton>.Instance;
 
-            try
+            if (isEngineer)
             {
-                if (__instance.ImpostorVentButton != null && !_onCooldown)
-                    __instance.ImpostorVentButton.gameObject.SetActive(true);
+                // Hide Egotist's red button, use Engineer's native button instead
+                if (__instance.ImpostorVentButton != null)
+                    __instance.ImpostorVentButton.gameObject.SetActive(false);
+
+                if (fakeVent != null)
+                {
+                    fakeVent.Show = true;
+                    if (!_onCooldown) fakeVent.Timer = 0f;
+                    else fakeVent.Timer = _ventCooldownTimer;
+                }
             }
-            catch { }
+            else
+            {
+                // Standard Egotist flow (not an Engineer)
+                if (fakeVent != null) fakeVent.Show = false;
+
+                if (__instance.ImpostorVentButton != null)
+                {
+                    bool shouldBeActive = !_onCooldown || _ventCooldownTimer > 0;
+                    if (__instance.ImpostorVentButton.gameObject.activeSelf != shouldBeActive)
+                        __instance.ImpostorVentButton.gameObject.SetActive(shouldBeActive);
+
+                    if (__instance.ImpostorVentButton.graphic != null)
+                        __instance.ImpostorVentButton.graphic.enabled = shouldBeActive;
+                }
+            }
+        }
+        else
+        {
+            var role = player.Data.Role;
+            bool isNeutral = role.GetRoleAlignment() is RoleAlignment.NeutralKilling or
+                                              RoleAlignment.NeutralEvil or
+                                              RoleAlignment.NeutralBenign or
+                                              RoleAlignment.NeutralOutlier;
+
+            if (__instance.ImpostorVentButton != null && !role.IsImpostor && !isNeutral)
+                __instance.ImpostorVentButton.gameObject.SetActive(false);
         }
 
         if (_onCooldown)
@@ -135,7 +201,7 @@ public static class EgotistExtendedPatch
     {
         if (pc == null || !pc.AmOwner) return;
         if (!pc.TryGetModifier<EgotistModifier>(out _)) return;
-        
+
         var opts = OptionGroupSingleton<EgotistExtendedOptions>.Instance;
         if (opts == null || !opts.CanVent) return;
 
@@ -183,7 +249,7 @@ public static class EgotistExtendedPatch
         if (!pc.Object.TryGetModifier<EgotistModifier>(out _)) return;
         if (!OptionGroupSingleton<EgotistExtendedOptions>.Instance.CanVent) return;
 
-        if (_onCooldown && !pc.Object.inVent)
+        if (pc.Object.AmOwner && _onCooldown && !pc.Object.inVent)
         {
             canUse = false;
             couldUse = false;
@@ -215,20 +281,7 @@ public static class EgotistExtendedPatch
         if (!player.Object.TryGetModifier<EgotistModifier>(out _)) return;
         if (!OptionGroupSingleton<EgotistExtendedOptions>.Instance.ImpostorVision) return;
 
-        __result = __instance.MaxLightRadius * GameOptionsManager.Instance.currentNormalGameOptions.ImpostorLightMod;
+        float egotistVision = __instance.MaxLightRadius * GameOptionsManager.Instance.currentNormalGameOptions.ImpostorLightMod;
+        __result = Mathf.Max(__result, egotistVision);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
