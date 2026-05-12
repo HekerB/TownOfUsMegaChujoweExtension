@@ -1,4 +1,5 @@
 using TownOfUs.Utilities;
+using TownOfUs.Roles.Crewmate;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -62,16 +63,15 @@ public static class VentOccupancySystem
         }
         return null!;
     }
+
+    /// <summary>
+    /// Checks if a vent is currently blocked by a Plumber's barricade or flushing action.
+    /// </summary>
+    public static bool IsBlocked(int ventId)
+    {
+        return PlumberRole.VentBlockList.Contains(ventId) || PlumberRole.VentFlushList.Contains(ventId);
+    }
 }
-
-
-
-
-
-
-
-
-
 
 
 

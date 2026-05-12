@@ -81,7 +81,7 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
             _closestInRange = null;
             ClearOutline();
             if (_isVining) EndVineWindow();
-            base.FixedUpdate(playerControl);
+            if (playerControl != null) base.FixedUpdate(playerControl);
             return;
         }
 

@@ -1201,5 +1201,9 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="Enable Draft Mode">Enable Draft Mode</string>
   <string name="Lock Lobby During Draft">Lock Lobby During Draft</string>
   <string name="Use Role Chances">Use Role Chances</string>
+
+  <!-- Endgame Statistics -->
+  <string name="StatsKillCount">Good Kills: &lt;count&gt;</string>
+  <string name="StatsBadKillCount">Bad Kills: &lt;count&gt;</string>
 </resources>
 

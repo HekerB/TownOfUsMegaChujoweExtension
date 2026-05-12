@@ -8,7 +8,7 @@ namespace TouMegaChujoweExtension.Assets;
 
 public static class TouExtensionFonts
 {
-    private static TMP_FontAsset _chewyFont;
+    private static TMP_FontAsset? _chewyFont;
 
     public static TMP_FontAsset ChewyFont
     {
@@ -20,7 +20,7 @@ public static class TouExtensionFonts
         }
     }
 
-    private static TMP_FontAsset LoadChewyFont()
+    private static TMP_FontAsset? LoadChewyFont()
     {
         try
         {

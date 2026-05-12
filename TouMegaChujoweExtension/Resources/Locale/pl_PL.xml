@@ -1202,5 +1202,9 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="Min Neutral Killing">Min Neutral Killing</string>
   <string name="Max Neutral Killing">Max Neutral Killing</string>
   <string name="Neutral Killing">Neutral Killing</string>
+
+  <!-- Endgame Statistics -->
+  <string name="StatsKillCount">Dobre zabójstwa: &lt;count&gt;</string>
+  <string name="StatsBadKillCount">Zle zabójstwa: &lt;count&gt;</string>
 </resources>
 

@@ -1,6 +1,7 @@
 using HarmonyLib;
 using MiraAPI.Modifiers;
 using TouMegaChujoweExtension.Modifiers.Crewmate;
+using TouMegaChujoweExtension.Modules;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Doctor;
@@ -33,6 +34,14 @@ public static class DoctorCanVentPatch
                 couldUse = true;
                 __result = 0f;
             }
+            return;
+        }
+
+        if (VentOccupancySystem.IsBlocked(__instance.Id) && !player.inVent)
+        {
+            canUse = false;
+            couldUse = false;
+            __result = float.MaxValue;
             return;
         }
 

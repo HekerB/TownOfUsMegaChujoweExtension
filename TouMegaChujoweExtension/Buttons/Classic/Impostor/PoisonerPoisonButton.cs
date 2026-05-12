@@ -113,7 +113,7 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
             _closestTarget = null;
             ClearOutline();
             if (_isPoisoning) EndPoisonWindow();
-            base.FixedUpdate(playerControl);
+            if (playerControl != null) base.FixedUpdate(playerControl);
             return;
         }
 

@@ -3,6 +3,7 @@ using HarmonyLib;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using TMPro;
+using TouMegaChujoweExtension.Modules;
 using TownOfUs.Assets;
 using UnityEngine;
 
@@ -52,6 +53,14 @@ public static class VentablePatch
         }
 
         if (mod.VentsRemaining <= 0)
+        {
+            canUse = false;
+            couldUse = false;
+            __result = float.MaxValue;
+            return;
+        }
+
+        if (VentOccupancySystem.IsBlocked(__instance.Id) && !player.inVent)
         {
             canUse = false;
             couldUse = false;

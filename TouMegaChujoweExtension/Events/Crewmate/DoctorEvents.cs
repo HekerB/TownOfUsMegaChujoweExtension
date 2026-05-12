@@ -62,7 +62,7 @@ public static class DoctorEvents
 
         if (pending.Target == null || pending.Target.HasDied() || pending.Doctor == null || pending.Doctor.HasDied())
         {
-            if (PendingInjects.ContainsKey(pending.Target.PlayerId))
+            if (pending.Target != null && PendingInjects.ContainsKey(pending.Target.PlayerId))
             {
                 PendingInjects[pending.Target.PlayerId].RemoveAll(p => p.InjectId == pending.InjectId);
                 if (PendingInjects[pending.Target.PlayerId].Count == 0)

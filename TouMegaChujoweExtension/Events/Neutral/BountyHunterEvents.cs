@@ -66,7 +66,7 @@ public static class BountyHunterEvents
             {
                  // Show notification for others
                  var notif = Helpers.CreateAndShowNotification(
-                    TouLocale.GetParsed("ExtensionBHWinWithWinnersOthers").Replace("<player>", killer.Data.PlayerName),
+                    TouLocale.GetParsed("ExtensionBHWinWithWinnersOthers").Replace("<player>", killer.Data?.PlayerName ?? "Unknown"),
                     Color.white, new Vector3(0f, 1f, -20f), spr: TouExtensionIcons.BountyHunterRoleIcon.LoadAsset());
                 notif.AdjustNotification();
             }

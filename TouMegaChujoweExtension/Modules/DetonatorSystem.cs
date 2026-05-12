@@ -103,7 +103,7 @@ public static class DetonatorSystem
 
     public static void MeetingUpdate()
     {
-        // We freeze the timer during meetings as requested
+
     }
 
     private static void UpdateTimers(float dt)
@@ -111,8 +111,6 @@ public static class DetonatorSystem
         for (int i = _activeBombs.Count - 1; i >= 0; i--)
         {
             var bomb = _activeBombs[i];
-
-            // Cleanup dead victims or detonated bombs
             var victim = MiscUtils.PlayerById(bomb.TargetId);
             if (victim == null || victim.HasDied())
             {
@@ -129,14 +127,11 @@ public static class DetonatorSystem
             if (bomb.TimeElapsed >= options.ManualDetonateDelay)
             {
                 float timeSinceReady = bomb.TimeElapsed - options.ManualDetonateDelay;
-                // Beep faster as time goes on (from 1.5s down to 0.3s)
                 float beepInterval = Mathf.Clamp(1.5f - (timeSinceReady / 15f), 0.3f, 1.5f);
 
                 if (bomb.TimeElapsed - bomb.LastBeepTime >= beepInterval)
                 {
                     bomb.LastBeepTime = bomb.TimeElapsed;
-
-                    // Volume increases (from 0.2 to 1.0)
                     float volume = Mathf.Clamp(0.2f + (timeSinceReady / 25f), 0.2f, 1.0f);
                     DetonatorRole.RpcPlayBeep(victim, bomb.DetonatorId, volume);
                 }

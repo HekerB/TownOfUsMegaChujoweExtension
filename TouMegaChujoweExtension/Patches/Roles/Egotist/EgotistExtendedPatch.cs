@@ -13,6 +13,7 @@ using TownOfUs;
 using TownOfUs.Utilities;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using TouMegaChujoweExtension.Modules;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Egotist;
@@ -248,6 +249,14 @@ public static class EgotistExtendedPatch
         if (!OptionGroupSingleton<EgotistExtendedOptions>.Instance.CanVent) return;
 
         if (pc.Object.AmOwner && _onCooldown && !pc.Object.inVent)
+        {
+            canUse = false;
+            couldUse = false;
+            __result = float.MaxValue;
+            return;
+        }
+
+        if (VentOccupancySystem.IsBlocked(__instance.Id) && !pc.Object.inVent)
         {
             canUse = false;
             couldUse = false;

@@ -295,12 +295,12 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
             }
         }
 
-        if (target.Data.Role is not ICustomRole && !target.HasModifier<DeathHandlerModifier>())
+        if (target.Data?.Role is not ICustomRole && !target.HasModifier<DeathHandlerModifier>())
             target.AddModifier<DeathHandlerModifier>();
             
         shifter.ChangeRole(stolenRoleId);
         
-        if (shifter.Data.Role is not ICustomRole && !shifter.HasModifier<DeathHandlerModifier>())
+        if (shifter.Data?.Role is not ICustomRole && !shifter.HasModifier<DeathHandlerModifier>())
             shifter.AddModifier<DeathHandlerModifier>();
             
         wasShifterRole.ShiftUsed = true;

@@ -56,7 +56,7 @@ public static class InjectorEvents
 
         if (pending.Target == null || pending.Target.HasDied() || pending.Injector == null || pending.Injector.HasDied())
         {
-            if (PendingInjections.ContainsKey(pending.Target.PlayerId))
+            if (pending.Target != null && PendingInjections.ContainsKey(pending.Target.PlayerId))
             {
                 PendingInjections[pending.Target.PlayerId].RemoveAll(p => p.InjectionId == pending.InjectionId);
                 if (PendingInjections[pending.Target.PlayerId].Count == 0)
