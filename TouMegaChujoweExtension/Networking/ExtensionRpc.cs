@@ -76,9 +76,11 @@ public enum ExtensionRpc : uint
     PoisonerPlayDeathAnim = 69,
     ShifterSyncTarget = 71,
     ShareFriendCode = 72,
-	YouAreBanned = 73,
+    YouAreBanned = 73,
     DeathNoteLaugh = 74,
     DuplicateModKick = 75,
+    DoctorInject = 76,
+    DoctorShieldAttacked = 77,
 }
 
 

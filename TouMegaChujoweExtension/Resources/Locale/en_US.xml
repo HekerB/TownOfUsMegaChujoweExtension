@@ -544,6 +544,55 @@
   <string name="ExtensionOptionEvokerBlindTypeEnumNormal">Normal</string>
   <string name="ExtensionOptionEvokerBlindTypeEnumShowOnlySelf">Show Only Yourself</string>
 
+  <!-- Doctor Role -->
+  <string name="ExtensionRoleDoctor">Doctor</string>
+  <string name="ExtensionRoleDoctorIntroBlurb">Inject players with beneficial effects to aid the Crew.</string>
+  <string name="ExtensionRoleDoctorTabDescription">Inject players to give them beneficial effects.\nIf configured, injections may occasionally cause negative effects.</string>
+  <string name="ExtensionRoleDoctorWikiDescription">The Doctor is a Crewmate role that can inject players with various beneficial effects. Effects are randomly selected and can include speed boosts, vision increases, cleansing negative effects, or applying a one-time protective shield.</string>
+  <string name="ExtensionRoleDoctorInject">Inject</string>
+  <string name="ExtensionRoleDoctorInjectWikiDescription">Inject a nearby player with a random beneficial effect. The effect will activate after a configurable delay.</string>
+
+  <!-- Doctor Options -->
+  <string name="ExtensionOptionDoctorInjectCooldown">Inject Cooldown</string>
+  <string name="ExtensionOptionDoctorEffectDelay">Effect Activation Delay</string>
+  <string name="ExtensionOptionDoctorEffectDurationType">Effect Duration Type</string>
+  <string name="ExtensionOptionDoctorEffectDuration">Effect Duration</string>
+  <string name="ExtensionOptionDoctorInitialUses">Initial Uses</string>
+  <string name="ExtensionOptionDoctorCanGiveNegativeEffects">Can Give Negative Effects</string>
+  <string name="ExtensionOptionDoctorSeesShield">Doctor Sees Shield Trigger</string>
+  <string name="ExtensionOptionDoctorTargetSeesShield">Target Sees Shield</string>
+  <string name="ExtensionOptionDoctorChanceSpeedBoost">Speed Boost Chance</string>
+  <string name="ExtensionOptionDoctorChanceVisionBoost">Vision Boost Chance</string>
+  <string name="ExtensionOptionDoctorChanceCleanse">Cleanse Chance</string>
+  <string name="ExtensionOptionDoctorChanceShield">Shield Chance</string>
+  <string name="ExtensionOptionDoctorChanceCanVent">Can Vent Chance</string>
+  <string name="ExtensionOptionDoctorChanceRegeneration">Regeneration Chance</string>
+  <string name="ExtensionOptionDoctorChanceNegativeSlowness">Negative Slowness Chance</string>
+  <string name="ExtensionOptionDoctorChanceNegativeLowVision">Negative Low Vision Chance</string>
+  <string name="ExtensionOptionDoctorChanceNegativeConfused">Negative Confused Chance</string>
+
+  <!-- Doctor Effect Enum Values -->
+  <string name="ExtensionOptionDoctorEffectTypeEnumCleanse">Cleanse</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumShield">Shield</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumCanVent">Can Vent</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumRegeneration">Regeneration</string>
+
+  <!-- Doctor Notifications -->
+  <string name="ExtensionDoctorNotificationSpeedBoost">Speed Boost Applied</string>
+  <string name="ExtensionDoctorNotificationVisionBoost">Vision Boost Applied</string>
+  <string name="ExtensionDoctorNotificationCleanse">All negative effects cleansed!</string>
+  <string name="ExtensionDoctorNotificationShield">Protective Shield Applied</string>
+  <string name="ExtensionDoctorNotificationCanVent">Venting Ability Granted</string>
+  <string name="ExtensionDoctorNotificationRegeneration">Regeneration Active (Reduced Cooldowns)</string>
+  <string name="ExtensionDoctorNotificationShieldAttacked">Your shield on {0} protected them!</string>
+  <string name="ExtensionDoctorNotificationShieldSaved">You were protected by the Doctor's shield!</string>
+  <string name="ExtensionDoctorNotificationWoreOffVisionBoost">Your eyesight has returned to normal.</string>
+  <string name="ExtensionDoctorNotificationWoreOffRegeneration">The regeneration effect has ended.</string>
+
+  <!-- Doctor Modifiers -->
+  <string name="ExtensionModifierDoctorVisionBoost">Vision Boost</string>
+  <string name="ExtensionModifierDoctorRegeneration">Regeneration</string>
+
   <!-- Mirage Role -->
   <string name="ExtensionRoleMirage">Mirage</string>
   <string name="ExtensionRoleMirageIntroBlurb">Deploy decoys to expose murderers.</string>
@@ -592,9 +641,7 @@
   <string name="ExtensionOptionInjectorEffectDurationTypeEnumSetTime">Set Time</string>
   <string name="ExtensionOptionInjectorEffectDuration">Effect Duration</string>
   <string name="ExtensionOptionInjectorInitialUses">Initial Uses</string>
-  <string name="ExtensionOptionInjectorUsesPerKill">Uses Per Kill</string>
   <string name="ExtensionOptionInjectorPositiveEffectsEnabled">Positive Effects Enabled</string>
-  <string name="ExtensionOptionInjectorSelectedEffectType">Effect Type To Configure</string>
   <string name="ExtensionOptionInjectorSharedCooldown">Shared Cooldown</string>
 
   <!-- Injector Effect Type Enum Values -->
@@ -613,19 +660,19 @@
   <string name="ExtensionOptionInjectorEffectTypeEnumRegeneration">Regeneration</string>
 
   <!-- Injector Effect Chances -->
-  <string name="ExtensionOptionInjectorChanceInvertedControls">Effect Chance</string>
-  <string name="ExtensionOptionInjectorChanceLowVision">Effect Chance</string>
-  <string name="ExtensionOptionInjectorChanceSlowness">Effect Chance</string>
-  <string name="ExtensionOptionInjectorChanceVeryLowVision">Effect Chance</string>
-  <string name="ExtensionOptionInjectorChanceConfused">Effect Chance</string>
-  <string name="ExtensionOptionInjectorChanceNoVent">Effect Chance</string>
-  <string name="ExtensionOptionInjectorChanceNoUse">Effect Chance</string>
-  <string name="ExtensionOptionInjectorChanceNoReport">Effect Chance</string>
-  <string name="ExtensionOptionInjectorChanceNausea">Effect Chance</string>
-  <string name="ExtensionOptionInjectorChanceWeakness">Effect Chance</string>
-  <string name="ExtensionOptionInjectorChanceSpeedBoost">Effect Chance</string>
-  <string name="ExtensionOptionInjectorChanceVisionBoost">Effect Chance</string>
-  <string name="ExtensionOptionInjectorChanceRegeneration">Effect Chance</string>
+  <string name="ExtensionOptionInjectorChanceInvertedControls">Inverted Controls Chance</string>
+  <string name="ExtensionOptionInjectorChanceLowVision">Low Vision Chance</string>
+  <string name="ExtensionOptionInjectorChanceSlowness">Slowness Chance</string>
+  <string name="ExtensionOptionInjectorChanceVeryLowVision">Very Low Vision Chance</string>
+  <string name="ExtensionOptionInjectorChanceConfused">Confused Chance</string>
+  <string name="ExtensionOptionInjectorChanceNoVent">No Vent Chance</string>
+  <string name="ExtensionOptionInjectorChanceNoUse">No Use Chance</string>
+  <string name="ExtensionOptionInjectorChanceNoReport">No Report Chance</string>
+  <string name="ExtensionOptionInjectorChanceNausea">Nausea Chance</string>
+  <string name="ExtensionOptionInjectorChanceWeakness">Weakness Chance</string>
+  <string name="ExtensionOptionInjectorChanceSpeedBoost">Speed Boost Chance</string>
+  <string name="ExtensionOptionInjectorChanceVisionBoost">Vision Boost Chance</string>
+  <string name="ExtensionOptionInjectorChanceRegeneration">Regeneration Chance</string>
 
   <!-- Extension Local Settings -->
   <string name="ExtensionLocalSettingEnableNauseaCameraShake">Enable Nausea Camera Shake</string>
