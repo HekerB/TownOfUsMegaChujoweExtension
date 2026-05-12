@@ -51,10 +51,6 @@ public sealed class InjectedWeaknessModifier : TimedModifier, IVisualAppearance,
     public override void OnDeactivate()
     {
         Player?.ResetAppearance(fullReset: true);
-        if (Player != null && Player.AmOwner)
-        {
-            InjectorEvents.ShowEffectWoreOffNotification(Player, "ExtensionInjectorNotificationWoreOffWeakness");
-        }
     }
 
     public override void OnMeetingStart()

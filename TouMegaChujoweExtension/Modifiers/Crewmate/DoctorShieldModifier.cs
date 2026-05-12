@@ -45,12 +45,25 @@ public sealed class DoctorShieldModifier : BaseShieldModifier
         }
     }
 
+    public bool IsShieldVisible
+    {
+        get
+        {
+            var options = OptionGroupSingleton<DoctorOptions>.Instance;
+            if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId) return options.TargetSeesShield;
+            if (Doctor != null && PlayerControl.LocalPlayer.PlayerId == Doctor.PlayerId) return options.DoctorSeesShield;
+            return false;
+        }
+    }
+
     public override bool VisibleSymbol
     {
         get
         {
             var options = OptionGroupSingleton<DoctorOptions>.Instance;
-            return PlayerControl.LocalPlayer.PlayerId == Player.PlayerId && options.TargetSeesShield;
+            if (PlayerControl.LocalPlayer.PlayerId == Player.PlayerId) return options.TargetSeesShield;
+            if (Doctor != null && PlayerControl.LocalPlayer.PlayerId == Doctor.PlayerId) return options.DoctorSeesShield;
+            return false;
         }
     }
 
@@ -59,10 +72,18 @@ public sealed class DoctorShieldModifier : BaseShieldModifier
     public override void OnActivate()
     {
         base.OnActivate();
-        
+
         // Visual effect from Cleric
         ClericBarrier = AnimStore.SpawnAnimBody(Player, TouAssets.ClericBarrier.LoadAsset(), false, -1.1f, -0.35f, 1.5f)!;
         ClericBarrier.GetComponent<SpriteAnim>().SetSpeed(2f);
+    }
+
+    public override void OnMeetingStart()
+    {
+        if (_durationType == DoctorEffectDurationType.AllRound)
+        {
+            ModifierComponent?.RemoveModifier(this);
+        }
     }
 
     public override void Update()
@@ -75,7 +96,7 @@ public sealed class DoctorShieldModifier : BaseShieldModifier
 
         if (!MeetingHud.Instance && ClericBarrier?.gameObject != null)
         {
-            ClericBarrier?.SetActive(!Player.IsConcealed() && IsVisible);
+            ClericBarrier?.SetActive(!Player.IsConcealed() && IsShieldVisible);
         }
     }
 

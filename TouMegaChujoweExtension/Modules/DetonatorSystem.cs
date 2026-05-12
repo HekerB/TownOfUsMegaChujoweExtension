@@ -39,12 +39,10 @@ public static class DetonatorSystem
     public static void AttachBomb(byte detonatorId, byte targetId)
     {
         var options = OptionGroupSingleton<DetonatorOptions>.Instance;
-        
+
         var target = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == targetId);
         if (target != null)
         {
-            // We still use the modifier for visual/logic but without a fixed duration if we want it to last forever until detonate
-            // Passing 9999f or similar for now, or updating the modifier to not care about duration
             target.AddModifier(new DetonatorBombModifier(MiscUtils.PlayerById(detonatorId), 9999f));
         }
 
@@ -113,7 +111,7 @@ public static class DetonatorSystem
         for (int i = _activeBombs.Count - 1; i >= 0; i--)
         {
             var bomb = _activeBombs[i];
-            
+
             // Cleanup dead victims or detonated bombs
             var victim = MiscUtils.PlayerById(bomb.TargetId);
             if (victim == null || victim.HasDied())
@@ -127,7 +125,6 @@ public static class DetonatorSystem
 
             bomb.TimeElapsed += dt;
 
-            // Beeping logic after delay
             var options = OptionGroupSingleton<DetonatorOptions>.Instance;
             if (bomb.TimeElapsed >= options.ManualDetonateDelay)
             {
@@ -138,7 +135,7 @@ public static class DetonatorSystem
                 if (bomb.TimeElapsed - bomb.LastBeepTime >= beepInterval)
                 {
                     bomb.LastBeepTime = bomb.TimeElapsed;
-                    
+
                     // Volume increases (from 0.2 to 1.0)
                     float volume = Mathf.Clamp(0.2f + (timeSinceReady / 25f), 0.2f, 1.0f);
                     DetonatorRole.RpcPlayBeep(victim, bomb.DetonatorId, volume);
@@ -150,7 +147,7 @@ public static class DetonatorSystem
     private static void Detonate(ActiveBomb bomb)
     {
         bomb.Detonated = true;
-        
+
         if (!AmongUsClient.Instance.AmHost) return;
 
         PlayerControl? mainTarget = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == bomb.TargetId);
@@ -178,7 +175,6 @@ public static class DetonatorSystem
 
         foreach (var victim in victims)
         {
-            // Extended shield protection check (ToU Extension + Original ToU)
             bool isShielded = victim.HasModifier<BaseShieldModifier>() ||
                              victim.HasModifier<TownOfUs.Modifiers.Neutral.MercenaryGuardModifier>() ||
                              victim.HasModifier<TownOfUs.Modifiers.Crewmate.MedicShieldModifier>() ||
@@ -190,17 +186,16 @@ public static class DetonatorSystem
 
             if (isShielded)
             {
-                // Trigger specific alerts for our own shields
                 if (victim.TryGetModifier<BodyguardShieldModifier>(out var bgShield))
                 {
                     BodyguardRole.RpcBodyguardShieldAttacked(bgShield.Bodyguard, detonator ?? victim, victim);
                 }
                 else if (victim.TryGetModifier<DoctorShieldModifier>(out var docShield))
                 {
-                    DoctorRole.RpcDoctorShieldAttacked(docShield.Doctor, victim);
+                    DoctorRole.RpcDoctorShieldAttacked(docShield.Doctor, victim, detonator ?? victim);
                     victim.RemoveModifier(docShield);
                 }
-                // For original ToU shields, RpcSpecialMurder with ignoreShield: false will handle them
+
                 else
                 {
                     actualKiller.RpcSpecialMurder(
@@ -218,7 +213,7 @@ public static class DetonatorSystem
 
             actualKiller.RpcSpecialMurder(
                 victim,
-                ignoreShield: true, // We already checked, so if we're here, they are dead
+                ignoreShield: true,
                 createDeadBody: true,
                 teleportMurderer: false,
                 showKillAnim: victims.Count == 1,
@@ -227,7 +222,6 @@ public static class DetonatorSystem
             );
         }
 
-        // Show explosion range effect to Impostors and dead players
         DetonatorRole.RpcShowDetonationEffect(actualKiller, pos, options.DetonateRadius);
         if (detonator != null)
         {
@@ -259,8 +253,7 @@ public static class DetonatorSystem
             }
             else
             {
-                // Instant return: keep TimeElapsed as it was (freezed during meeting)
-                b.LastBeepTime = b.TimeElapsed; // Reset beep timer to match current time
+                b.LastBeepTime = b.TimeElapsed;
             }
         }
     }

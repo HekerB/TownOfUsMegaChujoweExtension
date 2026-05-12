@@ -21,7 +21,6 @@ using Random = UnityEngine.Random;
 using TouMegaChujoweExtension.Modifiers.Crewmate;
 using TownOfUs;
 using TownOfUs.Events;
-using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Events.Crewmate;
 
@@ -101,7 +100,7 @@ public static class DoctorEvents
 
         effects.Add((options.ChanceSpeedBoost, new Func<BaseModifier>(() => new DoctorSpeedBoostModifier(duration, durationType)), "ExtensionDoctorNotificationSpeedBoost", "Increased movement speed"));
         effects.Add((options.ChanceVisionBoost, new Func<BaseModifier>(() => new DoctorVisionBoostModifier(duration, durationType)), "ExtensionDoctorNotificationVisionBoost", "Increased vision"));
-        effects.Add((options.ChanceCleanse, new Func<BaseModifier>(() => new DoctorCleanseModifier()), "ExtensionDoctorNotificationCleanse", ""));
+        effects.Add((options.ChanceCleanse, new Func<BaseModifier>(() => new DoctorCleanseModifier()), "ExtensionDoctorNotificationCleanse", "Removed negative effects"));
         effects.Add((options.ChanceShield, new Func<BaseModifier>(() => new DoctorShieldModifier(doctor, duration, durationType)), "ExtensionDoctorNotificationShield", "Protected from one attack"));
         effects.Add((options.ChanceCanVent, new Func<BaseModifier>(() => new DoctorCanVentModifier(duration, durationType)), "ExtensionDoctorNotificationCanVent", "Can use vents"));
         effects.Add((options.ChanceRegeneration, new Func<BaseModifier>(() => new DoctorRegenerationModifier(duration, durationType)), "ExtensionDoctorNotificationRegeneration", "Cooldowns recover faster"));
@@ -121,7 +120,10 @@ public static class DoctorEvents
             // Default to Speed Boost if nothing is configured
             var defaultMod = new DoctorSpeedBoostModifier(duration, durationType);
             target.AddModifier(defaultMod);
-            ShowNotification(target, "ExtensionDoctorNotificationSpeedBoost", "Increased movement speed");
+            if (doctor != null && doctor.PlayerId != target.PlayerId)
+            {
+                ShowNotification(doctor, "ExtensionDoctorNotificationSpeedBoost", "Increased movement speed");
+            }
             return;
         }
 
@@ -149,7 +151,10 @@ public static class DoctorEvents
         if (selectedModifier != null)
         {
             target.AddModifier(selectedModifier);
-            ShowNotification(target, selectedNotificationKey, selectedDesc);
+            if (doctor != null && doctor.PlayerId != target.PlayerId)
+            {
+                ShowNotification(doctor, selectedNotificationKey, selectedDesc);
+            }
             
             // Start coroutine to remove ClericBarrierModifier if it was selected and durationType is SetTime
             // TimedModifiers handle their own duration removal
@@ -192,7 +197,7 @@ public static class DoctorEvents
 
             if (shield.Doctor != null && (TutorialManager.InstanceExists || source.AmOwner))
             {
-                ShieldAttacked(shield.Doctor, source, target);
+                DoctorRole.RpcDoctorShieldAttacked(shield.Doctor, target, source);
             }
             
             // Remove shield after use

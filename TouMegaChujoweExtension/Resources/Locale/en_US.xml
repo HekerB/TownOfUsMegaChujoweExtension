@@ -578,8 +578,8 @@
 
   <!-- Doctor Role -->
   <string name="ExtensionRoleDoctor">Doctor</string>
-  <string name="ExtensionRoleDoctorIntroBlurb">Inject players with beneficial effects to aid the Crew.</string>
-  <string name="ExtensionRoleDoctorTabDescription">Inject players to give them beneficial effects.\nIf configured, injections may occasionally cause negative effects.</string>
+  <string name="ExtensionRoleDoctorIntroBlurb">Inject players with beneficial effects\%nl\%to aid the Crew.</string>
+  <string name="ExtensionRoleDoctorTabDescription">Inject players to give them beneficial effects.\%nl\%If configured, injections may occasionally cause negative effects.</string>
   <string name="ExtensionRoleDoctorWikiDescription">The Doctor is a Crewmate role that can inject players with various beneficial effects. Effects are randomly selected and can include speed boosts, vision increases, cleansing negative effects, or applying a one-time protective shield.</string>
   <string name="ExtensionRoleDoctorInject">Inject</string>
   <string name="ExtensionRoleDoctorInjectWikiDescription">Inject a nearby player with a random beneficial effect. The effect will activate after a configurable delay.</string>

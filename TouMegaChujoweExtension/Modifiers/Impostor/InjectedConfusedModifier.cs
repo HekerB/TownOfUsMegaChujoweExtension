@@ -130,7 +130,6 @@ public sealed class InjectedConfusedModifier : DisabledModifier, IInjectedModifi
         if (Player != null && Player.AmOwner)
         {
             RemoveHallucinatoryEffects();
-            InjectorEvents.ShowEffectWoreOffNotification(Player, "ExtensionInjectorNotificationWoreOffConfused");
         }
     }
 

@@ -78,77 +78,12 @@ public sealed class DoctorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     [MethodRpc((uint)ExtensionRpc.DoctorInject)]
     public static void RpcDoctorInject(PlayerControl doctor, PlayerControl target, int seed)
     {
-        if (target == null) return;
-
-        var random = new System.Random(seed);
-        var options = OptionGroupSingleton<DoctorOptions>.Instance;
-
-        // Pick effect based on chances
-        var effects = new List<DoctorEffectType>();
-        if (options.ChanceSpeedBoost > 0) effects.Add(DoctorEffectType.SpeedBoost);
-        if (options.ChanceVisionBoost > 0) effects.Add(DoctorEffectType.VisionBoost);
-        if (options.ChanceCleanse > 0) effects.Add(DoctorEffectType.Cleanse);
-        if (options.ChanceShield > 0) effects.Add(DoctorEffectType.Shield);
-        if (options.ChanceCanVent > 0) effects.Add(DoctorEffectType.CanVent);
-        if (options.ChanceRegeneration > 0) effects.Add(DoctorEffectType.Regeneration);
-
-        if (effects.Count == 0) return;
-
-        // Weighted random
-        float totalWeight = effects.Sum(e => options.GetEffectChance(e));
-        float r = (float)random.NextDouble() * totalWeight;
-
-        DoctorEffectType selected = effects[0];
-        float currentWeight = 0;
-        foreach (var e in effects)
-        {
-            currentWeight += options.GetEffectChance(e);
-            if (r <= currentWeight)
-            {
-                selected = e;
-                break;
-            }
-        }
-
-        // Apply effect after delay
-        Coroutines.Start(CoApplyEffect(doctor, target, selected, options.EffectDelay));
-    }
-
-    private static System.Collections.IEnumerator CoApplyEffect(PlayerControl doctor, PlayerControl target, DoctorEffectType effect, float delay)
-    {
-        if (delay > 0) yield return new WaitForSeconds(delay);
-        if (target == null || target.Data.IsDead) yield break;
-
-        var options = OptionGroupSingleton<DoctorOptions>.Instance;
-        var duration = options.EffectDuration;
-        var durationType = options.EffectDurationType.Value;
-
-        switch (effect)
-        {
-            case DoctorEffectType.SpeedBoost:
-                target.AddModifier<DoctorSpeedBoostModifier>(duration, durationType);
-                break;
-            case DoctorEffectType.VisionBoost:
-                target.AddModifier<DoctorVisionBoostModifier>(duration, durationType);
-                break;
-            case DoctorEffectType.Cleanse:
-                target.AddModifier<DoctorCleanseModifier>();
-                break;
-            case DoctorEffectType.Shield:
-                target.AddModifier<DoctorShieldModifier>(doctor, duration, durationType);
-                break;
-            case DoctorEffectType.CanVent:
-                target.AddModifier<DoctorCanVentModifier>(duration, durationType);
-                break;
-            case DoctorEffectType.Regeneration:
-                target.AddModifier<DoctorRegenerationModifier>(duration, durationType);
-                break;
-        }
+        DoctorEvents.ScheduleInject(doctor, target, seed);
     }
 
     [MethodRpc((uint)ExtensionRpc.DoctorShieldAttacked)]
-    public static void RpcDoctorShieldAttacked(PlayerControl doctor, PlayerControl target)
+    public static void RpcDoctorShieldAttacked(PlayerControl doctor, PlayerControl target, PlayerControl attacker)
     {
-        // Logika powiadomienia o ataku na tarczę
+        DoctorEvents.ShieldAttacked(doctor, attacker, target);
     }
 }
