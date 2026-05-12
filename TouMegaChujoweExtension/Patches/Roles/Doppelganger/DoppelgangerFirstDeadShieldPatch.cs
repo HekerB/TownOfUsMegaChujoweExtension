@@ -1,6 +1,7 @@
 using HarmonyLib;
 using MiraAPI.Modifiers;
 using TownOfUs.Modifiers;
+using TouMegaChujoweExtension.Modifiers.Neutral;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Doppelganger;
 
@@ -15,32 +16,13 @@ public static class DoppelgangerFirstDeadShieldPatch
             return;
         }
 
-        // If the player has DoppelgangerDisguiseModifier, match the target's shield state
-        if (__instance.Player.TryGetModifier<DoppelgangerDisguiseModifier>(out var disguise) && disguise.Target != null)
+        // Ukrywamy tarczę, jeśli Doppelganger jest w przebraniu (ma DoppelgangerDisguiseModifier)
+        if (__instance.Player.HasModifier<DoppelgangerDisguiseModifier>())
         {
-            var showAsTarget = disguise.Target.HasModifier<FirstDeadShield>();
-            if (!showAsTarget && __instance.FirstRoundShield.activeSelf)
+            if (__instance.FirstRoundShield.activeSelf)
             {
                 __instance.FirstRoundShield.SetActive(false);
             }
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

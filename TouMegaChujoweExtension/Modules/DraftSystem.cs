@@ -84,10 +84,10 @@ public static class DraftSystem
 
         if (neutralKillingCount + TargetOtherNeutralCount > remaining.Count)
         {
-             // Adjust if we have more special roles than players
-             float ratio = (float)remaining.Count / (neutralKillingCount + TargetOtherNeutralCount);
-             neutralKillingCount = Mathf.FloorToInt(neutralKillingCount * ratio);
-             TargetOtherNeutralCount = Mathf.FloorToInt(TargetOtherNeutralCount * ratio);
+            // Adjust if we have more special roles than players
+            float ratio = (float)remaining.Count / (neutralKillingCount + TargetOtherNeutralCount);
+            neutralKillingCount = Mathf.FloorToInt(neutralKillingCount * ratio);
+            TargetOtherNeutralCount = Mathf.FloorToInt(TargetOtherNeutralCount * ratio);
         }
 
         if (neutralKillingCount > remaining.Count)
@@ -104,13 +104,13 @@ public static class DraftSystem
         {
             int startIdx = idx;
             int num = -1;
-            
+
             if (nkReductionEnabled && LastNeutralKillingIds.Count > 0)
             {
                 // Try to find someone who wasn't NK last time
                 var subPool = remaining.Skip(idx).ToList();
                 var nonRecentNK = subPool.Where(id => !LastNeutralKillingIds.Contains(id)).ToList();
-                
+
                 if (nonRecentNK.Count > 0 && random.NextDouble() < nkBiasPercent)
                 {
                     // Pick from non-recent NKs
@@ -282,7 +282,7 @@ public static class DraftSystem
         foreach (var r in roleList)
         {
             int chance = (int)MiscUtils.GetAssignData(r.Role).Chance;
-            
+
             // Traktujemy role bez suwaka (0%) jako 100%
             if (chance <= 0) chance = 30;
 
@@ -351,11 +351,11 @@ public static class DraftSystem
             int currentNeutrals = GetCurrentOtherNeutralCount();
             int remainingEligiblePlayers = PickOrder.Count(id => PlayerFactions.TryGetValue(id, out var f) && f == DraftFaction.CrewOther);
             int neutralsNeeded = Mathf.Max(0, TargetOtherNeutralCount - currentNeutrals);
-            
+
             // Logic: Do we MUST have more neutrals to hit the target?
             bool forceNeutrals = neutralsNeeded >= remainingEligiblePlayers && remainingEligiblePlayers > 0;
             bool limitReached = currentNeutrals >= TargetOtherNeutralCount;
-            
+
             int wantedNeutrals = 0;
             if (!limitReached)
             {
@@ -413,21 +413,20 @@ public static class DraftSystem
 
     public static RoleBehaviour? PickRandomRole(bool isImpostor, List<RoleBehaviour>? offeredPool = null)
     {
-        // Jeśli mamy listę ról, które gracz widział na ekranie, wybieramy z nich!
-        // To realizuje zasadę 33%/66%/100% szansy na neutrala (zależnie od tego ile ich było w ofercie).
-        if (offeredPool != null && offeredPool.Count > 0)
+        var freshOffer = SelectRolesToOffer(isImpostor);
+        if (freshOffer != null && freshOffer.Count > 0)
         {
-            return offeredPool[UnityEngine.Random.Range(0, offeredPool.Count)];
+            return freshOffer[UnityEngine.Random.Range(0, freshOffer.Count)];
         }
 
         var myId = PlayerControl.LocalPlayer?.PlayerId ?? 255;
-        
+
         DraftFaction faction;
         if (!PlayerFactions.TryGetValue(myId, out faction))
             faction = isImpostor ? DraftFaction.Impostor : DraftFaction.CrewOther;
 
         var enabledAlignments = GetAlignmentsForFaction(faction);
-        
+
         // Fallback w razie braku puli ofert (np. błąd UI)
         var allRoles = GetRolesForAlignments(enabledAlignments);
         if (allRoles.Count == 0) return null;
@@ -477,14 +476,14 @@ public static class DraftSystem
         if (players.Count == 0) return;
 
         // --- SYSTEM OF THIRDS LOGIC ---
-        
+
         // 1. Categorize players
-        var specialPlayers = players.Where(id => 
-            PlayerFactions.ContainsKey(id) && 
+        var specialPlayers = players.Where(id =>
+            PlayerFactions.ContainsKey(id) &&
             PlayerFactions[id] != DraftFaction.CrewOther).ToList();
-        
-        var crewPlayers = players.Where(id => 
-            !PlayerFactions.ContainsKey(id) || 
+
+        var crewPlayers = players.Where(id =>
+            !PlayerFactions.ContainsKey(id) ||
             PlayerFactions[id] == DraftFaction.CrewOther).ToList();
 
         specialPlayers.Shuffle();

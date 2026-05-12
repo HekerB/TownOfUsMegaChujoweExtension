@@ -28,8 +28,8 @@ public sealed class FalconZoomButton : TownOfUsRoleButton<FalconRole>
 
     private float ZoomDuration => OptionGroupSingleton<FalconOptions>.Instance.ZoomDuration;
 
-    public override bool CanUse() => true;
-    public override bool CanClick() => true;
+    public override bool CanUse() => _isZoomed || CanActivate();
+    public override bool CanClick() => _isZoomed || CanActivate();
 
     private bool CanActivate()
     {
