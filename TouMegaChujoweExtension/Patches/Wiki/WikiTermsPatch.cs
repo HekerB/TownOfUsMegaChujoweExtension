@@ -1,8 +1,11 @@
-using System;
-using System.Reflection;
 using HarmonyLib;
-using TouMegaChujoweExtension.Assets;
+using MiraAPI.GameOptions;
+using System.Collections.Generic;
+using System.Reflection;
+using System;
 using TownOfUs.Assets;
+using TownOfUs.Options.Maps;
+using TownOfUs.Options;
 
 namespace TouMegaChujoweExtension.Patches.Wiki;
 
@@ -67,6 +70,13 @@ public static class WikiTermsPatch
                 (object)TouRoleIcons.Jackal);
             addMethod.Invoke(termsList, new[] { draftFactionsTerm });
 
+            // Page 5: Vampire Sabotage
+            var vampireSabotageTerm = Activator.CreateInstance(termType,
+                "TOUMCETermsVampireSabotageTitle",
+                "TOUMCETermsVampireSabotageInfo",
+                (object)TouRoleIcons.Vampire);
+            addMethod.Invoke(termsList, new[] { vampireSabotageTerm });
+
             Info("TOUMCE wiki terms added successfully");
         }
         catch (Exception e)
@@ -102,22 +112,42 @@ public static class WikiSettingsPatch
             if (addMethod == null) return;
 
             // Create List<AbstractOptionGroup>
-            var groupList = new List<MiraAPI.GameOptions.AbstractOptionGroup>
+            var draftGroupList = new List<MiraAPI.GameOptions.AbstractOptionGroup>
             {
                 MiraAPI.GameOptions.OptionGroupSingleton<TouMegaChujoweExtension.Options.DraftModeOptions>.Instance
             };
 
-            // Create OptionWikiInfo
-            // Constructor: (string Title, List<AbstractOptionGroup> OptionGroups, LoadableAsset<Sprite> DefaultIcon, bool IsVanilla = false)
+            // Create OptionWikiInfo for Draft
             var draftSettings = Activator.CreateInstance(infoType,
                 "TOUMCETermsDraftModeTitle",
-                groupList,
+                draftGroupList,
                 (object)TouExtensionIcons.HackerRole,
                 false);
 
             addMethod.Invoke(settingsList, new[] { draftSettings });
 
-            Info("TOUMCE draft settings added to wiki successfully");
+            // Create List<AbstractOptionGroup> for Role Extensions
+            var extensionGroupList = new List<MiraAPI.GameOptions.AbstractOptionGroup>
+            {
+                MiraAPI.GameOptions.OptionGroupSingleton<EgotistExtendedOptions>.Instance,
+                MiraAPI.GameOptions.OptionGroupSingleton<ForensicExtensionOptions>.Instance,
+                MiraAPI.GameOptions.OptionGroupSingleton<MayorExtensionOptions>.Instance,
+                MiraAPI.GameOptions.OptionGroupSingleton<SonarExtendedOptions>.Instance,
+                MiraAPI.GameOptions.OptionGroupSingleton<TimeLordExtensionOptions>.Instance,
+                MiraAPI.GameOptions.OptionGroupSingleton<AdvancedSabotageOptions>.Instance,
+                MiraAPI.GameOptions.OptionGroupSingleton<VampireExtendedOptions>.Instance
+            };
+
+            // Create OptionWikiInfo for Role Extensions
+            var roleExtensionsSettings = Activator.CreateInstance(infoType,
+                "TOUMCETermsRoleExtensionsTitle",
+                extensionGroupList,
+                (object)TouRoleIcons.Engineer,
+                false);
+
+            addMethod.Invoke(settingsList, new[] { roleExtensionsSettings });
+
+            Info("TOUMCE draft and role extension settings added to wiki successfully");
         }
         catch (Exception e)
         {
@@ -125,3 +155,18 @@ public static class WikiSettingsPatch
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

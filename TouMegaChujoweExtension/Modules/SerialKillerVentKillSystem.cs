@@ -1,5 +1,5 @@
-using TownOfUs.Utilities;
 using System.Collections.Generic;
+using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -90,3 +90,15 @@ public static class SerialKillerVentKillSystem
         return false;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

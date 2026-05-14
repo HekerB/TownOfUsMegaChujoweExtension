@@ -1,8 +1,7 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Options.Roles.Neutral;
 
@@ -31,7 +30,7 @@ public sealed class LawyerOptions : AbstractOptionGroup<LawyerRole>
     public bool ObjectionPreventsSameVote { get; set; } = true;
 
     [ModdedNumberOption("ExtensionOptionLawyerKillerClientChance", 0f, 100f, 10f, MiraNumberSuffixes.Percent)]
-    public float KillerClientChance { get; set; } = 70f;
+    public float KillerClientChance { get; set; } = 50f;
 
     public ModdedEnumOption OnClientDeath { get; } =
     new("ExtensionOptionLawyerBecomesClientDeath", (int)BecomeOptions.Crew, typeof(BecomeOptions),

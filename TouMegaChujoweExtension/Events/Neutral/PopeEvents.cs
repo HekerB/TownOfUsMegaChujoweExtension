@@ -1,18 +1,14 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Mira;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Buttons.Neutral;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Buttons;
 using UnityEngine;
 
-namespace TouMegaChujoweExtension.Events;
+namespace TouMegaChujoweExtension.Events.Neutral;
 
 public static class PopeEvents
 {
@@ -68,3 +64,20 @@ public static class PopeEvents
         CheckCanonized(source, target);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

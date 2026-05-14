@@ -1,11 +1,11 @@
-using System;
 using HarmonyLib;
 using MiraAPI.GameOptions;
-using TouMegaChujoweExtension.Options.Roles.Crewmate;
-using TouMegaChujoweExtension.Options.Modifiers;
-using TownOfUs.Roles.Crewmate;
+using System;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules.Localization;
+using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles.Impostor;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Patches.Wiki;
@@ -37,13 +37,13 @@ public static class WikiAppendOptionsPatch
                 var opts = OptionGroupSingleton<EgotistExtendedOptions>.Instance;
                 if (opts != null)
                 {
-                    __result += $"\nCan Vent: {(opts.CanVent.Value ? "True" : "False")}";
-                    if (opts.CanVent.Value)
+                    __result += $"\nCan Vent: {(opts.CanVent ? "True" : "False")}";
+                    if (opts.CanVent)
                     {
-                        __result += $"\nMax Vent Time: {opts.MaxVentTime.Value}s";
-                        __result += $"\nVent Cooldown: {opts.VentCooldown.Value}s";
+                        __result += $"\nMax Vent Time: {opts.MaxVentTime}s";
+                        __result += $"\nVent Cooldown: {opts.VentCooldown}s";
                     }
-                    __result += $"\nImpostor Vision: {(opts.ImpostorVision.Value ? "True" : "False")}";
+                    __result += $"\nImpostor Vision: {(opts.ImpostorVision ? "True" : "False")}";
                 }
             }
             else if (classType == typeof(ForensicRole))
@@ -73,6 +73,27 @@ public static class WikiAppendOptionsPatch
                     __result += $"\n{title}: {opts.VoteCount}";
                 }
             }
+            else if (classType == typeof(MirrorcasterRole))
+            {
+                var opts = OptionGroupSingleton<MirrorCasterExtensionOptions>.Instance;
+                if (opts != null)
+                {
+                    var title = TouLocale.Get("ExtensionOptionMirrorCasterMoveWhileMenu");
+                    __result += $"\n{title}: {(opts.MoveWhileMenu ? "True" : "False")}";
+                }
+            }
+            else if (classType == typeof(VampireRole))
+            {
+                var opts = OptionGroupSingleton<VampireExtendedOptions>.Instance;
+                if (opts != null)
+                {
+                    __result += $"\n{TouLocale.Get("ExtensionOptionVampireCanOnlySabotageLights")}: {(opts.CanOnlySabotageLights ? "True" : "False")}";
+                    if (opts.CanOnlySabotageLights)
+                    {
+                        __result += $"\n{TouLocale.Get("ExtensionOptionVampireOnlyOgCanSabotage")}: {(opts.OnlyOgCanSabotage ? "True" : "False")}";
+                    }
+                }
+            }
         }
         catch
         {
@@ -80,3 +101,18 @@ public static class WikiAppendOptionsPatch
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

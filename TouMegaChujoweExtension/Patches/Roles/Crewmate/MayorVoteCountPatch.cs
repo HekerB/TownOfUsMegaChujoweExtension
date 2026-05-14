@@ -1,15 +1,13 @@
 using HarmonyLib;
-using MiraAPI.GameOptions;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
+using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Options.Roles.Crewmate;
-using TouMegaChujoweExtension.Roles.Crewmate;
+using TMPro;
 using TownOfUs.Events.Crewmate;
-using TownOfUs.Roles.Crewmate;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
-using MiraAPI.Modifiers;
-using TMPro;
+using TownOfUs.Roles.Crewmate;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Crewmate;
 
@@ -37,10 +35,10 @@ public static class MayorVoteCountPatch
             foreach (var name in names)
             {
                 var field = AccessTools.Field(typeof(MayorRole), name);
-                if (field != null) try { field.SetValue(__instance, count); } catch { }
+                if (field != null) try { field.SetValue(__instance, count); } catch { /* ignore reflection field errors */ }
                 
                 var prop = AccessTools.Property(typeof(MayorRole), name);
-                if (prop != null && prop.CanWrite) try { prop.SetValue(__instance, count); } catch { }
+                if (prop != null && prop.CanWrite) try { prop.SetValue(__instance, count); } catch { /* ignore reflection property errors */ }
             }
         }
     }
@@ -114,7 +112,7 @@ public static class MayorVoteCountPatch
             }
         }
         // --- PRESIDENT UI ---
-        else if (PlayerControl.LocalPlayer.Data.Role is PresidentRole president)
+        else if (PlayerControl.LocalPlayer.Data.Role is PresidentRole)
         {
             var voteData = PlayerControl.LocalPlayer.GetVoteData();
             if (voteData == null) return;
@@ -136,15 +134,20 @@ public static class MayorVoteCountPatch
                 if (monarchOpts != null) knightBonus = (int)monarchOpts.VotesPerKnight;
             }
 
-            string info;
-            if (knightBonus > 0)
+            string info = "";
+            var formatKnighted = TouLocale.Get("ExtensionMeetingPresidentBankInfoKnighted");
+            var formatNormal = TouLocale.Get("ExtensionMeetingPresidentBankInfo");
+
+            if (knightBonus > 0 && !string.IsNullOrEmpty(formatKnighted))
             {
-                info = "\n" + string.Format(TouLocale.Get("ExtensionMeetingPresidentBankInfoKnighted"), remaining, knightBonus);
+                info = "\n" + string.Format(formatKnighted, remaining, knightBonus);
             }
-            else
+            else if (!string.IsNullOrEmpty(formatNormal))
             {
-                info = "\n" + string.Format(TouLocale.Get("ExtensionMeetingPresidentBankInfo"), remaining);
+                info = "\n" + string.Format(formatNormal, remaining);
             }
+            
+            if (string.IsNullOrEmpty(info)) return;
 
             // Append to the timer text if it's not already there
             // We use the localized strings to check for presence
@@ -172,3 +175,15 @@ public static class MayorVoteCountPatch
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

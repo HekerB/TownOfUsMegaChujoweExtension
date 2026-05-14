@@ -1,7 +1,6 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Crewmate;
 using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
@@ -22,3 +21,17 @@ public sealed class FalconOptions : AbstractOptionGroup<FalconRole>
     [ModdedNumberOption("ExtensionOptionFalconMaxUses", 0f, 10f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float MaxUses { get; set; } = 0f;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

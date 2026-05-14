@@ -1,8 +1,6 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events;
 using MiraAPI.Hud;
-using TouMegaChujoweExtension.Buttons.Impostor;
-using TouMegaChujoweExtension.Roles.Impostor;
 using TownOfUs.Buttons;
 using TownOfUs.Utilities;
 
@@ -40,3 +38,16 @@ public static class OutlawEvents
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

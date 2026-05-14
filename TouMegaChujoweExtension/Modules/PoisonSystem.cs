@@ -1,11 +1,22 @@
-// Modules/PoisonSystem.cs
 using MiraAPI.GameOptions;
-using TouMegaChujoweExtension.Modules;
-using TouMegaChujoweExtension.Options.Roles.Impostor;
-using TouMegaChujoweExtension.Roles.Impostor;
 using TownOfUs.Networking;
 using TownOfUs.Utilities;
 using UnityEngine;
+
+// Modules/PoisonSystem.cs
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -318,3 +329,19 @@ public static class PoisonSystem
         _lightMoved = false;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

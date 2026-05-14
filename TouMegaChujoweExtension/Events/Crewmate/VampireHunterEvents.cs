@@ -1,15 +1,12 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events;
+using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
-using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Buttons.Crewmate;
-using TouMegaChujoweExtension.Modifiers.Crewmate;
-using TouMegaChujoweExtension.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 
-namespace TouMegaChujoweExtension.Events;
+namespace TouMegaChujoweExtension.Events.Crewmate;
 
 public static class VampireHunterEvents
 {
@@ -19,6 +16,7 @@ public static class VampireHunterEvents
         if (@event.TriggeredByIntro)
         {
             StakeButton.ResetFirstRound();
+            StakeButton.HunterKilledVictims.Clear();
 
             if (PlayerControl.LocalPlayer.IsHost())
             {
@@ -74,3 +72,17 @@ public static class VampireHunterEvents
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

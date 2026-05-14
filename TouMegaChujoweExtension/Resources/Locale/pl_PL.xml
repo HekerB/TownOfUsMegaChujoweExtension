@@ -12,6 +12,13 @@
    <!-- Use Polish Language -->
   <string name="ExtensionLocalSettingUsePolishLanguage">Uzyj jezyka polskiego</string>
   
+  <!-- Draft Alert Local Settings -->
+  <string name="ExtensionLocalSettingDraftAlert">Powiadomienie o Draftcie</string>
+  <string name="DraftAlertOff">Wylaczone</string>
+  <string name="DraftAlertStartOnly">Tylko na poczatku</string>
+  <string name="DraftAlertEndOnly">Tylko na koncu</string>
+  <string name="DraftAlertStartAndEnd">Na poczatku i koncu</string>
+  
   <!-- Joker PiP Local Settings -->
   <string name="JokerPiPLocation">Polozenie okna PiP Jokera</string>
   <string name="JokerPiPSize">Rozmiar okna PiP Jokera</string>
@@ -52,6 +59,7 @@
   <string name="ExtensionRoleTrapperPlaced">Zastawiono pulapke na wentylacje w &lt;room&gt;!</string>
   <string name="ExtensionRoleTrapperTriggered">Twoja pulapka zostala uruchomiona w &lt;room&gt;!</string>
   <string name="ExtensionRoleTrapperCaught">Zostales zlapany w pulapke w &lt;room&gt;!</string>
+  <string name="ExtensionRoleTrapperTabHeader">Aktywne pulapki:</string>
 
   <!-- Trapper Options -->
   <string name="ExtensionOptionTrapperTrapCooldown">Czas odnowienia pulapki</string>
@@ -212,7 +220,11 @@
   <string name="ExtensionOptionShifterWinsWithCrew">Wygrywa z Crew</string>
   
   <!-- Lawyer Win -->
+  <string name="ExtensionLawyerWins">Prawnik i Klient wygrywaja</string>
   <string name="ExtensionLawyerWin">Wygrywa</string>
+  
+  <!-- Neutral Win Format -->
+  <string name="ExtensionNeutralWinsFormat">{0} Wygrywa</string>
   
   <!-- Lawyer Client Info -->
   <string name="ExtensionRoleLawyerClientDescription">Twoim prawnikiem jest &lt;lawyer&gt;.</string>
@@ -256,6 +268,11 @@
   <string name="ExtensionOptionSerialKillerManiacTimerReductionPerKill">Zmniejszenie czasu Maniac za kazde zabojstwo</string>
   <string name="ExtensionOptionSerialKillerManiacTimerLimit">Limit Licznika Maniac (Najkrotszy)</string>
   
+  <!-- Eclipsal Role -->
+  <string name="ExtensionRoleEclipsal">Eclipsal</string>
+  <string name="ExtensionOptionEclipsalCanEclipseDuringSabotage">Moze eclipsowac podczas sabotazu</string>
+  <string name="ExtensionOptionEclipsalCanVent">Moze ventowac</string>
+  
   <!-- Serial Killer Modifiers -->
   <string name="ExtensionModifierSerialKillerManiac">Maniac</string>
   <string name="ExtensionModifierSerialKillerReduction">Redukcja Cooldownu</string>
@@ -275,6 +292,11 @@
   <string name="ExtensionOptionPelicanSwallowCooldown">Cooldown polkniecia</string>
   <string name="ExtensionOptionPelicanMaxSwallowed">Maksymalna liczba graczy w zoladku</string>
   <string name="ExtensionOptionPelicanCanVent">Pelican moze uzywac wentylacji</string>
+  
+  <!-- Vampire Role -->
+  <string name="ExtensionRoleVampire">Wampir</string>
+  <string name="ExtensionOptionVampireCanOnlySabotageLights">Moze sabotowac tylko swiatla</string>
+  <string name="ExtensionOptionVampireOnlyOgCanSabotage">Tylko pierwotny wampir moze sabotowac</string>
 
   <!-- Pelican Notifications -->
   <string name="ExtensionPelicanSwallowedNotification">Zostales polkniety przez Pelicana!</string>
@@ -318,6 +340,8 @@
   <string name="ExtensionPirateDuelNotification">Pirate wyzwal cie na pojedynek!</string>
   <string name="ExtensionPirateDuelJailedPirateNotif">Jestes uwieziony! Twoj pojedynek zostal anulowany.</string>
   <string name="ExtensionPirateDuelJailedTargetNotif">Twoj cel pojedynku jest uwieziony! Pojedynek anulowany.</string>
+  <string name="ExtensionPirateCantDuelSamePersonTwiceNotif">Nie mozesz wyzwac tej samej osoby dwa razy pod rzad.</string>
+  <string name="ExtensionPirateTabCannotTarget">Nie mozna wyzwac w nastepnej rundzie: {0}</string>
 
   <!-- Pirate Death Message -->
   <string name="ExtensionDiedToPirate">Przegral pojedynek</string>
@@ -452,8 +476,6 @@
   <string name="ExtensionOptionHackerMoveWithDevice">Mozliwosc ruchu podczas uzywania urzadzenia</string>
   <string name="ExtensionOptionHackerSimpleModeJamOnly">Tryb prosty (tylko Jam)</string>
   <string name="ExtensionOptionHackerInitialJamCharges">Poczatkowe ladunki Jam</string>
-  <string name="ExtensionOptionHackerJamChargesPerKill">Ladunki Jam za zabojstwo</string>
-  <string name="ExtensionOptionHackerJamMaxCharges">Maksymalna liczba ladunkow Jam</string>
   <string name="ExtensionOptionHackerJamCooldown">Cooldown Jam</string>
   <string name="ExtensionOptionHackerJamDuration">Czas trwania Jam</string>
   
@@ -462,14 +484,14 @@
   
   <!-- RC-XD Role -->
   <string name="ExtensionRoleRcXd">RC-XD</string>
-  <string name="ExtensionRoleRcXdIntroBlurb">Steruj wybuchowym autkiem i niszcz zaloge.</string>
-  <string name="ExtensionRoleRcXdTabDescription">Wypusc auto RC, steruj nim za pomoca strzalek i zdetonuj je w poblizu wrogow.</string>
-  <string name="ExtensionRoleRcXdWikiDescription">Jako RC-XD mozesz wypuscic mini auto z CALL OF DUTY. To auto jest bomba, ktora kontrolujesz i mozesz zdetonowac w dowolnym momencie.</string>
-  <string name="ExtensionRoleRcXdDeploy">Wypusc</string>
-  <string name="ExtensionRoleRcXdDeployWikiDescription">Wypusc zdalnie sterowane auto, a potem mozesz nim jezdzic za pomoca strzalek przy wrogach i je zdetonowac!</string>
-  <string name="ExtensionRoleRcXdDetonate">Detonuj</string>
-  <string name="ExtensionRoleRcXdDetonateWikiDescription">Zdetonuj swoje auto RC w poblizu graczy, aby ich zabic.</string>
-
+  <string name="ExtensionRoleRcXdIntroBlurb">Steruj samochodem-bombą, aby zniszczyć załogę.</string>
+  <string name="ExtensionRoleRcXdTabDescription">Wypuść samochodzik RC i zdetonuj go obok wrogów.</string>
+  <string name="ExtensionRoleRcXdWikiDescription">RC-XD to rola Impostor Power, która może wypuszczać i detonować zdalnie sterowany samochodzik, aby zabijać graczy na mapie. Używaj strzałek, aby nim sterować i detonuj go blisko wrogów.</string>
+  <string name="ExtensionRoleRcXdDeploy">Wypuść</string>
+  <string name="ExtensionRoleRcXdDeployWikiDescription">Wypuść samochodzik RC, aby skierować go na cel.</string>
+  <string name="ExtensionRoleRcXdDetonate">Detonacja</string>
+  <string name="ExtensionRoleRcXdDetonateWikiDescription">Zdetonuj swój samochodzik, aby zabić pobliskich graczy.</string>
+  
   <!-- RC-XD Options -->
   <string name="ExtensionOptionRcXdDeployCooldown">Cooldown wypuszczenia</string>
   <string name="ExtensionOptionRcXdDriveTime">Czas jazdy</string>
@@ -479,6 +501,63 @@
   <string name="ExtensionOptionRcXdMaxKills">Maksymalna liczba zabojstw na detonacje</string>
   <string name="ExtensionOptionRcXdCanVent">Moze uzywac wentylacji</string>
   <string name="ExtensionOptionRcXdMaxDeploys">Maksymalna liczba wypuszczen</string>
+  <string name="ExtensionOptionRcXdCanUseInFirstRound">Można używać w pierwszej rundzie</string>
+  <string name="ExtensionOptionRcXdAllowEarlyDetonation">Pozwalaj na wczesną detonację</string>
+
+  <!-- Astral Role -->
+  <string name="ExtensionRoleAstral">Astral</string>
+  <string name="ExtensionRoleAstralIntroBlurb">Przechodź przez ściany i wracaj na pozycję startową.</string>
+  <string name="ExtensionRoleAstralTabDescription">Przechodź przez ściany i teleportuj się z powrotem. Musisz kogoś zabić, aby przeżyć!</string>
+  <string name="ExtensionRoleAstralWikiDescription">Astral to rola Impostor Concealing, która może wejść w stan astralny. W tym stanie możesz przechodzić przez ściany. Gdy faza się kończy, zostajesz teleportowany z powrotem do miejsca startu. Jeśli jest to skonfigurowane, brak zabójstwa podczas fazy skutkuje Twoją śmiercią.</string>
+  <string name="ExtensionRoleAstralPhase">Faza</string>
+  <string name="ExtensionRoleAstralPhaseWikiDescription">Przechodź przez ściany.</string>
+  <string name="ExtensionRoleAstralMaterialize">Materializacja</string>
+  <string name="ExtensionRoleAstralMaterializeWikiDescription">Wróć na pozycję startową.</string>
+
+  <!-- Astral Options -->
+  <string name="ExtensionOptionAstralPhaseCooldown">Cooldown Fazy</string>
+  <string name="ExtensionOptionAstralPhaseDuration">Czas trwania Fazy</string>
+  <string name="ExtensionOptionAstralTeleportInvisibilityEnabled">Niewidzialność po Teleporcie</string>
+  <string name="ExtensionOptionAstralTeleportInvisibilityDuration">Czas Niewidzialności</string>
+  <string name="ExtensionOptionAstralDieIfNoKillDuringPhase">Śmierć przy braku killa w Fazie</string>
+  <string name="ExtensionOptionAstralCanVent">Może używać wentów</string>
+  <string name="DiedToAstralShatter">Rozpadł się.</string>
+  <string name="DiedToAstralVoid">Wciągnięty w pustkę.</string>
+  <string name="ExtensionDiedToAstralShatter">Rozpadł się.</string>
+  <string name="ExtensionDiedToAstralVoid">Wciągnięty w pustkę.</string>
+  <string name="ExtensionDiedToEvokerAstralShatter">Evoker się rozpadł.</string>
+  
+  <!-- Speedy Role -->
+  <string name="ExtensionRoleSpeedy">Speedy</string>
+  <string name="ExtensionRoleSpeedyIntroBlurb">Speedy to rola Impostora Concealing, która może stać się zakamuflowana i szybka, aby zabijać Załogantów.</string>
+  <string name="ExtensionRoleSpeedyTabDescription">Użyj swojej umiejętności, aby zyskać prędkość i zakamuflować się (szary ludzik). Zaskocz Załogantów!</string>
+  <string name="ExtensionRoleSpeedyWikiDescription">Speedy to rola Impostora Concealing, która może stać się zakamuflowana i szybka, aby zabijać Załogantów.</string>
+  <string name="ExtensionRoleSpeedyAccelerate">Przyspieszenie</string>
+  <string name="ExtensionRoleSpeedyAccelerateWikiDescription">Przyspiesz i zakamufluj się.</string>
+
+  <!-- Speedy Options -->
+  <string name="ExtensionOptionSpeedyAccelerateCooldown">Czas odnowienia przyspieszenia</string>
+  <string name="ExtensionOptionSpeedyAccelerateDuration">Czas trwania przyspieszenia</string>
+  <string name="ExtensionOptionSpeedyAccelerationBuff">Moc przyspieszenia</string>
+  <string name="ExtensionOptionSpeedyCanVent">Może używać wentów</string>
+  <string name="DiedToDetonated">Wyleciał w powietrze</string>
+
+  <!-- Detonator Role -->
+  <string name="ExtensionRoleDetonator">Detonator</string>
+  <string name="ExtensionRoleDetonatorIntroBlurb">Podkładaj bomby graczom i zdetonuj je w odpowiednim momencie.</string>
+  <string name="ExtensionRoleDetonatorTabDescription">Zakradnij się do graczy, aby podłożyć bombę. Możesz ją zdetonować ręcznie po krótkim opóźnieniu!</string>
+  <string name="ExtensionRoleDetonatorWikiDescription">Detonator to rola Impostora, która może podkładać bomby czasowe innym graczom. Po podłożeniu bomby Detonator może zdetonować ją ręcznie tym samym przyciskiem po określonym czasie. Eksplozja zabija cel oraz wszystkich graczy znajdujących się w promieniu wybuchu.</string>
+  <string name="ExtensionRoleDetonatorAttach">Podłóż bombę</string>
+  <string name="ExtensionRoleDetonatorAttachWikiDescription">Podłóż bombę pobliskiemu graczowi. Po podłożeniu możesz kliknąć przycisk ponownie (po opóźnieniu), aby zdetonować ją wcześniej. Eksplozja może zabić wiele osób, jeśli znajdują się blisko celu.</string>
+  <string name="ExtensionRoleDetonatorDetonate">Zdetonuj</string>
+  <string name="ExtensionRoleDetonatorDetonateWikiDescription">Ręcznie zdetonuj bombę podłożoną celowi. Powoduje natychmiastową eksplozję.</string>
+
+  <!-- Detonator Options -->
+  <string name="ExtensionOptionDetonatorAttachDuration">Czas podkładania</string>
+  <string name="ExtensionOptionDetonatorManualDetonateDelay">Opóźnienie ręcznej detonacji</string>
+  <string name="ExtensionOptionDetonatorDetonateRadius">Promień wybuchu</string>
+  <string name="ExtensionOptionDetonatorMaxKills">Maks. liczba zabójstw na wybuch</string>
+  <string name="ExtensionOptionDetonatorCanVent">Może używać wentów</string>
 
   <!-- Forestaller Role -->
   <string name="ExtensionRoleForestaller">Forestaller</string>
@@ -502,8 +581,10 @@
   <string name="ExtensionRoleEvokerTabDescription">Aktywuj Blind, aby oslepic i ogluszyc (Nausea) zabojcow. Verify graczy, aby sprawdzic ich role.</string>
   <string name="ExtensionRoleEvokerWikiDescription">Twoja umiejetnosc pozwala oslepic i ogluszyc (efekt Nausea) wszystkie role zabijajace. Podczas Blind mozesz sprawdzac (Verify), czy dana osoba jest zabojca. Calosc jest zoptymalizowana dla maksymalnej wydajnosci FPS.</string>
   <string name="ExtensionRoleEvokerBlind">Blind</string>
-  <string name="ExtensionRoleEvokerBlindWikiDescription">Oslep zabojcow. Nie beda nic widziec i nie beda mogli nikogo zabic ani uzyc skilli.</string>
   <string name="ExtensionRoleEvokerVerify">Verify</string>
+  <string name="ExtensionRoleTrapperTabHeader">Aktywne pulapki:</string>
+  <string name="ExtensionRolePlumberTabHeader">Aktywne wentylacje:</string>
+  <string name="ExtensionRoleEvokerBlindWikiDescription">Oslep zabojcow. Nie beda nic widziec i nie beda mogli nikogo zabic ani uzyc skilli.</string>
   <string name="ExtensionRoleEvokerVerifyWikiDescription">Gdy Flash jest aktywny, mozesz sprawdzac graczy. Jesli twoj ekran mignie na czerwono, ta osoba jest rola zabijajaca.</string>
 
   <!-- Evoker Options -->
@@ -516,6 +597,55 @@
   <string name="ExtensionOptionEvokerBlindType">Typ Blind</string>
   <string name="ExtensionOptionEvokerBlindTypeEnumNormal">Normalny</string>
   <string name="ExtensionOptionEvokerBlindTypeEnumShowOnlySelf">Pokazuj tylko siebie</string>
+
+  <!-- Doctor Role -->
+  <string name="ExtensionRoleDoctor">Doktor</string>
+  <string name="ExtensionRoleDoctorIntroBlurb">Wstrzykuj graczom pozytywne efekty,\%nl\%aby pomoc Zalodze.</string>
+  <string name="ExtensionRoleDoctorTabDescription">Wstrzykuj graczom pozytywne efekty.\%nl\%Jesli tak skonfigurowano, wstrzykniecia moga czasem dac negatywny efekt.</string>
+  <string name="ExtensionRoleDoctorWikiDescription">Doktor to rola Crewmate, ktora moze wstrzykiwac graczom rozne pozytywne efekty. Efekty sa wybierane losowo i moga obejmowac przyspieszenie, zwiekszone widzenie, oczyszczenie z negatywnych efektow lub nalozenie jednorazowej tarczy ochronnej.</string>
+  <string name="ExtensionRoleDoctorInject">Wstrzyknij</string>
+  <string name="ExtensionRoleDoctorInjectWikiDescription">Wstrzyknij pobliskiemu graczowi losowy pozytywny efekt. Efekt aktywuje sie po skonfigurowanym opoznieniu.</string>
+
+  <!-- Doctor Options -->
+  <string name="ExtensionOptionDoctorInjectCooldown">Cooldown wstrzykniecia</string>
+  <string name="ExtensionOptionDoctorEffectDelay">Opoznienie aktywacji efektu</string>
+  <string name="ExtensionOptionDoctorEffectDurationType">Typ czasu trwania efektu</string>
+  <string name="ExtensionOptionDoctorEffectDuration">Czas trwania efektu</string>
+  <string name="ExtensionOptionDoctorInitialUses">Poczatkowe uzycia</string>
+  <string name="ExtensionOptionDoctorCanGiveNegativeEffects">Moze dawac negatywne efekty</string>
+  <string name="ExtensionOptionDoctorSeesShield">Doktor widzi aktywacje tarczy</string>
+  <string name="ExtensionOptionDoctorTargetSeesShield">Cel widzi tarcze</string>
+  <string name="ExtensionOptionDoctorChanceSpeedBoost">Szansa na Przyspieszenie</string>
+  <string name="ExtensionOptionDoctorChanceVisionBoost">Szansa na Lepsze Widzenie</string>
+  <string name="ExtensionOptionDoctorChanceCleanse">Szansa na Oczyszczenie</string>
+  <string name="ExtensionOptionDoctorChanceShield">Szansa na Tarcze</string>
+  <string name="ExtensionOptionDoctorChanceCanVent">Szansa na Wentylacje</string>
+  <string name="ExtensionOptionDoctorChanceRegeneration">Szansa na Regeneracje</string>
+  <string name="ExtensionOptionDoctorChanceNegativeSlowness">Szansa na Spowolnienie (Negatywne)</string>
+  <string name="ExtensionOptionDoctorChanceNegativeLowVision">Szansa na Slabe widzenie (Negatywne)</string>
+  <string name="ExtensionOptionDoctorChanceNegativeConfused">Szansa na Dezorientacje (Negatywne)</string>
+
+  <!-- Doctor Effect Enum Values -->
+  <string name="ExtensionOptionDoctorEffectTypeEnumCleanse">Oczyszczenie</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumShield">Tarcza</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumCanVent">Wentylacja</string>
+  <string name="ExtensionOptionDoctorEffectTypeEnumRegeneration">Regeneracja</string>
+
+  <!-- Doctor Notifications -->
+  <string name="ExtensionDoctorNotificationSpeedBoost">Nalozono Przyspieszenie</string>
+  <string name="ExtensionDoctorNotificationVisionBoost">Nalozono Lepsze Widzenie</string>
+  <string name="ExtensionDoctorNotificationCleanse">Wszystkie negatywne efekty zostaly usuniete!</string>
+  <string name="ExtensionDoctorNotificationShield">Nalozono Tarcze Ochronna</string>
+  <string name="ExtensionDoctorNotificationCanVent">Przyznano mozliwosc uzywania wentylacji</string>
+  <string name="ExtensionDoctorNotificationRegeneration">Regeneracja aktywna (skrocone cooldowny)</string>
+  <string name="ExtensionDoctorNotificationShieldAttacked">Twoja tarcza na {0} ochronila go!</string>
+  <string name="ExtensionDoctorNotificationShieldSaved">Zostales ochroniony przez tarcze Doktora!</string>
+  <string name="ExtensionDoctorNotificationWoreOffVisionBoost">Twoj wzrok wrocil do normy.</string>
+  <string name="ExtensionDoctorNotificationWoreOffRegeneration">Efekt regeneracji zakonczyl sie.</string>
+
+  <!-- Doctor Modifiers -->
+  <string name="ExtensionModifierDoctorVisionBoost">Lepsze Widzenie</string>
+  <string name="ExtensionModifierDoctorRegeneration">Regeneracja</string>
 
   <!-- Mirage Role -->
   <string name="ExtensionRoleMirage">Mirage</string>
@@ -566,9 +696,7 @@
   <string name="ExtensionOptionInjectorEffectDurationTypeEnumSetTime">Ustawiony czas</string>
   <string name="ExtensionOptionInjectorEffectDuration">Czas trwania efektu</string>
   <string name="ExtensionOptionInjectorInitialUses">Poczatkowe uzycia</string>
-  <string name="ExtensionOptionInjectorUsesPerKill">Uzycia za zabojstwo</string>
   <string name="ExtensionOptionInjectorPositiveEffectsEnabled">Pozytywne efekty wlaczone</string>
-  <string name="ExtensionOptionInjectorSelectedEffectType">Typ efektu do konfiguracji</string>
 
 
   <!-- Injector Effect Type Enum Values -->
@@ -587,19 +715,19 @@
   <string name="ExtensionOptionInjectorEffectTypeEnumRegeneration">Regeneracja</string>
 
   <!-- Injector Effect Chances -->
-  <string name="ExtensionOptionInjectorChanceInvertedControls">Szansa na efekt</string>
-  <string name="ExtensionOptionInjectorChanceLowVision">Szansa na efekt</string>
-  <string name="ExtensionOptionInjectorChanceSlowness">Szansa na efekt</string>
-  <string name="ExtensionOptionInjectorChanceVeryLowVision">Szansa na efekt</string>
-  <string name="ExtensionOptionInjectorChanceConfused">Szansa na efekt</string>
-  <string name="ExtensionOptionInjectorChanceNoVent">Szansa na efekt</string>
-  <string name="ExtensionOptionInjectorChanceNoUse">Szansa na efekt</string>
-  <string name="ExtensionOptionInjectorChanceNoReport">Szansa na efekt</string>
-  <string name="ExtensionOptionInjectorChanceNausea">Szansa na efekt</string>
-  <string name="ExtensionOptionInjectorChanceWeakness">Szansa na efekt</string>
-  <string name="ExtensionOptionInjectorChanceSpeedBoost">Szansa na efekt</string>
-  <string name="ExtensionOptionInjectorChanceVisionBoost">Szansa na efekt</string>
-  <string name="ExtensionOptionInjectorChanceRegeneration">Szansa na efekt</string>
+  <string name="ExtensionOptionInjectorChanceInvertedControls">Szansa na Odwrocone sterowanie</string>
+  <string name="ExtensionOptionInjectorChanceLowVision">Szansa na Slabe widzenie</string>
+  <string name="ExtensionOptionInjectorChanceSlowness">Szansa na Spowolnienie</string>
+  <string name="ExtensionOptionInjectorChanceVeryLowVision">Szansa na Bardzo slabe widzenie</string>
+  <string name="ExtensionOptionInjectorChanceConfused">Szansa na Dezorientacja</string>
+  <string name="ExtensionOptionInjectorChanceNoVent">Szansa na Brak wentylacji</string>
+  <string name="ExtensionOptionInjectorChanceNoUse">Szansa na Brak uzycia</string>
+  <string name="ExtensionOptionInjectorChanceNoReport">Szansa na Brak zgloszenia</string>
+  <string name="ExtensionOptionInjectorChanceNausea">Szansa na Mdlosci</string>
+  <string name="ExtensionOptionInjectorChanceWeakness">Szansa na Slabosc</string>
+  <string name="ExtensionOptionInjectorChanceSpeedBoost">Szansa na Przyspieszenie</string>
+  <string name="ExtensionOptionInjectorChanceVisionBoost">Szansa na Lepsze widzenie</string>
+  <string name="ExtensionOptionInjectorChanceRegeneration">Szansa na Regeneracje</string>
 
   <!-- Extension Local Settings -->
   <string name="ExtensionLocalSettingEnableNauseaCameraShake">Wlacz trzesienie kamery przy mdlosciach</string>
@@ -805,11 +933,15 @@
   <string name="ExtensionOptionBHCanVent">Bounty Hunter moze uzywac wentylacji</string>
   <string name="ExtensionOptionBHTargetsToKill">Liczba celow do zabicia przez BH</string>
   <string name="ExtensionOptionBHShowArrow">Pokaz strzalke do celu</string>
+  <string name="ExtensionOptionBHCanKillInRoundOne">Moze zabijac w pierwszej rundzie</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Interwal odswiezania strzalki</string>
   <string name="ExtensionOptionBHGameContinues">Gra trwa bez innych zabojcow</string>
   <string name="ExtensionOptionBHWinMode">Tryb wygranej</string>
   <string name="ExtensionOptionBHWinModeEnumSoloWin">Samotna wygrana (konczy gre)</string>
   <string name="ExtensionOptionBHWinModeEnumWinWithWinners">Wygrywa ze zwyciezcami</string>
+  
+  <string name="ExtensionBHTabTargetsKilled">Zabite cele: {0} / {1}</string>
+  <string name="ExtensionBHTabCurrentTarget">Aktualny cel: {0}</string>
   
   <!-- Bounty Hunter Notifications -->
   <string name="ExtensionBHYourNextTarget">Twoj nastepny cel</string>
@@ -817,6 +949,9 @@
   <string name="ExtensionBHTargetKilled">Cel wyeliminowany! (&lt;current&gt;/&lt;needed&gt;)</string>
   <string name="ExtensionBHFailed">Nie udalo ci sie zabic swojego celu! Nalozono kare do cooldownu.</string>
   <string name="ExtensionBHNoTargets">Brak poprawnych dostepnych celow!</string>
+  <string name="ExtensionBHWinWithWinnersSelf">Ukonczyles pomyslnie polowania jako &lt;color=#B0BEC5&gt;Bounty Hunter&lt;/color&gt;! Od teraz bedziesz obserwowac i wygrasz wraz ze zwycieska druzyna.</string>
+  <string name="ExtensionBHWinWithWinnersOthers">&lt;color=#B0BEC5&gt;Bounty Hunter&lt;/color&gt;, &lt;player&gt;, ukonczyl wszystkie swoje polowania!</string>
+  <string name="DiedToWinning">Zwycięzca</string>
   <string name="ExtensionBountyHunterWins">Wygrywa</string>
   
   <!-- Bounty Hunter Death Message -->
@@ -847,6 +982,15 @@
   <string name="DiedToPoisoner">Zabity</string>
   <string name="DiedToPoisonerPoison">Zatrucie</string>
   <string name="DiedToPoisonerVine">Zgnieciony</string>
+
+  <!-- Shroud Role -->
+  <string name="ExtensionRoleShroud">Shroud</string>
+  <string name="ExtensionRoleShroudIntroBlurb">Oznaczaj graczy i uderzaj z cienia.</string>
+  <string name="ExtensionRoleShroudTabDescription">Oznacz gracza, aby go spowic (shroud).\%nl\%Jesli zostanie zabity lub wyrzucony, wygrywasz!\%nl\%Mozesz takze zabijac graczy bezposrednio.</string>
+  <string name="ExtensionRoleShroudWikiDescription">Shroud to rola Neutral Killing. Mozesz oznaczyc gracza, aby go spowic. Jesli twoj oznaczony cel umrze, wygrywasz. Masz takze normalna umiejetnosc zabijania.</string>
+  <string name="ExtensionRoleShroudAbility">Shroud</string>
+  <string name="ExtensionRoleShroudAbilityWikiDescription">Oznacz gracza. Jesli umrze, wygrywasz.</string>
+  <string name="ExtensionRoleShroudShroudedPlayer">Spowity gracz</string>
   
   <!-- Bodyguard Role -->
   <string name="ExtensionRoleBodyguard">Bodyguard</string>
@@ -944,9 +1088,8 @@
 
   <!-- Doppelganger Options -->
   <string name="ExtensionOptionDoppelgangerKillCooldown">Cooldown zabojstwa</string>
-  <string name="ExtensionOptionDoppelgangerMaxSteals">Maksymalna liczba kradziezy tozsamosci</string>
+  <string name="ExtensionOptionDoppelgangerMaxSteals">Maksymalna liczba kradziezy na runde</string>
   <string name="ExtensionOptionDoppelgangerCanVent">Moze uzywac wentylacji</string>
-  <string name="ExtensionOptionDoppelgangerStealsPerRound">Resetuj kradzieze co runde</string>
 
   <!-- Doppelganger Death Message -->
   <string name="DiedToDoppelganger">Skradziona tozsamosc</string>
@@ -991,6 +1134,7 @@
   <string name="ExtensionRoleVampireHunterTabDescription">Uzyj kolka, aby zabijac Vampires.\%nl\%Nieudane przebicia na nie-Vampires sa marnowane.\%nl\%Gdy wszystkie Vampires zgina, stajesz sie nowa rola.</string>
   <string name="ExtensionRoleVampireHunterWikiDescription">Vampire Hunter pojawia sie tylko wtedy, gdy w grze sa Vampires. Po pierwszym spotkaniu losowy Crewmate zostaje zamieniony w Vampire Hunter. Moze przebijac graczy - jesli gracz jest Vampire, ginie. Jesli nie, kolek zostaje zuzyty. Gdy wszystkie Vampires zostana wyeliminowane, Vampire Hunter zamienia sie w inna role Crewmate.</string>
   <string name="ExtensionRoleVampireHunterStake">Stake</string>
+  <string name="DiedToExtensionRoleVampireHunterStaked">Przebity</string>
   <string name="ExtensionRoleVampireHunterStakeWikiDescription">Przebij pobliskiego gracza kolkiem. Jesli jest Vampire, ginie. Jesli nie, marnujesz jedno uzycie kolka.</string>
 
   <!-- Vampire Hunter Options -->
@@ -999,6 +1143,7 @@
   <string name="ExtensionOptionVHCanStakeRoundOne">Moze uzyc Stake w pierwszej rundzie</string>
   <string name="ExtensionOptionVHSelfKillOnFailure">Samobojstwo po wykorzystaniu wszystkich Stake</string>
   <string name="ExtensionOptionVHBecomesOnVampDeath">Staje sie po smierci Vampire</string>
+  <string name="ExtensionOptionVHCanSelfReport">Moze raportowac wlasne ofiary</string>
   <string name="ExtensionOptionVHMinVampires">Minimalna liczba Vampires do pojawienia sie</string>
   <string name="ExtensionOptionVHEnabled">Vampire Hunter wlaczony</string>
   <string name="ExtensionOptionVHChance">Szansa pojawienia sie Vampire Hunter</string>
@@ -1049,23 +1194,92 @@
 • Gracze sa przypisywani do strony (&lt;color=#4DA6FF&gt;&lt;b&gt;Zloga&lt;/b&gt;&lt;/color&gt;, &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt;, lub &lt;color=#7F7F7F&gt;&lt;b&gt;Neutralni&lt;/b&gt;&lt;/color&gt;), a nastepnie wybieraja role w losowej kolejnosci tur.
 • Kazdy gracz otrzymuje do wyboru 3 unikalne role. Widzowie sa wykluczeni z procesu.
 • Jesli nie wybierzesz roli w wyznaczonym czasie, zostanie ona przydzielona automatycznie.
-• Domyslnie &lt;color=#4DA6FF&gt;&lt;b&gt;Zloganci&lt;/b&gt;&lt;/color&gt; i &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybieraja ze specjalistycznych kategorii.</string>
+• Domyslnie wszyscy gracze wybieraja z pelnej puli dostepnych rol dla swojej strony (Zloga, Impostorzy, Neutralni). Nie ma juz restrykcyjnych kategorii.</string>
 
   <!-- TOUMCE Wiki Terms - Draft Factions -->
   <string name="TOUMCETermsDraftFactionsTitle">Frakcje Draftu</string>
   <string name="TOUMCETermsDraftFactionsInfo">Przed rozpoczeciem draftu gracze zostaja przypisani do frakcji:
-• &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybieraja sposrod roznych kategorii Impostora.
-• &lt;color=#4DA6FF&gt;&lt;b&gt;Zaloganci&lt;/b&gt;&lt;/color&gt; dokonuja wyboru z grup takich jak Investigative czy Protective.
-• &lt;color=#FFD700&gt;&lt;b&gt;Random Neutral&lt;/b&gt;&lt;/color&gt; oferuje zestaw rol Neutralnych. Domyslnie masz 70% szans na 2 role &lt;b&gt;Neutral Benign&lt;/b&gt;, 15% na &lt;b&gt;Neutral Outlier&lt;/b&gt; oraz 15% na &lt;b&gt;Neutral Evil&lt;/b&gt;.
+• &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybieraja z pelnej puli dostepnych rol Impostora.
+• &lt;color=#4DA6FF&gt;&lt;b&gt;Zaloganci&lt;/b&gt;&lt;/color&gt; wybieraja z pelnej puli dostepnych rol Zaloganta. Jesli <b>Inni Neutralni</b> (Benign, Evil lub Outlier) sa wlaczeni w lobby, moga oni pojawic sie w puli wyboru Zaloganta, dopoki globalne cele nie zostana osiagniete.
+• &lt;color=#FFD700&gt;&lt;b&gt;Neutral Killing&lt;/b&gt;&lt;/color&gt; wybiera sposrod dostepnych frakcji zabijajacych.
  
-• Ustawienia &lt;b&gt;Neutral&lt;/b&gt; w lobby kontroluja &lt;b&gt;Maksymalna&lt;/b&gt; liczbe graczy przypisanych do frakcji Benign, Evil oraz Killing.
+• <b>Globalne Cele</b> - Ustawienia lobby kontroluja <b>Min/Max</b> liczbe graczy przypisanych do frakcji Neutral Killing oraz Innych Neutralnych (Benign/Evil/Outlier).
+• <b>Logika 60/40</b> - System uzywa wazonego prawdopodobienstwa, aby preferowac minimalne cele, ale czasami losowac maksymalne dla wiekszej nieprzewidywalnosci.
  
-Jesli opcja &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy wybieraja ze wszystkich klas&lt;/b&gt;&lt;/color&gt; jest wlaczona, gracze moga wybierac z dowolnej dostepnej kategorii.</string>
+Draft moze rowniez brac pod uwage szanse rol (Uzyj szans rol), przez co role pojawiaja sie zgodnie z ich szansami w lobby (Weighted Shuffle).
+ 
+Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe ról Neutralnych pojawiajacych sie w kazdej turze (opcja ta dotyczy <b>tylko Zalogantów</b>).</string>
+
+  <!-- TOUMCE Wiki Terms - Role Extensions -->
+  <string name="TOUMCETermsRoleExtensionsTitle">Better Roles/Modifiers</string>
+  <string name="TOUMCETermsRoleExtensionsInfo">Ta sekcja zawiera zaawansowane opcje dla istniejacych rol i modyfikatorow, zwiekszajac ich mozliwosci i mechaniki rozgrywki.</string>
+  
+  <string name="TOUMCETermsVampireSabotageTitle">Sabotaz Wampira</string>
+  <string name="TOUMCETermsVampireSabotageInfo">Wampiry posiadaja zaawansowane opcje sabotazu: • &lt;color=#FF0000&gt;&lt;b&gt;Tylko Swiatla&lt;/b&gt;&lt;/color&gt; - Wampir moze sabotowac tylko system Electrical pod klawiszem TAB. • &lt;color=#FF0000&gt;&lt;b&gt;Wspolny Cooldown&lt;/b&gt;&lt;/color&gt; - Wampiry dziela ten sam globalny licznik sabotazu z Impostorami. • &lt;color=#FF0000&gt;&lt;b&gt;Tylko OG&lt;/b&gt;&lt;/color&gt; - Mozna ograniczyc sabotaz tylko dla pierwotnego Wampira (ugryzieni nie moga sabotowac).</string>
+  <string name="TOUMCETabOptionBetterRoles">Better Roles/Modifiers</string>
+  <string name="TOUMCETabOptionBetterRolesDesc">Skonfiguruj rozszerzone opcje dla istniejacych rol i modyfikatorow tutaj!</string>
 
   <!-- TOUMCE Wiki Terms - Game Settings -->
   <string name="TOUMCETermsGameSettingsTitle">Ustawienia Gry</string>
   <string name="TOUMCETermsGameSettingsInfo">TOUMCE wprowadza globalne ustawienia zmieniajace przebieg gry:
-• &lt;b&gt;Blokada Lobby podczas Draftu&lt;/b&gt; - Zapobiega dolaczaniu nowych graczy w trakcie wyboru rol.
-• &lt;b&gt;Respektuj Szanse Rol&lt;/b&gt; - Jesli wlaczone, prawdopodobienstwo wystapienia roli w drafcie opiera sie na jej ustawieniach szans w lobby.
-• &lt;b&gt;Czas Draftu&lt;/b&gt; - Okresla, ile sekund ma kazdy gracz na dokonanie wyboru.</string>
+• &lt;b&gt;Blokada Lobby podczas Draftu&lt;/b&gt; - Zapobiega dolaczaniu nowych graczy w trakcie wyboru rol dla stabilnosci gry.
+• <b>System Trzecich</b> - Zbalansowana kolejnosc wyboru, ktora rozdziela Impostorow i Neutralnych rownomiernie na poczatku, srodku i koncu fazy draftu.
+• <b>Uzyj szans rol</b> - Jesli wlaczone, prawdopodobienstwo roli w drafcie opiera sie na jej szansach w lobby.
+• <b>Neutralni na wybor</b> - Kontroluje, ile rol Neutralnych jest mieszanych w puli wyboru kazdego Zaloganta.
+• <b>Globalne Limity Neutralnych</b> - Sztywne limity dla calkowitej liczby rol Neutralnych (NK i inne) dozwolonych w rundzie.
+• <b>Zredukuj streak zabojcy</b> - Zmniejsza szanse na ponowne otrzymanie roli zabijajacej, jesli gracz mial ja w poprzedniej rundzie.
+• <b>Impostor / Neutral Killing</b> - Specyficzne szanse na redukcje dla kazdej glownej frakcji zabijajacej.</string>
+
+
+
+
+  <string name="Enable Draft Mode">Wlacz Tryb Draftu</string>
+  <string name="Lock Lobby During Draft">Zablokuj lobby podczas draftu</string>
+  <string name="Use Role Chances">Uzyj szans rol</string>
+  <string name="Reduce Killing Streak">Zredukuj streak zabojcy</string>
+  <string name="Impostor">Impostor</string>
+  <string name="Neutral Killing">Neutral Killing</string>
+
+  <!-- Better Sonar Options -->
+  <string name="ExtensionOptionBetterSonar">Lepszy Sonar</string>
+  <string name="ExtensionOptionBetterSonarMode">Tryb Sonaru</string>
+  <string name="ExtensionOptionBetterSonarModeArrowAndMap">Strzalka + Mapa</string>
+  <string name="ExtensionOptionBetterSonarModeMapOnly">Tylko Mapa</string>
+
+  <!-- Time Lord Options -->
+  <string name="ExtensionOptionTimeLordRewindSpeed">Predkosc cofania czasu</string>
+
+  <!-- Forensic Options -->
+  <string name="ExtensionOptionForensicFreezeOnMeeting">Zamroz dowody po naradzie</string>
+  <!-- Mayor Options -->
+  <string name="ExtensionOptionMayorVoteCount">Liczba glosow</string>
+
+  <!-- Role Names for Tab -->
+  <string name="TOUMCEBetterRolePrefix">Better role: </string>
+  <string name="TOUMCEBetterModifierPrefix">Better modifier: </string>
+  <string name="Sonar">Sonar</string>
+  <string name="Egotist">Egotysta</string>
+  <string name="Forensic">Forensic</string>
+  <string name="Time Lord">Time Lord</string>
+  <string name="Mirror Caster">Mirror Caster</string>
+  <string name="ExtensionOptionMirrorCasterMoveWhileMenu">Mozliwosc ruchu przy otwartym menu</string>
+  <string name="Mayor">Burmistrz</string>
+
+  <!-- General Options -->
+  <string name="ExtensionOptionGeneralLawyerChat">Prywatny czat Prawnik/Klient</string>
+  <string name="ExtensionOptionGeneralLoversChat">Prywatny czat Kochankowie</string>
+  <!-- Mod Compatibility Options -->
+  <string name="ExtensionOptionCompatibilityDuplicateWarnings">Pokazuj ostrzezenia o duplikatach</string>
+  <string name="ExtensionOptionCompatibilityDuplicateAutoKick">Automatyczne wyrzucanie przy duplikatach</string>
+  <!-- Draft Mode Options -->
+  <string name="Roles To Show">Liczba rol do wyboru</string>
+  <string name="Time To Choose">Czas na wybor</string>
+  <string name="Min Neutrals Per Choice">Min Neutralnych na wybor</string>
+  <string name="Max Neutrals Per Choice">Max Neutralnych na wybor</string>
+  <string name="Min Other Neutrals">Min Innych Neutrali</string>
+  <string name="Max Other Neutrals">Max Innych Neutrali</string>
+  <string name="Min Neutral Killing">Min Neutral Killing</string>
+  <string name="Max Neutral Killing">Max Neutral Killing</string>
+  <string name="Neutral Killing">Neutral Killing</string>
 </resources>
+

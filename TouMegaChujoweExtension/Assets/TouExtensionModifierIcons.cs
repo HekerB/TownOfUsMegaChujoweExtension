@@ -17,3 +17,11 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> PublicityVoteModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Publicity_Modifier_Icon.png", 200f);
     }
 }
+
+
+
+
+
+
+
+

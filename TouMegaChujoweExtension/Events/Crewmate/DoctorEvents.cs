@@ -19,14 +19,16 @@ using TownOfUs.Utilities;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using TouMegaChujoweExtension.Modifiers.Crewmate;
+using TownOfUs;
+using TownOfUs.Events;
 
 namespace TouMegaChujoweExtension.Events.Crewmate;
 
 public static class DoctorEvents
 {
-    private static readonly Dictionary<byte, List<PendingHeal>> PendingHeals = new();
+    private static readonly Dictionary<byte, List<PendingInject>> PendingInjects = new();
 
-    public static void ScheduleHeal(PlayerControl doctor, PlayerControl target, int seed)
+    public static void ScheduleInject(PlayerControl doctor, PlayerControl target, int seed)
     {
         if (target == null || target.HasDied() || doctor == null)
         {
@@ -36,54 +38,54 @@ public static class DoctorEvents
         var options = OptionGroupSingleton<DoctorOptions>.Instance;
         var delay = options.EffectDelay;
 
-        var pending = new PendingHeal
+        var pending = new PendingInject
         {
             Doctor = doctor,
             Target = target,
             Delay = delay,
             ScheduledTime = Time.time,
-            HealId = Guid.NewGuid(),
+            InjectId = Guid.NewGuid(),
             Seed = seed
         };
 
-        if (!PendingHeals.ContainsKey(target.PlayerId))
+        if (!PendingInjects.ContainsKey(target.PlayerId))
         {
-            PendingHeals[target.PlayerId] = new List<PendingHeal>();
+            PendingInjects[target.PlayerId] = new List<PendingInject>();
         }
-        PendingHeals[target.PlayerId].Add(pending);
-        Coroutines.Start(CoApplyHeal(pending));
+        PendingInjects[target.PlayerId].Add(pending);
+        Coroutines.Start(CoApplyInject(pending));
     }
 
-    private static IEnumerator CoApplyHeal(PendingHeal pending)
+    private static IEnumerator CoApplyInject(PendingInject pending)
     {
         yield return new WaitForSeconds(pending.Delay);
 
         if (pending.Target == null || pending.Target.HasDied() || pending.Doctor == null || pending.Doctor.HasDied())
         {
-            if (PendingHeals.ContainsKey(pending.Target.PlayerId))
+            if (PendingInjects.ContainsKey(pending.Target.PlayerId))
             {
-                PendingHeals[pending.Target.PlayerId].RemoveAll(p => p.HealId == pending.HealId);
-                if (PendingHeals[pending.Target.PlayerId].Count == 0)
+                PendingInjects[pending.Target.PlayerId].RemoveAll(p => p.InjectId == pending.InjectId);
+                if (PendingInjects[pending.Target.PlayerId].Count == 0)
                 {
-                    PendingHeals.Remove(pending.Target.PlayerId);
+                    PendingInjects.Remove(pending.Target.PlayerId);
                 }
             }
             yield break;
         }
 
-        ApplyHealEffect(pending.Doctor, pending.Target, pending.Seed);
+        ApplyInjectEffect(pending.Doctor, pending.Target, pending.Seed);
         
-        if (PendingHeals.ContainsKey(pending.Target.PlayerId))
+        if (PendingInjects.ContainsKey(pending.Target.PlayerId))
         {
-            PendingHeals[pending.Target.PlayerId].RemoveAll(p => p.HealId == pending.HealId);
-            if (PendingHeals[pending.Target.PlayerId].Count == 0)
+            PendingInjects[pending.Target.PlayerId].RemoveAll(p => p.InjectId == pending.InjectId);
+            if (PendingInjects[pending.Target.PlayerId].Count == 0)
             {
-                PendingHeals.Remove(pending.Target.PlayerId);
+                PendingInjects.Remove(pending.Target.PlayerId);
             }
         }
     }
 
-    private static void ApplyHealEffect(PlayerControl doctor, PlayerControl target, int seed)
+    private static void ApplyInjectEffect(PlayerControl doctor, PlayerControl target, int seed)
     {
         if (target == null || target.HasDied())
         {
@@ -98,7 +100,7 @@ public static class DoctorEvents
 
         effects.Add((options.ChanceSpeedBoost, new Func<BaseModifier>(() => new DoctorSpeedBoostModifier(duration, durationType)), "ExtensionDoctorNotificationSpeedBoost", "Increased movement speed"));
         effects.Add((options.ChanceVisionBoost, new Func<BaseModifier>(() => new DoctorVisionBoostModifier(duration, durationType)), "ExtensionDoctorNotificationVisionBoost", "Increased vision"));
-        effects.Add((options.ChanceCleanse, new Func<BaseModifier>(() => new DoctorCleanseModifier()), "ExtensionDoctorNotificationCleanse", "Negative effects removed"));
+        effects.Add((options.ChanceCleanse, new Func<BaseModifier>(() => new DoctorCleanseModifier()), "ExtensionDoctorNotificationCleanse", "Removed negative effects"));
         effects.Add((options.ChanceShield, new Func<BaseModifier>(() => new DoctorShieldModifier(doctor, duration, durationType)), "ExtensionDoctorNotificationShield", "Protected from one attack"));
         effects.Add((options.ChanceCanVent, new Func<BaseModifier>(() => new DoctorCanVentModifier(duration, durationType)), "ExtensionDoctorNotificationCanVent", "Can use vents"));
         effects.Add((options.ChanceRegeneration, new Func<BaseModifier>(() => new DoctorRegenerationModifier(duration, durationType)), "ExtensionDoctorNotificationRegeneration", "Cooldowns recover faster"));
@@ -106,9 +108,9 @@ public static class DoctorEvents
         // Injector negative effects if enabled
         if (options.CanGiveNegativeEffects)
         {
-            effects.Add((options.ChanceSpeedBoost, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.InjectedSlownessModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionRoleInjectorEffectTypeEnumSlowness", "Slowness"));
-            effects.Add((options.ChanceVisionBoost, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.InjectedLowVisionModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionRoleInjectorEffectTypeEnumLowVision", "Low Vision"));
-            effects.Add((options.ChanceCleanse, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.InjectedConfusedModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionRoleInjectorEffectTypeEnumConfused", "Confused"));
+            effects.Add((options.ChanceNegativeSlowness, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.Impostor.InjectedSlownessModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionRoleInjectorEffectTypeEnumSlowness", "Slowness"));
+            effects.Add((options.ChanceNegativeLowVision, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.Impostor.InjectedLowVisionModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionRoleInjectorEffectTypeEnumLowVision", "Low Vision"));
+            effects.Add((options.ChanceNegativeConfused, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.Impostor.InjectedConfusedModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionRoleInjectorEffectTypeEnumConfused", "Confused"));
         }
 
         var totalWeight = effects.Sum(e => e.Weight);
@@ -118,7 +120,10 @@ public static class DoctorEvents
             // Default to Speed Boost if nothing is configured
             var defaultMod = new DoctorSpeedBoostModifier(duration, durationType);
             target.AddModifier(defaultMod);
-            ShowNotification(target, "ExtensionDoctorNotificationSpeedBoost", "Increased movement speed");
+            if (doctor != null && doctor.PlayerId != target.PlayerId)
+            {
+                ShowNotification(doctor, "ExtensionDoctorNotificationSpeedBoost", "Increased movement speed");
+            }
             return;
         }
 
@@ -146,7 +151,10 @@ public static class DoctorEvents
         if (selectedModifier != null)
         {
             target.AddModifier(selectedModifier);
-            ShowNotification(target, selectedNotificationKey, selectedDesc);
+            if (doctor != null && doctor.PlayerId != target.PlayerId)
+            {
+                ShowNotification(doctor, selectedNotificationKey, selectedDesc);
+            }
             
             // Start coroutine to remove ClericBarrierModifier if it was selected and durationType is SetTime
             // TimedModifiers handle their own duration removal
@@ -158,7 +166,7 @@ public static class DoctorEvents
     {
         var options = OptionGroupSingleton<DoctorOptions>.Instance;
         
-        if (options.DoctorSeesShieldFlash)
+        if (options.DoctorSeesShield)
         {
             ShowNotification(doctor, "ExtensionDoctorNotificationShieldAttacked", $"Your shield on {target.Data.PlayerName} protected them from {attacker.Data.PlayerName}!");
         }
@@ -166,6 +174,34 @@ public static class DoctorEvents
         if (options.TargetSeesShield)
         {
             ShowNotification(target, "ExtensionDoctorNotificationShieldSaved", $"You were protected by the Doctor's shield from {attacker.Data.PlayerName}!");
+        }
+    }
+
+    [RegisterEvent]
+    public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
+    {
+        var target = @event.Target;
+        var source = @event.Source;
+
+        if (target == null || source == null || MeetingHud.Instance || ExileController.Instance) return;
+
+        if (target.TryGetModifier<DoctorShieldModifier>(out var shield))
+        {
+            // Ignore if same player or indirect attacker ignores shield
+            if (target.PlayerId == source.PlayerId) return;
+
+            // TODO: check for IndirectAttackerModifier if needed
+            
+            MiscUtils.LogInfo(TownOfUsEventHandlers.LogLevel.Error, $"{target.Data.PlayerName} has a doctor shield, stopping an interaction from {source.Data.PlayerName}!");
+            @event.Cancel();
+
+            if (shield.Doctor != null && (TutorialManager.InstanceExists || source.AmOwner))
+            {
+                DoctorRole.RpcDoctorShieldAttacked(shield.Doctor, target, source);
+            }
+            
+            // Remove shield after use
+            target.RemoveModifier(shield);
         }
     }
 
@@ -201,18 +237,18 @@ public static class DoctorEvents
             return;
         }
 
-        var btn = CustomButtonSingleton<DoctorHealButton>.Instance;
+        var btn = CustomButtonSingleton<DoctorInjectButton>.Instance;
         var options = OptionGroupSingleton<DoctorOptions>.Instance;
         btn.SetUses((int)options.InitialUses);
     }
 
-    private class PendingHeal
+    private class PendingInject
     {
         public PlayerControl? Doctor { get; set; }
         public PlayerControl? Target { get; set; }
         public float Delay { get; set; }
         public float ScheduledTime { get; set; }
-        public Guid HealId { get; set; }
+        public Guid InjectId { get; set; }
         public int Seed { get; set; }
     }
 }

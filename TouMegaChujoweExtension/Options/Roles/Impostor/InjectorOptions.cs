@@ -1,11 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Impostor;
+using System.Collections.Generic;
+using System.Linq;
 using TownOfUs.Interfaces;
 using TownOfUs.Modules.Localization;
 
@@ -45,6 +44,16 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
     [ModdedNumberOption("ExtensionOptionInjectorEffectDelay", 0f, 30f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float EffectDelay { get; set; } = 5f;
 
+    private static readonly string[] EffectDurationTypeValues =
+    [
+        "ExtensionOptionInjectorEffectDurationTypeEnumAllRound",
+        "ExtensionOptionInjectorEffectDurationTypeEnumAllGame",
+        "ExtensionOptionInjectorEffectDurationTypeEnumSetTime"
+    ];
+
+    public ModdedEnumOption<InjectorEffectDurationType> EffectDurationType { get; } =
+        new("ExtensionOptionInjectorEffectDurationType", InjectorEffectDurationType.SetTime, EffectDurationTypeValues);
+
     public ModdedNumberOption EffectDurationOption { get; } = new("ExtensionOptionInjectorEffectDuration", 45f, 5f, 200f, 5f, MiraNumberSuffixes.Seconds)
     {
         Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.EffectDurationType.Value == InjectorEffectDurationType.SetTime
@@ -56,11 +65,8 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
     {
     }
 
-    [ModdedNumberOption("ExtensionOptionInjectorInitialUses", 0, 15)]
+    [ModdedNumberOption("ExtensionOptionInjectorInitialUses", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float InitialUses { get; set; } = 4f;
-
-    [ModdedNumberOption("ExtensionOptionInjectorUsesPerKill", 0, 5)]
-    public float UsesPerKill { get; set; } = 1f;
 
     [ModdedToggleOption("ExtensionOptionInjectorSharedCooldown")]
     public bool SharedCooldown { get; set; } = true;
@@ -71,116 +77,53 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
     [ModdedToggleOption("ExtensionOptionInjectorPositiveEffectsEnabled")]
     public bool PositiveEffectsEnabled { get; set; } = true;
 
-    private static readonly string[] EffectDurationTypeValues =
-    [
-        "ExtensionOptionInjectorEffectDurationTypeEnumAllRound",
-        "ExtensionOptionInjectorEffectDurationTypeEnumAllGame",
-        "ExtensionOptionInjectorEffectDurationTypeEnumSetTime"
-    ];
-
-    public ModdedEnumOption<InjectorEffectDurationType> EffectDurationType { get; } =
-        new("ExtensionOptionInjectorEffectDurationType", InjectorEffectDurationType.SetTime, EffectDurationTypeValues);
-
-    private static readonly string[] EffectTypeValues =
-    [
-        "ExtensionOptionInjectorEffectTypeEnumInvertedControls",
-        "ExtensionOptionInjectorEffectTypeEnumLowVision",
-        "ExtensionOptionInjectorEffectTypeEnumSlowness",
-        "ExtensionOptionInjectorEffectTypeEnumVeryLowVision",
-        "ExtensionOptionInjectorEffectTypeEnumConfused",
-        "ExtensionOptionInjectorEffectTypeEnumNoVent",
-        "ExtensionOptionInjectorEffectTypeEnumNoUse",
-        "ExtensionOptionInjectorEffectTypeEnumNoReport",
-        "ExtensionOptionInjectorEffectTypeEnumNausea",
-        "ExtensionOptionInjectorEffectTypeEnumWeakness",
-        "ExtensionOptionInjectorEffectTypeEnumSpeedBoost",
-        "ExtensionOptionInjectorEffectTypeEnumVisionBoost",
-        "ExtensionOptionInjectorEffectTypeEnumRegeneration"
-    ];
-
-    public ModdedEnumOption<InjectorEffectType> SelectedEffectType { get; } =
-        new("ExtensionOptionInjectorSelectedEffectType", InjectorEffectType.InvertedControls, EffectTypeValues);
-
-    // Individual chance options for each effect type - only the selected one is visible
+    // Individual chance options for each effect type - all visible now
     public ModdedNumberOption ChanceInvertedControlsOption { get; } =
-        new("ExtensionOptionInjectorChanceInvertedControls", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.InvertedControls
-        };
+        new("ExtensionOptionInjectorChanceInvertedControls", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceLowVisionOption { get; } =
-        new("ExtensionOptionInjectorChanceLowVision", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.LowVision
-        };
+        new("ExtensionOptionInjectorChanceLowVision", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceSlownessOption { get; } =
-        new("ExtensionOptionInjectorChanceSlowness", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.Slowness
-        };
+        new("ExtensionOptionInjectorChanceSlowness", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceVeryLowVisionOption { get; } =
-        new("ExtensionOptionInjectorChanceVeryLowVision", 50f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.VeryLowVision
-        };
+        new("ExtensionOptionInjectorChanceVeryLowVision", 50f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceConfusedOption { get; } =
-        new("ExtensionOptionInjectorChanceConfused", 40f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.Confused
-        };
+        new("ExtensionOptionInjectorChanceConfused", 40f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceNoVentOption { get; } =
-        new("ExtensionOptionInjectorChanceNoVent", 60f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.NoVent
-        };
+        new("ExtensionOptionInjectorChanceNoVent", 60f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceNoUseOption { get; } =
-        new("ExtensionOptionInjectorChanceNoUse", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.NoUse
-        };
+        new("ExtensionOptionInjectorChanceNoUse", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceNoReportOption { get; } =
-        new("ExtensionOptionInjectorChanceNoReport", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.NoReport
-        };
+        new("ExtensionOptionInjectorChanceNoReport", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceNauseaOption { get; } =
-        new("ExtensionOptionInjectorChanceNausea", 50f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.Nausea
-        };
+        new("ExtensionOptionInjectorChanceNausea", 50f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceWeaknessOption { get; } =
-        new("ExtensionOptionInjectorChanceWeakness", 20f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.Weakness
-        };
+        new("ExtensionOptionInjectorChanceWeakness", 20f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceSpeedBoostOption { get; } =
         new("ExtensionOptionInjectorChanceSpeedBoost", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
         {
-            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.SpeedBoost &&
-                            OptionGroupSingleton<InjectorOptions>.Instance.PositiveEffectsEnabled
+            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.PositiveEffectsEnabled
         };
 
     public ModdedNumberOption ChanceVisionBoostOption { get; } =
         new("ExtensionOptionInjectorChanceVisionBoost", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
         {
-            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.VisionBoost &&
-                            OptionGroupSingleton<InjectorOptions>.Instance.PositiveEffectsEnabled
+            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.PositiveEffectsEnabled
         };
 
     public ModdedNumberOption ChanceRegenerationOption { get; } =
         new("ExtensionOptionInjectorChanceRegeneration", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
         {
-            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.SelectedEffectType.Value == InjectorEffectType.Regeneration &&
-                            OptionGroupSingleton<InjectorOptions>.Instance.PositiveEffectsEnabled
+            Visible = () => OptionGroupSingleton<InjectorOptions>.Instance.PositiveEffectsEnabled
         };
 
     // Properties for backward compatibility with InjectorEvents
@@ -224,7 +167,6 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
     public IReadOnlySet<StringNames> WikiHiddenOptionKeys =>
         new HashSet<StringNames>
         {
-            SelectedEffectType.StringName,
             ChanceInvertedControlsOption.StringName,
             ChanceLowVisionOption.StringName,
             ChanceSlownessOption.StringName,

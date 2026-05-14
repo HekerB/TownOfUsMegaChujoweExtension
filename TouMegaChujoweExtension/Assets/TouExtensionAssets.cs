@@ -28,3 +28,11 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> BrokenLanternSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.BrokenLantern.png");
     }
 }
+
+
+
+
+
+
+
+

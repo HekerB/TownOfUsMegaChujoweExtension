@@ -1,9 +1,9 @@
-using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.Attributes;
-using TownOfUs.Utilities;
-using UnityEngine;
+using Il2CppInterop.Runtime;
 using Object = UnityEngine.Object;
 using Resources = UnityEngine.Resources;
+using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -25,7 +25,6 @@ public static class HackerSystem
     private static MapConsole[] _cachedMapConsoles = null!;
     private static SystemConsole _cachedCameraConsole = null!;
     private static SystemConsole _cachedDoorLogConsole = null!;
-    private static int _cachedConsoleFrame = -1;
 
     public static float JamActiveUntil { get; private set; }
 
@@ -63,7 +62,6 @@ public static class HackerSystem
         _cachedMapConsoles = null!;
         _cachedCameraConsole = null!;
         _cachedDoorLogConsole = null!;
-        _cachedConsoleFrame = -1;
     }
 
     public static HackerInfoSource GetLockedSource(byte playerId)
@@ -114,21 +112,24 @@ public static class HackerSystem
         JamChargesByPlayer[playerId] = charges;
     }
 
-    public static void AddJamCharge(byte playerId, int delta, int maxCharges)
+    public static void AddJamCharge(byte playerId, int delta)
     {
-        if (delta <= 0 || maxCharges <= 0)
+        if (delta <= 0)
         {
             return;
         }
 
         var current = GetJamCharges(playerId);
-        var next = Mathf.Clamp(current + delta, 0, maxCharges);
+        if (current == 255) return; // Infinite
+
+        var next = Mathf.Clamp(current + delta, 0, 254);
         SetJamCharges(playerId, (byte)next);
     }
 
     public static bool TryConsumeJamCharge(byte playerId)
     {
         var current = GetJamCharges(playerId);
+        if (current == 255) return true; // Infinite
         if (current <= 0)
         {
             return false;
@@ -518,3 +519,15 @@ public static class HackerSystem
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

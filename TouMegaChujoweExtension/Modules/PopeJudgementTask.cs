@@ -1,21 +1,19 @@
-using System.Collections;
 using AmongUs.Data;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
+using Object = UnityEngine.Object;
 using Reactor.Utilities.Attributes;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TownOfUs;
+using System.Collections;
 using TownOfUs.Assets;
 using TownOfUs.Modifiers.Game.Universal;
 using TownOfUs.Modules.Anims;
-using TownOfUs.Utilities;
 using TownOfUs.Modules.Localization;
+using TownOfUs.Utilities;
+using TownOfUs;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -26,7 +24,7 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
     public override bool IsComplete => _isComplete;
     private bool _isComplete;
     private bool _triggeredJudgement;
-    private PopeJudgementSystem _sabotage;
+    private PopeJudgementSystem _sabotage = null!;
     private Coroutine? _flash;
 
     public override bool ValidConsole(Console console) => false;
@@ -72,8 +70,7 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
         var playSound = false;
 
         // Golden color for Pope
-        var goldFlashHigh = new Color(1f, 0.84f, 0f, 0.34f);   // bright gold
-        var goldFlashLow = new Color(1f, 0.84f, 0f, 0.18f);    // dim gold
+
         var goldBg = new Color(1f, 0.84f, 0f, 0.37254903f);
 
         while (_sabotage.IsActive)
@@ -247,3 +244,17 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
         PlayerControl.LocalPlayer.RemoveTask(this);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

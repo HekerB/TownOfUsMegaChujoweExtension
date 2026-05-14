@@ -1,12 +1,9 @@
-using MiraAPI.Events;
-using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
+using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Player;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Patches.Lawyer;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Events;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
@@ -115,3 +112,15 @@ public static class LawyerEvents
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

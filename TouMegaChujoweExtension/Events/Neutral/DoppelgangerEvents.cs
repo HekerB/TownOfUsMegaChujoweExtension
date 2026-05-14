@@ -1,11 +1,8 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Player;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Assets;
 using TownOfUs.Events;
 using TownOfUs.Modifiers;
@@ -47,6 +44,13 @@ public static class DoppelgangerEvents
         if (killer.TryGetModifier<DoppelgangerDisguiseModifier>(out var existing))
         {
             existing.UpdateTarget(victim);
+
+            // Hide First Dead Shield visual if the killer has it
+            if (killer.TryGetModifier<FirstDeadShield>(out var s1) && s1.FirstRoundShield != null)
+            {
+                s1.FirstRoundShield.SetActive(false);
+            }
+
             if (killer.AmOwner)
             {
                 TouAudio.PlaySound(TouAudio.MimicSound);
@@ -62,6 +66,11 @@ public static class DoppelgangerEvents
 
         TouAudio.PlaySound(TouAudio.MimicSound);
         killer.RpcAddModifier<DoppelgangerDisguiseModifier>(victim);
+
+        if (killer.TryGetModifier<FirstDeadShield>(out var s2) && s2.FirstRoundShield != null)
+        {
+            s2.FirstRoundShield.SetActive(false);
+        }
     }
 
     [RegisterEvent]
@@ -111,15 +120,29 @@ public static class DoppelgangerEvents
                 player.RemoveModifier(disguise);
             }
 
-            if (OptionGroupSingleton<DoppelgangerOptions>.Instance.StealsPerRound)
+            var role = player.GetRole<DoppelgangerRole>();
+            if (role != null)
             {
-                var role = player.GetRole<DoppelgangerRole>();
-                if (role != null)
-                {
-                    var maxSteals = (int)OptionGroupSingleton<DoppelgangerOptions>.Instance.MaxSteals;
-                    role.RemainingIdentityThefts = maxSteals == 0 ? -1 : maxSteals;
-                }
+                var maxSteals = (int)OptionGroupSingleton<DoppelgangerOptions>.Instance.MaxSteals;
+                role.RemainingIdentityThefts = maxSteals == 0 ? -1 : maxSteals;
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

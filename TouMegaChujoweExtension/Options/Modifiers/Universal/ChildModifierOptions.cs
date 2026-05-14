@@ -1,10 +1,9 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Modifiers.Universal;
 using UnityEngine;
 
-namespace TouMegaChujoweExtension.Options.Modifiers;
+namespace TouMegaChujoweExtension.Options.Modifiers.Universal;
 
 public sealed class ChildModifierOptions : AbstractOptionGroup<ChildModifier>
 {
@@ -22,3 +21,16 @@ public sealed class ChildModifierOptions : AbstractOptionGroup<ChildModifier>
     public ModdedNumberOption GrowthInterval { get; } =
         new("ExtensionModifierChildGrowthInterval", 30f, 10f, 120f, 5f, MiraNumberSuffixes.Seconds);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,15 +1,13 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using MiraAPI.Utilities.Assets;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Options.Modifiers;
+using TownOfUs.Assets;
 using TownOfUs.Interfaces;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
-using TownOfUs.Roles;
 using TownOfUs.Roles.Crewmate;
-using TownOfUs.Assets;
+using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -130,3 +128,17 @@ public sealed class VentableModifier : TouGameModifier, IWikiDiscoverable, IColo
         return _cachedVentSprite!;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

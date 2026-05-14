@@ -1,14 +1,12 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Options.Modifiers;
+using TownOfUs.Interfaces;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
-using TownOfUs.Interfaces;
 
 namespace TouMegaChujoweExtension.Modifiers.Neutral;
 
@@ -58,3 +56,17 @@ public sealed class VenomousModifier : UniversalGameModifier, IWikiDiscoverable,
         return role.GetRoleAlignment() == RoleAlignment.NeutralKilling;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

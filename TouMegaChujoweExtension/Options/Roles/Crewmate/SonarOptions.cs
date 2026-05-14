@@ -1,6 +1,6 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using TownOfUs;
 using UnityEngine;
@@ -15,10 +15,11 @@ public enum SonarDisplayMode
 
 public sealed class SonarExtendedOptions : AbstractOptionGroup
 {
-    public override string GroupName => "Sonar";
+    public override string GroupName => TownOfUs.Modules.Localization.TouLocale.Get("TOUMCEBetterRolePrefix") + TownOfUs.Modules.Localization.TouLocale.Get("Sonar");
     public override Color GroupColor => TownOfUsColors.Tracker;
-    public override bool ShowInModifiersMenu => true;
-    public override uint GroupPriority => 93;
+    public override bool ShowInModifiersMenu => false;
+    public override MenuCategory ParentMenu => MenuCategory.CustomOne;
+    public override uint GroupPriority => 104;
 
     [ModdedToggleOption("ExtensionOptionBetterSonar")]
     public bool BetterSonar { get; set; } = false;

@@ -1,15 +1,14 @@
 using HarmonyLib;
-using MiraAPI.Modifiers;
-using TownOfUs.Modules;
-using TownOfUs.Networking;
-using TouMegaChujoweExtension.Modules;
-using UnityEngine;
-using TownOfUs.Options.Roles.Crewmate;
 using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
 using System.Linq;
 using System;
 using TownOfUs.Modules.Anims;
+using TownOfUs.Modules;
+using TownOfUs.Networking;
+using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.BugFixes;
 
@@ -52,32 +51,53 @@ public static class TimeLordFixesPatch
     [HarmonyPostfix]
     public static void CancelRewindForMeetingPostfix()
     {
+        EjectAllSwallowed();
+    }
+
+    [HarmonyPatch(typeof(TimeLordRewindSystem), nameof(TimeLordRewindSystem.StartRewind))]
+    [HarmonyPostfix]
+    public static void StartRewindPostfix()
+    {
+        // Also eject when starting just to be safe and prevent position desyncs during rewind
+        EjectAllSwallowed();
+    }
+
+    // New: Handle normal rewind end (falling edge of IsRewinding)
+    private static bool _wasRewinding;
+
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    [HarmonyPostfix]
+    public static void HudUpdatePostfix()
+    {
+        bool isRewinding = TimeLordRewindSystem.IsRewinding;
+        if (_wasRewinding && !isRewinding)
+        {
+            EjectAllSwallowed();
+        }
+        _wasRewinding = isRewinding;
+    }
+
+    private static void EjectAllSwallowed()
+    {
         try
         {
+            var history = Math.Clamp(OptionGroupSingleton<TimeLordOptions>.Instance.RewindHistorySeconds, 0.25f, 120f);
+            var cutoff = DateTime.UtcNow - TimeSpan.FromSeconds(history);
+
             foreach (var player in PlayerControl.AllPlayerControls)
             {
                 if (player == null) continue;
                 
-                if (PelicanSystem.IsSwallowed(player.PlayerId))
+                var swallowTime = PelicanSystem.GetSwallowTime(player.PlayerId);
+                if (swallowTime.HasValue && swallowTime.Value > cutoff)
                 {
-                    var pelicanId = PelicanSystem.GetPelicanOf(player.PlayerId);
-                    if (pelicanId.HasValue)
-                    {
-                        PelicanSystem.ReleaseAll(pelicanId.Value);
-                        
-                        // Force visibility just in case ReleaseAll didn't apply it immediately
-                        if (!player.HasDied())
-                        {
-                            player.Visible = true;
-                            player.moveable = true;
-                        }
-                    }
+                    PelicanSystem.ReleaseSinglePlayer(player.PlayerId);
                 }
             }
         }
         catch (System.Exception ex)
         {
-            UnityEngine.Debug.LogError($"[TimeLordFixesPatch] Error releasing swallowed players on rewind end: {ex.Message}");
+            UnityEngine.Debug.LogError($"[TimeLordFixesPatch] Error releasing swallowed players: {ex.Message}");
         }
     }
 
@@ -109,3 +129,16 @@ public static class TimeLordFixesPatch
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

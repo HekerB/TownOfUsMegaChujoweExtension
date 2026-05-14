@@ -4,7 +4,9 @@
 > Forked from [TownOfUsMiraRolesExtension](https://github.com/rewalo/TownOfUsMiraRolesExtension) by rewalo.
 
 > [!WARNING]
-> This project is under constant development and much of the code was written **(a bit)** with the assistance of AI. Expect bugs, weird edge cases, and frequent changes! Please report any issues you find.
+> This project is under constant development. Expect bugs, weird edge cases, and frequent changes! Please report any issues you find.
+> 
+> **AI Usage:** Artificial Intelligence was used during development to help with code and documentation.
 
 -----------------------
 
@@ -14,17 +16,35 @@
 </div>
 <br/>
 
-An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira) that adds new roles, modifiers, features, and the best, Draft Mode!
+
+An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira) that adds new roles, modifiers, features, and an advanced Draft Mode!
+
+> [!IMPORTANT]
+> **Compatibility Note:** This extension mod is only guaranteed to work with the specific versions of **Town of Us: Mira** listed below. Due to differing releases on PC and Android, versions with an `x` (e.g., `17.3.x`) are compatible with all minor releases for both platforms.
+
+| Among Us Version | TOU: Mira Version | Download Mira |
+|------------------|-------------------|---------------|
+| 17.3.x           | 1.6.2             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.2) |
+| 17.3.x           | 1.6.1             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.1) |
+| 17.3.x           | 1.6.0             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.0) |
+
+> [!TIP]
+> **In-Game Patch Notes:** Every time a new version is released, you can view the full changelog directly in the game's Main Menu through our custom announcement system! (Inspired by **Town of Us: Mira** as it uses a similar system).
 
 -----------------------
 
 # Contents
 
 - [**Contents**](#contents)
+- [**Compatibility**](#compatibility-note)
 - [**Installation**](#installation)
 - [**Building**](#building)
 - [**Requirements**](#requirements)
 - [**Roles & Modifiers**](#roles--modifiers)
+- [**Better Roles & Modifiers (Improvements)**](#better-roles--modifiers-improvements)
+- [**Draft Mode**](#draft-mode)
+- [**Security & Stability**](#security--stability)
+- [**Localization 🇵🇱 🇺🇸**](#localization--)
 - [**Chat Commands**](#chat-commands)
 - [**Credits**](#credits)
 - [**License**](#license)
@@ -44,11 +64,16 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <img src="./Images/Groups/CrewProtect.png" align="center" />
   <a href="#bodyguard-protective"><img width="10%" src="./Images/Icons/Bodyguard_Icon.png" /></a>
   <img src="./Images/Groups/CrewSupport.png" align="center" />
+  <a href="#doctor-support"><img width="10%" src="./Images/Icons/Doctor_Role_Icon.png" /></a>
   <a href="#evoker-support"><img width="10%" src="./Images/Icons/Evoker_Role_Icon.png" /></a>
   <a href="#forestaller-support"><img width="10%" src="./Images/Icons/Forestaller_Role_Icon.png" /></a>
   <a href="#mirage-support"><img width="10%" src="./Images/Icons/Mirage_Role_Icon.png" /></a>
   <a href="#trapper-support"><img width="10%" src="./Images/Icons/Trapper_Role_Icon.png" /></a>
+  <img src="./Images/Groups/ImpConcealing.png" align="center" />
+  <a href="#astral-concealing"><img width="10%" src="./Images/Icons/Astral_Role_Icon.png" /></a>
+  <a href="#speedy-concealing"><img width="10%" src="./Images/Icons/Speedy_Role_Icon.png" /></a>
   <img src="./Images/Groups/ImpKilling.png" align="center" />
+  <a href="#detonator-killing"><img width="10%" src="./Images/Icons/Detonator_Role_Icon.png" /></a>
   <a href="#kamikaze-killing"><img width="10%" src="./Images/Icons/Kamikaze_Role_Icon.png" /></a>
   <a href="#outlaw-killing"><img width="10%" src="./Images/Icons/Outlaw_Role_Icon.png" /></a>
   <a href="#witch-killing"><img width="10%" src="./Images/Icons/Witch_Role_Icon.png" /></a>
@@ -65,7 +90,6 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="#shifter-benign"><img width="10%" src="./Images/Icons/Shifter_Role_Icon.png" /></a>
   <img src="./Images/Groups/NeutEvil.png" align="center" />
   <a href="#bounty-hunter-evil"><img width="10%" src="./Images/Icons/BountyHunter_Role_Icon.png" /></a>
-  <a href="#joker-evil"><img width="10%" src="./Images/Icons/Joker_Role_Icon.png" /></a>
   <a href="#pirate-evil"><img width="10%" src="./Images/Icons/Pirate_Role_Icon.png" /></a>
   <a href="#pope-evil"><img width="10%" src="./Images/Icons/Pope_Role_Icon.png" /></a>
   <a href="#vulture-evil"><img width="10%" src="./Images/Icons/Vulture_Icon.png" /></a>
@@ -84,7 +108,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="#clueless-universal"><img width="10%" src="./Images/Icons/Clueless_Modifier_Icon.png" /></a>
   <a href="#drunk-universal"><img width="10%" src="./Images/Icons/Drunk_Modifier_Icon.png" /></a>
   <a href="#spiteful-universal"><img width="10%" src="./Images/Icons/Spiteful_Modifier_Icon.png" /></a>
-  <img width="60%" src="./Images/Groups/NeuMods.png" align="center" /> <br>
+  <img width="60%" src="./Images/Groups/NeutMods.png" align="center" /> <br>
   <a href="#death-note-neutral-killing"><img width="10%" src="./Images/Icons/Death_Note_Icon.png" /></a>
   <a href="#venomous-neutral-killing"><img width="10%" src="./Images/Icons/Venomous_Modifier_Icon.png" /></a>
 </p>
@@ -113,6 +137,9 @@ Abstain from voting to bank votes, then spend them all at once in a future meeti
 ### Bodyguard (Crewmate Protective)
 Shield a player. When they're attacked, teleport to them and eliminate the attacker but you die too.
 
+### Doctor (Crewmate Support)
+Inject players with beneficial chemicals. After a short delay, they receive a random positive effect like a permanent shield, speed boost, or enhanced vision.
+
 ### Evoker (Crewmate Support)
 Activate Blind to Flash all killing roles are blinded they cannot use any abilities and can only see themselves. Depending on the host settings, the Evoker may verify whether players are killing roles or not.
 
@@ -126,6 +153,15 @@ Place a decoy with the appearance of yourself or a random player. If anyone inte
 Place traps on vents that immobilize players who use them. Get notifications when traps are triggered.
 
 ## Impostor Roles
+
+### Astral (Impostor Concealing)
+Phase through walls to bypass obstacles. Teleport back to your starting position after a delay. You must eliminate a target while phased to survive!
+
+### Speedy (Impostor Concealing)
+Gain a permanent speed boost each time you eliminate a player. Can be configured to stack or have a maximum limit.
+
+### Detonator (Impostor Killing)
+Attach a C4 bomb to a player. Detonate it manually to eliminate the target and anyone nearby.
 
 ### Kamikaze (Impostor Killing)
 Detonate yourself to kill all nearby players. You die in the process.
@@ -164,9 +200,6 @@ Steal another player's role at the next meeting. You can only steal a Crewmate r
 
 ### Bounty Hunter (Neutral Evil)
 Hunt assigned targets. The Bounty Hunter can only kill their assigned targets. Eliminate all targets to win.
-
-### Joker (Neutral Evil)
-Place clones of other players on the map. When killing roles attack clones, it counts toward your win.
 
 ### Pirate (Neutral Evil)
 Challenge players to Rock-Paper-Scissors duels during meetings. Win enough duels to win the game.
@@ -220,9 +253,6 @@ Grants limited vent access with a cooldown and max duration.
 
 ## Additional Features & Tweaks
 
-### Egotist Tweaks
-Added options to allow the Egotist modifier to use vents, have Impostor vision, and custom vent cooldowns.
-
 ### Polish Language Support
 An option added to use Polish localizations via `ExtensionLocalSettingUsePolish`.
 
@@ -232,14 +262,41 @@ Optional cycling-style assassin guessing (arrows + guess button instead of panel
 ### Legacy Guess Death Animation
 Optional old-style death animation for guessing.
 
-### Joker PiP Customization
-Added local settings to adjust the Picture-in-Picture size and location for the Joker role.
-
 -----------------------
 
-# Chat Commands
+# Better Roles & Modifiers (Improvements)
 
-- `/me` - Displays information about your role, modifiers and task progression.
+This extension focuses on improving existing roles from Town of Us: Mira. These can be configured in the **Better Roles/Modifiers** tab in the lobby.
+
+### Better Role: Time Lord (FULLY FIXED)
+- **Physical Position Rewind:** Now correctly rewinds actual player coordinates.
+- **Revive Thresholds:** Fixed game-breaking logic where revives were inconsistent.
+- **Speed Multiplier:** Configure the rewind animation speed (0.5x - 5.0x).
+- **Pelican Fix:** Swallowed players are safely ejected during rewind.
+
+### Better Role: Vampire
+- **Vampire Sabotage:** Finalized sabotage system (TAB-only).
+- **Lights Sabotage Restriction:** Toggle whether Vampires can only sabotage Lights.
+
+### Better Role: Mirror Caster
+- **Move While Targeting:** Option to move freely (WASD) while the targeting map is open.
+- **Instant Selection:** Fixed targeting buttons to respond on the first click.
+
+### Better Role: Forensic
+- **Freeze Scenes:** Option to stop tracking suspects once a meeting starts.
+- **Suspect Logic:** Improved suspect identification to prevent false positives.
+
+### Better Role: Mayor
+- **Custom Votes:** Supports **3-10 votes** based on lobby settings.
+
+### Better Role: Sonar
+- **Map Overlays:** Custom player head map pointers and arrow overlays.
+
+### Better Modifier: Egotist
+- **Vent Access:** Toggle whether the Egotist can use vents.
+- **Impostor Vision:** Optional enhanced vision.
+- **Vent Cooldown:** Fully customizable vent timings.
+
 
 -----------------------
 
@@ -251,18 +308,26 @@ Draft Mode is a special game feature that lets players take turns choosing their
 
 1. **Pre-Game Setup** - Host enables Draft Mode in the lobby options
 2. **Draft Phase** - When the game starts, instead of random role assignment, a draft UI appears
-3. **Turn-Based Picking** - Players take turns selecting their desired role from a pool of available roles
+3. **Unified Picking** - Players select their role from a comprehensive pool of available roles for their assigned side (Crewmate, Impostor, or Neutral).
 4. **Timer** - Each player has limited time to pick (configurable by host)
 5. **Random Fallback** - If a player doesn't pick in time, a random role is assigned
-6. **Game Start** - Once all players have picked, the game begins with chosen roles
+6. **Game Start** - Once all players have picked, the game begins with chosen roles.
+
+> [!IMPORTANT]
+> By default, Draft Mode **does NOT use** the original Town of Us: Mira role chances or spawn settings. The draft pool is generated based on Draft-specific configuration. However, you can enable the **"Respect Role Chances"** option in the lobby to use your standard spawn probabilities.
 
 ## Features
 
 - **Visual Draft UI** - Clean interface showing available roles, current picker, and time remaining
-- **Role Categories** - Roles organized by alignment (Crewmate, Impostor, Neutral)
+- **Unified Role Pool** - No more restrictive categories! Players choose from all enabled roles for their side.
+- **Unified Neutral Distribution** - Intelligent mixing of Neutral roles into the Crewmate pool based on global targets and per-choice limits.
+- **60/40 Probability Logic** - Balanced distribution that favors minimum targets but occasionally spikes to maximums for variety.
+- **Balanced Pick Order (System of Thirds)** - Ensures Impostors and Neutrals are evenly spread across the start, middle, and end of the draft.
+- **Streak Reduction** - Robust protection against players getting the same killing faction (Impostor or NK) multiple games in a row.
 - **Pick Order Display** - See how many turns until your pick
 - **Audio Cues** - Alert on draft complete, your turn, and pick confirmation
 - **Random Button** - Can't decide? Pick a random role from your side
+- **Instant Start** - Automatically skips the Among Us countdown after the picking phase is complete to jump straight into the round.
 
 ## Configuration Options
 
@@ -270,11 +335,14 @@ Draft Mode is a special game feature that lets players take turns choosing their
 |--------|-------------|
 | Enable Draft Mode | Toggle draft mode on/off |
 | Lock Lobby During Draft | Prevent players from joining mid-draft |
-| Time To Choose | Seconds each player has to pick |
-| Roles To Show | Number of role options displayed |
-| Impostor Pick from all classes | Player can draft from all valid factions for their side |
-| Crewmate Pick from all classes | Player can draft from all valid factions for their side |
-| Respect Role Chances | Draft pool follows lobby spawn probabilities |
+| Roles To Show | Number of role options displayed for each player |
+| Time To Choose | Seconds each player has to pick (3s - 67s) |
+| Min/Max Neutrals Per Choice | Number of Neutral roles mixed into Crewmate choices (60/40 weighted) |
+| Reduce Killing Streak | Lower the chance of players being killing roles multiple times in a row |
+| Impostor / Neutral Killing | Configure streak reduction probability (0-100%) for specific factions |
+| Min/Max Other Neutrals | Global target range for Neutral Benign/Evil/Outlier roles in the game |
+| Min/Max Neutral Killing | Global target range for Neutral Killing roles in the game |
+| Use Role Chances | Draft pool follows lobby spawn probabilities (Weighted Shuffle) |
 
 ## Showcase
 
@@ -289,15 +357,13 @@ Draft Mode is a special game feature that lets players take turns choosing their
   </table>
 </div>
 
-### Gameplay Video (PiP)
+### Gameplay Video
 > [!TIP]
-> Click the thumbnail below to watch the Draft Mode in action!
+> Watch the Draft Mode in action below!
 
-<div align="center">
-  <a href="https://www.youtube.com/watch?v=gleivmIt4nY">
-    <img src="https://img.youtube.com/vi/gleivmIt4nY/maxresdefault.jpg" width="80%" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.5);"/>
-  </a>
-</div>
+
+https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
+
 
 
 
@@ -338,12 +404,12 @@ Draft Mode is a special game feature that lets players take turns choosing their
 > **Huge shoutout to Atony**, creator of Town of Us: Mira — roughly 70% of the art assets used in this mod originate from his work, various TOU Mira builds, and resources shared on the TOU Mira Discord. We are extremely grateful for his incredible contributions to the community.
 
 - **Asterisken** - Art for Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful and Objection Button
-- **Atony / Town of Us: Mira / Town Of Us Discord** - Art for Serial Killer, Lawyer, Witch, Wraith; Shifter role icon & button; Bodyguard role icon; Vampire Hunter role icon; Vanisher icon (recolored Swooper); Sage role icon (Seer button from TOU Mira); Sage ability buttons (Salem option buttons from Seer); Bodyguard shield animation (repainted Warden shield from TOU Mira 1.5.9); Poisoner role icon & all Poisoner button icons; Evoker Verify button icon; Shroud ability button icon; Drunk modifier icon (from TOU Mira Discord); Venomous modifier icon (flipped & recolored Rotting modifier from TOU Mira)
+- **Atony / Town of Us: Mira / Town Of Us Discord** - Art for Serial Killer, Lawyer, Witch, Wraith, Kamikaze, Detonator, Astral, Speedy, Doctor, RC-XD; Shifter role icon & button; Bodyguard role icon; Vampire Hunter role icon; Vanisher icon; Sage role icon (Seer button from TOU Mira); Sage ability buttons (Salem option buttons from Seer); Bodyguard shield animation (repainted Warden shield from TOU Mira 1.5.9); Poisoner role icon & all Poisoner button icons; Evoker Verify button icon; Shroud ability button icon; Drunk modifier icon (from TOU Mira Discord); Venomous modifier icon (flipped & recolored Rotting modifier from TOU Mira)
 - **Atony / TOU Mira Fusion** - Vampire Hunter stake button
 - **Stellar Roles** - Role ideas, some button art
 - **[Launchpad Reloaded](https://github.com/All-Of-Us-Mods/LaunchpadReloaded)** - Doppelganger role icon
 - **[All Of Us](https://github.com/All-Of-Us-Mods)** - Death Note modifier icons (from their Discord)
-- **Sidemen (YouTube)** - Kamikaze role icon (temporary, detonator icon); RC-XD Deploy & Detonate button icons
+- **Sidemen (YouTube)** - RC-XD Deploy & Detonate button icons
 - **[TOHE (Town of Host Enhanced)](https://github.com/0xDrMoe/TownofHost-Enhanced)** - Shroud role icon
 - **Star Wars** - Bounty Hunter role icon
 - **Our friend's girlfriend** - Publicity modifier icon
@@ -352,7 +418,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 - **Radzik360** - Joker laugh (intro & in-game), Kamikaze explosion sound, Pelican swallow sound
 - **Ano** - Pope intro sound
 - **Innersloth & Puffballs United** - Draft music ("Seek")
-- **Dymowy Among Us (Tajemniczy Typiarz)** - Draft pick sound, Draft alert sound
+- **Tajemniczy Among Us (Tajemniczy Typiarz)** - Draft pick sound, Draft alert sound
 - **Death Note (anime)** - Death Note kill sound (Light's laugh)
 - **YouTube** - Pope alarm & Judgement end sounds (from Divine Judgement concept videos)
 - **Star Wars** - Bounty Hunter intro sound
@@ -364,12 +430,39 @@ Draft Mode is a special game feature that lets players take turns choosing their
 - **[Syzyfowe TOU ](https://github.com/LimeShep/Town-Of-Us/)** - Evoker role concept; Pelican role concept
 - **Tajemniczy Among Us (Tajemniczy Typiarz)** - Pirate role concept
 - **[Town of Us WYGON ](https://github.com/wygon/Town-Of-Us-WYGON)** - Falcon role concept; Kamikaze role concept
-- **Sidemen (YouTube)** - RC-XD & Poisoner roles concept (recreated from their videos)
+- **Sidemen (YouTube)** - RC-XD, Detonator, Doctor, Astral, Speedy & Poisoner roles concept (recreated from their videos)
 - **Death Note (anime)** - Death Note modifier concept
 - **Our friend Weakpass** - Added Publicity modifier
 
 ## Wiki & Documentation
 - **dziabe** - Helped with shortening role descriptions for the wiki (minimal effort)
+
+-----------------------
+
+# Security & Stability
+
+### Duplicate Extension Guard
+To ensure maximum stability and prevent frequent crashes, the mod includes a built-in **Duplicate Checker**. If you accidentally leave an old version of the mod (like `TouMegaChujoweExtension (1).dll`) in your plugins folder, the game will:
+1. Display a massive red warning on the Main Menu.
+2. Automatically prevent you from joining or hosting lobbies until the duplicate is removed.
+This protects both you and other players from unexpected "Assembly not registered" errors.
+
+### Memory & Performance
+The extension is optimized to prevent common IL2CPP memory leaks. We've eliminated "Death Loops" in UI button logic that previously caused FPS drops and `OutOfMemoryException`.
+
+-----------------------
+
+# Localization 🇵🇱 🇺🇸
+
+This mod features **100% complete Polish translation**, including:
+- Role descriptions and abilities.
+- Lobby options and tooltips.
+- In-game notifications and win screens.
+- Custom "Better Roles" settings tab.
+
+You can toggle between **English** and **Polish** in the game settings via `ExtensionLocalSettingUsePolish`.
+
+-----------------------
 
 ## Frameworks & Dependencies
 - **[Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)** - Base mod
@@ -386,7 +479,7 @@ Draft Mode is a special game feature that lets players take turns choosing their
 
 -----------------------
 
-# License
+# License & Copyright
 This software is distributed under the GNU GPLv3.0 License.
 
 # Copyright

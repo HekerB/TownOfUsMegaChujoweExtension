@@ -66,6 +66,7 @@ public sealed class DoctorCanVentModifier : TimedModifier, IWikiDiscoverable
                     currentVent.SetButtons(false);
                     Player.MyPhysics.RpcExitVent(currentVent.Id);
                 }
+                Player.MyPhysics.ExitAllVents();
             }
 
             if (HudManager.Instance != null && HudManager.Instance.ImpostorVentButton != null)

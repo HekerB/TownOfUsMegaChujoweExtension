@@ -1,8 +1,8 @@
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using System.IO;
 using TMPro;
-using UnityEngine;
 using UnityEngine.TextCore.LowLevel;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Assets;
 
@@ -60,10 +60,20 @@ public static class TouExtensionFonts
             // // BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogInfo("Chewy font loaded successfully");
             return tmpFont;
         }
-        catch (System.Exception ex)
+        catch (System.Exception)
         {
-            // // BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogError($"Failed to load Chewy font: {ex}");
+            // // BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogError($"Failed to load Chewy font");
             return null;
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

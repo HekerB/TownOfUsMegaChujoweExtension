@@ -1,6 +1,5 @@
 using BepInEx.Configuration;
 using MiraAPI.LocalSettings;
-using TouMegaChujoweExtension.Assets;
 using TownOfUs.LocalSettings.Attributes;
 using TownOfUs.LocalSettings.SettingTypes;
 
@@ -60,4 +59,13 @@ public class TouExtensionLocalSettings : LocalSettingsTab
     [LocalizedLocalToggleSetting("ExtensionLocalSettingUsePolishLanguage")]
     public ConfigEntry<bool> UsePolishLanguage { get; private set; }
 }
+
+
+
+
+
+
+
+
+
 

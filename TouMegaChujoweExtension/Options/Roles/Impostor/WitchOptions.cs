@@ -1,8 +1,7 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Impostor;
 using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
@@ -12,7 +11,7 @@ public sealed class WitchOptions : AbstractOptionGroup<WitchRole>
     public override string GroupName => TouLocale.Get("ExtensionRoleWitch", "Witch");
 
     [ModdedNumberOption("ExtensionOptionWitchSpellCooldown", 5f, 120f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float SpellCooldown { get; set; } = 37.5f;
+    public float SpellCooldown { get; set; } = 32.5f;
 
     [ModdedNumberOption("ExtensionOptionWitchAdditionalCooldown", 0f, 30f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float AdditionalCooldown { get; set; } = 2.5f;
@@ -24,5 +23,5 @@ public sealed class WitchOptions : AbstractOptionGroup<WitchRole>
     public float MeetingsUntilDeath { get; set; } = 1f;
 
     [ModdedToggleOption("ExtensionOptionWitchCanSpellFirstRound")]
-    public bool CanSpellFirstRound { get; set; } = false;
+    public bool CanSpellFirstRound { get; set; } = true;
 }

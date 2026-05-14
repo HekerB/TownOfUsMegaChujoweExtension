@@ -1,10 +1,8 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Usables;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Modifiers.Crewmate;
-using TouMegaChujoweExtension.Options.Modifiers;
 using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Events.Modifiers;
@@ -22,7 +20,6 @@ public static class VentableEvents
             return;
         }
 
-        --ventableMod.VentsRemaining;
         ventableMod.CooldownTimer = OptionGroupSingleton<VentableModifierOptions>.Instance.VentCooldown.Value;
     }
 
@@ -43,3 +40,16 @@ public static class VentableEvents
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

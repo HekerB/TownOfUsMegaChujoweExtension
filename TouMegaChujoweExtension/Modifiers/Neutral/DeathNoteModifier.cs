@@ -1,13 +1,12 @@
-using System.Collections;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
+using MiraAPI.Utilities;
+using Reactor.Networking.Attributes;
+using Reactor.Networking.Rpc;
 using Reactor.Utilities;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Modules;
-using TouMegaChujoweExtension.Options.Modifiers;
+using System.Collections;
 using TownOfUs.Interfaces;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Localization;
@@ -15,8 +14,6 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
-using Reactor.Networking.Attributes;
-using Reactor.Networking.Rpc;
 
 namespace TouMegaChujoweExtension.Modifiers.Neutral;
 
@@ -54,7 +51,6 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
     private float _killTimer;
     private bool _timerActive;
     private GameObject? _notePickup;
-    private bool _spawned;
     private bool _soundPlayed;
 
     public bool IsUsed => _used;
@@ -120,7 +116,6 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
         _cursedTarget = null;
         _killTimer = 0f;
         _timerActive = false;
-        _spawned = false;
         _soundPlayed = false;
         _notePickup = null;
 
@@ -157,7 +152,6 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
         var behaviour = _notePickup.AddComponent<DeathNotePickupBehaviour>();
         behaviour.Initialize(this);
 
-        _spawned = true;
     }
 
     public override void FixedUpdate()
@@ -353,6 +347,21 @@ public enum DeathNoteSubmitResult
     NotFound,
     SelfTarget
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

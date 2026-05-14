@@ -1,5 +1,5 @@
 using MiraAPI.GameOptions;
-using TouMegaChujoweExtension.Options.Roles.Crewmate;
+using System.Linq;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -120,4 +120,23 @@ public static class VentTrapSystem
     {
         return (Vector2)vent.transform.position + new Vector2(0f, 0.3636f);
     }
+
+    public static IEnumerable<int> GetTrapsOwnedBy(byte traprId)
+    {
+        return Traps.Where(kvp => kvp.Value.OwnerId == traprId).Select(kvp => kvp.Key);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

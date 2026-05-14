@@ -1,3 +1,4 @@
+
 namespace TouMegaChujoweExtension.Networking;
 
 public enum ExtensionRpc : uint
@@ -27,7 +28,7 @@ public enum ExtensionRpc : uint
     HackerResetRound = 22,
     InjectorInject = 23,
     CharlatanConceal = 24,
-    VultureEat = 50025,
+    VultureEat = 25,
     VultureScavenge = 26,
     PelicanSwallow = 27,
     PelicanDigest = 28,
@@ -75,6 +76,24 @@ public enum ExtensionRpc : uint
     PoisonerPlayDeathAnim = 69,
     ShifterSyncTarget = 71,
     ShareFriendCode = 72,
-	YouAreBanned = 73,
+    YouAreBanned = 73,
     DeathNoteLaugh = 74,
+    DuplicateModKick = 75,
+    DoctorInject = 76,
+    DoctorShieldAttacked = 77,
+    DetonatorAttach = 78,
+    DetonatorDetonate = 79,
+    DetonatorShowEffect = 80,
+    DetonatorPlayBeep = 81,
+    DetonatorPlayExplosion = 82,
 }
+
+
+
+
+
+
+
+
+
+

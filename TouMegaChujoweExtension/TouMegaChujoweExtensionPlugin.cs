@@ -1,21 +1,17 @@
-using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
+using BepInEx;
 using HarmonyLib;
-using MiraAPI;
 using MiraAPI.PluginLoading;
-using Reactor;
-using Reactor.Networking;
+using MiraAPI;
 using Reactor.Networking.Attributes;
+using Reactor.Networking;
 using Reactor.Utilities;
+using Reactor;
 using System.Globalization;
 using System.Reflection;
-using TouMegaChujoweExtension.Patches;
-using TouMegaChujoweExtension.Patches.WinConditions;
-using TouMegaChujoweExtension.Utilities;
-using TouMegaChujoweExtension.Modules;
-using TownOfUs;
 using TownOfUs.Patches;
+using TownOfUs;
 
 namespace TouMegaChujoweExtension;
 
@@ -31,8 +27,14 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
     ///     Gets the specified Culture for string manipulations.
     /// </summary> 
     public static CultureInfo Culture => TownOfUsPlugin.Culture;
-	/// <inheritdoc />
+	    /// <inheritdoc />
     public string OptionsTitleText => "TOU Mega Chujowe Extension";
+
+    /// <inheritdoc />
+    public string CustomOptionMenuNameOne => TownOfUs.Modules.Localization.TouLocale.Get("TOUMCETabOptionBetterRoles");
+
+    /// <inheritdoc />
+    public string CustomOptionMenuOneDescription => TownOfUs.Modules.Localization.TouLocale.Get("TOUMCETabOptionBetterRolesDesc");
     /// <summary>
     ///     Determines if the current build is a dev build or not.
     /// </summary>
@@ -45,21 +47,18 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 
 	public override void Load()
 	{
+		DuplicateChecker.Check();
 		Harmony = new Harmony(Id);
 
 		ReactorCredits.Register("Tou Mega Chujowe Extension", Version, IsDevBuild, ReactorCredits.AlwaysShow);
 		IL2CPPChainloader.Instance.Finished += Modules.ExtensionLocale.SearchInternalLocale;
 		IL2CPPChainloader.Instance.Finished += LawyerTeamChatRegistration.Register;
-		IL2CPPChainloader.Instance.Finished += Patches.Lovers.LoverMeetingChatRegistration.Register;
-		IL2CPPChainloader.Instance.Finished += Patches.SchrodingersCat.SchrodingersCatChatRegistration.Register;
+		IL2CPPChainloader.Instance.Finished += Patches.Roles.Lovers.LoverMeetingChatRegistration.Register;
 		IL2CPPChainloader.Instance.Finished += () => ExtensionModNewsFetcher.CheckForNews();
 	
 		PatchAllWithErrorHandling();
 
-		WinConditionRegistry.Register(new LawyerDuoWinCondition());
-		WinConditionRegistry.Register(new LawyerParityWinCondition());
-		WinConditionRegistry.Register(new PelicanWinCondition());
-		WinConditionRegistry.Register(new PopeWinCondition());
+		WinConditionRegistry.Register(new NeutralExtensionWinCondition());
 	}
 
     private void PatchAllWithErrorHandling()
@@ -109,37 +108,19 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
             throw new System.InvalidOperationException($"Failed to apply any Harmony patches. {failCount} patch classes failed. See log for details.");
         }
 
-        // Apply manual patches for Town of Us role buttons that need special handling
-        PatchToURoleButtons();
-    }
-
-    private void PatchToURoleButtons()
-    {
-        try
-        {
-            var assembly = typeof(TownOfUsPlugin).Assembly;
-            var types = assembly.GetTypes();
-            var prefix = new HarmonyMethod(typeof(ShieldUtils).GetMethod(nameof(ShieldUtils.HandleToURoleButtonPrefix)));
-
-            foreach (var type in types)
-            {
-                // Specifically target roles that have hardcoded shield checks in their OnClick
-                if (type.Name == "SheriffShootButton" || 
-                    type.Name == "OfficerShootButton" || 
-                    type.Name == "HunterKillButton")
-                {
-                    var method = type.GetMethod("OnClick", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (method != null)
-                    {
-                        Info($"[ManualPatch] Patching {type.Name}.OnClick");
-                        Harmony.Patch(method, prefix: prefix);
-                    }
-                }
-            }
-        }
-        catch (System.Exception ex)
-        {
-            Error($"[ManualPatch] Critical failure during manual patching: {ex.Message}");
-        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

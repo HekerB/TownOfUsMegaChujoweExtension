@@ -1,3 +1,4 @@
+
 namespace TouMegaChujoweExtension.Modules;
 
 /// <summary>
@@ -17,3 +18,15 @@ public static class LawyerWinConditionState
         Triggered = false;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,9 +1,7 @@
 using MiraAPI.GameOptions;
-using TouMegaChujoweExtension.Options.Roles.Impostor;
-using TouMegaChujoweExtension.Roles.Impostor;
-using UnityEngine;
 using Object = UnityEngine.Object;
 using TMPro;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -163,3 +161,18 @@ public static class CharlatanConcealSystem
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

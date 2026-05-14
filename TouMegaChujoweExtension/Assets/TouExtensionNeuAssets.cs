@@ -26,3 +26,11 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> SchrodingersCatRoleIcon { get; } = TownOfUs.Assets.TouRoleIcons.Traitor; // Placeholder
     }
 }
+
+
+
+
+
+
+
+

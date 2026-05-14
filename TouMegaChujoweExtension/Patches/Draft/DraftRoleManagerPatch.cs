@@ -1,7 +1,6 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Modules;
 using TownOfUs.Patches;
 using TownOfUs.Utilities;
 
@@ -35,6 +34,7 @@ public static class DraftRoleManagerPatch
 
 private static void ApplyDraftRoles()
 {
+    DraftSystem.LastNeutralKillingIds.Clear();
     foreach (var (playerId, roleId) in DraftSystem.DraftPicks)
     {
         var player = MiscUtils.PlayerById(playerId);
@@ -43,9 +43,16 @@ private static void ApplyDraftRoles()
             // Info($"[Draft] Skipping role assignment for player {playerId} (disconnected/null).");
             continue;
         }
+
+        // Record for NK streak reduction
+        if (DraftSystem.PlayerFactions.TryGetValue(playerId, out var faction) && faction == DraftFaction.NeutralKilling)
+        {
+            DraftSystem.LastNeutralKillingIds.Add(playerId);
+        }
         
         player.RpcSetRole((RoleTypes)roleId);
     }
+
 
     // Assign Crewmate to any player not in draft picks (e.g. spectators)
     // This ensures they get a valid base role so TownOfUs can convert them to SpectatorRole

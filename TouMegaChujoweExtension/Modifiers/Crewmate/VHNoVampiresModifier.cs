@@ -7,3 +7,15 @@ public sealed class VHNoVampiresModifier : BaseModifier
     public override string ModifierName => "VH With No Vampires";
     public override bool HideOnUi => true;
 }
+
+
+
+
+
+
+
+
+
+
+
+

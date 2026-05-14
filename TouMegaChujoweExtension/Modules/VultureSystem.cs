@@ -1,10 +1,9 @@
-using System.Collections;
 using MiraAPI.Modifiers;
+using Object = UnityEngine.Object;
 using Reactor.Utilities;
-using TouMegaChujoweExtension.Modifiers;
+using System.Collections;
 using TownOfUs.Utilities;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -121,3 +120,21 @@ public static class VultureSystem
         ActiveScavenges.Clear();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

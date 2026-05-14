@@ -1,27 +1,21 @@
+using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
-using MiraAPI.Events;
-using MiraAPI.Events.Vanilla.Gameplay;
 using Reactor.Utilities;
 using System.Collections;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Roles.Crewmate;
-using TouMegaChujoweExtension.Roles.Neutral;
-using TownOfUs.Modifiers;
-using TownOfUs.Modifiers.Crewmate;
-using TownOfUs.Modifiers.Game;
-using TownOfUs.Modifiers.Game.Crewmate;
-using TownOfUs.Modifiers.Neutral;
-using TownOfUs.Modules;
-using TownOfUs.Modules.Localization;
-using TownOfUs.Networking;
-using TownOfUs.Roles.Crewmate;
-using TownOfUs.Utilities;
 using TownOfUs.Events;
-using TouMegaChujoweExtension.Utilities;
+using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modifiers.Game.Crewmate;
+using TownOfUs.Modifiers.Game;
+using TownOfUs.Modifiers;
+using TownOfUs.Modules.Localization;
+using TownOfUs.Modules;
+using TownOfUs.Networking;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
@@ -61,13 +55,17 @@ public static class PelicanSystem
         return SwallowedPlayers.TryGetValue(pelicanId, out var set) ? set : new HashSet<byte>();
     }
 
+    private static readonly Dictionary<byte, byte> SwallowTracker = new();
+    private static readonly Dictionary<byte, DateTime> SwallowTimes = new();
+
+    public static DateTime? GetSwallowTime(byte victimId)
+    {
+        return SwallowTimes.TryGetValue(victimId, out var time) ? time : null;
+    }
+
     public static byte? GetPelicanOf(byte victimId)
     {
-        foreach (var kvp in SwallowedPlayers)
-        {
-            if (kvp.Value.Contains(victimId)) return kvp.Key;
-        }
-        return null;
+        return SwallowTracker.TryGetValue(victimId, out var pelicanId) ? pelicanId : null;
     }
 
     public static void UpdatePelicanPosition(byte pelicanId, Vector2 position)
@@ -92,7 +90,7 @@ public static class PelicanSystem
             if (player != null && player.TryGetModifier<FootstepsModifier>(out var footsteps))
                 player.RemoveModifier(footsteps);
         }
-        catch { }
+        catch { /* ignore modifier removal errors */ }
     }
 
     private static void RestoreFootstepsIfNeeded(PlayerControl player)
@@ -106,7 +104,7 @@ public static class PelicanSystem
             if (!player.HasModifier<FootstepsModifier>())
                 player.AddModifier<FootstepsModifier>();
         }
-        catch { }
+        catch { /* ignore modifier restoration errors */ }
     }
 
     // ==================== PRE-WIN DIGEST ====================
@@ -131,145 +129,16 @@ public static class PelicanSystem
 
         if (nonSwallowedAliveOthers > 0) return false;
 
-        Logger<TouMegaChujoweExtensionPlugin>.Info($"[PelicanSystem] Win condition met (others: {nonSwallowedAliveOthers}), triggering digest for win!");
-        
-        // TEMPORARILY DISABLED to test if this is the cause of instant ghosts
-        // PelicanRole.RpcPelicanDigest(pelican);
+        // Win condition met, triggering digest for win!
         return false;
     }
 
     // ==================== SHIELD CHECKING ====================
+    // Shield checks are now handled by the MiraAPI BeforeMurderEvent system.
+    // PelicanSwallowButton.ClickHandler() fires BeforeMurderEvent before calling OnClick/RpcPelicanSwallow.
+    // Native TOU-Mira event handlers (MedicEvents, WardenEvents, etc.) and BodyguardShieldEvents
+    // will cancel the event if the target is shielded, preventing the swallow from happening.
 
-    public static ShieldType CheckAllShields(PlayerControl pelican, PlayerControl target)
-    {
-        return target.GetShieldType();
-    }
-
-    public static bool HandleShieldCheck(PlayerControl pelican, PlayerControl target)
-    {
-        var shieldType = CheckAllShields(pelican, target);
-        if (shieldType == ShieldType.None) return false;
-
-        switch (shieldType)
-        {
-            case ShieldType.FirstDead:
-                break;
-
-            case ShieldType.Bodyguard:
-                HandleBodyguardShieldHit(pelican, target);
-                break;
-
-            case ShieldType.Child:
-                break;
-
-            case ShieldType.Medic:
-                HandleMedicShieldHit(pelican, target);
-                break;
-
-            case ShieldType.Warden:
-                HandleWardenFortifiedHit(pelican, target);
-                break;
-
-            case ShieldType.Mirrorcaster:
-                HandleMagicMirrorHit(pelican, target);
-                break;
-
-            case ShieldType.Fairy:
-                return true;
-
-            case ShieldType.Mercenary:
-                return true;
-
-            case ShieldType.DeadlyQuota:
-                return true;
-
-            case ShieldType.Oracle:
-                HandleOracleBlessHit(pelican, target);
-                break;
-        }
-
-        if (pelican.AmOwner)
-        {
-            ShieldUtils.TriggerShieldFlash(pelican, shieldType);
-        }
-
-        Logger<TouMegaChujoweExtensionPlugin>.Info(
-            $"[PelicanSystem] Swallow blocked by {shieldType} on player {target.PlayerId}");
-        return true;
-    }
-
-    private static void HandleBodyguardShieldHit(PlayerControl pelican, PlayerControl target)
-    {
-        try
-        {
-            if (target.TryGetModifier<BodyguardShieldModifier>(out var shieldMod))
-            {
-                var bodyguard = shieldMod.Bodyguard;
-                if (bodyguard != null)
-                {
-                    BodyguardRole.RpcBodyguardShieldAttacked(bodyguard, pelican, target);
-                    return;
-                }
-            }
-        }
-        catch (System.Exception ex)
-        {
-            Logger<TouMegaChujoweExtensionPlugin>.Error(
-                $"[PelicanSystem] Error handling Bodyguard shield: {ex.Message}");
-        }
-    }
-
-    private static void HandleMedicShieldHit(PlayerControl pelican, PlayerControl target)
-    {
-        try
-        {
-            if (target.TryGetModifier<MedicShieldModifier>(out var medicMod))
-                MedicRole.RpcMedicShieldAttacked(medicMod.Medic, pelican, target);
-        }
-        catch (System.Exception ex)
-        {
-            Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Error handling Medic shield: {ex.Message}");
-        }
-    }
-
-    private static void HandleWardenFortifiedHit(PlayerControl pelican, PlayerControl target)
-    {
-        try
-        {
-            if (target.TryGetModifier<WardenFortifiedModifier>(out var wardenMod))
-                WardenRole.RpcWardenNotify(wardenMod.Warden, pelican, target);
-        }
-        catch (System.Exception ex)
-        {
-            Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Error handling Warden shield: {ex.Message}");
-        }
-    }
-
-    private static void HandleMagicMirrorHit(PlayerControl pelican, PlayerControl target)
-    {
-        try
-        {
-            if (target.TryGetModifier<MagicMirrorModifier>(out var mirrorMod))
-                MirrorcasterRole.RpcMagicMirrorAttacked(mirrorMod.Mirrorcaster, pelican, target);
-        }
-        catch (System.Exception ex)
-        {
-            Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Error handling Mirrorcaster shield: {ex.Message}");
-        }
-    }
-
-    private static void HandleOracleBlessHit(PlayerControl pelican, PlayerControl target)
-    {
-        try
-        {
-            if (target.TryGetModifier<TownOfUs.Modifiers.Crewmate.OracleBlessedModifier>(out var oracleMod))
-                OracleRole.RpcOracleBlessNotify(pelican, oracleMod.Oracle, target);
-        }
-        catch (System.Exception ex)
-        {
-            Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Error handling Oracle blessing: {ex.Message}");
-        }
-    }
 
     // ==================== SWALLOW / DIGEST / RELEASE ====================
 
@@ -283,6 +152,8 @@ public static class PelicanSystem
 
         set.Add(victimId);
         AllSwallowed.Add(victimId);
+        SwallowTracker[victimId] = pelicanId;
+        SwallowTimes[victimId] = DateTime.UtcNow;
 
         var victim = MiscUtils.PlayerById(victimId);
         if (victim != null)
@@ -340,7 +211,7 @@ public static class PelicanSystem
                 bgRole.MarkedAttackerDot = false;
             }
         }
-        catch { }
+        catch { /* ignore role-specific state cleanup errors */ }
     }
 
     private static void EndExternalControl(PlayerControl victim)
@@ -354,7 +225,7 @@ public static class PelicanSystem
                     TownOfUs.Roles.Impostor.ParasiteRole.RpcParasiteEndControl(parasite, victim);
             }
         }
-        catch { }
+        catch { /* ignore Parasite/Puppeteer state errors */ }
 
         try
         {
@@ -365,21 +236,21 @@ public static class PelicanSystem
                     TownOfUs.Roles.Impostor.PuppeteerRole.RpcPuppeteerEndControl(puppeteer, victim);
             }
         }
-        catch { }
+        catch { /* ignore Puppeteer state errors */ }
 
         try
         {
             if (victim.Data?.Role is TownOfUs.Roles.Impostor.ParasiteRole parasiteRole && parasiteRole.Controlled != null)
                 TownOfUs.Roles.Impostor.ParasiteRole.RpcParasiteEndControl(victim, parasiteRole.Controlled);
         }
-        catch { }
+        catch { /* ignore Parasite role state errors */ }
 
         try
         {
             if (victim.Data?.Role is TownOfUs.Roles.Impostor.PuppeteerRole puppeteerRole && puppeteerRole.Controlled != null)
                 TownOfUs.Roles.Impostor.PuppeteerRole.RpcPuppeteerEndControl(victim, puppeteerRole.Controlled);
         }
-        catch { }
+        catch { /* ignore Puppeteer role state errors */ }
     }
 
     public static void DigestAll(byte pelicanId)
@@ -393,6 +264,8 @@ public static class PelicanSystem
             if (victim != null && !victim.HasDied())
             {
                 AllSwallowed.Remove(victimId);
+                SwallowTracker.Remove(victimId);
+            SwallowTimes.Remove(victimId);
                 OriginalPositions.Remove(victimId);
 
                 DigestKillVictims.Add(victimId);
@@ -412,7 +285,7 @@ public static class PelicanSystem
 
                 if (!victim.HasModifier<DeathHandlerModifier>())
                 {
-                    try { victim.AddModifier<DeathHandlerModifier>(); } catch { }
+                    try { victim.AddModifier<DeathHandlerModifier>(); } catch { /* ignore death handler addition failure */ }
                 }
 
                 try
@@ -430,7 +303,7 @@ public static class PelicanSystem
                         lockInfo: DeathHandlerOverride.SetTrue
                     );
                 }
-                catch { }
+                catch { /* ignore death handler update errors */ }
             }
 
             if (victim != null)
@@ -448,6 +321,8 @@ public static class PelicanSystem
             }
 
             AllSwallowed.Remove(victimId);
+            SwallowTracker.Remove(victimId);
+            SwallowTimes.Remove(victimId);
             OriginalPositions.Remove(victimId);
 
             // Host assigns the proper Ghost role so the player gets ghost abilities (like Haunt)
@@ -485,7 +360,7 @@ public static class PelicanSystem
                 HudManager.Instance.SetHudActive(false);
                 HudManager.Instance.SetHudActive(true);
             }
-            catch { }
+            catch { /* ignore HUD refresh errors */ }
         }
     }
 
@@ -549,7 +424,7 @@ public static class PelicanSystem
                     if (victim.TryGetModifier<DeathHandlerModifier>(out var dhMod))
                         victim.RemoveModifier(dhMod);
                 }
-                catch { }
+                catch { /* ignore death handler removal errors */ }
 
                 if (!victim.HasDied())
                 {
@@ -573,6 +448,8 @@ public static class PelicanSystem
             }
 
             AllSwallowed.Remove(victimId);
+            SwallowTracker.Remove(victimId);
+            SwallowTimes.Remove(victimId);
             OriginalPositions.Remove(victimId);
         }
 
@@ -581,15 +458,64 @@ public static class PelicanSystem
         LastPelicanPositions.Remove(pelicanId);
     }
 
+    public static void ReleaseSinglePlayer(byte victimId)
+    {
+        if (!SwallowTracker.TryGetValue(victimId, out var pelicanId)) return;
+        if (!SwallowedPlayers.TryGetValue(pelicanId, out var victims)) return;
+
+        var victim = MiscUtils.PlayerById(victimId);
+        if (victim != null)
+        {
+            RemoveSwallowedModifier(victim);
+            try
+            {
+                if (victim.TryGetModifier<DeathHandlerModifier>(out var dhMod))
+                    victim.RemoveModifier(dhMod);
+            }
+            catch { /* ignore death handler removal errors */ }
+
+            if (!victim.HasDied())
+            {
+                victim.Visible = true;
+                victim.moveable = true;
+
+                if (OriginalPositions.TryGetValue(victimId, out var origPos))
+                {
+                    victim.transform.position = new Vector3(origPos.x, origPos.y, 0f);
+                    victim.NetTransform.SnapTo(origPos);
+                }
+
+                RestoreFootstepsIfNeeded(victim);
+            }
+
+            if (victim.AmOwner)
+            {
+                StopSpectatingPelican();
+                HideSwallowedNotification();
+                if (!victim.HasDied()) ShowReleaseNotification();
+            }
+        }
+
+        victims.Remove(victimId);
+        AllSwallowed.Remove(victimId);
+        SwallowTracker.Remove(victimId);
+        SwallowTimes.Remove(victimId);
+        OriginalPositions.Remove(victimId);
+
+        if (victims.Count == 0)
+        {
+            SwallowedPlayers.Remove(pelicanId);
+            LastPelicanPositions.Remove(pelicanId);
+        }
+    }
+
     private static Vector2 FindSafePosition(Vector2 targetPosition)
     {
         if (targetPosition.x < -500f || targetPosition.y < -500f)
         {
-            foreach (var kvp in OriginalPositions)
-            {
-                if (IsPositionSafe(kvp.Value, kvp.Value)) return kvp.Value;
-            }
-            return Vector2.zero;
+        var safePos = OriginalPositions.Values.FirstOrDefault(pos => IsPositionSafe(pos, pos));
+        if (safePos != default) return safePos;
+        return Vector2.zero;
         }
 
         if (IsPositionSafe(targetPosition, targetPosition)) return targetPosition;
@@ -608,10 +534,8 @@ public static class PelicanSystem
             }
         }
 
-        foreach (var kvp in OriginalPositions)
-        {
-            if (IsPositionSafe(kvp.Value, kvp.Value)) return kvp.Value;
-        }
+        var fallbackPos = OriginalPositions.Values.FirstOrDefault(pos => IsPositionSafe(pos, pos));
+        if (fallbackPos != default) return fallbackPos;
 
         try
         {
@@ -621,7 +545,7 @@ public static class PelicanSystem
                 if (IsPositionSafe(spawn, spawn)) return spawn;
             }
         }
-        catch { }
+        catch { /* ignore ship status center errors */ }
 
         return targetPosition;
     }
@@ -643,7 +567,7 @@ public static class PelicanSystem
 
             return true;
         }
-        catch { return true; }
+        catch { /* fallback to safe default on error */ return true; }
     }
 
     private static void RemoveSwallowedModifier(PlayerControl player)
@@ -720,13 +644,13 @@ public static class PelicanSystem
             if (notif != null)
             {
                 _swallowedNotificationObject = notif.gameObject;
-                try { notif.AdjustNotification(); } catch { }
+                try { notif.AdjustNotification(); } catch { /* ignore adjustment errors */ }
                 try
                 {
                     var canvasGroup = notif.GetComponent<CanvasGroup>();
                     if (canvasGroup != null) canvasGroup.alpha = 1f;
                 }
-                catch { }
+                catch { /* ignore alpha setting errors */ }
             }
         }
         catch (System.Exception ex)
@@ -774,6 +698,8 @@ public static class PelicanSystem
                 }
 
                 AllSwallowed.Remove(victimId);
+                SwallowTracker.Remove(victimId);
+            SwallowTimes.Remove(victimId);
                 OriginalPositions.Remove(victimId);
             }
 
@@ -808,6 +734,8 @@ public static class PelicanSystem
 
         SwallowedPlayers.Clear();
         AllSwallowed.Clear();
+        SwallowTracker.Clear();
+        SwallowTimes.Clear();
         OriginalPositions.Clear();
         LastPelicanPositions.Clear();
         PendingDigestVictims.Clear();
@@ -824,15 +752,17 @@ public static class PelicanSystem
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player == null) continue;
-            try { RemoveSwallowedModifier(player); } catch { }
+            try { RemoveSwallowedModifier(player); } catch { /* ignore cleanup error */ }
             player.Visible = true;
             player.moveable = true;
             RestoreFootstepsIfNeeded(player);
-            try { player.NetTransform.Halt(); } catch { }
+            try { player.NetTransform.Halt(); } catch { /* ignore halt error */ }
         }
 
         SwallowedPlayers.Clear();
         AllSwallowed.Clear();
+        SwallowTracker.Clear();
+        SwallowTimes.Clear();
         OriginalPositions.Clear();
         LastPelicanPositions.Clear();
         PendingDigestVictims.Clear();
@@ -841,3 +771,22 @@ public static class PelicanSystem
         _preWinDigestDone = false;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,12 +1,11 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Modifiers.Universal;
+using SpitefulDurationTypeEnum = TouMegaChujoweExtension.Options.Modifiers.Universal.SpitefulDurationType;
+using SpitefulEffectTypeEnum = TouMegaChujoweExtension.Options.Modifiers.Universal.SpitefulEffectType;
 using UnityEngine;
-using SpitefulDurationTypeEnum = TouMegaChujoweExtension.Options.Modifiers.SpitefulDurationType;
-using SpitefulEffectTypeEnum = TouMegaChujoweExtension.Options.Modifiers.SpitefulEffectType;
 
-namespace TouMegaChujoweExtension.Options.Modifiers;
+namespace TouMegaChujoweExtension.Options.Modifiers.Universal;
 
 public enum SpitefulEffectType
 {
@@ -56,3 +55,16 @@ public sealed class SpitefulModifierOptions : AbstractOptionGroup<SpitefulModifi
             Visible = () => OptionGroupSingleton<SpitefulModifierOptions>.Instance.SpitefulDurationType.Value == SpitefulDurationTypeEnum.NextRounds
         };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

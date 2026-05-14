@@ -1,9 +1,7 @@
 using HarmonyLib;
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events;
 using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Roles.Impostor;
 using TownOfUs.Events.Modifiers;
 using TownOfUs.Modifiers.Game.Crewmate;
 using TownOfUs.Utilities;
@@ -33,3 +31,21 @@ public static class WitchBaitEvents
         return true;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

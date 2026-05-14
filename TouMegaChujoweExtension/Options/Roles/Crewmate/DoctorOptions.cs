@@ -30,8 +30,8 @@ public sealed class DoctorOptions : AbstractOptionGroup<DoctorRole>, IWikiOption
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleDoctor", "Doctor");
 
-    [ModdedNumberOption("ExtensionOptionDoctorHealCooldown", 5f, 120f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float HealCooldown { get; set; } = 30f;
+    [ModdedNumberOption("ExtensionOptionDoctorInjectCooldown", 5f, 120f, 2.5f, MiraNumberSuffixes.Seconds)]
+    public float InjectCooldown { get; set; } = 30f;
 
     [ModdedNumberOption("ExtensionOptionDoctorEffectDelay", 0f, 30f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float EffectDelay { get; set; } = 3f;
@@ -46,70 +46,64 @@ public sealed class DoctorOptions : AbstractOptionGroup<DoctorRole>, IWikiOption
     public ModdedEnumOption<DoctorEffectDurationType> EffectDurationType { get; } =
         new("ExtensionOptionDoctorEffectDurationType", DoctorEffectDurationType.SetTime, EffectDurationTypeValues);
 
-    [ModdedNumberOption("ExtensionOptionDoctorEffectDuration", 5f, 200f, 5f, MiraNumberSuffixes.Seconds)]
-    public float EffectDuration { get; set; } = 30f;
+    public ModdedNumberOption EffectDurationOption { get; } = new("ExtensionOptionDoctorEffectDuration", 30f, 5f, 200f, 5f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.EffectDurationType.Value == DoctorEffectDurationType.SetTime
+    };
 
-    [ModdedNumberOption("ExtensionOptionDoctorInitialUses", 0, 15)]
+    public float EffectDuration => EffectDurationOption.Value;
+
+    [ModdedNumberOption("ExtensionOptionDoctorInitialUses", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float InitialUses { get; set; } = 3f;
 
     [ModdedToggleOption("ExtensionOptionDoctorCanGiveNegativeEffects")]
     public bool CanGiveNegativeEffects { get; set; } = false;
 
-    [ModdedToggleOption("ExtensionOptionDoctorSeesShieldFlash")]
-    public bool DoctorSeesShieldFlash { get; set; } = true;
+    public ModdedNumberOption ChanceNegativeSlownessOption { get; } =
+        new("ExtensionOptionDoctorChanceNegativeSlowness", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
+        {
+            Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.CanGiveNegativeEffects
+        };
+
+    public ModdedNumberOption ChanceNegativeLowVisionOption { get; } =
+        new("ExtensionOptionDoctorChanceNegativeLowVision", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
+        {
+            Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.CanGiveNegativeEffects
+        };
+
+    public ModdedNumberOption ChanceNegativeConfusedOption { get; } =
+        new("ExtensionOptionDoctorChanceNegativeConfused", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
+        {
+            Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.CanGiveNegativeEffects
+        };
+
+    public float ChanceNegativeSlowness => ChanceNegativeSlownessOption.Value;
+    public float ChanceNegativeLowVision => ChanceNegativeLowVisionOption.Value;
+    public float ChanceNegativeConfused => ChanceNegativeConfusedOption.Value;
+
+    [ModdedToggleOption("ExtensionOptionDoctorSeesShield")]
+    public bool DoctorSeesShield { get; set; } = true;
 
     [ModdedToggleOption("ExtensionOptionDoctorTargetSeesShield")]
     public bool TargetSeesShield { get; set; } = true;
 
-    // Effect selection and chance configuration
-    private static readonly string[] EffectTypeValues =
-    [
-        "ExtensionOptionInjectorEffectTypeEnumSpeedBoost",
-        "ExtensionOptionInjectorEffectTypeEnumVisionBoost",
-        "ExtensionOptionDoctorEffectTypeEnumCleanse",
-        "ExtensionOptionDoctorEffectTypeEnumShield",
-        "ExtensionOptionDoctorEffectTypeEnumCanVent",
-        "ExtensionOptionDoctorEffectTypeEnumRegeneration"
-    ];
-
-    public ModdedEnumOption<DoctorEffectType> SelectedEffectType { get; } =
-        new("ExtensionOptionDoctorSelectedEffectType", DoctorEffectType.SpeedBoost, EffectTypeValues);
-
     public ModdedNumberOption ChanceSpeedBoostOption { get; } =
-        new("ExtensionOptionDoctorChanceSpeedBoost", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.SelectedEffectType.Value == DoctorEffectType.SpeedBoost
-        };
+        new("ExtensionOptionDoctorChanceSpeedBoost", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceVisionBoostOption { get; } =
-        new("ExtensionOptionDoctorChanceVisionBoost", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.SelectedEffectType.Value == DoctorEffectType.VisionBoost
-        };
+        new("ExtensionOptionDoctorChanceVisionBoost", 30f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceCleanseOption { get; } =
-        new("ExtensionOptionDoctorChanceCleanse", 40f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.SelectedEffectType.Value == DoctorEffectType.Cleanse
-        };
+        new("ExtensionOptionDoctorChanceCleanse", 40f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceShieldOption { get; } =
-        new("ExtensionOptionDoctorChanceShield", 20f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.SelectedEffectType.Value == DoctorEffectType.Shield
-        };
+        new("ExtensionOptionDoctorChanceShield", 20f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceCanVentOption { get; } =
-        new("ExtensionOptionDoctorChanceCanVent", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.SelectedEffectType.Value == DoctorEffectType.CanVent
-        };
+        new("ExtensionOptionDoctorChanceCanVent", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public ModdedNumberOption ChanceRegenerationOption { get; } =
-        new("ExtensionOptionDoctorChanceRegeneration", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<DoctorOptions>.Instance.SelectedEffectType.Value == DoctorEffectType.Regeneration
-        };
+        new("ExtensionOptionDoctorChanceRegeneration", 10f, 0f, 100f, 10f, MiraNumberSuffixes.Percent);
 
     public float ChanceSpeedBoost => ChanceSpeedBoostOption.Value;
     public float ChanceVisionBoost => ChanceVisionBoostOption.Value;
@@ -135,13 +129,15 @@ public sealed class DoctorOptions : AbstractOptionGroup<DoctorRole>, IWikiOption
     public IReadOnlySet<StringNames> WikiHiddenOptionKeys =>
         new HashSet<StringNames>
         {
-            SelectedEffectType.StringName,
             ChanceSpeedBoostOption.StringName,
             ChanceVisionBoostOption.StringName,
             ChanceCleanseOption.StringName,
             ChanceShieldOption.StringName,
             ChanceCanVentOption.StringName,
-            ChanceRegenerationOption.StringName
+            ChanceRegenerationOption.StringName,
+            ChanceNegativeSlownessOption.StringName,
+            ChanceNegativeLowVisionOption.StringName,
+            ChanceNegativeConfusedOption.StringName
         };
 
     public IEnumerable<string> GetWikiOptionSummaryLines()
@@ -154,12 +150,19 @@ public sealed class DoctorOptions : AbstractOptionGroup<DoctorRole>, IWikiOption
         if (ChanceShield > 0) enabledEffects.Add($"Shield: {ChanceShield}%");
         if (ChanceCanVent > 0) enabledEffects.Add($"Can Vent: {ChanceCanVent}%");
         if (ChanceRegeneration > 0) enabledEffects.Add($"Regeneration: {ChanceRegeneration}%");
+        
+        if (CanGiveNegativeEffects)
+        {
+            if (ChanceNegativeSlowness > 0) enabledEffects.Add($"Negative Slowness: {ChanceNegativeSlowness}%");
+            if (ChanceNegativeLowVision > 0) enabledEffects.Add($"Negative Low Vision: {ChanceNegativeLowVision}%");
+            if (ChanceNegativeConfused > 0) enabledEffects.Add($"Negative Confused: {ChanceNegativeConfused}%");
+        }
 
         if (enabledEffects.Count == 0)
         {
-            return new[] { "Heal Chances: None configured" };
+            return new[] { "Injection Chances: None configured" };
         }
 
-        return new[] { $"Heal Chances: {string.Join(", ", enabledEffects)}" };
+        return new[] { $"Injection Chances: {string.Join(", ", enabledEffects)}" };
     }
 }

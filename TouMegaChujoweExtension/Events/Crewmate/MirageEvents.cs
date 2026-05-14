@@ -1,14 +1,10 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
-using MiraAPI.Events.Vanilla.Player;
-using MiraAPI.GameOptions;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events.Vanilla.Player;
+using MiraAPI.Events;
+using MiraAPI.GameOptions;
 using MiraAPI.Hud;
-using TouMegaChujoweExtension.Buttons.Crewmate;
-using TouMegaChujoweExtension.Patches.Draft;
 using TownOfUs.Modules.Localization;
-using TouMegaChujoweExtension.Options.Roles.Crewmate;
-using TouMegaChujoweExtension.Roles.Crewmate;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -16,8 +12,7 @@ namespace TouMegaChujoweExtension.Events.Crewmate;
 
 public static class MirageEvents
 {
-    private static int ActiveTaskCount;
-    private static uint LastTaskId = uint.MaxValue;
+
 
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
@@ -27,8 +22,7 @@ public static class MirageEvents
             return;
         }
 
-        ActiveTaskCount = 0;
-        LastTaskId = uint.MaxValue;
+
 
         if (PlayerControl.LocalPlayer?.Data?.Role is not MirageRole)
         {
@@ -64,7 +58,7 @@ public static class MirageEvents
         
         if (MirageRole.TriggeredRoles.TryGetValue(localPlayer.PlayerId, out var roles) && roles.Count > 0)
         {
-            roles.Shuffle();
+            TownOfUs.Utilities.Extensions.Shuffle(roles);
             var rolesStr = string.Join(", ", roles);
             msg = $"Roles seen interacting with your decoy:\n{rolesStr}";
         }
@@ -78,3 +72,17 @@ public static class MirageEvents
         MirageRole.TriggeredRoles.Clear();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

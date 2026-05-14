@@ -1,10 +1,9 @@
-using MiraAPI.GameOptions;
+using CluelessCensorTypeEnum = TouMegaChujoweExtension.Options.Modifiers.Universal.CluelessCensorType;
 using MiraAPI.GameOptions.OptionTypes;
-using TouMegaChujoweExtension.Modifiers.Universal;
+using MiraAPI.GameOptions;
 using UnityEngine;
-using CluelessCensorTypeEnum = TouMegaChujoweExtension.Options.Modifiers.CluelessCensorType;
 
-namespace TouMegaChujoweExtension.Options.Modifiers;
+namespace TouMegaChujoweExtension.Options.Modifiers.Universal;
 
 public enum CluelessCensorType
 {
@@ -32,3 +31,16 @@ public sealed class CluelessModifierOptions : AbstractOptionGroup<CluelessModifi
     public ModdedEnumOption<CluelessCensorType> CluelessCensorType { get; } =
         new("ExtensionModifierCluelessCensorType", CluelessCensorTypeEnum.Asterisks, CluelessCensorTypeValues);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,10 +1,9 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Modifiers.Neutral;
 using UnityEngine;
 
-namespace TouMegaChujoweExtension.Options.Modifiers;
+namespace TouMegaChujoweExtension.Options.Modifiers.Neutral;
 
 public sealed class VenomousModifierOptions : AbstractOptionGroup<VenomousModifier>
 {
@@ -16,3 +15,16 @@ public sealed class VenomousModifierOptions : AbstractOptionGroup<VenomousModifi
     public ModdedNumberOption VenomousRotDelay { get; } =
         new("ExtensionModifierVenomousRotDelay", 5f, 5f, 40f, 1f, MiraNumberSuffixes.Seconds);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

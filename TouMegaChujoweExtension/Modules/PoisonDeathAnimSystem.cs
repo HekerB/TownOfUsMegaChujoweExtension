@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using Il2CppInterop.Runtime;
+using MiraAPI.GameOptions;
 using PowerTools;
 using Reactor.Utilities;
-using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
 using TownOfUs.Utilities;
-using MiraAPI.GameOptions;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -71,10 +71,9 @@ public static class PoisonDeathAnimSystem
 
         visualClone.SetActive(true);
         
-        if (ActiveClones.ContainsKey(targetId))
+        if (ActiveClones.TryGetValue(targetId, out var old) && old != null)
         {
-            var old = ActiveClones[targetId];
-            if (old != null) UnityEngine.Object.Destroy(old);
+            UnityEngine.Object.Destroy(old);
         }
         ActiveClones[targetId] = visualClone;
     }
@@ -83,7 +82,10 @@ public static class PoisonDeathAnimSystem
     {
         if (ActiveClones.TryGetValue(playerId, out var clone))
         {
-            if (clone != null) UnityEngine.Object.Destroy(clone);
+            if (clone != null)
+            {
+                UnityEngine.Object.Destroy(clone);
+            }
             ActiveClones.Remove(playerId);
         }
 
@@ -98,19 +100,27 @@ public static class PoisonDeathAnimSystem
 
     public static void CleanupAll()
     {
-        foreach (var kvp in ActiveClones)
+        foreach (var clone in ActiveClones.Values.Where(clone => clone != null))
         {
-            if (kvp.Value != null) UnityEngine.Object.Destroy(kvp.Value);
+            UnityEngine.Object.Destroy(clone);
         }
         ActiveClones.Clear();
     }
 
     private static DeadBody? GetBodyById(byte playerId)
     {
-        foreach (var body in UnityEngine.Object.FindObjectsOfType<DeadBody>())
-        {
-            if (body.ParentId == playerId) return body;
-        }
-        return null;
+        return UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(body => body.ParentId == playerId);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

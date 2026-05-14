@@ -1,14 +1,11 @@
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Modules;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Roles.Neutral;
-using TownOfUs.Modifiers;
-using TownOfUs.Utilities;
 using TownOfUs.Events;
+using TownOfUs.Modifiers;
+using TownOfUs.Modules.Localization;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Events.Neutral;
@@ -51,6 +48,27 @@ public static class BountyHunterEvents
                         DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse,
                         lockInfo: DeathHandlerOverride.SetTrue);
                 }
+                else
+                {
+                    // Non-solo win: die immediately
+                    DeathHandlerModifier.RpcUpdateLocalDeathHandler(PlayerControl.LocalPlayer, "DiedToWinning",
+                        DeathEventHandlers.CurrentRound, DeathHandlerOverride.SetFalse,
+                        lockInfo: DeathHandlerOverride.SetTrue);
+                    PlayerControl.LocalPlayer.RpcPlayerExile();
+                    
+                    var notif = Helpers.CreateAndShowNotification(
+                        TouLocale.GetParsed("ExtensionBHWinWithWinnersSelf"),
+                        Color.white, new Vector3(0f, 1f, -20f), spr: TouExtensionIcons.BountyHunterRoleIcon.LoadAsset());
+                    notif.AdjustNotification();
+                }
+            }
+            else if (!isSolo)
+            {
+                 // Show notification for others
+                 var notif = Helpers.CreateAndShowNotification(
+                    TouLocale.GetParsed("ExtensionBHWinWithWinnersOthers").Replace("<player>", killer.Data.PlayerName),
+                    Color.white, new Vector3(0f, 1f, -20f), spr: TouExtensionIcons.BountyHunterRoleIcon.LoadAsset());
+                notif.AdjustNotification();
             }
         }
         else if (killer.AmOwner)
@@ -59,45 +77,17 @@ public static class BountyHunterEvents
         }
     }
 
-    [RegisterEvent]
-    public static void RoundStartEventHandler(RoundStartEvent @event)
-    {
-        if (@event.TriggeredByIntro)
-            return;
-
-        if (OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode != BountyHunterWinMode.WinWithWinners)
-            return;
-
-        if (!BountyHunterSystem.HasWon)
-            return;
-
-        PlayerControl? bhPlayer = null;
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (player?.Data?.Role is BountyHunterRole && !player.HasDied())
-            {
-                bhPlayer = player;
-                break;
-            }
-        }
-
-        if (bhPlayer == null)
-            return;
-
-        if (bhPlayer.AmOwner)
-        {
-            PlayerControl.LocalPlayer.RpcPlayerExile();
-            var notif = Helpers.CreateAndShowNotification(
-                $"<b>You have successfully completed your bounties as the {TouExtensionColors.BountyHunter.ToTextColor()}Bounty Hunter</color>! You will now spectate and win with the winning team.</b>",
-                Color.white, new Vector3(0f, 1f, -20f), spr: TouExtensionIcons.BountyHunterRoleIcon.LoadAsset());
-            notif.AdjustNotification();
-        }
-        else
-        {
-            var notif = Helpers.CreateAndShowNotification(
-                $"<b>The {TouExtensionColors.BountyHunter.ToTextColor()}Bounty Hunter</color>, {bhPlayer.Data.PlayerName}, has completed all their bounties!</b>",
-                Color.white, new Vector3(0f, 1f, -20f), spr: TouExtensionIcons.BountyHunterRoleIcon.LoadAsset());
-            notif.AdjustNotification();
-        }
-    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

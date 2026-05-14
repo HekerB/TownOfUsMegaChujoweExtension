@@ -1,7 +1,6 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Crewmate;
 using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
@@ -48,3 +47,17 @@ public sealed class BodyguardOptions : AbstractOptionGroup<BodyguardRole>
     [ModdedNumberOption("ExtensionOptionBodyguardKillWindow", 3f, 20f, 1f, MiraNumberSuffixes.Seconds)]
     public float KillWindow { get; set; } = 8f;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,20 +1,15 @@
-using System.Collections.Generic;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using Il2CppInterop.Runtime;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Modules;
-using TouMegaChujoweExtension.Options;
-using TMPro;
-using UnityEngine;
-using Reactor.Utilities;
-
 using Object = UnityEngine.Object;
-using Il2CppInterop.Runtime;
+using Reactor.Utilities;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Draft;
 
@@ -22,27 +17,28 @@ namespace TouMegaChujoweExtension.Patches.Draft;
 public static class DraftLobbyPatch
 {
     // === UI ===
-    private static GameObject _draftContainer;
-    private static GameObject _overlayBackground;
-    private static TextMeshPro _playerListText;
-    private static TextMeshPro _timerText;
-    private static TextMeshPro _draftCompleteText;
-    private static TextMeshPro _draftTitleText;
+    private static GameObject _draftContainer = null!;
+    private static GameObject _overlayBackground = null!;
+    private static TextMeshPro _playerListText = null!;
+    private static TextMeshPro _timerText = null!;
+    private static TextMeshPro _draftCompleteText = null!;
+    private static TextMeshPro _draftTitleText = null!;
     private static float _titleRandomOffset;
     private static bool _isTitleAnimRunning;
-    private static Sprite _cachedRoundedSprite;
-    private static Sprite _cachedRandomIcon;
+    private static Sprite _cachedRoundedSprite = null!;
+    private static Sprite _cachedRandomIcon = null!;
     private static readonly List<GameObject> _roleButtonObjects = new();
+    private static GameObject? _randomButtonContainer;
     private static readonly System.Text.StringBuilder _playerListBuilder = new();
 
     // === BUTTON REFS ===
-    private class ButtonRefs
+    private sealed class ButtonRefs
     {
-        public SpriteRenderer BG;
-        public SpriteRenderer Border;
-        public TextMeshPro Label;
-        public SpriteRenderer Icon;
-        public SpriteRenderer RandomIcon;
+        public SpriteRenderer BG = null!;
+        public SpriteRenderer Border = null!;
+        public TextMeshPro Label = null!;
+        public SpriteRenderer Icon = null!;
+        public SpriteRenderer RandomIcon = null!;
         public float NormalizedScale;
     }
     private static readonly Dictionary<GameObject, ButtonRefs> _buttonRefs = new();
@@ -55,7 +51,6 @@ public static class DraftLobbyPatch
     private static float _pickTimer;
     private static bool _countdownWasActive;
     public static bool _draftCompletedWaitingForStart;
-    private static bool _alertPlayed;
     private static bool _isMusicMuted = false;
     private static GameObject _muteButtonObj;
     private static GameObject _cancelButtonObj;
@@ -67,8 +62,8 @@ public static class DraftLobbyPatch
     private static bool _forceUpdatePlayerList = false;
 
     // === DANGER MUSIC (DUAL SOURCE CROSSFADE) ===
-    private static AudioSource _draftMusicSourceA;
-    private static AudioSource _draftMusicSourceB;
+    private static AudioSource _draftMusicSourceA = null!;
+    private static AudioSource _draftMusicSourceB = null!;
     private static bool _usingSourceA = true;
 
     private static float _crossfadeTimer = 0f;
@@ -84,7 +79,6 @@ public static class DraftLobbyPatch
     private static AudioClip[] _dangerClips;
     private static int _currentDangerLevel = -1;
     private static int _totalDraftPickers = 0;
-    private static bool _clipsLoading = false;
 
     private static int _baseDangerClipIndex = 0;
     private static int _finalDangerClipIndex = 0;
@@ -101,7 +95,7 @@ public static class DraftLobbyPatch
     private static TMP_FontAsset _chewyFont;
     
     // === TOOLTIP ===
-    private static TextMeshPro _tooltipText;
+    private static TextMeshPro _tooltipText = null!;
 
     // === COUNTDOWN SOUND ===
     private static float _countdownSoundTimer = 1f;
@@ -153,7 +147,7 @@ public static class DraftLobbyPatch
             if (DraftSystem.PickOrder != null && DraftSystem.PickOrder.Count > 0)
                 return DraftSystem.PickOrder[0] == lp.PlayerId;
         }
-        catch { }
+        catch { /* ignore pick order access errors */ }
 
         return false;
     }
@@ -172,7 +166,6 @@ public static class DraftLobbyPatch
                 clip.name.IndexOf("hns_danger", System.StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 found.TryAdd(clip.name, clip);
-                // Info($"[Draft] Found danger clip in memory: {clip.name}");
             }
         }
 
@@ -182,7 +175,6 @@ public static class DraftLobbyPatch
             int idx = 0;
             foreach (var kvp in found)
                 result[idx++] = kvp.Value;
-            // Info($"[Draft] Loaded {result.Length} danger clips from memory.");
             return result;
         }
 
@@ -194,80 +186,47 @@ public static class DraftLobbyPatch
         if (_countdownTickClip != null) return _countdownTickClip;
 
         var allClips = Resources.FindObjectsOfTypeAll(Il2CppType.Of<AudioClip>());
-        foreach (var obj in allClips)
-        {
-            var clip = obj.Cast<AudioClip>();
-            if (clip.name.IndexOf("hns", System.StringComparison.OrdinalIgnoreCase) >= 0 &&
-                clip.name.IndexOf("countdown", System.StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                _countdownTickClip = clip;
-                // Info($"[Draft] Found countdown clip: {clip.name}");
-                return _countdownTickClip;
-            }
-        }
-
+        _countdownTickClip = allClips
+            .Select(obj => obj.Cast<AudioClip>())
+            .FirstOrDefault(clip => clip != null && 
+                                   clip.name.Contains("hns", System.StringComparison.OrdinalIgnoreCase) && 
+                                   clip.name.Contains("countdown", System.StringComparison.OrdinalIgnoreCase));
+        
         return _countdownTickClip;
     }
 
-    private static AudioClip FindTimeToHideClip()
+    private static AudioClip? FindTimeToHideClip()
     {
         if (_hnsTimeToHideClip != null) return _hnsTimeToHideClip;
 
         var allClips = Resources.FindObjectsOfTypeAll(Il2CppType.Of<AudioClip>());
+        var clips = allClips.Select(obj => obj.Cast<AudioClip>()).Where(c => c != null).ToList();
 
-        foreach (var obj in allClips)
-        {
-            var clip = obj.Cast<AudioClip>();
+        _hnsTimeToHideClip = clips.FirstOrDefault(clip => {
             string n = clip.name.ToLower();
-            if (n.Contains("stinger") && (n.Contains("hns") || n.Contains("hide") || n.Contains("seek")))
-            {
-                _hnsTimeToHideClip = clip;
-                // Info($"[Draft] Found stinger clip: {clip.name} ({clip.length:F1}s)");
-                return _hnsTimeToHideClip;
-            }
-        }
+            return n.Contains("stinger") && (n.Contains("hns") || n.Contains("hide") || n.Contains("seek"));
+        });
 
-        foreach (var obj in allClips)
-        {
-            var clip = obj.Cast<AudioClip>();
+        if (_hnsTimeToHideClip != null) return _hnsTimeToHideClip;
+
+        _hnsTimeToHideClip = clips.FirstOrDefault(clip => {
             string n = clip.name.ToLower();
-            if ((n.Contains("time") && n.Contains("hide")) ||
-                (n.Contains("go") && n.Contains("hide")) ||
-                (n.Contains("hide") && n.Contains("start")) ||
-                (n.Contains("round") && n.Contains("start") && n.Contains("hns")) ||
-                (n.Contains("hns") && n.Contains("begin")))
-            {
-                _hnsTimeToHideClip = clip;
-                // Info($"[Draft] Found hide clip: {clip.name} ({clip.length:F1}s)");
-                return _hnsTimeToHideClip;
-            }
-        }
+            return (n.Contains("time") && n.Contains("hide")) ||
+                   (n.Contains("go") && n.Contains("hide")) ||
+                   (n.Contains("hide") && n.Contains("start")) ||
+                   (n.Contains("round") && n.Contains("start") && n.Contains("hns")) ||
+                   (n.Contains("hns") && n.Contains("begin"));
+        });
 
-        foreach (var obj in allClips)
-        {
-            var clip = obj.Cast<AudioClip>();
+        if (_hnsTimeToHideClip != null) return _hnsTimeToHideClip;
+
+        _hnsTimeToHideClip = clips.FirstOrDefault(clip => {
             string n = clip.name.ToLower();
-            if (n.Contains("hns") && clip.length >= 1.5f && clip.length <= 10f &&
-                !n.Contains("danger") && !n.Contains("countdown") && !n.Contains("footstep"))
-            {
-                _hnsTimeToHideClip = clip;
-                // Info($"[Draft] Found short HnS clip as stinger: {clip.name} ({clip.length:F1}s)");
-                return _hnsTimeToHideClip;
-            }
-        }
+            return n.Contains("hns") && clip.length >= 1.5f && clip.length <= 10f &&
+                   !n.Contains("danger") && !n.Contains("countdown") && !n.Contains("footstep");
+        });
 
-        // Info("[Draft] No time-to-hide clip found. Available HnS clips:");
-        /*
-        foreach (var obj in allClips)
-        {
-            var clip = obj.Cast<AudioClip>();
-            string n = clip.name.ToLower();
-            if (n.Contains("hns") || n.Contains("hide") || n.Contains("seek"))
-                // Info($"[Draft]   - {clip.name} ({clip.length:F1}s)");
-        }
-        */
-
-        return null;
+        return _hnsTimeToHideClip;
     }
 
     // === LOBBY LOCK/UNLOCK ===
@@ -342,7 +301,7 @@ public static class DraftLobbyPatch
         _draftInProgress = false;
         _countdownWasActive = false;
         _draftCompletedWaitingForStart = false;
-        _alertPlayed = false;
+
         _lobbyLocked = false;
         _lastAlertedPicker = null;
 
@@ -350,7 +309,6 @@ public static class DraftLobbyPatch
         _dangerClips = null;
         _countdownTickClip = null;
         _hnsTimeToHideClip = null;
-        _clipsLoading = false;
 
         _isCrossfading = false;
         _crossfadeTimer = 0f;
@@ -505,18 +463,19 @@ public static class DraftLobbyPatch
 
     // === START DRAFT (HOST) ===
 
-    public static void StartDraft(GameStartManager gsm = null)
+    public static void StartDraft(GameStartManager? gsm = null)
     {
         if (gsm == null) gsm = Object.FindObjectOfType<GameStartManager>();
         if (gsm == null) return;
         _draftInProgress = true;
         _draftCompletedWaitingForStart = false;
-        _alertPlayed = false;
+
         _pickTimer = 0f;
         _lastAlertedPicker = null;
         _lastTimeLeftInt = -1;
         _forceUpdatePlayerList = true;
 
+        _titleRandomOffset = UnityEngine.Random.Range(0f, 60f);
         DraftSystem.Reset();
 
         var options = OptionGroupSingleton<DraftModeOptions>.Instance;
@@ -545,17 +504,74 @@ public static class DraftLobbyPatch
             impostorCount = Mathf.Max(impostorCount, 1);
         }
 
-        var shuffled = new List<byte>(allPlayers);
-        shuffled.Shuffle();
         var impostors = new HashSet<byte>();
-        for (int i = 0; i < impostorCount; i++)
-            impostors.Add(shuffled[i]);
+        
+        if (options.ReduceKillingStreak.Value)
+        {
+            var biasPercent = options.ReductionChance.Value / 100f;
+            var random = new System.Random();
+            
+            // Try to get LastImps from TownOfUs
+            List<int> lastImps = new List<int>();
+            try
+            {
+                var type = AccessTools.TypeByName("TownOfUs.Patches.TouRoleManagerPatches");
+                if (type != null)
+                {
+                    // Access private static property using reflection flags
+                    var prop = type.GetProperty("LastImps", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+                    if (prop != null)
+                    {
+                        lastImps = (List<int>)prop.GetValue(null);
+                    }
+                }
+            }
+            catch { }
+
+            var remainingPlayers = new List<byte>(allPlayers);
+            var skippedPlayers = new List<byte>();
+
+            while (impostors.Count < impostorCount && (remainingPlayers.Count > 0 || skippedPlayers.Count > 0))
+            {
+                // If we ran out of clean players, we must pick from the skipped ones
+                if (remainingPlayers.Count == 0)
+                {
+                    remainingPlayers.AddRange(skippedPlayers);
+                    skippedPlayers.Clear();
+                    remainingPlayers.Shuffle();
+                }
+
+                int num = random.Next(remainingPlayers.Count);
+                byte playerId = remainingPlayers[num];
+                var pc = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == playerId);
+                
+                bool shouldSkip = pc != null && lastImps != null && lastImps.Contains(pc.Data.ClientId) && random.NextDouble() < biasPercent;
+
+                if (shouldSkip) 
+                {
+                    // Move to skipped list for this selection round
+                    skippedPlayers.Add(playerId);
+                    remainingPlayers.RemoveAt(num);
+                    continue;
+                }
+
+                impostors.Add(playerId);
+                remainingPlayers.RemoveAt(num);
+            }
+        }
+        else
+        {
+            var shuffled = new List<byte>(allPlayers);
+            shuffled.Shuffle();
+            for (int i = 0; i < impostorCount; i++)
+                impostors.Add(shuffled[i]);
+        }
 
         DraftSystem.ImpostorPlayerIds = impostors;
+        DraftSystem.AssignFactions(allPlayers, impostors);
         DraftSystem.GeneratePickOrder(allPlayers);
         _originalPickOrder.Clear();
         _originalPickOrder.AddRange(DraftSystem.PickOrder);
-        DraftSystem.AssignFactions(allPlayers, impostors);
         // Info($"[Draft] PickOrder generated: {string.Join(",", DraftSystem.PickOrder)}");
 
         DraftNetworking.SendDraftStart(impostors);
@@ -572,11 +588,12 @@ public static class DraftLobbyPatch
 
         _draftInProgress = true;
         _draftCompletedWaitingForStart = false;
-        _alertPlayed = false;
+
         _pickTimer = 0f;
         _lastAlertedPicker = null;
         _lastTimeLeftInt = -1;
         _forceUpdatePlayerList = true;
+        _titleRandomOffset = UnityEngine.Random.Range(0f, 60f);
 
         DraftSystem.DraftPicks.Clear();
         DraftSystem.AlreadyPicked.Clear();
@@ -698,7 +715,6 @@ public static class DraftLobbyPatch
         }
 
         // Info("[Draft] Danger clips not in memory, loading from Addressables...");
-        _clipsLoading = true;
         Coroutines.Start(CoLoadDangerClipsAndPlay());
     }
 
@@ -757,7 +773,7 @@ public static class DraftLobbyPatch
             }
         }
 
-        _clipsLoading = false;
+
 
         if (loaded.Count == 0)
         {
@@ -944,7 +960,7 @@ public static class DraftLobbyPatch
         _crossfadeTimer = 0f;
 
         _currentDangerLevel = -1;
-        _clipsLoading = false;
+        // Final danger triggered
 
         _finalDangerTriggered = false;
     }
@@ -1064,9 +1080,16 @@ public static class DraftLobbyPatch
         var titleText = CreateTMP("DraftTitle", _draftContainer.transform,
             new Vector3(2.23f, 2.15f, -510f), 1.8f, TextAlignmentOptions.Center, true);
         
-        _titleRandomOffset = UnityEngine.Random.Range(0f, 1000f);
-        bool startWithHeker = ((int)((Time.time + _titleRandomOffset) / 20f) % 2) == 0;
-        titleText.text = $"<size=130%><b>DRAFT MODE</b></size>\nBY {(startWithHeker ? "HEKER" : "MARZECOOO")}";
+        // Randomize the starting author (33% each)
+        _titleRandomOffset = UnityEngine.Random.Range(0f, 60f);
+        int cycle = (int)((Time.time + _titleRandomOffset) / 20f) % 3;
+        string startAuthor = cycle switch {
+            0 => "HEKER",
+            1 => "MARZECOOO",
+            2 => "KAJOJAJO",
+            _ => "HEKER"
+        };
+        titleText.text = $"<size=130%><b>DRAFT MODE</b></size>\nBY {startAuthor}";
         _draftTitleText = titleText;
         if (!_isTitleAnimRunning) Coroutines.Start(CoAnimateDraftTitle());
 
@@ -1233,7 +1256,7 @@ public static class DraftLobbyPatch
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
-            float eased = 1f - Mathf.Pow(1f - t, 3f); // Out Cubic
+
             float alpha = 1f - t;
 
             foreach (var data in buttonData)
@@ -1253,8 +1276,8 @@ public static class DraftLobbyPatch
             yield return null;
         }
 
-        foreach (var data in buttonData)
-            if (data.obj != null) Object.Destroy(data.obj);
+        foreach (var obj in buttonData.Select(data => data.obj).Where(obj => obj != null))
+            Object.Destroy(obj);
             
         _roleButtonObjects.Clear();
         _buttonRefs.Clear();
@@ -1587,7 +1610,7 @@ public static class DraftLobbyPatch
         _draftCompletedWaitingForStart = false;
         _countdownWasActive = false;
         _pickTimer = 0f;
-        _alertPlayed = false;
+
         _pickLocked = false;
         _lastAlertedPicker = null;
 
@@ -1740,7 +1763,7 @@ public static class DraftLobbyPatch
                 float jump = Mathf.Abs(Mathf.Sin(Time.time * 10f)) * 0.15f;
                 string voffset = $"<voffset={jump:F2}em>";
 
-                _playerListBuilder.Append("<color=").Append(timerColor).Append(">").Append(voffset).Append(">>").Append((int)timeLeft).Append("</voffset></color>")
+                _playerListBuilder.Append("<color=").Append(timerColor).Append('>').Append(voffset).Append(">>").Append((int)timeLeft).Append("</voffset></color>")
                                  .Append("<pos=12%><color=#FFFFFF>").Append(name).Append("</color><pos=35%>: <color=").Append(timerColor).Append(">PICKING").Append(dots).Append("</color>\n");
             }
             else
@@ -1794,11 +1817,7 @@ public static class DraftLobbyPatch
         float duration = 0.5f;
         float elapsed = 0f;
 
-        var others = new List<GameObject>();
-        foreach (var obj in _roleButtonObjects)
-        {
-            if (obj != selected && obj != null) others.Add(obj);
-        }
+        var others = _roleButtonObjects.Where(obj => obj != selected && obj != null).ToList();
 
         // Store original data for the selected button
         ButtonRefs selectedRefs = null;
@@ -1884,7 +1903,7 @@ public static class DraftLobbyPatch
     private static void ShowRoleButtonsForCurrentPicker()
     {
         ClearRoleButtons();
-        _alertPlayed = false;
+
         _countdownSoundTimer = 1f;
 
         if (!DraftSystem.IsMyTurn) return;
@@ -2061,8 +2080,13 @@ public static class DraftLobbyPatch
             for (int y = 0; y < h; y++)
             {
                 float alpha = 1f;
-                float cx = (x < radius) ? radius : (x > w - radius - 1) ? w - radius - 1 : x;
-                float cy = (y < radius) ? radius : (y > h - radius - 1) ? h - radius - 1 : y;
+                float cx = x;
+                if (x < radius) cx = radius;
+                else if (x > w - radius - 1) cx = (float)w - radius - 1;
+
+                float cy = y;
+                if (y < radius) cy = radius;
+                else if (y > h - radius - 1) cy = (float)h - radius - 1;
                 
                 if (x < radius || x > w - radius - 1 || y < radius || y > h - radius - 1)
                 {
@@ -2095,7 +2119,7 @@ public static class DraftLobbyPatch
             if (role?.RoleIconSolid != null)
                 return role.RoleIconSolid;
         }
-        catch { }
+        catch (System.Exception) { /* ignore icon loading error */ }
         return null;
     }
 
@@ -2199,7 +2223,11 @@ public static class DraftLobbyPatch
                     }
                 }
             }
-            catch { }
+                catch (System.Exception ex)
+                {
+                    Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"Draft error: {ex.Message}");
+                }
+
         }
 
         Color labelColor;
@@ -2213,15 +2241,31 @@ public static class DraftLobbyPatch
         labelObj.transform.localPosition = new Vector3(0.15f, 0f, -0.02f);
         labelObj.layer = LayerMask.NameToLayer("UI");
 
+        string labelText = isRandom ? "RANDOM" : role.GetRoleName().ToUpper(System.Globalization.CultureInfo.InvariantCulture);
+        if (!isRandom && role != null)
+        {
+            try
+            {
+                var assignData = TownOfUs.Utilities.MiscUtils.GetAssignData(role.Role);
+                if (assignData.Chance > 0f && assignData.Chance < 30f)
+                    labelText = labelText + " ☆";
+            }
+            catch (System.Exception ex)
+            {
+                Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"Draft label setup error: {ex.Message}");
+            }
+
+        }
+
         var label = labelObj.AddComponent<TextMeshPro>();
-        label.text = isRandom ? "RANDOM" : role.GetRoleName().ToUpper();
+        label.text = labelText;
         label.fontSize = 2.2f;
         label.alignment = TextAlignmentOptions.Center;
         label.sortingOrder = 25;
         label.color = labelColor;
         label.fontStyle = FontStyles.Bold;
-        label.outlineWidth = 0.1f;
-        label.outlineColor = new Color32(0, 0, 0, 120);
+        label.outlineWidth = 0.08f;
+        label.outlineColor = Color.black;
         label.rectTransform.sizeDelta = new Vector2(2.4f, 0.65f);
         ApplyFont(label);
 
@@ -2297,6 +2341,7 @@ public static class DraftLobbyPatch
         }));
         if (isRandom)
         {
+            _randomButtonContainer = container;
             var offered = DraftSystem.CurrentOfferedRoles;
             var capContainer = container;
             btn.OnClick.AddListener((System.Action)(() =>
@@ -2410,7 +2455,7 @@ public static class DraftLobbyPatch
  
     private static void PlayPickSound()
     {
-        try { SoundManager.Instance.PlaySound(TouExtensionAudio.DraftPickSound.LoadAsset(), false); } catch { }
+        try { SoundManager.Instance.PlaySound(TouExtensionAudio.DraftPickSound.LoadAsset(), false); } catch (System.Exception) { /* ignore sound error */ }
     }
 
     private static AudioClip FindHoverSound()
@@ -2421,7 +2466,7 @@ public static class DraftLobbyPatch
         foreach (var obj in allClips)
         {
             var clip = obj.Cast<AudioClip>();
-            string n = clip.name.ToLower();
+            string n = clip.name.ToLower(System.Globalization.CultureInfo.InvariantCulture);
             
             // "rollover" is the standard name for hover sounds in AU
             if (n.Contains("rollover") || n.Contains("buttonhover") || n.Contains("ui_hover"))
@@ -2441,7 +2486,11 @@ public static class DraftLobbyPatch
             if (clip != null)
                 SoundManager.Instance.PlaySound(clip, false, 0.5f);
         }
-        catch { }
+        catch (System.Exception ex)
+        {
+            Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"Draft hover sound error: {ex.Message}");
+        }
+
     }
 
     // === PICK HANDLING ===
@@ -2454,7 +2503,7 @@ public static class DraftLobbyPatch
     public static void OnPickReceived(byte playerId, ushort roleId)
     {
         _pickTimer = 0f;
-        _alertPlayed = false;
+
         _countdownSoundTimer = 1f;
         _forceUpdatePlayerList = true;
         UpdatePlayerList();
@@ -2518,9 +2567,15 @@ public static class DraftLobbyPatch
             if (_draftTitleText == null) yield break;
 
             // Check what name SHOULD be displayed now
-            bool isHekerTime = ((int)((Time.time + _titleRandomOffset) / interval) % 2) == 0;
+            int cycle = (int)((Time.time + _titleRandomOffset) / interval) % 3;
             string currentText = _draftTitleText.text;
-            string targetAuthor = isHekerTime ? "HEKER" : "MARZECOOO";
+            string targetAuthor = cycle switch
+            {
+                0 => "HEKER",
+                1 => "MARZECOOO",
+                2 => "KAJOJAJO",
+                _ => "HEKER"
+            };
 
             // If the current name doesn't match the desired one, trigger transition
             if (!currentText.Contains(targetAuthor))
@@ -2614,10 +2669,10 @@ public static class DraftLobbyPatch
             _timerText.gameObject.SetActive(iAmPickingNow);
             if (iAmPickingNow)
             {
-                var color = timeLeft < 5f ? "#FF4444" : "#ffffff";
-                _timerText.text = $"<color={color}>Time Left: {(int)timeLeft}s</color>";
+                var color = timeLeft <= 4.0f ? "#FF4444" : "#ffffff";
+                _timerText.text = $"<color={color}>Time Left: {Mathf.CeilToInt(timeLeft)}s</color>";
 
-                if (timeLeft < 5f)
+                if (timeLeft <= 4.0f)
                 {
                     float pulse = 1f + Mathf.Abs(Mathf.Sin(Time.time * 12f)) * 0.12f;
                     _timerText.transform.localScale = new Vector3(pulse, pulse, 1f);
@@ -2663,7 +2718,11 @@ public static class DraftLobbyPatch
                         GameManagerCreator.Instance.HideAndSeekManagerPrefab.FinalHideCountdownSFX,
                         false, 1f, pitch, SoundManager.Instance.SfxChannel);
                 }
-                catch { }
+                catch (System.Exception ex)
+                {
+                    Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"Draft countdown sound error: {ex.Message}");
+                }
+
 
                 _countdownSoundTimer = 1f;
             }
@@ -2675,11 +2734,17 @@ public static class DraftLobbyPatch
 
         if (DraftSystem.IsMyTurn && !_pickLocked && _pickTimer >= maxTime)
         {
-            LockRoleButtons(null);
             var localId = PlayerControl.LocalPlayer.PlayerId;
             var isImp = DraftSystem.ImpostorPlayerIds.Contains(localId);
             var rr = DraftSystem.PickRandomRole(isImp, DraftSystem.CurrentOfferedRoles);
-            if (rr != null) OnLocalPlayerPick((ushort)rr.Role);
+            
+            GameObject selected = (rr != null) ? _randomButtonContainer : null;
+            LockRoleButtons(selected);
+            
+            if (rr != null)
+            {
+                OnLocalPlayerPick((ushort)rr.Role);
+            }
         }
 
         UpdatePlayerList();
@@ -2692,10 +2757,11 @@ public static class DraftLobbyPatch
 
     private static void ClearRoleButtons()
     {
-        foreach (var obj in _roleButtonObjects)
-            if (obj != null) Object.Destroy(obj);
+        foreach (var obj in _roleButtonObjects.Where(obj => obj != null))
+            Object.Destroy(obj);
         _roleButtonObjects.Clear();
         _buttonRefs.Clear();
+        _randomButtonContainer = null;
         _pickLocked = false;
     }
 
@@ -2848,13 +2914,9 @@ public static class DraftLobbyPatch
     [HarmonyPrefix]
     public static void ChatControllerUpdatePrefix(ChatController __instance)
     {
-        if (_draftInProgress && Input.GetKeyDown(KeyCode.Return))
+        if (_draftInProgress && Input.GetKeyDown(KeyCode.Return) && !__instance.IsOpenOrOpening)
         {
-            if (!__instance.IsOpenOrOpening)
-            {
-                __instance.SetVisible(true);
-            }
+            __instance.SetVisible(true);
         }
     }
 }
-

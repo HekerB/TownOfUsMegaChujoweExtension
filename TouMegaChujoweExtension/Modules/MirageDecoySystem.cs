@@ -338,7 +338,7 @@ public static class MirageDecoySystem
             // 1. Check expiration
             if (now >= decoy.ExpiresAt)
             {
-                Roles.Crewmate.MirageRole.RpcMirageDestroyDecoy(mirage);
+                Roles.Classic.Crewmate.MirageRole.RpcMirageDestroyDecoy(mirage);
                 continue;
             }
 
@@ -353,7 +353,7 @@ public static class MirageDecoySystem
                 var dist = Vector2.Distance(player.GetTruePosition(), new Vector2(decoy.WorldPosition.x, decoy.WorldPosition.y));
                 if (dist < 0.35f)
                 {
-                    Roles.Crewmate.MirageRole.RpcMirageTriggerDecoy(mirage, player, new Vector2(decoy.WorldPosition.x, decoy.WorldPosition.y));
+                    Roles.Classic.Crewmate.MirageRole.RpcMirageTriggerDecoy(mirage, player, new Vector2(decoy.WorldPosition.x, decoy.WorldPosition.y));
                     break;
                 }
             }
@@ -392,3 +392,16 @@ public static class MirageDecoySystem
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

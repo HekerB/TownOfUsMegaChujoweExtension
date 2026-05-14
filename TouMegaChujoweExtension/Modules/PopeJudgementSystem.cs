@@ -1,15 +1,13 @@
 using Hazel;
 using Il2CppInterop.Runtime.Injection;
+using MiraAPI.GameEnd;
 using MiraAPI.Roles;
 using Reactor.Utilities.Attributes;
-using TouMegaChujoweExtension.Roles.Neutral;
-using TownOfUs;
 using TownOfUs.Events;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
-using MiraAPI.GameEnd;
-using TouMegaChujoweExtension.GameOver;
+using TownOfUs;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -108,7 +106,7 @@ public sealed class PopeJudgementSystem(nint cppPtr) : Il2CppSystem.Object(cppPt
 
                         if (winners.Length > 0)
                         {
-                            CustomGameOver.Trigger<PopeGameOver>(winners);
+                            CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners);
                         }
                     }
                     break;
@@ -185,3 +183,17 @@ public enum PopeJudgementStage
     PopeDead,
     Ending,
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

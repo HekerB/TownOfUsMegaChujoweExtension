@@ -1,8 +1,7 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Crewmate;
 using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
@@ -36,3 +35,17 @@ public enum MirageArrowTarget
     Mirage,
     Interactor
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

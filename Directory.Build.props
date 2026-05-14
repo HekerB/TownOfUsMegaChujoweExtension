@@ -6,14 +6,14 @@
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <ImplicitUsings>true</ImplicitUsings>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
 
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
-        <VersionPrefix>1.0.6</VersionPrefix>
+        <VersionPrefix>1.1.0</VersionPrefix>
         <VersionSuffix></VersionSuffix>
 
-        <Authors>Heker, Marzecooo, Weakpass, Kajo, Radzik360</Authors>
+        <Authors>Heker, marzecoo, kajojajo</Authors>
         <Company>Mega Shit Bunch</Company>
 
         <!-- SourceLink -->

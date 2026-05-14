@@ -1,8 +1,7 @@
-using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
+using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using TownOfUs.Modules.Localization;
-using TouMegaChujoweExtension.Roles.Neutral;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 

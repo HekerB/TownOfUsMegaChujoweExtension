@@ -1,8 +1,7 @@
-using MiraAPI.Events;
-using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
+using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Events;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Roles.Crewmate;
 
 namespace TouMegaChujoweExtension.Events.Crewmate;
 
@@ -51,3 +50,15 @@ public static class PresidentEvents
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

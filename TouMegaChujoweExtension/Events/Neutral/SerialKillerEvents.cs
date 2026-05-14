@@ -1,20 +1,14 @@
 using HarmonyLib;
-using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Player;
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Modifiers.Neutral;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Modules;
-using TouMegaChujoweExtension.Roles.Neutral;
 using TownOfUs.Events;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
-using TouMegaChujoweExtension.Buttons.Neutral;
 
 namespace TouMegaChujoweExtension.Events.Neutral;
 
@@ -148,3 +142,21 @@ public static class SerialKillerEvents
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

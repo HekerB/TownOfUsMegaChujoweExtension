@@ -1,6 +1,7 @@
-/*using TMPro;
-using UnityEngine;
 using UnityEngine.TextCore;
+using UnityEngine;
+
+/*using TMPro;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -64,3 +65,15 @@ public static class TMPSpriteHelper
     }
 }*/
 // who would have thought that will not work
+
+
+
+
+
+
+
+
+
+
+
+

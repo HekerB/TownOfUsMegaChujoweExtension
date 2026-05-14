@@ -1,11 +1,9 @@
-using System.Collections.Generic;
 using AmongUs.GameOptions;
 using Hazel;
 using MiraAPI.Utilities;
-using TouMegaChujoweExtension.Networking;
-using TouMegaChujoweExtension.Patches.Draft;
+using System.Collections.Generic;
 
-namespace TouMegaChujoweExtension.Modules;
+namespace TouMegaChujoweExtension.Networking;
 
 public static class DraftNetworking
 {
@@ -33,6 +31,8 @@ public static class DraftNetworking
             writer.Write((byte)kvp.Value);
         }
 
+        writer.Write((byte)DraftSystem.TargetOtherNeutralCount);
+
         AmongUsClient.Instance.FinishRpcImmediately(writer);
 
         ReceiveDraftStart(impostorIds);
@@ -52,8 +52,7 @@ public static class DraftNetworking
         DraftSystem.IsRunning = true;
 
         var myId = PlayerControl.LocalPlayer?.PlayerId ?? 255;
-        var isImp = impostorIds.Contains(myId);
-        // Info($"[DraftNetworking] Draft started. I am {(isImp ? "IMPOSTOR" : "CREWMATE")}");
+        // Info($"[DraftNetworking] Draft started. I am {(impostorIds.Contains(myId) ? "IMPOSTOR" : "CREWMATE")}");
 
         DraftLobbyPatch.ShowSystemMessage("<color=#FF0000>Draft Mode</color> has Started. Be Ready to Pick Your Role!");
     }
@@ -79,7 +78,9 @@ public static class DraftNetworking
             DraftSystem.PlayerFactions[playerId] = faction;
         }
 
-        // Info($"[DraftNetworking] Received combined draft data: {orderCount} players, {factionCount} factions.");
+        DraftSystem.TargetOtherNeutralCount = reader.ReadByte();
+
+        // Info($"[DraftNetworking] Received combined draft data: {orderCount} players, {factionCount} factions, targetNeutrals={DraftSystem.TargetOtherNeutralCount}");
 
         ReceiveDraftStart(impostorIds);
         DraftSystem.DraftActiveThisRound = true;
@@ -108,8 +109,7 @@ public static class DraftNetworking
         DraftSystem.RegisterPick(playerId, roleId);
 
         var role = RoleManager.Instance.GetRole((RoleTypes)roleId);
-        var roleName = role?.GetRoleName() ?? $"Unknown({roleId})";
-        // Info($"[DraftNetworking] Player {playerId} picked {roleName}");
+        // Info($"[DraftNetworking] Player {playerId} picked {role?.GetRoleName() ?? $"Unknown({roleId})"}");
 
         DraftLobbyPatch.OnPickReceived(playerId, roleId);
     }
@@ -160,3 +160,14 @@ public static class DraftNetworking
         DraftLobbyPatch.ShowSystemMessage("<color=#FF4444>Draft Cancelled</color> by the Host.");
     }
 }
+
+
+
+
+
+
+
+
+
+
+

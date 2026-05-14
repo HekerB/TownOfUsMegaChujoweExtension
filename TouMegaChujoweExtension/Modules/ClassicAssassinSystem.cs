@@ -1,31 +1,23 @@
-using System.Reflection;
 using MiraAPI.GameOptions;
 using MiraAPI.LocalSettings;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
+using Object = UnityEngine.Object;
 using Reactor.Utilities.Extensions;
+using System.Reflection;
 using TMPro;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Utilities;
-using TouMegaChujoweExtension.Modifiers;
-using TouMegaChujoweExtension.Modifiers.Neutral;
-using TouMegaChujoweExtension.Modifiers.Universal;
-using TouMegaChujoweExtension.Options.Modifiers;
-using TouMegaChujoweExtension.Options.Roles.Impostor;
-using TouMegaChujoweExtension.Roles.Crewmate;
 using TownOfUs.Extensions;
 using TownOfUs.Interfaces;
 using TownOfUs.Modifiers.Game;
-using TownOfUs.Options;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Options.Roles.Neutral;
-using TownOfUs.Roles;
+using TownOfUs.Options;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
+using TownOfUs.Roles;
 using TownOfUs.Utilities;
-using UnityEngine;
 using UnityEngine.UI;
-using Object = UnityEngine.Object;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -45,7 +37,7 @@ public static class ClassicAssassinSystem
     private static readonly Dictionary<System.Type, FieldInfo> _screenFields = new();
     private static readonly Dictionary<System.Type, MethodInfo[]> _refreshMethods = new();
 
-    private class GuessEntry
+    private sealed class GuessEntry
     {
         public string Name { get; set; } = "";
         public Color Color { get; set; }
@@ -481,12 +473,12 @@ public static class ClassicAssassinSystem
                                 modifiers.Add(prototype);
                             }
                         }
-                        catch { }
+                        catch { /* fallback to next instantiator */ }
                     }
                 }
             }
         }
-        catch { }
+        catch { /* ignore dynamic discovery errors */ }
 
         return modifiers;
     }
@@ -699,7 +691,7 @@ public static class ClassicAssassinSystem
         if (voteArea.AmDead) return true;
         if (player.Data.IsDead || player.Data.Disconnected) return true;
 
-        var genOptions = OptionGroupSingleton<GeneralOptions>.Instance;
+        var genOptions = OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance;
 
         if (assassin.Player.IsImpostorAligned() && player.IsImpostorAligned() && !genOptions.FFAImpostorMode)
             return true;
@@ -811,7 +803,7 @@ public static class ClassicAssassinSystem
             victim.TryGetModifier<TownOfUs.Modifiers.Crewmate.OracleBlessedModifier>(out var oracleMod))
         {
             OracleRole.RpcOracleBlessNotify(PlayerControl.LocalPlayer, oracleMod.Oracle, victim);
-            ShieldUtils.TriggerShieldFlash(PlayerControl.LocalPlayer, ShieldType.Oracle);
+
             HideSingle(targetId);
             return;
         }
@@ -882,7 +874,7 @@ public static class ClassicAssassinSystem
             victim.TryGetModifier<TownOfUs.Modifiers.Crewmate.OracleBlessedModifier>(out var oracleMod))
         {
             OracleRole.RpcOracleBlessNotify(PlayerControl.LocalPlayer, oracleMod.Oracle, victim);
-            ShieldUtils.TriggerShieldFlash(PlayerControl.LocalPlayer, ShieldType.Oracle);
+
             HideSingle(targetId);
             return;
         }
@@ -956,7 +948,7 @@ public static class ClassicAssassinSystem
         if (victim.TryGetModifier<TownOfUs.Modifiers.Crewmate.OracleBlessedModifier>(out var oracleMod))
         {
             OracleRole.RpcOracleBlessNotify(PlayerControl.LocalPlayer, oracleMod.Oracle, victim);
-            ShieldUtils.TriggerShieldFlash(PlayerControl.LocalPlayer, ShieldType.Oracle);
+
             HideSingle(targetId);
             return;
         }
@@ -1065,13 +1057,9 @@ public static class ClassicAssassinSystem
                     continue;
                 }
 
-                if (local.Data.Role is DoomsayerRole doomsayer)
+                if (local.Data.Role is DoomsayerRole doomsayer && IsExempt(voteArea, doomsayer))
                 {
-                    if (IsExempt(voteArea, doomsayer))
-                    {
-                        HideSingle(targetId);
-                    }
-                    continue;
+                    HideSingle(targetId);
                 }
                 
                 // If we reach here, it means they are a guesser (e.g. Jailor) but we don't have custom logic for them yet
@@ -1118,6 +1106,7 @@ public static class ClassicAssassinSystem
             {
                 if (!_screenFields.TryGetValue(type, out var field))
                 {
+                    // Accessibility bypass is safe here as we are interacting with custom role classes in the same mod or base mod
                     field = type.GetField("guessingScreen", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                     if (field != null) _screenFields[type] = field;
                 }
@@ -1138,6 +1127,7 @@ public static class ClassicAssassinSystem
                 // Force an update of the guessing screen using cached methods
                 if (!_refreshMethods.TryGetValue(screenType, out var methods))
                 {
+                    // Accessibility bypass is safe here to ensure all potential refresh methods are triggered for UI sync
                     var flags = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
                     var list = new List<MethodInfo>();
                     string[] names = { "UpdatePlayers", "UpdateButtons", "Update", "OnEnable" };
@@ -1233,4 +1223,30 @@ public static class ClassicAssassinSystem
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
