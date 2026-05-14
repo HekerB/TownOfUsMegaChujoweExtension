@@ -19,8 +19,8 @@ public sealed class DoctorShieldModifier : BaseShieldModifier
     public override string ModifierName => "Doctor Shield";
     public override bool HideOnUi => true;
 
-    private float _duration;
-    private DoctorEffectDurationType _durationType;
+    private readonly float _duration;
+    private readonly DoctorEffectDurationType _durationType;
     public PlayerControl Doctor { get; }
     public GameObject? ClericBarrier { get; set; }
 

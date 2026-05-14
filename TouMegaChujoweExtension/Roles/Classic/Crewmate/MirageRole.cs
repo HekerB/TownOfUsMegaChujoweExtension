@@ -19,7 +19,7 @@ namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IUnguessable
 {
     public DoomableType DoomHintType => DoomableType.Insight;
-    public static readonly System.Collections.Generic.Dictionary<byte, System.Collections.Generic.List<string>> TriggeredRoles = new();
+    internal static readonly Dictionary<byte, List<string>> TriggeredRoles = [];
 
     public string LocaleKey => "Mirage";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
@@ -84,9 +84,7 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         PlayerControl appearanceSource,
         Vector2 pos,
         float z,
-        float durationSeconds,
-        float zRot,
-        bool flipX)
+        float durationSeconds)
     {
         if (mirage?.Data?.Role is not MirageRole)
         {
@@ -99,7 +97,7 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         }
 
         var worldPos = new Vector3(pos.x, pos.y, z);
-        MirageDecoySystem.RevealOrSpawnDecoy(mirage.PlayerId, appearanceSource, worldPos, zRot, flipX, durationSeconds);
+        MirageDecoySystem.RevealOrSpawnDecoy(mirage.PlayerId, appearanceSource, worldPos, durationSeconds);
     }
 
     [MethodRpc((uint)ExtensionRpc.MiragePrimeDecoy)]
@@ -107,9 +105,7 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         PlayerControl mirage,
         PlayerControl appearanceSource,
         Vector2 pos,
-        float z,
-        float zRot,
-        bool flipX)
+        float z)
     {
         if (mirage?.Data?.Role is not MirageRole)
         {
@@ -117,7 +113,7 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         }
 
         var worldPos = new Vector3(pos.x, pos.y, z);
-        MirageDecoySystem.PrimeDecoy(mirage.PlayerId, appearanceSource, worldPos, zRot, flipX);
+        MirageDecoySystem.PrimeDecoy(mirage.PlayerId, appearanceSource, worldPos);
     }
 
     [MethodRpc((uint)ExtensionRpc.MirageDestroyDecoy)]
@@ -149,13 +145,14 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
 
         if (OptionGroupSingleton<MirageOptions>.Instance.RevealInteractorRole && interactor != null)
         {
-            if (!TriggeredRoles.ContainsKey(mirage.PlayerId))
+            if (!TriggeredRoles.TryGetValue(mirage.PlayerId, out var roles))
             {
-                TriggeredRoles[mirage.PlayerId] = new System.Collections.Generic.List<string>();
+                roles = [];
+                TriggeredRoles[mirage.PlayerId] = roles;
             }
-            
+
             var role = interactor.Data?.Role;
-            string roleName = "Unknown";
+            string roleName;
             Color roleColor = Color.white;
 
             if (role != null)
@@ -175,10 +172,10 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             }
 
             var coloredRoleName = $"<color=#{ColorUtility.ToHtmlStringRGBA(roleColor)}>{roleName}</color>";
-            
-            if (!TriggeredRoles[mirage.PlayerId].Contains(coloredRoleName))
+
+            if (!roles.Contains(coloredRoleName))
             {
-                TriggeredRoles[mirage.PlayerId].Add(coloredRoleName);
+                roles.Add(coloredRoleName);
             }
         }
 
@@ -234,24 +231,3 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

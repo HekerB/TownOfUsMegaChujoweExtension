@@ -18,9 +18,9 @@ public enum HackerInfoSource : byte
 
 public static class HackerSystem
 {
-    private static readonly Dictionary<byte, HackerInfoSource> LockedSourceByPlayer = new();
-    private static readonly Dictionary<byte, float> BatterySecondsByPlayer = new();
-    private static readonly Dictionary<byte, byte> JamChargesByPlayer = new();
+    private static readonly Dictionary<byte, HackerInfoSource> LockedSourceByPlayer = [];
+    private static readonly Dictionary<byte, float> BatterySecondsByPlayer = [];
+    private static readonly Dictionary<byte, byte> JamChargesByPlayer = [];
     private static SystemConsole[] _cachedSystemConsoles = null!;
     private static MapConsole[] _cachedMapConsoles = null!;
     private static SystemConsole _cachedCameraConsole = null!;
@@ -29,10 +29,6 @@ public static class HackerSystem
     public static float JamActiveUntil { get; private set; }
 
     public static bool IsJammed => Time.time < JamActiveUntil;
-
-    /// <summary>
-    /// Reset ALL Hacker state (use for new game / intro).
-    /// </summary>
     public static void ResetAll()
     {
         LockedSourceByPlayer.Clear();
@@ -41,10 +37,6 @@ public static class HackerSystem
         JamActiveUntil = 0f;
         InvalidateConsoleCache();
     }
-
-    /// <summary>
-    /// Reset per-round Hacker state (battery + lock). Jam charges persist.
-    /// </summary>
     public static void ResetRoundState()
     {
         LockedSourceByPlayer.Clear();
@@ -52,10 +44,6 @@ public static class HackerSystem
         JamActiveUntil = 0f;
         InvalidateConsoleCache();
     }
-
-    /// <summary>
-    /// Invalidates cached console lookups. Call when map changes or consoles may have been destroyed.
-    /// </summary>
     private static void InvalidateConsoleCache()
     {
         _cachedSystemConsoles = null!;
@@ -207,10 +195,7 @@ public static class HackerSystem
         dist = float.MaxValue;
 
 
-        if (_cachedMapConsoles == null)
-        {
-            _cachedMapConsoles = Object.FindObjectsOfType<MapConsole>();
-        }
+        _cachedMapConsoles ??= Object.FindObjectsOfType<MapConsole>();
 
         var consoles = _cachedMapConsoles;
         if (consoles == null || consoles.Length == 0)
@@ -368,8 +353,7 @@ public static class HackerSystem
         }
         else if (mapId is ExpandedMapNames.MiraHq)
         {
-            var found = consoles.FirstOrDefault(IsDoorLogConsole);
-            if (found == null) found = consoles.FirstOrDefault(x => x != null && x.gameObject.name.Contains("SurvLogConsole"));
+            var found = consoles.FirstOrDefault(IsDoorLogConsole) ?? consoles.FirstOrDefault(x => x != null && x.gameObject.name.Contains("SurvLogConsole"));
             if (found != null) result = found;
         }
         else if (mapId is ExpandedMapNames.Submerged)
@@ -458,19 +442,12 @@ public static class HackerSystem
         return console.gameObject.name.Contains("SurvLogConsole", System.StringComparison.OrdinalIgnoreCase) ||
                console.gameObject.name.Contains("DoorLog", System.StringComparison.OrdinalIgnoreCase);
     }
-
-    /// <summary>
-    /// Gets cached system consoles, refreshing the cache if needed. This avoids expensive FindObjectsOfType calls.
-    /// </summary>
     private static SystemConsole[] GetCachedSystemConsoles()
     {
 
-        if (_cachedSystemConsoles == null)
-        {
-            _cachedSystemConsoles = FindAllSystemConsoles();
-        }
+        _cachedSystemConsoles ??= FindAllSystemConsoles();
 
-        return _cachedSystemConsoles ?? System.Array.Empty<SystemConsole>();
+        return _cachedSystemConsoles ?? [];
     }
 
     private static SystemConsole[] FindAllSystemConsoles()
@@ -486,10 +463,10 @@ public static class HackerSystem
             var allObjects = Resources.FindObjectsOfTypeAll(Il2CppType.From(typeof(SystemConsole)));
             if (allObjects == null)
             {
-                return System.Array.Empty<SystemConsole>();
+                return [];
             }
 
-            var result = new List<SystemConsole>();
+            List<SystemConsole> result = [];
             foreach (var obj in allObjects)
             {
                 if (obj == null)
@@ -511,11 +488,11 @@ public static class HackerSystem
                 result.Add(sc);
             }
 
-            return result.ToArray();
+            return [.. result];
         }
         catch
         {
-            return System.Array.Empty<SystemConsole>();
+            return [];
         }
     }
 }

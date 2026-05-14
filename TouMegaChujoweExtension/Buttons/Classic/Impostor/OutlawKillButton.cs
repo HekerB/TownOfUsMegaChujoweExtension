@@ -45,8 +45,8 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
     private bool _inDoubleKillWindow;
     private float _windowTimer;
 
-    private int MaxBonusKills => (int)OptionGroupSingleton<OutlawOptions>.Instance.BonusKills;
-    private float WindowDuration => OptionGroupSingleton<OutlawOptions>.Instance.DoubleKillWindow;
+    private static int MaxBonusKills => (int)OptionGroupSingleton<OutlawOptions>.Instance.BonusKills;
+    private static float WindowDuration => OptionGroupSingleton<OutlawOptions>.Instance.DoubleKillWindow;
 
     public void SetDiseasedTimer(float multiplier) => SetTimer(Cooldown * multiplier);
 
@@ -169,7 +169,7 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
 
                 if (Button != null)
                 {
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_windowTimer).ToString();
+                    Button.cooldownTimerText.text = Mathf.CeilToInt(_windowTimer).ToString(System.Globalization.CultureInfo.InvariantCulture);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
 

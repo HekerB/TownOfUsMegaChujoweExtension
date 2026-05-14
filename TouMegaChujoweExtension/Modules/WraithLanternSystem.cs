@@ -9,10 +9,10 @@ public static class WraithLanternSystem
 
     private sealed record ActiveLantern(Vector2 Position, float PlacedAt, float ExpiresAt);
 
-    private static readonly Dictionary<byte, ActiveLantern> Active = new();
-    private static readonly List<Vector2> BrokenEvidence = new();
-    private static readonly Dictionary<byte, GameObject> ActiveVisuals = new();
-    private static readonly List<GameObject> BrokenVisuals = new();
+    private static readonly Dictionary<byte, ActiveLantern> Active = [];
+    private static readonly List<Vector2> BrokenEvidence = [];
+    private static readonly Dictionary<byte, GameObject> ActiveVisuals = [];
+    private static readonly List<GameObject> BrokenVisuals = [];
 
     public static void ClearAll()
     {
@@ -86,16 +86,14 @@ public static class WraithLanternSystem
     }
 
 
-    private static SpriteRenderer PickBestPlayerWorldRenderer(PlayerControl local)
+    private static SpriteRenderer? PickBestPlayerWorldRenderer(PlayerControl local)
     {
         if (local == null) return null;
         var direct = local.GetComponent<SpriteRenderer>();
         if (direct != null) return direct;
 
         var rends = local.GetComponentsInChildren<SpriteRenderer>(true);
-        if (rends == null || rends.Length == 0) return null;
-
-        SpriteRenderer best = null;
+        SpriteRenderer? best = null;
         int bestScore = int.MinValue;
 
         for (int i = 0; i < rends.Length; i++)
@@ -135,7 +133,7 @@ public static class WraithLanternSystem
         if (ShipStatus.Instance != null && go.transform.parent != ShipStatus.Instance.transform)
             go.transform.SetParent(ShipStatus.Instance.transform, true);
 
-        SpriteRenderer src = null;
+        SpriteRenderer? src = null;
         var local = PlayerControl.LocalPlayer;
         if (local != null)
         {

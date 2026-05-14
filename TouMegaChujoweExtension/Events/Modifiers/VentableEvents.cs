@@ -24,7 +24,7 @@ public static class VentableEvents
     }
 
     [RegisterEvent]
-    public static void RoundStartEventHandler(RoundStartEvent @event)
+    public static void RoundStartEventHandler()
     {
         foreach (var player in PlayerControl.AllPlayerControls)
         {

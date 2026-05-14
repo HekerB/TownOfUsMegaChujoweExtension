@@ -10,7 +10,7 @@ public static class VampireExtensionPatch
 {
     // sabotageId for Lights is 7 on most maps
     private const byte LightsSabotageId = 7;
-    public static bool LocalVampireJustSabotaged = false;
+    public static bool LocalVampireJustSabotaged { get; set; }
 
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.RpcUpdateSystem), typeof(SystemTypes), typeof(byte))]
     [HarmonyPrefix]

@@ -18,8 +18,7 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
 public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole, PlayerControl>
 {
-    // // private static readonly BepInEx.Logging.ManualLogSource Log =
-        // // BepInEx.Logging.Logger.CreateLogSource("BH-Button");
+
 
     public override string Name => TouLocale.Get("ExtensionRoleBountyHunterKill", "Hunt");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
@@ -101,9 +100,9 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
         return closest;
     }
 
-    protected override void FixedUpdate(PlayerControl rolePlayer)
+    protected override void FixedUpdate(PlayerControl playerControl)
     {
-        base.FixedUpdate(rolePlayer);
+        base.FixedUpdate(playerControl);
         RefreshKillCounter();
     }
 
@@ -130,7 +129,6 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
     {
         if (Target == null || PlayerControl.LocalPlayer == null)
         {
-            // Log.LogWarning("[BH-Button] OnClick: Target or LocalPlayer is null");
             return;
         }
 
@@ -148,8 +146,6 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
         }
 
         role.LastTargetPlayerId = Target.PlayerId;
-
-        // Log.LogWarning($"[BH-Button] OnClick: Killing {Target.Data.PlayerName} (PlayerId={Target.PlayerId})");
 
         PlayerControl.LocalPlayer.RpcCustomMurder(Target);
 

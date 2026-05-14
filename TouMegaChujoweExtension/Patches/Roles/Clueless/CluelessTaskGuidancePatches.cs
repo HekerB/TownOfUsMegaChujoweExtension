@@ -102,10 +102,10 @@ public static class CluelessTaskGuidancePatches
         if (contentWithoutColors.Length > 0)
         {
             var trimmedStart = contentWithoutColors.TrimStart();
-            leadingWhitespace = contentWithoutColors.Substring(0, contentWithoutColors.Length - trimmedStart.Length);
+            leadingWhitespace = contentWithoutColors[..(contentWithoutColors.Length - trimmedStart.Length)];
 
             var trimmedEnd = trimmedStart.TrimEnd();
-            trailingWhitespace = trimmedStart.Substring(trimmedEnd.Length);
+            trailingWhitespace = trimmedStart[trimmedEnd.Length..];
 
             contentWithoutColors = trimmedEnd;
         }
@@ -220,12 +220,8 @@ public static class CluelessTaskGuidancePatches
     [HarmonyPriority(Priority.Last)]
     public static void MapBehaviourShowPostfix(MapBehaviour __instance)
     {
-        if (!LocalIsClueless() || __instance == null)
-        {
-            return;
-        }
-
-        __instance.taskOverlay?.Hide();
+        // Re-use prefix logic to satisfy identical implementation warning
+        MapBehaviourShowPrefix(__instance);
     }
 
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.FixedUpdate))]

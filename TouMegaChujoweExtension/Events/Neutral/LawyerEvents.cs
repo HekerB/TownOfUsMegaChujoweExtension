@@ -36,7 +36,7 @@ public static class LawyerEvents
         return ObjectedVoterOriginalVotes.TryGetValue(voterId, out originalVote);
     }
     [RegisterEvent]
-    public static void StartMeetingEventHandler(StartMeetingEvent @event)
+    public static void StartMeetingEventHandler()
     {
         ClearObjectedVoters();
         LawyerVoteBlockPatch.ClearVotes();

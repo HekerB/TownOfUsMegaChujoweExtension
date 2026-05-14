@@ -17,12 +17,9 @@ public static class DoppelgangerFirstDeadShieldPatch
         }
 
         // Ukrywamy tarczę, jeśli Doppelganger jest w przebraniu (ma DoppelgangerDisguiseModifier)
-        if (__instance.Player.HasModifier<DoppelgangerDisguiseModifier>())
+        if (__instance.Player.HasModifier<DoppelgangerDisguiseModifier>() && __instance.FirstRoundShield.activeSelf)
         {
-            if (__instance.FirstRoundShield.activeSelf)
-            {
-                __instance.FirstRoundShield.SetActive(false);
-            }
+            __instance.FirstRoundShield.SetActive(false);
         }
     }
 }

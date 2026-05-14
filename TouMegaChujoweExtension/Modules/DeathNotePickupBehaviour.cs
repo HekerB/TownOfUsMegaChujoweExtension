@@ -7,26 +7,26 @@ using UnityEngine;
 namespace TouMegaChujoweExtension.Modules;
 
 [RegisterInIl2Cpp]
-public class DeathNotePickupBehaviour : MonoBehaviour
+public class DeathNotePickupBehaviour(IntPtr cppPtr) : MonoBehaviour(cppPtr)
 {
-public static readonly List<DeathNotePickupBehaviour> Instances = new();
+    private static readonly List<DeathNotePickupBehaviour> _instances = [];
+    public static IReadOnlyList<DeathNotePickupBehaviour> Instances => _instances;
     private DeathNoteModifier? _modifier;
     private SpriteRenderer? _renderer;
     private const float PickupRange = 0.75f;
     private const float FadeSpeed = 12f;
     private const bool OwnerOnly = true;
-    private float _currentAlpha = 0f;
-    private bool _renderConfigured = false;
-
-    public DeathNotePickupBehaviour(IntPtr ptr) : base(ptr) { }
+    private float _currentAlpha;
+    private bool _renderConfigured;
 
     [HideFromIl2Cpp]
-    private void Log(string msg)
+    private void Log()
     {
+        // Method intentionally left empty
     }
 
     [HideFromIl2Cpp]
-    private SpriteRenderer PickBestPlayerWorldRenderer(PlayerControl local)
+    private SpriteRenderer? PickBestPlayerWorldRenderer(PlayerControl local)
     {
         if (local == null) return null;
         var direct = local.GetComponent<SpriteRenderer>();
@@ -35,7 +35,7 @@ public static readonly List<DeathNotePickupBehaviour> Instances = new();
         var rends = local.GetComponentsInChildren<SpriteRenderer>(true);
         if (rends == null || rends.Length == 0) return null;
 
-        SpriteRenderer best = null;
+        SpriteRenderer? best = null;
         int bestScore = int.MinValue;
 
         for (int i = 0; i < rends.Length; i++)
@@ -75,7 +75,7 @@ public static readonly List<DeathNotePickupBehaviour> Instances = new();
 
 
         _renderer.sortingLayerID = source.sortingLayerID;
-        _renderer.sortingOrder = source.sortingOrder; 
+        _renderer.sortingOrder = source.sortingOrder;
 
 
         gameObject.layer = source.gameObject.layer;
@@ -99,9 +99,7 @@ public static readonly List<DeathNotePickupBehaviour> Instances = new();
             {
                 CopyRenderSettingsFrom(pr);
 
-                Log($"Configured from PLAYER: mask={_renderer.maskInteraction} " +
-                    $"sorting={_renderer.sortingLayerName}:{_renderer.sortingOrder} " +
-                    $"layer={LayerMask.LayerToName(gameObject.layer)} source={pr.name}/{pr.sortingLayerName}:{pr.sortingOrder}");
+                Log();
 
                 return true;
             }
@@ -115,7 +113,7 @@ public static readonly List<DeathNotePickupBehaviour> Instances = new();
             if (vr != null)
             {
                 CopyRenderSettingsFrom(vr);
-                Log($"Configured from VENT: mask={_renderer.maskInteraction} sorting={_renderer.sortingLayerName}:{_renderer.sortingOrder}");
+                Log();
                 return true;
             }
         }
@@ -126,8 +124,8 @@ public static readonly List<DeathNotePickupBehaviour> Instances = new();
     [HideFromIl2Cpp]
     public void Initialize(DeathNoteModifier mod)
     {
-        if (!Instances.Contains(this))
-            Instances.Add(this);
+        if (!_instances.Contains(this))
+            _instances.Add(this);
         _modifier = mod;
 
         _renderer = GetComponent<SpriteRenderer>();
@@ -137,7 +135,7 @@ public static readonly List<DeathNotePickupBehaviour> Instances = new();
         _currentAlpha = 0f;
         _renderer.color = new Color(1f, 1f, 1f, 0f);
 
-  
+
         _renderConfigured = TryConfigureWorldRenderingOnce();
     }
 
@@ -164,7 +162,7 @@ public static readonly List<DeathNotePickupBehaviour> Instances = new();
 
         if (!_renderConfigured)
             _renderConfigured = TryConfigureWorldRenderingOnce();
-       
+
         if (!_renderConfigured)
             _renderer.maskInteraction = SpriteMaskInteraction.None;
 
@@ -199,21 +197,7 @@ public static readonly List<DeathNotePickupBehaviour> Instances = new();
 
     private void OnDestroy()
     {
-        Instances.Remove(this);
+        _instances.Remove(this);
         _modifier = null;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

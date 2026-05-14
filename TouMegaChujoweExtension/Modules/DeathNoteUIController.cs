@@ -5,9 +5,9 @@ using UnityEngine;
 namespace TouMegaChujoweExtension.Modules;
 
 [RegisterInIl2Cpp]
-public class DeathNoteUIController : MonoBehaviour
+public class DeathNoteUIController(IntPtr handle) : MonoBehaviour(handle)
 {
-    public static DeathNoteUIController? Instance;
+    public static DeathNoteUIController? Instance { get; private set; }
     private static DeathNoteModifier? _activeModifier;
     private static string _currentInput = "";
 
@@ -15,20 +15,13 @@ public class DeathNoteUIController : MonoBehaviour
     private bool _movableWasCached;
     private bool _cachedMovable;
 
-    private GameObject _background = null!;
     private TMPro.TextMeshPro _inputText = null!;
     private TMPro.TextMeshPro _statusText = null!;
-
-    public DeathNoteUIController(IntPtr ptr) : base(ptr)
-    {
-    }
 
     [HideFromIl2Cpp]
     public void Initialize(DeathNoteModifier modifier)
     {
-        Instance = this;
-        _activeModifier = modifier;
-        _currentInput = "";
+        SetStaticState(this, modifier, "");
         _statusTimer = 0f;
 
         if (PlayerControl.LocalPlayer != null)
@@ -41,6 +34,13 @@ public class DeathNoteUIController : MonoBehaviour
         CreateUI();
     }
 
+    private static void SetStaticState(DeathNoteUIController? instance, DeathNoteModifier? modifier, string input)
+    {
+        Instance = instance;
+        _activeModifier = modifier;
+        _currentInput = input;
+    }
+
     private void CreateUI()
     {
         var cam = Camera.main;
@@ -49,12 +49,12 @@ public class DeathNoteUIController : MonoBehaviour
             transform.position = new Vector3(cam.transform.position.x, cam.transform.position.y, -50f);
         }
 
-        _background = new GameObject("DeathNoteBG");
-        _background.transform.SetParent(transform);
-        _background.transform.localPosition = Vector3.zero;
-        _background.layer = LayerMask.NameToLayer("UI");
+        var background = new GameObject("DeathNoteBG");
+        background.transform.SetParent(transform);
+        background.transform.localPosition = Vector3.zero;
+        background.layer = LayerMask.NameToLayer("UI");
 
-        var bgRenderer = _background.AddComponent<SpriteRenderer>();
+        var bgRenderer = background.AddComponent<SpriteRenderer>();
         bgRenderer.sprite = TouExtensionAssets.DeathNoteUISprite.LoadAsset();
         bgRenderer.sortingOrder = 100;
 
@@ -66,12 +66,11 @@ public class DeathNoteUIController : MonoBehaviour
             var scaleX = (width * 0.6f) / sprBounds.x;
             var scaleY = (height * 0.6f) / sprBounds.y;
             var scale = Mathf.Min(scaleX, scaleY);
-            _background.transform.localScale = new Vector3(scale, scale, 1f);
+            background.transform.localScale = new Vector3(scale, scale, 1f);
         }
 
-        // Status text ABOVE input
         var statusObj = new GameObject("DeathNoteStatus");
-        statusObj.transform.SetParent(_background.transform);
+        statusObj.transform.SetParent(background.transform);
         statusObj.transform.localPosition = new Vector3(0.44f, 0.5f, -0.7f);
         statusObj.layer = LayerMask.NameToLayer("UI");
 
@@ -83,9 +82,8 @@ public class DeathNoteUIController : MonoBehaviour
         _statusText.text = "";
         _statusText.rectTransform.sizeDelta = new Vector2(6f, 1f);
 
-        // Input text - more right, more up, below status
         var inputObj = new GameObject("DeathNoteInput");
-        inputObj.transform.SetParent(_background.transform);
+        inputObj.transform.SetParent(background.transform);
         inputObj.transform.localPosition = new Vector3(0.44f, 0.2f, -0.7f);
         inputObj.layer = LayerMask.NameToLayer("UI");
 
@@ -140,7 +138,7 @@ public class DeathNoteUIController : MonoBehaviour
             }
             else
             {
-                _currentInput = "";
+                SetStaticState(Instance, _activeModifier, "");
                 UpdateInputDisplay();
                 ShowStatus(result == DeathNoteSubmitResult.SelfTarget
                     ? "You cannot curse yourself!"
@@ -153,7 +151,7 @@ public class DeathNoteUIController : MonoBehaviour
         {
             if (_currentInput.Length > 0)
             {
-                _currentInput = _currentInput[..^1];
+                SetStaticState(Instance, _activeModifier, _currentInput[..^1]);
                 UpdateInputDisplay();
             }
             return;
@@ -166,7 +164,7 @@ public class DeathNoteUIController : MonoBehaviour
 
             if (_currentInput.Length < 20)
             {
-                _currentInput += c;
+                SetStaticState(Instance, _activeModifier, _currentInput + c);
                 UpdateInputDisplay();
             }
         }
@@ -191,12 +189,11 @@ public class DeathNoteUIController : MonoBehaviour
 
     public void Close()
     {
-        Instance = null;
-        _activeModifier = null;
+        SetStaticState(null, null, _currentInput);
 
         if (PlayerControl.LocalPlayer != null)
         {
-            PlayerControl.LocalPlayer.moveable = _movableWasCached ? _cachedMovable : true;
+            PlayerControl.LocalPlayer.moveable = !_movableWasCached || _cachedMovable;
         }
 
         Destroy(gameObject);
@@ -206,30 +203,12 @@ public class DeathNoteUIController : MonoBehaviour
     {
         if (Instance == this)
         {
-            Instance = null;
-            _activeModifier = null;
+            SetStaticState(null, null, _currentInput);
         }
 
         if (PlayerControl.LocalPlayer != null)
         {
-            PlayerControl.LocalPlayer.moveable = _movableWasCached ? _cachedMovable : true;
+            PlayerControl.LocalPlayer.moveable = !_movableWasCached || _cachedMovable;
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

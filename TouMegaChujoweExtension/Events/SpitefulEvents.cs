@@ -21,10 +21,10 @@ namespace TouMegaChujoweExtension.Events;
 
 public static class SpitefulEvents
 {
-    private static readonly Dictionary<byte, HashSet<byte>> SpitefulVoters = new();
+    private static readonly Dictionary<byte, HashSet<byte>> SpitefulVoters = [];
 
     [RegisterEvent]
-    public static void GameEndEventHandler(GameEndEvent @event)
+    public static void GameEndEventHandler()
     {
         SpitefulVoters.Clear();
 
@@ -43,7 +43,7 @@ public static class SpitefulEvents
     }
 
     [RegisterEvent]
-    public static void RoundStartEventHandler(RoundStartEvent @event)
+    public static void RoundStartEventHandler()
     {
         SpitefulVoters.Clear();
 
@@ -59,10 +59,10 @@ public static class SpitefulEvents
             return;
         }
 
-        Coroutines.Start(CoFixSpitefulCooldowns(localPlayer, mod));
+        Coroutines.Start(CoFixSpitefulCooldowns(localPlayer));
     }
 
-    private static IEnumerator CoFixSpitefulCooldowns(PlayerControl player, SpitefulEffectModifier mod)
+    private static IEnumerator CoFixSpitefulCooldowns(PlayerControl player)
     {
         while (MeetingHud.Instance != null || ExileController.Instance != null)
         {
@@ -110,7 +110,7 @@ public static class SpitefulEvents
     }
 
     [RegisterEvent]
-    public static void StartMeetingEventHandler(StartMeetingEvent @event)
+    public static void StartMeetingEventHandler()
     {
         foreach (var player in PlayerControl.AllPlayerControls)
         {
@@ -144,7 +144,7 @@ public static class SpitefulEvents
 
         if (!SpitefulVoters.TryGetValue(suspectPlayer.Object.PlayerId, out var voters))
         {
-            voters = new HashSet<byte>();
+            voters = [];
             SpitefulVoters[suspectPlayer.Object.PlayerId] = voters;
         }
 
@@ -251,15 +251,15 @@ public static class SpitefulEvents
             SpitefulEffectType.LowerVision => TouLocale.GetParsed(
                 "ExtensionModifierSpitefulEffectLowerVisionDescription",
                 $"Your vision is reduced by {impactPercent}%",
-                new Dictionary<string, string> { { "<impact>", impactPercent.ToString() } }),
+                new Dictionary<string, string> { { "<impact>", impactPercent.ToString(System.Globalization.CultureInfo.InvariantCulture) } }),
             SpitefulEffectType.Slowness => TouLocale.GetParsed(
                 "ExtensionModifierSpitefulEffectSlownessDescription",
                 $"Your speed is reduced by {impactPercent}%",
-                new Dictionary<string, string> { { "<impact>", impactPercent.ToString() } }),
+                new Dictionary<string, string> { { "<impact>", impactPercent.ToString(System.Globalization.CultureInfo.InvariantCulture) } }),
             SpitefulEffectType.IncreasedCooldowns => TouLocale.GetParsed(
                 "ExtensionModifierSpitefulEffectIncreasedCooldownsDescription",
                 $"Your ability cooldowns are increased by {impactPercent}%",
-                new Dictionary<string, string> { { "<impact>", impactPercent.ToString() } }),
+                new Dictionary<string, string> { { "<impact>", impactPercent.ToString(System.Globalization.CultureInfo.InvariantCulture) } }),
             _ => string.Empty
         };
     }

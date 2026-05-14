@@ -18,9 +18,10 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
     private bool _bhGameOverTriggered;
 
     /// <summary>
-    /// Priority 4 - matches BountyHunter's original priority to run before Mira's NeutralRoleWinCondition (5).
+    /// Priority 12 - matches the original Lawyer's priority to ensure critical sabotages (like Reactor)
+    /// and core win conditions take precedence.
     /// </summary>
-    public int Priority => 4;
+    public int Priority => 12;
 
     public bool BlocksOthers => true;
 
@@ -65,7 +66,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             if (player == null || player.HasDied() || player.Data?.Role is not PelicanRole pelicanRole) continue;
             if (pelicanRole.WinConditionMet() && player.Data != null)
             {
-                CustomGameOver.Trigger<ExtensionNeutralGameOver>(new[] { player.Data });
+                CustomGameOver.Trigger<ExtensionNeutralGameOver>([player.Data]);
                 return;
             }
         }
@@ -78,7 +79,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             {
                 if (player?.Data?.Role is BountyHunterRole && player.Data != null)
                 {
-                    CustomGameOver.Trigger<ExtensionNeutralGameOver>(new[] { player.Data });
+                    CustomGameOver.Trigger<ExtensionNeutralGameOver>([player.Data]);
                     return;
                 }
             }
@@ -89,7 +90,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         {
             if (player?.Data?.Role is PirateRole pirate && pirate.WinConditionMet() && player.Data != null)
             {
-                CustomGameOver.Trigger<ExtensionNeutralGameOver>(new[] { player.Data });
+                CustomGameOver.Trigger<ExtensionNeutralGameOver>([player.Data]);
                 return;
             }
         }
@@ -100,7 +101,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
 
     #region Role Specific Checks
 
-    private bool IsPopeWinMet()
+    private static bool IsPopeWinMet()
     {
         bool isJudgementActive = PopeJudgementSystem.Instance != null && PopeJudgementSystem.Instance.Stage >= PopeJudgementStage.Countdown;
         bool popeRaceCondition = false;
@@ -114,8 +115,8 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
         }
 
-        return PopeJudgementSystem.GlobalBombFinished || 
-               (PopeJudgementSystem.Instance != null && PopeJudgementSystem.Instance.Stage == PopeJudgementStage.Finished) || 
+        return PopeJudgementSystem.GlobalBombFinished ||
+               (PopeJudgementSystem.Instance != null && PopeJudgementSystem.Instance.Stage == PopeJudgementStage.Finished) ||
                popeRaceCondition;
     }
 
@@ -127,7 +128,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode == BountyHunterWinMode.SoloWin;
     }
 
-    private bool IsPelicanWinMet()
+    private static bool IsPelicanWinMet()
     {
         foreach (var player in PlayerControl.AllPlayerControls)
         {
@@ -137,7 +138,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return false;
     }
 
-    private bool IsPirateWinMet()
+    private static bool IsPirateWinMet()
     {
         if (OptionGroupSingleton<PirateOptions>.Instance.WinMode != PirateWinMode.PirateWins) return false;
 
@@ -151,15 +152,17 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return false;
     }
 
-    private bool IsLawyerWinMet()
+    private static bool IsLawyerWinMet()
     {
         if (LawyerWinConditionState.Triggered) return false;
         if (OptionGroupSingleton<LawyerOptions>.Instance.WinMode == LawyerWinMode.WinWithClient) return false;
 
+        if (IsAnyCriticalSabotageActive()) return false;
+
         return IsLawyerDuoMet() || IsLawyerParityMet();
     }
 
-    private bool IsLawyerDuoMet()
+    private static bool IsLawyerDuoMet()
     {
         var alivePlayers = Helpers.GetAlivePlayers();
         if (alivePlayers.Count != 2) return false;
@@ -181,7 +184,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return false;
     }
 
-    private bool IsLawyerParityMet()
+    private static bool IsLawyerParityMet()
     {
         var alivePlayers = Helpers.GetAlivePlayers();
         if (alivePlayers.Count != 3) return false;
@@ -205,7 +208,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return false;
     }
 
-    private bool ClientHasWonAlone(PlayerControl client)
+    private static bool ClientHasWonAlone(PlayerControl client)
     {
         if (client == null || client.HasDied()) return false;
         var clientRole = client.GetRoleWhenAlive();
@@ -213,12 +216,12 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return false;
     }
 
-    private bool IsKillerClient(PlayerControl client)
+    private static bool IsKillerClient(PlayerControl client)
     {
         return client != null && (client.IsImpostorAligned() || client.Is(RoleAlignment.NeutralKilling));
     }
 
-    private void TriggerLawyerWin()
+    private static void TriggerLawyerWin()
     {
         if (LawyerWinConditionState.Triggered) return;
 
@@ -245,8 +248,20 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         if (winners.Count >= 2)
         {
             LawyerWinConditionState.MarkTriggered();
-            CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners.ToArray());
+            CustomGameOver.Trigger<ExtensionNeutralGameOver>([.. winners]);
         }
+    }
+
+    private static bool IsAnyCriticalSabotageActive()
+    {
+        if (ShipStatus.Instance == null || ShipStatus.Instance.Systems == null) return false;
+        foreach (var sys in ShipStatus.Instance.Systems.Values)
+        {
+            if (sys == null) continue;
+            var sabo = sys.TryCast<ICriticalSabotage>();
+            if (sabo != null && sabo.IsActive) return true;
+        }
+        return false;
     }
 
     #endregion

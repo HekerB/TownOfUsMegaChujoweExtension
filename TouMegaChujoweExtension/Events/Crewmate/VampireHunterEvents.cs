@@ -72,17 +72,3 @@ public static class VampireHunterEvents
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

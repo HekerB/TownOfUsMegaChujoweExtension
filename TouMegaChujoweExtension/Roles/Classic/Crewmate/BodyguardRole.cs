@@ -16,6 +16,8 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Networking;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
+using TownOfUs;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
@@ -65,19 +67,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     [HideFromIl2Cpp] public PlayerControl? Guarded { get; set; }
     [HideFromIl2Cpp] public PlayerControl? LastAttacker { get; set; }
 
-    private bool _backlashReady;
-    [HideFromIl2Cpp]
-    public bool BacklashReady
-    {
-        get => _backlashReady;
-        set
-        {
-            if (_backlashReady && !value)
-            {
-            }
-            _backlashReady = value;
-        }
-    }
+    [HideFromIl2Cpp] public bool BacklashReady { get; set; }
 
     [HideFromIl2Cpp] public float BacklashTimer { get; set; }
     [HideFromIl2Cpp] public bool KillModeActive { get; set; }
@@ -141,17 +131,17 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (Guarded != null)
         {
-            sb.AppendLine($"\n<b>{TouLocale.GetParsed("ExtensionRoleBodyguardTabGuarding").Replace("<player>", Guarded.Data.PlayerName)}</b>");
+            sb.AppendLine(TownOfUsPlugin.Culture, $"\n<b>{TouLocale.GetParsed("ExtensionRoleBodyguardTabGuarding").Replace("<player>", Guarded.Data.PlayerName)}</b>");
         }
 
         if (BacklashReady)
         {
-            sb.AppendLine($"\n<color=red><b>{TouLocale.Get("ExtensionRoleBodyguardTabBacklashReady")}</b></color>");
+            sb.AppendLine(TownOfUsPlugin.Culture, $"\n<color=red><b>{TouLocale.Get("ExtensionRoleBodyguardTabBacklashReady")}</b></color>");
         }
 
         if (KillModeActive)
         {
-            sb.AppendLine($"\n<color=red><b>{TouLocale.Get("ExtensionRoleBodyguardTabKillMode")}</b></color>");
+            sb.AppendLine(TownOfUsPlugin.Culture, $"\n<color=red><b>{TouLocale.Get("ExtensionRoleBodyguardTabKillMode")}</b></color>");
         }
 
         return sb;
@@ -176,17 +166,12 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
     public void Clear()
     {
-
-
         RemoveBacklashArrow();
 
-        if (Guarded != null)
-        {
-            Guarded.RemoveModifier<BodyguardShieldModifier>();
-        }
+        Guarded?.RemoveModifier<BodyguardShieldModifier>();
 
         Guarded = null;
-        _backlashReady = false;
+        BacklashReady = false;
         KillModeActive = false;
         LastAttacker = null;
         MarkedAttackerDot = false;
@@ -196,10 +181,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         RemoveBacklashArrow();
 
-        if (Guarded != null)
-        {
-            Guarded.RemoveModifier<BodyguardShieldModifier>();
-        }
+        Guarded?.RemoveModifier<BodyguardShieldModifier>();
 
         Guarded = target;
         BacklashReady = false;
@@ -264,7 +246,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
         }
     }
 
-    public void RemoveBacklashArrow()
+    public static void RemoveBacklashArrow()
     {
         foreach (var pc in PlayerControl.AllPlayerControls)
         {
@@ -305,9 +287,9 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
             return;
         }
 
+        Logger<TouMegaChujoweExtensionPlugin>.Info($"[Bodyguard] Shield on {guarded.Data.PlayerName} attacked by {attacker.Data.PlayerName}");
         role.OnGuardedAttacked(attacker);
-        
-        // Notify attacker too if they are the local player
+
         if (attacker != null && attacker.AmOwner)
         {
             TriggerBodyguardFlash(attacker);
@@ -338,7 +320,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
             return;
         }
 
-        role.RemoveBacklashArrow();
+        RemoveBacklashArrow();
 
         role.KillModeActive = false;
         role.KillModeTimer = 0f;
@@ -375,7 +357,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     public static void TriggerBodyguardFlash(PlayerControl player)
     {
         if (player == null || !player.AmOwner) return;
-        var color = TouExtensionColors.ShieldFlashes.Bodyguard;
+        var color = TouExtensionColors.ShieldFlashes.BodyguardFlash;
         Logger<TouMegaChujoweExtensionPlugin>.Info($"[Bodyguard] Triggering shield flash for {player.Data.PlayerName}");
         Coroutines.Start(CoFlash(color));
     }
@@ -398,28 +380,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         yield return new WaitForSeconds(0.5f);
 
-        if (_flashRenderer != null)
-        {
-            _flashRenderer.gameObject.SetActive(false);
-        }
+        _flashRenderer?.gameObject.SetActive(false);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

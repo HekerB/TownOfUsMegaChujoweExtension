@@ -9,11 +9,11 @@ namespace TouMegaChujoweExtension.Modules;
 
 public static class ForestallerSystem
 {
-    private static readonly HashSet<byte> ActiveForestallerIds = new();
-    private static readonly Dictionary<byte, PlayerControl> ActiveForestallerPlayers = new();
-    private static readonly HashSet<byte> PendingMeetingRevealIds = new();
-    private static readonly HashSet<byte> RevealedIds = new();
-    private static readonly List<byte> TmpRemoveIds = new();
+    private static readonly HashSet<byte> ActiveForestallerIds = [];
+    private static readonly Dictionary<byte, PlayerControl> ActiveForestallerPlayers = [];
+    private static readonly HashSet<byte> PendingMeetingRevealIds = [];
+    private static readonly HashSet<byte> RevealedIds = [];
+    private static readonly List<byte> TmpRemoveIds = [];
 
     public static void ClearAll()
     {

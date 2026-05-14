@@ -409,7 +409,7 @@
   
   <!-- Witch Notifications -->
   <string name="ExtensionWitchSpellNotification">&lt;player&gt; has been cursed! They have &lt;meetings&gt; meeting(s) left. Vote out or kill the Witch to save them!</string>
-  <string name="ExtensionWitchSpellNotificationMultiple">Multiple players have been cursed:\n&lt;players&gt;\nVote out or kill the Witch to save them!</string>
+  <string name="ExtensionWitchSpellNotificationMultiple">Multiple players have been cursed:\%nl\%&lt;players&gt;\%nl\%Vote out or kill the Witch to save them!</string>
 
 
   <!-- Wraith Role -->
@@ -1185,6 +1185,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- General Options -->
   <string name="ExtensionOptionGeneralLawyerChat">Lawyer/Client Private Chat</string>
   <string name="ExtensionOptionGeneralLoversChat">Lovers Private Chat</string>
+  <string name="ExtensionOptionGeneralDisableKillsFirstRound">Disable kills in first round</string>
   <!-- Mod Compatibility Options -->
   <string name="ExtensionOptionCompatibilityDuplicateWarnings">Show Duplicate Mod Warnings</string>
   <string name="ExtensionOptionCompatibilityDuplicateAutoKick">Auto-Kick If Duplicates Detected</string>
@@ -1205,5 +1206,106 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- Endgame Statistics -->
   <string name="StatsKillCount">Good Kills: &lt;count&gt;</string>
   <string name="StatsBadKillCount">Bad Kills: &lt;count&gt;</string>
+  <!-- Arcanist -->
+  <string name="ExtensionRoleArcanist">Arcanist</string>
+  <string name="ExtensionRoleArcanistIntroBlurb">Draw Tarot cards to influence your fate.</string>
+  <string name="ExtensionRoleArcanistTabDescription">Draw cards from your deck. Each card has a unique effect - some good, some bad. Effects include role changes (Jester, Doomsayer, Bounty Hunter, Pope, Lawyer), temporary or permanent modifiers (Speed, Vision, Blindness, Drunk, Knighted), or immediate death.</string>
+  <string name="ExtensionRoleArcanistWikiDescription">The Arcanist is a Neutral Outlier role that carries a deck of Tarot cards. By drawing a card, they trigger various effects ranging from helpful vision boosts to sudden death.\%nl\%They win by surviving until the end of the game.\%nl\%&lt;color=#F1C40F&gt;Available Cards:&lt;/color&gt;\%nl\%• &lt;color=#FFD700&gt;Fool:&lt;/color&gt; Become a Jester.\%nl\%• &lt;color=#FFD700&gt;Magician:&lt;/color&gt; Blind non-killers (10s).\%nl\%• &lt;color=#FFD700&gt;High Priestess:&lt;/color&gt; Become a Doomsayer.\%nl\%• &lt;color=#FFD700&gt;Empress:&lt;/color&gt; Get Knighted (Monarch).\%nl\%• &lt;color=#FFD700&gt;Emperor:&lt;/color&gt; Get Drunk (Modifier).\%nl\%• &lt;color=#FFD700&gt;Hierophant:&lt;/color&gt; Random Neutral Benign.\%nl\%• &lt;color=#FFD700&gt;Lovers:&lt;/color&gt; Become Lover with evil player.\%nl\%• &lt;color=#FFD700&gt;Chariot:&lt;/color&gt; Speed boost (30s).\%nl\%• &lt;color=#FFD700&gt;Strength:&lt;/color&gt; 20 percent faster card drawing.\%nl\%• &lt;color=#FFD700&gt;Hermit:&lt;/color&gt; Permanent speed boost.\%nl\%• &lt;color=#FFD700&gt;Wheel of Fortune:&lt;/color&gt; Random NK or Amnesiac.\%nl\%• &lt;color=#FFD700&gt;Justice:&lt;/color&gt; Reveal yourself in chat.\%nl\%• &lt;color=#FFD700&gt;Hanged Man:&lt;/color&gt; Become a Bounty Hunter.\%nl\%• &lt;color=#FFD700&gt;Death:&lt;/color&gt; Immediate suicide.\%nl\%• &lt;color=#FFD700&gt;Temperance:&lt;/color&gt; 20 percent slower card drawing.\%nl\%• &lt;color=#FFD700&gt;Devil:&lt;/color&gt; Become a Lawyer.\%nl\%• &lt;color=#FFD700&gt;Tower:&lt;/color&gt; Permanent slowness.\%nl\%• &lt;color=#FFD700&gt;Star:&lt;/color&gt; Permanent vision boost.\%nl\%• &lt;color=#FFD700&gt;Moon:&lt;/color&gt; Blind self (30s).\%nl\%• &lt;color=#FFD700&gt;Sun:&lt;/color&gt; Vision boost (30s).\%nl\%• &lt;color=#FFD700&gt;Judgement:&lt;/color&gt; Become the Pope.\%nl\%• &lt;color=#FFD700&gt;World:&lt;/color&gt; Get a Death Note.</string>
+  <string name="ExtensionRoleArcanistDraw">Draw Card</string>
+  <string name="ExtensionRoleArcanistDrawWikiDescription">Draw a Tarot card from your deck and trigger its effect.</string>
+  <string name="ExtensionOptionArcanistCooldown">Draw Cooldown</string>
+  <string name="ExtensionOptionArcanistDeckSize">Deck Size</string>
+  <string name="ExtensionOptionArcanistAllowDuplicateRoles">Allow Duplicate Roles from Cards</string>
+  <string name="ExtensionArcanistCardDrawn">You drew {0}!</string>
+  <string name="ModifierNameSlowness">Slowness</string>
+  <string name="ModifierNameTemporarySlowness">Temporary slowness</string>
+  <string name="ModifierNameVisionBoost">Vision boost</string>
+  <string name="ModifierNameTemporaryVisionBoost">Temporary vision boost</string>
+  <string name="ModifierNameLowVision">Low vision</string>
+  <string name="ModifierNameTemporaryLowVision">Temporary low vision</string>
+  <string name="ModifierNameSpeedBoost">Speed boost</string>
+  <string name="ModifierNameTemporarySpeedBoost">Temporary speed boost</string>
+  
+  <!-- Tarot Cards -->
+  <string name="TarotCardTheFool">The Fool</string>
+  <string name="TarotCardTheMagician">The Magician</string>
+  <string name="TarotCardTheHighPriestess">The High Priestess</string>
+  <string name="TarotCardTheEmpress">The Empress</string>
+  <string name="TarotCardTheEmperor">The Emperor</string>
+  <string name="TarotCardTheHierophant">The Hierophant</string>
+  <string name="TarotCardTheLovers">The Lovers</string>
+  <string name="TarotCardTheChariot">The Chariot</string>
+  <string name="TarotCardStrength">Strength</string>
+  <string name="TarotCardTheHermit">The Hermit</string>
+  <string name="TarotCardWheelOfFortune">Wheel of Fortune</string>
+  <string name="TarotCardJustice">Justice</string>
+  <string name="TarotCardTheHangedMan">The Hanged Man</string>
+  <string name="TarotCardDeath">Death</string>
+  <string name="TarotCardTemperance">The Temperance</string>
+  <string name="TarotCardTheDevil">The Devil</string>
+  <string name="TarotCardTheTower">The Tower</string>
+  <string name="TarotCardTheStar">The Star</string>
+  <string name="TarotCardTheMoon">The Moon</string>
+  <string name="TarotCardTheSun">The Sun</string>
+  <string name="TarotCardJudgement">Judgement</string>
+  <string name="TarotCardTheWorld">The World</string>
+   
+  <string name="DeathReasonPlayingWithMagic">Playing with magic</string>
+  <string name="ExtensionOptionArcanistWeight00">Chance: The Fool (Jester)</string>
+  <string name="ExtensionOptionArcanistWeight01">Chance: The Magician (Blind non-killers)</string>
+  <string name="ExtensionOptionArcanistWeight02">Chance: The High Priestess (Doomsayer)</string>
+  <string name="ExtensionOptionArcanistWeight03">Chance: The Empress (Knighted)</string>
+  <string name="ExtensionOptionArcanistWeight04">Chance: The Emperor (Drunk)</string>
+  <string name="ExtensionOptionArcanistWeight05">Chance: The Hierophant (Random Neutral Benign)</string>
+  <string name="ExtensionOptionArcanistWeight06">Chance: The Lovers (Linked with evil)</string>
+  <string name="ExtensionOptionArcanistWeight07">Chance: The Chariot (30s Speed Boost)</string>
+  <string name="ExtensionOptionArcanistWeight08">Chance: Strength (Permanent Fast Draw)</string>
+  <string name="ExtensionOptionArcanistWeight09">Chance: The Hermit (Permanent Speed Boost)</string>
+  <string name="ExtensionOptionArcanistWeight10">Chance: Wheel of Fortune (Random NK/Amnesiac)</string>
+  <string name="ExtensionOptionArcanistWeight11">Chance: Justice (Reveal self in chat)</string>
+  <string name="ExtensionOptionArcanistWeight12">Chance: The Hanged Man (Bounty Hunter)</string>
+  <string name="ExtensionOptionArcanistWeight13">Chance: Death (Immediate Suicide)</string>
+  <string name="ExtensionOptionArcanistWeight14">Chance: Temperance (Permanent Slow Draw)</string>
+  <string name="ExtensionOptionArcanistWeight15">Chance: The Devil (Become Lawyer)</string>
+  <string name="ExtensionOptionArcanistWeight16">Chance: The Tower (Permanent Slowness)</string>
+  <string name="ExtensionOptionArcanistWeight17">Chance: The Star (Permanent Vision Boost)</string>
+  <string name="ExtensionOptionArcanistWeight18">Chance: The Moon (30s Self Blindness)</string>
+  <string name="ExtensionOptionArcanistWeight19">Chance: The Sun (30s Vision Boost)</string>
+  <string name="ExtensionOptionArcanistWeight20">Chance: Judgement (Become Pope)</string>
+  <string name="ExtensionOptionArcanistWeight21">Chance: The World (Get Death Note)</string>
+
+  <!-- Gardener -->
+  <string name="ExtensionRoleGardener">Gardener</string>
+  <string name="ExtensionRoleGardenerIntroBlurb">Create a peaceful garden where no one can kill.</string>
+  <string name="ExtensionRoleGardenerTabDescription">Place a garden area. Anyone inside the garden is unable to use their Kill button.</string>
+  <string name="ExtensionRoleGardenerWikiDescription">The Gardener is a Crewmate Protective role. They can place a Garden area on the map. While inside the garden, all players (including killers) are unable to use their Kill button. The effect is removed immediately upon leaving the garden.</string>
+  <string name="ExtensionRoleGardenerGarden">Garden</string>
+  <string name="ExtensionRoleGardenerGardenWikiDescription">Place a garden at your current location. No one can kill inside its radius.</string>
+  <string name="ExtensionOptionGardenerRadius">Garden Size</string>
+  <string name="ExtensionOptionGardenerCooldown">Garden Cooldown</string>
+  <string name="ExtensionOptionGardenerDuration">Garden Duration</string>
+  <string name="ExtensionOptionGardenerCanKillInGarden">Allow kills in garden</string>
+  <string name="ExtensionOptionGardenerFeedback">Gardener feedback (who killed/tried)</string>
+  <string name="ExtensionGardenerAttackKilled">Someone was killed in your garden!</string>
+  <string name="ExtensionGardenerAttackKilledFeedback">{0} killed someone in your garden!</string>
+  <string name="ExtensionGardenerAttackBlocked">An attack was blocked in your garden!</string>
+  <string name="ExtensionGardenerAttackBlockedFeedback">An attack by {0} was blocked in your garden!</string>
+
+  <!-- Portalmaker -->
+  <string name="ExtensionRolePortalmaker">Portalmaker</string>
+  <string name="ExtensionRolePortalmakerIntroBlurb">Link two locations with magical portals.</string>
+  <string name="ExtensionRolePortalmakerTabDescription">Place up to two portals to create a connection. Players touching one portal teleport to the other.</string>
+  <string name="ExtensionRolePortalmakerWikiDescription">The Portalmaker is a Crewmate Power role. They can place two portals on the map. Once both are placed, any player who stands on a portal will be instantly teleported to the other one. Placing a third portal will remove the first one.</string>
+  <string name="ExtensionRolePortalmakerPlace">Place Portal</string>
+  <string name="ExtensionRolePortalmakerPlaceWikiDescription">Place a portal at your current location. Cannot be placed near walls.</string>
+  <string name="ExtensionOptionPortalmakerCooldown">Place Cooldown</string>
+  <string name="ExtensionOptionPortalmakerRadius">Portal Radius</string>
+  <string name="ExtensionOptionPortalmakerTeleportCooldown">Teleport Cooldown (Per Player)</string>
+  <string name="ExtensionOptionPortalmakerTeleportMode">Teleport Mode</string>
+  <string name="ExtensionOptionPortalmakerDuration">Portal Duration</string>
+  <string name="ExtensionOptionPortalmakerStayAfterMeeting">Stay after meeting</string>
+  <string name="ExtensionOptionPortalmakerPlacementDelay">Placement Delay</string>
+  <string name="TeleportModeInteraction">Interaction</string>
+  <string name="TeleportModeAutomatic">Automatic</string>
 </resources>
 

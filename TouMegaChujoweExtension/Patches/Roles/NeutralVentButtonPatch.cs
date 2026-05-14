@@ -77,10 +77,7 @@ public static class NeutralVentButtonPatch
                 ventButton.buttonLabelText.color = new Color(1f, 1f, 1f, alpha);
                 ventButton.buttonLabelText.outlineColor = finalColor;
                 
-                if (ventButton.buttonLabelText.fontMaterial != null)
-                {
-                    ventButton.buttonLabelText.fontMaterial.SetColor("_OutlineColor", finalColor);
-                }
+                ventButton.buttonLabelText.fontMaterial?.SetColor("_OutlineColor", finalColor);
             }
         }
     }

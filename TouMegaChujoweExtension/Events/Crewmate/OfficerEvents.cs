@@ -22,7 +22,7 @@ public static class OfficerEvents
     }
 
     [RegisterEvent]
-    public static void RoundStartEventHandler(RoundStartEvent @event)
+    public static void RoundStartEventHandler(RoundStartEvent _)
     {
         var localPlayer = PlayerControl.LocalPlayer;
         if (localPlayer == null || localPlayer.Data.Role is not OfficerRole)
@@ -35,15 +35,8 @@ public static class OfficerEvents
 
         var initialCd = 10f;
 
-        if (shootButton != null)
-        {
-            shootButton.SetTimer(Mathf.Max(shootButton.Timer, initialCd));
-        }
-
-        if (loadButton != null)
-        {
-            loadButton.SetTimer(Mathf.Max(loadButton.Timer, initialCd));
-        }
+        shootButton?.SetTimer(Mathf.Max(shootButton.Timer, initialCd));
+        loadButton?.SetTimer(Mathf.Max(loadButton.Timer, initialCd));
     }
 
     [HarmonyPatch(typeof(OfficerRole), nameof(OfficerRole.OnMeetingStart))]

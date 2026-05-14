@@ -35,20 +35,8 @@ public static class ForestallerEvents
     }
 
     [RegisterEvent]
-    public static void StartMeetingEventHandler(StartMeetingEvent @event)
+    public static void StartMeetingEventHandler()
     {
         Modules.ForestallerSystem.OnMeetingStarted();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

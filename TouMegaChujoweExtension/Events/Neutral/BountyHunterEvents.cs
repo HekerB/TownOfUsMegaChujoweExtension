@@ -16,7 +16,6 @@ public static class BountyHunterEvents
     public static void AfterMurderEventHandler(AfterMurderEvent @event)
     {
         var killer = @event.Source;
-        var victim = @event.Target;
 
         if (killer.Data?.Role is not BountyHunterRole bh)
             return;

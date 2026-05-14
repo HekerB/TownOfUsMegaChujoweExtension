@@ -8,7 +8,7 @@ namespace TouMegaChujoweExtension.Patches.Roles;
 [HarmonyPatch(typeof(CrimeSceneComponent))]
 public static class ForensicContaminationPatch
 {
-    private static readonly HashSet<int> FrozenSceneIds = new();
+    private static readonly HashSet<int> FrozenSceneIds = [];
 
     [HarmonyPatch(nameof(CrimeSceneComponent.FixedUpdate))]
     [HarmonyPrefix]

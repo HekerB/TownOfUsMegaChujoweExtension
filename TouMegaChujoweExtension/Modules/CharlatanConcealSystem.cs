@@ -9,8 +9,8 @@ public static class CharlatanConcealSystem
 {
     private sealed record ConcealedBody(byte BodyId, byte CharlatanId, float ConcealedAt, float ChannelDuration, bool ChannelComplete);
 
-    private static readonly Dictionary<byte, ConcealedBody> ConcealedBodies = new();
-    private static readonly Dictionary<byte, DeadBody> BodyCache = new();
+    private static readonly Dictionary<byte, ConcealedBody> ConcealedBodies = [];
+    private static readonly Dictionary<byte, DeadBody> BodyCache = [];
 
     public static void ClearAll()
     {
@@ -20,10 +20,9 @@ public static class CharlatanConcealSystem
 
     public static void ClearForPlayer(byte charlatanId)
     {
-        var toRemove = ConcealedBodies.Where(kvp => kvp.Value.CharlatanId == charlatanId).ToList();
-        foreach (var kvp in toRemove)
+        var toRemove = ConcealedBodies.Where(kvp => kvp.Value.CharlatanId == charlatanId).Select(kvp => kvp.Key).ToList();
+        foreach (var bodyId in toRemove)
         {
-            var bodyId = kvp.Key;
             ConcealedBodies.Remove(bodyId);
 
             if (BodyCache.TryGetValue(bodyId, out var body) && body != null)
@@ -96,7 +95,7 @@ public static class CharlatanConcealSystem
         };
     }
 
-    private static float _lastUpdateTime = 0f;
+    private static float _lastUpdateTime;
 
     public static void UpdateBodyTransparency()
     {
@@ -161,18 +160,3 @@ public static class CharlatanConcealSystem
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

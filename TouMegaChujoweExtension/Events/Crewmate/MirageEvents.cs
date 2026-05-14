@@ -34,13 +34,13 @@ public static class MirageEvents
     }
 
     [RegisterEvent]
-    public static void CompleteTaskEvent(CompleteTaskEvent @event)
+    public static void CompleteTaskEvent()
     {
         // Task reward removed as per Mirage rework
     }
 
     [RegisterEvent]
-    public static void OnMeetingStart(StartMeetingEvent @event)
+    public static void OnMeetingStart()
     {
         var localPlayer = PlayerControl.LocalPlayer;
         if (localPlayer == null || localPlayer.Data?.Role is not MirageRole)
@@ -55,7 +55,7 @@ public static class MirageEvents
 
         var title = $"<color=#{ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Mirage)}>Mirage Feedback</color>";
         string msg;
-        
+
         if (MirageRole.TriggeredRoles.TryGetValue(localPlayer.PlayerId, out var roles) && roles.Count > 0)
         {
             TownOfUs.Utilities.Extensions.Shuffle(roles);
@@ -68,21 +68,7 @@ public static class MirageEvents
         }
 
         MiscUtils.AddFakeChat(localPlayer.Data, title, msg, false, true);
-        
+
         MirageRole.TriggeredRoles.Clear();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

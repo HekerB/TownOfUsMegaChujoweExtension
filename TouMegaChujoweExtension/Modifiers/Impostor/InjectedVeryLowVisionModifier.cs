@@ -7,19 +7,20 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modifiers.Impostor;
 
-public sealed class InjectedVeryLowVisionModifier : TimedModifier, IInjectedModifier
+public sealed class InjectedVeryLowVisionModifier(float duration, InjectorEffectDurationType durationType, bool isInjected) 
+    : TimedModifier, IInjectedModifier
 {
-    public override string ModifierName => "Injected (Very Low Vision)";
-    public override bool HideOnUi => true;
+    public InjectedVeryLowVisionModifier(float duration, InjectorEffectDurationType durationType) : this(duration, durationType, true) { }
+    public override string ModifierName => GetModifierName();
+    public override bool HideOnUi => isInjected;
     public override LoadableAsset<Sprite>? ModifierIcon => null;
 
-    private float _duration;
-    private InjectorEffectDurationType _durationType;
-
-    public InjectedVeryLowVisionModifier(float duration, InjectorEffectDurationType durationType)
+    private string GetModifierName()
     {
-        _duration = duration;
-        _durationType = durationType;
+        if (isInjected) return "Injected (Very Low Vision)";
+        return durationType == InjectorEffectDurationType.AllGame
+            ? TouLocale.Get("ModifierNameLowVision", "Low vision")
+            : TouLocale.Get("ModifierNameTemporaryLowVision", "Temporary low vision");
     }
 
     public Guid InjectionId { get; set; }
@@ -29,12 +30,12 @@ public sealed class InjectedVeryLowVisionModifier : TimedModifier, IInjectedModi
     {
         get
         {
-            return _durationType switch
+            return durationType switch
             {
                 InjectorEffectDurationType.AllRound => -1f,
                 InjectorEffectDurationType.AllGame => -1f,
-                InjectorEffectDurationType.SetTime => _duration,
-                _ => _duration
+                InjectorEffectDurationType.SetTime => duration,
+                _ => duration
             };
         }
     }
@@ -43,7 +44,7 @@ public sealed class InjectedVeryLowVisionModifier : TimedModifier, IInjectedModi
 
     public override void OnMeetingStart()
     {
-        if (_durationType == InjectorEffectDurationType.AllRound)
+        if (durationType == InjectorEffectDurationType.AllRound)
         {
             Player.RemoveModifier(this);
         }

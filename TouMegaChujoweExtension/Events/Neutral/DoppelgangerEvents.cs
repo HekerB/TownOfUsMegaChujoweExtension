@@ -106,7 +106,7 @@ public static class DoppelgangerEvents
     }
 
     [RegisterEvent]
-    public static void RoundStartHandler(RoundStartEvent @event)
+    public static void RoundStartHandler()
     {
         foreach (var player in PlayerControl.AllPlayerControls)
         {

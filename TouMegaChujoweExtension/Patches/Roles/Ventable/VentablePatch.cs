@@ -123,6 +123,7 @@ public static class VentablePatch
             return;
 
         var player = PlayerControl.LocalPlayer;
+        var ventButton = __instance.ImpostorVentButton;
         if (player == null || player.Data == null || player.Data.IsDead)
         {
             CleanupUI(__instance);
@@ -136,12 +137,16 @@ public static class VentablePatch
         }
 
         var mod = player.GetModifier<VentableModifier>();
-        var ventButton = __instance.ImpostorVentButton;
 
         if (mod == null || ventButton == null || ventButton.gameObject == null)
         {
             CleanupUI(__instance);
             return;
+        }
+
+        if (player.Data.Role != null && !player.Data.Role.CanVent)
+        {
+            player.Data.Role.CanVent = true;
         }
 
         bool inMeeting = MeetingHud.Instance != null || ExileController.Instance != null;
@@ -182,13 +187,16 @@ public static class VentablePatch
             ventButton.buttonLabelText.outlineColor = Palette.CrewmateRoleHeaderBlue;
 
         var usesCounter = GetOrCreateUsesCounter(ventButton);
-        if (usesCounter != null)
+        if (usesCounter is not null)
         {
-            usesCounter.spriteRenderer.sprite = TouAssets.AbilityCounterVentSprite.LoadAsset();
-            usesCounter.textMesh.text = mod.VentsRemaining.ToString(CultureInfo.InvariantCulture);
-            
+            if (usesCounter.spriteRenderer is not null)
+                usesCounter.spriteRenderer.sprite = TouAssets.AbilityCounterVentSprite.LoadAsset();
+
+            if (usesCounter.textMesh is not null)
+                usesCounter.textMesh.text = mod.VentsRemaining.ToString(CultureInfo.InvariantCulture);
+
             bool showCounter = OptionGroupSingleton<VentableModifierOptions>.Instance.MaxVentUses.Value > 1f;
-            usesCounter.gameObject.SetActive(showCounter);
+            usesCounter.gameObject?.SetActive(showCounter);
         }
 
         if (mod != null && mod.IsShaking)
@@ -226,24 +234,33 @@ public static class VentablePatch
             float maxDuration = OptionGroupSingleton<VentableModifierOptions>.Instance.VentDuration.Value;
             if (maxDuration > 0f)
             {
-                float remaining = Mathf.Max(0f, maxDuration - mod.VentDurationTimer);
-                if (ventButton != null && ventButton.graphic != null)
+                float remaining = Mathf.Max(0f, maxDuration - mod!.VentDurationTimer);
+                VentUtilities.InitializeVentButton(ventButton);
+                if (VentUtilities.IsSafeToSetCooldown(ventButton))
+                {
                     ventButton.SetCoolDown(remaining, maxDuration);
+                }
                 SetTimerText(timerText, remaining);
                 return;
             }
         }
-        else if (mod.CooldownTimer > 0f)
+        else if (mod!.CooldownTimer > 0f)
         {
             float maxCd = OptionGroupSingleton<VentableModifierOptions>.Instance.VentCooldown.Value;
-            if (ventButton != null && ventButton.graphic != null)
+            VentUtilities.InitializeVentButton(ventButton);
+            if (VentUtilities.IsSafeToSetCooldown(ventButton))
+            {
                 ventButton.SetCoolDown(mod.CooldownTimer, maxCd);
+            }
             SetTimerText(timerText, mod.CooldownTimer);
             return;
         }
 
-        if (ventButton != null && ventButton.graphic != null)
+        VentUtilities.InitializeVentButton(ventButton);
+        if (VentUtilities.IsSafeToSetCooldown(ventButton))
+        {
             ventButton.SetCoolDown(0f, 1f);
+        }
         timerText.gameObject.SetActive(false);
     }
 
@@ -286,14 +303,25 @@ public static class VentablePatch
         if (existingCounter != null && existingCounter.gameObject != null)
             existingCounter.gameObject.SetActive(false);
 
+        var data = PlayerControl.LocalPlayer?.Data;
+        if (data != null && (data.Role == null || !data.Role.IsImpostor) && (data.Role == null || !data.Role.CanVent) && ventButton.gameObject.activeSelf)
+        {
+            ventButton.gameObject.SetActive(false);
+        }
+
+        if (data != null && data.Role != null && !data.Role.IsImpostor && data.Role.CanVent)
+        {
+            data.Role.CanVent = false;
+        }
+
         _basePosSet = false;
     }
 
     private sealed class UsesCounterRefs
     {
-        public GameObject gameObject;
-        public SpriteRenderer spriteRenderer;
-        public TextMeshPro textMesh;
+        public GameObject? gameObject;
+        public SpriteRenderer? spriteRenderer;
+        public TextMeshPro? textMesh;
     }
 
     private static UsesCounterRefs? GetOrCreateUsesCounter(ActionButton ventButton)
@@ -327,10 +355,9 @@ public static class VentablePatch
         var sr = counterObj.GetComponent<SpriteRenderer>();
         var text = counterObj.transform.Find("Text")?.GetComponent<TextMeshPro>();
 
-        if (text == null)
+        if (text is null)
         {
-            // If Text child is missing, try to find it in the clone or create it
-            text = counterObj.GetComponentInChildren<TextMeshPro>();
+            text ??= counterObj.GetComponentInChildren<TextMeshPro>();
         }
 
         return new UsesCounterRefs
@@ -385,18 +412,3 @@ public static class VentablePatch
         return null;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

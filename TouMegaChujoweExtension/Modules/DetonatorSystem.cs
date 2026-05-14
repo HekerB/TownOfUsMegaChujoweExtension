@@ -24,7 +24,7 @@ public static class DetonatorSystem
 {
     private static readonly ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("DetonatorSystem");
 
-    private class ActiveBomb
+    private sealed class ActiveBomb
     {
         public byte DetonatorId;
         public byte TargetId;
@@ -33,17 +33,19 @@ public static class DetonatorSystem
         public float LastBeepTime;
     }
 
-    private static readonly List<ActiveBomb> _activeBombs = new();
-    private static readonly HashSet<byte> _bombTargets = new();
+    private static readonly List<ActiveBomb> _activeBombs = [];
+    private static readonly HashSet<byte> _bombTargets = [];
 
     public static void AttachBomb(byte detonatorId, byte targetId)
     {
-        var options = OptionGroupSingleton<DetonatorOptions>.Instance;
-
         var target = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == targetId);
-        if (target != null)
+        if (target is not null)
         {
-            target.AddModifier(new DetonatorBombModifier(MiscUtils.PlayerById(detonatorId), 9999f));
+            var detonator = MiscUtils.PlayerById(detonatorId);
+            if (detonator is not null)
+            {
+                target.AddModifier(new DetonatorBombModifier(detonator, 9999f));
+            }
         }
 
         _activeBombs.Add(new ActiveBomb
@@ -103,7 +105,7 @@ public static class DetonatorSystem
 
     public static void MeetingUpdate()
     {
-
+        // Bombs do not update during meetings
     }
 
     private static void UpdateTimers(float dt)
@@ -218,13 +220,9 @@ public static class DetonatorSystem
         }
 
         DetonatorRole.RpcShowDetonationEffect(actualKiller, pos, options.DetonateRadius);
-        if (detonator != null)
+        if (detonator is not null)
         {
             DetonatorRole.RpcPlayExplosion(detonator);
-        }
-
-        if (detonator != null)
-        {
             detonator.SetKillTimer(detonator.GetKillCooldown());
         }
 
@@ -235,7 +233,6 @@ public static class DetonatorSystem
 
     public static void RoundReset()
     {
-        var options = OptionGroupSingleton<DetonatorOptions>.Instance;
         for (int i = _activeBombs.Count - 1; i >= 0; i--)
         {
             var b = _activeBombs[i];

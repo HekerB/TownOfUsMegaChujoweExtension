@@ -86,14 +86,8 @@ public enum ExtensionRpc : uint
     DetonatorShowEffect = 80,
     DetonatorPlayBeep = 81,
     DetonatorPlayExplosion = 82,
+    ArcanistDrawCard = 102,
+    GardenerPlaceGarden = 103,
+    PortalmakerPlacePortal = 104,
+    GardenerAttackNotify = 107
 }
-
-
-
-
-
-
-
-
-
-

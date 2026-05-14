@@ -15,7 +15,7 @@ public static class MirageDecoySystem
         float ExpiresAt,
         bool IsVisible);
 
-    private static readonly Dictionary<byte, ActiveDecoy> ActiveByMirage = new();
+    private static readonly Dictionary<byte, ActiveDecoy> ActiveByMirage = [];
     private static CosmeticsLayer LocalOutlinedCosmetics = null!;
     private static SpriteRenderer LocalOutlinedBody = null!;
 
@@ -51,7 +51,7 @@ public static class MirageDecoySystem
                     // ignore
                 }
             }
-            else if (LocalOutlinedBody != null)
+            else
             {
                 LocalOutlinedBody.SetOutline(null);
             }
@@ -99,7 +99,7 @@ public static class MirageDecoySystem
                 continue;
             }
 
-            var body = cosmetics.currentBodySprite != null ? cosmetics.currentBodySprite.BodySprite : null;
+            var body = cosmetics.currentBodySprite?.BodySprite;
             if (body == null)
             {
                 continue;
@@ -210,7 +210,7 @@ public static class MirageDecoySystem
     /// Prime a decoy: create it once, at the Mirage's current pose, but keep it hidden.
     /// The Mirage player sees a faint preview; everyone else sees nothing yet.
     /// </summary>
-    public static void PrimeDecoy(byte mirageId, PlayerControl appearanceSource, Vector3 worldPos, float zRot, bool flipX)
+    public static void PrimeDecoy(byte mirageId, PlayerControl appearanceSource, Vector3 worldPos)
     {
         if (appearanceSource == null)
         {
@@ -243,7 +243,7 @@ public static class MirageDecoySystem
     /// Place a decoy: reveal the already-primed decoy to everyone and start its duration.
     /// If the decoy wasn't primed (late join / desync), we fall back to spawning it visible.
     /// </summary>
-    public static void RevealOrSpawnDecoy(byte mirageId, PlayerControl appearanceSource, Vector3 worldPos, float zRot, bool flipX, float durationSeconds)
+    public static void RevealOrSpawnDecoy(byte mirageId, PlayerControl appearanceSource, Vector3 worldPos, float durationSeconds)
     {
         if (TryRevealExisting(mirageId, durationSeconds))
         {

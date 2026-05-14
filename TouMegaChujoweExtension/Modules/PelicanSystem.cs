@@ -22,16 +22,16 @@ namespace TouMegaChujoweExtension.Modules;
 
 public static class PelicanSystem
 {
-    private static readonly Dictionary<byte, HashSet<byte>> SwallowedPlayers = new();
-    private static readonly HashSet<byte> AllSwallowed = new();
-    private static readonly Dictionary<byte, Vector2> OriginalPositions = new();
+    private static readonly Dictionary<byte, HashSet<byte>> SwallowedPlayers = [];
+    private static readonly HashSet<byte> AllSwallowed = [];
+    private static readonly Dictionary<byte, Vector2> OriginalPositions = [];
     private static IEnumerator? _spectateCoroutine;
     private static GameObject? _swallowedNotificationObject;
-    private static readonly Dictionary<byte, Vector2> LastPelicanPositions = new();
+    private static readonly Dictionary<byte, Vector2> LastPelicanPositions = [];
 
-    private static readonly HashSet<byte> PendingDigestVictims = new();
-    private static readonly Dictionary<byte, byte> PendingDigestKillers = new();
-    private static readonly HashSet<byte> DigestKillVictims = new();
+    private static readonly HashSet<byte> PendingDigestVictims = [];
+    private static readonly Dictionary<byte, byte> PendingDigestKillers = [];
+    private static readonly HashSet<byte> DigestKillVictims = [];
 
     private static bool _preWinDigestDone;
 
@@ -52,11 +52,11 @@ public static class PelicanSystem
 
     public static HashSet<byte> GetSwallowedByPelican(byte pelicanId)
     {
-        return SwallowedPlayers.TryGetValue(pelicanId, out var set) ? set : new HashSet<byte>();
+        return SwallowedPlayers.TryGetValue(pelicanId, out var set) ? set : [];
     }
 
-    private static readonly Dictionary<byte, byte> SwallowTracker = new();
-    private static readonly Dictionary<byte, DateTime> SwallowTimes = new();
+    private static readonly Dictionary<byte, byte> SwallowTracker = [];
+    private static readonly Dictionary<byte, DateTime> SwallowTimes = [];
 
     public static DateTime? GetSwallowTime(byte victimId)
     {
@@ -146,7 +146,7 @@ public static class PelicanSystem
     {
         if (!SwallowedPlayers.TryGetValue(pelicanId, out var set))
         {
-            set = new HashSet<byte>();
+            set = [];
             SwallowedPlayers[pelicanId] = set;
         }
 
@@ -520,7 +520,7 @@ public static class PelicanSystem
 
         if (IsPositionSafe(targetPosition, targetPosition)) return targetPosition;
 
-        float[] distances = { 0.3f, 0.5f, 0.7f, 1.0f, 1.3f, 1.5f, 2.0f };
+        float[] distances = [ 0.3f, 0.5f, 0.7f, 1.0f, 1.3f, 1.5f, 2.0f ];
         int directions = 8;
 
         foreach (var dist in distances)
@@ -595,7 +595,7 @@ public static class PelicanSystem
         if (localPlayer != null && Camera.main != null)
         {
             var follower = Camera.main.GetComponent<FollowerCamera>();
-            if (follower != null) follower.SetTarget(localPlayer);
+            follower?.SetTarget(localPlayer);
         }
     }
 
@@ -620,7 +620,7 @@ public static class PelicanSystem
             if (Camera.main != null)
             {
                 var follower = Camera.main.GetComponent<FollowerCamera>();
-                if (follower != null) follower.SetTarget(pelican);
+                follower?.SetTarget(pelican);
             }
 
             yield return null;

@@ -16,8 +16,8 @@ public sealed class DoctorCanVentModifier : TimedModifier, IWikiDiscoverable
     public override bool HideOnUi => true;
     public override LoadableAsset<Sprite>? ModifierIcon => null;
 
-    private float _duration;
-    private DoctorEffectDurationType _durationType;
+    private readonly float _duration;
+    private readonly DoctorEffectDurationType _durationType;
 
     public DoctorCanVentModifier(float duration, DoctorEffectDurationType durationType)
     {

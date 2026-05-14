@@ -66,9 +66,10 @@ public sealed class BodyguardShieldModifier(PlayerControl bodyguard) : BaseShiel
 
     public override void OnActivate()
     {
+        if (Player == null) return;
         base.OnActivate();
 
-        Info($"[BodyguardShield] OnActivate player={Player?.Data?.PlayerName} bodyguard={Bodyguard?.Data?.PlayerName}");
+        Info($"[BodyguardShield] OnActivate player={Player.Data?.PlayerName} bodyguard={Bodyguard?.Data?.PlayerName}");
 
         var cosmeticsLayer = Player.transform.GetChild(2);
         var playerLayer = Player.gameObject.layer;
@@ -177,8 +178,8 @@ public sealed class BodyguardShieldModifier(PlayerControl bodyguard) : BaseShiel
         _frontSr = null;
         _backSr = null;
 
-        if (_holderFront != null) _holderFront.Destroy();
-        if (_holderBack != null) _holderBack.Destroy();
+        _holderFront?.Destroy();
+        _holderBack?.Destroy();
 
         _holderFront = null;
         _holderBack = null;
@@ -194,8 +195,8 @@ public sealed class BodyguardShieldModifier(PlayerControl bodyguard) : BaseShiel
 
         if (MeetingHud.Instance)
         {
-            if (_holderFront != null) _holderFront.SetActive(false);
-            if (_holderBack != null) _holderBack.SetActive(false);
+            _holderFront?.SetActive(false);
+            _holderBack?.SetActive(false);
             return;
         }
 
@@ -208,8 +209,8 @@ public sealed class BodyguardShieldModifier(PlayerControl bodyguard) : BaseShiel
         // Bez raycast/vision — maska vision “ucina” sprite sama
         var isVisible = canSee && !Player.IsConcealed() && IsVisible;
 
-        if (_holderFront != null) _holderFront.SetActive(isVisible);
-        if (_holderBack != null) _holderBack.SetActive(isVisible);
+        _holderFront?.SetActive(isVisible);
+        _holderBack?.SetActive(isVisible);
 
         if (!isVisible)
             return;

@@ -10,22 +10,8 @@ namespace TouMegaChujoweExtension.Events.Crewmate;
 public static class TrapperEvents
 {
     [RegisterEvent]
-    public static void EjectionEventHandler(EjectionEvent @event)
+    public static void EjectionEventHandler()
     {
         VentTrapSystem.DecrementRoundsAndRemoveExpired();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

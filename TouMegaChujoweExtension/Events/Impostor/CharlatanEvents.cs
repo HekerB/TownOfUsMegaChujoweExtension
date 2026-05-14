@@ -25,7 +25,7 @@ public static class CharlatanEvents
     }
 
     [RegisterEvent]
-    public static void GameEndEventHandler(GameEndEvent @event)
+    public static void GameEndEventHandler()
     {
         CharlatanConcealSystem.ClearAll();
         CharlatanDeceiveSystem.ClearAll();
@@ -62,13 +62,9 @@ public static class CharlatanEvents
         if (source.AmOwner)
         {
             var concealButton = CustomButtonSingleton<CharlatanConcealButton>.Instance;
-            if (concealButton != null)
+            if (concealButton != null && options.ResetKillConcealCooldownsTogether)
             {
-
-                if (options.ResetKillConcealCooldownsTogether)
-                {
-                    concealButton.Timer = concealButton.Cooldown;
-                }
+                concealButton.Timer = concealButton.Cooldown;
             }
         }
     }

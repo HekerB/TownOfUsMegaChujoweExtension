@@ -13,7 +13,7 @@ public static class BodyguardNamePatch
 
     [HarmonyPatch(typeof(PlayerRoleTextExtensions), nameof(PlayerRoleTextExtensions.UpdateTargetColor), typeof(Color), typeof(PlayerControl), typeof(bool))]
     [HarmonyPostfix]
-    public static void UpdateTargetColorPostfix(ref Color __result, PlayerControl player, bool hidden)
+    public static void UpdateTargetColorPostfix(ref Color __result, PlayerControl player)
     {
         var local = PlayerControl.LocalPlayer;
         if (player == null || local == null || local.Data == null)

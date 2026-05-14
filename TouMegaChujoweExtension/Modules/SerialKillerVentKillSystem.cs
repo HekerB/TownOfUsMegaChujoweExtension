@@ -2,15 +2,11 @@ using System.Collections.Generic;
 using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Modules;
-
-/// <summary>
-/// Tracks when a Serial Killer can kill someone in a vent.
-/// </summary>
 public static class SerialKillerVentKillSystem
 {
-    private static readonly Dictionary<byte, byte> VentKillTargets = new();
-    private static readonly Dictionary<byte, bool> ProcessingVentKill = new();
-    private static readonly Dictionary<byte, int> EscapeVentUsages = new();
+    private static readonly Dictionary<byte, byte> VentKillTargets = [];
+    private static readonly Dictionary<byte, bool> ProcessingVentKill = [];
+    private static readonly Dictionary<byte, int> EscapeVentUsages = [];
 
     public static void SetVentKillTarget(byte serialKillerId, PlayerControl? target)
     {
@@ -90,15 +86,3 @@ public static class SerialKillerVentKillSystem
         return false;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -153,21 +153,18 @@ public sealed class KamikazeRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     [HideFromIl2Cpp]
     private static IEnumerator CoProcessKills(PlayerControl kamikaze, List<PlayerControl> victims)
     {
-        foreach (var victim in victims)
+        foreach (var victim in victims.Where(v => v != null && !v.HasDied()))
         {
-            if (victim != null && !victim.HasDied())
-            {
-                kamikaze.RpcSpecialMurder(
-                    victim,
-                    createDeadBody: true,
-                    teleportMurderer: false,
-                    showKillAnim: false,
-                    playKillSound: false,
-                    causeOfDeath: "Seppuku");
+            kamikaze.RpcSpecialMurder(
+                victim,
+                createDeadBody: true,
+                teleportMurderer: false,
+                showKillAnim: false,
+                playKillSound: false,
+                causeOfDeath: "Seppuku");
 
-                yield return null;
-                yield return null;
-            }
+            yield return null;
+            yield return null;
         }
 
         yield return null;
@@ -189,10 +186,7 @@ public sealed class KamikazeRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     private static IEnumerator CoDestroySphere(GameObject? sphere)
     {
         yield return new WaitForSeconds(0.5f);
-        if (sphere != null)
-        {
-            sphere.Destroy();
-        }
+        sphere?.Destroy();
     }
 }
 

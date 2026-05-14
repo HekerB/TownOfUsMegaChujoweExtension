@@ -8,7 +8,7 @@ namespace TouMegaChujoweExtension.Events.Crewmate;
 public static class PresidentEvents
 {
     [RegisterEvent]
-    public static void OnMeetingStart(StartMeetingEvent @event)
+    public static void OnMeetingStart()
     {
         foreach (var player in PlayerControl.AllPlayerControls)
         {
@@ -29,7 +29,7 @@ public static class PresidentEvents
     }
 
     [RegisterEvent]
-    public static void OnMeetingEnd(EndMeetingEvent @event)
+    public static void OnMeetingEnd()
     {
         if (PlayerControl.AllPlayerControls == null) return;
 
@@ -50,15 +50,3 @@ public static class PresidentEvents
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

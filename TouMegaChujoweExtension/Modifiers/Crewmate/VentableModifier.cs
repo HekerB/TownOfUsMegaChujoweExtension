@@ -32,7 +32,7 @@ public sealed class VentableModifier : TouGameModifier, IWikiDiscoverable, IColo
             return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}TabDescriptionEmpty");
 
         return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}TabDescription")
-            .Replace("-uses-", VentsRemaining.ToString());
+            .Replace("-uses-", VentsRemaining.ToString(System.Globalization.CultureInfo.InvariantCulture));
     }
 
     public string GetAdvancedDescription()
@@ -106,9 +106,9 @@ public sealed class VentableModifier : TouGameModifier, IWikiDiscoverable, IColo
                     if (currentVent != null)
                     {
                         currentVent.SetButtons(false);
-                        if (currentVent.Left != null) currentVent.Left.SetButtons(false);
-                        if (currentVent.Right != null) currentVent.Right.SetButtons(false);
-                        if (currentVent.Center != null) currentVent.Center.SetButtons(false);
+                        currentVent.Left?.SetButtons(false);
+                        currentVent.Right?.SetButtons(false);
+                        currentVent.Center?.SetButtons(false);
 
                         Player.MyPhysics.RpcExitVent(currentVent.Id);
                     }

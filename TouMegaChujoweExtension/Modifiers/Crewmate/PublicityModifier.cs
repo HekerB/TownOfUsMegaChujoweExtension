@@ -24,8 +24,8 @@ public sealed class PublicityModifier : TouGameModifier, IWikiDiscoverable, ICol
     public override Color FreeplayFileColor => new Color32(140, 255, 255, 255);
     public Color ModifierColor => TouExtensionColors.Publicity;
     public string GuesserName => ModifierName;
-    public Color GuesserColor => TouExtensionColors.Publicity;
-    public Sprite? GuesserIcon => TouExtensionModifierIcons.PublicityVoteModifierIcon.LoadAsset();
+    public static Color GuesserColor => TouExtensionColors.Publicity;
+    public static Sprite? GuesserIcon => TouExtensionModifierIcons.PublicityVoteModifierIcon.LoadAsset();
     public bool CanBeGuessed => GetAmountPerGame() > 0;
 
     public override string GetDescription()

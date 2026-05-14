@@ -408,7 +408,7 @@
   
   <!-- Witch Notifications -->
   <string name="ExtensionWitchSpellNotification">&lt;player&gt; zostal przeklety! Pozostalo mu &lt;meetings&gt; spotkanie(a). Wyrzuccie lub zabijcie Witch, aby go uratowac!</string>
-  <string name="ExtensionWitchSpellNotificationMultiple">Wielu graczy zostalo przekletych:\n&lt;players&gt;\nWyrzuccie lub zabijcie Witch, aby ich uratowac!</string>
+  <string name="ExtensionWitchSpellNotificationMultiple">Wielu graczy zostało przeklętych:\%nl\%&lt;players&gt;\%nl\%Wyrzućcie lub zabijcie Wiedźmę, aby ich uratować!</string>
 
   <!-- Wraith Role -->
   <string name="ExtensionRoleWraith">Wraith</string>
@@ -1189,6 +1189,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <!-- General Options -->
   <string name="ExtensionOptionGeneralLawyerChat">Prywatny czat Prawnik/Klient</string>
   <string name="ExtensionOptionGeneralLoversChat">Prywatny czat Kochankowie</string>
+  <string name="ExtensionOptionGeneralDisableKillsFirstRound">Wyłącz zabijanie w pierwszej rundzie</string>
   <!-- Mod Compatibility Options -->
   <string name="ExtensionOptionCompatibilityDuplicateWarnings">Pokazuj ostrzezenia o duplikatach</string>
   <string name="ExtensionOptionCompatibilityDuplicateAutoKick">Automatyczne wyrzucanie przy duplikatach</string>
@@ -1206,5 +1207,106 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <!-- Endgame Statistics -->
   <string name="StatsKillCount">Dobre zabójstwa: &lt;count&gt;</string>
   <string name="StatsBadKillCount">Zle zabójstwa: &lt;count&gt;</string>
+  <!-- Arcanist -->
+  <string name="ExtensionRoleArcanist">Arcanista</string>
+  <string name="ExtensionRoleArcanistIntroBlurb">Wyciągaj karty Tarota, aby wpłynąć na swój los.</string>
+  <string name="ExtensionRoleArcanistTabDescription">Wyciągaj karty ze swojej talii. Każda karta ma unikalny efekt - niektóre dobre, niektóre złe. Efekty obejmują zmiany roli (Pajac, Wieszcz, Łowca Nagród, Papież, Prawnik), tymczasowe lub stałe modyfikatory (Prędkość, Wizja, Oślepienie, Pijany, Pasowanie) lub natychmiastową śmierć.</string>
+  <string name="ExtensionRoleArcanistWikiDescription">Arcanista to Neutralna rola (Outlier), która posiada talię kart Tarota. Wyciągając kartę, aktywuje on różnorodne efekty – od pomocnych wzmocnień wzroku po nagłą śmierć.\%nl\%Wygrywa, jeśli przeżyje do końca gry.\%nl\%&lt;color=#F1C40F&gt;Dostępne Karty:&lt;/color&gt;\%nl\%• &lt;color=#FFD700&gt;Głupiec:&lt;/color&gt; Zostań Pajacem.\%nl\%• &lt;color=#FFD700&gt;Mag:&lt;/color&gt; Oślepienie nie-morderców (10s).\%nl\%• &lt;color=#FFD700&gt;Kapłanka:&lt;/color&gt; Zostań Wieszczem.\%nl\%• &lt;color=#FFD700&gt;Cesarzowa:&lt;/color&gt; Pasowanie (Monarcha).\%nl\%• &lt;color=#FFD700&gt;Cesarz:&lt;/color&gt; Upicie się (Modyfikator).\%nl\%• &lt;color=#FFD700&gt;Hierofant:&lt;/color&gt; Losowa rola Neutralna Łagodna.\%nl\%• &lt;color=#FFD700&gt;Kochankowie:&lt;/color&gt; Połączenie ze złym graczem.\%nl\%• &lt;color=#FFD700&gt;Rydwan:&lt;/color&gt; Prędkość (30s).\%nl\%• &lt;color=#FFD700&gt;Siła:&lt;/color&gt; 20 procent szybsze karty.\%nl\%• &lt;color=#FFD700&gt;Pustelnik:&lt;/color&gt; Stała prędkość.\%nl\%• &lt;color=#FFD700&gt;Koło Fortuny:&lt;/color&gt; Losowy Zabójca lub Amnesiac.\%nl\%• &lt;color=#FFD700&gt;Sprawiedliwość:&lt;/color&gt; Ujawnienie się na czacie.\%nl\%• &lt;color=#FFD700&gt;Wisielec:&lt;/color&gt; Zostań Łowcą Nagród.\%nl\%• &lt;color=#FFD700&gt;Śmierć:&lt;/color&gt; Samobójstwo.\%nl\%• &lt;color=#FFD700&gt;Umiarkowanie:&lt;/color&gt; 20 procent wolniejsze karty.\%nl\%• &lt;color=#FFD700&gt;Diabeł:&lt;/color&gt; Zostań Prawnikiem.\%nl\%• &lt;color=#FFD700&gt;Wieża:&lt;/color&gt; Stałe spowolnienie.\%nl\%• &lt;color=#FFD700&gt;Gwiazda:&lt;/color&gt; Stała wizja.\%nl\%• &lt;color=#FFD700&gt;Księżyc:&lt;/color&gt; Oślepienie siebie (30s).\%nl\%• &lt;color=#FFD700&gt;Słońce:&lt;/color&gt; Wizja (30s).\%nl\%• &lt;color=#FFD700&gt;Sąd Ostateczny:&lt;/color&gt; Zostań Papieżem.\%nl\%• &lt;color=#FFD700&gt;Świat:&lt;/color&gt; Otrzymaj Death Note.</string>
+  <string name="ExtensionRoleArcanistDraw">Wyciągnij kartę</string>
+  <string name="ExtensionRoleArcanistDrawWikiDescription">Wyciągnij kartę Tarota ze swojej talii i aktywuj jej efekt.</string>
+  <string name="ExtensionOptionArcanistCooldown">Czas odnowienia wyciągania</string>
+  <string name="ExtensionOptionArcanistDeckSize">Rozmiar talii</string>
+  <string name="ExtensionOptionArcanistAllowDuplicateRoles">Zezwalaj na duplikaty ról z kart</string>
+  <string name="ExtensionArcanistCardDrawn">Wyciągnąłeś {0}!</string>
+  <string name="ModifierNameSlowness">Spowolnienie</string>
+  <string name="ModifierNameTemporarySlowness">Tymczasowe spowolnienie</string>
+  <string name="ModifierNameVisionBoost">Wzmocnienie wzroku</string>
+  <string name="ModifierNameTemporaryVisionBoost">Tymczasowe wzmocnienie wzroku</string>
+  <string name="ModifierNameLowVision">Słabe widzenie</string>
+  <string name="ModifierNameTemporaryLowVision">Tymczasowe słabe widzenie</string>
+  <string name="ModifierNameSpeedBoost">Zwiększona prędkość</string>
+  <string name="ModifierNameTemporarySpeedBoost">Tymczasowa zwiększona prędkość</string>
+  <string name="ExtensionModifierGardenProtection">Ochrona ogrodu</string>
+  
+  <!-- Tarot Cards -->
+  <string name="TarotCardTheFool">Głupiec</string>
+  <string name="TarotCardTheMagician">Mag</string>
+  <string name="TarotCardTheHighPriestess">Arcykapłanka</string>
+  <string name="TarotCardTheEmpress">Cesarzowa</string>
+  <string name="TarotCardTheEmperor">Cesarz</string>
+  <string name="TarotCardTheHierophant">Hierofant</string>
+  <string name="TarotCardTheLovers">Kochankowie</string>
+  <string name="TarotCardTheChariot">Rydwan</string>
+  <string name="TarotCardStrength">Siła</string>
+  <string name="TarotCardTheHermit">Pustelnik</string>
+  <string name="TarotCardWheelOfFortune">Koło Fortuny</string>
+  <string name="TarotCardJustice">Sprawiedliwość</string>
+  <string name="TarotCardTheHangedMan">Wisielec</string>
+  <string name="TarotCardDeath">Śmierć</string>
+  <string name="TarotCardTemperance">Umiarkowanie</string>
+  <string name="TarotCardTheDevil">Diabeł</string>
+  <string name="TarotCardTheTower">Wieża</string>
+  <string name="TarotCardTheStar">Gwiazda</string>
+  <string name="TarotCardTheMoon">Księżyc</string>
+  <string name="TarotCardTheSun">Słońce</string>
+  <string name="TarotCardJudgement">Sąd Ostateczny</string>
+  <string name="TarotCardTheWorld">Świat</string>
+    
+  <string name="ExtensionOptionArcanistWeight00">Szansa: Głupiec (Pajac)</string>
+  <string name="ExtensionOptionArcanistWeight01">Szansa: Mag (Oślepienie innych)</string>
+  <string name="ExtensionOptionArcanistWeight02">Szansa: Wysoka Kapłanka (Wieszcz)</string>
+  <string name="ExtensionOptionArcanistWeight03">Szansa: Cesarzowa (Pasowanie)</string>
+  <string name="ExtensionOptionArcanistWeight04">Szansa: Cesarz (Pijany)</string>
+  <string name="ExtensionOptionArcanistWeight05">Szansa: Hierofant (Neutralny Łagodny)</string>
+  <string name="ExtensionOptionArcanistWeight06">Szansa: Kochankowie (Kochankowie)</string>
+  <string name="ExtensionOptionArcanistWeight07">Szansa: Rydwan (30s Prędkości)</string>
+  <string name="ExtensionOptionArcanistWeight08">Szansa: Siła (Stałe szybkie karty)</string>
+  <string name="ExtensionOptionArcanistWeight09">Szansa: Pustelnik (Stała prędkość)</string>
+  <string name="ExtensionOptionArcanistWeight10">Szansa: Koło Fortuny (Neutralny Zabójca)</string>
+  <string name="ExtensionOptionArcanistWeight11">Szansa: Sprawiedliwość (Ujawnienie roli)</string>
+  <string name="ExtensionOptionArcanistWeight12">Szansa: Wisielec (Łowca Nagród)</string>
+  <string name="ExtensionOptionArcanistWeight13">Szansa: Śmierć (Samobójstwo)</string>
+  <string name="ExtensionOptionArcanistWeight14">Szansa: Umiarkowanie (Stałe wolne karty)</string>
+  <string name="ExtensionOptionArcanistWeight15">Szansa: Diabeł (Prawnik)</string>
+  <string name="ExtensionOptionArcanistWeight16">Szansa: Wieża (Stałe spowolnienie)</string>
+  <string name="ExtensionOptionArcanistWeight17">Szansa: Gwiazda (Stała wizja)</string>
+  <string name="ExtensionOptionArcanistWeight18">Szansa: Księżyc (Oślepienie siebie)</string>
+  <string name="ExtensionOptionArcanistWeight19">Szansa: Słońce (Wizja)</string>
+  <string name="ExtensionOptionArcanistWeight20">Szansa: Sąd Ostateczny (Papież)</string>
+  <string name="ExtensionOptionArcanistWeight21">Szansa: Świat (Death Note)</string>
+
+  <!-- Gardener -->
+  <string name="ExtensionRoleGardener">Ogrodnik</string>
+  <string name="ExtensionRoleGardenerIntroBlurb">Stwórz spokojny ogród, w którym nikt nie może zabijać.</string>
+  <string name="ExtensionRoleGardenerTabDescription">Postaw obszar ogrodu. Każdy, kto znajduje się w ogrodzie, nie może użyć przycisku zabijania.</string>
+  <string name="ExtensionRoleGardenerWikiDescription">Ogrodnik to rola ochronna załoganta. Może umieścić obszar Ogrodu na mapie. Będąc w ogrodzie, wszyscy gracze (w tym mordercy) nie mogą używać przycisku zabijania. Efekt znika natychmiast po opuszczeniu ogrodu.</string>
+  <string name="ExtensionRoleGardenerGarden">Ogród</string>
+  <string name="ExtensionRoleGardenerGardenWikiDescription">Postaw ogród w swojej obecnej lokalizacji. Nikt nie może zabijać w jego promieniu.</string>
+  <string name="ExtensionOptionGardenerRadius">Rozmiar ogródka</string>
+  <string name="ExtensionOptionGardenerCooldown">Czas odnowienia ogrodu</string>
+  <string name="ExtensionOptionGardenerDuration">Czas trwania ogrodu</string>
+  <string name="ExtensionOptionGardenerCanKillInGarden">Możliwość zabójstw w ogrodzie</string>
+  <string name="ExtensionOptionGardenerFeedback">Feedback dla ogrodnika (kto zabił/próbował)</string>
+  <string name="ExtensionGardenerAttackKilled">Ktoś został zabity w Twoim ogrodzie!</string>
+  <string name="ExtensionGardenerAttackKilledFeedback">Rola {0} zabiła kogoś w Twoim ogrodzie!</string>
+  <string name="ExtensionGardenerAttackBlocked">Atak został zablokowany w Twoim ogrodzie!</string>
+  <string name="ExtensionGardenerAttackBlockedFeedback">Atak roli {0} został zablokowany w Twoim ogrodzie!</string>
+
+  <!-- Portalmaker -->
+  <string name="ExtensionRolePortalmaker">Portalomistrz</string>
+  <string name="ExtensionRolePortalmakerIntroBlurb">Połącz dwie lokalizacje magicznymi portalami.</string>
+  <string name="ExtensionRolePortalmakerTabDescription">Postaw do dwóch portali, aby stworzyć połączenie. Gracze dotykający jednego portalu teleportują się do drugiego.</string>
+  <string name="ExtensionRolePortalmakerWikiDescription">Portalomistrz to potężna rola załoganta. Może umieścić dwa portale na mapie. Gdy oba zostaną postawione, każdy gracz stojący na jednym portalu zostanie natychmiast przeteleportowany do drugiego. Postawienie trzeciego portalu usunie pierwszy.</string>
+  <string name="ExtensionRolePortalmakerPlace">Postaw portal</string>
+  <string name="ExtensionRolePortalmakerPlaceWikiDescription">Postaw portal w swojej obecnej lokalizacji. Nie można stawiać blisko ścian.</string>
+  <string name="ExtensionOptionPortalmakerCooldown">Czas odnowienia stawiania</string>
+  <string name="ExtensionOptionPortalmakerRadius">Promień portalu</string>
+  <string name="ExtensionOptionPortalmakerTeleportCooldown">Czas odnowienia teleportacji (na gracza)</string>
+  <string name="ExtensionOptionPortalmakerTeleportMode">Tryb teleportacji</string>
+  <string name="ExtensionOptionPortalmakerDuration">Czas trwania portalu</string>
+  <string name="ExtensionOptionPortalmakerStayAfterMeeting">Pozostaje po spotkaniu</string>
+  <string name="ExtensionOptionPortalmakerPlacementDelay">Opóźnienie stawiania</string>
+  <string name="TeleportModeInteraction">Interakcja</string>
+  <string name="TeleportModeAutomatic">Automatycznie</string>
 </resources>
 

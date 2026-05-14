@@ -14,7 +14,7 @@ namespace TouMegaChujoweExtension.Events.Neutral;
 public static class VultureEvents
 {
     [RegisterEvent]
-    public static void PlayerDeathEvent(PlayerDeathEvent @event)
+    public static void PlayerDeathEvent()
     {
         foreach (var player in PlayerControl.AllPlayerControls)
         {
