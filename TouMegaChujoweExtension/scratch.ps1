@@ -1,1 +1,0 @@
-[Reflection.Assembly]::LoadFrom('C:\Program Files (x86)\Steam\steamapps\common\Among Us\BepInEx\plugins\MiraAPI.dll').GetTypes() | Where-Object { $_.Name -match 'BaseButton' } | ForEach-Object { $_.GetProperties() } | Select-Object Name | Select -Unique

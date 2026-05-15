@@ -108,7 +108,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="#clueless-universal"><img width="10%" src="./Images/Icons/Clueless_Modifier_Icon.png" /></a>
   <a href="#drunk-universal"><img width="10%" src="./Images/Icons/Drunk_Modifier_Icon.png" /></a>
   <a href="#spiteful-universal"><img width="10%" src="./Images/Icons/Spiteful_Modifier_Icon.png" /></a>
-  <img width="60%" src="./Images/Groups/NeutMods.png" align="center" /> <br>
+  <img width="60%" src="./Images/Groups/NeuMods.png" align="center" /> <br>
   <a href="#death-note-neutral-killing"><img width="10%" src="./Images/Icons/Death_Note_Icon.png" /></a>
   <a href="#venomous-neutral-killing"><img width="10%" src="./Images/Icons/Venomous_Modifier_Icon.png" /></a>
 </p>
@@ -388,7 +388,7 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 # Requirements
 
 - .NET 6.0
-- Town of Us: Mira 1.6.0 or later
+- Town of Us: Mira 1.6.2 or later
 - MiraAPI 0.4.0 or later
 - Reactor 2.5.0 or later
 
