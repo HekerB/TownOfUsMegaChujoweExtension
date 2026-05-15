@@ -21,13 +21,12 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> ShroudKillButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Shroud_Kill_Button.png", 100f);
         public static LoadableAsset<Sprite> ShroudVentSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Shroud_Vent_Button.png", 100f);
         public static LoadableAsset<Sprite> DoppelgangerKillButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Doppelganger_Kill_Button.png", 100f);
+
+        // New Role Assets
+        public static LoadableAsset<Sprite> SchrodingersCatRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Schrodingers_Cat_Icon.png", 100f);
+        public static LoadableAsset<Sprite> FreezeButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Freeze_Icon.png", 300f);
+        public static LoadableAsset<Sprite> BlizzardButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Blizzard_Icon.png", 300f);
+        public static LoadableAsset<Sprite> IcenbergStormOverlay { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Icenberg_Storm_Overlay.png", 200f);
+        public static LoadableAsset<Sprite> NecromancerMarkButtonSprite { get; } = TownOfUs.Assets.TouRoleIcons.Traitor;
     }
 }
-
-
-
-
-
-
-
-

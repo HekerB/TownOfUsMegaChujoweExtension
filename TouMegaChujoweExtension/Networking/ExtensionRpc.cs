@@ -1,4 +1,3 @@
-
 namespace TouMegaChujoweExtension.Networking;
 
 public enum ExtensionRpc : uint
@@ -28,7 +27,7 @@ public enum ExtensionRpc : uint
     HackerResetRound = 22,
     InjectorInject = 23,
     CharlatanConceal = 24,
-    VultureEat = 25,
+    VultureEat = 50025,
     VultureScavenge = 26,
     PelicanSwallow = 27,
     PelicanDigest = 28,
@@ -76,24 +75,40 @@ public enum ExtensionRpc : uint
     PoisonerPlayDeathAnim = 69,
     ShifterSyncTarget = 71,
     ShareFriendCode = 72,
-    YouAreBanned = 73,
+	YouAreBanned = 73,
     DeathNoteLaugh = 74,
-    DuplicateModKick = 75,
-    DoctorInject = 76,
-    DoctorShieldAttacked = 77,
-    DetonatorAttach = 78,
-    DetonatorDetonate = 79,
-    DetonatorShowEffect = 80,
-    DetonatorPlayBeep = 81,
-    DetonatorPlayExplosion = 82,
+    DoctorInject = 75,
+    CatSetTeammate = 82,
+    SendCatChat = 83,
+    CatChangeRoleOnOwnerDeath = 84,
+    DoctorShieldAttacked = 85,
+    IcenbergFreeze = 88,
+    IcenbergBlizzard = 89,
+    SchrodingersCatClearAdoption = 91,
+    DetonatorAttach = 92,
+	PossessorCompletedTasks = 93,
+	PossessorChooseSuccessor = 94,
+    SentinelPlacePatrol = 100,
+    ZapperZap = 101,
+    ArcanistDrawCard = 102,
+    GardenerPlaceGarden = 103,
+    PortalmakerPlacePortal = 104,
+    NecromancerMark = 105,
+    NecromancerMarkKill = 106,
+    ZombieConvert = 107,
+    ZombieHordeChat = 108,
+    SandwormUnderground = 109,
+    SandwormEmerge = 110,
+    ConfuserConfuse = 111,
+    DumperPickupBody = 112,
+    DumperDropBody = 113,
+    GaslighterKnight = 114,
+    GaslighterCurse = 115,
+    GaslighterShield = 116,
+    SandwormStartDigging = 117,
+    DetonatorDetonate = 118,
+    DetonatorShowEffect = 119,
+    DetonatorPlayBeep = 120,
+    DetonatorPlayExplosion = 121,
+    DuplicateModKick = 122
 }
-
-
-
-
-
-
-
-
-
-

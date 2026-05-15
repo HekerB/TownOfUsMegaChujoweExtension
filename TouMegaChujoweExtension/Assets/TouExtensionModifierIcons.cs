@@ -15,13 +15,6 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> VentableVentButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Ventable_Vent_Button.png", 120f);
         public static LoadableAsset<Sprite> DeathNoteModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Death_Note_Icon.png", 500f);
         public static LoadableAsset<Sprite> PublicityVoteModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Publicity_Modifier_Icon.png", 200f);
+        public static LoadableAsset<Sprite> SniperModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Sniper_Modifier.png", 200f);
     }
 }
-
-
-
-
-
-
-
-

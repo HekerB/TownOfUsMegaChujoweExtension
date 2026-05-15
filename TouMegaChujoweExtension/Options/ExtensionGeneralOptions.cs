@@ -3,7 +3,7 @@ using MiraAPI.GameOptions;
 
 namespace TouMegaChujoweExtension.Options;
 
-public sealed class ExtensionGeneralOptions : AbstractOptionGroup
+public sealed class GeneralOptions : AbstractOptionGroup
 {
     public override string GroupName => "General";
     public override uint GroupPriority => 1;
@@ -13,4 +13,7 @@ public sealed class ExtensionGeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("ExtensionOptionGeneralLoversChat")]
     public bool LoversChat { get; set; } = true;
+
+    [ModdedToggleOption("ExtensionOptionGeneralCatChat")]
+    public bool CatChat { get; set; } = true;
 }

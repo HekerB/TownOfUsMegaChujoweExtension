@@ -54,11 +54,15 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 		IL2CPPChainloader.Instance.Finished += Modules.ExtensionLocale.SearchInternalLocale;
 		IL2CPPChainloader.Instance.Finished += LawyerTeamChatRegistration.Register;
 		IL2CPPChainloader.Instance.Finished += Patches.Roles.Lovers.LoverMeetingChatRegistration.Register;
+		IL2CPPChainloader.Instance.Finished += Patches.SchrodingersCat.SchrodingersCatChatRegistration.Register;
+		IL2CPPChainloader.Instance.Finished += Patches.Neutral.ZombieHordeChatRegistration.Register;
 		IL2CPPChainloader.Instance.Finished += () => ExtensionModNewsFetcher.CheckForNews();
 	
 		PatchAllWithErrorHandling();
 
 		WinConditionRegistry.Register(new NeutralExtensionWinCondition());
+		WinConditionRegistry.Register(new ZombieWinCondition());
+		WinConditionRegistry.Register(new GaslighterWinCondition());
 	}
 
     private void PatchAllWithErrorHandling()

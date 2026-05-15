@@ -22,7 +22,7 @@ public static class LawyerTeamChatRegistration
             Priority = 50,
             IsChatAvailable = () =>
             {
-                var genOpt = OptionGroupSingleton<Options.ExtensionGeneralOptions>.Instance;
+                var genOpt = OptionGroupSingleton<Options.GeneralOptions>.Instance;
                 if (!genOpt.LawyerChat || !MeetingHud.Instance)
                 {
                     return false;

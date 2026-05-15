@@ -14,7 +14,7 @@ public static class LawyerChatPatches
     [MethodRpc((uint)ExtensionRpc.SendLawyerChat)]
     public static void RpcSendLawyerChat(PlayerControl player, string text)
     {
-        var genOpt = OptionGroupSingleton<Options.ExtensionGeneralOptions>.Instance;
+        var genOpt = OptionGroupSingleton<Options.GeneralOptions>.Instance;
         if (!genOpt.LawyerChat)
         {
             return;
@@ -83,7 +83,7 @@ public static class LawyerChatPatches
     [MethodRpc((uint)ExtensionRpc.SendClientChat)]
     public static void RpcSendClientChat(PlayerControl player, string text)
     {
-        var genOpt = OptionGroupSingleton<Options.ExtensionGeneralOptions>.Instance;
+        var genOpt = OptionGroupSingleton<Options.GeneralOptions>.Instance;
         if (!genOpt.LawyerChat)
         {
             return;

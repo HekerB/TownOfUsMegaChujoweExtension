@@ -7,6 +7,7 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
+using TouMegaChujoweExtension.Options.Modifiers;
 
 namespace TouMegaChujoweExtension.Modifiers.Neutral;
 

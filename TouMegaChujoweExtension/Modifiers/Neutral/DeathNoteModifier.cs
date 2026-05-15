@@ -14,6 +14,7 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
+using TouMegaChujoweExtension.Options.Modifiers;
 
 namespace TouMegaChujoweExtension.Modifiers.Neutral;
 
@@ -31,6 +32,8 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
     public Color GuesserColor => ModifierColor;
     public Sprite? GuesserIcon => ModifierIcon?.LoadAsset();
     public bool CanBeGuessed => GetAmountPerGame() > 0;
+
+    public static List<byte> CursedTargets { get; } = new();
 
 	[HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities
@@ -235,6 +238,7 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
             return DeathNoteSubmitResult.NotFound;
 
         _cursedTarget = target;
+        if (!CursedTargets.Contains(target.PlayerId)) CursedTargets.Add(target.PlayerId);
         _killTimer = (int)OptionGroupSingleton<DeathNoteModifierOptions>.Instance.DeathNoteTimer.Value;
         _timerActive = true;
         _soundPlayed = false;
@@ -264,6 +268,7 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
 
         if (_cursedTarget == null || _cursedTarget.Data == null || _cursedTarget.Data.IsDead)
         {
+            if (_cursedTarget != null) CursedTargets.Remove(_cursedTarget.PlayerId);
             _cursedTarget = null;
             return;
         }
@@ -288,6 +293,7 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
 
         RpcPlayDeathNoteLaugh(Player);
 
+        CursedTargets.Remove(_cursedTarget.PlayerId);
         _cursedTarget = null;
     }
 

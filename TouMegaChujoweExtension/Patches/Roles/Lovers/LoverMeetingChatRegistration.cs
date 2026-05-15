@@ -27,7 +27,7 @@ public static class LoverMeetingChatRegistration
             IsForced = false,
             IsChatAvailable = () =>
             {
-                var genOpt = MiraAPI.GameOptions.OptionGroupSingleton<Options.ExtensionGeneralOptions>.Instance;
+                var genOpt = MiraAPI.GameOptions.OptionGroupSingleton<Options.GeneralOptions>.Instance;
                 if (genOpt == null || !genOpt.LoversChat || !MeetingHud.Instance)
                 {
                     return false;

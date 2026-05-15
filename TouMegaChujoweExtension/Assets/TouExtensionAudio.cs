@@ -30,15 +30,7 @@ public static class TouExtensionAudio
 	public static LoadableAsset<AudioClip> DraftStartAlert { get; } = new LoadableAudioResourceAsset($"{AudioPath}.DraftStartHexBombAlarm.wav");   //  lol
 	public static LoadableAsset<AudioClip> DeathNoteLaughSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.light_laughing.wav");
 	public static LoadableAsset<AudioClip> KamikazeExplodeSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.allahu_akbar.wav");    // by radzik360
-	public static LoadableAsset<AudioClip> C4Beep { get; } = new LoadableAudioResourceAsset($"{AudioPath}.c4_beep.wav");
+    public static LoadableAsset<AudioClip> C4Beep { get; } = new LoadableAudioResourceAsset($"{AudioPath}.c4_beep.wav");
+	public static LoadableAsset<AudioClip> ZapSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.ZapSound.wav");
+	public static LoadableAsset<AudioClip> ElectricitySound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.ElectricitySound.wav"); 
 }
-
-
-
-
-
-
-
-
-
-

@@ -1,11 +1,11 @@
+using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions.OptionTypes;
-using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using TownOfUs;
 using UnityEngine;
 
-namespace TouMegaChujoweExtension.Options;
+namespace TouMegaChujoweExtension.Options.Modifiers;
 
 public sealed class NeutralModifierOptions : AbstractOptionGroup
 {
@@ -30,4 +30,13 @@ public sealed class NeutralModifierOptions : AbstractOptionGroup
     {
         Visible = () => OptionGroupSingleton<NeutralModifierOptions>.Instance.DeathNoteAmount > 0
     };
+
+    [ModdedNumberOption("ExtensionModifierSniperAmount", 0, 15)]
+    public float SniperAmount { get; set; } = 0;
+
+    public ModdedNumberOption SniperChance { get; } =
+        new("ExtensionModifierSniperChance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+        {
+            Visible = () => OptionGroupSingleton<NeutralModifierOptions>.Instance.SniperAmount > 0
+        };
 }
