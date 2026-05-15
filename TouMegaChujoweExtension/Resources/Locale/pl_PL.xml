@@ -102,31 +102,6 @@
   <string name="ExtensionRoleVanisherUnvanish">Pojaw sie</string>
   <string name="ExtensionRoleVanisherVanishWikiDescription">Zniknij na chwile. Zli gracze w poblizu dostana ostrzezenie. Mozesz pojawic sie wczesniej, klikajac ten sam przycisk.</string>
 
-  <!-- Doctor Options -->
-  <string name="ExtensionOptionDoctorHealCooldown">Cooldown wstrzykiwania</string>
-  <string name="ExtensionOptionDoctorEffectDelay">Opoznienie efektu</string>
-  <string name="ExtensionOptionDoctorEffectDurationType">Typ czasu trwania efektu</string>
-  <string name="ExtensionOptionDoctorEffectDuration">Czas trwania efektu</string>
-  <string name="ExtensionOptionDoctorInitialUses">Poczatkowe uzycia wstrzykniecia</string>
-  <string name="ExtensionOptionDoctorCanGiveNegativeEffects">Moze dawac negatywne efekty</string>
-  <string name="ExtensionOptionDoctorSeesShieldFlash">Doctor widzi blysk tarczy</string>
-  <string name="ExtensionOptionDoctorTargetSeesShield">Cel widzi tarcze</string>
-  <string name="ExtensionOptionDoctorSelectedEffectType">Typ efektu do konfiguracji</string>
-  <string name="ExtensionOptionDoctorChanceSpeedBoost">Szansa na Speed Boost</string>
-  <string name="ExtensionOptionDoctorChanceVisionBoost">Szansa na Vision Boost</string>
-  <string name="ExtensionOptionDoctorChanceCleanse">Szansa na Cleanse</string>
-  <string name="ExtensionOptionDoctorChanceShield">Szansa na Shield</string>
-  <string name="ExtensionOptionDoctorChanceCanVent">Szansa na Can Vent</string>
-  <string name="ExtensionOptionDoctorChanceRegeneration">Szansa na Regeneration</string>
-  <string name="ExtensionOptionDoctorEffectTypeEnumCleanse">Cleanse</string>
-  <string name="ExtensionOptionDoctorEffectTypeEnumShield">Shield</string>
-  <string name="ExtensionOptionDoctorEffectTypeEnumCanVent">Can Vent</string>
-  <string name="ExtensionOptionDoctorEffectTypeEnumRegeneration">Regeneration</string>
-  <string name="ExtensionDoctorNotificationShieldAttacked">Twoja tarcza na &lt;target&gt; go obronila!</string>
-  <string name="ExtensionDoctorNotificationShieldSaved">Zostales obroniony przez tarcze Doctora!</string>
-  <string name="ExtensionDoctorNotificationWoreOffCanVent">Efekt Can Vent wygasl!</string>
-  <string name="ExtensionDoctorNotificationWoreOffRegeneration">Regeneracja wygasla!</string>
-
   <!-- Vanisher Options -->
   <string name="ExtensionOptionVanisherCooldown">Cooldown Znikania</string>
   <string name="ExtensionOptionVanisherDuration">Czas trwania znikniecia</string>
@@ -778,49 +753,6 @@
   <string name="ExtensionInjectorNotificationWoreOffVisionBoost">Twoje widzenie wrocilo do normy.</string>
   <string name="ExtensionInjectorNotificationWoreOffRegeneration">Efekt regeneracji zakonczyl sie.</string>
 
-  <!-- Doctor Role -->
-  <string name="ExtensionRoleDoctor">Doctor</string>
-  <string name="ExtensionRoleDoctorIntroBlurb">Wstrzykuj graczom pozytywne efekty.</string>
-  <string name="ExtensionRoleDoctorTabDescription">Wstrzykuj graczom losowe pozytywne efekty.</string>
-  <string name="ExtensionRoleDoctorWikiDescription">Doctor to rola Crewmate Support, ktora moze wstrzykiwac graczom rozne pozytywne efekty. Efekty sa wybierane losowo i moga obejmowac przyspieszenie, lepsze widzenie, regeneracje, oczyszczenie z negatywnych efektow, tarcze lub wzrok rentgenowski.</string>
-  <string name="ExtensionRoleDoctorInject">Wstrzyknij</string>
-  <string name="ExtensionModifierDoctorVisionBoost">Lepsze widzenie</string>
-  <string name="ExtensionModifierDoctorRegeneration">Regeneracja</string>
-  <string name="ExtensionRoleDoctorHealWikiDescription">Wstrzyknij pobliskiemu graczowi losowy pozytywny efekt. Efekt aktywuje sie po skonfigurowanym opoznieniu.</string>
-
-  <!-- Doctor Options -->
-  <string name="ExtensionOptionDoctorHealCooldown">Cooldown uleczenia</string>
-  <string name="ExtensionOptionDoctorEffectDelay">Opoznienie aktywacji efektu</string>
-  <string name="ExtensionOptionDoctorEffectDurationType">Typ czasu trwania efektu</string>
-  <string name="ExtensionOptionDoctorEffectDuration">Czas trwania efektu</string>
-  <string name="ExtensionOptionDoctorInitialUses">Poczatkowe uzycia</string>
-  <string name="ExtensionOptionDoctorSelectedEffectType">Typ efektu do konfiguracji</string>
-
-  <!-- Doctor Effect Type Enum Values -->
-  <string name="ExtensionOptionDoctorEffectTypeEnumCleanse">Oczyszczenie</string>
-  <string name="ExtensionOptionDoctorEffectTypeEnumShield">Tarcza</string>
-  <string name="ExtensionOptionDoctorEffectTypeEnumXRay">RTG (RTG)</string>
-
-  <!-- Doctor Effect Chances -->
-  <string name="ExtensionOptionDoctorChanceSpeedBoost">Szansa na efekt</string>
-  <string name="ExtensionOptionDoctorChanceVisionBoost">Szansa na efekt</string>
-  <string name="ExtensionOptionDoctorChanceRegeneration">Szansa na efekt</string>
-  <string name="ExtensionOptionDoctorChanceCleanse">Szansa na efekt</string>
-  <string name="ExtensionOptionDoctorChanceShield">Szansa na efekt</string>
-  <string name="ExtensionOptionDoctorChanceXRay">Szansa na efekt</string>
-
-  <!-- Doctor Notifications -->
-  <string name="ExtensionDoctorNotificationSpeedBoost">Czujesz przyplyw energii i szybkosci!</string>
-  <string name="ExtensionDoctorNotificationVisionBoost">Twoj wzrok staje sie krystalicznie wyrazny!</string>
-  <string name="ExtensionDoctorNotificationRegeneration">Czujesz, jak twoje cialo szybko sie regeneruje!</string>
-  <string name="ExtensionDoctorNotificationCleanse">Wszystkie negatywne efekty zostaly usuniete!</string>
-  <string name="ExtensionDoctorNotificationShield">Zostales osloniety potezna tarcza!</string>
-  <string name="ExtensionDoctorNotificationXRay">Twoje zmysly sa wyostrzone, widzisz wiecej!</string>
-  <string name="ExtensionDoctorNotificationShieldWoreOff">Tarcza Doktora wygasla.</string>
-  <string name="ExtensionDoctorNotificationWoreOffSpeedBoost">Efekt przyspieszenia Doktora minal.</string>
-  <string name="ExtensionDoctorNotificationWoreOffVisionBoost">Twoje widzenie wrocilo do normy.</string>
-  <string name="ExtensionDoctorNotificationWoreOffRegeneration">Efekt regeneracji zakonczyl sie.</string>
-
   <!-- Charlatan Role -->
   <string name="ExtensionRoleCharlatan">Charlatan</string>
   <string name="ExtensionRoleCharlatanIntroBlurb">Manipuluj raportami i zmylaj zaloge.</string>
@@ -847,14 +779,13 @@
 
   <!-- Vulture Role -->
   <string name="ExtensionRoleVulture">Vulture</string>
-  <string name="ExtensionRoleVultureIntroBlurb">Zjadaj zwloki, aby wygrac samotnie.</string>
-  <string name="ExtensionRoleVultureTabDescription">Zjadaj martwe ciala, aby wygrac jako jedyny ocalaly.</string>
-  <string name="ExtensionRoleVultureWikiDescription">Vulture to rola Neutral Evil, ktorej celem jest zjedzenie okreslonej liczby zwlok. Opcjonalnie Vulture moze uzywac Scavenge, aby otrzymac strzalki wskazujace ciala. Jesli warunek wygranej Vulture nie moze byc juz spelniony, zamienia sie on w skonfigurowana role.</string>
-
+  <string name="ExtensionRoleVultureIntroBlurb">Zjadaj martwe ciala, by wygrac jako padlinozerca.</string>
+  <string name="ExtensionRoleVultureTabDescription">Zjadaj ciala, aby wygrac gre. Uzywaj Scavenge, aby zobaczyc strzalki wskazujace zwloki.</string>
+  <string name="ExtensionRoleVultureWikiDescription">Celem Vulture jest zjedzenie okreslonej liczby cial. Uzywaj przycisku jedzenia, aby konsumowac zwloki i Scavenge, aby je namierzac.</string>
   <string name="ExtensionRoleVultureEat">Zjedz</string>
-  <string name="ExtensionRoleVultureEatWikiDescription">Zjedz pobliskie zwloki. Liczy sie to do twojego warunku wygranej.</string>
-  <string name="ExtensionRoleVultureScavenge">Padlina</string>
-  <string name="ExtensionRoleVultureScavengeWikiDescription">Otrzymaj strzalki wskazujace wszystkie ciala przez pewien czas. Jesli zwloki sa na innym pietrze na mapie Submerged, strzalka bedzie wskazywac winde.</string>
+  <string name="ExtensionRoleVultureEatWikiDescription">Zjedz pobliskie martwe cialo. Liczy sie to do twojego warunku wygranej.</string>
+  <string name="ExtensionRoleVultureScavenge">Scavenge</string>
+  <string name="ExtensionRoleVultureScavengeWikiDescription">Dostan strzalki wskazujace wszystkie zwloki na pewien czas. Jesli zwloki sa na innym pietrze na Submerged, strzalka wskaze winde.</string>
 
   <!-- Vulture Options -->
   <string name="ExtensionOptionVultureEatCooldown">Cooldown zjadania</string>
@@ -865,16 +796,7 @@
   <string name="ExtensionOptionVultureScavengeEnabled">Scavenge wlaczone</string>
   <string name="ExtensionOptionVultureScavengeCooldown">Cooldown Scavenge</string>
   <string name="ExtensionOptionVultureScavengeDuration">Czas trwania Scavenge</string>
-  <string name="ExtensionOptionVultureOnLoseBecomes">W razie przegranej, Vulture staje sie</string>
-
-  <!-- Schrodinger's Cat Role -->
-  <string name="ExtensionRoleSchrodingersCat">Kot Schrodingera</string>
-  <string name="ExtensionRoleSchrodingersCatIntroBlurb">Przezyj probe zabojstwo, aby dolaczyc do druzyny atakujacego.</string>
-  <string name="ExtensionRoleSchrodingersCatTabDescription">Pierwszy gracz, ktory sprobuje Cie zabic, zamiast tego Cie adoptuje. Dolaczysz do jego druzyny i wygrasz wraz z nim. Po adopcji mozesz zostac zabity normalnie przez kazdego, z wyjatkiem Twojego opiekuna.</string>
-  <string name="ExtensionRoleSchrodingersCatWikiDescription">Kot Schrodingera to rola Neutral Benign. Pierwszy zabojca, ktory zaatakuje Kota, nie zabije go — zamiast tego Kot dolacza do druzyny tego zabojcy. Zarowno Kot, jak i zabojca otrzymuja powiadomienie. Po adopcji Kot moze zostac zabity normalnie przez KAZDEGO INNEGO niz jego opiekun. Kot wygrywa, jesli druzyna jego opiekuna wygra, a Kot wciaz zyje.</string>
-
-  <!-- Schrodinger's Cat Options -->
-  <string name="ExtensionOptionCatCanBeAdoptedByNK">Moze zostac zaadoptowany przez NK</string>
+  <string name="ExtensionOptionVultureOnLoseBecomes">Po przegranej Vulture staje sie</string>
 
   <!-- Spiteful Modifier -->
   <string name="ExtensionModifierSpiteful">Spiteful</string>
@@ -960,15 +882,14 @@
   
   <!-- Poisoner Role -->
   <string name="ExtensionRolePoisoner">Poisoner</string>
-  <string name="ExtensionRolePoisonerIntroBlurb">Zatruwaj i owijaj bluszczem swoich wrogow</string>
-  <string name="ExtensionRolePoisonerTabDescription">Uzywaj Trucizny, aby powoli zabijac graczy, do ktorych sie zblizysz.\%nl\%Uzywaj Bluszczu, aby zdalnie zabic najblizszego gracza w zasiegu.</string>
-  <string name="ExtensionRolePoisonerWikiDescription">Impostor, ktory moze zatruwac graczy przy kontakcie lub uzywac bluszczu, aby zabijac z dystansu.</string>
-  <string name="ExtensionRolePoisonerPoison">Trucizna</string>
-  <string name="ExtensionRolePoisonerPoisonWikiDescription">Podejdz do gracza i go zatruj. Zginie po pewnym czasie.</string>
-  <string name="ExtensionRolePoisonerVine">Bluszcz</string>
-  <string name="ExtensionRolePoisonerVining">Owijanie...</string>
-  <string name="ExtensionRolePoisonerVineWikiDescription">Znajdz najblizszego gracza w zasiegu i zabij go po pewnym czasie. Twoja kamera podaza za celem.</string>
-
+  <string name="ExtensionRolePoisonerIntroBlurb">Zatruwaj wrogow lub petaj ich pnaczami.</string>
+  <string name="ExtensionRolePoisonerTabDescription">Uzywaj Trucia, aby powoli eliminowac graczy, do ktorych podejdziesz.\%nl\%Uzywaj Pnacza, aby zdalnie zabic najblizszego gracza w zasiegu.</string>
+  <string name="ExtensionRolePoisonerWikiDescription">Impostor, ktory moze zatruwac graczy przy kontakcie lub uzywac pnaczy do zabijania z dystansu.</string>
+  <string name="ExtensionRolePoisonerPoison">Trucie</string>
+  <string name="ExtensionRolePoisonerPoisonWikiDescription">Podejdz do gracza i go zatruj. Umrze po opoznieniu.</string>
+  <string name="ExtensionRolePoisonerVine">Pnacze</string>
+  <string name="ExtensionRolePoisonerVining">Petanie...</string>
+  <string name="ExtensionRolePoisonerVineWikiDescription">Znajdz najblizszego gracza w zasiegu i zabij go po opoznieniu. Twoja kamera podaza za celem.</string>
   
   <!-- Poisoner Options -->
   <string name="ExtensionOptionPoisonerPoisonCooldown">Cooldown Trucia</string>
@@ -1182,11 +1103,11 @@
 
   <!-- TOUMCE Wiki Terms - Symbols -->
   <string name="TOUMCETermsSymbolsTitle">Symbole TOUMCE</string>
-  <string name="TOUMCETermsSymbolsInfo">Glosariusz symboli TOUMCE • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Gracz kanonizowany przez Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Gracz ustawiony jako pulapka przez Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;✶&lt;/b&gt;&lt;/color&gt; - Gracz wpisany do Death Note • &lt;color=#77B962&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Gracz chroniony przez Bodyguarda • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Gracz otruty przez Poisonera • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Klient Lawyera • &lt;color=#C0C0C0&gt;&lt;b&gt;¤&lt;/b&gt;&lt;/color&gt; - Gracz przeklety przez Witch</string>
+  <string name="TOUMCETermsSymbolsInfo">Glosariusz symboli TOUMCE • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Gracz kanonizowany przez Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Gracz ustawiony jako pulapka przez Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Gracz wpisany do Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Gracz chroniony przez Bodyguarda • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Gracz otruty przez Poisonera • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Klient Lawyera</string>
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">Blyski tarczy</string>
-  <string name="TOUMCETermsShieldFlashesInfo">Gdy zabojstwo zostanie zablokowane przez tarcze, zabojca widzi kolorowy blysk wskazujacy role: • &lt;color=#006600&gt;&lt;b&gt;Ciemnozielony&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Fioletowy&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyjan/Turkusowy&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Srebrnoniebieski&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Jasnoniebieski&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Malwa&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#77B962&gt;&lt;b&gt;Zielony&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (ochrona na meetingu) • &lt;color=#00FF7F&gt;&lt;b&gt;Wiosenna Zielen&lt;/b&gt;&lt;/color&gt; - Doctor</string>
+  <string name="TOUMCETermsShieldFlashesInfo">Gdy zabojstwo zostanie zablokowane przez tarcze, zabojca widzi kolorowy blysk wskazujacy role: • &lt;color=#006600&gt;&lt;b&gt;Ciemnozielony&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Fioletowy&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyjan/Turkusowy&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Srebrnoniebieski&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Jasnoniebieski&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Malwa&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#77B962&gt;&lt;b&gt;Zielony&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (ochrona na spotkaniu)</string>
 
   <!-- TOUMCE Wiki Terms - Draft Mode -->
   <string name="TOUMCETermsDraftModeTitle">Tryb Draftu</string>

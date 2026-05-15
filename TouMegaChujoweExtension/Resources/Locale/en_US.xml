@@ -103,31 +103,6 @@
   <string name="ExtensionRoleVanisherUnvanish">Unvanish</string>
   <string name="ExtensionRoleVanisherVanishWikiDescription">Turn invisible for a short time. Bad players nearby get a warning. You can reappear early by pressing Unvanish.</string>
 
-  <!-- Doctor Options -->
-  <string name="ExtensionOptionDoctorHealCooldown">Inject Cooldown</string>
-  <string name="ExtensionOptionDoctorEffectDelay">Effect Delay</string>
-  <string name="ExtensionOptionDoctorEffectDurationType">Effect Duration Type</string>
-  <string name="ExtensionOptionDoctorEffectDuration">Effect Duration</string>
-  <string name="ExtensionOptionDoctorInitialUses">Initial Inject Uses</string>
-  <string name="ExtensionOptionDoctorCanGiveNegativeEffects">Can Give Negative Effects</string>
-  <string name="ExtensionOptionDoctorSeesShieldFlash">Doctor Sees Shield Flash</string>
-  <string name="ExtensionOptionDoctorTargetSeesShield">Target Sees Shield</string>
-  <string name="ExtensionOptionDoctorSelectedEffectType">Effect Type To Configure</string>
-  <string name="ExtensionOptionDoctorChanceSpeedBoost">Chance for Speed Boost</string>
-  <string name="ExtensionOptionDoctorChanceVisionBoost">Chance for Vision Boost</string>
-  <string name="ExtensionOptionDoctorChanceCleanse">Chance for Cleanse</string>
-  <string name="ExtensionOptionDoctorChanceShield">Chance for Shield</string>
-  <string name="ExtensionOptionDoctorChanceCanVent">Chance for Can Vent</string>
-  <string name="ExtensionOptionDoctorChanceRegeneration">Chance for Regeneration</string>
-  <string name="ExtensionOptionDoctorEffectTypeEnumCleanse">Cleanse</string>
-  <string name="ExtensionOptionDoctorEffectTypeEnumShield">Shield</string>
-  <string name="ExtensionOptionDoctorEffectTypeEnumCanVent">Can Vent</string>
-  <string name="ExtensionOptionDoctorEffectTypeEnumRegeneration">Regeneration</string>
-  <string name="ExtensionDoctorNotificationShieldAttacked">Your shield on &lt;target&gt; protected them!</string>
-  <string name="ExtensionDoctorNotificationShieldSaved">You were protected by the Doctor's shield!</string>
-  <string name="ExtensionDoctorNotificationWoreOffCanVent">Can Vent effect wore off!</string>
-  <string name="ExtensionDoctorNotificationWoreOffRegeneration">Regeneration wore off!</string>
-
   <!-- Vanisher Options -->
   <string name="ExtensionOptionVanisherCooldown">Vanish Cooldown</string>
   <string name="ExtensionOptionVanisherDuration">Vanish Duration</string>
@@ -780,49 +755,6 @@
   <string name="ExtensionInjectorNotificationWoreOffVisionBoost">Your vision has returned to normal.</string>
   <string name="ExtensionInjectorNotificationWoreOffRegeneration">The regeneration effect has ended.</string>
 
-  <!-- Doctor Role -->
-  <string name="ExtensionRoleDoctor">Doctor</string>
-  <string name="ExtensionRoleDoctorIntroBlurb">Inject players with positive effects.</string>
-  <string name="ExtensionRoleDoctorTabDescription">Inject players to give them random positive effects.</string>
-  <string name="ExtensionRoleDoctorWikiDescription">The Doctor is a Crewmate Support role that can inject players with various positive effects. Effects are randomly selected and can include speed boost, enhanced vision, regeneration, cleansing of negative effects, shield, or X-ray vision.</string>
-  <string name="ExtensionRoleDoctorHeal">Heal</string>
-  <string name="ExtensionRoleDoctorInject">Inject</string>
-  <string name="ExtensionModifierDoctorVisionBoost">Vision Boost</string>
-  <string name="ExtensionModifierDoctorRegeneration">Regeneration</string>
-
-  <!-- Doctor Options -->
-  <string name="ExtensionOptionDoctorHealCooldown">Heal Cooldown</string>
-  <string name="ExtensionOptionDoctorEffectDelay">Effect Activation Delay</string>
-  <string name="ExtensionOptionDoctorEffectDurationType">Effect Duration Type</string>
-  <string name="ExtensionOptionDoctorEffectDuration">Effect Duration</string>
-  <string name="ExtensionOptionDoctorInitialUses">Initial Uses</string>
-  <string name="ExtensionOptionDoctorSelectedEffectType">Effect Type To Configure</string>
-
-  <!-- Doctor Effect Type Enum Values -->
-  <string name="ExtensionOptionDoctorEffectTypeEnumCleanse">Cleanse</string>
-  <string name="ExtensionOptionDoctorEffectTypeEnumShield">Shield</string>
-  <string name="ExtensionOptionDoctorEffectTypeEnumXRay">X-Ray</string>
-
-  <!-- Doctor Effect Chances -->
-  <string name="ExtensionOptionDoctorChanceSpeedBoost">Effect Chance</string>
-  <string name="ExtensionOptionDoctorChanceVisionBoost">Effect Chance</string>
-  <string name="ExtensionOptionDoctorChanceRegeneration">Effect Chance</string>
-  <string name="ExtensionOptionDoctorChanceCleanse">Effect Chance</string>
-  <string name="ExtensionOptionDoctorChanceShield">Effect Chance</string>
-  <string name="ExtensionOptionDoctorChanceXRay">Effect Chance</string>
-
-  <!-- Doctor Notifications -->
-  <string name="ExtensionDoctorNotificationSpeedBoost">You feel energized and fast!</string>
-  <string name="ExtensionDoctorNotificationVisionBoost">Your vision becomes crystal clear!</string>
-  <string name="ExtensionDoctorNotificationRegeneration">You feel your body healing rapidly!</string>
-  <string name="ExtensionDoctorNotificationCleanse">All negative effects have been removed!</string>
-  <string name="ExtensionDoctorNotificationShield">You have been shielded by a powerful force!</string>
-  <string name="ExtensionDoctorNotificationXRay">Your senses are heightened, you can see more!</string>
-  <string name="ExtensionDoctorNotificationShieldWoreOff">The Doctor's shield has expired.</string>
-  <string name="ExtensionDoctorNotificationWoreOffSpeedBoost">The Doctor's speed boost has worn off.</string>
-  <string name="ExtensionDoctorNotificationWoreOffVisionBoost">Your vision has returned to normal.</string>
-  <string name="ExtensionDoctorNotificationWoreOffRegeneration">The regeneration effect has ended.</string>
-
   <!-- Charlatan Role -->
   <string name="ExtensionRoleCharlatan">Charlatan</string>
   <string name="ExtensionRoleCharlatanIntroBlurb">Manipulate body reports to your advantage.</string>
@@ -867,15 +799,6 @@
   <string name="ExtensionOptionVultureScavengeCooldown">Scavenge Cooldown</string>
   <string name="ExtensionOptionVultureScavengeDuration">Scavenge Duration</string>
   <string name="ExtensionOptionVultureOnLoseBecomes">On Lose, Vulture Becomes</string>
-
-  <!-- Schrodinger's Cat Role -->
-  <string name="ExtensionRoleSchrodingersCat">Schrodinger's Cat</string>
-  <string name="ExtensionRoleSchrodingersCatIntroBlurb">Survive a kill to join your attacker's team.</string>
-  <string name="ExtensionRoleSchrodingersCatTabDescription">The first player to attempt to kill you will adopt you instead. You will join their team and win with them. After adoption, you can be killed normally by anyone except your adopter.</string>
-  <string name="ExtensionRoleSchrodingersCatWikiDescription">Schrodinger's Cat is a Neutral Benign role. The first killer who targets the Cat will not kill them — instead, the Cat joins that killer's team. Both the Cat and the killer receive a notification. After being adopted, the Cat can be killed normally by anyone OTHER than their adopter. The Cat wins if their adopter's team wins and the Cat is still alive.</string>
-
-  <!-- Schrodinger's Cat Options -->
-  <string name="ExtensionOptionCatCanBeAdoptedByNK">Can Be Adopted By NK</string>
 
   <!-- Spiteful Modifier -->
   <string name="ExtensionModifierSpiteful">Spiteful</string>
@@ -1189,8 +1112,7 @@
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">General Shield Flashes</string>
-
-  <string name="TOUMCETermsShieldFlashesInfo">When a kill is blocked by a shield, the killer sees a colored flash indicating which role provided the protection: • &lt;color=#006600&gt;&lt;b&gt;Dark Green&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Purple&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyan/Teal&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Silver Blue&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Light Blue&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Mauve&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#4DA6FF&gt;&lt;b&gt;Sky Blue&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (meeting protection) • &lt;color=#00FF7F&gt;&lt;b&gt;Spring Green&lt;/b&gt;&lt;/color&gt; - Doctor</string>
+  <string name="TOUMCETermsShieldFlashesInfo">When a kill is blocked by a shield, the killer sees a colored flash indicating which role provided the protection: • &lt;color=#006600&gt;&lt;b&gt;Dark Green&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Purple&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyan/Teal&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Silver Blue&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Light Blue&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Mauve&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#003380&gt;&lt;b&gt;Dark Blue&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (meeting protection)</string>
 
   <!-- TOUMCE Wiki Terms - Draft Mode -->
   <string name="TOUMCETermsDraftModeTitle">Draft Mode</string>

@@ -7,9 +7,6 @@ public static class TouExtensionColors
 {
     //crewmates
     public static Color Trapper => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(166, 209, 179, 255);
-    public static Color SerialKiller => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(58, 102, 192, 255);
-    public static Color Witch => Palette.ImpostorRed;
-    public static Color Doctor => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(0, 255, 127, 255); // Spring Green
     public static Color Forestaller => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(241, 196, 15, 255);
     public static Color Mirage => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(222, 168, 94, 255);
     public static Color President => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(150, 100, 200, 255);
@@ -36,7 +33,6 @@ public static class TouExtensionColors
     public static Color Wraith => Palette.ImpostorRed;
     public static Color Hacker => Palette.ImpostorRed;
     public static Color Injector => Palette.ImpostorRed;
-    public static Color SchrodingersCat => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(255, 211, 105, 255);
     public static Color Poisoner => Palette.ImpostorRed;
     public static Color Charlatan => Palette.ImpostorRed;
     public static Color Outlaw => Palette.ImpostorRed;
@@ -57,8 +53,6 @@ public static class TouExtensionColors
         public static Color Mercenary => new Color32(140, 102, 153, 255); // Mauve
         public static Color Bodyguard => new Color32(0, 35, 255, 255); // Vibrant Royal Blue (Distinct from Mirror)
         public static Color Oracle => new Color32(191, 0, 191, 255);    // Magenta
-        public static Color SchrodingersCat => new Color32(255, 211, 105, 255);
-        public static Color Doctor => new Color32(0, 255, 127, 255); // Spring Green
     }
 
     // Modifiers

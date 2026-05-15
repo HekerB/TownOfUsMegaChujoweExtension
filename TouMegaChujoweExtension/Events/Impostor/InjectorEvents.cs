@@ -23,7 +23,7 @@ public static class InjectorEvents
     private static readonly Dictionary<byte, List<PendingInjection>> PendingInjections = new();
     private static readonly Dictionary<byte, int> AppliedInjectionCounts = new();
 
-    public static void ScheduleInjection(PlayerControl injector, PlayerControl target, int seed)
+    public static void ScheduleInjection(PlayerControl injector, PlayerControl target)
     {
         if (target == null || target.HasDied() || injector == null)
         {
@@ -39,8 +39,7 @@ public static class InjectorEvents
             Target = target,
             Delay = delay,
             ScheduledTime = Time.time,
-            InjectionId = Guid.NewGuid(),
-            Seed = seed
+            InjectionId = Guid.NewGuid()
         };
 
         if (!PendingInjections.ContainsKey(target.PlayerId))
@@ -68,7 +67,7 @@ public static class InjectorEvents
             yield break;
         }
 
-        ApplyInjectionEffect(pending.Injector, pending.Target, pending.InjectionId, pending.Seed);
+        ApplyInjectionEffect(pending.Injector, pending.Target, pending.InjectionId);
         
         if (PendingInjections.ContainsKey(pending.Target.PlayerId))
         {
@@ -80,7 +79,7 @@ public static class InjectorEvents
         }
     }
 
-    private static void ApplyInjectionEffect(PlayerControl injector, PlayerControl target, Guid injectionId, int seed)
+    private static void ApplyInjectionEffect(PlayerControl injector, PlayerControl target, Guid injectionId)
     {
         if (target == null || target.HasDied())
         {
@@ -153,8 +152,7 @@ public static class InjectorEvents
             return;
         }
 
-        var rng = new System.Random(seed);
-        var randomValue = (float)(rng.NextDouble() * totalWeight);
+        var randomValue = Random.RandomRange(0f, totalWeight);
         var cumulativeWeight = 0f;
         BaseModifier? selectedModifier = null;
         string selectedNotificationKey = string.Empty;
@@ -314,7 +312,6 @@ public static class InjectorEvents
         public float Delay { get; set; }
         public float ScheduledTime { get; set; }
         public Guid InjectionId { get; set; }
-        public int Seed { get; set; }
     }
 }
 

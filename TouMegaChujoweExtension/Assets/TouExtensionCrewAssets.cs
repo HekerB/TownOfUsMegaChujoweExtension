@@ -18,7 +18,6 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> ZoomInButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Zoom_Out_Icon.png", 400f);
         public static LoadableAsset<Sprite> StakeButtonIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.VH_Stake_Button.png", 350f);
         public static LoadableAsset<Sprite> DoctorInjectButtonSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Doctor_Inject_Button.png", 200f);
-
     }
 }
 

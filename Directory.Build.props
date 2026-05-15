@@ -10,8 +10,8 @@
 
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
-        <VersionPrefix>1.1.0</VersionPrefix>
-        <VersionSuffix></VersionSuffix>
+        <VersionPrefix>16.5.2026.55</VersionPrefix>
+        <VersionSuffix>dev</VersionSuffix>
 
         <Authors>Heker, marzecoo, kajojajo</Authors>
         <Company>Mega Shit Bunch</Company>

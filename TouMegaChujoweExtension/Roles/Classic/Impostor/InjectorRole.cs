@@ -65,7 +65,7 @@ public sealed class InjectorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     }
 
     [MethodRpc((uint)ExtensionRpc.InjectorInject)]
-    public static void RpcInjectorInject(PlayerControl injector, PlayerControl target, int randomSeed)
+    public static void RpcInjectorInject(PlayerControl injector, PlayerControl target)
     {
         if (injector.Data.Role is not InjectorRole)
         {
@@ -78,7 +78,7 @@ public sealed class InjectorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
             return;
         }
 
-        InjectorEvents.ScheduleInjection(injector, target, randomSeed);
+        InjectorEvents.ScheduleInjection(injector, target);
     }
 }
 
