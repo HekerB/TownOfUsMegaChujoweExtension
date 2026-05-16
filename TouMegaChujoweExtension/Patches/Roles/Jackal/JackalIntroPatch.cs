@@ -55,11 +55,23 @@ public static class JackalIntroPatch
     private static void ShowRecruitIntroText(IntroCutscene instance)
     {
         var jackalInfo = TouLocale.GetParsed("SidekickIntroBlurb");
+        
+        if (instance.RoleText != null)
+        {
+            instance.RoleText.text = SidekickModifier.ShortName;
+            instance.RoleText.color = TouExtensionColors.Jackal;
+        }
+
+        if (instance.BackgroundBar != null)
+        {
+            instance.BackgroundBar.material.color = TouExtensionColors.Jackal;
+        }
+
         if (!string.IsNullOrEmpty(jackalInfo))
         {
             if (instance.RoleBlurbText != null)
             {
-                instance.RoleBlurbText.text += $"\n\n<size=80%><color=#{ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Jackal)}>{jackalInfo}</color></size>";
+                instance.RoleBlurbText.text = $"<color=#{ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Jackal)}>{jackalInfo}</color>";
             }
         }
     }
@@ -69,10 +81,8 @@ public static class JackalIntroPatch
         // Wait for the assignment to complete (it has a 3s delay)
         yield return new WaitForSeconds(5f);
 
-        if (localPlayer == null || localPlayer.Pointer == System.IntPtr.Zero) yield break;
-
         // Check again after assignment should have run
-        if (localPlayer.TryGetModifier<SidekickModifier>(out var mod) && !mod.WasNotified)
+        if (localPlayer != null && localPlayer.Pointer != System.IntPtr.Zero && localPlayer.TryGetModifier<SidekickModifier>(out var mod) && !mod.WasNotified)
         {
             mod.WasNotified = true;
 

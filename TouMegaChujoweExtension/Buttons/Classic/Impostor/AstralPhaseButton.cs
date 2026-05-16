@@ -25,17 +25,17 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
     private bool _hasCapturedButtonPos;
     private bool _isPhasing;
 
-    public override string Name => _isPhasing 
-        ? TouLocale.Get("ExtensionRoleAstralMaterialize", "Materialize") 
+    public override string Name => _isPhasing
+        ? TouLocale.Get("ExtensionRoleAstralMaterialize", "Materialize")
         : TouLocale.Get("ExtensionRoleAstralPhase", "Phase");
 
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Astral;
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<AstralOptions>.Instance.PhaseCooldown + MapCooldown, 5f, 120f);
     public override float EffectDuration => OptionGroupSingleton<AstralOptions>.Instance.PhaseDuration;
-    public override LoadableAsset<Sprite> Sprite => 
-        (EffectActive && Timer <= 3f && (int)(Timer * 8) % 2 == 0) 
-        ? TouCrewAssets.RewindingSprite 
+    public override LoadableAsset<Sprite> Sprite =>
+        (EffectActive && Timer <= 3f && (int)(Timer * 8) % 2 == 0)
+        ? TouCrewAssets.RewindingSprite
         : TouCrewAssets.RewindSprite;
 
     public override void ClickHandler()
@@ -53,14 +53,14 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
         {
             _startPosition = player.transform.position;
             _isPhasing = true;
-            
+
             if (Role != null) Role.KillMadeDuringPhase = false;
 
             Timer = EffectDuration;
             EffectActive = true;
-            
+
             player.RpcAddModifier<AstralPhaseModifier>();
-            
+
             OnClick();
         }
     }
@@ -84,7 +84,7 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
         EffectActive = false;
 
         player.RpcRemoveModifier<AstralPhaseModifier>();
-        
+
         if (shouldDie)
         {
             player.NetTransform.SnapTo(_startPosition);
@@ -93,7 +93,7 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
         }
 
         player.NetTransform.SnapTo(_startPosition);
-        
+
         if (options.InvisibilityAfterTeleport)
         {
             player.RpcAddModifier<AstralInvisibilityModifier>();
@@ -112,12 +112,9 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
 
         bool killMade = Role != null && Role.KillMadeDuringPhase;
 
-        if (!killMade)
+        if (!killMade && options.DieIfNoKillDuringPhase)
         {
-            if (options.DieIfNoKillDuringPhase)
-            {
-                shouldDie = true;
-            }
+            shouldDie = true;
         }
 
         if (shouldDie)
@@ -162,9 +159,9 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
         {
             Button.cooldownTimerText.gameObject.SetActive(true);
         }
-        
-        OverrideName(_isPhasing 
-            ? TouLocale.Get("ExtensionRoleAstralMaterialize", "Materialize") 
+
+        OverrideName(_isPhasing
+            ? TouLocale.Get("ExtensionRoleAstralMaterialize", "Materialize")
             : TouLocale.Get("ExtensionRoleAstralPhase", "Phase"));
 
         if (EffectActive && Timer <= 3f && Button.gameObject.activeInHierarchy)
@@ -191,10 +188,10 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
     public override bool CanUse()
     {
         if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance) return false;
-        
+
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.Data.IsDead) return false;
-        
+
         if (player.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities)) return false;
 
         if (EffectActive)

@@ -25,26 +25,6 @@ public static class RcXdKillTimerSyncPatch
     }
 }
 
-[HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-public static class RcXdKillButtonBlockPatch
-{
-    [HarmonyPostfix]
-    [HarmonyPriority(Priority.Low)]
-    public static void Postfix(HudManager __instance)
-    {
-        var local = PlayerControl.LocalPlayer;
-        if (local == null || local.Data == null || local.Data.IsDead) return;
-        if (local.Data.Role is not RcXdRole role) return;
-        if (role.ActiveCar == null || !role.ActiveCar.IsDriving) return;
-
-        var killButton = __instance.KillButton;
-        if (killButton == null) return;
-
-        killButton.SetDisabled();
-        killButton.graphic.color = Palette.DisabledClear;
-        killButton.graphic.material.SetFloat("_Desat", 1f);
-    }
-}
 
 
 [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
@@ -73,18 +53,3 @@ public static class RcXdCheckMurderBlockPatch
         return true;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

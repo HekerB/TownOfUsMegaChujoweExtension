@@ -29,7 +29,7 @@ public static class GardenerSystem
 {
     private static readonly Dictionary<byte, ActiveGarden> ActiveGardens = [];
     private static float _lastCleanupTime;
-    private static float _lastModifierUpdateTime;
+
     private static readonly List<AttackLog> PendingAttackLogs = [];
 
     public class AttackLog
@@ -64,13 +64,8 @@ public static class GardenerSystem
 
         foreach (var garden in ActiveGardens.Values)
         {
-            if (garden.RemainingTime <= 0) continue;
-
-            var owner = MiscUtils.PlayerById(garden.OwnerId);
-            if (owner == null || owner.Data == null || owner.Data.IsDead) continue;
-
-            if (garden.Position == Vector2.zero) continue;
-
+            if (garden == null) continue;
+            
             var pos = player.GetTruePosition();
             if (Vector2.Distance(pos, garden.Position) <= garden.Radius)
             {
@@ -101,22 +96,25 @@ public static class GardenerSystem
 
     private static GameObject CreateGardenVisual(Vector2 position, float radius)
     {
-        // Use CreateSpherePrimitive for better accuracy and appearance matching 'Revealer'
         var sphere = MiscUtils.CreateSpherePrimitive(new Vector3(position.x, position.y, position.y / 1000f + 0.1f), radius);
         if (sphere == null) return new GameObject("GardenVisual_Fallback");
+
+        sphere.transform.localScale = new Vector3(radius * 2f, radius * 2f, radius * 2f);
 
         var meshRenderer = sphere.GetComponent<MeshRenderer>();
         if (meshRenderer != null)
         {
             Material? mat = null;
-            try {
+            try
+            {
                 var loadableMat = AuAvengersAnims.IgniteMaterial;
                 if (loadableMat != null) mat = new Material(loadableMat.LoadAsset());
-            } catch { /* fallback */ }
+            }
+            catch { /* fallback */ }
 
             if (mat == null) mat = new Material(Shader.Find("Sprites/Default"));
-            
-            mat.color = new Color(0.2f, 0.8f, 0.2f, 0.25f); // Transparent green
+
+            mat.color = new Color(0.2f, 0.8f, 0.2f, 0.25f);
             meshRenderer.material = mat;
         }
 
@@ -224,43 +222,54 @@ public static class GardenerSystem
     [RegisterEvent]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
-        if (OptionGroupSingleton<GardenerOptions>.Instance.CanKillInGarden) return;
-        if (@event.Source == null || @event.Target == null) return;
-
-        bool targetInGarden = IsInAnyGarden(@event.Target);
-
-        if (targetInGarden)
+        try
         {
-            @event.Cancel();
+            if (OptionGroupSingleton<GardenerOptions>.Instance != null &&
+                OptionGroupSingleton<GardenerOptions>.Instance.CanKillInGarden) return;
 
-            if (@event.Source.AmOwner)
+            if (@event.Source == null || @event.Target == null) return;
+
+            bool targetInGarden = IsInAnyGarden(@event.Target);
+
+            if (targetInGarden)
             {
-                @event.Source.SetKillTimer(@event.Source.GetKillCooldown());
+                @event.Cancel();
 
-                Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(Color.cyan));
-
-                var garden = ActiveGardens.Values.FirstOrDefault(g =>
-                    g.RemainingTime > 0 &&
-                    Vector2.Distance(@event.Target.GetTruePosition(), g.Position) <= g.Radius);
-
-                if (garden != null)
+                if (@event.Source.AmOwner)
                 {
-                    var owner = MiscUtils.PlayerById(garden.OwnerId);
-                    if (owner != null)
+                    @event.Source.SetKillTimer(@event.Source.GetKillCooldown());
+
+                    if (HudManager.Instance != null && HudManager.Instance.KillButton != null)
                     {
-                        GardenerRole.RpcGardenerAttackNotify(owner, @event.Source.PlayerId, false);
+                        HudManager.Instance.KillButton.SetTarget(null);
+                    }
+
+                    var garden = ActiveGardens.Values.FirstOrDefault(g =>
+                        g.RemainingTime > 0 &&
+                        Vector2.Distance(@event.Target.GetTruePosition(), g.Position) <= g.Radius);
+
+                    if (garden != null)
+                    {
+                        var owner = MiscUtils.PlayerById(garden.OwnerId);
+                        if (owner != null)
+                        {
+                            GardenerRole.RpcGardenerAttackNotify(owner, @event.Source.PlayerId, false);
+                        }
                     }
                 }
             }
         }
+        catch (Exception ex)
+        {
+            UnityEngine.Debug.LogError($"[TOUMCE] Exception in Gardener BeforeMurderEventHandler: {ex}");
+        }
     }
 
     [RegisterEvent]
-    public static void OnMeetingStart(MiraAPI.Events.Vanilla.Meeting.StartMeetingEvent @event)
+    public static void OnMeetingStart(MiraAPI.Events.Vanilla.Meeting.StartMeetingEvent _)
     {
         if (PendingAttackLogs.Count == 0) return;
 
-        // Show summary to Gardener if they are still alive
         foreach (var log in PendingAttackLogs.Where(l => l.OwnerId == PlayerControl.LocalPlayer?.PlayerId))
         {
             HandleAttackNotification(log.OwnerId, log.AttackerId, log.Killed, true);
@@ -270,13 +279,13 @@ public static class GardenerSystem
 
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-
     public static class HudManagerUpdatePatch
     {
-        public static void Postfix(HudManager __instance)
+        public static void Postfix()
         {
             if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
 
+            // Only run cleanup every 0.1s - light on CPU
             if (Time.time - _lastCleanupTime >= 0.1f)
             {
                 var expired = new List<byte>();
@@ -314,32 +323,6 @@ public static class GardenerSystem
                     {
                         if (g.Visual != null) UnityEngine.Object.Destroy(g.Visual);
                         ActiveGardens.Remove(id);
-                    }
-                }
-            }
-
-            if (Time.time - _lastModifierUpdateTime >= 0.2f)
-            {
-                _lastModifierUpdateTime = Time.time;
-                foreach (var player in PlayerControl.AllPlayerControls)
-                {
-                    if (player == null || player.Data == null || player.Data.IsDead) continue;
-
-                    bool shouldHaveProtection = IsInAnyGarden(player);
-
-                    if (shouldHaveProtection)
-                    {
-                        if (!player.HasModifier<GardenerProtectedModifier>())
-                        {
-                            player.AddModifier(new GardenerProtectedModifier());
-                        }
-                    }
-                    else
-                    {
-                        if (player.HasModifier<GardenerProtectedModifier>())
-                        {
-                            player.RemoveModifier<GardenerProtectedModifier>();
-                        }
                     }
                 }
             }

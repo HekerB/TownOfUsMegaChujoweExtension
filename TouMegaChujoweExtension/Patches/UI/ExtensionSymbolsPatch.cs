@@ -91,10 +91,14 @@ public static class ExtensionSymbolsPatch
         if (player.TryGetModifier<SidekickModifier>(out var mod))
         {
             bool localIsJackal = local.IsRole<JackalRole>();
-            bool localIsSidekick = local.TryGetModifier<SidekickModifier>(out var localMod);
+            bool isPcRecruitOfLocal = mod.JackalId == local.PlayerId || 
+                                     (Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(player.PlayerId, out var jId) && jId == local.PlayerId);
             
-            bool sameTeam = (localIsJackal && local.PlayerId == mod.JackalId) || 
-                           (localIsSidekick && localMod.JackalId == mod.JackalId);
+            bool localIsSidekick = local.TryGetModifier<SidekickModifier>(out var localMod);
+            bool isPcSameRecruitTeam = localIsSidekick && localMod != null && (localMod.JackalId == mod.JackalId || 
+                                      (Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(player.PlayerId, out var pjId) && pjId == localMod.JackalId));
+
+            bool sameTeam = (localIsJackal && isPcRecruitOfLocal) || isPcSameRecruitTeam;
             
             bool canSeeTeam = sameTeam || deadKnow;
 
@@ -103,18 +107,21 @@ public static class ExtensionSymbolsPatch
                 string prefix = "";
                 
                 // Jackal always sees roles. Sidekicks see roles ONLY if the setting is enabled.
-                bool canSeeRole = localIsJackal || (localIsSidekick && OptionGroupSingleton<TouMegaChujoweExtension.Options.ExtensionGeneralOptions>.Instance.RecruitsKnowEachOther);
+                bool canSeeRole = localIsJackal || (localIsSidekick && OptionGroupSingleton<Options.ExtensionGeneralOptions>.Instance.RecruitsKnowEachOther);
 
                 if (canSeeRole && player.PlayerId != local.PlayerId && !deadKnow && player.Data?.Role != null)
                 {
                     var role = RoleManager.Instance?.GetRole(player.Data.Role.Role);
-                    var roleColor = (role as ITownOfUsRole)?.RoleColor ?? (role as ICustomRole)?.RoleColor ?? Color.white;
-                    string colorHex = ColorUtility.ToHtmlStringRGB(roleColor);
-                    
-                    string roleName = role is ITownOfUsRole touRole ? touRole.RoleName : (role as ICustomRole)?.RoleName ?? role.Role.ToString();
-                    if (!__result.Contains(roleName))
+                    if (role != null)
                     {
-                        prefix = $"<size=80%><color=#{colorHex}>{roleName}</color></size>\n";
+                        var roleColor = (role as ITownOfUsRole)?.RoleColor ?? (role as ICustomRole)?.RoleColor ?? Color.white;
+                        string colorHex = ColorUtility.ToHtmlStringRGB(roleColor);
+                        
+                        string roleName = role is ITownOfUsRole touRole ? touRole.RoleName : (role as ICustomRole)?.RoleName ?? role.Role.ToString();
+                        if (!__result.Contains(roleName))
+                        {
+                            prefix = $"<size=80%><color=#{colorHex}>{roleName}</color></size>\n";
+                        }
                     }
                 }
 
@@ -124,17 +131,9 @@ public static class ExtensionSymbolsPatch
                 }
             }
         }
-        else if (player.IsRole<JackalRole>())
+        else if (player.IsRole<JackalRole>() && (local.PlayerId == player.PlayerId || deadKnow) && !__result.Contains(jackalHex))
         {
-            // Only Jackal sees themselves as Jackal (color-wise)
-            // sidekicks do NOT see the jackal in color to keep the leader anonymous
-            if (local.PlayerId == player.PlayerId || deadKnow)
-            {
-                if (!__result.Contains(jackalHex))
-                {
-                    __result = $"<color=#{jackalHex}>{__result}</color>";
-                }
-            }
+            __result = $"<color=#{jackalHex}>{__result}</color>";
         }
     }
 

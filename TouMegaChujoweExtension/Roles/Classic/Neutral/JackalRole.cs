@@ -42,26 +42,19 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
         var alivePlayers = Helpers.GetAlivePlayers();
         var aliveCount = alivePlayers.Count;
-        
-        // Count Jackal team
-        var jackalTeam = alivePlayers.Where(p => 
+
+        var jackalTeam = alivePlayers.Where(p =>
             p != null && p.Pointer != IntPtr.Zero &&
-            (p.IsRole<JackalRole>() || 
+            (p.IsRole<JackalRole>() ||
              (p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == Player.PlayerId))
         ).ToList();
-        
+
         var jackalTeamCount = jackalTeam.Count;
 
-        // 1. Impostors prevent Jackal win
         if (MiscUtils.ImpAliveCount > 0) return false;
-
-        // 2. Other Neutral Killing roles prevent Jackal win
         if (MiscUtils.NKillersAliveCount > alivePlayers.Count(p => p.IsRole<JackalRole>())) return false;
-
-        // 3. Crewmate Killing roles prevent win
         if (alivePlayers.Any(p => p != null && p.Pointer != IntPtr.Zero && p.Is(RoleAlignment.CrewmateKilling))) return false;
 
-        // Parity win against passive crewmates
         return aliveCount <= jackalTeamCount * 2;
     }
 
@@ -113,7 +106,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     {
         var canVent = MiraAPI.GameOptions.OptionGroupSingleton<JackalOptions>.Instance.CanVent || LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value;
         var kill = MiraAPI.Hud.CustomButtonSingleton<JackalKillButton>.Instance;
-        
+
         Reactor.Utilities.Coroutines.Start(MiscUtils.CoMoveButtonIndex(kill, !canVent));
     }
 
@@ -136,21 +129,25 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
     }
 
-    private bool _killAbilityAlertShown = false;
+    private bool _killAbilityAlertShown;
 
     public void OnRecruitDie()
     {
-        // Check if all sidekicks are dead now
         var remainingSidekicks = PlayerControl.AllPlayerControls.ToArray()
             .Count(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == Player.PlayerId);
 
         if (remainingSidekicks == 0 && !_killAbilityAlertShown)
         {
             _killAbilityAlertShown = true;
-            
-            // Notification for Jackal
+
             if (Player.AmOwner)
             {
+                var killButton = MiraAPI.Hud.CustomButtonSingleton<JackalKillButton>.Instance;
+                if (killButton != null)
+                {
+                    killButton.Timer = 10f;
+                }
+
                 string msg = TouLocale.Get("ExtensionJackalKillAbilityAlert");
                 if (OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
                 {
@@ -207,22 +204,19 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 public static class JackalDeathLifelinkPatch
 {
     [HarmonyPostfix]
-    public static void Postfix(PlayerControl __instance, DeathReason reason)
+    public static void Postfix(PlayerControl __instance)
     {
         if (__instance == null || !AmongUsClient.Instance.AmHost) return;
 
         // If Jackal dies, kill their Sidekicks
-        if (__instance.GetRole<JackalRole>() != null)
+        if (__instance.GetRole<JackalRole>() != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
         {
-            if (OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
-            {
-                var sidekicks = PlayerControl.AllPlayerControls.ToArray()
-                    .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == __instance.PlayerId);
+            var sidekicks = PlayerControl.AllPlayerControls.ToArray()
+                .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == __instance.PlayerId);
 
-                foreach (var sk in sidekicks)
-                {
-                    sk.RpcCustomMurder(__instance);
-                }
+            foreach (var sk in sidekicks)
+            {
+                sk.RpcCustomMurder(__instance);
             }
         }
     }
@@ -234,11 +228,5 @@ public static class JackalVampireExclusionPatch
     [HarmonyPrefix]
     public static void Prefix()
     {
-        if (!AmongUsClient.Instance.AmHost) return;
-        
-        var options = OptionGroupSingleton<ExtensionGeneralOptions>.Instance;
-        if (!options.PreventVampiresWithJackal) return;
-
-        // Logic handled in DraftSystem or other patches
     }
 }

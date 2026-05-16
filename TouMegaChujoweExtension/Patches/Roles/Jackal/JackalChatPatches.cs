@@ -44,7 +44,7 @@ public static class JackalChatPatches
                 text, bubbleType: BubbleType.Other, onLeft: false);
             shouldMarkUnread = true;
         }
-        else if (isJackal || isSidekick || isDeadAndKnows)
+        else if ((isJackal && genOpt.JackalSeesRecruitChat) || isSidekick || isDeadAndKnows)
         {
             MiscUtils.AddTeamChat(player.Data,
                 $"<color=#{TouExtensionColors.Jackal.ToHtmlStringRGBA()}>{player.Data.PlayerName} (SIDE)</color>",

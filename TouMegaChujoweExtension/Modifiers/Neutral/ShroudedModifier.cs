@@ -38,19 +38,10 @@ public sealed class ShroudedModifier(PlayerControl shroudOwner) : BaseModifier
 
     public override void OnMeetingStart()
     {
-        if (Player == null || Player.HasDied())
+        if (Player == null || Player.HasDied() || WasInteractedWith)
         {
             ModifierComponent?.RemoveModifier(this);
-            return;
         }
-
-        if (WasInteractedWith)
-        {
-            ModifierComponent?.RemoveModifier(this);
-            return;
-        }
-
-        // Kill handled by ShroudMeetingPatch
     }
 }
 

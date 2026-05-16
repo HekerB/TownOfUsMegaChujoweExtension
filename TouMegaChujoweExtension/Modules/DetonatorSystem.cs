@@ -21,9 +21,9 @@ namespace TouMegaChujoweExtension.Modules;
 
 public static class DetonatorSystem
 {
-    private static readonly ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("DetonatorSystem");
 
-    private class ActiveBomb
+
+    private sealed class ActiveBomb
     {
         public byte DetonatorId;
         public byte TargetId;
@@ -33,10 +33,9 @@ public static class DetonatorSystem
         public float CreationTime; 
     }
 
-    private static readonly List<ActiveBomb> _activeBombs = new();
-    private static readonly HashSet<byte> _bombTargets = new();
-    private static float _roundStartTime = 0f;
-    private static float _timeSinceRoundStart = 0f;
+    private static readonly List<ActiveBomb> _activeBombs = [];
+    private static readonly HashSet<byte> _bombTargets = [];
+    private static float _timeSinceRoundStart;
 
     public static bool IsAtRoundStart => _timeSinceRoundStart < 30f;
     
@@ -84,9 +83,11 @@ public static class DetonatorSystem
     public static void AttachBomb(byte detonatorId, byte targetId)
     {
         var target = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == targetId);
-        if (target != null)
+        var detonator = MiscUtils.PlayerById(detonatorId);
+        
+        if (target != null && detonator != null)
         {
-            target.AddModifier(new DetonatorBombModifier(MiscUtils.PlayerById(detonatorId)));
+            target.AddModifier(new DetonatorBombModifier(detonator));
         }
 
         _activeBombs.Add(new ActiveBomb
@@ -122,14 +123,12 @@ public static class DetonatorSystem
 
     public static void OnRoundStart()
     {
-        _roundStartTime = Time.time;
         _timeSinceRoundStart = 0f;
         // Don't clear bombs here - they should persist through meetings!
     }
 
     public static void OnMeetingEnd()
     {
-        _roundStartTime = Time.time;
         var impostors = PlayerControl.AllPlayerControls.ToArray().Where(p => p.Data.Role.IsImpostor);
         foreach (var imp in impostors)
         {
@@ -138,7 +137,10 @@ public static class DetonatorSystem
         }
     }
 
-    public static void MeetingUpdate() { }
+    public static void MeetingUpdate() 
+    {
+        // Handled by other systems
+    }
 
     private static void UpdateTimers(float dt)
     {
@@ -188,10 +190,8 @@ public static class DetonatorSystem
         var actualKiller = detonator ?? mainTarget;
         var victims = PlayerControl.AllPlayerControls.ToArray().Where(p => p != null && !p.HasDied() && Vector2.Distance(pos, p.transform.position) <= radius).OrderBy(p => Vector2.Distance(pos, p.transform.position)).Take((int)options.MaxKills).ToList();
         if (!victims.Contains(mainTarget)) victims.Add(mainTarget);
-        foreach (var victim in victims)
+        foreach (var victim in victims.Where(victim => victim != null && !victim.HasDied()))
         {
-            if (victim != null && !victim.HasDied())
-            {
                 // Check for invulnerability (e.g. Pestilence, Veteran on alert)
                 if (victim.TryGetModifier<TownOfUs.Modifiers.InvulnerabilityModifier>(out var invic) &&
                     !actualKiller.HasModifier<TownOfUs.Modifiers.IgnoreInvulnerabilityModifier>())
@@ -205,11 +205,13 @@ public static class DetonatorSystem
                 }
 
                 actualKiller.RpcSpecialMurder(victim, ignoreShield: false, createDeadBody: true, teleportMurderer: false, showKillAnim: victims.Count == 1, playKillSound: true, causeOfDeath: "Detonated");
-            }
         }
         DetonatorRole.RpcShowDetonationEffect(actualKiller, pos, options.DetonateRadius);
-        if (detonator != null) DetonatorRole.RpcPlayExplosion(detonator);
-        if (detonator != null) detonator.SetKillTimer(detonator.GetKillCooldown());
+        if (detonator is not null)
+        {
+            DetonatorRole.RpcPlayExplosion(detonator);
+            detonator.SetKillTimer(detonator.GetKillCooldown());
+        }
     }
 
     public static void RoundReset() { OnMeetingEnd(); }

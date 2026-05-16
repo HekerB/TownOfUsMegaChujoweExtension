@@ -2,6 +2,7 @@ using AmongUs.GameOptions;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using TouMegaChujoweExtension.Options;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,11 @@ public static class DraftSystem
     public static int TargetOtherNeutralCount { get; set; } // Global target for benign/evil/outliers
 
     // === FACTION ASSIGNMENTS ===
+    private static int GetSafeCount(float min, float max)
+    {
+        if (min > max || Mathf.Approximately(min, max)) return Mathf.RoundToInt(min);
+        return (Random.Range(0f, 100f) < 60f) ? Mathf.RoundToInt(min) : Mathf.RoundToInt(max);
+    }
     public static Dictionary<byte, DraftFaction> PlayerFactions { get; } = new();
 
     // === DRAFT MODE CHECK ===
@@ -73,10 +79,10 @@ public static class DraftSystem
         var remaining = allPlayerIds.Where(id => !impostorIds.Contains(id)).ToList();
         remaining.Shuffle();
 
-        int GetSafeCount(float min, float max)
+        if (options == null)
         {
-            if (min == max) return (int)min;
-            return (Random.Range(0f, 100f) < 60f) ? (int)min : (int)max;
+            UnityEngine.Debug.LogError("[TOUMCE] DraftModeOptions instance is null in AssignFactions!");
+            return;
         }
 
         int neutralKillingCount = GetSafeCount(options.MinNeutralKilling.Value, options.MaxNeutralKilling.Value);

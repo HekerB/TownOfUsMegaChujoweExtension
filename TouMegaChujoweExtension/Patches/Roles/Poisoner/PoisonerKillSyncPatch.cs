@@ -41,27 +41,6 @@ public static class PoisonerForceKillTimerPatch
     }
 }
 
-[HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-public static class PoisonerKillButtonBlockPatch
-{
-    [HarmonyPostfix]
-    [HarmonyPriority(Priority.Low)]
-    public static void Postfix(HudManager __instance)
-    {
-        var local = PlayerControl.LocalPlayer;
-        if (local == null || local.Data == null || local.Data.IsDead) return;
-        if (!local.IsRole<PoisonerRole>()) return;
-        if (PoisonSystem.IsRemoteKill) return;
-        if (!PoisonSystem.HasActivePoison && !PoisonSystem.IsVineActive) return;
-
-        var killButton = __instance.KillButton;
-        if (killButton == null) return;
-
-        killButton.SetDisabled();
-        killButton.graphic.color = Palette.DisabledClear;
-        killButton.graphic.material.SetFloat("_Desat", 1f);
-    }
-}
 
 [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
 public static class PoisonerBlockKillClickPatch

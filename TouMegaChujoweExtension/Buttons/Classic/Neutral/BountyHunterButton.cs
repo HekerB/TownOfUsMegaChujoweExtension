@@ -96,13 +96,11 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
             return null;
 
         return closest;
-
-        return closest;
     }
 
-    protected override void FixedUpdate(PlayerControl rolePlayer)
+    protected override void FixedUpdate(PlayerControl playerControl)
     {
-        base.FixedUpdate(rolePlayer);
+        base.FixedUpdate(playerControl);
         RefreshKillCounter();
     }
 

@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using System.Linq;
 using HarmonyLib;
+using AmongUs.GameOptions;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -12,25 +13,27 @@ public static class VentUtilities
     private static FieldInfo? _visualField;
     private static bool _fieldsFound;
 
-    private static readonly string[] TimerTextFieldNames = { "cooldownTimerText", "CooldownTimerText", "cooldownText", "TimerText" };
-    private static readonly string[] VisualFieldNames = { "cooldownVisual", "CooldownVisual", "ProgressImage", "Circle" };
+    private static readonly string[] TimerTextFieldNames = ["cooldownTimerText", "CooldownTimerText", "cooldownText", "TimerText"];
+    private static readonly string[] VisualFieldNames = ["cooldownVisual", "CooldownVisual", "ProgressImage", "Circle"];
 
     private static void FindFields()
     {
         if (_fieldsFound) return;
-        var type = typeof(ActionButton);
-        
+
         foreach (var name in TimerTextFieldNames)
         {
-            _timerTextField = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            _timerTextField = AccessTools.Field(typeof(ActionButton), name);
             if (_timerTextField != null) break;
         }
 
         foreach (var name in VisualFieldNames)
         {
-            _visualField = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            _visualField = AccessTools.Field(typeof(ActionButton), name);
             if (_visualField != null) break;
         }
+
+        if (_timerTextField == null) UnityEngine.Debug.LogWarning("[TOUMCE] VentUtilities: Could not find cooldownTimerText field on ActionButton!");
+        if (_visualField == null) UnityEngine.Debug.LogWarning("[TOUMCE] VentUtilities: Could not find cooldownVisual field on ActionButton!");
 
         _fieldsFound = true;
     }
@@ -42,17 +45,24 @@ public static class VentUtilities
     public static void InitializeVentButton(ActionButton? button)
     {
         if (button == null) return;
-        
-        try 
+
+        try
         {
             FindFields();
 
             // Check if already initialized or needs initialization
             if (_timerTextField != null && _timerTextField.GetValue(button) == null)
             {
-                var text = button.transform.Find("CooldownTimerText")?.GetComponent<TextMeshPro>() 
+                // Try multiple ways to find the text component
+                var text = button.transform.Find("CooldownTimerText")?.GetComponent<TextMeshPro>()
                            ?? button.GetComponentInChildren<TextMeshPro>(true);
-                
+
+                // Special case for Town of Us VentButton which often has buttonLabelText field
+                if (text == null && button is VentButton vb)
+                {
+                    text = vb.buttonLabelText;
+                }
+
                 if (text != null)
                 {
                     _timerTextField.SetValue(button, text);
@@ -63,16 +73,16 @@ public static class VentUtilities
             {
                 var visual = button.transform.Find("CooldownVisual")?.GetComponent<PassiveButton>()
                              ?? button.GetComponentInChildren<PassiveButton>(true);
-                
+
                 if (visual != null)
                 {
                     _visualField.SetValue(button, visual);
                 }
             }
         }
-        catch (System.Exception)
+        catch (System.Exception ex)
         {
-            // Silent catch to prevent any potential game crashes during initialization attempt
+            UnityEngine.Debug.LogError($"[TOUMCE] VentUtilities Error: {ex}");
         }
     }
 
@@ -82,11 +92,18 @@ public static class VentUtilities
     public static bool IsSafeToSetCooldown(ActionButton? button)
     {
         if (button == null) return false;
+
+        // If we are an Impostor or Engineer, the base game should have handled this.
+        // We only really need this safety for custom roles we manually enabled venting for.
+        var local = PlayerControl.LocalPlayer;
+        if (local != null && local.Data != null && (local.Data.Role.IsImpostor || local.Data.Role.Role == RoleTypes.Engineer))
+        {
+            return true;
+        }
+
         FindFields();
-        
-        // If we can't find the timer text field at all, we can't safely call SetCoolDown 
-        // as it will likely throw NRE inside.
-        if (_timerTextField == null) return false;
+
+        if (_timerTextField == null) return true; // Can't check, let it try (might crash but better than permanent block if we are wrong)
 
         try
         {
@@ -94,28 +111,7 @@ public static class VentUtilities
         }
         catch
         {
-            return false;
+            return true;
         }
-    }
-}
-
-[HarmonyPatch(typeof(ActionButton), nameof(ActionButton.SetCoolDown))]
-public static class ActionButtonSafetyPatch
-{
-    [HarmonyPrefix]
-    public static bool Prefix(ActionButton __instance)
-    {
-        if (__instance == null) return false;
-
-        // Try to initialize fields if they are missing
-        VentUtilities.InitializeVentButton(__instance);
-
-        // If it's still not safe (fields are null), skip the native call to prevent NRE
-        if (!VentUtilities.IsSafeToSetCooldown(__instance))
-        {
-            return false;
-        }
-
-        return true;
     }
 }

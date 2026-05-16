@@ -10,8 +10,8 @@ public sealed class GardenerOptions : AbstractOptionGroup<GardenerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleGardener", "Gardener");
 
-    [ModdedNumberOption("ExtensionOptionGardenerRadius", 0.1f, 5f, 0.1f, MiraNumberSuffixes.Multiplier, "0.00")]
-    public float Radius { get; set; } = 0.3f;
+    [ModdedNumberOption("ExtensionOptionGardenerRadius", 0.5f, 5.0f, 0.5f, MiraNumberSuffixes.None, "0.0")]
+    public float Radius { get; set; } = 2.5f;
 
     [ModdedNumberOption("ExtensionOptionGardenerCooldown", 5f, 120f, 5f, MiraNumberSuffixes.Seconds)]
     public float Cooldown { get; set; } = 30f;

@@ -9,7 +9,7 @@ namespace TouMegaChujoweExtension.Patches.Roles.Evoker;
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
 public static class EvokerHudPatch
 {
-    private static float _lastOutlineUpdateTime = 0f;
+    private static float _lastOutlineUpdateTime;
 
     [HarmonyPostfix]
     [HarmonyPriority(Priority.Last)]
@@ -57,7 +57,6 @@ public static class EvokerBlockVanillaKillTargetPatch
     {
         if (!EvokerSystem.IsLocalPlayerBlocked()) return true;
         __instance.currentTarget = null;
-        __instance.SetDisabled();
         return false;
     }
 }
@@ -133,18 +132,23 @@ public static class EvokerBlockPoisonerCanUsePatch
     }
 }
 
+[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Start))]
+public static class EvokerRoundStartPatch
+{
+    [HarmonyPrefix]
+    public static void Prefix()
+    {
+        EvokerSystem.OnRoundStart();
+    }
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+[HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
+public static class EvokerMeetingResetPatch
+{
+    [HarmonyPostfix]
+    public static void Postfix()
+    {
+        EvokerSystem.OnRoundStart();
+    }
+}

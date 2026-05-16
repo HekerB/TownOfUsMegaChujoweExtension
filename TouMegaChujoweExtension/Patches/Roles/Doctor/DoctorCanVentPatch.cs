@@ -1,8 +1,11 @@
+using AmongUs.GameOptions;
 using HarmonyLib;
 using MiraAPI.Modifiers;
 using TouMegaChujoweExtension.Modifiers.Crewmate;
 using TouMegaChujoweExtension.Modules;
 using UnityEngine;
+using TownOfUs.Extensions;
+using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Patches.Doctor;
 
@@ -74,16 +77,19 @@ public static class DoctorCanVentPatch
 
         if (mod == null) 
         {
-            // Reset CanVent if modifier is lost
-            if (player.Data.Role != null && !player.Data.Role.IsImpostor && player.Data.Role.CanVent)
+            // Only reset CanVent if we are a Doctor (since we handle their venting through the modifier)
+            // This prevents breaking native venting roles like Engineer, Jackal, or Serial Killer.
+            if (player.GetRole<DoctorRole>() != null)
             {
-                player.Data.Role.CanVent = false;
-            }
+                if (player.Data.Role != null && player.Data.Role.CanVent)
+                {
+                    player.Data.Role.CanVent = false;
+                }
 
-            // Only hide the button if we are NOT an impostor and NOT a native venting role (like Engineer)
-            if (player.Data.Role != null && !player.Data.Role.IsImpostor && !player.Data.Role.CanVent && ventButton != null && ventButton.gameObject.activeSelf)
-            {
-                ventButton.gameObject.SetActive(false);
+                if (ventButton != null && ventButton.gameObject.activeSelf)
+                {
+                    ventButton.gameObject.SetActive(false);
+                }
             }
             return;
         }

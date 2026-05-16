@@ -73,8 +73,11 @@ public sealed class GardenerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     {
         if (player == null) return;
 
-        float radius = OptionGroupSingleton<GardenerOptions>.Instance.Radius * 5f;
-        float duration = OptionGroupSingleton<GardenerOptions>.Instance.Duration;
+        var options = OptionGroupSingleton<GardenerOptions>.Instance;
+        if (options == null) return;
+
+        float radius = options.Radius;
+        float duration = options.Duration;
 
         GardenerSystem.SetGarden(player.PlayerId, position, radius, duration);
     }

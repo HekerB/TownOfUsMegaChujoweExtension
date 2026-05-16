@@ -17,9 +17,16 @@ public sealed class ExtensionGeneralOptions : AbstractOptionGroup
     [ModdedToggleOption("ExtensionOptionGeneralJackalChat")]
     public bool JackalChat { get; set; } = true;
 
+    [ModdedToggleOption("ExtensionOptionGeneralJackalSeesRecruitChat")]
+    public bool JackalSeesRecruitChat { get; set; } = true;
+
     [ModdedToggleOption("ExtensionOptionGeneralRecruitsKnowEachOther")]
     public bool RecruitsKnowEachOther { get; set; } = true;
 
+    [ModdedToggleOption("ExtensionOptionGeneralRecruitsHaveArrow")]
+    public bool RecruitsHaveArrow { get; set; } = true;
+
     [ModdedToggleOption("ExtensionOptionGeneralPreventVampiresWithJackal")]
     public bool PreventVampiresWithJackal { get; set; } = true;
+
 }

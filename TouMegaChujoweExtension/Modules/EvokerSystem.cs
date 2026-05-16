@@ -1,3 +1,4 @@
+using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
@@ -33,6 +34,7 @@ public static class EvokerSystem
         var evoker = MiscUtils.PlayerById(evokerPlayerId);
         if (evoker == null || evoker.HasDied()) return;
 
+        UnityEngine.Debug.Log($"[TOUMCE] Evoker Blind STARTED for {duration}s by player {evokerPlayerId}");
         IsBlindActive = true;
         BlindTimeRemaining = duration;
         EvokerPlayerId = evokerPlayerId;
@@ -62,6 +64,8 @@ public static class EvokerSystem
         {
             return;
         }
+
+        UnityEngine.Debug.Log("[TOUMCE] Evoker Blind ENDED");
 
         if (PlayerControl.LocalPlayer?.Data?.Role is EvokerRole)
         {
@@ -109,6 +113,12 @@ public static class EvokerSystem
                 return;
             }
         }
+        
+        if (Mathf.Approximately(BlindTimeRemaining, 0f) || BlindTimeRemaining < 0f)
+        {
+            EndBlind();
+            return;
+        }
 
         BlindTimeRemaining -= Time.deltaTime;
         if (BlindTimeRemaining <= 0f)
@@ -119,12 +129,20 @@ public static class EvokerSystem
 
     public static bool IsBlindTarget(PlayerControl? player)
     {
-        if (player == null || player.HasDied())
+        if (player == null || player.Pointer == System.IntPtr.Zero || player.Data == null)
         {
             return false;
         }
 
-        if (player.Data.Role.IsImpostor)
+        if (player.HasDied())
+        {
+            return false;
+        }
+
+        var role = player.Data.Role;
+        if (role == null) return false;
+
+        if (role.IsImpostor)
         {
             return true;
         }
@@ -134,13 +152,21 @@ public static class EvokerSystem
             return true;
         }
 
-        if (OptionGroupSingleton<EvokerOptions>.Instance.CrewmateKillersBlinded.Value &&
+        if (OptionGroupSingleton<EvokerOptions>.Instance != null && 
+            OptionGroupSingleton<EvokerOptions>.Instance.CrewmateKillersBlinded != null &&
+            OptionGroupSingleton<EvokerOptions>.Instance.CrewmateKillersBlinded.Value &&
             player.Is(RoleAlignment.CrewmateKilling))
         {
             return true;
         }
 
         return false;
+    }
+
+    public static void OnRoundStart()
+    {
+        EndBlind();
+        VerifiedPlayers.Clear();
     }
 
     public static void AddVerified(byte playerId, bool isKiller)

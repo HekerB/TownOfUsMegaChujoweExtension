@@ -33,16 +33,16 @@ public static class JackalLobbyPatch
 [HarmonyPatch(typeof(TouRoleManagerPatches), "AssignRolesFromRoleList")]
 public static class JackalStartPatch
 {
-    public static readonly Dictionary<byte, byte> PendingAssignments = new();
-    public static bool WasExecuted = false;
-    public static float StartTime = -1f;
+    internal static Dictionary<byte, byte> PendingAssignments { get; } = [];
+    internal static bool WasExecuted { get; set; }
+    internal static float StartTime { get; set; } = -1f;
     public static float TimeSinceStart => StartTime > 0 ? Time.time - StartTime : 0;
 
     [HarmonyPostfix]
     public static void Postfix()
     {
         UnityEngine.Debug.Log("[TOUMCE] AssignRoles Postfix triggered.");
-        if (!AmongUsClient.Instance.AmHost) 
+        if (!AmongUsClient.Instance.AmHost)
         {
             UnityEngine.Debug.Log("[TOUMCE] Not host, skipping assignment.");
             return;
@@ -62,13 +62,15 @@ public static class JackalStartPatch
     }
 
     [MethodRpc((uint)ExtensionRpc.SetSidekickAssignments)]
-    public static void RpcSetSidekickAssignments(PlayerControl host, Il2CppSystem.Collections.Generic.Dictionary<byte, byte> assignments)
+    public static void RpcSetSidekickAssignments(byte[] victims, byte[] jackalIds)
     {
         PendingAssignments.Clear();
-        foreach (var entry in assignments)
+        if (victims == null || jackalIds == null) return;
+
+        for (int i = 0; i < victims.Length && i < jackalIds.Length; i++)
         {
-            PendingAssignments[entry.Key] = entry.Value;
-            UnityEngine.Debug.Log($"[TOUMCE] Synced sidekick {entry.Key} to Jackal {entry.Value}");
+            PendingAssignments[victims[i]] = jackalIds[i];
+            UnityEngine.Debug.Log($"[TOUMCE] Synced sidekick {victims[i]} to Jackal {jackalIds[i]}");
         }
     }
 
@@ -82,7 +84,7 @@ public static class JackalStartPatch
 
         var jackals = PlayerControl.AllPlayerControls.ToArray()
             .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead &&
-                        (p.GetRole<JackalRole>() != null || (p.Data.Role != null && p.Data.Role is JackalRole)))
+                        (p.GetRole<JackalRole>() != null || p.Data.Role is JackalRole))
             .OrderBy(p => p.PlayerId)
             .ToList();
 
@@ -93,8 +95,8 @@ public static class JackalStartPatch
             UnityEngine.Debug.Log("[TOUMCE] No Jackals found, ending assignment.");
             yield break;
         }
-        
-        HashSet<byte> alreadyAssigned = new();
+
+        HashSet<byte> alreadyAssigned = [];
 
         foreach (var jackal in jackals)
         {
@@ -104,10 +106,10 @@ public static class JackalStartPatch
             foreach (var sidekick in selected)
             {
                 if (alreadyAssigned.Contains(sidekick.PlayerId)) continue;
-                
+
                 alreadyAssigned.Add(sidekick.PlayerId);
                 PendingAssignments[sidekick.PlayerId] = jackal.PlayerId;
-                
+
                 // Add modifier with safety check
                 if (!sidekick.HasModifier<SidekickModifier>())
                 {
@@ -121,9 +123,9 @@ public static class JackalStartPatch
         // Sync assignments to all clients
         if (PendingAssignments.Count > 0)
         {
-            var il2cppDict = new Il2CppSystem.Collections.Generic.Dictionary<byte, byte>();
-            foreach (var kvp in PendingAssignments) il2cppDict.Add(kvp.Key, kvp.Value);
-            RpcSetSidekickAssignments(PlayerControl.LocalPlayer, il2cppDict);
+            var victims = PendingAssignments.Keys.ToArray();
+            var jackalIds = PendingAssignments.Values.ToArray();
+            RpcSetSidekickAssignments(victims, jackalIds);
         }
     }
 
@@ -136,24 +138,24 @@ public static class JackalStartPatch
     public static List<PlayerControl> GetSidekicksForJackal(PlayerControl jackal, HashSet<byte> excludeIds)
     {
         var candidates = PlayerControl.AllPlayerControls.ToArray()
-            .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead 
-                        && p.PlayerId != jackal.PlayerId 
-                        && p.GetRole<JackalRole>() == null 
-                        && (p.Data.Role == null || !(p.Data.Role is JackalRole))
+            .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead
+                        && p.PlayerId != jackal.PlayerId
+                        && p.GetRole<JackalRole>() == null
+                        && p.Data.Role is not JackalRole
                         && !p.HasModifier<LoverModifier>()
                         && !p.HasModifier<EgotistModifier>()
                         && !p.HasModifier<CrewpostorModifier>()
                         && !excludeIds.Contains(p.PlayerId))
             .ToList();
 
-        if (candidates.Count == 0) return new List<PlayerControl>();
+        if (candidates.Count == 0) return [];
 
         var rng = new System.Random(); // Truly random on host
-        
+
         var impostors = candidates.Where(p => p.Data != null && p.Data.Role != null && p.Data.Role.IsImpostor).OrderBy(p => p.PlayerId).ToList();
         var crewmates = candidates.Where(p => p.IsCrewmate()).OrderBy(p => p.PlayerId).ToList();
 
-        var selected = new List<PlayerControl>();
+        List<PlayerControl> selected = [];
 
         // Pick 1 Impostor if possible
         if (impostors.Count > 0)
