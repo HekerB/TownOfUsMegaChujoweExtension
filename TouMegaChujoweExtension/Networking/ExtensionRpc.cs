@@ -90,5 +90,9 @@ public enum ExtensionRpc : uint
     GardenerPlaceGarden = 103,
     PortalmakerPlacePortal = 104,
     GardenerAttackNotify = 107,
-    GardenerClearGarden = 108
+    GardenerClearGarden = 108,
+    SendSidekickChat = 109,
+    SetSidekickAssignments = 110,
+    DetonatorPlayTracker = 111,
+    BountyHunterShowMisKill = 112
 }

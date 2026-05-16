@@ -15,7 +15,7 @@ public sealed class JackalOptions : AbstractOptionGroup<JackalRole>
     [ModdedNumberOption("Kill Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float KillCooldown { get; set; } = 25f;
 
-    [ModdedEnumOption("Kill Distance", null, new[] { "Short", "Medium", "Long" })]
+    [ModdedEnumOption("Kill Distance", null!, new[] { "Short", "Medium", "Long" })]
     public int KillDistance { get; set; } = 1; // 1 = Normal
 
     [ModdedToggleOption("Can Vent")]

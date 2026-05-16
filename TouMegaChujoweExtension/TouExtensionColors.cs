@@ -17,6 +17,10 @@ public static class TouExtensionColors
     public static Color VampireHunter => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(150, 100, 200, 255);
     public static Color Falcon => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(255, 255, 255, 255);
     public static Color Doctor => Trapper;
+    public static Color Arcanist => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(128, 0, 128, 255); // Purple
+    public static Color Portalmaker => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(0, 255, 255, 255); // Cyan
+    public static Color Gardener => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(34, 139, 34, 255); // Forest Green
+
     //neutrals
     public static Color SerialKiller => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(40, 80, 160, 255);
     public static Color Vulture => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(139, 69, 19, 255);
@@ -52,7 +56,7 @@ public static class TouExtensionColors
         public static Color Mirrorcaster => new Color32(144, 162, 195, 255); // Silver Blue
         public static Color Fairy => new Color32(102, 170, 243, 255);   // Light Blue
         public static Color Mercenary => new Color32(140, 102, 153, 255); // Mauve
-        public static Color Bodyguard => new Color32(0, 35, 255, 255); // Vibrant Royal Blue (Distinct from Mirror)
+        public static Color BodyguardFlash => new Color32(0, 35, 255, 255); // Vibrant Royal Blue (Distinct from Mirror)
         public static Color Oracle => new Color32(191, 0, 191, 255);    // Magenta
     }
 

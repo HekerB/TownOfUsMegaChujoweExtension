@@ -5,7 +5,6 @@ using TouMegaChujoweExtension.Options.Roles.Impostor;
 using TouMegaChujoweExtension.Modifiers.Impostor;
 using TouMegaChujoweExtension.Roles.Impostor;
 using TouMegaChujoweExtension.Roles.Classic.Crewmate;
-using TouMegaChujoweExtension.Roles.Crewmate;
 using TouMegaChujoweExtension.Modifiers.Crewmate;
 using TouMegaChujoweExtension.Assets;
 using TownOfUs.Assets;
