@@ -400,7 +400,7 @@
   
   <!-- Witch Options -->
   <string name="ExtensionOptionWitchSpellCooldown">Spell Cooldown</string>
-  <string name="ExtensionOptionWitchCanSpellFirstRound">Can Spell in First Round</string>
+  <string name="ExtensionOptionWitchCanSpellFirstRound">Allow First Round Spell</string>
   <string name="ExtensionOptionWitchAdditionalCooldown">Witch Additional Cooldown</string>
   <string name="ExtensionOptionWitchSpellCastingDuration">Witch Spell Casting Duration</string>
   <string name="ExtensionOptionWitchMeetingsUntilDeath">Meetings Until Death</string>
@@ -480,7 +480,7 @@
   <string name="ExtensionOptionRcXdMaxKills">Max Kills per Detonation</string>
   <string name="ExtensionOptionRcXdCanVent">Can Vent</string>
   <string name="ExtensionOptionRcXdMaxDeploys">Max Deploys</string>
-  <string name="ExtensionOptionRcXdCanUseInFirstRound">Can use in first round</string>
+  <string name="ExtensionOptionRcXdCanUseInFirstRound">Allow First Round Deploy</string>
   <string name="ExtensionOptionRcXdAllowEarlyDetonation">Allow Early Detonation</string>
 
   <!-- Astral Role -->
@@ -850,11 +850,15 @@
   
   <!-- Bounty Hunter Role -->
   <string name="ExtensionRoleBountyHunter">Bounty Hunter</string>
-  <string name="ExtensionRoleBountyHunterIntroBlurb">Hunt your assigned targets to victory.</string>
+  <string name="ExtensionRoleBountyHunterIntroBlurb">Hunt your assigned targets to victory. Do not kill the wrong target!</string>
   <string name="ExtensionRoleBountyHunterTabDescription">Eliminate all targets to win!</string>
-  <string name="ExtensionRoleBountyHunterWikiDescription">You need to murder your targets to win!</string>
+  <string name="ExtensionRoleBountyHunterWikiDescription">The Bounty Hunter is a Neutral Evil role whose mission is to eliminate a specific number of targets. Only killing your assigned target brings you closer to victory.\%nl\%\%nl\%Although you are free to kill ANY player on the map, attempting to kill anyone other than your current target using your Hunt button will result in your instant execution by the Guild (Suicide). Strategy and precision are key.</string>
   <string name="ExtensionRoleBountyHunterKill">Hunt</string>
   <string name="ExtensionRoleBountyHunterKillWikiDescription">Kill your assigned target. You cannot kill any other player.</string>
+  <string name="BountyHunterWrongVictim">Wrong Target</string>
+  <string name="BountyHunterWrongVictimAlert">You broke the pact with the Guild and died!</string>
+  <string name="BountyHunterWrongVictimAlertTarget">The Bounty Hunter tried to kill the wrong target and was executed!</string>
+  <string name="DiedToSuicideBountyHunter">Guild Execution</string>
   
   <!-- Bounty Hunter Options -->
   <string name="ExtensionOptionBHKillCooldown">BH Kill Cooldown</string>
@@ -862,7 +866,7 @@
   <string name="ExtensionOptionBHCanVent">Bounty Hunter Can Vent</string>
   <string name="ExtensionOptionBHTargetsToKill">Targets BH Has To Kill</string>
   <string name="ExtensionOptionBHShowArrow">Show Arrow To Target</string>
-  <string name="ExtensionOptionBHCanKillInRoundOne">Can Kill in Round 1</string>
+  <string name="ExtensionOptionBHCanKillInRoundOne">Allow first round kill</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Arrow Update Interval</string>
   <string name="ExtensionOptionBHGameContinues">Game Continues Without Other Killers</string>
   <string name="ExtensionOptionBHWinMode">Win Mode</string>
@@ -1067,7 +1071,7 @@
   <!-- Vampire Hunter Options -->
   <string name="ExtensionOptionVHStakeCooldown">Stake Cooldown</string>
   <string name="ExtensionOptionVHMaxFailedStakes">Max Failed Stakes</string>
-  <string name="ExtensionOptionVHCanStakeRoundOne">Can Stake Round One</string>
+  <string name="ExtensionOptionVHCanStakeRoundOne">Allow First Round Stake</string>
   <string name="ExtensionOptionVHSelfKillOnFailure">Self Kill On All Stakes Failed</string>
   <string name="ExtensionOptionVHBecomesOnVampDeath">Becomes On Vampire Death</string>
   <string name="DiedToExtensionRoleVampireHunterStaked">Staked</string>
@@ -1093,7 +1097,7 @@
   <string name="ExtensionOptionKamikazeMaxKills">Max Kills In Detonation</string>
   <string name="ExtensionOptionKamikazeCanVent">Can Vent</string>
   <string name="ExtensionOptionKamikazeShowRadiusIndicator">Show Radius Indicator</string>
-  <string name="ExtensionOptionKamikazeCanSuicideFirstRound">Can Suicide First Round</string>
+  <string name="ExtensionOptionKamikazeCanSuicideFirstRound">Allow First Round Detonation</string>
   
   <!-- Publicity Modifier -->
   <string name="ExtensionModifierPublicity">Publicity</string>

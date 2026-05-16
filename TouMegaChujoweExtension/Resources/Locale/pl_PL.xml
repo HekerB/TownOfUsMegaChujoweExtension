@@ -400,7 +400,7 @@
   
   <!-- Witch Options -->
   <string name="ExtensionOptionWitchSpellCooldown">Cooldown zaklecia</string>
-  <string name="ExtensionOptionWitchCanSpellFirstRound">Zezwalaj na czar w 1. rundzie</string>
+  <string name="ExtensionOptionWitchCanSpellFirstRound">Zezwalaj na użycie w 1. rundzie</string>
   <string name="ExtensionOptionWitchAdditionalCooldown">Dodatkowy cooldown Witch</string>
   <string name="ExtensionOptionWitchSpellCastingDuration">Czas rzucania zaklecia Witch</string>
   <string name="ExtensionOptionWitchMeetingsUntilDeath">Liczba spotkan do smierci</string>
@@ -478,7 +478,7 @@
   <string name="ExtensionOptionRcXdMaxKills">Maksymalna liczba zabojstw na detonacje</string>
   <string name="ExtensionOptionRcXdCanVent">Moze uzywac wentylacji</string>
   <string name="ExtensionOptionRcXdMaxDeploys">Maksymalna liczba wypuszczen</string>
-  <string name="ExtensionOptionRcXdCanUseInFirstRound">Zezwalaj na wypuszczenie w 1. rundzie</string>
+  <string name="ExtensionOptionRcXdCanUseInFirstRound">Zezwalaj na użycie w 1. rundzie</string>
   <string name="ExtensionOptionRcXdAllowEarlyDetonation">Pozwalaj na wczesną detonację</string>
 
   <!-- Astral Role -->
@@ -853,6 +853,7 @@
   <string name="BountyHunterWrongVictim">Zła Ofiara</string>
   <string name="BountyHunterWrongVictimAlert">Złamałeś pakt z Gildią i zginąłeś!</string>
   <string name="BountyHunterWrongVictimAlertTarget">Łowca Nagród próbował zabić niewłaściwy cel i został stracony!</string>
+  <string name="DiedToSuicideBountyHunter">Egzekucja Gildii</string>
   
   <!-- Bounty Hunter Options -->
   <string name="ExtensionOptionBHKillCooldown">Cooldown zabojstwa BH</string>
@@ -860,7 +861,7 @@
   <string name="ExtensionOptionBHHasImpostorVision">Bounty Hunter ma wizję Impostora</string>
   <string name="ExtensionOptionBHTargetsToKill">Liczba celow do zabicia przez BH</string>
   <string name="ExtensionOptionBHShowArrow">Pokaz strzalke do celu</string>
-  <string name="ExtensionOptionBHCanKillInRoundOne">Zezwalaj na zabójstwo w 1. rundzie</string>
+  <string name="ExtensionOptionBHCanKillInRoundOne">Zezwalaj na użycie w 1. rundzie</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Interwal odswiezania strzalki</string>
   <string name="ExtensionOptionBHGameContinues">Gra trwa bez innych zabojcow</string>
   <string name="ExtensionOptionBHWinMode">Tryb wygranej</string>
@@ -1059,7 +1060,7 @@
   <!-- Vampire Hunter Options -->
   <string name="ExtensionOptionVHStakeCooldown">Cooldown Stake</string>
   <string name="ExtensionOptionVHMaxFailedStakes">Maksymalna liczba nieudanych Stake</string>
-  <string name="ExtensionOptionVHCanStakeRoundOne">Zezwalaj na Stake w 1. rundzie</string>
+  <string name="ExtensionOptionVHCanStakeRoundOne">Zezwalaj na użycie w 1. rundzie</string>
   <string name="ExtensionOptionVHSelfKillOnFailure">Samobojstwo po wykorzystaniu wszystkich Stake</string>
   <string name="ExtensionOptionVHBecomesOnVampDeath">Staje sie po smierci Vampire</string>
   <string name="ExtensionOptionVHCanSelfReport">Moze raportowac wlasne ofiary</string>
@@ -1085,7 +1086,7 @@
   <string name="ExtensionOptionKamikazeMaxKills">Maksymalna liczba zabojstw na detonacje</string>
   <string name="ExtensionOptionKamikazeCanVent">Moze uzywac wentylacji</string>
   <string name="ExtensionOptionKamikazeShowRadiusIndicator">Pokaz wskaznik promienia</string>
-  <string name="ExtensionOptionKamikazeCanSuicideFirstRound">Zezwalaj na samobójstwo w 1. rundzie</string>
+  <string name="ExtensionOptionKamikazeCanSuicideFirstRound">Zezwalaj na użycie w 1. rundzie</string>
 
   <!-- Publicity Modifier -->
   <string name="ExtensionModifierPublicity">Publicity</string>
@@ -1253,7 +1254,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <!-- Vampire Hunter Options -->
   <string name="ExtensionOptionVHStakeCooldown">Cooldown Stake</string>
   <string name="ExtensionOptionVHMaxFailedStakes">Maksymalna liczba nieudanych Stake</string>
-  <string name="ExtensionOptionVHCanStakeRoundOne">Zezwalaj na Stake w 1. rundzie</string>
+  <string name="ExtensionOptionVHCanStakeRoundOne">Zezwalaj na użycie w 1. rundzie</string>
   <string name="ExtensionOptionVHSelfKillOnFailure">Samobojstwo po wykorzystaniu wszystkich Stake</string>
   <string name="ExtensionOptionVHBecomesOnVampDeath">Staje sie po smierci Vampire</string>
   <string name="ExtensionOptionVHCanSelfReport">Moze raportowac wlasne ofiary</string>
@@ -1279,7 +1280,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionKamikazeMaxKills">Maksymalna liczba zabojstw na detonacje</string>
   <string name="ExtensionOptionKamikazeCanVent">Moze uzywac wentylacji</string>
   <string name="ExtensionOptionKamikazeShowRadiusIndicator">Pokaz wskaznik promienia</string>
-  <string name="ExtensionOptionKamikazeCanSuicideFirstRound">Zezwalaj na samobójstwo w 1. rundzie</string>
+  <string name="ExtensionOptionKamikazeCanSuicideFirstRound">Zezwalaj na użycie w 1. rundzie</string>
 
   <!-- Publicity Modifier -->
   <string name="ExtensionModifierPublicity">Publicity</string>
