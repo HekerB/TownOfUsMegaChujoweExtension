@@ -54,6 +54,7 @@ public static class NeutralVentButtonPatch
         else if (role is ShroudRole) roleColor = TouExtensionColors.Shroud;
         else if (role is VultureRole) roleColor = TouExtensionColors.Vulture;
         else if (role is PelicanRole) roleColor = TouExtensionColors.Pelican;
+        else if (role is JackalRole) roleColor = TouExtensionColors.Jackal;
 
         if (roleColor.HasValue)
         {

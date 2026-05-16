@@ -6,6 +6,7 @@ using System;
 using TownOfUs.Assets;
 using TownOfUs.Options.Maps;
 using TownOfUs.Options;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
 
 namespace TouMegaChujoweExtension.Patches.Wiki;
 
@@ -70,7 +71,14 @@ public static class WikiTermsPatch
                 (object)TouRoleIcons.Jackal);
             addMethod.Invoke(termsList, new[] { draftFactionsTerm });
 
-            // Page 5: Vampire Sabotage
+            // Page 5: Infiltrator
+            var infiltratorTerm = Activator.CreateInstance(termType,
+                "TOUMCETermsInfiltratorTitle",
+                "TOUMCETermsInfiltratorInfo",
+                (object)TouRoleIcons.Jackal);
+            addMethod.Invoke(termsList, new[] { infiltratorTerm });
+
+            // Page 6: Vampire Sabotage
             var vampireSabotageTerm = Activator.CreateInstance(termType,
                 "TOUMCETermsVampireSabotageTitle",
                 "TOUMCETermsVampireSabotageInfo",
@@ -135,7 +143,8 @@ public static class WikiSettingsPatch
                 MiraAPI.GameOptions.OptionGroupSingleton<SonarExtendedOptions>.Instance,
                 MiraAPI.GameOptions.OptionGroupSingleton<TimeLordExtensionOptions>.Instance,
                 MiraAPI.GameOptions.OptionGroupSingleton<AdvancedSabotageOptions>.Instance,
-                MiraAPI.GameOptions.OptionGroupSingleton<VampireExtendedOptions>.Instance
+                MiraAPI.GameOptions.OptionGroupSingleton<VampireExtendedOptions>.Instance,
+                MiraAPI.GameOptions.OptionGroupSingleton<JackalOptions>.Instance
             };
 
             // Create OptionWikiInfo for Role Extensions

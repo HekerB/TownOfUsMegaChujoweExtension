@@ -1201,5 +1201,40 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="Enable Draft Mode">Enable Draft Mode</string>
   <string name="Lock Lobby During Draft">Lock Lobby During Draft</string>
   <string name="Use Role Chances">Use Role Chances</string>
+
+  <!-- Infiltrator & Recruits -->
+  <string name="ExtensionRoleJackal">Infiltrator</string>
+  <string name="ExtensionRoleJackalIntroBlurb">Gather recruits and survive to kill.</string>
+  <string name="ExtensionRoleJackalTabDescription">Gather two recruits from opposing factions. Once they die, you gain the ability to kill. Survive until the end.</string>
+  <string name="ExtensionRoleJackalWikiDescription">&lt;color=#535064&gt;&lt;b&gt;The Infiltrator&lt;/b&gt;&lt;/color&gt; plays the long game through proxy survival. You start with two &lt;color=#FF3B3B&gt;Lifelinked&lt;/color&gt; &lt;color=#535064&gt;Recruits&lt;/color&gt;. Protect your identity while they work for you. \%nl\%While they live, they grant you a &lt;color=#535064&gt;Shield&lt;/color&gt;. You only gain the ability to &lt;b&gt;Assassinate&lt;/b&gt; once all recruits have perished. \%nl\% \%nl\%&lt;i&gt;"Infiltration is a slow poison."&lt;/i&gt;</string>
+  <string name="ExtensionRoleJackalAssassination">Assassination</string>
+  <string name="ExtensionRoleJackalAssassinationWikiDescription">Eliminate a nearby player. This ability is only available after all Recruits have died.</string>
+  <string name="ExtensionRoleJackalRecruits">Recruits</string>
+  <string name="ExtensionRoleJackalRecruitsWikiDescription">You start with two recruits who work for you. They are &lt;color=#FF3B3B&gt;Lifelinked&lt;/color&gt; and tagged with &lt;b&gt;(REC)&lt;/b&gt;. You can see their roles and read their private chat. While they live, they grant you a shield. Once they die, you gain the ability to kill. \%nl\% \%nl\%&lt;i&gt;"Loyalty is earned, but betrayal is strategic."&lt;/i&gt;</string>
+  
+  <string name="ExtensionOptionJackalSeesSidekickRoles">Infiltrator sees Recruit roles</string>
+  <string name="ExtensionOptionJackalNotifySidekickDeath">Notify on Recruit death</string>
+  <string name="ExtensionJackalSidekickDiedAlert">Recruit {0} has died!</string>
+  <string name="ExtensionJackalShieldLostAlert">You lost your shield!</string>
+  <string name="ExtensionJackalKillAbilityAlert">You can now kill!</string>
+  <string name="ExtensionModifierSidekickShortName">REC</string>
+  <string name="ExtensionJackalShieldModifierTitle">RECRUIT ALIVE SHIELD</string>
+  <string name="ExtensionJackalShieldModifierDesc">Protects the Infiltrator from any killing attempt as long as at least one Recruit is alive.</string>
+  <string name="ExtensionJackalChatTitle">Infiltrator</string>
+  <string name="ExtensionOptionGeneralJackalChat">Infiltrator Private Chat</string>
+  <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Recruits see each other's role</string>
+
+  <string name="Sidekick">Recruit</string>
+  <string name="SidekickIntroBlurb">You have been recruited by the Infiltrator. You must betray your team.</string>
+  <string name="SidekickTabDescription">You have been recruited. Protect the Infiltrator to win alongside them.\%nl\%&lt;color=#FF3B3B&gt;&lt;b&gt;You have joined a new team and have a new win condition!&lt;/b&gt;&lt;/color&gt;</string>
+  <string name="SidekickWikiDescription">Protect the Infiltrator and help them eliminate other factions. You are lifelinked to another Recruit.</string>
+  <string name="DiedToJackal">Assassinated by Infiltrator</string>
+
+  <string name="ExtensionRoleSidekickRecruitTeam">Recruits</string>
+  <string name="ExtensionRoleSidekickRecruitTeamWikiDescription">View information about your fellow Recruits and your mission status.</string>
+  <string name="ExtensionJackalRecruitIntroDescription">You have been recruited by &lt;jackal&gt;.</string>
+  <string name="ExtensionJackalRecruitIntroDescriptionAnonymized">You have been recruited by the Infiltrator. Protect them and work with other recruits.</string>
+  <string name="ExtensionSidekickRecruitedAlert">Recruited!</string>
+  <string name="ExtensionSidekickRecruitedChatMsg">You have been recruited by the Infiltrator! You are now a Recruit.</string>
 </resources>
 

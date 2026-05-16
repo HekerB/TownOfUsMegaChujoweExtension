@@ -257,16 +257,18 @@
   
   <!-- Pelican Role -->
   <string name="ExtensionRolePelican">Pelican</string>
-  <string name="ExtensionRolePelicanIntroBlurb">Polykaj graczy zywcem, aby wygrac samotnie.</string>
-  <string name="ExtensionRolePelicanTabDescription">Polykaj graczy, aby uwiezic ich w swoim zoladku.\%nl\%Zostana strawieni, gdy zostanie zwolane spotkanie.\%nl\%Jesli zginiesz, uciekna zywi.</string>
-  <string name="ExtensionRolePelicanWikiDescription">Mozesz zjadac ludzi zywcem, zjedz wszystkich, aby wygrac! Osoby w twoim zoladku umra na poczatku spotkania.</string>
-  <string name="ExtensionRolePelicanSwallow">Polknij</string>
-  <string name="ExtensionRolePelicanSwallowWikiDescription">Polknij graczy. Znajduja sie w twoim zoladku, dopoki nie zostanie zwolane spotkanie albo nie zginiesz.</string>
+  <string name="ExtensionRolePelicanIntroBlurb">Zjadaj graczy i trzymaj ich w brzuchu do czasu spotkania.</string>
+  <string name="ExtensionRolePelicanTabDescription">Pelican może zjadać graczy i trzymać ich w swoim brzuchu. Zjedzeni gracze giną podczas spotkania, ale mogą zostać uwolnieni, jeśli Pelican zginie wcześniej.</string>
+  <string name="ExtensionRolePelicanWikiDescription">Pelican to rola Neutral Killing, która może zjadać graczy i trzymać ich w swoim brzuchu. Zjedzeni gracze giną podczas spotkania, ale mogą zostać uwolnieni, jeśli Pelican zginie wcześniej.</string>
+   <string name="ExtensionRolePelicanSwallow">Połknij</string>
+  <string name="ExtensionRolePelicanSwallowWikiDescription">Połknięcie gracza, jak sama nazwa wskazuje, polega na połknięciu go i trzymaniu w brzuchu. Pelican i zjedzeni gracze mogą rozmawiać ze sobą na czacie. Umiejętności zjedzonych graczy są zablokowane.</string>
 
   <!-- Pelican Options -->
-  <string name="ExtensionOptionPelicanSwallowCooldown">Cooldown polkniecia</string>
-  <string name="ExtensionOptionPelicanMaxSwallowed">Maksymalna liczba graczy w zoladku</string>
-  <string name="ExtensionOptionPelicanCanVent">Pelican moze uzywac wentylacji</string>
+  <string name="ExtensionOptionPelicanSwallowCooldown">Cooldown połykania</string>
+  <string name="ExtensionOptionPelicanMaxSwallowed">Maks. liczba graczy w brzuchu</string>
+  <string name="ExtensionOptionPelicanCanUseMapWhileEaten">Może używać mapy/sabotażu po zjedzeniu</string>
+  <string name="ExtensionOptionPelicanCanEatThroughShields">Może zjadać przez tarcze</string>
+  <string name="ExtensionOptionPelicanCanVent">Może używać wentylacji</string>
   
   <!-- Vampire Role -->
   <string name="ExtensionRoleVampire">Wampir</string>
@@ -274,8 +276,8 @@
   <string name="ExtensionOptionVampireOnlyOgCanSabotage">Tylko pierwotny wampir moze sabotowac</string>
 
   <!-- Pelican Notifications -->
-  <string name="ExtensionPelicanSwallowedNotification">Zostales polkniety przez Pelicana!</string>
-  <string name="ExtensionPelicanReleasedNotification">Zostales uwolniony z Pelicana!</string>
+  <string name="ExtensionPelicanSwallowedNotification">Zostałeś zjedzony przez Pelicana!</string>
+  <string name="ExtensionPelicanReleasedNotification">Zostałeś uwolniony z brzucha Pelicana!</string>
   
   <!-- Pelican Death Message -->
   <string name="DiedToPelican">Strawiony</string>
@@ -379,14 +381,14 @@
   
   <!-- Outlaw Role -->
   <string name="ExtensionRoleOutlaw">Outlaw</string>
-  <string name="ExtensionRoleOutlawIntroBlurb">Wykorzystaj szal zabijania, by uderzyc dwa razy.</string>
-  <string name="ExtensionRoleOutlawTabDescription">Po zabojstwie masz krotkie okno na zabicie drugiego gracza bez cooldownu.</string>
-  <string name="ExtensionRoleOutlawWikiDescription">Mozesz wykonac wiele zabojstw w zaleznosci od opcji.</string>
+  <string name="ExtensionRoleOutlawIntroBlurb">Uderzaj z zabójczą precyzją i siej podwójny chaos!</string>
+  <string name="ExtensionRoleOutlawTabDescription">Wykonuj błyskawiczne eliminacje. Po pierwszym zabójstwie wchodzisz w szał, który pozwala ci uderzyć ponownie bez czekania na cooldown.</string>
+  <string name="ExtensionRoleOutlawWikiDescription">Outlaw to rola Impostora, która może wykonać drugie zabójstwo niemal natychmiast po pierwszym, o ile zmieści się w krótkim oknie czasowym (Szał).</string>
 
   <!-- Outlaw Options -->
-  <string name="ExtensionOptionOutlawKillCooldown">Cooldown zabojstwa</string>
-  <string name="ExtensionOptionOutlawDoubleKillWindow">Okno bonusowego zabojstwa</string>
-  <string name="ExtensionOptionOutlawBonusKills">Bonusowe zabojstwa</string>
+  <string name="ExtensionOptionOutlawKillCooldown">Cooldown zabijania</string>
+  <string name="ExtensionOptionOutlawDoubleKillWindow">Okno Szału (Sekundy)</string>
+  <string name="ExtensionOptionOutlawBonusKills">Liczba dodatkowych killi w szału</string>
 
   <!-- Witch Role -->
   <string name="ExtensionRoleWitch">Witch</string>
@@ -398,7 +400,7 @@
   
   <!-- Witch Options -->
   <string name="ExtensionOptionWitchSpellCooldown">Cooldown zaklecia</string>
-  <string name="ExtensionOptionWitchCanSpellFirstRound">Moze uzywac czaru w 1 rundzie</string>
+  <string name="ExtensionOptionWitchCanSpellFirstRound">Zezwalaj na czar w 1. rundzie</string>
   <string name="ExtensionOptionWitchAdditionalCooldown">Dodatkowy cooldown Witch</string>
   <string name="ExtensionOptionWitchSpellCastingDuration">Czas rzucania zaklecia Witch</string>
   <string name="ExtensionOptionWitchMeetingsUntilDeath">Liczba spotkan do smierci</string>
@@ -476,7 +478,7 @@
   <string name="ExtensionOptionRcXdMaxKills">Maksymalna liczba zabojstw na detonacje</string>
   <string name="ExtensionOptionRcXdCanVent">Moze uzywac wentylacji</string>
   <string name="ExtensionOptionRcXdMaxDeploys">Maksymalna liczba wypuszczen</string>
-  <string name="ExtensionOptionRcXdCanUseInFirstRound">Można używać w pierwszej rundzie</string>
+  <string name="ExtensionOptionRcXdCanUseInFirstRound">Zezwalaj na wypuszczenie w 1. rundzie</string>
   <string name="ExtensionOptionRcXdAllowEarlyDetonation">Pozwalaj na wczesną detonację</string>
 
   <!-- Astral Role -->
@@ -519,13 +521,13 @@
 
   <!-- Detonator Role -->
   <string name="ExtensionRoleDetonator">Detonator</string>
-  <string name="ExtensionRoleDetonatorIntroBlurb">Podkładaj bomby graczom i zdetonuj je w odpowiednim momencie.</string>
-  <string name="ExtensionRoleDetonatorTabDescription">Zakradnij się do graczy, aby podłożyć bombę. Możesz ją zdetonować ręcznie po krótkim opóźnieniu!</string>
-  <string name="ExtensionRoleDetonatorWikiDescription">Detonator to rola Impostora, która może podkładać bomby czasowe innym graczom. Po podłożeniu bomby Detonator może zdetonować ją ręcznie tym samym przyciskiem po określonym czasie. Eksplozja zabija cel oraz wszystkich graczy znajdujących się w promieniu wybuchu.</string>
-  <string name="ExtensionRoleDetonatorAttach">Podłóż bombę</string>
-  <string name="ExtensionRoleDetonatorAttachWikiDescription">Podłóż bombę pobliskiemu graczowi. Po podłożeniu możesz kliknąć przycisk ponownie (po opóźnieniu), aby zdetonować ją wcześniej. Eksplozja może zabić wiele osób, jeśli znajdują się blisko celu.</string>
-  <string name="ExtensionRoleDetonatorDetonate">Zdetonuj</string>
-  <string name="ExtensionRoleDetonatorDetonateWikiDescription">Ręcznie zdetonuj bombę podłożoną celowi. Powoduje natychmiastową eksplozję.</string>
+  <string name="ExtensionRoleDetonatorIntroBlurb">Eliminuj całe grupy graczy za pomocą zdalnie sterowanych ładunków wybuchowych.</string>
+  <string name="ExtensionRoleDetonatorTabDescription">Przymocuj ładunek C4 do niczego niepodejrzewającego gracza. Gdy znajdzie się blisko innych, zdetonuj go, aby zmaksymalizować straty!</string>
+  <string name="ExtensionRoleDetonatorWikiDescription">Detonator może podłożyć ładunek wybuchowy wybranemu graczowi. Po krótkim opóźnieniu ładunek może zostać zdetonowany ręcznie tym samym przyciskiem. Eksplozja zabija cel oraz wszystkich graczy w promieniu rażenia. Jednocześnie aktywny może być tylko jeden ładunek.</string>
+  <string name="ExtensionRoleDetonatorAttach">Podłóż C4</string>
+  <string name="ExtensionRoleDetonatorAttachWikiDescription">Podłóż ładunek C4 wybranemu graczowi. Po przymocowaniu musisz odczekać czas bezpieczeństwa, zanim będziesz mógł go zdetonować.</string>
+  <string name="ExtensionRoleDetonatorDetonate">Detonuj</string>
+  <string name="ExtensionRoleDetonatorDetonateWikiDescription">Zdalnie zdetonuj ładunek C4. Eksplozja wyeliminuje cel oraz wszystkich graczy w zasięgu wybuchu.</string>
 
   <!-- Detonator Options -->
   <string name="ExtensionOptionDetonatorAttachDuration">Czas podkładania</string>
@@ -843,24 +845,32 @@
   
   <!-- Bounty Hunter Role -->
   <string name="ExtensionRoleBountyHunter">Bounty Hunter</string>
-  <string name="ExtensionRoleBountyHunterIntroBlurb">Poluj na wyznaczone cele, aby zwyciezyc.</string>
-  <string name="ExtensionRoleBountyHunterTabDescription">Wyeliminuj wszystkie cele, aby wygrac!</string>
-  <string name="ExtensionRoleBountyHunterWikiDescription">Musisz mordowac swoje cele, aby wygrac!</string>
-  <string name="ExtensionRoleBountyHunterKill">Polowanie</string>
-  <string name="ExtensionRoleBountyHunterKillWikiDescription">Zabij swoj wyznaczony cel. Nie mozesz zabic zadnego innego gracza.</string>
+  <string name="ExtensionRoleBountyHunterIntroBlurb">Poluj na wyznaczone cele. Uważaj, by nie zabić złej osoby!</string>
+  <string name="ExtensionRoleBountyHunterTabDescription">Jesteś profesjonalnym zabójcą. Eliminuj swoje cele, aby wygrać!</string>
+  <string name="ExtensionRoleBountyHunterWikiDescription">Bounty Hunter to rola Neutralna Zła, której misją jest wyeliminowanie określonej liczby celów. Tylko zabijanie wyznaczonych celów przybliża Cię do zwycięstwa.\%nl\%\%nl\%Chociaż masz swobodę zabicia KAŻDEGO gracza na mapie, zabicie kogoś innego niż Twój aktualny cel skończy się Twoją natychmiastową egzekucją przez Gildię (Samobójstwem). Strategia i precyzja są kluczowe.</string>
+  <string name="ExtensionRoleBountyHunterKill">Poluj</string>
+  <string name="ExtensionRoleBountyHunterKillWikiDescription">Wyeliminuj gracza. Jeśli to Twój wyznaczony cel, przybliżasz się do zwycięstwa. Jeśli to NIE jest Twój cel, natychmiast zginiesz (Samobójstwo).</string>
+  <string name="BountyHunterWrongVictim">Zła Ofiara</string>
+  <string name="BountyHunterWrongVictimAlert">Złamałeś pakt z Gildią i zginąłeś!</string>
+  <string name="BountyHunterWrongVictimAlertTarget">Łowca Nagród próbował zabić niewłaściwy cel i został stracony!</string>
   
   <!-- Bounty Hunter Options -->
   <string name="ExtensionOptionBHKillCooldown">Cooldown zabojstwa BH</string>
   <string name="ExtensionOptionBHImpostorKillCd">Bounty Hunter ma cooldown zabojstwa jak Impostor</string>
-  <string name="ExtensionOptionBHCanVent">Bounty Hunter moze uzywac wentylacji</string>
+  <string name="ExtensionOptionBHHasImpostorVision">Bounty Hunter ma wizję Impostora</string>
   <string name="ExtensionOptionBHTargetsToKill">Liczba celow do zabicia przez BH</string>
   <string name="ExtensionOptionBHShowArrow">Pokaz strzalke do celu</string>
-  <string name="ExtensionOptionBHCanKillInRoundOne">Moze zabijac w pierwszej rundzie</string>
+  <string name="ExtensionOptionBHCanKillInRoundOne">Zezwalaj na zabójstwo w 1. rundzie</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Interwal odswiezania strzalki</string>
   <string name="ExtensionOptionBHGameContinues">Gra trwa bez innych zabojcow</string>
   <string name="ExtensionOptionBHWinMode">Tryb wygranej</string>
   <string name="ExtensionOptionBHWinModeEnumSoloWin">Samotna wygrana (konczy gre)</string>
   <string name="ExtensionOptionBHWinModeEnumWinWithWinners">Wygrywa ze zwyciezcami</string>
+  <string name="ExtensionOptionBHArrowRange">Zasięg strzałki</string>
+  <string name="ExtensionOptionBHArrowRangeShort">Krótki</string>
+  <string name="ExtensionOptionBHArrowRangeMedium">Średni</string>
+  <string name="ExtensionOptionBHArrowRangeLong">Długi</string>
+  <string name="ExtensionOptionBHArrowRangeInfinite">Nieskończony</string>
   
   <string name="ExtensionBHTabTargetsKilled">Zabite cele: {0} / {1}</string>
   <string name="ExtensionBHTabCurrentTarget">Aktualny cel: {0}</string>
@@ -989,18 +999,6 @@
   <string name="ExtensionOptionSageNeutralEvilFriendly">Neutral Evil pokazuje jako przyjazny</string>
   <string name="ExtensionOptionSageNeutralOutlierFriendly">Neutral Outlier pokazuje jako przyjazny</string>
 
-  <!-- Ventable Modifier -->
-  <string name="ExtensionModifierVentable">Ventable</string>
-  <string name="ExtensionModifierVentableIntroBlurb">Mozesz uzywac wentylacji!</string>
-  <string name="ExtensionModifierVentableTabDescription">Mozesz uzywac wentylacji! Pozostale uzycia: -uses-</string>
-  <string name="ExtensionModifierVentableTabDescriptionEmpty">Nie pozostaly zadne uzycia wentylacji.</string>
-  <string name="ExtensionModifierVentableWikiDescription">Modyfikator Crewmate, ktory daje ograniczony dostep do wentylacji. Masz okreslona liczbe uzyc wentylacji z cooldownem pomiedzy uzyciami i maksymalnym czasem przebywania w wentylacji.</string>
-  <string name="ExtensionModifierVentableAmount">Liczba Ventable</string>
-  <string name="ExtensionModifierVentableChance">Szansa na Ventable</string>
-  <string name="ExtensionModifierVentableMaxVentUses">Maksymalna liczba uzyc wentylacji</string>
-  <string name="ExtensionModifierVentableVentCooldown">Cooldown wentylacji</string>
-  <string name="ExtensionModifierVentableVentDuration">Maksymalny czas w wentylacji</string>
-
   <!-- Doppelganger Role -->
   <string name="ExtensionRoleDoppelganger">Doppelganger</string>
   <string name="ExtensionRoleDoppelgangerIntroBlurb">Zabij i ukradnij ich tozsamosc.</string>
@@ -1061,7 +1059,7 @@
   <!-- Vampire Hunter Options -->
   <string name="ExtensionOptionVHStakeCooldown">Cooldown Stake</string>
   <string name="ExtensionOptionVHMaxFailedStakes">Maksymalna liczba nieudanych Stake</string>
-  <string name="ExtensionOptionVHCanStakeRoundOne">Moze uzyc Stake w pierwszej rundzie</string>
+  <string name="ExtensionOptionVHCanStakeRoundOne">Zezwalaj na Stake w 1. rundzie</string>
   <string name="ExtensionOptionVHSelfKillOnFailure">Samobojstwo po wykorzystaniu wszystkich Stake</string>
   <string name="ExtensionOptionVHBecomesOnVampDeath">Staje sie po smierci Vampire</string>
   <string name="ExtensionOptionVHCanSelfReport">Moze raportowac wlasne ofiary</string>
@@ -1087,7 +1085,201 @@
   <string name="ExtensionOptionKamikazeMaxKills">Maksymalna liczba zabojstw na detonacje</string>
   <string name="ExtensionOptionKamikazeCanVent">Moze uzywac wentylacji</string>
   <string name="ExtensionOptionKamikazeShowRadiusIndicator">Pokaz wskaznik promienia</string>
-  <string name="ExtensionOptionKamikazeCanSuicideFirstRound">Samobojstwo w pierwszej rundzie</string>
+  <string name="ExtensionOptionKamikazeCanSuicideFirstRound">Zezwalaj na samobójstwo w 1. rundzie</string>
+
+  <!-- Publicity Modifier -->
+  <string name="ExtensionModifierPublicity">Publicity</string>
+  <string name="ExtensionModifierPublicityIntroBlurb">Mozesz widziec kolorowe glosy innych podczas spotkan.</string>
+  <string name="ExtensionModifierPublicityTabDescription">Mozesz widziec kolorowe glosy wszystkich graczy podczas spotkan.</string>
+  <string name="ExtensionModifierPublicityWikiDescription">Widzisz prawdziwe kolorowe glosy wszystkich graczy podczas spotkan.</string>
+
+  <!-- Egotist Extra Options -->
+  <string name="ExtensionOptionEgotistCanVent">Egotist moze uzywac wentylacji</string>
+  <string name="ExtensionOptionEgotistMaxVentTime">Maksymalny czas w wentylacji</string>
+  <string name="ExtensionOptionEgotistVentCooldown">Cooldown wentylacji</string>
+  <string name="ExtensionOptionEgotistImpostorVision">Egotist ma widzenie Impostora</string>
+
+  <!-- TOUMCE Wiki Terms - Symbols -->
+  <string name="TOUMCETermsSymbolsTitle">Symbole TOUMCE</string>
+  <string name="TOUMCETermsSymbolsInfo">Glosariusz symboli TOUMCE • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Gracz kanonizowany przez Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Gracz ustawiony jako pulapka przez Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Gracz wpisany do Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Gracz chroniony przez Bodyguarda • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Gracz otruty przez Poisonera • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Klient Lawyera</string>
+
+  <!-- TOUMCE Wiki Terms - Shield Flashes -->
+  <string name="TOUMCETermsShieldFlashesTitle">Blyski tarczy</string>
+  <string name="TOUMCETermsShieldFlashesInfo">Gdy zabojstwo zostanie zablokowane przez tarcze, zabojca widzi kolorowy blysk wskazujacy role: • &lt;color=#006600&gt;&lt;b&gt;Ciemnozielony&lt;/b&gt;&lt;/color&gt; - Medic • &lt;color=#9900FF&gt;&lt;b&gt;Fioletowy&lt;/b&gt;&lt;/color&gt; - Warden • &lt;color=#00FFB3&gt;&lt;b&gt;Cyjan/Turkusowy&lt;/b&gt;&lt;/color&gt; - Cleric • &lt;color=#90A2C3&gt;&lt;b&gt;Srebrnoniebieski&lt;/b&gt;&lt;/color&gt; - Mirrorcaster • &lt;color=#66AAF3&gt;&lt;b&gt;Jasnoniebieski&lt;/b&gt;&lt;/color&gt; - Fairy • &lt;color=#8C6699&gt;&lt;b&gt;Malwa&lt;/b&gt;&lt;/color&gt; - Mercenary • &lt;color=#77B962&gt;&lt;b&gt;Zielony&lt;/b&gt;&lt;/color&gt; - Bodyguard • &lt;color=#BF00BF&gt;&lt;b&gt;Magenta&lt;/b&gt;&lt;/color&gt; - Oracle (ochrona na spotkaniu)</string>
+
+  <!-- TOUMCE Wiki Terms - Draft Mode -->
+  <string name="TOUMCETermsDraftModeTitle">Tryb Draftu</string>
+  <string name="TOUMCETermsDraftModeInfo">Draft Mode to alternatywny sposob przydzielania rol:
+• Gracze sa przypisywani do strony (&lt;color=#4DA6FF&gt;&lt;b&gt;Zloga&lt;/b&gt;&lt;/color&gt;, &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt;, lub &lt;color=#7F7F7F&gt;&lt;b&gt;Neutralni&lt;/b&gt;&lt;/color&gt;), a nastepnie wybieraja role w losowej kolejnosci tur.
+• Kazdy gracz otrzymuje do wyboru 3 unikalne role. Widzowie sa wykluczeni z procesu.
+• Jesli nie wybierzesz roli w wyznaczonym czasie, zostanie ona przydzielona automatycznie.
+• Domyslnie wszyscy gracze wybieraja z pelnej puli dostepnych rol dla swojej strony (Zloga, Impostorzy, Neutralni). Nie ma juz restrykcyjnych kategorii.</string>
+
+  <!-- TOUMCE Wiki Terms - Draft Factions -->
+  <string name="TOUMCETermsDraftFactionsTitle">Frakcje Draftu</string>
+  <string name="TOUMCETermsDraftFactionsInfo">Przed rozpoczeciem draftu gracze zostaja przypisani do frakcji:
+• &lt;color=#FF3B3B&gt;&lt;b&gt;Impostorzy&lt;/b&gt;&lt;/color&gt; wybieraja z pelnej puli dostepnych rol Impostora.
+• &lt;color=#4DA6FF&gt;&lt;b&gt;Zaloganci&lt;/b&gt;&lt;/color&gt; wybieraja z pelnej puli dostepnych rol Zaloganta. Jesli <b>Inni Neutralni</b> (Benign, Evil lub Outlier) sa wlaczeni w lobby, moga oni pojawic sie w puli wyboru Zaloganta, dopoki globalne cele nie zostana osiagniete.
+• &lt;color=#FFD700&gt;&lt;b&gt;Neutral Killing&lt;/b&gt;&lt;/color&gt; wybiera sposrod dostepnych frakcji zabijajacych.
+ 
+• <b>Globalne Cele</b> - Ustawienia lobby kontroluja <b>Min/Max</b> liczbe graczy przypisanych do frakcji Neutral Killing oraz Innych Neutralnych (Benign/Evil/Outlier).
+• <b>Logika 60/40</b> - System uzywa wazonego prawdopodobienstwa, aby preferowac minimalne cele, ale czasami losowac maksymalne dla wiekszej nieprzewidywalnosci.
+ 
+Draft moze rowniez brac pod uwage szanse rol (Uzyj szans rol), przez co role pojawiaja sie zgodnie z ich szansami w lobby (Weighted Shuffle).
+ 
+Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe ról Neutralnych pojawiajacych sie w kazdej turze (opcja ta dotyczy <b>tylko Zalogantów</b>).</string>
+
+  <!-- TOUMCE Wiki Terms - Role Extensions -->
+  <string name="TOUMCETermsRoleExtensionsTitle">Better Roles/Modifiers</string>
+  <string name="TOUMCETermsRoleExtensionsInfo">Ta sekcja zawiera zaawansowane opcje dla istniejacych rol i modyfikatorow, zwiekszajac ich mozliwosci i mechaniki rozgrywki.</string>
+  
+  <string name="TOUMCETermsVampireSabotageTitle">Sabotaz Wampira</string>
+  <string name="TOUMCETermsVampireSabotageInfo">Wampiry posiadaja zaawansowane opcje sabotazu: • &lt;color=#FF0000&gt;&lt;b&gt;Tylko Swiatla&lt;/b&gt;&lt;/color&gt; - Wampir moze sabotowac tylko system Electrical pod klawiszem TAB. • &lt;color=#FF0000&gt;&lt;b&gt;Wspolny Cooldown&lt;/b&gt;&lt;/color&gt; - Wampiry dziela ten sam globalny licznik sabotazu z Impostorami. • &lt;color=#FF0000&gt;&lt;b&gt;Tylko OG&lt;/b&gt;&lt;/color&gt; - Mozna ograniczyc sabotaz tylko dla pierwotnego Wampira (ugryzieni nie moga sabotowac).</string>
+  <string name="TOUMCETabOptionBetterRoles">Better Roles/Modifiers</string>
+  <string name="TOUMCETabOptionBetterRolesDesc">Skonfiguruj rozszerzone opcje dla istniejacych rol i modyfikatorow tutaj!</string>
+
+  <!-- TOUMCE Wiki Terms - Game Settings -->
+  <string name="TOUMCETermsGameSettingsTitle">Ustawienia Gry</string>
+  <string name="TOUMCETermsGameSettingsInfo">TOUMCE wprowadza globalne ustawienia zmieniajace przebieg gry:
+• &lt;b&gt;Blokada Lobby podczas Draftu&lt;/b&gt; - Zapobiega dolaczaniu nowych graczy w trakcie wyboru rol dla stabilnosci gry.
+• <b>System Trzecich</b> - Zbalansowana kolejnosc wyboru, ktora rozdziela Impostorow i Neutralnych rownomiernie na poczatku, srodku i koncu fazy draftu.
+• <b>Uzyj szans rol</b> - Jesli wlaczone, prawdopodobienstwo roli w drafcie opiera sie na jej szansach w lobby.
+• <b>Neutralni na wybor</b> - Kontroluje, ile rol Neutralnych jest mieszanych w puli wyboru kazdego Zaloganta.
+• <b>Globalne Limity Neutralnych</b> - Sztywne limity dla calkowitej liczby rol Neutralnych (NK i inne) dozwolonych w rundzie.
+• <b>Zredukuj streak zabojcy</b> - Zmniejsza szanse na ponowne otrzymanie roli zabijajacej, jesli gracz mial ja w poprzedniej rundzie.
+• <b>Impostor / Neutral Killing</b> - Specyficzne szanse na redukcje dla kazdej glownej frakcji zabijajacej.</string>
+
+
+
+
+  <string name="Enable Draft Mode">Wlacz Tryb Draftu</string>
+  <string name="Lock Lobby During Draft">Zablokuj lobby podczas draftu</string>
+  <string name="Use Role Chances">Uzyj szans rol</string>
+  <string name="Reduce Killing Streak">Zredukuj streak zabojcy</string>
+  <string name="Impostor">Impostor</string>
+  <string name="Neutral Killing">Neutral Killing</string>
+
+  <!-- Better Sonar Options -->
+  <string name="ExtensionOptionBetterSonar">Lepszy Sonar</string>
+  <string name="ExtensionOptionBetterSonarMode">Tryb Sonaru</string>
+  <string name="ExtensionOptionBetterSonarModeArrowAndMap">Strzalka + Mapa</string>
+  <string name="ExtensionOptionBetterSonarModeMapOnly">Tylko Mapa</string>
+
+  <!-- Time Lord Options -->
+  <string name="ExtensionOptionTimeLordRewindSpeed">Predkosc cofania czasu</string>
+
+  <!-- Forensic Options -->
+  <string name="ExtensionOptionForensicFreezeOnMeeting">Zamroz dowody po naradzie</string>
+  <!-- Mayor Options -->
+  <string name="ExtensionOptionMayorVoteCount">Liczba glosow</string>
+
+  <!-- Role Names for Tab -->
+  <string name="TOUMCEBetterRolePrefix">Better role: </string>
+  <string name="TOUMCEBetterModifierPrefix">Better modifier: </string>
+  <string name="Sonar">Sonar</string>
+  <string name="Egotist">Egotysta</string>
+  <string name="Forensic">Forensic</string>
+  <string name="Time Lord">Time Lord</string>
+  <string name="Mirror Caster">Mirror Caster</string>
+  <string name="ExtensionOptionMirrorCasterMoveWhileMenu">Mozliwosc ruchu przy otwartym menu</string>
+  <string name="Mayor">Burmistrz</string>
+
+  <!-- General Options -->
+
+  <!-- Mod Compatibility Options -->
+  <string name="ExtensionOptionCompatibilityDuplicateWarnings">Pokazuj ostrzezenia o duplikatach</string>
+  <string name="ExtensionOptionCompatibilityDuplicateAutoKick">Automatyczne wyrzucanie przy duplikatach</string>
+  <!-- Draft Mode Options -->
+  <string name="Roles To Show">Liczba rol do wyboru</string>
+  <string name="Time To Choose">Czas na wybor</string>
+  <string name="Min Neutrals Per Choice">Min Neutralnych na wybor</string>
+  <string name="Max Neutrals Per Choice">Max Neutralnych na wybor</string>
+  <string name="Min Other Neutrals">Min Innych Neutrali</string>
+  <string name="Max Other Neutrals">Max Innych Neutrali</string>
+  <string name="Min Neutral Killing">Min Neutral Killing</string>
+  <string name="Max Neutral Killing">Max Neutral Killing</string>
+<resources>
+  <!-- Doppelganger Options -->
+  <string name="ExtensionOptionDoppelgangerKillCooldown">Cooldown zabojstwa</string>
+  <string name="ExtensionOptionDoppelgangerMaxSteals">Maksymalna liczba kradziezy na runde</string>
+  <string name="ExtensionOptionDoppelgangerCanVent">Moze uzywac wentylacji</string>
+
+  <!-- Doppelganger Death Message -->
+  <string name="DiedToDoppelganger">Skradziona tozsamosc</string>
+
+  <!-- Death Note Modifier -->
+  <string name="ExtensionModifierDeathNote">Death Note</string>
+  <string name="ExtensionModifierDeathNoteIntroBlurb">Zapisz ich imie... a umra.</string>
+  <string name="ExtensionModifierDeathNoteTabDescription">Znajdz Death Note przy wentylacji. Zapisz imie gracza, aby przeklac go opozniona smiercia.</string>
+  <string name="ExtensionModifierDeathNoteBaseDesc">Death Note zostal uzyty.</string>
+  <string name="ExtensionModifierDeathNoteWikiDescription">Death Note pojawia sie przy losowej wentylacji. Jesli go znajdziesz, mozesz zapisac imie gracza, aby go przeklac. Umrze na zawal serca po uplywie licznika.</string>
+  <string name="ExtensionModifierDeathNoteAmount">Liczba Death Note</string>
+  <string name="ExtensionModifierDeathNoteChance">Szansa na Death Note</string>
+  <string name="ExtensionModifierDeathNoteTimer">Licznik smierci</string>
+  <string name="ExtensionModifierDeathNoteMaxUses">Maksymalna liczba uzyc</string>
+  <string name="ExtensionModifierDeathNoteGuessable">Death Note zgadywalny</string>
+  <string name="DiedToHeartAttack">Zawal serca</string>
+
+  <!-- Death Note Modifier Ability -->
+  <string name="ExtensionModifierDeathNoteAbility">Zapisz imie</string>
+  <string name="ExtensionModifierDeathNoteAbilityWikiDescription">Znajdz Death Note przy losowej wentylacji i zapisz imie zyjacego gracza. Po uplywie ustawionego czasu ten gracz umrze na zawal serca. Death Note zuzywa sie natychmiast po uzyciu.</string>
+  
+  <!-- Shroud Role -->
+  <string name="ExtensionRoleShroud">Shroud</string>
+  <string name="ExtensionRoleShroudIntroBlurb">Oznaczaj graczy smiertelna pulapka.</string>
+  <string name="ExtensionRoleShroudTabDescription">Oznacz gracza jako Shroud, aby ustawic pulapke. Kazdy, kto z nim wejdzie w interakcje, zginie.\%nl\%Jesli nikt nie wejdzie w interakcje, oznaczony gracz umrze po zwolaniu spotkania.</string>
+  <string name="ExtensionRoleShroudWikiDescription">Shroud moze oznaczyc jednego gracza na runde smiertelna pulapka. Kazdy gracz, ktory wejdzie w interakcje z oznaczonym graczem, zginie zamiast niego. Jesli nikt nie wejdzie w interakcje z oznaczonym graczem przed zwolaniem spotkania, oznaczony gracz umrze chwile po rozpoczeciu spotkania.</string>
+  <string name="ExtensionRoleShroudAbility">Shroud</string>
+  <string name="ExtensionRoleShroudAbilityWikiDescription">Oznacz gracza jako pulapke. Kto z nim wejdzie w interakcje, ten ginie. Jesli nikt tego nie zrobi przed spotkaniem, oznaczony gracz umrze zaraz po spotkaniu.</string>
+  <string name="ExtensionRoleShroudShroudedPlayer">Oznaczony gracz</string>
+
+  <!-- Shroud Cause of Death -->
+  <string name="DiedToShroud">Oznaczony przez Shroud</string>
+
+  <!-- Shroud Options -->
+  <string name="ExtensionOptionShroudCooldown">Cooldown Shroud</string>
+  <string name="ExtensionOptionShroudCanVent">Moze uzywac wentylacji</string>
+  <string name="ExtensionOptionShroudSharedCooldown">Wspolny cooldown (Kill &amp; Shroud)</string>
+
+  <!-- Vampire Hunter Role -->
+  <string name="ExtensionRoleVampireHunter">Vampire Hunter</string>
+  <string name="ExtensionRoleVampireHunterIntroBlurb">Przebij Vampires kolkiem!</string>
+  <string name="ExtensionRoleVampireHunterTabDescription">Uzyj kolka, aby zabijac Vampires.\%nl\%Nieudane przebicia na nie-Vampires sa marnowane.\%nl\%Gdy wszystkie Vampires zgina, stajesz sie nowa rola.</string>
+  <string name="ExtensionRoleVampireHunterWikiDescription">Vampire Hunter pojawia sie tylko wtedy, gdy w grze sa Vampires. Po pierwszym spotkaniu losowy Crewmate zostaje zamieniony w Vampire Hunter. Moze przebijac graczy - jesli gracz jest Vampire, ginie. Jesli nie, kolek zostaje zuzyty. Gdy wszystkie Vampires zostana wyeliminowane, Vampire Hunter zamienia sie w inna role Crewmate.</string>
+  <string name="ExtensionRoleVampireHunterStake">Stake</string>
+  <string name="DiedToExtensionRoleVampireHunterStaked">Przebity</string>
+  <string name="ExtensionRoleVampireHunterStakeWikiDescription">Przebij pobliskiego gracza kolkiem. Jesli jest Vampire, ginie. Jesli nie, marnujesz jedno uzycie kolka.</string>
+
+  <!-- Vampire Hunter Options -->
+  <string name="ExtensionOptionVHStakeCooldown">Cooldown Stake</string>
+  <string name="ExtensionOptionVHMaxFailedStakes">Maksymalna liczba nieudanych Stake</string>
+  <string name="ExtensionOptionVHCanStakeRoundOne">Zezwalaj na Stake w 1. rundzie</string>
+  <string name="ExtensionOptionVHSelfKillOnFailure">Samobojstwo po wykorzystaniu wszystkich Stake</string>
+  <string name="ExtensionOptionVHBecomesOnVampDeath">Staje sie po smierci Vampire</string>
+  <string name="ExtensionOptionVHCanSelfReport">Moze raportowac wlasne ofiary</string>
+  <string name="ExtensionOptionVHMinVampires">Minimalna liczba Vampires do pojawienia sie</string>
+  <string name="ExtensionOptionVHEnabled">Vampire Hunter wlaczony</string>
+  <string name="ExtensionOptionVHChance">Szansa pojawienia sie Vampire Hunter</string>
+  <string name="VampireHunterBecomesHunter">Hunter</string>
+
+  <!-- Kamikaze Role -->
+  <string name="ExtensionRoleKamikaze">Kamikaze</string>
+  <string name="ExtensionRoleKamikazeIntroBlurb">Poswiec sie w poteznej eksplozji i zabierz wrogow ze soba do grobu!</string>
+  <string name="ExtensionRoleKamikazeTabDescription">Poswiec sie w eksplozji, aby zabic wszystkich pobliskich graczy.</string>
+  <string name="ExtensionRoleKamikazeWikiDescription">Kamikaze to rola Impostora, ktory moze zdetonowac samego siebie, zabijajac wszystkich graczy w promieniu wybuchu. Kamikaze ginie w tym procesie. Uzywaj zwyklego przycisku zabojstwa normalnie, a przycisk samobojstwa aktywuj we wlasciwym momencie, aby wyeliminowac jak najwiecej wrogow.</string>
+  <string name="ExtensionRoleKamikazeSuicide">Samobojstwo</string>
+  <string name="ExtensionRoleKamikazeSuicideWikiDescription">Wysadz sie w powietrze! Zabijesz wszystkich wokol, ale sam tez zginiesz.</string>
+  <string name="DiedToSeppuku">Seppuku</string>
+
+
+  <!-- Kamikaze Options -->
+  <string name="ExtensionOptionKamikazeKillCooldown">Cooldown zabojstwa</string>
+  <string name="ExtensionOptionKamikazeSuicideCooldown">Cooldown samobojstwa</string>
+  <string name="ExtensionOptionKamikazeDetonateRadius">Promien detonacji</string>
+  <string name="ExtensionOptionKamikazeMaxKills">Maksymalna liczba zabojstw na detonacje</string>
+  <string name="ExtensionOptionKamikazeCanVent">Moze uzywac wentylacji</string>
+  <string name="ExtensionOptionKamikazeShowRadiusIndicator">Pokaz wskaznik promienia</string>
+  <string name="ExtensionOptionKamikazeCanSuicideFirstRound">Zezwalaj na samobójstwo w 1. rundzie</string>
 
   <!-- Publicity Modifier -->
   <string name="ExtensionModifierPublicity">Publicity</string>
@@ -1188,7 +1380,9 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
 
   <!-- General Options -->
   <string name="ExtensionOptionGeneralLawyerChat">Prywatny czat Prawnik/Klient</string>
-  <string name="ExtensionOptionGeneralLoversChat">Prywatny czat Kochankowie</string>
+  <string name="ExtensionOptionGeneralLoversChat">Prywatny czat kochanków</string>
+  <string name="ExtensionOptionGeneralJackalChat">Prywatny czat Infiltratora</string>
+  <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Rekruci widzą siebie nawzajem</string>
   <!-- Mod Compatibility Options -->
   <string name="ExtensionOptionCompatibilityDuplicateWarnings">Pokazuj ostrzezenia o duplikatach</string>
   <string name="ExtensionOptionCompatibilityDuplicateAutoKick">Automatyczne wyrzucanie przy duplikatach</string>
@@ -1201,6 +1395,39 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="Max Other Neutrals">Max Innych Neutrali</string>
   <string name="Min Neutral Killing">Min Neutral Killing</string>
   <string name="Max Neutral Killing">Max Neutral Killing</string>
-  <string name="Neutral Killing">Neutral Killing</string>
+
+  <!-- Jackal (Infiltrator) -->
+  <string name="ExtensionRoleJackal">Infiltrator</string>
+  <string name="ExtensionRoleJackalIntroBlurb">Zrekrutuj rekrutów i przetrwaj, by zabijać.</string>
+  <string name="ExtensionRoleJackalTabDescription">Zrekrutuj dwóch rekrutów z przeciwnych frakcji. Gdy zginą, zyskasz zdolność zabijania. Przetrwaj do końca.</string>
+  <string name="ExtensionRoleJackalWikiDescription">&lt;color=#535064&gt;&lt;b&gt;Infiltrator&lt;/b&gt;&lt;/color&gt; gra na zwłokę poprzez przetrwanie swoich rekrutów. Na starcie otrzymujesz dwóch &lt;color=#FF3B3B&gt;Połączonych Życiem&lt;/color&gt; &lt;color=#535064&gt;Rekrutów&lt;/color&gt;. Chroń swoją tożsamość, podczas gdy oni pracują dla Ciebie. \%nl\%Dopóki żyją, zapewniają Ci &lt;color=#535064&gt;Tarczę&lt;/color&gt;. Zdolność &lt;b&gt;Asasynacji&lt;/b&gt; zyskujesz dopiero po śmierci wszystkich rekrutów. \%nl\% \%nl\%&lt;i&gt;"Infiltracja to powolna trucizna."&lt;/i&gt;</string>
+  <string name="ExtensionRoleJackalAssassination">Asasynacja</string>
+  <string name="ExtensionRoleJackalAssassinationWikiDescription">Wyeliminuj pobliskiego gracza. Ta umiejętność jest dostępna dopiero po śmierci wszystkich Rekrutów.</string>
+  <string name="ExtensionRoleJackalRecruits">Rekruci</string>
+  <string name="ExtensionRoleJackalRecruitsWikiDescription">Zaczynasz z dwoma rekrutami, którzy dla Ciebie pracują. Są oni &lt;color=#FF3B3B&gt;Połączeni Życiem&lt;/color&gt; i oznaczeni tagiem &lt;b&gt;(REC)&lt;/b&gt;. Widzisz ich role i możesz czytać ich prywatny czat. Dopóki żyją, zapewniają Ci tarczę. Po ich śmierci zyskujesz zdolność zabijania. \%nl\% \%nl\%&lt;i&gt;"Na lojalność trzeba zapracować, ale zdrada jest strategiczna."&lt;/i&gt;</string>
+  
+  <string name="ExtensionOptionJackalSeesSidekickRoles">Infiltrator widzi role rekrutów</string>
+  <string name="ExtensionOptionJackalNotifySidekickDeath">Powiadomienie o śmierci rekruta</string>
+  <string name="ExtensionJackalSidekickDiedAlert">Rekrut {0} zginął!</string>
+  <string name="ExtensionJackalShieldLostAlert">Straciłeś tarczę!</string>
+  <string name="ExtensionJackalKillAbilityAlert">Możesz teraz zabijać!</string>
+  <string name="ExtensionModifierSidekickShortName">REC</string>
+  <string name="ExtensionJackalShieldModifierTitle">TARCZA ŻYWEGO REKRUTA</string>
+  <string name="ExtensionJackalShieldModifierDesc">Chroni Infiltratora przed próbami zabójstwa, dopóki żyje przynajmniej jeden Rekrut.</string>
+  <string name="ExtensionJackalChatTitle">Infiltrator</string>
+
+  <string name="Sidekick">Rekrut</string>
+  <string name="SidekickIntroBlurb">Zostałeś zwerbowany przez Infiltratora. Musisz zdradzić swoją drużynę.</string>
+  <string name="SidekickTabDescription">Zostałeś zrekrutowany. Musisz chronić Infiltratora, aby wygrać wraz z nim.\%nl\%&lt;color=#FF3B3B&gt;&lt;b&gt;Zmieniłeś drużynę i masz nowy cel zwycięstwa!&lt;/b&gt;&lt;/color&gt;</string>
+  <string name="SidekickWikiDescription">Chroń Infiltratora i pomóż mu wyeliminować inne frakcje. Jesteś połączony życiem z drugim Rekrutem.</string>
+  <string name="DiedToJackal">Zabity przez Infiltratora</string>
+
+  <string name="ExtensionRoleSidekickRecruitTeam">Rekruci</string>
+  <string name="ExtensionRoleSidekickRecruitTeamWikiDescription">Zobacz informacje o swoich współtowarzyszach i status misji.</string>
+  <string name="ExtensionJackalRecruitIntroDescription">Zostałeś zwerbowany przez gracza &lt;jackal&gt;.</string>
+  <string name="ExtensionJackalRecruitIntroDescriptionAnonymized">Zostałeś zrekrutowany przez Infiltratora. Chroń go i współpracuj z innymi rekrutami.</string>
+  <string name="ExtensionSidekickRecruitedAlert">Zwerbowany!</string>
+  <string name="ExtensionSidekickRecruitedChatMsg">Zostałeś zwerbowany przez Infiltratora! Jesteś teraz jego pomocnikiem.</string>
 </resources>
+
 

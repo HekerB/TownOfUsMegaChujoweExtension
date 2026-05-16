@@ -6,6 +6,10 @@ using TownOfUs.Interfaces;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Roles.Classic.Neutral;
+using TouMegaChujoweExtension.Modifiers.Neutral;
+using MiraAPI.Modifiers;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.WinConditions;
 
@@ -42,6 +46,9 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
 
         // 5. Lawyer (Original Priority 12)
         if (IsLawyerWinMet()) return true;
+
+        // 6. Jackal (Original Priority 15)
+        if (IsJackalWinMet()) return true;
 
         return false;
     }
@@ -96,6 +103,16 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
 
         // 5. Lawyer
         TriggerLawyerWin();
+
+        // 6. Jackal
+        if (IsJackalWinMet())
+        {
+            var winners = PlayerControl.AllPlayerControls.ToArray()
+                .Where(p => p.GetRole<JackalRole>() != null || p.TryGetModifier<SidekickModifier>(out _))
+                .Select(p => p.Data)
+                .ToArray();
+            CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners);
+        }
     }
 
     #region Role Specific Checks
@@ -247,6 +264,22 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             LawyerWinConditionState.MarkTriggered();
             CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners.ToArray());
         }
+    }
+
+    private bool IsJackalWinMet()
+    {
+        var alive = Helpers.GetAlivePlayers();
+        if (alive.Count == 0) return false;
+
+        // Find the first alive Jackal to check their specific team parity
+        foreach (var jackalPc in PlayerControl.AllPlayerControls)
+        {
+            if (jackalPc == null || jackalPc.HasDied()) continue;
+            var jackal = jackalPc.GetRole<JackalRole>();
+            if (jackal != null && jackal.WinConditionMet()) return true;
+        }
+
+        return false;
     }
 
     #endregion

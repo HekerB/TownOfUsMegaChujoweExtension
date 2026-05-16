@@ -19,6 +19,7 @@ public sealed class SpeedyAccelerateModifier : ConcealedModifier, IVisualAppeara
     public override float Duration => OptionGroupSingleton<SpeedyOptions>.Instance.AccelerateDuration;
     public override bool AutoStart => true;
     public override bool HideOnUi => true;
+    public override bool VisibleToOthers => true;
     public bool VisualPriority => true;
 
     public override void OnDeath(DeathReason reason)
@@ -39,7 +40,7 @@ public sealed class SpeedyAccelerateModifier : ConcealedModifier, IVisualAppeara
         if (Player.AmOwner)
         {
             TouAudio.PlaySound(TouExtensionAudio.WraithDashSound);
-            
+
             var button = CustomButtonSingleton<SpeedyAccelerateButton>.Instance;
             if (button != null)
             {
@@ -68,7 +69,7 @@ public sealed class SpeedyAccelerateModifier : ConcealedModifier, IVisualAppeara
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-        
+
         Player.RawSetAppearance(this);
         Player.cosmetics.ToggleNameVisible(false);
     }

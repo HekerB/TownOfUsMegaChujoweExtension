@@ -28,6 +28,7 @@ public static class TouExtensionColors
     public static Color Shroud => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(77, 153, 230, 255);
     public static Color Doppelganger => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(212, 176, 56, 255);
     public static Color BountyHunter => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(0, 18, 97, 255);
+    public static Color Jackal => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(83, 80, 100, 255);
     //impostors
     public static Color Witch => Palette.ImpostorRed;
     public static Color Wraith => Palette.ImpostorRed;
@@ -56,16 +57,12 @@ public static class TouExtensionColors
     }
 
     // Modifiers
-    public static Color Ventable => new Color32(51, 179, 179, 255);
+
     public static Color Venomous => new Color32(0, 200, 90, 255);
     public static Color Publicity => new Color32(51, 179, 179, 255);
     public static Color DeathNote => new Color32(42, 10, 42, 255);
+    public static Color Sidekick => new Color32(167, 155, 255, 255);
 }
-
-
-
-
-
 
 
 

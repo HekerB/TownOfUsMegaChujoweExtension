@@ -281,7 +281,8 @@ public static class PelicanInteractionPatches
     }
 
     // ==================== MODIFIER EXCLUSIONS ====================
-    
+    // Commented out due to signature mismatch in this TOU version
+    /*
     [HarmonyPatch(typeof(MiniModifier), nameof(MiniModifier.IsModifierValidOn))]
     [HarmonyPostfix]
     public static void MiniModifierIsModifierValidOnPostfix(ref bool __result, RoleBehaviour role)
@@ -295,4 +296,5 @@ public static class PelicanInteractionPatches
     {
         if (role is PelicanRole) __result = false;
     }
+    */
 }

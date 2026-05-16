@@ -3,6 +3,7 @@ using HarmonyLib;
 using MiraAPI.Utilities;
 using TownOfUs.Patches;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Patches.Roles.Jackal;
 
 namespace TouMegaChujoweExtension.Patches.Draft;
 
@@ -67,7 +68,10 @@ private static void ApplyDraftRoles()
         }
     }
 
+    // Assign Jackal sidekicks after roles are set
+    JackalStartPatch.ExecuteAssignment();
+
     DraftSystem.DraftComplete = false;
     DraftSystem.DraftActiveThisRound = false;
 }
-}
+}

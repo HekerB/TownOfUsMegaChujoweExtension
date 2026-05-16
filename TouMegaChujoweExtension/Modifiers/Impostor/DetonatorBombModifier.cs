@@ -9,41 +9,31 @@ using TownOfUs.Assets;
 
 namespace TouMegaChujoweExtension.Modifiers.Impostor;
 
-public sealed class DetonatorBombModifier : TimedModifier
+public sealed class DetonatorBombModifier : BaseModifier
 {
     private PlayerControl _detonator;
-    private float _duration;
 
     public override string ModifierName => "Bomb Attached";
-    public override bool HideOnUi => true;
-    public override float Duration => _duration;
 
-    public DetonatorBombModifier(PlayerControl detonator, float duration)
+    public DetonatorBombModifier(PlayerControl detonator)
     {
         _detonator = detonator;
-        _duration = duration;
     }
 
     public override void OnActivate()
     {
         base.OnActivate();
-        ResumeTimer();
     }
 
     public override void FixedUpdate()
     {
         base.FixedUpdate();
         
-        if (Player == null || Player.HasDied() || MeetingHud.Instance)
+        if (Player == null || Player.HasDied() || MeetingHud.Instance || _detonator == null || _detonator.HasDied())
         {
             if (Player != null) Player.RemoveModifier(this);
             return;
         }
     }
 
-    public override void OnTimerComplete()
-    {
-        base.OnTimerComplete();
-        // Detonation is handled by DetonatorSystem to ensure persistence and correct killer attribution
-    }
 }

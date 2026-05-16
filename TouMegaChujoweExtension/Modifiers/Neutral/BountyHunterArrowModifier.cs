@@ -10,7 +10,6 @@ public sealed class BountyHunterArrowModifier(PlayerControl owner, Color color)
 {
     public override string ModifierName => "Bounty Hunter Arrow";
 
-    private const float ArrowVisibleRange = 10f;
     private GameObject? _targetPopup;
 
     public override void OnActivate()
@@ -52,7 +51,17 @@ public sealed class BountyHunterArrowModifier(PlayerControl owner, Color color)
             (Vector2)local.transform.position,
             (Vector2)Player.transform.position);
 
-        Arrow.gameObject.SetActive(distance <= ArrowVisibleRange);
+        var rangeEnum = OptionGroupSingleton<TouMegaChujoweExtension.Options.Roles.Neutral.BountyHunterOptions>.Instance.ArrowRange.Value;
+        float visibleRange = rangeEnum switch
+        {
+            TouMegaChujoweExtension.Options.Roles.Neutral.BountyHunterArrowRange.Short => 10f,
+            TouMegaChujoweExtension.Options.Roles.Neutral.BountyHunterArrowRange.Medium => 25f,
+            TouMegaChujoweExtension.Options.Roles.Neutral.BountyHunterArrowRange.Long => 50f,
+            TouMegaChujoweExtension.Options.Roles.Neutral.BountyHunterArrowRange.Infinite => float.MaxValue,
+            _ => 10f
+        };
+
+        Arrow.gameObject.SetActive(distance <= visibleRange);
     }
 
     public override void OnMeetingStart()

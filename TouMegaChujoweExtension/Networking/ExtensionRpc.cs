@@ -86,6 +86,11 @@ public enum ExtensionRpc : uint
     DetonatorShowEffect = 80,
     DetonatorPlayBeep = 81,
     DetonatorPlayExplosion = 82,
+    SendJackalChat = 83,
+    SendSidekickChat = 84,
+    DetonatorPlayTracker = 85,
+    BountyHunterShowMisKill = 86,
+    SetSidekickAssignments = 94,
 }
 
 

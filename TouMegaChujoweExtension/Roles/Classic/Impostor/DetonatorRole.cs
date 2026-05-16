@@ -85,6 +85,20 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         if (target == null || target.HasDied()) return;
 
         DetonatorSystem.AttachBomb(detonator.PlayerId, target.PlayerId);
+        RpcPlayTracker(detonator);
+    }
+
+    [MethodRpc((uint)ExtensionRpc.DetonatorPlayTracker)]
+    public static void RpcPlayTracker(PlayerControl detonator)
+    {
+        if (PlayerControl.LocalPlayer == null || detonator == null) return;
+        if (PlayerControl.LocalPlayer.PlayerId != detonator.PlayerId) return;
+
+        var clip = TouAudio.TrackerActivateSound.LoadAsset();
+        if (clip != null)
+        {
+            SoundManager.Instance.PlaySound(clip, false, 1f);
+        }
     }
 
     [MethodRpc((uint)ExtensionRpc.DetonatorDetonate)]

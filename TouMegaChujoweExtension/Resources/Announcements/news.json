@@ -313,6 +313,42 @@
         "\n- <b>Code Reorganization</b> - Major internal structural cleanup (Classic/Modded categorization) for better maintainability.",
         "\n- <b>General Optimization</b> - Resolved various NullReferenceExceptions and optimized intro sound loading performance."
       ]
+    },
+    {
+      "Date": "2026-05-13T22:00:00Z",
+      "Number": "200012",
+      "ShortTitle": "TOUMCE v1.1.1",
+      "SubTitle": "Infiltrator (Jackal) Added",
+      "Title": "TOU Mega Chujowe Extension v1.1.1",
+      "Text": [
+        "\r★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> ★ <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> ★",
+        "\n\n\r<b>Version 1.1.1 - Infiltrator (Jackal) & Sidekick Mechanics</b>",
+        "\n\n\r<size=110%><b>★ NEW ROLE: INFILTRATOR (Neutral Outlier) ★</b></size>",
+        "\n- <b>Jackal Gameplay</b> - Recruit two players from opposite teams to work for you. You win if your team is the last one standing.",
+        "\n- <b>Sidekick Shield</b> - While at least one <b>Recruit (Sidekick)</b> is alive, you are protected by a powerful shield.",
+        "\n- <b>Assassination</b> - You gain the ability to kill only AFTER all your recruits have died.",
+        "\n- <b>Impostor Vision</b> - See the world like an Impostor while remaining neutral.",
+        "\n- <b>Deadly Bond</b> - Recruits are <b>Life-Linked</b>; if one dies, the other follows shortly after.",
+        "\n\n\r<size=110%><b>★ Sidekick (Recruit) Mechanics ★</b></size>",
+        "\n- <b>Team Synergy</b> - Recruits have <b>white names</b> and a special <b>(REC) tag</b> visible to the Infiltrator team.",
+        "\n- <b>Private Chat</b> - Access to a dedicated private chat during the game.",
+        "\n- <b>Notification System</b> - The Infiltrator receives a <b>screen flash and alert</b> when a Recruit dies.",
+        "\n\n\r<size=110%><b>★ Improvements & Wiki ★</b></size>",
+        "\n- <b>Wiki Cleanup</b> - Optimized the Wiki layout for Infiltrator and hidden technical modifiers.",
+        "\n- <b>Localization</b> - Full Polish support for all Infiltrator-related options and alerts.",
+        "\n- <b>Bug Fixes</b> - Resolved various compilation errors and stabilized role-switching logic.",
+        "\n\n\r<size=110%><b>★ Bounty Hunter Rework ★</b></size>",
+        "\n- <b>Suicide Penalty</b> - BH now dies instantly (Guild Execution) if they kill anyone other than their target.",
+        "\n- <b>Free Hunt</b> - BH can now target anyone, making misclicks fatal and strategy more important.",
+        "\n- <b>Tracker Range</b> - Added new option to set arrow visibility (Short, Medium, Long, or Infinite).",
+        "\n- <b>Vision Toggle</b> - Added option to enable/disable <b>Impostor Vision</b> for BH.",
+        "\n\n\r<size=110%><b>★ Polish & Stability ★</b></size>",
+        "\n- <b>Team-Kill Prevention</b> - Blocked targeting/killing between Jackal and Recruits.",
+        "\n- <b>Intro Reveal</b> - Sidekicks see a prominent <b>RECRUIT</b> title and mission info in the intro.",
+        "\n- <b>Smart Highlighting</b> - Shroud and Pelican buttons show a <b>red glow</b> when a target is in range, even on cooldown.",
+        "\n- <b>Detonator UI Fix</b> - finalized button mechanics with consistent red fill and white Mira-style timer.",
+        "\n- <b>Speedy Fix</b> - camouflage now correctly applies to all players during acceleration."
+      ]
     }
   ]
 }

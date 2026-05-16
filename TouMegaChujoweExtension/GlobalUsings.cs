@@ -17,7 +17,6 @@ global using TouMegaChujoweExtension.Modifiers.Game;
 global using TouMegaChujoweExtension.Modules;
 global using TouMegaChujoweExtension.Networking;
 global using TouMegaChujoweExtension.Options;
-global using TouMegaChujoweExtension.Options.Modifiers.Crewmate;
 global using TouMegaChujoweExtension.Options.Modifiers.Impostor;
 global using TouMegaChujoweExtension.Options.Modifiers.Neutral;
 global using TouMegaChujoweExtension.Options.Modifiers.Universal;
@@ -57,7 +56,7 @@ global using TouMegaChujoweExtension.Patches.Roles.Spiteful;
 global using TouMegaChujoweExtension.Patches.Roles.TimeLord;
 global using TouMegaChujoweExtension.Patches.Roles.Trapper;
 global using TouMegaChujoweExtension.Patches.Roles.Venomous;
-global using TouMegaChujoweExtension.Patches.Roles.Ventable;
+
 global using TouMegaChujoweExtension.Patches.Roles.Witch;
 global using TouMegaChujoweExtension.Patches.Roles.Wraith;
 global using TouMegaChujoweExtension.Patches.UI;
@@ -82,6 +81,9 @@ global using WitchOptions = TouMegaChujoweExtension.Options.Roles.Impostor.Witch
 global using WitchEvents = TouMegaChujoweExtension.Events.Impostor.WitchEvents;
 global using WitchSpellboundModifier = TouMegaChujoweExtension.Modifiers.Impostor.WitchSpellboundModifier;
 global using static Reactor.Utilities.Logger<TouMegaChujoweExtension.TouMegaChujoweExtensionPlugin>;
+global using TownOfUs.Extensions;
 global using TownOfUs.Networking;
 global using MiraAPI.Networking;
 global using MiraAPI.LocalSettings;
+global using MiraAPI.GameOptions;
+global using TownOfUs.Assets;

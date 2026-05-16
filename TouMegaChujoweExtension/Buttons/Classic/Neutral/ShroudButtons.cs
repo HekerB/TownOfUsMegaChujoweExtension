@@ -85,7 +85,7 @@ public sealed class ShroudKillButton : TownOfUsKillRoleButton<ShroudRole, Player
 
     public override bool CanUse()
     {
-        return base.CanUse() && Target != null && Timer <= 0;
+        return base.CanUse();
     }
 
     public static void SyncInternalTimer(float timer)
@@ -118,7 +118,7 @@ public sealed class ShroudAbilityButton : TownOfUsKillRoleButton<ShroudRole, Pla
 
     public override bool CanUse()
     {
-        return base.CanUse() && Target != null && Timer <= 0;
+        return base.CanUse();
     }
 
     public override bool IsTargetValid(PlayerControl? target)

@@ -6,6 +6,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
+using MiraAPI.Utilities.Assets;
 using Reactor.Networking.Attributes;
 using System.Collections.Generic;
 using System.Text;
@@ -25,6 +26,7 @@ using TownOfUs.Buttons;
 using MiraAPI.Hud;
 using TouMegaChujoweExtension.Buttons.Classic.Neutral;
 using UnityEngine;
+using System.Linq;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
@@ -43,12 +45,19 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities => new();
+    public List<CustomButtonWikiDescription> Abilities => new()
+    {
+        new CustomButtonWikiDescription(
+            TouLocale.Get("ExtensionRoleBountyHunterKill"),
+            TouLocale.Get("ExtensionRoleBountyHunterKillWikiDescription"),
+            new LoadableBundleAsset<Sprite>("OfficerShootButton", TouAssets.MainBundle)
+        )
+    };
 
     public Color RoleColor => TouExtensionColors.BountyHunter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
-    public bool HasImpostorVision => false;
+    public bool HasImpostorVision => OptionGroupSingleton<BountyHunterOptions>.Instance.HasImpostorVision;
     public bool HasWon { get; set; }
     public PlayerControl? CurrentTarget { get; set; }
     public byte? LastTargetPlayerId { get; set; }
@@ -66,7 +75,7 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = OptionGroupSingleton<BountyHunterOptions>.Instance.CanVent,
+        CanUseVent = false,
         Icon = TouExtensionIcons.BountyHunterRoleIcon,
         IntroSound = TouExtensionAudio.BountyHunterIntroSound,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
@@ -103,7 +112,7 @@ public bool WinConditionMet()
 
     public void OffsetButtons()
     {
-        var canVent = OptionGroupSingleton<BountyHunterOptions>.Instance.CanVent || LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value;
+        var canVent = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value;
         var bounty = MiraAPI.Hud.CustomButtonSingleton<BountyHunterKillButton>.Instance;
         Reactor.Utilities.Coroutines.Start(MiscUtils.CoMoveButtonIndex(bounty, !canVent));
     }
@@ -123,8 +132,6 @@ public bool WinConditionMet()
         if (player.AmOwner)
         {
             OffsetButtons();
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
-            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(RoleColor);
         }
     }
 
@@ -134,8 +141,6 @@ public bool WinConditionMet()
 
         if (targetPlayer.AmOwner)
         {
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
-            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
             ClearArrowModifiers();
         }
 
@@ -228,10 +233,15 @@ public bool WinConditionMet()
         if (KillsDone >= needed)
         {
             HasWon = true;
-            BountyHunterSystem.HasWon = true; // Global flag for legacy patches if any
-            var isSolo = OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode == BountyHunterWinMode.SoloWin;
+            BountyHunterSystem.HasWon = true; 
+            var isSolo = opts.WinMode == BountyHunterWinMode.SoloWin;
             BountyHunterSystem.GameEndedByBH = isSolo;
             ClearArrowModifiers();
+            
+            if (Player.AmOwner)
+            {
+                RpcBountyHunterWin(Player);
+            }
             return;
         }
 
@@ -277,19 +287,42 @@ public bool WinConditionMet()
         if (player?.Data?.Role is BountyHunterRole bh)
             bh.HasWon = true;
     }
+
+    [MethodRpc((uint)Networking.ExtensionRpc.BountyHunterShowMisKill)]
+    public static void RpcShowBountyHunterMisKillText(PlayerControl victim, PlayerControl bh)
+    {
+        if (victim != null)
+        {
+            DeathHandlerModifier.UpdateDeathHandlerImmediate(
+                victim,
+                TouLocale.Get("BountyHunterWrongVictim", "Wrong Victim"),
+                TownOfUs.Events.DeathEventHandlers.CurrentRound,
+                DeathHandlerOverride.SetTrue,
+                "null",
+                DeathHandlerOverride.SetTrue);
+        }
+
+        if (bh != null)
+        {
+            DeathHandlerModifier.UpdateDeathHandlerImmediate(
+                bh,
+                TouLocale.Get("DiedToSuicideBountyHunter", "Guild Execution"),
+                TownOfUs.Events.DeathEventHandlers.CurrentRound,
+                DeathHandlerOverride.SetTrue,
+                "null",
+                DeathHandlerOverride.SetTrue);
+
+            if (bh.AmOwner)
+            {
+                var alertMsg = TouLocale.Get("BountyHunterWrongVictimAlert", "You broke the pact with the Guild and died!");
+                Helpers.CreateAndShowNotification($"<b><size=120%><color=#{ColorUtility.ToHtmlStringRGBA(Palette.ImpostorRed)}>{alertMsg}</color></size></b>", Color.white, new Vector3(0f, 1.5f, -20f), spr: TouExtensionIcons.BountyHunterRoleIcon.LoadAsset());
+            }
+        }
+
+        if (victim != null && victim.AmOwner)
+        {
+            var victimMsg = TouLocale.Get("BountyHunterWrongVictimAlertTarget", "The Bounty Hunter tried to kill the wrong target and was executed!");
+            Helpers.CreateAndShowNotification($"<b>{victimMsg}</b>", Color.white, new Vector3(0f, 1.5f, -20f));
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

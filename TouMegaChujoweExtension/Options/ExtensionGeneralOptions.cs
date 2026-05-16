@@ -13,4 +13,10 @@ public sealed class ExtensionGeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("ExtensionOptionGeneralLoversChat")]
     public bool LoversChat { get; set; } = true;
+
+    [ModdedToggleOption("ExtensionOptionGeneralJackalChat")]
+    public bool JackalChat { get; set; } = true;
+
+    [ModdedToggleOption("ExtensionOptionGeneralRecruitsKnowEachOther")]
+    public bool RecruitsKnowEachOther { get; set; } = true;
 }

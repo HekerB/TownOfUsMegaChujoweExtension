@@ -14,102 +14,87 @@ using System.Linq;
 using MiraAPI.Modifiers;
 using TownOfUs.Assets;
 using Reactor.Utilities;
+using UnityEngine.UI;
 
 namespace TouMegaChujoweExtension.Buttons.Impostor;
 
-public sealed class DetonatorAttachButton : TownOfUsRoleButton<DetonatorRole, PlayerControl>
+public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole, PlayerControl>
 {
     private PlayerControl? _attachTarget;
-    private float _attachTimer; // How long we've been attaching
+    private float _attachTimer;
     private bool _isAttaching;
+    private PlayerControl? _lastOutlined;
 
     public override string Name => TouLocale.Get("ExtensionRoleDetonatorAttach", "Attach Bomb");
-
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Detonator;
-
-    public override float Cooldown => GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown + MapCooldown;
-
-    public override float EffectDuration => 0f;
-    public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.DetonatorAttachSprite;
-
-    public override void CreateButton(Transform parent)
+    public override float Cooldown
     {
-        base.CreateButton(parent);
-        if (Button != null)
+        get
         {
-            var icon = Button.transform.FindChild("Icon");
-            if (icon != null) icon.localScale = Vector3.one * 0.75f;
+            var local = PlayerControl.LocalPlayer;
+            if (local == null) return DetonatorSystem.GetDetonateCooldown();
+            
+            bool hasBomb = DetonatorSystem.HasAnyActiveBomb(local.PlayerId);
+            return hasBomb ? DetonatorSystem.GetDetonateCooldown() : local.GetKillCooldown();
         }
     }
+    public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.DetonatorAttachSprite;
+    public override bool ZeroIsInfinite { get; set; } = true;
 
     public override PlayerControl? GetTarget()
     {
-        if (DetonatorSystem.HasAnyActiveBomb(PlayerControl.LocalPlayer.PlayerId)) return null;
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
-    }
-
-    public override bool IsTargetValid(PlayerControl? target)
-    {
-        if (DetonatorSystem.HasAnyActiveBomb(PlayerControl.LocalPlayer.PlayerId)) return true;
-        if (!base.IsTargetValid(target) || target == null) return false;
-        return target != PlayerControl.LocalPlayer;
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(false, Distance);
     }
 
     public override bool CanClick()
     {
-        var localPlayer = PlayerControl.LocalPlayer;
-        if (DetonatorSystem.HasAnyActiveBomb(localPlayer.PlayerId))
-        {
-            return Timer <= 0;
-        }
+        var local = PlayerControl.LocalPlayer;
+        if (local == null || local.Data.IsDead) return false;
 
-        var target = GetTarget();
-        if (target != null && target.IsImpostorAligned()) return false;
+        bool hasBomb = DetonatorSystem.HasAnyActiveBomb(local.PlayerId);
+        float remaining = hasBomb ? DetonatorSystem.GetManualDetonateRemainingTime(local.PlayerId) : DetonatorSystem.GetAttachRemainingTime(local.PlayerId);
 
-        return base.CanClick();
-    }
+        if (hasBomb)
+            return remaining <= 0;
 
-    public override bool CanUse()
-    {
-        if (DetonatorSystem.HasAnyActiveBomb(PlayerControl.LocalPlayer.PlayerId))
-        {
-            return Timer <= 0;
-        }
-        return base.CanUse();
+        var t = GetTarget();
+        return t != null && !t.IsImpostorAligned() && remaining <= 0;
     }
 
     protected override void OnClick()
     {
         var localPlayer = PlayerControl.LocalPlayer;
-        if (DetonatorSystem.HasAnyActiveBomb(localPlayer.PlayerId))
+        if (localPlayer == null || localPlayer.Data.IsDead) return;
+
+        if (!CanClick()) return;
+
+        bool hasBomb = DetonatorSystem.HasAnyActiveBomb(localPlayer.PlayerId);
+
+        if (hasBomb)
         {
-            if (DetonatorSystem.CanManualDetonate(localPlayer.PlayerId))
-            {
-                DetonatorRole.RpcDetonate(localPlayer);
-                localPlayer.SetKillTimer(localPlayer.GetKillCooldown());
-            }
+            DetonatorRole.RpcDetonate(localPlayer);
+            DetonatorSystem.ResetAttachCooldown(localPlayer.PlayerId);
+            localPlayer.SetKillTimer(localPlayer.GetKillCooldown());
+            Button?.SetDisabled();
             return;
         }
 
-        if (Target == null || Target.IsImpostorAligned()) return;
-        
-        // Start "Witch-style" attaching
-        _attachTarget = Target;
+        var target = GetTarget();
+        if (target == null || target.IsImpostorAligned()) return;
+
+        _attachTarget = target;
         _attachTimer = 0f;
         _isAttaching = true;
     }
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
-        if (playerControl == null || playerControl.Data.IsDead)
-        {
-            return;
-        }
+        if (playerControl == null || playerControl.Data.IsDead) return;
 
         var options = OptionGroupSingleton<DetonatorOptions>.Instance;
         bool hasBomb = DetonatorSystem.HasAnyActiveBomb(playerControl.PlayerId);
-        
+
         if (hasBomb)
         {
             _isAttaching = false;
@@ -117,74 +102,101 @@ public sealed class DetonatorAttachButton : TownOfUsRoleButton<DetonatorRole, Pl
             _attachTimer = 0f;
             OverrideName(TouLocale.Get("ExtensionRoleDetonatorDetonate", "Detonate"));
             OverrideSprite(TouExtensionImpAssets.DetonatorDetonateSprite.LoadAsset());
-
-            float manualDelay = DetonatorSystem.GetManualDetonateRemainingTime(playerControl.PlayerId);
-            Timer = Mathf.Max(manualDelay, playerControl.killTimer);
+            
+            Timer = DetonatorSystem.GetManualDetonateRemainingTime(playerControl.PlayerId);
         }
         else
         {
             OverrideName(TouLocale.Get("ExtensionRoleDetonatorAttach", "Attach Bomb"));
             OverrideSprite(TouExtensionImpAssets.DetonatorAttachSprite.LoadAsset());
+            
             Timer = playerControl.killTimer;
+        }
 
-            if (_isAttaching && _attachTarget != null)
+        // Handling Attach phase (progress bar on button)
+        if (_isAttaching)
+        {
+            if (_attachTarget == null || _attachTarget.Data.IsDead || !CanClick())
             {
-                var dist = Vector2.Distance(playerControl.GetTruePosition(), _attachTarget.GetTruePosition());
-                if (dist > Distance || _attachTarget.HasDied() || playerControl.killTimer > 0)
-                {
-                    _isAttaching = false;
-                    _attachTarget = null;
-                    _attachTimer = 0f;
-                }
-                else
-                {
-                    _attachTimer += Time.fixedDeltaTime;
-                    var progress = Mathf.Clamp01(_attachTimer / options.AttachDuration);
-                    
-                    if (Button != null) Button.SetCooldownFill(1f - progress);
+                _isAttaching = false;
+                _attachTimer = 0f;
+            }
+            else
+            {
+                _attachTimer += Time.fixedDeltaTime;
+                var progress = Mathf.Clamp01(_attachTimer / options.AttachDuration);
+                if (Button != null) Button.SetCooldownFill(1f - progress);
 
-                    if (progress >= 1f)
-                    {
-                        DetonatorRole.RpcAttachBomb(playerControl, _attachTarget);
-                        playerControl.SetKillTimer(playerControl.GetKillCooldown());
-                        _isAttaching = false;
-                        _attachTarget = null;
-                        _attachTimer = 0f;
-                    }
+                if (_attachTimer >= options.AttachDuration)
+                {
+                    DetonatorRole.RpcAttachBomb(playerControl, _attachTarget);
+                    DetonatorSystem.ResetDetonateCooldown(playerControl.PlayerId);
+                    playerControl.SetKillTimer(playerControl.GetKillCooldown());
+                    _isAttaching = false;
+                    _attachTimer = 0f;
+                    _attachTarget = null;
                 }
+                
+                // Button should be bright and outline visible during attaching
+                UpdateOutline();
+                SetButtonState(true, hasBomb, true);
+                return; 
             }
         }
 
         base.FixedUpdate(playerControl);
-        
+        UpdateOutline();
+        SetButtonState(hasBomb || GetTarget() != null, hasBomb, false);
+    }
+
+    private void SetButtonState(bool shouldBeBright, bool hasBomb, bool isAttaching)
+    {
         if (Button == null) return;
 
-        var target = GetTarget();
-        bool hasTarget = target != null;
-        bool isTeammateTarget = target != null && target.IsImpostorAligned();
-
-        // Update visuals based on target presence
-        if (Button.graphic != null)
+        // White timer text
+        if (Button.cooldownTimerText != null && Button.cooldownTimerText.gameObject.activeSelf)
         {
-            // Disable (desaturate/dim) if target is a teammate
-            bool shouldHighlight = hasBomb || (hasTarget && !isTeammateTarget) || _isAttaching;
-            Button.graphic.color = shouldHighlight ? Color.white : new Color(1f, 1f, 1f, 0.5f);
-            Button.graphic.material.SetFloat("_Desat", shouldHighlight ? 0f : 1f);
+            Button.cooldownTimerText.color = Color.white;
         }
 
         if (Button.buttonLabelText != null)
         {
-            // If we have a target but on CD (or ready), highlight the text
-            if (!hasBomb && (hasTarget || _isAttaching))
+            Button.buttonLabelText.text = hasBomb ? TouLocale.Get("ExtensionRoleDetonatorDetonate", "Detonate") : TouLocale.Get("ExtensionRoleDetonatorAttach", "Attach Bomb");
+            Button.buttonLabelText.color = shouldBeBright ? Color.white : new Color(1f, 1f, 1f, 0.5f);
+        }
+
+        if (Button.graphic != null)
+        {
+            float alpha = shouldBeBright ? 1f : 0.5f;
+            Button.graphic.color = new Color(1f, 1f, 1f, alpha);
+            Button.graphic.material.SetFloat("_Desat", shouldBeBright ? 0f : 1f);
+        }
+
+        // Red fill (radial cooldown) like Poisoner
+        try
+        {
+            var fill = Button.gameObject.transform.Find("CooldownFill")?.GetComponent<Image>();
+            if (fill != null)
             {
-                Button.buttonLabelText.color = Timer > 0 ? new Color(1f, 1f, 0.5f, 1f) : Color.white;
-                Button.buttonLabelText.alpha = 1f;
-            }
-            else
-            {
-                Button.buttonLabelText.color = Color.white;
-                Button.buttonLabelText.alpha = Timer > 0 ? 0.3f : 1f;
+                fill.color = (hasBomb || isAttaching) ? Palette.ImpostorRed : Color.white;
             }
         }
+        catch { /* ignore */ }
+    }
+
+    private void UpdateOutline()
+    {
+        var target = GetTarget();
+        if (_lastOutlined != null && _lastOutlined != target)
+        {
+            _lastOutlined.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>());
+        }
+
+        if (target != null)
+        {
+            target.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(Palette.ImpostorRed));
+        }
+
+        _lastOutlined = target;
     }
 }

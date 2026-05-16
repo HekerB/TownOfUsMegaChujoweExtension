@@ -100,7 +100,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="#shroud-killing"><img width="10%" src="./Images/Icons/Shroud_Role_Icon.png" /></a>
   <img src="./Images/Groups/CrewMods.png" align="center" />
   <a href="#publicity-crewmate"><img width="10%" src="./Images/Icons/Publicity_Modifier_Icon.png" /></a>
-  <a href="#ventable-crewmate"><img width="10%" src="./Images/Icons/Ventable_Modifier_Icon.png" /></a>
+
   <img src="./Images/Groups/ImpMods.png" align="center" />
   <a href="#lucky-impostor"><img width="10%" src="./Images/Icons/Lucky_Modifier_Icon.png" /></a>
   <img src="./Images/Groups/UniMods.png" align="center" />
@@ -248,8 +248,6 @@ After a set amount of time, the body of a killed player will rot away, preventin
 ### Publicity (Crewmate Passive)
 See the real colors of player's votes during meetings.
 
-### Ventable (Crewmate Utility)
-Grants limited vent access with a cooldown and max duration.
 
 ## Additional Features & Tweaks
 

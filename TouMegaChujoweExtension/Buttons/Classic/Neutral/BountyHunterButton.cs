@@ -4,6 +4,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
+using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using System;
 using TownOfUs.Assets;
@@ -12,18 +13,17 @@ using TownOfUs.Events;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Options;
 using TownOfUs.Utilities;
+using TownOfUs.Modifiers;
+using TownOfUs;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
 public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole, PlayerControl>
 {
-    // // private static readonly BepInEx.Logging.ManualLogSource Log =
-        // // BepInEx.Logging.Logger.CreateLogSource("BH-Button");
-
     public override string Name => TouLocale.Get("ExtensionRoleBountyHunterKill", "Hunt");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
-    public override float Distance => 1.5f;
+    public override float Distance => GameOptionsManager.Instance.currentNormalGameOptions.KillDistance;
 
     public override float Cooldown
     {
@@ -92,11 +92,10 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
         if (closest == null)
             return null;
 
-        if (closest.PlayerId != role.CurrentTarget.PlayerId)
-            return null;
-
         if (closest.TryGetModifier<ChildModifier>(out var child) && !child.IsAdult)
             return null;
+
+        return closest;
 
         return closest;
     }
@@ -117,7 +116,7 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
 
         var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
         MiraEventManager.InvokeEvent(beforeMurderEvent);
-        
+
         if (beforeMurderEvent.IsCancelled)
         {
             return;
@@ -129,29 +128,31 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
     protected override void OnClick()
     {
         if (Target == null || PlayerControl.LocalPlayer == null)
-        {
-            // Log.LogWarning("[BH-Button] OnClick: Target or LocalPlayer is null");
             return;
-        }
 
         if (PlayerControl.LocalPlayer?.Data?.Role is not BountyHunterRole role)
             return;
 
-        if (role.CurrentTarget == null)
-        {
-            return;
-        }
+        bool isTarget = role.CurrentTarget != null && Target.PlayerId == role.CurrentTarget.PlayerId;
 
-        if (Target.PlayerId != role.CurrentTarget.PlayerId)
-        {
-            return;
-        }
+        // Sync for event handlers if needed
+        role.LastTargetPlayerId = isTarget ? Target.PlayerId : (byte)255;
 
-        role.LastTargetPlayerId = Target.PlayerId;
-
-        // Log.LogWarning($"[BH-Button] OnClick: Killing {Target.Data.PlayerName} (PlayerId={Target.PlayerId})");
-
+        // Perform murder
         PlayerControl.LocalPlayer.RpcCustomMurder(Target);
+
+        if (isTarget)
+        {
+            role.OnTargetKilled();
+        }
+        else
+        {
+            // Wrong person - suicide
+            BountyHunterRole.RpcShowBountyHunterMisKillText(Target, PlayerControl.LocalPlayer);
+
+            // Suicide for the Bounty Hunter
+            PlayerControl.LocalPlayer.RpcCustomMurder(PlayerControl.LocalPlayer, showKillAnim: false);
+        }
 
         RefreshKillCounter();
         ResetCooldownAndOrEffect();

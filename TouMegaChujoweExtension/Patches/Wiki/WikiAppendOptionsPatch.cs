@@ -7,6 +7,9 @@ using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Impostor;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
+using TouMegaChujoweExtension.Roles.Classic.Neutral;
+using TouMegaChujoweExtension.Modifiers.Neutral;
 
 namespace TouMegaChujoweExtension.Patches.Wiki;
 
@@ -94,6 +97,12 @@ public static class WikiAppendOptionsPatch
                     }
                 }
             }
+            else if (classType == typeof(SidekickModifier))
+            {
+                // Clear default "Amount: X, Chance: Y" strings for Recruit
+                __result = "";
+            }
+            /* Jackal options are handled automatically because they are registered as AbstractOptionGroup<JackalRole> */
         }
         catch
         {
