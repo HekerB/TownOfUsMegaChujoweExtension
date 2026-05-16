@@ -106,8 +106,10 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     {
         var canVent = MiraAPI.GameOptions.OptionGroupSingleton<JackalOptions>.Instance.CanVent || LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value;
         var kill = MiraAPI.Hud.CustomButtonSingleton<JackalKillButton>.Instance;
-
-        Reactor.Utilities.Coroutines.Start(MiscUtils.CoMoveButtonIndex(kill, !canVent));
+        if (kill != null)
+        {
+            Reactor.Utilities.Coroutines.Start(MiscUtils.CoMoveButtonIndex(kill, !canVent));
+        }
     }
 
     public override void Initialize(PlayerControl player)
@@ -115,6 +117,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         RoleBehaviourStubs.Initialize(this, player);
         if (player.AmOwner)
         {
+            CustomButtonSingleton<JackalKillButton>.Instance.Show = true;
             OffsetButtons();
             if (OptionGroupSingleton<JackalOptions>.Instance.CanVent)
             {
@@ -133,12 +136,27 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public void OnRecruitDie()
     {
-        var remainingSidekicks = PlayerControl.AllPlayerControls.ToArray()
-            .Count(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == Player.PlayerId);
+        Reactor.Utilities.Coroutines.Start(CoOnRecruitDie());
+    }
+
+    private System.Collections.IEnumerator CoOnRecruitDie()
+    {
+        // Wait a bit to ensure the player state is updated across the network/array
+        yield return new WaitForSeconds(0.1f);
+
+        // Check if all sidekicks are dead now
+        var sidekicks = PlayerControl.AllPlayerControls.ToArray()
+            .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == Player.PlayerId)
+            .ToList();
+
+        var remainingSidekicks = sidekicks.Count(p => !p.Data.IsDead);
+
+        UnityEngine.Debug.Log($"[TOUMCE] Jackal {Player.Data.PlayerName} sidekick died. Remaining: {remainingSidekicks}");
 
         if (remainingSidekicks == 0 && !_killAbilityAlertShown)
         {
             _killAbilityAlertShown = true;
+            UnityEngine.Debug.Log("[TOUMCE] All sidekicks dead, enabling Jackal kill ability.");
 
             if (Player.AmOwner)
             {
@@ -146,6 +164,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                 if (killButton != null)
                 {
                     killButton.Timer = 10f;
+                    UnityEngine.Debug.Log("[TOUMCE] Set Jackal Kill Timer to 10s");
                 }
 
                 string msg = TouLocale.Get("ExtensionJackalKillAbilityAlert");
@@ -228,5 +247,6 @@ public static class JackalVampireExclusionPatch
     [HarmonyPrefix]
     public static void Prefix()
     {
+        // Logic handled in DraftSystem or other patches
     }
 }

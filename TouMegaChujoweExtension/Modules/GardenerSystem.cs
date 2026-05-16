@@ -88,15 +88,13 @@ public static class GardenerSystem
             Radius = radius,
             RemainingTime = duration,
             OwnerId = ownerId,
-            Visual = (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == ownerId)
-                ? CreateGardenVisual(position, radius)
-                : null
+            Visual = CreateGardenVisual(position, radius)
         };
     }
 
     private static GameObject CreateGardenVisual(Vector2 position, float radius)
     {
-        var sphere = MiscUtils.CreateSpherePrimitive(new Vector3(position.x, position.y, position.y / 1000f + 0.1f), radius);
+        var sphere = MiscUtils.CreateSpherePrimitive(new Vector3(position.x, position.y, position.y / 1000f + 0.01f), radius);
         if (sphere == null) return new GameObject("GardenVisual_Fallback");
 
         sphere.transform.localScale = new Vector3(radius * 2f, radius * 2f, radius * 2f);
@@ -104,18 +102,11 @@ public static class GardenerSystem
         var meshRenderer = sphere.GetComponent<MeshRenderer>();
         if (meshRenderer != null)
         {
-            Material? mat = null;
             try
             {
-                var loadableMat = AuAvengersAnims.IgniteMaterial;
-                if (loadableMat != null) mat = new Material(loadableMat.LoadAsset());
+                meshRenderer.material = TouExtensionAnims.GardenerMaterial;
             }
             catch { /* fallback */ }
-
-            if (mat == null) mat = new Material(Shader.Find("Sprites/Default"));
-
-            mat.color = new Color(0.2f, 0.8f, 0.2f, 0.25f);
-            meshRenderer.material = mat;
         }
 
         return sphere;

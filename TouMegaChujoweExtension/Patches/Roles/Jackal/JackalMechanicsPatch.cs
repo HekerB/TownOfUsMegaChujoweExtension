@@ -39,22 +39,7 @@ public static class JackalMechanicsPatch
         }
     }
 
-    [RegisterEvent]
-    public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
-    {
-        var button = @event.Button as MiraAPI.Hud.CustomActionButton<PlayerControl>;
-        var source = PlayerControl.LocalPlayer;
-        var target = button?.Target;
 
-        if (target == null || button is not TownOfUs.Buttons.IKillButton || !button.CanClick()) return;
-        if (source == null) return;
-
-        if (IsMurderBlocked(source, target, MeetingCheck.OutsideMeeting))
-        {
-            @event.Cancel();
-            source.SetKillTimer(10f);
-        }
-    }
 
     private static bool IsMurderBlocked(PlayerControl killer, PlayerControl victim, MeetingCheck meetingCheck = MeetingCheck.OutsideMeeting)
     {
@@ -73,6 +58,14 @@ public static class JackalMechanicsPatch
             if (killerJackalId != 255 && killerJackalId == victimJackalId)
             {
                 return true;
+            }
+
+            if (killer.GetRole<JackalRole>() != null)
+            {
+                var killerSidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
+                    .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == killer.PlayerId);
+                
+                if (killerSidekicksAlive) return true;
             }
 
             if (victim.GetRole<JackalRole>() != null && meetingCheck == MeetingCheck.OutsideMeeting)

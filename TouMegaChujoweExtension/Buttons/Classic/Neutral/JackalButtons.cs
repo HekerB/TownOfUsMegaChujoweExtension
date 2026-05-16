@@ -24,12 +24,14 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
 public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
-    public JackalKillButton() : base() { }
-
-    public override string Name => "Assassination";
+    public override string Name => "Kill";
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Jackal;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.PestKillSprite;
+    public override bool ShouldPauseInVent => false;
+    public bool Show { get; set; } = true;
+
+    public override bool Enabled(RoleBehaviour? role) => base.Enabled(role) && Show;
 
     public void SetDiseasedTimer(float multiplier)
     {
@@ -49,14 +51,13 @@ public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, Player
 
     public override bool CanUse()
     {
-        var local = PlayerControl.LocalPlayer;
-        if (local == null || local.Data == null || local.Data.IsDead) return false;
+        if (!base.CanUse()) return false;
 
-        if (AmongUsClient.Instance == null || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return false;
-        if (MeetingHud.Instance != null) return false;
+        var local = PlayerControl.LocalPlayer;
+        if (local == null) return false;
 
         var sidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
-            .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == local.PlayerId);
+            .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == local.PlayerId);
 
         return !sidekicksAlive;
     }
@@ -66,32 +67,8 @@ public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, Player
         return CanUse() && Target != null;
     }
 
-    public override void ClickHandler()
-    {
-        if (!CanClick()) 
-        {
-            UnityEngine.Debug.Log("[TOUMCE] Jackal ClickHandler: Cannot click (CanClick=false)");
-            return;
-        }
-        if (Target == null) return;
-
-        var local = PlayerControl.LocalPlayer;
-        if (local == null) return;
-
-        UnityEngine.Debug.Log($"[TOUMCE] Jackal ClickHandler: Attempting to kill {Target.Data.PlayerName}");
-
-        var beforeMurderEvent = new BeforeMurderEvent(local, Target, MeetingCheck.OutsideMeeting);
-        MiraEventManager.InvokeEvent(beforeMurderEvent);
-
-        if (beforeMurderEvent.IsCancelled)
-        {
-            UnityEngine.Debug.Log($"[TOUMCE] Jackal Kill CANCELLED by event system for target {Target.Data.PlayerName}");
-            Timer = Cooldown;
-            return;
-        }
-
-        OnClick();
-    }
+    private bool _needsInitialCooldown;
+    private bool _wasSidekickAlive = true;
 
     public override void FixedUpdateHandler(PlayerControl playerControl)
     {
@@ -99,13 +76,23 @@ public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, Player
 
         if (playerControl == null || playerControl.Data == null || playerControl.Data.IsDead) return;
 
-        var newTarget = GetTarget();
-        if (newTarget != Target)
+        // Check if sidekicks just died to trigger the 10s cooldown
+        var sidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
+            .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == playerControl.PlayerId);
+
+        if (_wasSidekickAlive && !sidekicksAlive)
         {
-            SetOutline(false);
+            _needsInitialCooldown = true;
+            UnityEngine.Debug.Log("[TOUMCE] Jackal sidekicks died, flagging for 10s cooldown.");
         }
-        Target = IsTargetValid(newTarget) ? newTarget : null;
-        SetOutline(true);
+        _wasSidekickAlive = sidekicksAlive;
+
+        if (_needsInitialCooldown && Timer < 10f)
+        {
+            Timer = 10f;
+            _needsInitialCooldown = false;
+            UnityEngine.Debug.Log("[TOUMCE] Applied 10s cooldown to Jackal Kill Button.");
+        }
     }
 
     protected override void OnClick()
@@ -119,21 +106,13 @@ public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, Player
 
         try
         {
-            local.RpcCustomMurder(Target);
+            local.RpcCustomMurder(Target, MeetingCheck.OutsideMeeting);
             UnityEngine.Debug.Log($"[TOUMCE] Jackal Kill RPC Sent successfully to {Target.Data.PlayerName}");
         }
         catch (Exception ex)
         {
             UnityEngine.Debug.LogError($"[TOUMCE] Jackal Kill RPC FAILED: {ex}");
         }
-
-        DeathHandlerModifier.UpdateDeathHandlerImmediate(
-            Target,
-            causeOfDeath: TouLocale.Get("DiedToJackal", "Assassinated"),
-            roundOfDeath: DeathEventHandlers.CurrentRound,
-            diedThisRound: DeathHandlerOverride.SetTrue,
-            killedBy: Role.RoleName,
-            lockInfo: DeathHandlerOverride.SetTrue);
 
         Timer = Cooldown;
     }
@@ -155,11 +134,14 @@ public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, Player
 
     public override PlayerControl? GetTarget()
     {
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+        var local = PlayerControl.LocalPlayer;
+        if (local == null) return null;
+        return local.GetClosestLivingPlayer(true, Distance, false, x => IsTargetValid(x));
     }
 
     public override bool IsTargetValid(PlayerControl? target)
     {
+        if (!base.IsTargetValid(target)) return false;
         if (target == null || target.Data == null || target.Data.IsDead) return false;
 
         var local = PlayerControl.LocalPlayer;
