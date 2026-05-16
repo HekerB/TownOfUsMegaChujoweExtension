@@ -1,11 +1,14 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Keybinds;
+using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
 using TouMegaChujoweExtension.Roles.Classic.Crewmate;
 using TownOfUs.Assets;
 using TownOfUs.Buttons;
+using TownOfUs.Extensions;
+using TownOfUs.Utilities;
 using TownOfUs.Modules.Localization;
 using UnityEngine;
 
@@ -18,6 +21,15 @@ public sealed class PortalmakerPlaceButton : TownOfUsRoleButton<PortalmakerRole>
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override float Cooldown => OptionGroupSingleton<PortalmakerOptions>.Instance.Cooldown;
 
+    public override float EffectDuration => OptionGroupSingleton<PortalmakerOptions>.Instance.PlacementDelay;
+
+    public override int MaxUses => (int)OptionGroupSingleton<PortalmakerOptions>.Instance.PortalUses;
+    public override bool ZeroIsInfinite { get; set; } = true;
+
+    public override Color TextOutlineColor => TouExtensionColors.Portalmaker;
+
+    public Vector3? SavedPos { get; set; }
+
     public override void CreateButton(Transform parent)
     {
         base.CreateButton(parent);
@@ -27,13 +39,10 @@ public sealed class PortalmakerPlaceButton : TownOfUsRoleButton<PortalmakerRole>
         }
     }
 
-    private float _placementTimer;
-    private Vector2 _placementPos;
-
     public override bool CanUse()
     {
         if (!base.CanUse() || Role == null) return false;
-        if (_placementTimer > 0) return false;
+        if (LimitedUses && UsesLeft <= 0) return false;
 
         // Wall check
         if (Modules.PortalmakerSystem.IsNearWall(PlayerControl.LocalPlayer.GetTruePosition()))
@@ -50,30 +59,61 @@ public sealed class PortalmakerPlaceButton : TownOfUsRoleButton<PortalmakerRole>
         if (delay <= 0f)
         {
             Role.PlacePortal(PlayerControl.LocalPlayer.GetTruePosition());
+            Timer = Cooldown;
         }
         else
         {
-            _placementTimer = delay;
-            _placementPos = PlayerControl.LocalPlayer.GetTruePosition();
-            Timer = _placementTimer;
+            SavedPos = PlayerControl.LocalPlayer.GetTruePosition();
+            Reactor.Utilities.Coroutines.Start(ShowNotificationCoroutine(delay));
         }
+    }
+
+    public override void OnEffectEnd()
+    {
+        base.OnEffectEnd();
+
+        if (Role != null && SavedPos != null && MeetingHud.Instance == null && !PlayerControl.LocalPlayer.HasDied())
+        {
+            Role.PlacePortal(SavedPos.Value);
+            Timer = Cooldown;
+        }
+
+        SavedPos = null;
+    }
+
+    private System.Collections.IEnumerator ShowNotificationCoroutine(float delay)
+    {
+        var player = PlayerControl.LocalPlayer;
+        var notif = Helpers.CreateAndShowNotification(
+            "<b>Placing portal...</b>",
+            TouExtensionColors.Portalmaker,
+            new Vector3(0f, 1.2f, -20f),
+            spr: TouExtensionCrewAssets.PortalSprite.LoadAsset());
+        notif.AdjustNotification();
+
+        float start = Time.time;
+        while (Time.time - start < delay)
+        {
+            if (MeetingHud.Instance != null || player.HasDied())
+            {
+                if (notif != null) UnityEngine.Object.Destroy(notif.gameObject);
+                yield break;
+            }
+
+            float remaining = delay - (Time.time - start);
+            if (notif != null && notif.Text != null)
+            {
+                notif.Text.text = $"<b>Placing portal in {remaining:F1}s...</b>";
+            }
+
+            yield return null;
+        }
+
+        if (notif != null) UnityEngine.Object.Destroy(notif.gameObject);
     }
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
         base.FixedUpdate(playerControl);
-
-        if (_placementTimer > 0)
-        {
-            _placementTimer -= Time.fixedDeltaTime;
-            Timer = _placementTimer;
-
-            if (_placementTimer <= 0)
-            {
-                _placementTimer = 0;
-                Role.PlacePortal(_placementPos);
-                Timer = Cooldown;
-            }
-        }
     }
 }

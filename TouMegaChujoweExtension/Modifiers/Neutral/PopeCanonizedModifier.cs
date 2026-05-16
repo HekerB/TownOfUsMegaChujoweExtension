@@ -6,6 +6,7 @@ namespace TouMegaChujoweExtension.Modifiers.Neutral;
 public sealed class PopeCanonizedModifier(PlayerControl pope) : BaseModifier
 {
     public PlayerControl Pope { get; } = pope;
+    public bool HasSpread { get; set; }
     private readonly Color _color = TouExtensionColors.Pope;
 
     public override string ModifierName => "Canonized";

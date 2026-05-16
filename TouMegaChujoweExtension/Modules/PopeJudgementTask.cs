@@ -99,7 +99,7 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
                 if (playSound && !disableBlare)
                 {
                     SoundManager.Instance.StopSound(TouExtensionAudio.PopeAlarmSound.LoadAsset());
-                    SoundManager.Instance.PlaySound(TouExtensionAudio.PopeAlarmSound.LoadAsset(), false, 3f);
+                    SoundManager.Instance.PlaySound(TouExtensionAudio.PopeAlarmSound.LoadAsset(), false, 0.25f);
                 }
             }
             else if (_sabotage.Stage == PopeJudgementStage.PopeDead)
@@ -182,7 +182,7 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
                 if (!HudManager.Instance.FullScreen.gameObject.activeSelf && !disableBlare)
                 {
                     SoundManager.Instance.StopSound(TouExtensionAudio.PopeAlarmSound.LoadAsset());
-                    SoundManager.Instance.PlaySound(TouExtensionAudio.PopeAlarmSound.LoadAsset(), false, 3f);
+                    SoundManager.Instance.PlaySound(TouExtensionAudio.PopeAlarmSound.LoadAsset(), false, 0.25f);
                 }
                 HudManager.Instance.FullScreen.gameObject.SetActive(
                     !HudManager.Instance.FullScreen.gameObject.activeSelf);

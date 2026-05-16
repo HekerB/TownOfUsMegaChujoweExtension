@@ -2,6 +2,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using TouMegaChujoweExtension.Events.Crewmate;
 using TouMegaChujoweExtension.Modifiers.Impostor;
+using TouMegaChujoweExtension.Modifiers.Neutral;
 using TownOfUs.Modules.Localization;
 using UnityEngine;
 using System.Linq;
@@ -30,7 +31,8 @@ public sealed class DoctorCleanseModifier : TimedModifier
             m is InjectedNoUseModifier ||
             m is InjectedNoReportModifier ||
             m is InjectedNauseaModifier ||
-            m is InjectedWeaknessModifier
+            m is InjectedWeaknessModifier ||
+            m is PopeCanonizedModifier
         ).ToList();
 
         foreach (var mod in modifiersToRemove)

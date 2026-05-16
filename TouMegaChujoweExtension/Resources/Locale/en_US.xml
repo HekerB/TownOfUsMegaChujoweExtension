@@ -259,14 +259,15 @@
   <string name="ExtensionRolePelican">Pelican</string>
   <string name="ExtensionRolePelicanIntroBlurb">Swallow All Players To Win!</string>
   <string name="ExtensionRolePelicanTabDescription">Swallow players to trap them in your stomach.\%nl\%They are digested when a meeting is called.\%nl\%If you die, they escape alive.</string>
-  <string name="ExtensionRolePelicanWikiDescription">You can eat people alive, eat everyone to win! The People in your stomach will die at the beginning of the meeting.</string>
+  <string name="ExtensionRolePelicanWikiDescription">The Pelican is a Neutral Killing role that can swallow players and keep them in their stomach. Swallowed players die in the meeting, and can be set free if the Pelican dies before that.</string>
   <string name="ExtensionRolePelicanSwallow">Swallow</string>
-  <string name="ExtensionRolePelicanSwallowWikiDescription">Swallow players. They are in your stomach. Until the meeting is called or you die.</string>
+  <string name="ExtensionRolePelicanSwallowWikiDescription">Swallowing a player, as the name implies, swallows a player and keeps them in their stomach. The Pelican and swallowed players can also chat with one another. Abilities are also disabled for the swallowed players.</string>
 
   <!-- Pelican Options -->
   <string name="ExtensionOptionPelicanSwallowCooldown">Swallow Cooldown</string>
   <string name="ExtensionOptionPelicanMaxSwallowed">Max Players In Stomach</string>
   <string name="ExtensionOptionPelicanCanVent">Pelican Can Vent</string>
+  <string name="ExtensionOptionPelicanCanEatThroughShields">Can Swallow Through Shields</string>
   
   <!-- Vampire Role -->
   <string name="ExtensionRoleVampire">Vampire</string>
@@ -524,11 +525,11 @@
   <string name="ExtensionRoleDetonator">Detonator</string>
   <string name="ExtensionRoleDetonatorIntroBlurb">Attach bombs to players and detonate them at the right moment.</string>
   <string name="ExtensionRoleDetonatorTabDescription">Sneak up on players to attach a bomb. You can detonate it manually after a short delay!</string>
-  <string name="ExtensionRoleDetonatorWikiDescription">The Detonator is an Impostor role that can attach time bombs to other players. After attaching a bomb, the Detonator can detonate it manually using the same button after a configurable delay. The explosion kills the target and anyone else within the blast radius.</string>
-  <string name="ExtensionRoleDetonatorAttach">Attach Bomb</string>
-  <string name="ExtensionRoleDetonatorAttachWikiDescription">Attach a bomb to a nearby player. Once attached, you can click the button again after the manual delay to detonate it. The explosion will kill multiple people if they are close enough.</string>
+  <string name="ExtensionRoleDetonatorWikiDescription">The Detonator is a specialized Impostor who uses remote explosives to eliminate targets. Plant a bomb on any player and wait for the perfect moment to trigger it. Once the detonation becomes available, the target will hear a distinct beeping sound. The explosion kills the target and anyone nearby.</string>
+  <string name="ExtensionRoleDetonatorAttach">Attach C4</string>
+  <string name="ExtensionRoleDetonatorAttachWikiDescription">Attach a C4 charge to a player. You must wait for the short security delay to finish before you can detonate it.</string>
   <string name="ExtensionRoleDetonatorDetonate">Detonate</string>
-  <string name="ExtensionRoleDetonatorDetonateWikiDescription">Manually detonate the bomb attached to your target. Triggers the explosion immediately.</string>
+  <string name="ExtensionRoleDetonatorDetonateWikiDescription">Trigger your remote bomb to cause a massive explosion, killing the target and all nearby players instantly.</string>
 
   <!-- Detonator Options -->
   <string name="ExtensionOptionDetonatorAttachDuration">Attach Duration</string>
@@ -1292,11 +1293,16 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionPortalmakerDuration">Portal Duration (0=inf.)</string>
   <string name="ExtensionOptionPortalmakerStayAfterMeeting">Stay After Meeting</string>
   <string name="ExtensionOptionPortalmakerPlacementDelay">Placement Delay</string>
+  <string name="ExtensionOptionPortalmakerUses">Portal Uses</string>
   <string name="ExtensionOptionPortalmakerWhoCanUse">Who Can Use</string>
   <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateOnly">Crewmate Only</string>
   <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateAndNeutral">Crewmate &amp; Neutral</string>
   <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateAndImpostor">Crewmate &amp; Impostor</string>
   <string name="ExtensionOptionPortalmakerWhoCanUseEnumEveryone">Everyone</string>
+  <string name="ExtensionRolePortalmakerPlace">Place Portal</string>
+  <string name="ExtensionRolePortalmakerPlaceWikiDescription">Places one of two portals connecting zones.</string>
+  <string name="ExtensionRolePortalmakerTeleport">Teleport</string>
+  <string name="ExtensionRolePortalmakerTeleportWikiDescription">Transports the player to the other portal in the pair.</string>
 
   <!-- Gardener Options -->
   <string name="ExtensionOptionGardenerRadius">Garden Radius</string>
@@ -1322,4 +1328,3 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionJackalShieldModifierDesc">Protected by Recruits</string>
   <string name="ExtensionSidekickRecruitedChatMsg">You have been recruited by the Infiltrator! You are now a Recruit. Your goal has changed - you only win with the Infiltrator.</string>
 </resources>
-

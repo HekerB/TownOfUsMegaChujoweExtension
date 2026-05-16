@@ -16,23 +16,25 @@ public static class PopeEvents
     {
         if (!OptionGroupSingleton<PopeOptions>.Instance.CanonizeInteractions) return;
 
-        var sourceCan = source.HasModifier<PopeCanonizedModifier>();
-        var targetCan = target.HasModifier<PopeCanonizedModifier>();
+        source.TryGetModifier<PopeCanonizedModifier>(out var sourceCanMod);
+        target.TryGetModifier<PopeCanonizedModifier>(out var targetCanMod);
         var sourcePope = source.Data.Role is PopeRole;
         var targetPope = target.Data.Role is PopeRole;
 
-        if (!sourceCan && !sourcePope && !targetCan && !targetPope) return;
+        if (sourceCanMod == null && !sourcePope && targetCanMod == null && !targetPope) return;
 
         var pope = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.Data.Role is PopeRole);
         if (pope == null) return;
 
-        if ((sourcePope || sourceCan) && !targetCan && !targetPope)
+        if ((sourcePope || (sourceCanMod != null && !sourceCanMod.HasSpread)) && targetCanMod == null && !targetPope)
         {
             target.RpcAddModifier<PopeCanonizedModifier>(pope);
+            if (sourceCanMod != null) sourceCanMod.HasSpread = true;
         }
-        else if ((targetPope || targetCan) && !sourceCan && !sourcePope)
+        else if ((targetPope || (targetCanMod != null && !targetCanMod.HasSpread)) && sourceCanMod == null && !sourcePope)
         {
             source.RpcAddModifier<PopeCanonizedModifier>(pope);
+            if (targetCanMod != null) targetCanMod.HasSpread = true;
         }
     }
 

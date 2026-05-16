@@ -23,6 +23,11 @@ using MiraAPI.Hud;
 using TownOfUs.Buttons;
 using TouMegaChujoweExtension.Buttons.Classic.Neutral;
 using UnityEngine;
+using HarmonyLib;
+using TownOfUs.Patches;
+using TownOfUs.Utilities;
+using MiraAPI.GameEnd;
+using TownOfUs.Modifiers;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
@@ -141,6 +146,7 @@ public sealed class PirateRole(IntPtr cppPtr)
                     DeathEventHandlers.CurrentRound,
                     DeathHandlerOverride.SetFalse,
                     lockInfo: DeathHandlerOverride.SetTrue);
+                PlayerControl.LocalPlayer.RpcPlayerExile();
             }
         }
     }
@@ -470,6 +476,7 @@ public sealed class PirateRole(IntPtr cppPtr)
             }
         }
     }
+
 }
 
 

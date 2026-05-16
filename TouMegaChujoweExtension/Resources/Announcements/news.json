@@ -346,7 +346,11 @@
         "\n- <b>Team-Kill Prevention</b> - Blocked targeting/killing between Jackal and Recruits.",
         "\n- <b>Intro Reveal</b> - Sidekicks see a prominent <b>RECRUIT</b> title and mission info in the intro.",
         "\n- <b>Smart Highlighting</b> - Shroud and Pelican buttons show a <b>red glow</b> when a target is in range, even on cooldown.",
-        "\n- <b>Detonator UI Fix</b> - finalized button mechanics with consistent red fill and white Mira-style timer.",
+        "\n- <b>Detonator Wiki Rework</b> - updated Wiki with clean descriptions and 'Attach C4' label. Target now hears a beeping sound when detonation is ready.",
+        "\n- <b>Pelican Wiki Rework</b> - standardized terminology to 'Swallow' (Połknij) and polished all descriptions.",
+        "\n- <b>Pope Balancing</b> - limited canonization spread to a single transfer and reduced judge alarm volume (0.25f). Doctor can now cleanse the canonization modifier.",
+        "\n- <b>RC-XD Meeting Fix</b> - car now detonates instantly when a meeting or exile starts, preventing it from driving during discussions.",
+        "\n- <b>Victory Status Fix</b> - ensured custom neutral winners (BH, Pirate, etc.) correctly display 'Victorious' above their heads.",
         "\n- <b>Speedy Fix</b> - camouflage now correctly applies to all players during acceleration."
       ]
     }

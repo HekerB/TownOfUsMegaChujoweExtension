@@ -34,7 +34,7 @@ public sealed class PortalmakerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     {
         UseVanillaKillButton = false,
         Icon = TouExtensionIcons.PortalmakerRoleIcon,
-        IntroSound = TouAudio.ScientistIntroSound
+        IntroSound = TouAudio.TimeLordIntroSound
     };
 
     [HideFromIl2Cpp]
@@ -67,7 +67,6 @@ public sealed class PortalmakerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
-        Modules.PortalmakerSystem.ClearPortals(targetPlayer.PlayerId);
     }
 
     public void PlacePortal(Vector2 position)

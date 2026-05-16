@@ -150,6 +150,13 @@ public sealed class RcXdDeployButton : TownOfUsKillRoleButton<RcXdRole>, IDiseas
         else
         {
             _isNearWall = false;
+
+            // Insta-detonate on meeting/report
+            if (MeetingHud.Instance || ExileController.Instance)
+            {
+                OnEffectEnd();
+                return;
+            }
         }
 
         if (_driving && (Role.ActiveCar == null || Role.ActiveCar.IsDetonated))

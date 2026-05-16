@@ -313,6 +313,12 @@ public sealed class RcXdCar : IDisposable
 
         while (!_detonated && _go != null)
         {
+            if (MeetingHud.Instance || ExileController.Instance)
+            {
+                Detonate();
+                yield break;
+            }
+
             if (_owner == null || _owner.Data == null || _owner.Data.IsDead || _owner.Data.Disconnected)
             {
                 DoDestroy();
@@ -509,7 +515,7 @@ public sealed class RcXdCar : IDisposable
         var bombPos = _go.transform.position;
         var opts = OptionGroupSingleton<RcXdOptions>.Instance;
 
-        if (!MeetingHud.Instance && !ExileController.Instance && _owner != null)
+        if (_owner != null)
         {
             var radius = opts.DetonateRadius * ShipStatus.Instance.MaxLightRadius;
             var allNear = Helpers.GetClosestPlayers(bombPos, radius);

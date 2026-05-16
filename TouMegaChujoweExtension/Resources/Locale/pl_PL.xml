@@ -257,17 +257,17 @@
   
   <!-- Pelican Role -->
   <string name="ExtensionRolePelican">Pelican</string>
-  <string name="ExtensionRolePelicanIntroBlurb">Zjadaj graczy i trzymaj ich w brzuchu do czasu spotkania.</string>
-  <string name="ExtensionRolePelicanTabDescription">Pelican może zjadać graczy i trzymać ich w swoim brzuchu. Zjedzeni gracze giną podczas spotkania, ale mogą zostać uwolnieni, jeśli Pelican zginie wcześniej.</string>
-  <string name="ExtensionRolePelicanWikiDescription">Pelican to rola Neutral Killing, która może zjadać graczy i trzymać ich w swoim brzuchu. Zjedzeni gracze giną podczas spotkania, ale mogą zostać uwolnieni, jeśli Pelican zginie wcześniej.</string>
+  <string name="ExtensionRolePelicanIntroBlurb">Połykaj wszystkich graczy, aby wygrać!</string>
+  <string name="ExtensionRolePelicanTabDescription">Połykaj graczy, aby uwięzić ich w swoim brzuchu.\%nl\%Zostaną oni strawieni podczas spotkania.\%nl\%Jeśli zginiesz, zostaną uwolnieni żywi.</string>
+  <string name="ExtensionRolePelicanWikiDescription">Pelican to rola Neutral Killing, która może połykać graczy i trzymać ich w swoim brzuchu. Połknięci gracze giną podczas spotkania, ale mogą zostać uwolnieni, jeśli Pelican zginie wcześniej.</string>
    <string name="ExtensionRolePelicanSwallow">Połknij</string>
-  <string name="ExtensionRolePelicanSwallowWikiDescription">Połknięcie gracza, jak sama nazwa wskazuje, polega na połknięciu go i trzymaniu w brzuchu. Pelican i zjedzeni gracze mogą rozmawiać ze sobą na czacie. Umiejętności zjedzonych graczy są zablokowane.</string>
+  <string name="ExtensionRolePelicanSwallowWikiDescription">Połknięcie gracza, jak sama nazwa wskazuje, polega na połknięciu go i trzymaniu w brzuchu. Pelican i połknięci gracze mogą rozmawiać ze sobą na czacie. Umiejętności połkniętych graczy są zablokowane.</string>
 
   <!-- Pelican Options -->
   <string name="ExtensionOptionPelicanSwallowCooldown">Cooldown połykania</string>
   <string name="ExtensionOptionPelicanMaxSwallowed">Maks. liczba graczy w brzuchu</string>
   <string name="ExtensionOptionPelicanCanUseMapWhileEaten">Może używać mapy/sabotażu po zjedzeniu</string>
-  <string name="ExtensionOptionPelicanCanEatThroughShields">Może zjadać przez tarcze</string>
+  <string name="ExtensionOptionPelicanCanEatThroughShields">Może połykać przez tarcze</string>
   <string name="ExtensionOptionPelicanCanVent">Może używać wentylacji</string>
   
   <!-- Vampire Role -->
@@ -521,13 +521,13 @@
 
   <!-- Detonator Role -->
   <string name="ExtensionRoleDetonator">Detonator</string>
-  <string name="ExtensionRoleDetonatorIntroBlurb">Eliminuj całe grupy graczy za pomocą zdalnie sterowanych ładunków wybuchowych.</string>
-  <string name="ExtensionRoleDetonatorTabDescription">Przymocuj ładunek C4 do niczego niepodejrzewającego gracza. Gdy znajdzie się blisko innych, zdetonuj go, aby zmaksymalizować straty!</string>
-  <string name="ExtensionRoleDetonatorWikiDescription">Detonator może podłożyć ładunek wybuchowy wybranemu graczowi. Po krótkim opóźnieniu ładunek może zostać zdetonowany ręcznie tym samym przyciskiem. Eksplozja zabija cel oraz wszystkich graczy w promieniu rażenia. Jednocześnie aktywny może być tylko jeden ładunek.</string>
+  <string name="ExtensionRoleDetonatorIntroBlurb">Podkładaj bomby pod graczy i detonuj je w idealnym momencie.</string>
+  <string name="ExtensionRoleDetonatorTabDescription">Zakradnij się do graczy, aby podłożyć bombę. Możesz ją zdetonować ręcznie po krótkim opóźnieniu!</string>
+  <string name="ExtensionRoleDetonatorWikiDescription">Detonator to specjalista od materiałów wybuchowych. Może podłożyć bombę C4 pod dowolnego gracza i zdetonować ją w dowolnym momencie. Gdy detonacja stanie się dostępna, ofiara usłyszy wyraźne pipkanie. Wybuch zabija cel oraz wszystkich znajdujących się w pobliżu.</string>
   <string name="ExtensionRoleDetonatorAttach">Podłóż C4</string>
-  <string name="ExtensionRoleDetonatorAttachWikiDescription">Podłóż ładunek C4 wybranemu graczowi. Po przymocowaniu musisz odczekać czas bezpieczeństwa, zanim będziesz mógł go zdetonować.</string>
+  <string name="ExtensionRoleDetonatorAttachWikiDescription">Podłóż ładunek C4 pod gracza. Musisz chwilę odczekać na uzbrojenie zapalnika przed detonacją.</string>
   <string name="ExtensionRoleDetonatorDetonate">Detonuj</string>
-  <string name="ExtensionRoleDetonatorDetonateWikiDescription">Zdalnie zdetonuj ładunek C4. Eksplozja wyeliminuje cel oraz wszystkich graczy w zasięgu wybuchu.</string>
+  <string name="ExtensionRoleDetonatorDetonateWikiDescription">Zdalnie zdetonuj bombę, wywołując potężną eksplozję, która natychmiast eliminuje cel i świadków.</string>
 
   <!-- Detonator Options -->
   <string name="ExtensionOptionDetonatorAttachDuration">Czas podkładania</string>
@@ -1484,11 +1484,16 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionPortalmakerDuration">Czas trwania portalu (0=niesk.)</string>
   <string name="ExtensionOptionPortalmakerStayAfterMeeting">Pozostaje po spotkaniu</string>
   <string name="ExtensionOptionPortalmakerPlacementDelay">Opóźnienie postawienia</string>
+  <string name="ExtensionOptionPortalmakerUses">Ilość portali</string>
   <string name="ExtensionOptionPortalmakerWhoCanUse">Kto może używać</string>
   <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateOnly">Tylko Załoga</string>
   <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateAndNeutral">Załoga i Neutralni</string>
   <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateAndImpostor">Załoga i Impostorzy</string>
   <string name="ExtensionOptionPortalmakerWhoCanUseEnumEveryone">Wszyscy</string>
+  <string name="ExtensionRolePortalmakerPlace">Postaw Portal</string>
+  <string name="ExtensionRolePortalmakerPlaceWikiDescription">Stawia jeden z dwóch portali łączących strefy.</string>
+  <string name="ExtensionRolePortalmakerTeleport">Teleportuj</string>
+  <string name="ExtensionRolePortalmakerTeleportWikiDescription">Przenosi gracza do drugiego portalu w parze.</string>
 
   <!-- Gardener Options -->
   <string name="ExtensionOptionGardenerRadius">Promień ogrodu</string>

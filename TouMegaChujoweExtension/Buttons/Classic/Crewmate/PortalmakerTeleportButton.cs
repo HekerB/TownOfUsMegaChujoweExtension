@@ -19,6 +19,8 @@ public sealed class PortalmakerTeleportButton : TownOfUsRoleButton<RoleBehaviour
     public override BaseKeybind Keybind => Keybinds.TertiaryAction;
     public override float Cooldown => 0f;
 
+    public override Color TextOutlineColor => TouExtensionColors.Portalmaker;
+
     public override void CreateButton(Transform parent)
     {
         base.CreateButton(parent);
@@ -43,6 +45,9 @@ public sealed class PortalmakerTeleportButton : TownOfUsRoleButton<RoleBehaviour
         var opts = OptionGroupSingleton<PortalmakerOptions>.Instance;
         if (opts.Mode != TeleportMode.Interaction) return false;
 
+        // Check if teleport cooldown is active
+        if (PortalmakerSystem.GetTeleportCooldownRemaining(PlayerControl.LocalPlayer.PlayerId) > 0f) return false;
+
         return PortalmakerSystem.IsNearPortalPair(PlayerControl.LocalPlayer);
     }
 
@@ -57,7 +62,21 @@ public sealed class PortalmakerTeleportButton : TownOfUsRoleButton<RoleBehaviour
         if (playerControl.AmOwner)
         {
             var opts = OptionGroupSingleton<PortalmakerOptions>.Instance;
-            Button?.gameObject.SetActive(opts.Mode == TeleportMode.Interaction && PortalmakerSystem.IsNearPortalPair(playerControl));
+            bool isNear = PortalmakerSystem.IsNearPortalPair(playerControl);
+            Button?.gameObject.SetActive(opts.Mode == TeleportMode.Interaction && isNear);
+
+            if (Button != null && Button.gameObject.activeSelf)
+            {
+                float cooldownRemaining = PortalmakerSystem.GetTeleportCooldownRemaining(playerControl.PlayerId);
+                if (cooldownRemaining > 0f)
+                {
+                    Timer = cooldownRemaining;
+                }
+                else
+                {
+                    Timer = 0f;
+                }
+            }
         }
     }
 }

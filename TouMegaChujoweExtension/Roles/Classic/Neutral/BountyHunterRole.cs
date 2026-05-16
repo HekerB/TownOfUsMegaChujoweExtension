@@ -27,6 +27,9 @@ using MiraAPI.Hud;
 using TouMegaChujoweExtension.Buttons.Classic.Neutral;
 using UnityEngine;
 using System.Linq;
+using HarmonyLib;
+using TownOfUs.Patches;
+using MiraAPI.GameEnd;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
@@ -88,8 +91,8 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         var stringB = ITownOfUsRole.SetNewTabText(this);
         var needed = (int)OptionGroupSingleton<BountyHunterOptions>.Instance.TargetsToKill.Value;
         var done = KillsDone;
-        
-        stringB.Append(TownOfUsPlugin.Culture, 
+
+        stringB.Append(TownOfUsPlugin.Culture,
             $"\n{TouLocale.GetParsed("ExtensionBHTabTargetsKilled", "Targets Killed: {0} / {1}").Replace("{0}", done.ToString()).Replace("{1}", needed.ToString())}");
 
         if (CurrentTarget != null && Hunting)
@@ -98,17 +101,17 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         return stringB;
     }
 
- [HideFromIl2Cpp]
-public bool WinConditionMet()
-{
-    if (!HasWon)
-        return false;
+    [HideFromIl2Cpp]
+    public bool WinConditionMet()
+    {
+        if (!HasWon)
+            return false;
 
-    if (OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode != BountyHunterWinMode.SoloWin)
-        return false;
+        if (OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode != BountyHunterWinMode.SoloWin)
+            return false;
 
-    return true;
-}
+        return true;
+    }
 
     public void OffsetButtons()
     {
@@ -128,7 +131,7 @@ public bool WinConditionMet()
         Hunting = false;
         IntroFinished = false;
         IntroFinishTime = 0f;
-        
+
         if (player.AmOwner)
         {
             OffsetButtons();
@@ -197,8 +200,8 @@ public bool WinConditionMet()
         {
             int weight = 100;
             var role = p.GetTownOfUsRole();
-            if (p.IsImpostorAligned() || (role != null && (role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralKilling || 
-                                                           role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralEvil || 
+            if (p.IsImpostorAligned() || (role != null && (role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralKilling ||
+                                                           role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralEvil ||
                                                            role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralBenign)))
             {
                 weight = 110; // 10% more
@@ -233,11 +236,11 @@ public bool WinConditionMet()
         if (KillsDone >= needed)
         {
             HasWon = true;
-            BountyHunterSystem.HasWon = true; 
+            BountyHunterSystem.HasWon = true;
             var isSolo = opts.WinMode == BountyHunterWinMode.SoloWin;
             BountyHunterSystem.GameEndedByBH = isSolo;
             ClearArrowModifiers();
-            
+
             if (Player.AmOwner)
             {
                 RpcBountyHunterWin(Player);
@@ -285,7 +288,20 @@ public bool WinConditionMet()
         BountyHunterSystem.GameEndedByBH = isSolo;
 
         if (player?.Data?.Role is BountyHunterRole bh)
+        {
             bh.HasWon = true;
+
+            if (player.AmOwner)
+            {
+                DeathHandlerModifier.RpcUpdateLocalDeathHandler(
+                    player,
+                    "DiedToWinning",
+                    TownOfUs.Events.DeathEventHandlers.CurrentRound,
+                    DeathHandlerOverride.SetFalse,
+                    lockInfo: DeathHandlerOverride.SetTrue);
+                player.RpcPlayerExile();
+            }
+        }
     }
 
     [MethodRpc((uint)Networking.ExtensionRpc.BountyHunterShowMisKill)]
