@@ -95,6 +95,31 @@ public static class TouExtensionAnims
 	public static Sprite[] JokerPiPBorderFrames => _jokerPiPBorderFrames ??= LoadSpriteSheet(
     "TouMegaChujoweExtension.Resources.Anims.Joker_PIP_Border.png",
     3, 1, 100f);
+
+    private static Material? _gardenerMaterial;
+    public static Material GardenerMaterial
+    {
+        get
+        {
+            if (_gardenerMaterial == null)
+            {
+                var loadableMat = TownOfUs.Assets.AuAvengersAnims.IgniteMaterial;
+                if (loadableMat != null)
+                {
+                    _gardenerMaterial = new Material(loadableMat.LoadAsset());
+                    _gardenerMaterial.SetColor("_BackgroundColor", new Color(0f, 1f, 0f, 0.13725491f));
+                    _gardenerMaterial.SetColor("_ForegroundColor", new Color(0f, 0.8f, 0.2f, 0.13333334f));
+                    _gardenerMaterial.SetColor("_OutlineColor", new Color(0.2f, 1f, 0.4f, 0.1254902f));
+                }
+                else
+                {
+                    _gardenerMaterial = new Material(Shader.Find("Sprites/Default"));
+                    _gardenerMaterial.color = new Color(0.2f, 0.8f, 0.2f, 0.25f);
+                }
+            }
+            return _gardenerMaterial;
+        }
+    }
 }
 
 

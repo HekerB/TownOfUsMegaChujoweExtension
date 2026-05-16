@@ -1434,6 +1434,34 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleArcanistIntroBlurb">Losuj magiczne karty, aby zmieniać losy gry.</string>
   <string name="ExtensionRoleArcanistTabDescription">Masz talię kart. Każda karta ma inny efekt. Używaj ich mądrze, by eliminować cele.</string>
   <string name="ExtensionRoleArcanistWikiDescription">Arcanist to rola Neutral Killing, która używa magicznych kart do eliminowania przeciwników lub wspomagania siebie.</string>
+  <string name="ExtensionRoleArcanistDraw">Dobierz Kartę</string>
+  <string name="ExtensionRoleArcanistDrawWikiDescription">Dobierz magiczną kartę Tarota ze swojej talii. Każda karta wywołuje inny mistyczny efekt.</string>
+  <string name="ExtensionArcanistCardDrawn">Wylosowałeś: {0}!</string>
+  <string name="ExtensionArcanistDuplicateRole">{0}: Ta rola już istnieje w grze! Karta usunięta z talii.</string>
+  <string name="ExtensionArcanistDevilMeeting">Ktoś podpisał pakt z Diabłem i został Prawnikiem!</string>
+
+  <string name="TarotCardTheFool">Głupiec</string>
+  <string name="TarotCardTheMagician">Magik</string>
+  <string name="TarotCardTheHighPriestess">Arcykapłanka</string>
+  <string name="TarotCardTheEmpress">Cesarzowa</string>
+  <string name="TarotCardTheEmperor">Cesarz</string>
+  <string name="TarotCardTheHierophant">Hierofant</string>
+  <string name="TarotCardTheLovers">Kochankowie</string>
+  <string name="TarotCardTheChariot">Rydwan</string>
+  <string name="TarotCardStrength">Siła</string>
+  <string name="TarotCardTheHermit">Pustelnik</string>
+  <string name="TarotCardWheelOfFortune">Koło Fortuny</string>
+  <string name="TarotCardJustice">Sprawiedliwość</string>
+  <string name="TarotCardTheHangedMan">Wisielec</string>
+  <string name="TarotCardDeath">Śmierć</string>
+  <string name="TarotCardTemperance">Umiarkowanie</string>
+  <string name="TarotCardTheDevil">Diabeł</string>
+  <string name="TarotCardTheTower">Wieża</string>
+  <string name="TarotCardTheStar">Gwiazda</string>
+  <string name="TarotCardTheMoon">Księżyc</string>
+  <string name="TarotCardTheSun">Słońce</string>
+  <string name="TarotCardJudgement">Sąd</string>
+  <string name="TarotCardTheWorld">Świat</string>
 
   <!-- Portalmaker -->
   <string name="ExtensionRolePortalmaker">Portalmaker</string>

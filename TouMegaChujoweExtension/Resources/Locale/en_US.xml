@@ -1243,6 +1243,34 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleArcanistIntroBlurb">Draw magical cards to change the tide of the game.</string>
   <string name="ExtensionRoleArcanistTabDescription">You have a deck of cards. Each card has a different effect. Use them wisely to eliminate targets.</string>
   <string name="ExtensionRoleArcanistWikiDescription">The Arcanist is a Neutral Killing role that uses magical cards to eliminate opponents or buff themselves.</string>
+  <string name="ExtensionRoleArcanistDraw">Draw Card</string>
+  <string name="ExtensionRoleArcanistDrawWikiDescription">Draw a magical Tarot card from your deck. Each card triggers a different mystical effect.</string>
+  <string name="ExtensionArcanistCardDrawn">You drew {0}!</string>
+  <string name="ExtensionArcanistDuplicateRole">{0}: Role already exists! Card removed from deck.</string>
+  <string name="ExtensionArcanistDevilMeeting">Someone has made a deal with the Devil and become a Lawyer!</string>
+
+  <string name="TarotCardTheFool">The Fool</string>
+  <string name="TarotCardTheMagician">The Magician</string>
+  <string name="TarotCardTheHighPriestess">The High Priestess</string>
+  <string name="TarotCardTheEmpress">The Empress</string>
+  <string name="TarotCardTheEmperor">The Emperor</string>
+  <string name="TarotCardTheHierophant">The Hierophant</string>
+  <string name="TarotCardTheLovers">The Lovers</string>
+  <string name="TarotCardTheChariot">The Chariot</string>
+  <string name="TarotCardStrength">Strength</string>
+  <string name="TarotCardTheHermit">The Hermit</string>
+  <string name="TarotCardWheelOfFortune">Wheel of Fortune</string>
+  <string name="TarotCardJustice">Justice</string>
+  <string name="TarotCardTheHangedMan">The Hanged Man</string>
+  <string name="TarotCardDeath">Death</string>
+  <string name="TarotCardTemperance">Temperance</string>
+  <string name="TarotCardTheDevil">The Devil</string>
+  <string name="TarotCardTheTower">The Tower</string>
+  <string name="TarotCardTheStar">The Star</string>
+  <string name="TarotCardTheMoon">The Moon</string>
+  <string name="TarotCardTheSun">The Sun</string>
+  <string name="TarotCardJudgement">Judgement</string>
+  <string name="TarotCardTheWorld">The World</string>
 
   <!-- Portalmaker -->
   <string name="ExtensionRolePortalmaker">Portalmaker</string>
