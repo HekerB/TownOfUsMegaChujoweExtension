@@ -1209,7 +1209,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- Arcanist -->
   <string name="ExtensionRoleArcanist">Arcanist</string>
   <string name="ExtensionRoleArcanistIntroBlurb">Draw Tarot cards to influence your fate.</string>
-  <string name="ExtensionRoleArcanistTabDescription">Draw cards from your deck. Each card has a unique effect - some good, some bad. Effects include role changes (Jester, Doomsayer, Bounty Hunter, Pope, Lawyer), temporary or permanent modifiers (Speed, Vision, Blindness, Drunk, Knighted), or immediate death.</string>
+  <string name="ExtensionRoleArcanistTabDescription">Draw cards from your deck. Each card has a unique effect - some good, some bad.\%nl\%Effects include role changes (Jester, Doomsayer, Bounty Hunter, Pope, Lawyer),\%nl\%temporary or permanent modifiers (Speed, Vision, Blindness, Drunk, Knighted), or immediate death.</string>
   <string name="ExtensionRoleArcanistWikiDescription">The Arcanist is a Neutral Outlier role that carries a deck of Tarot cards. By drawing a card, they trigger various effects ranging from helpful vision boosts to sudden death.\%nl\%They win by surviving until the end of the game.\%nl\%&lt;color=#F1C40F&gt;Available Cards:&lt;/color&gt;\%nl\%• &lt;color=#FFD700&gt;Fool:&lt;/color&gt; Become a Jester.\%nl\%• &lt;color=#FFD700&gt;Magician:&lt;/color&gt; Blind non-killers (10s).\%nl\%• &lt;color=#FFD700&gt;High Priestess:&lt;/color&gt; Become a Doomsayer.\%nl\%• &lt;color=#FFD700&gt;Empress:&lt;/color&gt; Get Knighted (Monarch).\%nl\%• &lt;color=#FFD700&gt;Emperor:&lt;/color&gt; Get Drunk (Modifier).\%nl\%• &lt;color=#FFD700&gt;Hierophant:&lt;/color&gt; Random Neutral Benign.\%nl\%• &lt;color=#FFD700&gt;Lovers:&lt;/color&gt; Become Lover with evil player.\%nl\%• &lt;color=#FFD700&gt;Chariot:&lt;/color&gt; Speed boost (30s).\%nl\%• &lt;color=#FFD700&gt;Strength:&lt;/color&gt; 20 percent faster card drawing.\%nl\%• &lt;color=#FFD700&gt;Hermit:&lt;/color&gt; Permanent speed boost.\%nl\%• &lt;color=#FFD700&gt;Wheel of Fortune:&lt;/color&gt; Random NK or Amnesiac.\%nl\%• &lt;color=#FFD700&gt;Justice:&lt;/color&gt; Reveal yourself in chat.\%nl\%• &lt;color=#FFD700&gt;Hanged Man:&lt;/color&gt; Become a Bounty Hunter.\%nl\%• &lt;color=#FFD700&gt;Death:&lt;/color&gt; Immediate suicide.\%nl\%• &lt;color=#FFD700&gt;Temperance:&lt;/color&gt; 20 percent slower card drawing.\%nl\%• &lt;color=#FFD700&gt;Devil:&lt;/color&gt; Become a Lawyer.\%nl\%• &lt;color=#FFD700&gt;Tower:&lt;/color&gt; Permanent slowness.\%nl\%• &lt;color=#FFD700&gt;Star:&lt;/color&gt; Permanent vision boost.\%nl\%• &lt;color=#FFD700&gt;Moon:&lt;/color&gt; Blind self (30s).\%nl\%• &lt;color=#FFD700&gt;Sun:&lt;/color&gt; Vision boost (30s).\%nl\%• &lt;color=#FFD700&gt;Judgement:&lt;/color&gt; Become the Pope.\%nl\%• &lt;color=#FFD700&gt;World:&lt;/color&gt; Get a Death Note.</string>
   <string name="ExtensionRoleArcanistDraw">Draw Card</string>
   <string name="ExtensionRoleArcanistDrawWikiDescription">Draw a Tarot card from your deck and trigger its effect.</string>
@@ -1290,6 +1290,8 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionGardenerAttackKilledFeedback">{0} killed someone in your garden!</string>
   <string name="ExtensionGardenerAttackBlocked">An attack was blocked in your garden!</string>
   <string name="ExtensionGardenerAttackBlockedFeedback">An attack by {0} was blocked in your garden!</string>
+  <string name="ExtensionModifierGardenerProtected">Garden Protection</string>
+  <string name="ExtensionModifierGardenerProtectedDescription">You are protected by the Garden!</string>
 
   <!-- Portalmaker -->
   <string name="ExtensionRolePortalmaker">Portalmaker</string>
@@ -1305,6 +1307,11 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionPortalmakerDuration">Portal Duration</string>
   <string name="ExtensionOptionPortalmakerStayAfterMeeting">Stay after meeting</string>
   <string name="ExtensionOptionPortalmakerPlacementDelay">Placement Delay</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUse">Who Can Use Portals</string>
+  <string name="PortalUsageTypeCrewmateOnly">Crewmate Only</string>
+  <string name="PortalUsageTypeCrewmateAndNeutral">Crewmate + Neutral</string>
+  <string name="PortalUsageTypeCrewmateAndImpostor">Crewmate + Impostor</string>
+  <string name="PortalUsageTypeEveryone">Everyone</string>
   <string name="TeleportModeInteraction">Interaction</string>
   <string name="TeleportModeAutomatic">Automatic</string>
 </resources>

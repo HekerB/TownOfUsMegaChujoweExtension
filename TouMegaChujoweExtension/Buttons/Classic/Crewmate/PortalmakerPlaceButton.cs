@@ -14,9 +14,18 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Crewmate;
 public sealed class PortalmakerPlaceButton : TownOfUsRoleButton<PortalmakerRole>
 {
     public override string Name => TouLocale.Get("ExtensionRolePortalmakerPlace", "Place Portal");
-    public override LoadableAsset<Sprite> Sprite => TouRoleIcons.Traitor; // Placeholder
+    public override LoadableAsset<Sprite> Sprite => TouExtensionCrewAssets.PortalSprite;
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override float Cooldown => OptionGroupSingleton<PortalmakerOptions>.Instance.Cooldown;
+
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        if (Button != null)
+        {
+            Button.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
+        }
+    }
 
     private float _placementTimer;
     private Vector2 _placementPos;

@@ -15,9 +15,18 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Crewmate;
 public sealed class PortalmakerTeleportButton : TownOfUsRoleButton<RoleBehaviour>
 {
     public override string Name => TouLocale.Get("ExtensionRolePortalmakerTeleport", "Teleport");
-    public override LoadableAsset<Sprite> Sprite => TouAssets.VentSprite;
+    public override LoadableAsset<Sprite> Sprite => TouExtensionCrewAssets.PortalSprite;
     public override BaseKeybind Keybind => Keybinds.TertiaryAction;
     public override float Cooldown => 0f;
+
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        if (Button != null)
+        {
+            Button.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
+        }
+    }
 
     public override bool Enabled(RoleBehaviour? role)
     {
@@ -44,7 +53,6 @@ public sealed class PortalmakerTeleportButton : TownOfUsRoleButton<RoleBehaviour
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
-        if (Button != null) VentUtilities.InitializeVentButton(Button);
         base.FixedUpdate(playerControl);
         if (playerControl.AmOwner)
         {

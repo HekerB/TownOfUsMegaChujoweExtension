@@ -29,7 +29,7 @@ public static class BodyguardShieldEvents
         if (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield) return;
 
         @event.Cancel();
-        Logger<TouMegaChujoweExtensionPlugin>.Info(
+        Info(
             $"[BodyguardShieldEvents] Murder from {source.Data.PlayerName} blocked by Bodyguard shield on {target.Data.PlayerName}");
 
         if (bgMod.Bodyguard != null && (TutorialManager.InstanceExists || source.AmOwner))
@@ -59,7 +59,7 @@ public static class BodyguardShieldEvents
         if (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield) return;
 
         @event.Cancel();
-        Logger<TouMegaChujoweExtensionPlugin>.Info(
+        Info(
             $"[BodyguardShieldEvents] Button click from {source.Data.PlayerName} blocked by Bodyguard shield on {target.Data.PlayerName}");
 
         if (bgMod.Bodyguard != null)

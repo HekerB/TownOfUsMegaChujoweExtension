@@ -29,11 +29,19 @@ public static class VentablePatch
         if (__instance == null || pc == null)
             return;
 
-        if (canUse)
-            return;
-
         var player = pc.Object;
         if (player == null || pc.IsDead || pc.Disconnected)
+            return;
+
+        if (VentOccupancySystem.IsBlocked(__instance.Id) && !(player.inVent && Vent.currentVent != null && __instance.Id == Vent.currentVent.Id))
+        {
+            canUse = false;
+            couldUse = false;
+            __result = float.MaxValue;
+            return;
+        }
+
+        if (canUse)
             return;
 
         var mod = player.GetModifier<VentableModifier>();
@@ -53,14 +61,6 @@ public static class VentablePatch
         }
 
         if (mod.VentsRemaining <= 0)
-        {
-            canUse = false;
-            couldUse = false;
-            __result = float.MaxValue;
-            return;
-        }
-
-        if (VentOccupancySystem.IsBlocked(__instance.Id) && !player.inVent)
         {
             canUse = false;
             couldUse = false;
@@ -307,11 +307,6 @@ public static class VentablePatch
         if (data != null && (data.Role == null || !data.Role.IsImpostor) && (data.Role == null || !data.Role.CanVent) && ventButton.gameObject.activeSelf)
         {
             ventButton.gameObject.SetActive(false);
-        }
-
-        if (data != null && data.Role != null && !data.Role.IsImpostor && data.Role.CanVent)
-        {
-            data.Role.CanVent = false;
         }
 
         _basePosSet = false;

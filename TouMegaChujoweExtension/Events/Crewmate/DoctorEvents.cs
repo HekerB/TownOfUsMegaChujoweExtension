@@ -12,7 +12,7 @@ using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Buttons.Crewmate;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
-using TouMegaChujoweExtension.Roles.Crewmate;
+using TouMegaChujoweExtension.Roles.Classic.Crewmate;
 using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;

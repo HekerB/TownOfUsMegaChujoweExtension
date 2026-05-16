@@ -19,10 +19,19 @@ public static class DoctorCanVentPatch
         ref float __result)
     {
         if (__instance == null || pc == null) return;
-        if (canUse) return; // already can use
 
         var player = pc.Object;
         if (player == null || pc.IsDead || pc.Disconnected) return;
+
+        if (VentOccupancySystem.IsBlocked(__instance.Id) && !(player.inVent && Vent.currentVent != null && __instance.Id == Vent.currentVent.Id))
+        {
+            canUse = false;
+            couldUse = false;
+            __result = float.MaxValue;
+            return;
+        }
+
+        if (canUse) return; // already can use
 
         if (!player.HasModifier<DoctorCanVentModifier>()) return;
 
@@ -34,14 +43,6 @@ public static class DoctorCanVentPatch
                 couldUse = true;
                 __result = 0f;
             }
-            return;
-        }
-
-        if (VentOccupancySystem.IsBlocked(__instance.Id) && !player.inVent)
-        {
-            canUse = false;
-            couldUse = false;
-            __result = float.MaxValue;
             return;
         }
 

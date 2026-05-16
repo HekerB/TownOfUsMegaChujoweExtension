@@ -3,7 +3,7 @@ using MiraAPI.Keybinds;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
-using TouMegaChujoweExtension.Roles.Crewmate;
+using TouMegaChujoweExtension.Roles.Classic.Crewmate;
 using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Assets;

@@ -8,6 +8,10 @@ using TownOfUs.Assets;
 using TownOfUs.Utilities;
 using TownOfUs.Extensions;
 using MiraAPI;
+using MiraAPI.Roles;
+using TownOfUs.Roles;
+using TouMegaChujoweExtension.Options.Roles.Crewmate;
+using TownOfUs;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -59,7 +63,7 @@ public static class PortalmakerSystem
         go.transform.position = new Vector3(position.x, position.y, position.y / 1000f + 0.05f);
         
         var renderer = go.AddComponent<SpriteRenderer>();
-        renderer.sprite = TouAssets.VentSprite.LoadAsset();
+        renderer.sprite = TouExtensionCrewAssets.PortalSprite.LoadAsset();
         renderer.color = new Color(0.6f, 0.2f, 1f, 0.6f); // Bright purple portal
         
         // Scale the visual to match the actual radius (roughly)
@@ -85,7 +89,7 @@ public static class PortalmakerSystem
         public static void Postfix()
         {
             if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
-            if (PlayerControl.LocalPlayer == null) return;
+            if (PlayerControl.LocalPlayer == null || MeetingHud.Instance != null) return;
 
             var player = PlayerControl.LocalPlayer;
             if (player == null || player.Data == null || player.Data.IsDead) return;
@@ -120,6 +124,8 @@ public static class PortalmakerSystem
             var mode = opts.Mode;
             if (mode != TeleportMode.Automatic) return;
 
+            if (!CanPlayerUsePortal(player)) return;
+
             var allPortals = PlayerPortals.Values.ToList();
             foreach (var portals in allPortals)
             {
@@ -148,7 +154,7 @@ public static class PortalmakerSystem
 
     public static bool IsNearPortalPair(PlayerControl player)
     {
-        if (player == null) return false;
+        if (player == null || !CanPlayerUsePortal(player)) return false;
         float radius = OptionGroupSingleton<PortalmakerOptions>.Instance.PortalRadius;
         var allPortals = PlayerPortals.Values.ToList();
         foreach (var portals in allPortals)
@@ -161,7 +167,7 @@ public static class PortalmakerSystem
 
     public static void TriggerTeleport(PlayerControl player)
     {
-        if (player == null) return;
+        if (player == null || MeetingHud.Instance != null || !CanPlayerUsePortal(player)) return;
         float radius = OptionGroupSingleton<PortalmakerOptions>.Instance.PortalRadius;
         float tpCooldown = OptionGroupSingleton<PortalmakerOptions>.Instance.TeleportCooldown;
 
@@ -225,8 +231,69 @@ public static class PortalmakerSystem
         }
     }
 
+    public static bool CanPlayerUsePortal(PlayerControl player)
+    {
+        if (player == null || player.Data == null || player.Data.IsDead) return false;
+
+        var opts = OptionGroupSingleton<PortalmakerOptions>.Instance;
+        var permission = opts.WhoCanUse;
+
+        if (permission == PortalUsageType.Everyone) return true;
+
+        var role = player.Data.Role;
+        if (role == null) return false;
+
+        ModdedRoleTeams team;
+        if (role is ITownOfUsRole touRole)
+        {
+            team = touRole.Team;
+        }
+        else
+        {
+            team = role.IsImpostor ? ModdedRoleTeams.Impostor : ModdedRoleTeams.Crewmate;
+        }
+
+        if (team == ModdedRoleTeams.Crewmate) return true;
+
+        if (team == ModdedRoleTeams.Impostor)
+        {
+            return permission == PortalUsageType.Everyone || permission == PortalUsageType.CrewmateAndImpostor;
+        }
+
+        if (team == ModdedRoleTeams.Custom)
+        {
+            return permission == PortalUsageType.Everyone || permission == PortalUsageType.CrewmateAndNeutral;
+        }
+
+        return false;
+    }
+
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
     public static class GameEndPatch
+    {
+        public static void Postfix() => Reset();
+    }
+
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
+    public static class GameStartPatch
+    {
+        public static void Postfix() => Reset();
+    }
+
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
+    public static class IntroImpostorStartPatch
+    {
+        public static void Postfix() => Reset();
+    }
+
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
+    public static class IntroCrewmateStartPatch
+    {
+        public static void Postfix() => Reset();
+    }
+
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
+    public static class LobbyStartPatch
     {
         public static void Postfix() => Reset();
     }

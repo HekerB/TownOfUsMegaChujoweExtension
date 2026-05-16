@@ -251,11 +251,8 @@ public static class EgotistExtendedPatch
     public static void VentCanUsePostfix(Vent __instance, NetworkedPlayerInfo pc, ref bool canUse, ref bool couldUse, ref float __result)
     {
         if (pc?.Object == null) return;
-        if (pc.Object.gameObject.GetComponent<ModifierComponent>() == null) return;
-        if (!pc.Object.TryGetModifier<EgotistModifier>(out _)) return;
-        if (!OptionGroupSingleton<EgotistExtendedOptions>.Instance.CanVent) return;
 
-        if (pc.Object.AmOwner && _onCooldown && !pc.Object.inVent)
+        if (VentOccupancySystem.IsBlocked(__instance.Id) && !(pc.Object.inVent && Vent.currentVent != null && __instance.Id == Vent.currentVent.Id))
         {
             canUse = false;
             couldUse = false;
@@ -263,7 +260,11 @@ public static class EgotistExtendedPatch
             return;
         }
 
-        if (VentOccupancySystem.IsBlocked(__instance.Id) && !pc.Object.inVent)
+        if (pc.Object.gameObject.GetComponent<ModifierComponent>() == null) return;
+        if (!pc.Object.TryGetModifier<EgotistModifier>(out _)) return;
+        if (!OptionGroupSingleton<EgotistExtendedOptions>.Instance.CanVent) return;
+
+        if (pc.Object.AmOwner && _onCooldown && !pc.Object.inVent)
         {
             canUse = false;
             couldUse = false;

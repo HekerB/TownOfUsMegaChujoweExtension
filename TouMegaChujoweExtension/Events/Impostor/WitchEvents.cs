@@ -49,7 +49,7 @@ public static class WitchEvents
     }
 
     [RegisterEvent]
-    public static void StartMeetingEventHandler()
+    public static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
         _meetingCount++;
 

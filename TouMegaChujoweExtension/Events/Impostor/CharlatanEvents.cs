@@ -25,7 +25,7 @@ public static class CharlatanEvents
     }
 
     [RegisterEvent]
-    public static void GameEndEventHandler()
+    public static void GameEndEventHandler(GameEndEvent @event)
     {
         CharlatanConcealSystem.ClearAll();
         CharlatanDeceiveSystem.ClearAll();

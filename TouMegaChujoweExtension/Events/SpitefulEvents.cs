@@ -24,7 +24,7 @@ public static class SpitefulEvents
     private static readonly Dictionary<byte, HashSet<byte>> SpitefulVoters = [];
 
     [RegisterEvent]
-    public static void GameEndEventHandler()
+    public static void GameEndEventHandler(GameEndEvent @event)
     {
         SpitefulVoters.Clear();
 
@@ -43,7 +43,7 @@ public static class SpitefulEvents
     }
 
     [RegisterEvent]
-    public static void RoundStartEventHandler()
+    public static void RoundStartEventHandler(RoundStartEvent @event)
     {
         SpitefulVoters.Clear();
 
@@ -110,7 +110,7 @@ public static class SpitefulEvents
     }
 
     [RegisterEvent]
-    public static void StartMeetingEventHandler()
+    public static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
         foreach (var player in PlayerControl.AllPlayerControls)
         {

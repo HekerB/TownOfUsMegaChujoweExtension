@@ -15,7 +15,7 @@ namespace TouMegaChujoweExtension.Events.Neutral;
 public static class SerialKillerEvents
 {
     [RegisterEvent]
-    public static void RoundStartHandler()
+    public static void RoundStartHandler(RoundStartEvent @event)
     {
         ModifierUtils.GetActiveModifiers<SerialKillerManiacModifier>().Do(x => x.OnRoundStart());
     }

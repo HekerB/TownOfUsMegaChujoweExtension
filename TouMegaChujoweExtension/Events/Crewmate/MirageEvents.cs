@@ -34,13 +34,13 @@ public static class MirageEvents
     }
 
     [RegisterEvent]
-    public static void CompleteTaskEvent()
+    public static void CompleteTaskEvent(CompleteTaskEvent @event)
     {
         // Task reward removed as per Mirage rework
     }
 
     [RegisterEvent]
-    public static void OnMeetingStart()
+    public static void OnMeetingStart(StartMeetingEvent @event)
     {
         var localPlayer = PlayerControl.LocalPlayer;
         if (localPlayer == null || localPlayer.Data?.Role is not MirageRole)

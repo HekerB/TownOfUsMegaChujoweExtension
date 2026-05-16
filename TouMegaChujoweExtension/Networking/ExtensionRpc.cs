@@ -89,5 +89,6 @@ public enum ExtensionRpc : uint
     ArcanistDrawCard = 102,
     GardenerPlaceGarden = 103,
     PortalmakerPlacePortal = 104,
-    GardenerAttackNotify = 107
+    GardenerAttackNotify = 107,
+    GardenerClearGarden = 108
 }

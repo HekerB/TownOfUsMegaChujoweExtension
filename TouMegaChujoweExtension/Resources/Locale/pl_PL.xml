@@ -1210,7 +1210,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <!-- Arcanist -->
   <string name="ExtensionRoleArcanist">Arcanista</string>
   <string name="ExtensionRoleArcanistIntroBlurb">Wyciągaj karty Tarota, aby wpłynąć na swój los.</string>
-  <string name="ExtensionRoleArcanistTabDescription">Wyciągaj karty ze swojej talii. Każda karta ma unikalny efekt - niektóre dobre, niektóre złe. Efekty obejmują zmiany roli (Pajac, Wieszcz, Łowca Nagród, Papież, Prawnik), tymczasowe lub stałe modyfikatory (Prędkość, Wizja, Oślepienie, Pijany, Pasowanie) lub natychmiastową śmierć.</string>
+  <string name="ExtensionRoleArcanistTabDescription">Wyciągnaj karty ze swojej talii. Każda karta ma unikalny efekt - niektóre dobre, niektóre złe.\%nl\%Efekty obejmują zmiany roli (Pajac, Wieszcz, Łowca Nagród, Papież, Prawnik),\%nl\%tymczasowe lub stałe modyfikatory (Prędkość, Wizja, Oślepienie, Pijany, Pasowanie) lub natychmiastową śmierć.</string>
   <string name="ExtensionRoleArcanistWikiDescription">Arcanista to Neutralna rola (Outlier), która posiada talię kart Tarota. Wyciągając kartę, aktywuje on różnorodne efekty – od pomocnych wzmocnień wzroku po nagłą śmierć.\%nl\%Wygrywa, jeśli przeżyje do końca gry.\%nl\%&lt;color=#F1C40F&gt;Dostępne Karty:&lt;/color&gt;\%nl\%• &lt;color=#FFD700&gt;Głupiec:&lt;/color&gt; Zostań Pajacem.\%nl\%• &lt;color=#FFD700&gt;Mag:&lt;/color&gt; Oślepienie nie-morderców (10s).\%nl\%• &lt;color=#FFD700&gt;Kapłanka:&lt;/color&gt; Zostań Wieszczem.\%nl\%• &lt;color=#FFD700&gt;Cesarzowa:&lt;/color&gt; Pasowanie (Monarcha).\%nl\%• &lt;color=#FFD700&gt;Cesarz:&lt;/color&gt; Upicie się (Modyfikator).\%nl\%• &lt;color=#FFD700&gt;Hierofant:&lt;/color&gt; Losowa rola Neutralna Łagodna.\%nl\%• &lt;color=#FFD700&gt;Kochankowie:&lt;/color&gt; Połączenie ze złym graczem.\%nl\%• &lt;color=#FFD700&gt;Rydwan:&lt;/color&gt; Prędkość (30s).\%nl\%• &lt;color=#FFD700&gt;Siła:&lt;/color&gt; 20 procent szybsze karty.\%nl\%• &lt;color=#FFD700&gt;Pustelnik:&lt;/color&gt; Stała prędkość.\%nl\%• &lt;color=#FFD700&gt;Koło Fortuny:&lt;/color&gt; Losowy Zabójca lub Amnesiac.\%nl\%• &lt;color=#FFD700&gt;Sprawiedliwość:&lt;/color&gt; Ujawnienie się na czacie.\%nl\%• &lt;color=#FFD700&gt;Wisielec:&lt;/color&gt; Zostań Łowcą Nagród.\%nl\%• &lt;color=#FFD700&gt;Śmierć:&lt;/color&gt; Samobójstwo.\%nl\%• &lt;color=#FFD700&gt;Umiarkowanie:&lt;/color&gt; 20 procent wolniejsze karty.\%nl\%• &lt;color=#FFD700&gt;Diabeł:&lt;/color&gt; Zostań Prawnikiem.\%nl\%• &lt;color=#FFD700&gt;Wieża:&lt;/color&gt; Stałe spowolnienie.\%nl\%• &lt;color=#FFD700&gt;Gwiazda:&lt;/color&gt; Stała wizja.\%nl\%• &lt;color=#FFD700&gt;Księżyc:&lt;/color&gt; Oślepienie siebie (30s).\%nl\%• &lt;color=#FFD700&gt;Słońce:&lt;/color&gt; Wizja (30s).\%nl\%• &lt;color=#FFD700&gt;Sąd Ostateczny:&lt;/color&gt; Zostań Papieżem.\%nl\%• &lt;color=#FFD700&gt;Świat:&lt;/color&gt; Otrzymaj Death Note.</string>
   <string name="ExtensionRoleArcanistDraw">Wyciągnij kartę</string>
   <string name="ExtensionRoleArcanistDrawWikiDescription">Wyciągnij kartę Tarota ze swojej talii i aktywuj jej efekt.</string>
@@ -1291,6 +1291,8 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionGardenerAttackKilledFeedback">Rola {0} zabiła kogoś w Twoim ogrodzie!</string>
   <string name="ExtensionGardenerAttackBlocked">Atak został zablokowany w Twoim ogrodzie!</string>
   <string name="ExtensionGardenerAttackBlockedFeedback">Atak roli {0} został zablokowany w Twoim ogrodzie!</string>
+  <string name="ExtensionModifierGardenerProtected">Ochrona Ogrodu</string>
+  <string name="ExtensionModifierGardenerProtectedDescription">Jesteś pod ochroną Ogrodu!</string>
 
   <!-- Portalmaker -->
   <string name="ExtensionRolePortalmaker">Portalomistrz</string>
@@ -1306,6 +1308,11 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionPortalmakerDuration">Czas trwania portalu</string>
   <string name="ExtensionOptionPortalmakerStayAfterMeeting">Pozostaje po spotkaniu</string>
   <string name="ExtensionOptionPortalmakerPlacementDelay">Opóźnienie stawiania</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUse">Kto może używać portali</string>
+  <string name="PortalUsageTypeCrewmateOnly">Tylko Załoga</string>
+  <string name="PortalUsageTypeCrewmateAndNeutral">Załoga + Neutralni</string>
+  <string name="PortalUsageTypeCrewmateAndImpostor">Załoga + Impostorzy</string>
+  <string name="PortalUsageTypeEveryone">Wszyscy</string>
   <string name="TeleportModeInteraction">Interakcja</string>
   <string name="TeleportModeAutomatic">Automatycznie</string>
 </resources>

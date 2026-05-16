@@ -13,6 +13,14 @@ public enum TeleportMode
     Automatic
 }
 
+public enum PortalUsageType
+{
+    CrewmateOnly,
+    CrewmateAndNeutral,
+    CrewmateAndImpostor,
+    Everyone
+}
+
 public sealed class PortalmakerOptions : AbstractOptionGroup<PortalmakerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRolePortalmaker", "Portalmaker");
@@ -37,4 +45,7 @@ public sealed class PortalmakerOptions : AbstractOptionGroup<PortalmakerRole>
 
     [ModdedNumberOption("ExtensionOptionPortalmakerPlacementDelay", 0f, 10f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float PlacementDelay { get; set; } = 2f;
+
+    [ModdedEnumOption("ExtensionOptionPortalmakerWhoCanUse", typeof(PortalUsageType))]
+    public PortalUsageType WhoCanUse { get; set; } = PortalUsageType.CrewmateOnly;
 }

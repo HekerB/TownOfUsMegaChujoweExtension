@@ -27,13 +27,13 @@ public static class HackerEvents
     }
 
     [RegisterEvent]
-    public static void GameEndEventHandler()
+    public static void GameEndEventHandler(GameEndEvent @event)
     {
         HackerSystem.ResetAll();
     }
 
     [RegisterEvent]
-    public static void StartMeetingEventHandler()
+    public static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
         if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost && PlayerControl.LocalPlayer != null)
         {

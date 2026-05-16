@@ -28,12 +28,12 @@ public sealed class PortalmakerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
     public Color RoleColor => TouExtensionColors.Portalmaker;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
-    public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
+    public RoleAlignment RoleAlignment => RoleAlignment.CrewmateSupport;
 
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = false,
-        Icon = TownOfUs.Assets.TouRoleIcons.Traitor, // Placeholder
+        Icon = TouExtensionIcons.PortalmakerRoleIcon,
         IntroSound = TouAudio.ScientistIntroSound
     };
 
@@ -43,11 +43,11 @@ public sealed class PortalmakerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
         new(
             TouLocale.Get("ExtensionRolePortalmakerPlace", "Place Portal"),
             TouLocale.GetParsed("ExtensionRolePortalmakerPlaceWikiDescription"),
-            TouRoleIcons.Traitor), // Placeholder
+            TouExtensionCrewAssets.PortalPlaceButtonSprite),
         new(
             TouLocale.Get("ExtensionRolePortalmakerTeleport", "Teleport"),
             TouLocale.GetParsed("ExtensionRolePortalmakerTeleportWikiDescription"),
-            TouAssets.VentSprite)
+            TouExtensionCrewAssets.PortalSprite)
     ];
 
     public string GetAdvancedDescription()

@@ -14,7 +14,7 @@ namespace TouMegaChujoweExtension.Events.Neutral;
 public static class PelicanEvents
 {
     [RegisterEvent]
-    public static void StartMeetingEventHandler()
+    public static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
         PelicanSystem.StopSpectatingPelican();
         PelicanSystem.HideSwallowedNotification();

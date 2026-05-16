@@ -106,7 +106,7 @@ public sealed class ArcanistDrawButton : TownOfUsRoleButton<ArcanistRole>
                 else
                 {
                     var otherRoles = new List<ushort> {
-                        RoleId.Get<TouMegaChujoweExtension.Roles.Crewmate.DoctorRole>(),
+                        RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Crewmate.DoctorRole>(),
                         (ushort)RoleTypes.Engineer,
                         RoleId.Get<MayorRole>()
                     };

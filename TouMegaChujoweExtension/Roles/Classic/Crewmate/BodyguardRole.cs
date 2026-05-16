@@ -287,7 +287,8 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
             return;
         }
 
-        Logger<TouMegaChujoweExtensionPlugin>.Info($"[Bodyguard] Shield on {guarded.Data.PlayerName} attacked by {attacker.Data.PlayerName}");
+        if (guarded == null || attacker == null) return;
+        Info($"[Bodyguard] Shield on {guarded.Data.PlayerName} attacked by {attacker.Data.PlayerName}");
         role.OnGuardedAttacked(attacker);
 
         if (attacker != null && attacker.AmOwner)
@@ -358,7 +359,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     {
         if (player == null || !player.AmOwner) return;
         var color = TouExtensionColors.ShieldFlashes.BodyguardFlash;
-        Logger<TouMegaChujoweExtensionPlugin>.Info($"[Bodyguard] Triggering shield flash for {player.Data.PlayerName}");
+        Info($"[Bodyguard] Triggering shield flash for {player.Data.PlayerName}");
         Coroutines.Start(CoFlash(color));
     }
 

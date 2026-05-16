@@ -17,6 +17,7 @@ using TownOfUs.Utilities;
 using UnityEngine;
 using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Networking;
+using TouMegaChujoweExtension.Assets;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
@@ -29,12 +30,12 @@ public sealed class GardenerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
     public Color RoleColor => TouExtensionColors.Gardener;
     public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
-    public RoleAlignment RoleAlignment => RoleAlignment.CrewmatePower;
+    public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
 
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = false,
-        Icon = TouRoleIcons.Traitor,
+        Icon = TouExtensionCrewAssets.GardenerButtonSprite,
         IntroSound = TouAudio.ScientistIntroSound,
     };
 
@@ -44,7 +45,7 @@ public sealed class GardenerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         new(
             TouLocale.Get("ExtensionRoleGardenerGarden", "Garden"),
             TouLocale.GetParsed("ExtensionRoleGardenerGardenWikiDescription"),
-            TouRoleIcons.Traitor)
+            TouExtensionCrewAssets.GardenerButtonSprite)
     ];
 
     public string GetAdvancedDescription()
@@ -80,8 +81,15 @@ public sealed class GardenerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
 
 
     [MethodRpc((uint)ExtensionRpc.GardenerAttackNotify)]
-    public static void RpcGardenerAttackNotify(byte ownerId, byte attackerId, bool killed)
+    public static void RpcGardenerAttackNotify(PlayerControl owner, byte attackerId, bool killed)
     {
-        GardenerSystem.HandleAttackNotification(ownerId, attackerId, killed);
+        if (owner == null) return;
+        GardenerSystem.RecordAttackLog(owner.PlayerId, attackerId, killed);
+    }
+
+    [MethodRpc((uint)ExtensionRpc.GardenerClearGarden)]
+    public static void RpcClearGarden(PlayerControl player, byte ownerId)
+    {
+        GardenerSystem.RemoveGarden(ownerId);
     }
 }
