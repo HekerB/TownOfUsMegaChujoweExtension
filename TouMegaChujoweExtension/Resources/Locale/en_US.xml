@@ -1235,6 +1235,91 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionJackalRecruitIntroDescription">You have been recruited by &lt;jackal&gt;.</string>
   <string name="ExtensionJackalRecruitIntroDescriptionAnonymized">You have been recruited by the Infiltrator. Protect them and work with other recruits.</string>
   <string name="ExtensionSidekickRecruitedAlert">Recruited!</string>
-  <string name="ExtensionSidekickRecruitedChatMsg">You have been recruited by the Infiltrator! You are now a Recruit.</string>
+  <string name="ExtensionSidekickRecruitedChatMsg">You have been recruited by the Infiltrator! You are now a Recruit. Your goal has changed - you only win with the Infiltrator.</string>
+
+  <!-- Arcanist -->
+  <string name="ExtensionRoleArcanist">Arcanist</string>
+  <string name="ExtensionRoleArcanistIntroBlurb">Draw magical cards to change the tide of the game.</string>
+  <string name="ExtensionRoleArcanistTabDescription">You have a deck of cards. Each card has a different effect. Use them wisely to eliminate targets.</string>
+  <string name="ExtensionRoleArcanistWikiDescription">The Arcanist is a Neutral Killing role that uses magical cards to eliminate opponents or buff themselves.</string>
+
+  <!-- Portalmaker -->
+  <string name="ExtensionRolePortalmaker">Portalmaker</string>
+  <string name="ExtensionRolePortalmakerIntroBlurb">Create portals to travel quickly across the map.</string>
+  <string name="ExtensionRolePortalmakerTabDescription">You can place two portals. Entering one teleports you to the other.</string>
+  <string name="ExtensionRolePortalmakerWikiDescription">The Portalmaker is a Crewmate role that can link two points on the map with portals accessible to all crewmates.</string>
+
+  <!-- Gardener -->
+  <string name="ExtensionRoleGardener">Gardener</string>
+  <string name="ExtensionRoleGardenerIntroBlurb">Plant gardens that grant bonuses to crewmates.</string>
+  <string name="ExtensionRoleGardenerTabDescription">You can plant a garden. Crewmates inside the garden receive bonuses (e.g., vision).</string>
+  <string name="ExtensionRoleGardenerWikiDescription">The Gardener is a Crewmate Support role that creates protective and supportive zones on the map.</string>
+
+  <!-- Arcanist Options -->
+  <string name="ExtensionOptionArcanistCooldown">Card Cooldown</string>
+  <string name="ExtensionOptionArcanistDeckSize">Deck Size</string>
+  <string name="ExtensionOptionArcanistAllowDuplicateRoles">Allow Duplicate Roles</string>
+  <string name="ExtensionOptionArcanistWeight00">Weight: The Fool</string>
+  <string name="ExtensionOptionArcanistWeight01">Weight: The Magician</string>
+  <string name="ExtensionOptionArcanistWeight02">Weight: The High Priestess</string>
+  <string name="ExtensionOptionArcanistWeight03">Weight: The Empress</string>
+  <string name="ExtensionOptionArcanistWeight04">Weight: The Emperor</string>
+  <string name="ExtensionOptionArcanistWeight05">Weight: The Hierophant</string>
+  <string name="ExtensionOptionArcanistWeight06">Weight: The Lovers</string>
+  <string name="ExtensionOptionArcanistWeight07">Weight: The Chariot</string>
+  <string name="ExtensionOptionArcanistWeight08">Weight: Strength</string>
+  <string name="ExtensionOptionArcanistWeight09">Weight: The Hermit</string>
+  <string name="ExtensionOptionArcanistWeight10">Weight: Wheel of Fortune</string>
+  <string name="ExtensionOptionArcanistWeight11">Weight: Justice</string>
+  <string name="ExtensionOptionArcanistWeight12">Weight: The Hanged Man</string>
+  <string name="ExtensionOptionArcanistWeight13">Weight: Death</string>
+  <string name="ExtensionOptionArcanistWeight14">Weight: Temperance</string>
+  <string name="ExtensionOptionArcanistWeight15">Weight: The Devil</string>
+  <string name="ExtensionOptionArcanistWeight16">Weight: The Tower</string>
+  <string name="ExtensionOptionArcanistWeight17">Weight: The Star</string>
+  <string name="ExtensionOptionArcanistWeight18">Weight: The Moon</string>
+  <string name="ExtensionOptionArcanistWeight19">Weight: The Sun</string>
+  <string name="ExtensionOptionArcanistWeight20">Weight: Judgement</string>
+  <string name="ExtensionOptionArcanistWeight21">Weight: The World</string>
+
+  <!-- Portalmaker Options -->
+  <string name="ExtensionOptionPortalmakerCooldown">Portal Cooldown</string>
+  <string name="ExtensionOptionPortalmakerRadius">Portal Radius</string>
+  <string name="ExtensionOptionPortalmakerTeleportCooldown">Teleport Cooldown</string>
+  <string name="ExtensionOptionPortalmakerTeleportMode">Teleport Mode</string>
+  <string name="ExtensionOptionPortalmakerTeleportModeEnumInteraction">Interaction</string>
+  <string name="ExtensionOptionPortalmakerTeleportModeEnumAutomatic">Automatic</string>
+  <string name="ExtensionOptionPortalmakerDuration">Portal Duration (0=inf.)</string>
+  <string name="ExtensionOptionPortalmakerStayAfterMeeting">Stay After Meeting</string>
+  <string name="ExtensionOptionPortalmakerPlacementDelay">Placement Delay</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUse">Who Can Use</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateOnly">Crewmate Only</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateAndNeutral">Crewmate &amp; Neutral</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateAndImpostor">Crewmate &amp; Impostor</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUseEnumEveryone">Everyone</string>
+
+  <!-- Gardener Options -->
+  <string name="ExtensionOptionGardenerRadius">Garden Radius</string>
+  <string name="ExtensionOptionGardenerCooldown">Garden Cooldown</string>
+  <string name="ExtensionOptionGardenerDuration">Garden Duration</string>
+  <string name="ExtensionOptionGardenerCanKillInGarden">Can Kill In Garden</string>
+  <string name="ExtensionOptionGardenerFeedback">Visual Feedback</string>
+
+  <!-- Jackal Rework Options -->
+  <string name="ExtensionOptionJackalKillCooldown">Kill Cooldown</string>
+  <string name="ExtensionOptionJackalKillDistance">Kill Distance</string>
+  <string name="ExtensionOptionJackalCanVent">Can Vent</string>
+  <string name="ExtensionOptionJackalShieldWhileSidekicksAlive">Shield while Recruits alive</string>
+  <string name="ExtensionOptionJackalNotifySidekickDeath">Notify on Recruit death</string>
+  <string name="ExtensionOptionJackalShowArrowToSidekicks">Arrow to allies</string>
+  <string name="ExtensionOptionJackalLifelinkDeath">Lifelink Death with Recruits</string>
+  <string name="ExtensionOptionGeneralPreventVampiresWithJackal">Prevent Vampires with Infiltrator</string>
+  <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Recruits see each other roles</string>
+  
+  <!-- Alerts -->
+  <string name="ExtensionJackalShieldLostAlert">Your shield has been depleted!</string>
+  <string name="ExtensionJackalSidekickDiedAlert">{0} has died!</string>
+  <string name="ExtensionJackalShieldModifierDesc">Protected by Recruits</string>
+  <string name="ExtensionSidekickRecruitedChatMsg">You have been recruited by the Infiltrator! You are now a Recruit. Your goal has changed - you only win with the Infiltrator.</string>
 </resources>
 

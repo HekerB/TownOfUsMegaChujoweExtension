@@ -13,6 +13,12 @@ using TownOfUs.Utilities;
 using MiraAPI.GameOptions;
 using TownOfUs;
 using MiraAPI.GameEnd;
+using System.Collections.Generic;
+using System.Linq;
+using System;
+using HarmonyLib;
+using TouMegaChujoweExtension.Roles.Classic.Neutral;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
 
 namespace TouMegaChujoweExtension.Modifiers.Neutral;
 
@@ -55,38 +61,42 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
                MiscUtils.AppendOptionsText(GetType());
     }
 
-    public override void OnDeactivate()
-    {
-        base.OnDeactivate();
-
-        // Find the Jackal this recruit was tied to
-        var jackalPlayer = PlayerControl.AllPlayerControls.ToArray()
-            .FirstOrDefault(p => p != null && p.Pointer != IntPtr.Zero && p.PlayerId == JackalId);
-
-        if (jackalPlayer != null)
-        {
-            var jackal = jackalPlayer.GetRole<JackalRole>();
-            if (jackal != null)
-            {
-                jackal.OnRecruitDie(); // Count and trigger vengeance if needed
-            }
-        }
-    }
-
     public override void OnActivate()
     {
         base.OnActivate();
         
         var player = Player;
-        if (player == null || JackalId != 255) return;
+        if (player == null) return;
 
         // Use the synced dictionary (assigned by host and synced via RPC)
-        if (Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(player.PlayerId, out var jackalId))
+        if (JackalId == 255 && Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(player.PlayerId, out var jackalId))
         {
             JackalId = jackalId;
             UnityEngine.Debug.Log($"[TOUMCE] Sidekick {player.Data?.PlayerName} discovered their Jackal: {jackalId}");
         }
+
+        if (player.AmOwner && !WasNotified && JackalId != 255)
+        {
+            WasNotified = true;
+            Reactor.Utilities.Coroutines.Start(DelayedNotification());
+        }
     }
+
+    private System.Collections.IEnumerator DelayedNotification()
+    {
+        yield return new WaitForSeconds(3f);
+        
+        // Add to chat as feedback
+        if (Player != null)
+        {
+            HudManager.Instance.Chat.AddChat(Player, TouLocale.Get("ExtensionSidekickRecruitedChatMsg"));
+        }
+        
+        MiraAPI.Utilities.Helpers.CreateAndShowNotification(TouLocale.Get("ExtensionSidekickRecruitedAlert"), TouExtensionColors.Jackal, spr: TouRoleIcons.Jackal.LoadAsset()).AdjustNotification();
+        Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
+    }
+
+    private static readonly Dictionary<byte, ArrowBehaviour> _arrows = new();
 
     public override void Update()
     {
@@ -97,7 +107,87 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
             if (Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(Player.PlayerId, out var jackalId))
             {
                 JackalId = jackalId;
-                UnityEngine.Debug.Log($"[TOUMCE] Sidekick {Player.Data?.PlayerName} finally discovered their Jackal: {jackalId}");
+            }
+        }
+
+        if (Player == null || !Player.AmOwner || Player.Data.IsDead) 
+        {
+            ClearArrows();
+            return;
+        }
+
+        var options = OptionGroupSingleton<JackalOptions>.Instance;
+        if (!options.ShowArrowToSidekicks)
+        {
+            ClearArrows();
+            return;
+        }
+
+        UpdateArrows();
+    }
+
+    [HideFromIl2Cpp]
+    private void UpdateArrows()
+    {
+        var teamMembers = PlayerControl.AllPlayerControls.ToArray()
+            .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.PlayerId != Player.PlayerId &&
+                        (p.PlayerId == JackalId || (p.GetModifier<SidekickModifier>() != null && p.GetModifier<SidekickModifier>().JackalId == JackalId)))
+            .ToList();
+
+        // Remove old arrows
+        var currentIds = teamMembers.Select(p => p.PlayerId).ToHashSet();
+        var toRemove = _arrows.Keys.Where(id => !currentIds.Contains(id)).ToList();
+        foreach (var id in toRemove)
+        {
+            if (_arrows.TryGetValue(id, out var arrow)) 
+            {
+                if (arrow != null && arrow.gameObject != null) UnityEngine.Object.Destroy(arrow.gameObject);
+            }
+            _arrows.Remove(id);
+        }
+
+        // Add/Update arrows
+        foreach (var member in teamMembers)
+        {
+            if (!_arrows.ContainsKey(member.PlayerId))
+            {
+                var arrow = MiscUtils.CreateArrow(Player.transform, TouExtensionColors.Jackal);
+                _arrows[member.PlayerId] = arrow;
+            }
+            
+            var targetArrow = _arrows[member.PlayerId];
+            if (targetArrow != null)
+            {
+                targetArrow.target = member.transform.position;
+                targetArrow.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    [HideFromIl2Cpp]
+    private void ClearArrows()
+    {
+        foreach (var arrow in _arrows.Values)
+        {
+            if (arrow != null && arrow.gameObject != null) UnityEngine.Object.Destroy(arrow.gameObject);
+        }
+        _arrows.Clear();
+    }
+
+    public override void OnDeactivate()
+    {
+        base.OnDeactivate();
+        ClearArrows();
+        
+        var jackalPlayer = PlayerControl.AllPlayerControls.ToArray()
+            .FirstOrDefault(p => p != null && p.Pointer != IntPtr.Zero && p.PlayerId == JackalId);
+
+        if (jackalPlayer != null)
+        {
+            var jackal = jackalPlayer.GetRole<JackalRole>();
+            if (jackal != null)
+            {
+                jackal.OnRecruitDie();
             }
         }
     }
@@ -117,5 +207,37 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
         }
 
         return false;
+    }
+}
+
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
+public static class SidekickFriendlyFirePatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix(PlayerControl __instance, PlayerControl target)
+    {
+        if (__instance == null || target == null) return true;
+
+        // Check if killer is a Sidekick
+        var killerSidekick = __instance.GetModifier<SidekickModifier>();
+        if (killerSidekick != null)
+        {
+            // Cannot kill their own Jackal
+            if (target.PlayerId == killerSidekick.JackalId) return false;
+            
+            // Cannot kill other Sidekicks of same Jackal
+            var targetSidekick = target.GetModifier<SidekickModifier>();
+            if (targetSidekick != null && targetSidekick.JackalId == killerSidekick.JackalId) return false;
+        }
+
+        // Check if killer is a Jackal
+        if (__instance.GetRole<JackalRole>() != null)
+        {
+            // Cannot kill their own Sidekicks
+            var targetSidekick = target.GetModifier<SidekickModifier>();
+            if (targetSidekick != null && targetSidekick.JackalId == __instance.PlayerId) return false;
+        }
+
+        return true;
     }
 }

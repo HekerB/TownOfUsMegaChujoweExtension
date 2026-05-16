@@ -25,6 +25,10 @@ using MiraAPI.GameEnd;
 using TouMegaChujoweExtension.GameOver;
 using TownOfUs.Patches;
 using TouMegaChujoweExtension.Buttons.Classic.Neutral;
+using TouMegaChujoweExtension.Modifiers.Neutral;
+using TouMegaChujoweExtension.Options;
+using HarmonyLib;
+using System.Collections.Generic;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
@@ -152,7 +156,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                 {
                     msg += "\n" + TouLocale.Get("ExtensionJackalShieldLostAlert");
                 }
-                Helpers.CreateAndShowNotification(msg, TouExtensionColors.Jackal, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Jackal.LoadAsset()).AdjustNotification();
+                MiraAPI.Utilities.Helpers.CreateAndShowNotification(msg, TouExtensionColors.Jackal, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Jackal.LoadAsset()).AdjustNotification();
                 Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
             }
         }
@@ -169,5 +173,72 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     {
         return TouLocale.GetParsed("ExtensionRoleJackalWikiDescription") +
                MiscUtils.AppendOptionsText(GetType());
+    }
+
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Pointer == IntPtr.Zero || Player.Data == null || Player.Data.IsDead) return;
+
+        // Manage Shield Modifier
+        if (OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
+        {
+            var sidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
+                .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == Player.PlayerId);
+
+            if (sidekicksAlive)
+            {
+                if (!Player.HasModifier<JackalShieldModifier>())
+                {
+                    Player.AddModifier<JackalShieldModifier>();
+                }
+            }
+            else
+            {
+                if (Player.HasModifier<JackalShieldModifier>())
+                {
+                    Player.RemoveModifier<JackalShieldModifier>();
+                }
+            }
+        }
+    }
+}
+
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]
+public static class JackalDeathLifelinkPatch
+{
+    [HarmonyPostfix]
+    public static void Postfix(PlayerControl __instance, DeathReason reason)
+    {
+        if (__instance == null || !AmongUsClient.Instance.AmHost) return;
+
+        // If Jackal dies, kill their Sidekicks
+        if (__instance.GetRole<JackalRole>() != null)
+        {
+            if (OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
+            {
+                var sidekicks = PlayerControl.AllPlayerControls.ToArray()
+                    .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == __instance.PlayerId);
+
+                foreach (var sk in sidekicks)
+                {
+                    sk.RpcCustomMurder(__instance);
+                }
+            }
+        }
+    }
+}
+
+[HarmonyPatch(typeof(TouRoleManagerPatches), "AssignRoles")]
+public static class JackalVampireExclusionPatch
+{
+    [HarmonyPrefix]
+    public static void Prefix()
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        
+        var options = OptionGroupSingleton<ExtensionGeneralOptions>.Instance;
+        if (!options.PreventVampiresWithJackal) return;
+
+        // Logic handled in DraftSystem or other patches
     }
 }

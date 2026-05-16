@@ -51,6 +51,13 @@ public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, Player
     {
         var local = PlayerControl.LocalPlayer;
         if (local == null || local.Data == null || local.Data.IsDead) return false;
+
+        // Check if any sidekicks are alive
+        var sidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
+            .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == local.PlayerId);
+
+        if (sidekicksAlive) return false;
+
         if (AmongUsClient.Instance == null || AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return false;
         if (MeetingHud.Instance != null) return false;
 

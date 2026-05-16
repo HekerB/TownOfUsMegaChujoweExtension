@@ -18,8 +18,8 @@ public static class TouExtensionColors
     public static Color Falcon => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(255, 255, 255, 255);
     public static Color Doctor => Trapper;
     public static Color Arcanist => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(128, 0, 128, 255); // Purple
-    public static Color Portalmaker => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(0, 255, 255, 255); // Cyan
-    public static Color Gardener => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(34, 139, 34, 255); // Forest Green
+    public static Color Portalmaker => SerialKiller;
+    public static Color Gardener => TownOfUsColors.Sonar;
 
     //neutrals
     public static Color SerialKiller => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(40, 80, 160, 255);

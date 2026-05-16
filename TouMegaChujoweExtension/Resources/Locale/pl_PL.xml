@@ -1427,7 +1427,92 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionJackalRecruitIntroDescription">Zostałeś zwerbowany przez gracza &lt;jackal&gt;.</string>
   <string name="ExtensionJackalRecruitIntroDescriptionAnonymized">Zostałeś zrekrutowany przez Infiltratora. Chroń go i współpracuj z innymi rekrutami.</string>
   <string name="ExtensionSidekickRecruitedAlert">Zwerbowany!</string>
-  <string name="ExtensionSidekickRecruitedChatMsg">Zostałeś zwerbowany przez Infiltratora! Jesteś teraz jego pomocnikiem.</string>
+  <string name="ExtensionSidekickRecruitedChatMsg">Zostałeś zwerbowany przez Infiltratora! Jesteś teraz jego pomocnikiem. Twój cel gry uległ zmianie - wygrywasz tylko z Infiltratorem.</string>
+
+  <!-- Arcanist -->
+  <string name="ExtensionRoleArcanist">Arcanist</string>
+  <string name="ExtensionRoleArcanistIntroBlurb">Losuj magiczne karty, aby zmieniać losy gry.</string>
+  <string name="ExtensionRoleArcanistTabDescription">Masz talię kart. Każda karta ma inny efekt. Używaj ich mądrze, by eliminować cele.</string>
+  <string name="ExtensionRoleArcanistWikiDescription">Arcanist to rola Neutral Killing, która używa magicznych kart do eliminowania przeciwników lub wspomagania siebie.</string>
+
+  <!-- Portalmaker -->
+  <string name="ExtensionRolePortalmaker">Portalmaker</string>
+  <string name="ExtensionRolePortalmakerIntroBlurb">Twórz portale, aby szybko przemieszczać się po mapie.</string>
+  <string name="ExtensionRolePortalmakerTabDescription">Możesz postawić dwa portale. Wejście w jeden przenosi do drugiego.</string>
+  <string name="ExtensionRolePortalmakerWikiDescription">Portalmaker to rola Crewmate, która może łączyć dwa punkty na mapie portalami dostępnymi dla wszystkich załogantów.</string>
+
+  <!-- Gardener -->
+  <string name="ExtensionRoleGardener">Gardener</string>
+  <string name="ExtensionRoleGardenerIntroBlurb">Sadź ogrody, które dają bonusy załogantom.</string>
+  <string name="ExtensionRoleGardenerTabDescription">Możesz zasadzić ogród. Załoganci wewnątrz ogrodu otrzymują bonusy (np. widzenie).</string>
+  <string name="ExtensionRoleGardenerWikiDescription">Gardener to rola Crewmate Support, która tworzy strefy ochronne i wspomagające na mapie.</string>
+
+  <!-- Arcanist Options -->
+  <string name="ExtensionOptionArcanistCooldown">Czas odnowienia kart</string>
+  <string name="ExtensionOptionArcanistDeckSize">Wielkość talii</string>
+  <string name="ExtensionOptionArcanistAllowDuplicateRoles">Zezwalaj na duplikaty ról</string>
+  <string name="ExtensionOptionArcanistWeight00">Waga: Głupiec</string>
+  <string name="ExtensionOptionArcanistWeight01">Waga: Magik</string>
+  <string name="ExtensionOptionArcanistWeight02">Waga: Arcykapłanka</string>
+  <string name="ExtensionOptionArcanistWeight03">Waga: Cesarzowa</string>
+  <string name="ExtensionOptionArcanistWeight04">Waga: Cesarz</string>
+  <string name="ExtensionOptionArcanistWeight05">Waga: Hierofant</string>
+  <string name="ExtensionOptionArcanistWeight06">Waga: Kochankowie</string>
+  <string name="ExtensionOptionArcanistWeight07">Waga: Rydwan</string>
+  <string name="ExtensionOptionArcanistWeight08">Waga: Siła</string>
+  <string name="ExtensionOptionArcanistWeight09">Waga: Pustelnik</string>
+  <string name="ExtensionOptionArcanistWeight10">Waga: Koło Fortuny</string>
+  <string name="ExtensionOptionArcanistWeight11">Waga: Sprawiedliwość</string>
+  <string name="ExtensionOptionArcanistWeight12">Waga: Wisielec</string>
+  <string name="ExtensionOptionArcanistWeight13">Waga: Śmierć</string>
+  <string name="ExtensionOptionArcanistWeight14">Waga: Umiarkowanie</string>
+  <string name="ExtensionOptionArcanistWeight15">Waga: Diabeł</string>
+  <string name="ExtensionOptionArcanistWeight16">Waga: Wieża</string>
+  <string name="ExtensionOptionArcanistWeight17">Waga: Gwiazda</string>
+  <string name="ExtensionOptionArcanistWeight18">Waga: Księżyc</string>
+  <string name="ExtensionOptionArcanistWeight19">Waga: Słońce</string>
+  <string name="ExtensionOptionArcanistWeight20">Waga: Sąd</string>
+  <string name="ExtensionOptionArcanistWeight21">Waga: Świat</string>
+
+  <!-- Portalmaker Options -->
+  <string name="ExtensionOptionPortalmakerCooldown">Czas odnowienia portalu</string>
+  <string name="ExtensionOptionPortalmakerRadius">Promień portalu</string>
+  <string name="ExtensionOptionPortalmakerTeleportCooldown">Czas odnowienia teleportacji</string>
+  <string name="ExtensionOptionPortalmakerTeleportMode">Tryb teleportacji</string>
+  <string name="ExtensionOptionPortalmakerTeleportModeEnumInteraction">Interakcja</string>
+  <string name="ExtensionOptionPortalmakerTeleportModeEnumAutomatic">Automatyczny</string>
+  <string name="ExtensionOptionPortalmakerDuration">Czas trwania portalu (0=niesk.)</string>
+  <string name="ExtensionOptionPortalmakerStayAfterMeeting">Pozostaje po spotkaniu</string>
+  <string name="ExtensionOptionPortalmakerPlacementDelay">Opóźnienie postawienia</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUse">Kto może używać</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateOnly">Tylko Załoga</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateAndNeutral">Załoga i Neutralni</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateAndImpostor">Załoga i Impostorzy</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUseEnumEveryone">Wszyscy</string>
+
+  <!-- Gardener Options -->
+  <string name="ExtensionOptionGardenerRadius">Promień ogrodu</string>
+  <string name="ExtensionOptionGardenerCooldown">Czas odnowienia ogrodu</string>
+  <string name="ExtensionOptionGardenerDuration">Czas trwania ogrodu</string>
+  <string name="ExtensionOptionGardenerCanKillInGarden">Można zabijać w ogrodzie</string>
+  <string name="ExtensionOptionGardenerFeedback">Informacja zwrotna (wizualna)</string>
+
+  <!-- Jackal Rework Options -->
+  <string name="ExtensionOptionJackalKillCooldown">Czas odnowienia zabójstwa</string>
+  <string name="ExtensionOptionJackalKillDistance">Zasięg zabójstwa</string>
+  <string name="ExtensionOptionJackalCanVent">Może używać wentylacji</string>
+  <string name="ExtensionOptionJackalShieldWhileSidekicksAlive">Tarcza gdy Rekruci żyją</string>
+  <string name="ExtensionOptionJackalNotifySidekickDeath">Powiadom o śmierci Rekruta</string>
+  <string name="ExtensionOptionJackalShowArrowToSidekicks">Strzałka do sojuszników</string>
+  <string name="ExtensionOptionJackalLifelinkDeath">Wspólna śmierć z Rekrutami</string>
+  <string name="ExtensionOptionGeneralPreventVampiresWithJackal">Wyklucz Wampiry przy Infiltratorze</string>
+  <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Rekruci widzą swoje role</string>
+
+  <!-- Alerts -->
+  <string name="ExtensionJackalShieldLostAlert">Twoja tarcza została wyczerpana!</string>
+  <string name="ExtensionJackalSidekickDiedAlert">{0} nie żyje!</string>
+  <string name="ExtensionJackalShieldModifierDesc">Chroniony przez Rekrutów</string>
+  <string name="ExtensionSidekickRecruitedChatMsg">Zostałeś zrekrutowany przez Infiltratora! Jesteś teraz Rekrutem. Twój cel się zmienił - wygrywasz tylko z Infiltratorem.</string>
 </resources>
 
 

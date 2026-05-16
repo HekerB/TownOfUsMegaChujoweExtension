@@ -179,6 +179,9 @@ public static class DraftSystem
         if (!_roleCacheDirty && _roleCache.Count > 0) return;
         _roleCache.Clear();
 
+        var generalOptions = OptionGroupSingleton<ExtensionGeneralOptions>.Instance;
+        bool preventVampires = generalOptions.PreventVampiresWithJackal && MiscUtils.GetAssignData((AmongUs.GameOptions.RoleTypes)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Neutral.JackalRole>()).Count > 0;
+
         var allAlignments = (RoleAlignment[])Enum.GetValues(typeof(RoleAlignment));
         foreach (var alignment in allAlignments)
         {
@@ -188,6 +191,9 @@ public static class DraftSystem
                 if (role.IsDead) continue;
                 if (!CustomRoleUtils.CanSpawnOnCurrentMode(role)) continue;
                 if (roles.Any(r => r.Role == role.Role)) continue;
+
+                // Exclusion logic: No Vampires if Jackal is in the game
+                if (preventVampires && role.Role.ToString().Contains("Vampire")) continue;
 
                 var assignData = MiscUtils.GetAssignData(role.Role);
                 if (assignData.Count <= 0) continue;

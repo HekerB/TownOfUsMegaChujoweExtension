@@ -105,9 +105,9 @@ public static class ExtensionSymbolsPatch
                 // Jackal always sees roles. Sidekicks see roles ONLY if the setting is enabled.
                 bool canSeeRole = localIsJackal || (localIsSidekick && OptionGroupSingleton<TouMegaChujoweExtension.Options.ExtensionGeneralOptions>.Instance.RecruitsKnowEachOther);
 
-                if (canSeeRole && player.PlayerId != local.PlayerId && !deadKnow)
+                if (canSeeRole && player.PlayerId != local.PlayerId && !deadKnow && player.Data?.Role != null)
                 {
-                    var role = RoleManager.Instance.GetRole(player.Data.Role.Role);
+                    var role = RoleManager.Instance?.GetRole(player.Data.Role.Role);
                     var roleColor = (role as ITownOfUsRole)?.RoleColor ?? (role as ICustomRole)?.RoleColor ?? Color.white;
                     string colorHex = ColorUtility.ToHtmlStringRGB(roleColor);
                     

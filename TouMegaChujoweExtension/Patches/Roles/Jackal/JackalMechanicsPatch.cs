@@ -58,11 +58,12 @@ public static class JackalMechanicsPatch
 
     private static bool IsMurderBlocked(PlayerControl killer, PlayerControl victim, MeetingCheck meetingCheck = MeetingCheck.OutsideMeeting)
     {
-        if (killer == null || killer.Pointer == IntPtr.Zero || victim == null || victim.Pointer == IntPtr.Zero) return false;
+        if (killer == null || killer.Pointer == IntPtr.Zero || victim == null || victim.Pointer == IntPtr.Zero || victim.Data == null) return false;
 
         // 1. Team protection (Sidekicks cannot kill each other)
         if (killer.TryGetModifier<SidekickModifier>(out var killerMod) && 
             victim.TryGetModifier<SidekickModifier>(out var victimMod) && 
+            killerMod.JackalId != 255 &&
             killerMod.JackalId == victimMod.JackalId)
         {
             return true;
@@ -76,7 +77,7 @@ public static class JackalMechanicsPatch
             var sidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
                 .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == victim.PlayerId);
 
-            if (sidekicksAlive && OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
+            if (sidekicksAlive && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
             {
                 if (victim.AmOwner)
                 {
