@@ -19,5 +19,5 @@ public sealed class PopeOptions : AbstractOptionGroup<PopeRole>
     public bool CanonizeInteractions { get; set; } = true;
 
     [ModdedNumberOption("ExtensionOptionPopeJudgementDuration", 30f, 180f, 5f, MiraNumberSuffixes.Seconds)]
-    public float JudgementDuration { get; set; } = 120f;
+    public float JudgementDuration { get; set; } = 45f;
 }

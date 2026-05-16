@@ -11,11 +11,11 @@ public static class VampireHunterReportPatch
 {
     private static readonly Vector2 BodyOffset = new(-0.2f, -0.25f);
 
-    private static DeadBody GetClosestReportableBody(PlayerControl player)
+    private static DeadBody? GetClosestReportableBody(PlayerControl player)
     {
         if (player == null || player.Data.IsDead || !GameManager.Instance.CanReportBodies() || Minigame.Instance) return null;
         
-        DeadBody closestBody = null;
+        DeadBody? closestBody = null;
         float closestDistance = player.MaxReportDistance;
         Vector2 playerPos = player.GetTruePosition();
         

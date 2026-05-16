@@ -17,12 +17,15 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> SageRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Sage_Icon.png", 70f);
         public static LoadableAsset<Sprite> VampireHunterRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.VampireHunter_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> DoctorRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Doctor_Role_Icon.png", 100f);
+        public static LoadableAsset<Sprite> ArcanistRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Arcanist_icon.png", 125f);
+        public static LoadableAsset<Sprite> PortalmakerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.PortalMaker.png", 300f);
         //neutrals
         public static LoadableAsset<Sprite> VultureRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Vulture_Icon.png", 200f);
         public static LoadableAsset<Sprite> PelicanRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Pelican_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> PirateRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Pirate_Role_Icon.png", 250f);
         public static LoadableAsset<Sprite> JokerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Joker_Role_Icon.png", 250f);
         public static LoadableAsset<Sprite> PopeRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Pope_Role_Icon.png", 300f);
+
         public static LoadableAsset<Sprite> BountyHunterRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.BountyHunter_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> ShroudRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Shroud_Role_Icon.png", 200f);
         public static LoadableAsset<Sprite> DoppelgangerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Doppelganger_Icon.png", 200f);

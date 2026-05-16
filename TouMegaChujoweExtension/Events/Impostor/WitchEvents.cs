@@ -16,7 +16,7 @@ namespace TouMegaChujoweExtension.Events.Impostor;
 
 public static class WitchEvents
 {
-    private static readonly List<PlayerControl> PendingSpellDeaths = new();
+    private static readonly List<PlayerControl> PendingSpellDeaths = [];
     private static int _meetingCount;
     private static bool _processingDeaths;
 
@@ -85,7 +85,7 @@ public static class WitchEvents
             yield return new WaitForSeconds(0.1f);
         }
 
-        if (!HasAnyWitch() || !HasAnyHexedPlayers())
+        if (!HasAnyWitch() || !HasAnyHexedPlayers()) yield break;
 
         if (!_processingDeaths)
         {
@@ -200,10 +200,7 @@ public static class WitchEvents
                 var meetingsSinceSpell = _meetingCount - modifier.SpellCastMeeting;
                 var meetingsSinceSpellFloat = (float)meetingsSinceSpell;
 
-                if (meetingsSinceSpellFloat >= meetingsUntilDeath)
-                {
-                }
-                else
+                if (meetingsSinceSpellFloat < meetingsUntilDeath)
                 {
                     continue;
                 }
@@ -227,7 +224,6 @@ public static class WitchEvents
                 {
                     if (hexingWitch != null)
                     {
-                        // Logger.LogWarning($"[Witch] CoProcessSpellDeaths: Calling RpcSpecialMurder on {player.Data.PlayerName}");
                         hexingWitch.RpcSpecialMurder(
                             player,
                             isIndirect: true,

@@ -8,9 +8,9 @@ namespace TouMegaChujoweExtension.Assets;
 
 public static class TouExtensionFonts
 {
-    private static TMP_FontAsset _chewyFont;
+    private static TMP_FontAsset? _chewyFont;
 
-    public static TMP_FontAsset ChewyFont
+    public static TMP_FontAsset? ChewyFont
     {
         get
         {
@@ -20,7 +20,7 @@ public static class TouExtensionFonts
         }
     }
 
-    private static TMP_FontAsset LoadChewyFont()
+    private static TMP_FontAsset? LoadChewyFont()
     {
         try
         {
@@ -30,19 +30,20 @@ public static class TouExtensionFonts
             using var stream = assembly.GetManifestResourceStream(resourceName);
             if (stream == null)
             {
-                // // BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogWarning("Chewy font resource not found");
                 return null;
             }
 
-            var fontData = new byte[stream.Length];
-            stream.Read(fontData, 0, fontData.Length);
-
             // Write to temp file and load via Font constructor
             var tempPath = Path.Combine(Path.GetTempPath(), "Chewy-Regular.ttf");
-            File.WriteAllBytes(tempPath, fontData);
+            using (var fileStream = File.Create(tempPath))
+            {
+                stream.CopyTo(fileStream);
+            }
 
-            var font = new Font(tempPath);
-            font.hideFlags = HideFlags.DontUnloadUnusedAsset;
+            var font = new Font(tempPath)
+            {
+                hideFlags = HideFlags.DontUnloadUnusedAsset
+            };
 
             var tmpFont = TMP_FontAsset.CreateFontAsset(font, 90, 9, GlyphRenderMode.SDFAA, 1024, 1024);
             tmpFont.hideFlags = HideFlags.DontUnloadUnusedAsset;
@@ -57,23 +58,11 @@ public static class TouExtensionFonts
                 tmpFont.fallbackFontAssetTable = fallbackList;
             }
 
-            // // BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogInfo("Chewy font loaded successfully");
             return tmpFont;
         }
         catch (System.Exception)
         {
-            // // BepInEx.Logging.Logger.CreateLogSource("ExtensionFonts").LogError($"Failed to load Chewy font");
             return null;
         }
     }
 }
-
-
-
-
-
-
-
-
-
-

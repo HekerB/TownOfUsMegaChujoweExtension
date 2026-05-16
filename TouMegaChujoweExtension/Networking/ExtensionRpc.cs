@@ -86,19 +86,9 @@ public enum ExtensionRpc : uint
     DetonatorShowEffect = 80,
     DetonatorPlayBeep = 81,
     DetonatorPlayExplosion = 82,
-    SendJackalChat = 83,
-    SendSidekickChat = 84,
-    DetonatorPlayTracker = 85,
-    BountyHunterShowMisKill = 86,
-    SetSidekickAssignments = 94,
+    ArcanistDrawCard = 102,
+    GardenerPlaceGarden = 103,
+    PortalmakerPlacePortal = 104,
+    GardenerAttackNotify = 107,
+    GardenerClearGarden = 108
 }
-
-
-
-
-
-
-
-
-
-

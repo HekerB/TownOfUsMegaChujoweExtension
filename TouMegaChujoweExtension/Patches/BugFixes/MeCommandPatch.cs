@@ -36,21 +36,21 @@ public static class MeCommandPatch
         var text = __instance.freeChatField.Text;
         if (string.IsNullOrEmpty(text)) return true;
 
-        var spaceLess = text.Replace(" ", "").ToLower();
-        if (spaceLess.StartsWith("/draft"))
+        var spaceLess = text.Replace(" ", "").ToLower(System.Globalization.CultureInfo.InvariantCulture);
+        if (spaceLess.StartsWith("/draft", StringComparison.OrdinalIgnoreCase))
         {
             HandleDraftCommand(__instance, text);
             return false;
         }
 
-        if (spaceLess.StartsWith("/setname") && DraftLobbyPatch._draftInProgress)
+        if (spaceLess.StartsWith("/setname", StringComparison.OrdinalIgnoreCase) && DraftLobbyPatch._draftInProgress)
         {
             DraftLobbyPatch.ShowSystemMessage("<color=#FF0000>Draft Mode</color>: You cannot change your name during the draft.");
             ClearChat(__instance);
             return false;
         }
 
-        if (!spaceLess.StartsWith("/me")) return true;
+        if (!spaceLess.StartsWith("/me", StringComparison.OrdinalIgnoreCase)) return true;
 
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.Data == null)
@@ -78,7 +78,7 @@ public static class MeCommandPatch
             return;
         }
 
-        string sub = args[1].ToLower();
+        string sub = args[1].ToLower(System.Globalization.CultureInfo.InvariantCulture);
         if (sub == "start")
         {
             if (AmongUsClient.Instance.AmHost)
@@ -118,12 +118,12 @@ public static class MeCommandPatch
         if (role != null)
         {
             string roleTag = MiscUtils.GetHyperlinkText(role);
-            sb.AppendLine($"Role: {roleTag}");
+            sb.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"Role: {roleTag}");
 
             try
             {
                 var alignment = role.GetRoleAlignment();
-                sb.AppendLine($"Alignment: {FormatAlignment(alignment.ToString())}");
+                sb.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"Alignment: {FormatAlignment(alignment.ToString())}");
             }
             catch { /* Ignore reflection errors */ }
         }
@@ -195,12 +195,12 @@ public static class MeCommandPatch
                     if (task.IsComplete) completed++;
                 }
                 if (total > 0)
-                    sb.AppendLine($"Tasks: {completed}/{total}");
+                    sb.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"Tasks: {completed}/{total}");
             }
             catch { /* ignore task tracking errors */ }
         }
 
-        sb.Append(" ");
+        sb.Append(' ');
         return sb.ToString();
     }
 

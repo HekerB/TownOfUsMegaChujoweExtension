@@ -13,8 +13,8 @@ public sealed class DoctorVisionBoostModifier : TimedModifier
     public override string ModifierName => TouLocale.Get("ExtensionModifierDoctorVisionBoost", "Vision Boost");
     public override bool HideOnUi => true;
 
-    private float _duration;
-    private DoctorEffectDurationType _durationType;
+    private readonly float _duration;
+    private readonly DoctorEffectDurationType _durationType;
 
     public DoctorVisionBoostModifier(float duration, DoctorEffectDurationType durationType)
     {
@@ -57,8 +57,8 @@ public sealed class DoctorRegenerationModifier : TimedModifier
     public override string ModifierName => TouLocale.Get("ExtensionModifierDoctorRegeneration", "Regeneration");
     public override bool HideOnUi => true;
 
-    private float _duration;
-    private DoctorEffectDurationType _durationType;
+    private readonly float _duration;
+    private readonly DoctorEffectDurationType _durationType;
 
     public DoctorRegenerationModifier(float duration, DoctorEffectDurationType durationType)
     {
@@ -102,5 +102,6 @@ public sealed class DoctorRegenerationModifier : TimedModifier
 
     public override void OnDeactivate()
     {
+        // No specific cleanup needed for regeneration effect
     }
 }

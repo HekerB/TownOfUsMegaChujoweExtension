@@ -9,8 +9,8 @@ using Reactor.Utilities;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
-using System.Reflection;
 using System;
+using TownOfUs.Extensions;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers;
@@ -60,55 +60,8 @@ internal sealed class ToBecomeVampireHunterModifier : ExcludedGameModifier
         return (int)customRole.GetChance()!;
     }
 
-    private static bool TryGetBoolByName(object obj, string propOrFieldName, out bool value)
-    {
-        value = false;
-        if (obj == null) return false;
 
-        var t = obj.GetType();
 
-        var p = t.GetProperty(propOrFieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        if (p != null && p.PropertyType == typeof(bool))
-        {
-            value = (bool)p.GetValue(obj);
-            return true;
-        }
-
-        var f = t.GetField(propOrFieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        if (f != null && f.FieldType == typeof(bool))
-        {
-            value = (bool)f.GetValue(obj);
-            return true;
-        }
-
-        return false;
-    }
-
-    private static bool TryGetEnumStringByName(object obj, string propOrFieldName, out string? enumString)
-    {
-        enumString = null;
-        if (obj == null) return false;
-
-        var t = obj.GetType();
-
-        var p = t.GetProperty(propOrFieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        if (p != null && p.PropertyType.IsEnum)
-        {
-            var v = p.GetValue(obj);
-            enumString = v?.ToString();
-            return enumString != null;
-        }
-
-        var f = t.GetField(propOrFieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        if (f != null && f.FieldType.IsEnum)
-        {
-            var v = f.GetValue(obj);
-            enumString = v?.ToString();
-            return enumString != null;
-        }
-
-        return false;
-    }
 
     private static bool IsCrewPowerOrProtective(RoleBehaviour role)
     {
@@ -118,69 +71,27 @@ internal sealed class ToBecomeVampireHunterModifier : ExcludedGameModifier
         {
             if (crewRole.IsPowerCrew) return true;
             if (crewRole.RoleAlignment == RoleAlignment.CrewmateProtective) return true;
-            return false;
         }
 
-        if (TryGetBoolByName(role, "IsPowerCrew", out var isPower) && isPower)
-            return true;
+        var alignment = role.GetRoleAlignment();
+        if (alignment == RoleAlignment.CrewmateProtective) return true;
 
-        string? align;
-        if (!TryGetEnumStringByName(role, "RoleAlignment", out align))
-            TryGetEnumStringByName(role, "Alignment", out align);
-
-        if (!string.IsNullOrEmpty(align))
-        {
-            if (align.Equals("CrewmateProtective", StringComparison.OrdinalIgnoreCase)) return true;
-            if (align.Contains("Protective", StringComparison.OrdinalIgnoreCase)) return true;
-            if (align.Contains("Power", StringComparison.OrdinalIgnoreCase)) return true;
-        }
-
-        return false;
+        var alignStr = alignment.ToString();
+        return alignStr.Contains("Protective", StringComparison.OrdinalIgnoreCase) ||
+               alignStr.Contains("Power", StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool HasModifierLike(PlayerControl player, string token)
     {
         if (player == null) return false;
 
-        try
-        {
-            var comp = player.GetComponent<ModifierComponent>();
-            if (comp == null) return false;
+        var modifiers = player.GetModifiers<BaseModifier>();
+        if (modifiers == null) return false;
 
-            object? listObj = null;
-
-            var t = comp.GetType();
-            var p = t.GetProperty("Modifiers", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                    ?? t.GetProperty("ActiveModifiers", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-
-            if (p != null)
-                listObj = p.GetValue(comp);
-            else
-            {
-                var f = t.GetField("Modifiers", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                        ?? t.GetField("ActiveModifiers", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                if (f != null) listObj = f.GetValue(comp);
-            }
-
-            if (listObj is not IEnumerable enumerable) return false;
-
-            foreach (var m in enumerable)
-            {
-                if (m == null) continue;
-
-                var name = m.GetType().Name ?? string.Empty;
-                if (name.Contains(token, StringComparison.OrdinalIgnoreCase))
-                    return true;
-
-                var mnProp = m.GetType().GetProperty("ModifierName", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                var mn = mnProp?.GetValue(m)?.ToString() ?? string.Empty;
-                if (mn.Contains(token, StringComparison.OrdinalIgnoreCase))
-                    return true;
-            }
-        }
-        catch { /* ignore reflection errors during modifier lookup */ }
-
-        return false;
+        return modifiers.Any(m =>
+            (m.GetType().Name?.Contains(token, StringComparison.OrdinalIgnoreCase) ?? false) ||
+            (m.ModifierName?.Contains(token, StringComparison.OrdinalIgnoreCase) ?? false)
+        );
     }
 
     private static bool IsEligible(PlayerControl player)
@@ -303,17 +214,3 @@ internal sealed class ToBecomeVampireHunterModifier : ExcludedGameModifier
             RemoveAllModifiers();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

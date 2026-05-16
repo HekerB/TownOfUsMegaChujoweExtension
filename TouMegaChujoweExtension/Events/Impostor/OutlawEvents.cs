@@ -31,11 +31,7 @@ public static class OutlawEvents
         
         if (local.Data?.Role is not OutlawRole) return;
 
-        var button = CustomButtonSingleton<OutlawKillButton>.Instance;
-        if (button != null)
-        {
-            button.HandleSuccessfulKill();
-        }
+        CustomButtonSingleton<OutlawKillButton>.Instance?.HandleSuccessfulKill();
     }
 }
 

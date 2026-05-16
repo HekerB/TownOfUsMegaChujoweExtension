@@ -38,7 +38,6 @@ public static class PelicanEvents
 
         if (!PelicanSystem.IsDigestKillVictim(victim.PlayerId)) return;
 
-        // Usuwamy strzałkę od Mystica
         try
         {
             if (victim.TryGetModifier<MysticDeathNotifierModifier>(out var mysticMod))
@@ -46,7 +45,10 @@ public static class PelicanEvents
                 victim.RemoveModifier(mysticMod);
             }
         }
-        catch { }
+        catch
+        {
+            // Ignore potential issues when removing Mystic modifier during cleanup
+        }
     }
 
     [RegisterEvent]
@@ -63,16 +65,3 @@ public static class PelicanEvents
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

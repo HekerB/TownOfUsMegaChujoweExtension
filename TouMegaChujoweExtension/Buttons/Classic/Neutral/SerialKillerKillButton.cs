@@ -121,16 +121,14 @@ public sealed class SerialKillerKillButton : TownOfUsKillRoleButton<SerialKiller
             return;
         }
 
-        if (player.inVent && Vent.currentVent != null && !player.HasModifier<SerialKillerNoVentModifier>())
+        if (player.inVent && Vent.currentVent != null && !player.HasModifier<SerialKillerNoVentModifier>() &&
+            SerialKillerVentKillSystem.TryGetVentKillTarget(player.PlayerId, out var ventTarget) &&
+            ventTarget != null && ventTarget.PlayerId == Target.PlayerId)
         {
-            if (SerialKillerVentKillSystem.TryGetVentKillTarget(player.PlayerId, out var ventTarget) &&
-                ventTarget != null && ventTarget.PlayerId == Target.PlayerId)
-            {
-                player.RpcCustomMurder(Target, true, true, true, false, true, true);
-                Role.KillCount++;
-                Role.UpdateReductionModifier();
-                return;
-            }
+            player.RpcCustomMurder(Target, true, true, true, false, true, true);
+            Role.KillCount++;
+            Role.UpdateReductionModifier();
+            return;
         }
 
         player.RpcCustomMurder(Target);

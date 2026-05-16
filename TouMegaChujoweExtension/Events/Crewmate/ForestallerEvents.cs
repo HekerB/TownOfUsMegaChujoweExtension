@@ -40,15 +40,3 @@ public static class ForestallerEvents
         Modules.ForestallerSystem.OnMeetingStarted();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

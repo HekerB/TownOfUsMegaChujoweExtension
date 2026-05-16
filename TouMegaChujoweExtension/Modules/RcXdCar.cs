@@ -75,11 +75,7 @@ public sealed class RcXdCar : IDisposable
         if (dist < 0.001f) return false;
 
         var hit = Physics2D.RaycastAll(from, dir.normalized, dist + 0.05f, Constants.ShipAndAllObjectsMask);
-        foreach (var h in hit)
-        {
-            if (h.collider != null && !h.collider.isTrigger) return true;
-        }
-        return false;
+        return hit.Any(h => h.collider != null && !h.collider.isTrigger);
     }
 
     private static SpriteRenderer? FindBestMaskedRendererOnLocalPlayer()
@@ -106,11 +102,11 @@ public sealed class RcXdCar : IDisposable
             if (r.maskInteraction != SpriteMaskInteraction.None) score += 100;
 
             var sl = r.sortingLayerName ?? string.Empty;
-            if (sl.IndexOf("Player", StringComparison.OrdinalIgnoreCase) >= 0) score += 50;
-            if (sl.IndexOf("UI", StringComparison.OrdinalIgnoreCase) >= 0) score -= 200;
+            if (sl.Contains("Player", StringComparison.OrdinalIgnoreCase)) score += 50;
+            if (sl.Contains("UI", StringComparison.OrdinalIgnoreCase)) score -= 200;
 
             var nm = r.name ?? string.Empty;
-            if (nm.IndexOf("Name", StringComparison.OrdinalIgnoreCase) >= 0) score -= 100;
+            if (nm.Contains("Name", StringComparison.OrdinalIgnoreCase)) score -= 100;
 
             score += Mathf.Clamp(r.sortingOrder, -50, 50);
 
@@ -153,7 +149,7 @@ public sealed class RcXdCar : IDisposable
     public static RcXdCar Create(PlayerControl owner, Vector2 position)
     {
         var opts = OptionGroupSingleton<RcXdOptions>.Instance;
-        var car = new RcXdCar
+        RcXdCar car = new()
         {
             _owner = owner,
             _isOwner = owner.AmOwner,
@@ -260,7 +256,7 @@ public sealed class RcXdCar : IDisposable
             var moving = speedMag > 0.10f && (Time.time - _netLastRecvTime) < 0.35f;
 
             UpdateFrameAnimation(Time.deltaTime, moving, speedMag);
-            UpdateRemotePitch(speedMag);
+            UpdateRemotePitch();
             UpdateAudio();
 
             yield return null;
@@ -292,7 +288,7 @@ public sealed class RcXdCar : IDisposable
         }
     }
 
-    private void UpdateRemotePitch(float speedMag)
+    private void UpdateRemotePitch()
     {
         if (_audio == null) return;
         _audio.pitch = 1.0f;

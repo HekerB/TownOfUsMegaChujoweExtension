@@ -8,19 +8,20 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modifiers.Impostor;
 
-public sealed class InjectedSlownessModifier : TimedModifier, IVisualAppearance, IInjectedModifier
+public sealed class InjectedSlownessModifier(float duration, InjectorEffectDurationType durationType, bool isInjected) 
+    : TimedModifier, IVisualAppearance, IInjectedModifier
 {
-    public override string ModifierName => "Injected (Slowness)";
-    public override bool HideOnUi => true;
+    public InjectedSlownessModifier(float duration, InjectorEffectDurationType durationType) : this(duration, durationType, true) { }
+    public override string ModifierName => GetModifierName();
+    public override bool HideOnUi => isInjected;
     public override LoadableAsset<Sprite>? ModifierIcon => null;
 
-    private float _duration;
-    private InjectorEffectDurationType _durationType;
-
-    public InjectedSlownessModifier(float duration, InjectorEffectDurationType durationType)
+    private string GetModifierName()
     {
-        _duration = duration;
-        _durationType = durationType;
+        if (isInjected) return "Injected (Slowness)";
+        return durationType == InjectorEffectDurationType.AllGame
+            ? TouLocale.Get("ModifierNameSlowness", "Slowness")
+            : TouLocale.Get("ModifierNameTemporarySlowness", "Temporary slowness");
     }
 
     public Guid InjectionId { get; set; }
@@ -30,12 +31,12 @@ public sealed class InjectedSlownessModifier : TimedModifier, IVisualAppearance,
     {
         get
         {
-            return _durationType switch
+            return durationType switch
             {
-                InjectorEffectDurationType.AllRound => -1f,
-                InjectorEffectDurationType.AllGame => -1f,
-                InjectorEffectDurationType.SetTime => _duration,
-                _ => _duration
+                InjectorEffectDurationType.AllRound => 999999f,
+                InjectorEffectDurationType.AllGame => 999999f,
+                InjectorEffectDurationType.SetTime => duration,
+                _ => duration
             };
         }
     }
@@ -59,7 +60,7 @@ public sealed class InjectedSlownessModifier : TimedModifier, IVisualAppearance,
 
     public override void OnMeetingStart()
     {
-        if (_durationType == InjectorEffectDurationType.AllRound)
+        if (durationType == InjectorEffectDurationType.AllRound)
         {
             Player.RemoveModifier(this);
         }

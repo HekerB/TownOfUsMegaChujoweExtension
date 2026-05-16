@@ -111,15 +111,3 @@ public static class PresidentAbstainEvents
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

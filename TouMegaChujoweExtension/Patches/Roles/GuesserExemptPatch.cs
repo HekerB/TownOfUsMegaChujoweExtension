@@ -12,9 +12,14 @@ public static class GuesserExemptPatch
 {
     public static IEnumerable<MethodBase> TargetMethods()
     {
-        yield return typeof(AssassinModifier).GetMethod("IsExempt", BindingFlags.Public | BindingFlags.Instance);
-        yield return typeof(DoomsayerRole).GetMethod("IsExempt", BindingFlags.Public | BindingFlags.Instance);
-        yield return typeof(VigilanteRole).GetMethod("IsExempt", BindingFlags.Public | BindingFlags.Instance);
+        var m1 = AccessTools.Method(typeof(AssassinModifier), "IsExempt");
+        if (m1 != null) yield return m1;
+
+        var m2 = AccessTools.Method(typeof(DoomsayerRole), "IsExempt");
+        if (m2 != null) yield return m2;
+
+        var m3 = AccessTools.Method(typeof(VigilanteRole), "IsExempt");
+        if (m3 != null) yield return m3;
     }
 
     [HarmonyPostfix]

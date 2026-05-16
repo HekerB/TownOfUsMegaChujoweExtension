@@ -8,8 +8,8 @@ namespace TouMegaChujoweExtension.Modules;
 /// </summary>
 public static class LawyerDuoTracker
 {
-    private static readonly Dictionary<byte, byte> LawyerToClient = new();
-    private static readonly Dictionary<byte, HashSet<byte>> ClientToLawyers = new();
+    private static readonly Dictionary<byte, byte> LawyerToClient = [];
+    private static readonly Dictionary<byte, HashSet<byte>> ClientToLawyers = [];
 
     public static void ClearAll()
     {
@@ -34,7 +34,7 @@ public static class LawyerDuoTracker
 
         if (!ClientToLawyers.TryGetValue(clientId, out var set))
         {
-            set = new HashSet<byte>();
+            set = [];
             ClientToLawyers[clientId] = set;
         }
         set.Add(lawyerId);
@@ -42,12 +42,12 @@ public static class LawyerDuoTracker
 
     public static IReadOnlyCollection<byte> GetLawyers()
     {
-        return LawyerToClient.Keys.ToArray();
+        return [..LawyerToClient.Keys];
     }
 
     public static IReadOnlyCollection<byte> GetClients()
     {
-        return ClientToLawyers.Keys.ToArray();
+        return [..ClientToLawyers.Keys];
     }
 }
 

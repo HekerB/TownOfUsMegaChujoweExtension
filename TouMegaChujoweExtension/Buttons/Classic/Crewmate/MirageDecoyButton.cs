@@ -222,9 +222,7 @@ public sealed class MirageDecoyButton : TownOfUsRoleButton<MirageRole>
             appearance,
             new Vector2(_primedWorldPos.x, _primedWorldPos.y),
             _primedWorldPos.z,
-            OptionGroupSingleton<MirageOptions>.Instance.DecoyDuration.Value,
-            0f,
-            false);
+            OptionGroupSingleton<MirageOptions>.Instance.DecoyDuration.Value);
         _stage = Stage.Destroy;
         _destroyUnlockAt = Time.time + PostPlaceLockSeconds;
     }
@@ -272,9 +270,7 @@ public sealed class MirageDecoyButton : TownOfUsRoleButton<MirageRole>
                     player,
                     plr,
                     new Vector2(_primedWorldPos.x, _primedWorldPos.y),
-                    _primedWorldPos.z,
-                    0f,
-                    false);
+                    _primedWorldPos.z);
             }
         );
         

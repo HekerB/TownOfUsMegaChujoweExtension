@@ -15,7 +15,7 @@ namespace TouMegaChujoweExtension.Patches.Roles.Witch;
 [HarmonyPatch(typeof(HudManagerPatches), nameof(HudManagerPatches.UpdateRoleNameText))]
 public static class WitchSpellboundIndicatorPatch
 {
-    private static readonly Dictionary<byte, SpriteRenderer> HexedSprites = new();
+    private static readonly Dictionary<byte, SpriteRenderer> HexedSprites = [];
 
     [HarmonyPostfix]
     public static void UpdateRoleNameTextPostfix()

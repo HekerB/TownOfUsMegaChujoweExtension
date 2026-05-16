@@ -43,6 +43,8 @@ public static class BlockMiraVigilanteButtonsPatch
 [HarmonyPatch(typeof(DoomsayerRole), nameof(DoomsayerRole.OnMeetingStart))]
 public static class BlockMiraDoomsayerButtonsPatch
 {
+    private static readonly MethodInfo? DoomsayerGenerateReport = AccessTools.Method(typeof(DoomsayerRole), "GenerateReport");
+
     public static bool Prefix(DoomsayerRole __instance)
     {
         if (!ClassicAssassinSystem.IsActive)
@@ -50,10 +52,7 @@ public static class BlockMiraDoomsayerButtonsPatch
 
         if (__instance.Player.AmOwner && MeetingHud.Instance != null)
         {
-            var generateReport = typeof(DoomsayerRole).GetMethod("GenerateReport",
-                BindingFlags.Instance | BindingFlags.NonPublic);
-
-            generateReport?.Invoke(__instance, null);
+            DoomsayerGenerateReport?.Invoke(__instance, null);
 
             ClassicAssassinSystem.GenerateButtons(MeetingHud.Instance, __instance);
         }

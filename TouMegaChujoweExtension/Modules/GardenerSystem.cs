@@ -1,0 +1,348 @@
+using HarmonyLib;
+using InnerNet;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Linq;
+using MiraAPI.Modifiers;
+using TouMegaChujoweExtension.Modifiers.Crewmate;
+using TouMegaChujoweExtension.Roles.Classic.Crewmate;
+using TownOfUs.Assets;
+using TownOfUs.Utilities;
+using MiraAPI.GameOptions;
+using TouMegaChujoweExtension.Options.Roles.Crewmate;
+using Reactor.Networking.Attributes;
+using Reactor.Utilities;
+using TownOfUs.Modules.Localization;
+using TownOfUs.Options;
+using TownOfUs.Extensions;
+using MiraAPI.Utilities;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
+using TownOfUs.Buttons;
+using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.Modifiers.Types;
+using TouMegaChujoweExtension.Assets;
+
+namespace TouMegaChujoweExtension.Modules;
+
+public static class GardenerSystem
+{
+    private static readonly Dictionary<byte, ActiveGarden> ActiveGardens = [];
+    private static float _lastCleanupTime;
+    private static float _lastModifierUpdateTime;
+    private static readonly List<AttackLog> PendingAttackLogs = [];
+
+    public class AttackLog
+    {
+        public byte OwnerId { get; set; }
+        public byte AttackerId { get; set; }
+        public bool Killed { get; set; }
+    }
+
+    public static void RemoveGarden(byte ownerId)
+    {
+        if (ActiveGardens.TryGetValue(ownerId, out var garden))
+        {
+            if (garden.Visual != null) UnityEngine.Object.Destroy(garden.Visual);
+            ActiveGardens.Remove(ownerId);
+        }
+    }
+
+    public class ActiveGarden
+    {
+        public Vector2 Position { get; set; }
+        public float Radius { get; set; }
+        public float RemainingTime { get; set; }
+        public byte OwnerId { get; set; }
+        public GameObject? Visual { get; set; }
+    }
+
+    public static bool IsInAnyGarden(PlayerControl? player)
+    {
+        if (player == null || player.Data == null || player.Data.IsDead) return false;
+        if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return false;
+
+        foreach (var garden in ActiveGardens.Values)
+        {
+            if (garden.RemainingTime <= 0) continue;
+
+            var owner = MiscUtils.PlayerById(garden.OwnerId);
+            if (owner == null || owner.Data == null || owner.Data.IsDead) continue;
+
+            if (garden.Position == Vector2.zero) continue;
+
+            var pos = player.GetTruePosition();
+            if (Vector2.Distance(pos, garden.Position) <= garden.Radius)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void SetGarden(byte ownerId, Vector2 position, float radius, float duration)
+    {
+        if (ActiveGardens.TryGetValue(ownerId, out var oldGarden) && oldGarden.Visual != null)
+        {
+            UnityEngine.Object.Destroy(oldGarden.Visual);
+        }
+
+        ActiveGardens[ownerId] = new ActiveGarden
+        {
+            Position = position,
+            Radius = radius,
+            RemainingTime = duration,
+            OwnerId = ownerId,
+            Visual = (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == ownerId)
+                ? CreateGardenVisual(position, radius)
+                : null
+        };
+    }
+
+    private static GameObject CreateGardenVisual(Vector2 position, float radius)
+    {
+        // Use CreateSpherePrimitive for better accuracy and appearance matching 'Revealer'
+        var sphere = MiscUtils.CreateSpherePrimitive(new Vector3(position.x, position.y, position.y / 1000f + 0.1f), radius);
+        if (sphere == null) return new GameObject("GardenVisual_Fallback");
+
+        var meshRenderer = sphere.GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
+        {
+            Material? mat = null;
+            try {
+                var loadableMat = AuAvengersAnims.IgniteMaterial;
+                if (loadableMat != null) mat = new Material(loadableMat.LoadAsset());
+            } catch { /* fallback */ }
+
+            if (mat == null) mat = new Material(Shader.Find("Sprites/Default"));
+            
+            mat.color = new Color(0.2f, 0.8f, 0.2f, 0.25f); // Transparent green
+            meshRenderer.material = mat;
+        }
+
+        return sphere;
+    }
+
+    public static void ClearAll()
+    {
+        PendingAttackLogs.Clear();
+        foreach (var visual in ActiveGardens.Values.Select(garden => garden.Visual).Where(visual => visual != null))
+        {
+            UnityEngine.Object.Destroy(visual);
+        }
+        ActiveGardens.Clear();
+        _lastCleanupTime = Time.time;
+
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player != null && player.HasModifier<GardenerProtectedModifier>())
+            {
+                player.RemoveModifier<GardenerProtectedModifier>();
+            }
+        }
+    }
+
+    public static void RecordAttackLog(byte ownerId, byte attackerId, bool killed)
+    {
+        PendingAttackLogs.Add(new AttackLog { OwnerId = ownerId, AttackerId = attackerId, Killed = killed });
+    }
+
+    public static void HandleAttackNotification(byte ownerId, byte attackerId, bool killed, bool delayed = false)
+    {
+        if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == ownerId)
+        {
+            var attacker = MiscUtils.PlayerById(attackerId);
+            var role = attacker?.Data?.Role;
+            string attackerRole = "Someone";
+            if (role != null)
+            {
+                attackerRole = role.GetRoleName();
+                if (string.IsNullOrWhiteSpace(attackerRole) || attackerRole == "Unknown")
+                {
+                    attackerRole = role.GetType().Name.Replace("Role", "").Replace("RoleBehaviour", "");
+                }
+            }
+            var options = OptionGroupSingleton<GardenerOptions>.Instance;
+
+            string msg;
+            if (options.Feedback)
+            {
+                msg = killed
+                   ? TouLocale.GetParsed("ExtensionGardenerAttackKilledFeedback", $"{attackerRole} killed someone in your garden!").Replace("{0}", attackerRole)
+                   : TouLocale.GetParsed("ExtensionGardenerAttackBlockedFeedback", $"An attack by {attackerRole} was blocked in your garden!").Replace("{0}", attackerRole);
+            }
+            else
+            {
+                msg = killed
+                   ? TouLocale.Get("ExtensionGardenerAttackKilled", "Someone was killed in your garden!")
+                   : TouLocale.Get("ExtensionGardenerAttackBlocked", "An attack was blocked in your garden!");
+            }
+
+
+            var notif = MiraAPI.Utilities.Helpers.CreateAndShowNotification(
+                $"<b><color=#{(killed ? "FF0000" : "00FF00")}>{msg}</color></b>",
+                Color.white,
+                new Vector3(0f, 1f, -20f),
+                spr: TouExtensionCrewAssets.GardenerButtonSprite.LoadAsset());
+            notif.AdjustNotification();
+
+            if (!delayed)
+                Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(killed ? Color.red : Color.green));
+        }
+    }
+
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
+    public static class GameEndPatch
+    {
+        public static void Postfix() => ClearAll();
+    }
+
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Begin))]
+    public static class GameStartPatch
+    {
+        public static void Postfix() => ClearAll();
+    }
+
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
+    public static class IntroImpostorStartPatch
+    {
+        public static void Postfix() => ClearAll();
+    }
+
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
+    public static class IntroCrewmateStartPatch
+    {
+        public static void Postfix() => ClearAll();
+    }
+
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
+    public static class LobbyStartPatch
+    {
+        public static void Postfix() => ClearAll();
+    }
+
+    [RegisterEvent]
+    public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
+    {
+        if (OptionGroupSingleton<GardenerOptions>.Instance.CanKillInGarden) return;
+        if (@event.Source == null || @event.Target == null) return;
+
+        bool targetInGarden = IsInAnyGarden(@event.Target);
+
+        if (targetInGarden)
+        {
+            @event.Cancel();
+
+            if (@event.Source.AmOwner)
+            {
+                @event.Source.SetKillTimer(@event.Source.GetKillCooldown());
+
+                Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(Color.cyan));
+
+                var garden = ActiveGardens.Values.FirstOrDefault(g =>
+                    g.RemainingTime > 0 &&
+                    Vector2.Distance(@event.Target.GetTruePosition(), g.Position) <= g.Radius);
+
+                if (garden != null)
+                {
+                    var owner = MiscUtils.PlayerById(garden.OwnerId);
+                    if (owner != null)
+                    {
+                        GardenerRole.RpcGardenerAttackNotify(owner, @event.Source.PlayerId, false);
+                    }
+                }
+            }
+        }
+    }
+
+    [RegisterEvent]
+    public static void OnMeetingStart(MiraAPI.Events.Vanilla.Meeting.StartMeetingEvent @event)
+    {
+        if (PendingAttackLogs.Count == 0) return;
+
+        // Show summary to Gardener if they are still alive
+        foreach (var log in PendingAttackLogs.Where(l => l.OwnerId == PlayerControl.LocalPlayer?.PlayerId))
+        {
+            HandleAttackNotification(log.OwnerId, log.AttackerId, log.Killed, true);
+        }
+        PendingAttackLogs.Clear();
+    }
+
+
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+
+    public static class HudManagerUpdatePatch
+    {
+        public static void Postfix(HudManager __instance)
+        {
+            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
+
+            if (Time.time - _lastCleanupTime >= 0.1f)
+            {
+                var expired = new List<byte>();
+                float dt = Time.time - _lastCleanupTime;
+                foreach (var kvp in ActiveGardens)
+                {
+                    kvp.Value.RemainingTime -= dt;
+                    if (kvp.Value.RemainingTime <= 0)
+                    {
+                        expired.Add(kvp.Key);
+                    }
+                }
+
+                _lastCleanupTime = Time.time;
+
+                foreach (var key in expired)
+                {
+                    if (ActiveGardens.TryGetValue(key, out var garden))
+                    {
+                        if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == key)
+                        {
+                            GardenerRole.RpcClearGarden(PlayerControl.LocalPlayer, key);
+                        }
+
+                        if (garden.Visual != null) UnityEngine.Object.Destroy(garden.Visual);
+                        ActiveGardens.Remove(key);
+                    }
+                }
+
+                var allPlayerIds = PlayerControl.AllPlayerControls.ToArray().Select(p => p.PlayerId).ToHashSet();
+                var ownersToRemove = ActiveGardens.Keys.Where(id => !allPlayerIds.Contains(id)).ToList();
+                foreach (var id in ownersToRemove)
+                {
+                    if (ActiveGardens.TryGetValue(id, out var g))
+                    {
+                        if (g.Visual != null) UnityEngine.Object.Destroy(g.Visual);
+                        ActiveGardens.Remove(id);
+                    }
+                }
+            }
+
+            if (Time.time - _lastModifierUpdateTime >= 0.2f)
+            {
+                _lastModifierUpdateTime = Time.time;
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    if (player == null || player.Data == null || player.Data.IsDead) continue;
+
+                    bool shouldHaveProtection = IsInAnyGarden(player);
+
+                    if (shouldHaveProtection)
+                    {
+                        if (!player.HasModifier<GardenerProtectedModifier>())
+                        {
+                            player.AddModifier(new GardenerProtectedModifier());
+                        }
+                    }
+                    else
+                    {
+                        if (player.HasModifier<GardenerProtectedModifier>())
+                        {
+                            player.RemoveModifier<GardenerProtectedModifier>();
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

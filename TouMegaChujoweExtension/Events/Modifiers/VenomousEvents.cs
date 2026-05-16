@@ -39,12 +39,7 @@ public static class VenomousEvents
         {
             VenomousDelayPatch.Active = true;
 
-            var result = _coSetUpRotMethod.Invoke(null, new object[]
-            {
-                body,
-                @event.Target,
-                @event.Source
-            });
+            var result = _coSetUpRotMethod.Invoke(null, [body, @event.Target, @event.Source]);
 
             if (result is IEnumerator coroutine)
                 Coroutines.Start(coroutine);
@@ -59,8 +54,8 @@ public static class VenomousEvents
 
         var paramCount = _startRottingMethod.GetParameters().Length;
         var result2 = paramCount >= 2
-            ? _startRottingMethod.Invoke(null, new object[] { @event.Target, @event.Source })
-            : _startRottingMethod.Invoke(null, new object[] { @event.Target });
+            ? _startRottingMethod.Invoke(null, [@event.Target, @event.Source])
+            : _startRottingMethod.Invoke(null, [@event.Target]);
 
         if (result2 is IEnumerator coroutine2)
             Coroutines.Start(coroutine2);

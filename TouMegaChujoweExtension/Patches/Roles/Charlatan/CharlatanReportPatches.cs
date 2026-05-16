@@ -13,7 +13,7 @@ public static class CharlatanReportPatches
 {
     [HarmonyPatch(typeof(ReportButton), nameof(ReportButton.DoClick))]
     [HarmonyPrefix]
-    public static bool ReportButtonDoClickPrefix(ReportButton __instance)
+    public static bool ReportButtonDoClickPrefix()
     {
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.Data?.Role is not CharlatanRole)
@@ -22,15 +22,7 @@ public static class CharlatanReportPatches
         }
 
         var allBodies = Object.FindObjectsOfType<DeadBody>();
-        DeadBody? targetBody = null;
-        foreach (var body in allBodies)
-        {
-            if (CharlatanDeceiveSystem.CanDeceiveReport(player.PlayerId, body.ParentId))
-            {
-                targetBody = body;
-                break;
-            }
-        }
+        var targetBody = allBodies.FirstOrDefault(body => CharlatanDeceiveSystem.CanDeceiveReport(player.PlayerId, body.ParentId));
 
         if (targetBody != null)
         {
@@ -44,8 +36,6 @@ public static class CharlatanReportPatches
 
         return true;
     }
-
-    // Patch DeadBody.OnClick to check concealed distance
     [HarmonyPatch(typeof(DeadBody), nameof(DeadBody.OnClick))]
     [HarmonyPrefix]
     public static bool DeadBodyOnClickPrefix(DeadBody __instance)
@@ -104,10 +94,8 @@ public static class CharlatanReportPatches
             }
         }
 
-        return false; // Skip original method
+        return false;
     }
-
-    // Patch HudManager.Update to update report button visibility
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     [HarmonyPostfix]
     public static void HudManagerUpdatePostfix(HudManager __instance)
@@ -116,8 +104,8 @@ public static class CharlatanReportPatches
         UpdateReportButton(__instance);
     }
 
-    private static float _lastReportUpdateTime = 0f;
-    private static bool _lastReportableState = false;
+    private static float _lastReportUpdateTime;
+    private static bool _lastReportableState;
 
     private static void UpdateReportButton(HudManager __instance)
     {
@@ -190,20 +178,3 @@ public static class CharlatanReportPatches
         __instance.ReportButton.SetActive(reportable);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

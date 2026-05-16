@@ -12,7 +12,7 @@ using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Buttons.Crewmate;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
-using TouMegaChujoweExtension.Roles.Crewmate;
+using TouMegaChujoweExtension.Roles.Classic.Crewmate;
 using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
@@ -21,12 +21,13 @@ using Random = UnityEngine.Random;
 using TouMegaChujoweExtension.Modifiers.Crewmate;
 using TownOfUs;
 using TownOfUs.Events;
+using TownOfUs.Modifiers;
 
 namespace TouMegaChujoweExtension.Events.Crewmate;
 
 public static class DoctorEvents
 {
-    private static readonly Dictionary<byte, List<PendingInject>> PendingInjects = new();
+    private static readonly Dictionary<byte, List<PendingInject>> PendingInjects = [];
 
     public static void ScheduleInject(PlayerControl doctor, PlayerControl target, int seed)
     {
@@ -48,11 +49,12 @@ public static class DoctorEvents
             Seed = seed
         };
 
-        if (!PendingInjects.ContainsKey(target.PlayerId))
+        if (!PendingInjects.TryGetValue(target.PlayerId, out var list))
         {
-            PendingInjects[target.PlayerId] = new List<PendingInject>();
+            list = [];
+            PendingInjects[target.PlayerId] = list;
         }
-        PendingInjects[target.PlayerId].Add(pending);
+        list.Add(pending);
         Coroutines.Start(CoApplyInject(pending));
     }
 
@@ -62,10 +64,10 @@ public static class DoctorEvents
 
         if (pending.Target == null || pending.Target.HasDied() || pending.Doctor == null || pending.Doctor.HasDied())
         {
-            if (PendingInjects.ContainsKey(pending.Target.PlayerId))
+            if (pending.Target != null && PendingInjects.TryGetValue(pending.Target.PlayerId, out var list))
             {
-                PendingInjects[pending.Target.PlayerId].RemoveAll(p => p.InjectId == pending.InjectId);
-                if (PendingInjects[pending.Target.PlayerId].Count == 0)
+                list.RemoveAll(p => p.InjectId == pending.InjectId);
+                if (list.Count == 0)
                 {
                     PendingInjects.Remove(pending.Target.PlayerId);
                 }
@@ -74,11 +76,11 @@ public static class DoctorEvents
         }
 
         ApplyInjectEffect(pending.Doctor, pending.Target, pending.Seed);
-        
-        if (PendingInjects.ContainsKey(pending.Target.PlayerId))
+
+        if (PendingInjects.TryGetValue(pending.Target.PlayerId, out var list2))
         {
-            PendingInjects[pending.Target.PlayerId].RemoveAll(p => p.InjectId == pending.InjectId);
-            if (PendingInjects[pending.Target.PlayerId].Count == 0)
+            list2.RemoveAll(p => p.InjectId == pending.InjectId);
+            if (list2.Count == 0)
             {
                 PendingInjects.Remove(pending.Target.PlayerId);
             }
@@ -96,7 +98,7 @@ public static class DoctorEvents
         var duration = options.EffectDuration;
         var durationType = options.EffectDurationType.Value;
 
-        var effects = new List<(float Weight, Func<BaseModifier> CreateModifier, string NotificationKey, string Desc)>();
+        List<(float Weight, Func<BaseModifier> CreateModifier, string NotificationKey, string Desc)> effects = [];
 
         effects.Add((options.ChanceSpeedBoost, new Func<BaseModifier>(() => new DoctorSpeedBoostModifier(duration, durationType)), "ExtensionDoctorNotificationSpeedBoost", "Increased movement speed"));
         effects.Add((options.ChanceVisionBoost, new Func<BaseModifier>(() => new DoctorVisionBoostModifier(duration, durationType)), "ExtensionDoctorNotificationVisionBoost", "Increased vision"));
@@ -130,7 +132,7 @@ public static class DoctorEvents
         // Use System.Random for deterministic generation across clients using the same seed
         var rng = new System.Random(seed);
         var randomValue = (float)(rng.NextDouble() * totalWeight);
-        
+
         var cumulativeWeight = 0f;
         BaseModifier? selectedModifier = null;
         string selectedNotificationKey = string.Empty;
@@ -155,7 +157,7 @@ public static class DoctorEvents
             {
                 ShowNotification(doctor, selectedNotificationKey, selectedDesc);
             }
-            
+
             // Start coroutine to remove ClericBarrierModifier if it was selected and durationType is SetTime
             // TimedModifiers handle their own duration removal
         }
@@ -165,7 +167,7 @@ public static class DoctorEvents
     public static void ShieldAttacked(PlayerControl doctor, PlayerControl attacker, PlayerControl target)
     {
         var options = OptionGroupSingleton<DoctorOptions>.Instance;
-        
+
         if (options.DoctorSeesShield)
         {
             ShowNotification(doctor, "ExtensionDoctorNotificationShieldAttacked", $"Your shield on {target.Data.PlayerName} protected them from {attacker.Data.PlayerName}!");
@@ -187,11 +189,10 @@ public static class DoctorEvents
 
         if (target.TryGetModifier<DoctorShieldModifier>(out var shield))
         {
-            // Ignore if same player or indirect attacker ignores shield
             if (target.PlayerId == source.PlayerId) return;
 
-            // TODO: check for IndirectAttackerModifier if needed
-            
+            if (source.HasModifier<IndirectAttackerModifier>()) return;
+
             MiscUtils.LogInfo(TownOfUsEventHandlers.LogLevel.Error, $"{target.Data.PlayerName} has a doctor shield, stopping an interaction from {source.Data.PlayerName}!");
             @event.Cancel();
 
@@ -199,8 +200,6 @@ public static class DoctorEvents
             {
                 DoctorRole.RpcDoctorShieldAttacked(shield.Doctor, target, source);
             }
-            
-            // Remove shield after use
             target.RemoveModifier(shield);
         }
     }
@@ -242,7 +241,7 @@ public static class DoctorEvents
         btn.SetUses((int)options.InitialUses);
     }
 
-    private class PendingInject
+    private sealed class PendingInject
     {
         public PlayerControl? Doctor { get; set; }
         public PlayerControl? Target { get; set; }

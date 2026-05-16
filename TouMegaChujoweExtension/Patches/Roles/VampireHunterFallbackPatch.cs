@@ -11,7 +11,7 @@ namespace TouMegaChujoweExtension.Patches.Roles;
 [HarmonyPatch(typeof(TownOfUs.Utilities.Extensions), "ChangeRole")]
 public static class VampireHunterFallbackPatch
 {
-    private static bool _isReentry = false;
+    private static bool _isReentry;
 
     [HarmonyPostfix]
     public static void Postfix(PlayerControl player, ushort newRoleType)

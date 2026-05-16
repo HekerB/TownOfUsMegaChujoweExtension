@@ -14,8 +14,8 @@ public sealed class DoctorSpeedBoostModifier : TimedModifier, IVisualAppearance
     public override string ModifierName => "Doctor Boost (Speed)";
     public override bool HideOnUi => true;
 
-    private float _duration;
-    private DoctorEffectDurationType _durationType;
+    private readonly float _duration;
+    private readonly DoctorEffectDurationType _durationType;
 
     public DoctorSpeedBoostModifier(float duration, DoctorEffectDurationType durationType)
     {

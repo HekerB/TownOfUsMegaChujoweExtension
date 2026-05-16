@@ -105,11 +105,12 @@ public override bool CanUse()
             return;
         }
 
-        Button?.gameObject.SetActive(
+        var button = Button;
+        button?.gameObject.SetActive(
             HudManager.Instance.UseButton.isActiveAndEnabled ||
             HudManager.Instance.PetButton.isActiveAndEnabled);
 
-        if (Button == null) return;
+        if (button == null) return;
 
         var maxVer = (int)OptionGroupSingleton<EvokerOptions>.Instance.MaxVerifications.Value;
         var isVerify = EvokerSystem.IsBlindActive && (maxVer <= 0 || Role.VerifiesUsed < maxVer);
@@ -122,7 +123,7 @@ public override bool CanUse()
             var max = (int)OptionGroupSingleton<EvokerOptions>.Instance.MaxVerifications.Value;
             if (max > 0)
             {
-                Button?.SetUsesRemaining(max - Role.VerifiesUsed);
+                button.SetUsesRemaining(max - Role.VerifiesUsed);
             }
         }
         else if (!isVerify && _wasVerifyMode)
@@ -131,10 +132,8 @@ public override bool CanUse()
             _wasVerifyMode = false;
             _verifyTarget = null;
             ClearOutline();
-            if (Button?.usesRemainingText != null)
-                Button.usesRemainingText.gameObject.SetActive(false);
-            if (Button?.usesRemainingSprite != null)
-                Button.usesRemainingSprite.gameObject.SetActive(false);
+            button.usesRemainingText?.gameObject.SetActive(false);
+            button.usesRemainingSprite?.gameObject.SetActive(false);
         }
 
         // --- sprite + name ---
@@ -142,15 +141,15 @@ public override bool CanUse()
         {
             OverrideName(TouLocale.Get("ExtensionRoleEvokerVerify", "Verify"));
             var spr = TouExtensionCrewAssets.EvokerVerifyButtonSprite.LoadAsset();
-            if (spr != null && Button.graphic.sprite != spr)
-                Button.graphic.sprite = spr;
+            if (spr != null && button.graphic is { } graphic && graphic.sprite != spr)
+                graphic.sprite = spr;
         }
         else
         {
             OverrideName(TouLocale.Get("ExtensionRoleEvokerBlind", "Blind"));
             var spr = TouExtensionCrewAssets.EvokerBlindButtonSprite.LoadAsset();
-            if (spr != null && Button.graphic.sprite != spr)
-                Button.graphic.sprite = spr;
+            if (spr != null && button.graphic is { } graphic && graphic.sprite != spr)
+                graphic.sprite = spr;
         }
 
         // --- verify target ---

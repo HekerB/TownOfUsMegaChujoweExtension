@@ -29,18 +29,15 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
         var role = firstWinner.Role;
         _roleColor = role.TeamColor;
 
-        if (role is PopeRole)
-            _winText = $"{TouLocale.Get("ExtensionRolePope", "Pope")} {TouLocale.Get("ExtensionPopeWins", "Wins")}";
-        else if (role is PelicanRole)
-            _winText = $"{TouLocale.Get("ExtensionRolePelican", "Pelican")} {TouLocale.Get("ExtensionPelicanWins", "Wins")}";
-        else if (role is PirateRole)
-            _winText = $"{TouLocale.Get("ExtensionRolePirate", "Pirate")} {TouLocale.Get("ExtensionPirateWins", "Wins")}";
-        else if (role is LawyerRole)
-            _winText = TouLocale.Get("ExtensionLawyerWins", "Lawyer & Client Win");
-        else if (role is BountyHunterRole)
-            _winText = $"{TouLocale.Get("ExtensionRoleBountyHunter", "Bounty Hunter")} {TouLocale.Get("ExtensionBountyHunterWins", "Wins")}";
-        else
-            _winText = TouLocale.GetParsed("ExtensionNeutralWinsFormat", "{0} Wins").Replace("{0}", role.GetRoleName());
+        _winText = role switch
+        {
+            PopeRole => $"{TouLocale.Get("ExtensionRolePope", "Pope")} {TouLocale.Get("ExtensionPopeWins", "Wins")}",
+            PelicanRole => $"{TouLocale.Get("ExtensionRolePelican", "Pelican")} {TouLocale.Get("ExtensionPelicanWins", "Wins")}",
+            PirateRole => $"{TouLocale.Get("ExtensionRolePirate", "Pirate")} {TouLocale.Get("ExtensionPirateWins", "Wins")}",
+            LawyerRole => TouLocale.Get("ExtensionLawyerWins", "Lawyer & Client Win"),
+            BountyHunterRole => $"{TouLocale.Get("ExtensionRoleBountyHunter", "Bounty Hunter")} {TouLocale.Get("ExtensionBountyHunterWins", "Wins")}",
+            _ => TouLocale.GetParsed("ExtensionNeutralWinsFormat", "{0} Wins").Replace("{0}", role.GetRoleName())
+        };
 
         return true;
     }
@@ -48,7 +45,7 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
     public override void AfterEndGameSetup(EndGameManager endGameManager)
     {
         endGameManager.BackgroundBar.material.SetColor("_Color", _roleColor);
-        GameHistory.WinningFaction = $"<color=#{_roleColor.ToHtmlStringRGBA()}>{_winText}</color>";
+        SetWinningFaction(_roleColor, _winText);
 
         var text = Object.Instantiate(endGameManager.WinText, endGameManager.WinText.transform.parent);
         text.text = $"<size=4>{_winText}!</size>";
@@ -57,20 +54,13 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
         var pos = endGameManager.WinText.transform.localPosition;
         pos.y = 1.5f;
         pos += Vector3.down * 0.15f;
-        
+
         text.transform.localScale = Vector3.one;
         text.transform.localPosition = pos;
     }
+
+    private static void SetWinningFaction(Color color, string text)
+    {
+        GameHistory.WinningFaction = $"<color=#{color.ToHtmlStringRGBA()}>{text}</color>";
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-

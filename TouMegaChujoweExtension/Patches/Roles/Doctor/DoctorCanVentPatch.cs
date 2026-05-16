@@ -1,6 +1,7 @@
 using HarmonyLib;
 using MiraAPI.Modifiers;
 using TouMegaChujoweExtension.Modifiers.Crewmate;
+using TouMegaChujoweExtension.Modules;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Doctor;
@@ -18,10 +19,19 @@ public static class DoctorCanVentPatch
         ref float __result)
     {
         if (__instance == null || pc == null) return;
-        if (canUse) return; // already can use
 
         var player = pc.Object;
         if (player == null || pc.IsDead || pc.Disconnected) return;
+
+        if (VentOccupancySystem.IsBlocked(__instance.Id) && !(player.inVent && Vent.currentVent != null && __instance.Id == Vent.currentVent.Id))
+        {
+            canUse = false;
+            couldUse = false;
+            __result = float.MaxValue;
+            return;
+        }
+
+        if (canUse) return; // already can use
 
         if (!player.HasModifier<DoctorCanVentModifier>()) return;
 
@@ -62,7 +72,27 @@ public static class DoctorCanVentPatch
         var mod = player.GetModifier<DoctorCanVentModifier>();
         var ventButton = __instance.ImpostorVentButton;
 
-        if (mod == null) return;
+        if (mod == null) 
+        {
+            // Reset CanVent if modifier is lost
+            if (player.Data.Role != null && !player.Data.Role.IsImpostor && player.Data.Role.CanVent)
+            {
+                player.Data.Role.CanVent = false;
+            }
+
+            // Only hide the button if we are NOT an impostor and NOT a native venting role (like Engineer)
+            if (player.Data.Role != null && !player.Data.Role.IsImpostor && !player.Data.Role.CanVent && ventButton != null && ventButton.gameObject.activeSelf)
+            {
+                ventButton.gameObject.SetActive(false);
+            }
+            return;
+        }
+
+        // Enable native venting for the player
+        if (player.Data.Role != null && !player.Data.Role.CanVent)
+        {
+            player.Data.Role.CanVent = true;
+        }
 
         if (ventButton == null || ventButton.gameObject == null) return;
 
@@ -73,15 +103,19 @@ public static class DoctorCanVentPatch
             return;
         }
 
+        // Force button visibility and initialize it for non-impostor usage
         if (!ventButton.gameObject.activeSelf) ventButton.gameObject.SetActive(true);
 
         if (ventButton.graphic != null)
         {
             if (!ventButton.graphic.gameObject.activeSelf) ventButton.graphic.gameObject.SetActive(true);
             ventButton.graphic.enabled = true;
-            // ventButton.graphic.sprite = default vent sprite is usually fine
         }
         
-        ventButton.SetCoolDown(0f, 1f);
+        VentUtilities.InitializeVentButton(ventButton);
+        if (VentUtilities.IsSafeToSetCooldown(ventButton))
+        {
+            ventButton.SetCoolDown(0f, 1f);
+        }
     }
 }

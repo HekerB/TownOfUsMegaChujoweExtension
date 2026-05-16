@@ -55,7 +55,7 @@ public static class MirageEvents
 
         var title = $"<color=#{ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Mirage)}>Mirage Feedback</color>";
         string msg;
-        
+
         if (MirageRole.TriggeredRoles.TryGetValue(localPlayer.PlayerId, out var roles) && roles.Count > 0)
         {
             TownOfUs.Utilities.Extensions.Shuffle(roles);
@@ -68,21 +68,7 @@ public static class MirageEvents
         }
 
         MiscUtils.AddFakeChat(localPlayer.Data, title, msg, false, true);
-        
+
         MirageRole.TriggeredRoles.Clear();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

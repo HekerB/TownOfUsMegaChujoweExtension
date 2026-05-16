@@ -62,13 +62,9 @@ public static class CharlatanEvents
         if (source.AmOwner)
         {
             var concealButton = CustomButtonSingleton<CharlatanConcealButton>.Instance;
-            if (concealButton != null)
+            if (concealButton != null && options.ResetKillConcealCooldownsTogether)
             {
-
-                if (options.ResetKillConcealCooldownsTogether)
-                {
-                    concealButton.Timer = concealButton.Cooldown;
-                }
+                concealButton.Timer = concealButton.Cooldown;
             }
         }
     }

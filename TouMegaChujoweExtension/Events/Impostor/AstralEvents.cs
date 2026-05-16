@@ -5,12 +5,13 @@ using TouMegaChujoweExtension.Roles.Classic.Impostor;
 using TouMegaChujoweExtension.Modifiers.Impostor;
 using TownOfUs.Extensions;
 using MiraAPI.Modifiers;
+using System.Collections.Generic;
 
 namespace TouMegaChujoweExtension.Events.Impostor;
 
 public static class AstralEvents
 {
-    private static readonly System.Collections.Generic.HashSet<byte> _killInProgress = new();
+    private static readonly HashSet<byte> _killInProgress = [];
 
     [RegisterEvent]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
@@ -34,12 +35,9 @@ public static class AstralEvents
 
         _killInProgress.Remove(killer.PlayerId);
 
-        if (killer.Data.Role is AstralRole astral)
+        if (killer.Data.Role is AstralRole astral && killer.HasModifier<AstralPhaseModifier>())
         {
-            if (killer.HasModifier<AstralPhaseModifier>())
-            {
-                astral.KillMadeDuringPhase = true;
-            }
+            astral.KillMadeDuringPhase = true;
         }
     }
 }

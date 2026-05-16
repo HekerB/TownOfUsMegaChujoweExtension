@@ -50,15 +50,3 @@ public static class PresidentEvents
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -120,13 +120,8 @@ public static class MayorVoteCountPatch
             var remaining = voteData.VotesRemaining;
             var knightBonus = 0;
             
-            bool isKnight = false;
-            foreach (var mod in PlayerControl.LocalPlayer.GetModifiers<MiraAPI.Modifiers.BaseModifier>()) {
-                if (mod.GetType().Name.Contains("KnightedModifier")) {
-                    isKnight = true;
-                    break;
-                }
-            }
+            bool isKnight = PlayerControl.LocalPlayer.GetModifiers<MiraAPI.Modifiers.BaseModifier>()
+                .Any(mod => mod.GetType().Name.Contains("KnightedModifier"));
 
             if (isKnight)
             {
@@ -140,11 +135,11 @@ public static class MayorVoteCountPatch
 
             if (knightBonus > 0 && !string.IsNullOrEmpty(formatKnighted))
             {
-                info = "\n" + string.Format(formatKnighted, remaining, knightBonus);
+                info = "\n" + string.Format(System.Globalization.CultureInfo.InvariantCulture, formatKnighted, remaining, knightBonus);
             }
             else if (!string.IsNullOrEmpty(formatNormal))
             {
-                info = "\n" + string.Format(formatNormal, remaining);
+                info = "\n" + string.Format(System.Globalization.CultureInfo.InvariantCulture, formatNormal, remaining);
             }
             
             if (string.IsNullOrEmpty(info)) return;

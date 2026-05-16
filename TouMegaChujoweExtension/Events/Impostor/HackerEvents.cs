@@ -9,27 +9,6 @@ namespace TouMegaChujoweExtension.Events.Impostor;
 
 public static class HackerEvents
 {
-    private static bool IsHackerRole(PlayerControl? player)
-    {
-        if (player == null || player.Data?.Role == null)
-        {
-            return false;
-        }
-
-        if (player.Data.Role is HackerRole)
-        {
-            return true;
-        }
-
-        try
-        {
-            return player.Data.Role.Role == (RoleTypes)RoleId.Get<HackerRole>();
-        }
-        catch
-        {
-            return false;
-        }
-    }
 
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)

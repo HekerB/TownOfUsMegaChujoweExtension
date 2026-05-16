@@ -17,9 +17,9 @@ public static class EvokerSystem
     public static byte? EvokerPlayerId { get; private set; }
     public static bool HysteriaApplied { get; private set; }
 
-    public static Dictionary<byte, bool> VerifiedPlayers { get; } = new();
+    public static Dictionary<byte, bool> VerifiedPlayers { get; } = [];
 
-    private static readonly Dictionary<byte, int> _playerEffects = new();
+    private static readonly Dictionary<byte, int> _playerEffects = [];
 
     public static bool IsLocalPlayerBlocked()
     {
@@ -114,7 +114,6 @@ public static class EvokerSystem
         if (BlindTimeRemaining <= 0f)
         {
             EndBlind();
-            return;
         }
     }
 

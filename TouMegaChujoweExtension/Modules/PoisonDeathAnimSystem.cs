@@ -11,7 +11,7 @@ namespace TouMegaChujoweExtension.Modules;
 
 public static class PoisonDeathAnimSystem
 {
-    private static readonly Dictionary<byte, GameObject> ActiveClones = new();
+    private static readonly Dictionary<byte, GameObject> ActiveClones = [];
 
     public static void TriggerDeathAnimation(byte targetId)
     {
@@ -30,15 +30,15 @@ public static class PoisonDeathAnimSystem
         if (realBody == null) yield break;
 
         if (GameManager.Instance == null || GameManager.Instance.deadBodyPrefab == null || GameManager.Instance.deadBodyPrefab.Length < 2) yield break;
-        
+
         var viperPrefab = GameManager.Instance.deadBodyPrefab[1].Cast<ViperDeadBody>();
         if (viperPrefab == null) yield break;
 
         bool wasActive = viperPrefab.gameObject.activeSelf;
         viperPrefab.gameObject.SetActive(false);
-        
+
         var visualClone = UnityEngine.Object.Instantiate(viperPrefab.gameObject, realBody.transform);
-        
+
         viperPrefab.gameObject.SetActive(wasActive);
 
         UnityEngine.Object.DestroyImmediate(visualClone.GetComponent<ViperDeadBody>());
@@ -52,7 +52,7 @@ public static class PoisonDeathAnimSystem
         foreach (var r in realBody.GetComponentsInChildren<SpriteRenderer>())
         {
             if (r.transform.IsChildOf(visualClone.transform)) continue;
-            
+
             r.color = Color.clear;
         }
 
@@ -70,7 +70,7 @@ public static class PoisonDeathAnimSystem
         }
 
         visualClone.SetActive(true);
-        
+
         if (ActiveClones.TryGetValue(targetId, out var old) && old != null)
         {
             UnityEngine.Object.Destroy(old);

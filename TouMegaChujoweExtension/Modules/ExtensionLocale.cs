@@ -10,14 +10,14 @@ namespace TouMegaChujoweExtension.Modules;
 
 public static class ExtensionLocale
 {
-    // // internal static ManualLogSource LocaleLogger { get; } = BepInEx.Logging.Logger.CreateLogSource("ExtensionLocale");
+
 
     public static void SearchInternalLocale()
     {
         var assembly = Assembly.GetExecutingAssembly();
-        
+
         bool forcePolish = false;
-        try 
+        try
         {
             if (LocalSettingsTabSingleton<TouExtensionLocalSettings>.Instance != null)
             {
@@ -29,11 +29,11 @@ public static class ExtensionLocale
         string targetFile = forcePolish ? "pl_PL.xml" : "en_US.xml";
 
         using var resourceStream = assembly.GetManifestResourceStream("TouMegaChujoweExtension.Resources.Locale." + targetFile);
-        
+
         if (resourceStream == null)
         {
-            // LocaleLogger.LogError($"File not found: {targetFile}");
-            
+
+
             if (forcePolish)
             {
                 using var fallbackStream = assembly.GetManifestResourceStream("TouMegaChujoweExtension.Resources.Locale.en_US.xml");
@@ -43,7 +43,7 @@ public static class ExtensionLocale
         }
 
         ForceInjectTranslations(resourceStream);
-        // LocaleLogger.LogWarning($"Successfully loaded and overwritten translations from file: {targetFile}");
+
     }
 
     private static void ForceInjectTranslations(Stream stream)
@@ -53,11 +53,11 @@ public static class ExtensionLocale
             using StreamReader reader = new(stream);
             string content = reader.ReadToEnd();
 
-            XmlDocument xmlDoc = new XmlDocument();
+            XmlDocument xmlDoc = new();
             xmlDoc.LoadXml(content);
 
             var nodes = xmlDoc.SelectNodes("//string");
-            
+
             if (nodes == null || nodes.Count == 0)
             {
                 nodes = xmlDoc.SelectNodes("//entry");
@@ -76,12 +76,13 @@ public static class ExtensionLocale
                         {
                             var langEnum = (SupportedLangs)langKey;
 
-                            if (!TouLocale.TouLocalization.ContainsKey(langEnum))
+                            if (!TouLocale.TouLocalization.TryGetValue(langEnum, out var dict))
                             {
-                                TouLocale.TouLocalization[langEnum] = new System.Collections.Generic.Dictionary<string, string>();
+                                dict = [];
+                                TouLocale.TouLocalization[langEnum] = dict;
                             }
 
-                            TouLocale.TouLocalization[langEnum][key] = value;
+                            dict[key] = value;
                         }
                     }
                 }
@@ -89,19 +90,7 @@ public static class ExtensionLocale
         }
         catch (System.Exception)
         {
-            // LocaleLogger.LogError($"XML parsing error");
+            // Ignore parsing errors; translations will fall back to default game text
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

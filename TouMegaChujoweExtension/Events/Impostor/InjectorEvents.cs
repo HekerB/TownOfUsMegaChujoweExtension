@@ -20,8 +20,8 @@ namespace TouMegaChujoweExtension.Events.Impostor;
 
 public static class InjectorEvents
 {
-    private static readonly Dictionary<byte, List<PendingInjection>> PendingInjections = new();
-    private static readonly Dictionary<byte, int> AppliedInjectionCounts = new();
+    private static readonly Dictionary<byte, List<PendingInjection>> PendingInjections = [];
+    private static readonly Dictionary<byte, int> AppliedInjectionCounts = [];
 
     public static void ScheduleInjection(PlayerControl injector, PlayerControl target)
     {
@@ -42,11 +42,12 @@ public static class InjectorEvents
             InjectionId = Guid.NewGuid()
         };
 
-        if (!PendingInjections.ContainsKey(target.PlayerId))
+        if (!PendingInjections.TryGetValue(target.PlayerId, out var list))
         {
-            PendingInjections[target.PlayerId] = new List<PendingInjection>();
+            list = [];
+            PendingInjections[target.PlayerId] = list;
         }
-        PendingInjections[target.PlayerId].Add(pending);
+        list.Add(pending);
         Coroutines.Start(CoApplyInjection(pending));
     }
 
@@ -56,10 +57,10 @@ public static class InjectorEvents
 
         if (pending.Target == null || pending.Target.HasDied() || pending.Injector == null || pending.Injector.HasDied())
         {
-            if (PendingInjections.ContainsKey(pending.Target.PlayerId))
+            if (pending.Target != null && PendingInjections.TryGetValue(pending.Target.PlayerId, out var list))
             {
-                PendingInjections[pending.Target.PlayerId].RemoveAll(p => p.InjectionId == pending.InjectionId);
-                if (PendingInjections[pending.Target.PlayerId].Count == 0)
+                list.RemoveAll(p => p.InjectionId == pending.InjectionId);
+                if (list.Count == 0)
                 {
                     PendingInjections.Remove(pending.Target.PlayerId);
                 }
@@ -69,10 +70,10 @@ public static class InjectorEvents
 
         ApplyInjectionEffect(pending.Injector, pending.Target, pending.InjectionId);
         
-        if (PendingInjections.ContainsKey(pending.Target.PlayerId))
+        if (PendingInjections.TryGetValue(pending.Target.PlayerId, out var list2))
         {
-            PendingInjections[pending.Target.PlayerId].RemoveAll(p => p.InjectionId == pending.InjectionId);
-            if (PendingInjections[pending.Target.PlayerId].Count == 0)
+            list2.RemoveAll(p => p.InjectionId == pending.InjectionId);
+            if (list2.Count == 0)
             {
                 PendingInjections.Remove(pending.Target.PlayerId);
             }
@@ -89,11 +90,11 @@ public static class InjectorEvents
         var options = OptionGroupSingleton<InjectorOptions>.Instance;
         var duration = options.EffectDuration;
 
-        if (!AppliedInjectionCounts.ContainsKey(target.PlayerId))
+        if (!AppliedInjectionCounts.TryGetValue(target.PlayerId, out var count))
         {
-            AppliedInjectionCounts[target.PlayerId] = 0;
+            count = 0;
         }
-        AppliedInjectionCounts[target.PlayerId]++;
+        AppliedInjectionCounts[target.PlayerId] = count + 1;
 
         if (AppliedInjectionCounts[target.PlayerId] > 1)
         {
@@ -102,7 +103,7 @@ public static class InjectorEvents
 
         var durationType = options.EffectDurationType.Value;
 
-        var effects = new List<(float Weight, Func<BaseModifier> CreateModifier, string NotificationKey)>();
+        List<(float Weight, Func<BaseModifier> CreateModifier, string NotificationKey)> effects = [];
 
         // Negative effects
         effects.Add((options.ChanceInvertedControls, () => new InjectedInvertedControlsModifier(duration, durationType), "ExtensionInjectorNotificationInvertedControls"));
@@ -195,7 +196,7 @@ public static class InjectorEvents
         var injectorColor = ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Injector);
         
         var localizedPrefix = TouLocale.GetParsed("ExtensionInjectorNotificationPrefix", "Injected {0}:");
-        var finalMessage = string.Format(localizedPrefix, target.Data.PlayerName) + " " + message;
+        var finalMessage = string.Format(System.Globalization.CultureInfo.InvariantCulture, localizedPrefix, target.Data.PlayerName) + " " + message;
 
         var notif = Helpers.CreateAndShowNotification(
             $"<b><color=#{injectorColor}>{finalMessage}</color></b>",
@@ -233,32 +234,12 @@ public static class InjectorEvents
             return;
         }
 
-        var keysToCheck = PendingInjections.Keys.ToList();
-        foreach (var key in keysToCheck)
+        foreach (var (key, list) in PendingInjections.Where(pair => pair.Value.Any(p => p.Injector?.PlayerId == exiled.PlayerId)).ToList())
         {
-            if (PendingInjections[key].Any(p => p.Injector?.PlayerId == exiled.PlayerId))
+            list.RemoveAll(p => p.Injector?.PlayerId == exiled.PlayerId);
+            if (list.Count == 0)
             {
-                PendingInjections[key].RemoveAll(p => p.Injector?.PlayerId == exiled.PlayerId);
-                if (PendingInjections[key].Count == 0)
-                {
-                    PendingInjections.Remove(key);
-                }
-            }
-        }
-
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (player == null || player.HasDied())
-            {
-                continue;
-            }
-
-            if (player.HasModifier<InjectedInvertedControlsModifier>() ||
-                player.HasModifier<InjectedLowVisionModifier>() ||
-                player.HasModifier<InjectedVeryLowVisionModifier>() ||
-                player.HasModifier<InjectedSlownessModifier>() ||
-                player.HasModifier<InjectedConfusedModifier>())
-            {
+                PendingInjections.Remove(key);
             }
         }
     }

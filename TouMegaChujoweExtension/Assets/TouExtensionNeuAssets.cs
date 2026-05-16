@@ -21,6 +21,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> ShroudKillButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Shroud_Kill_Button.png", 100f);
         public static LoadableAsset<Sprite> ShroudVentSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Shroud_Vent_Button.png", 100f);
         public static LoadableAsset<Sprite> DoppelgangerKillButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Doppelganger_Kill_Button.png", 100f);
+
     }
 }
 

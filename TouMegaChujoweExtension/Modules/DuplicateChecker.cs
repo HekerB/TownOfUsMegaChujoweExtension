@@ -23,17 +23,17 @@ public static class DuplicateChecker
         {
             var currentAssembly = Assembly.GetExecutingAssembly();
             var assemblyName = currentAssembly.GetName().Name ?? "TouMegaChujoweExtension";
-            
+
             // In IL2CPP, Location can be tricky, so let's get the absolute full path
             var currentPath = string.Empty;
-            try {
+            try
+            {
                 currentPath = Path.GetFullPath(currentAssembly.Location);
-            } catch { /* ignore path access errors during scan */ }
-
-            // Use the global BepInEx plugins directory to be sure we scan everything
+            }
+            catch { /* ignore path access errors during scan */ }
             var pluginsDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BepInEx", "plugins");
-            if (!Directory.Exists(pluginsDir)) {
-                // Fallback to assembly dir if plugins dir not found (unlikely)
+            if (!Directory.Exists(pluginsDir))
+            {
                 var loc = Path.GetDirectoryName(currentAssembly.Location);
                 if (!string.IsNullOrEmpty(loc)) pluginsDir = loc;
             }
@@ -44,34 +44,36 @@ public static class DuplicateChecker
             Logger<TouMegaChujoweExtensionPlugin>.Info($"[DuplicateChecker] Current assembly path: {currentPath}");
 
             var files = Directory.GetFiles(pluginsDir, "*.dll", SearchOption.AllDirectories);
-            
+
             var duplicates = files
-                .Where(f => {
+                .Where(f =>
+                {
                     var fullF = string.Empty;
-                    try {
+                    try
+                    {
                         fullF = Path.GetFullPath(f);
-                    } catch { return false; }
+                    }
+                    catch { return false; }
 
                     if (!string.IsNullOrEmpty(currentPath) && string.Equals(fullF, currentPath, StringComparison.OrdinalIgnoreCase)) return false;
-
-                    // Log for debugging
                     Logger<TouMegaChujoweExtensionPlugin>.Info($"[DuplicateChecker] Scanning file: {Path.GetFileName(f)}");
 
-                    // 1. Check file name (fast)
                     var fileName = Path.GetFileNameWithoutExtension(f);
-                    if (fileName.StartsWith(assemblyName, StringComparison.OrdinalIgnoreCase)) {
+                    if (fileName.StartsWith(assemblyName, StringComparison.OrdinalIgnoreCase))
+                    {
                         Logger<TouMegaChujoweExtensionPlugin>.Warning($"[DuplicateChecker] Flagged by NAME: {fileName}");
                         return true;
                     }
-
-                    // 2. Check internal assembly name (robust - handles renamed files)
-                    try {
+                    try
+                    {
                         var internalName = AssemblyName.GetAssemblyName(f).Name;
-                        if (string.Equals(internalName, assemblyName, StringComparison.OrdinalIgnoreCase)) {
+                        if (string.Equals(internalName, assemblyName, StringComparison.OrdinalIgnoreCase))
+                        {
                             Logger<TouMegaChujoweExtensionPlugin>.Warning($"[DuplicateChecker] Flagged by INTERNAL NAME: {internalName} (File: {fileName})");
                             return true;
                         }
-                    } catch (Exception) { /* skip files that cannot be read as assemblies */ }
+                    }
+                    catch (Exception) { /* skip files that cannot be read as assemblies */ }
 
                     return false;
                 })
@@ -83,7 +85,8 @@ public static class DuplicateChecker
                 DuplicatePath = duplicates[0];
                 Logger<TouMegaChujoweExtensionPlugin>.Error($"[DuplicateChecker] DUPLICATE FOUND: {DuplicatePath}");
             }
-            else {
+            else
+            {
                 Logger<TouMegaChujoweExtensionPlugin>.Info("[DuplicateChecker] No duplicates found.");
             }
         }
@@ -95,7 +98,7 @@ public static class DuplicateChecker
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
     [HarmonyPostfix]
-    public static void MainMenuStartPostfix(MainMenuManager __instance)
+    public static void MainMenuStartPostfix()
     {
         if (HasDuplicate)
         {
@@ -109,7 +112,6 @@ public static class DuplicateChecker
                       $"Found: <color=#FFFF00>{Path.GetFileName(DuplicatePath)}</color>\n" +
                       $"in your plugins folder.\n\n" +
                       $"<color=#FF7777>You MUST delete this file to avoid crashes!</color>";
-
         var go = new GameObject("DuplicateWarningUI");
         var text = go.AddComponent<TMPro.TextMeshPro>();
         text.text = message;
@@ -117,12 +119,8 @@ public static class DuplicateChecker
         text.fontSize = 3f;
         text.outlineWidth = 0.3f;
         text.outlineColor = Color.black;
-        
-        // Ensure it's in front of everything
         go.transform.position = new Vector3(0, 0, -15);
         Object.DontDestroyOnLoad(go);
-
-        // Add a second text as shadow for extreme visibility
         var shadowGo = new GameObject("DuplicateWarningShadow");
         var shadow = shadowGo.AddComponent<TMPro.TextMeshPro>();
         shadow.text = message;
@@ -133,13 +131,12 @@ public static class DuplicateChecker
         Object.DontDestroyOnLoad(shadowGo);
     }
 
-    private static bool kickTriggered = false;
+    private static bool kickTriggered;
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Update))]
     [HarmonyPostfix]
     public static void AmongUsClientUpdatePostfix()
     {
-        // Reset the trigger flag when we are not connected (in menu, disconnected)
         if (!AmongUsClient.Instance.AmConnected)
         {
             kickTriggered = false;
@@ -155,15 +152,15 @@ public static class DuplicateChecker
 
     private static System.Collections.IEnumerator CoSelfKick()
     {
-        // Wait a bit so the player fully spawns and connection is established
         yield return new WaitForSeconds(1.2f);
-        
+
         if (!HasDuplicate) yield break;
 
-        // Notify the host via Custom RPC
-        try {
-            if (AmongUsClient.Instance.AmConnected && PlayerControl.LocalPlayer != null) {
-                var fileName = Path.GetFileName(DuplicatePath);
+        try
+        {
+            if (AmongUsClient.Instance.AmConnected && PlayerControl.LocalPlayer is not null)
+            {
+                var fileName = Path.GetFileName(DuplicatePath) ?? "Unknown.dll";
                 string playerName = PlayerControl.LocalPlayer.Data.PlayerName;
 
                 if (AmongUsClient.Instance.AmHost)
@@ -172,7 +169,6 @@ public static class DuplicateChecker
                 }
                 else
                 {
-                    // Find a player that won't be destroyed immediately (like the host or the first available player)
                     var targetNetId = PlayerControl.LocalPlayer.NetId;
                     foreach (var pc in PlayerControl.AllPlayerControls)
                     {
@@ -189,7 +185,8 @@ public static class DuplicateChecker
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                 }
             }
-        } catch { /* ignore RPC delivery failures */ }
+        }
+        catch { /* ignore RPC delivery failures */ }
 
         // Give a bit more time for RPC to send over network before objects are destroyed
         yield return new WaitForSeconds(1.0f);
@@ -202,7 +199,7 @@ public static class DuplicateChecker
     public static class DuplicateCheckerRpcPatch
     {
         [HarmonyPostfix]
-        public static void Postfix(PlayerControl __instance, byte callId, Hazel.MessageReader reader)
+        public static void Postfix(byte callId, Hazel.MessageReader reader)
         {
             if (callId == (byte)TouMegaChujoweExtension.Networking.ExtensionRpc.DuplicateModKick)
             {
@@ -229,16 +226,3 @@ public static class DuplicateChecker
         TownOfUs.Utilities.MiscUtils.AddFakeChat(player.Data, systemName, msg, true, true);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

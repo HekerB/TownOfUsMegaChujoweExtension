@@ -29,7 +29,8 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-    public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable {
+public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+{
     public DoomableType DoomHintType => DoomableType.Trickster;
     public string LocaleKey => "Shifter";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
@@ -76,7 +77,7 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
             var target = MiscUtils.PlayerById(PendingTargetId);
             if (target != null)
             {
-                stringB.AppendLine($"Pending Target: {target.Data.PlayerName}");
+                stringB.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"Pending Target: {target.Data.PlayerName}");
             }
         }
         else
@@ -105,7 +106,7 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
         PendingTargetId = byte.MaxValue;
         PendingStolenRoleId = ushort.MaxValue;
         ShiftUsed = false;
-        
+
         if (player.AmOwner)
         {
             OffsetButtons();
@@ -222,7 +223,7 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
             if (target?.Data?.Role != null)
             {
                 if (target.Data.Role is ICustomRole customRole)
-                    shifterRole.PendingStolenRoleId = (ushort)RoleId.Get(customRole.GetType());
+                    shifterRole.PendingStolenRoleId = RoleId.Get(customRole.GetType());
                 else
                     shifterRole.PendingStolenRoleId = (ushort)target.Data.Role.Role;
             }
@@ -244,13 +245,10 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
         if (options.StealModifiers)
         {
-            foreach (var modifier in targetModifiers)
+            foreach (var modifier in targetModifiers.Where(modifier => modifier is not DeathHandlerModifier && modifier is not LoverModifier))
             {
-                if (modifier is not DeathHandlerModifier && modifier is not LoverModifier)
-                {
-                    shifter.AddModifier(modifier.GetType());
-                    target.RemoveModifier(modifier.GetType());
-                }
+                shifter.AddModifier(modifier.GetType());
+                target.RemoveModifier(modifier.GetType());
             }
         }
 
@@ -262,7 +260,7 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
             target.Data.Role.Role = (RoleTypes)byte.MaxValue;
         }
         target.ChangeRole(becomeRoleId);
-        
+
         // BUG FIX: Remove role-defining modifiers from the target that might desync the UI
         foreach (var modifier in targetModifiers)
         {
@@ -280,8 +278,7 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
             if (!shouldRemove)
             {
-                var mnProp = type.GetProperty("ModifierName", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                var mn = mnProp?.GetValue(modifier)?.ToString() ?? string.Empty;
+                var mn = modifier?.ModifierName ?? string.Empty;
                 if (mn.Contains("Assassin", StringComparison.OrdinalIgnoreCase) ||
                     mn.Contains("Imitator", StringComparison.OrdinalIgnoreCase))
                 {
@@ -295,14 +292,14 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
             }
         }
 
-        if (target.Data.Role is not ICustomRole && !target.HasModifier<DeathHandlerModifier>())
+        if (target.Data?.Role is not ICustomRole && !target.HasModifier<DeathHandlerModifier>())
             target.AddModifier<DeathHandlerModifier>();
-            
+
         shifter.ChangeRole(stolenRoleId);
-        
-        if (shifter.Data.Role is not ICustomRole && !shifter.HasModifier<DeathHandlerModifier>())
+
+        if (shifter.Data?.Role is not ICustomRole && !shifter.HasModifier<DeathHandlerModifier>())
             shifter.AddModifier<DeathHandlerModifier>();
-            
+
         wasShifterRole.ShiftUsed = true;
         wasShifterRole.PendingTargetId = byte.MaxValue;
         wasShifterRole.PendingStolenRoleId = ushort.MaxValue;
@@ -317,7 +314,7 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
         if (shifter.AmOwner)
         {
             PirateDuelSystem.FlashScreen(TouExtensionColors.Shifter, 0.5f, 0.3f);
-            ShowShifterNotification($"You stole {target.Data.PlayerName}'s role!");
+            ShowShifterNotification($"You stole {target.Data?.PlayerName ?? "Unknown"}'s role!");
         }
     }
 
@@ -355,22 +352,7 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
         }
         catch
         {
-            if (HudManager.Instance != null)
-                HudManager.Instance.Notifier.AddDisconnectMessage(text);
+            HudManager.Instance?.Notifier.AddDisconnectMessage(text);
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

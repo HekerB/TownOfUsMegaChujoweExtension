@@ -25,7 +25,7 @@ using TouMegaChujoweExtension.Modifiers.Crewmate;
 using MiraAPI.Modifiers;
 using Reactor.Utilities;
 
-namespace TouMegaChujoweExtension.Roles.Crewmate;
+namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
 public sealed class DoctorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
@@ -60,6 +60,8 @@ public sealed class DoctorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
             TouMegaChujoweExtension.Assets.TouExtensionCrewAssets.DoctorInjectButtonSprite)
     ];
 
+    public override bool IsAffectedByComms => false;
+
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
@@ -68,11 +70,6 @@ public sealed class DoctorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
-    }
-
-    public override bool CanUse(IUsable usable)
-    {
-        return GameManager.Instance.LogicUsables.CanUse(usable, Player);
     }
 
     [MethodRpc((uint)ExtensionRpc.DoctorInject)]

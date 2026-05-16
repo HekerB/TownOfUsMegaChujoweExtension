@@ -2,6 +2,7 @@ using MiraAPI.Utilities;
 using Reactor.Utilities;
 using System.Collections;
 using System.Reflection;
+using HarmonyLib;
 using TownOfUs.Events;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -63,9 +64,7 @@ public static class PirateDuelSystem
         }
         if (_coAnimateDeathMethod == null)
         {
-            _coAnimateDeathMethod = typeof(TownOfUsEventHandlers).GetMethod(
-                "CoAnimateDeath",
-                BindingFlags.NonPublic | BindingFlags.Static);
+            _coAnimateDeathMethod = AccessTools.Method(typeof(TownOfUsEventHandlers), "CoAnimateDeath");
 
             if (_coAnimateDeathMethod == null)
             {
@@ -78,8 +77,7 @@ public static class PirateDuelSystem
 
         try
         {
-            var coroutine = _coAnimateDeathMethod.Invoke(null, new object[] { voteArea }) as IEnumerator;
-            if (coroutine != null)
+            if (_coAnimateDeathMethod.Invoke(null, [voteArea]) is IEnumerator coroutine)
             {
                 Coroutines.Start(coroutine);
             }

@@ -6,7 +6,7 @@ public static class CharlatanDeceiveSystem
 {
     private sealed record DeceiveState(byte BodyId, float ActivatedAt, float ExpiresAt);
 
-    private static readonly Dictionary<byte, DeceiveState> ActiveDeceives = new();
+    private static readonly Dictionary<byte, DeceiveState> ActiveDeceives = [];
 
     public static void ClearAll()
     {
@@ -58,15 +58,3 @@ public static class CharlatanDeceiveSystem
         return Mathf.Max(0f, state.ExpiresAt - Time.time);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

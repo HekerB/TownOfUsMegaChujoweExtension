@@ -15,17 +15,3 @@ public static class TrapperEvents
         VentTrapSystem.DecrementRoundsAndRemoveExpired();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
