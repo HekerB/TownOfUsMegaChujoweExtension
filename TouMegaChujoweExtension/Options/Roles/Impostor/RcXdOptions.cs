@@ -10,7 +10,7 @@ public sealed class RcXdOptions : AbstractOptionGroup<RcXdRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleRcXd", "RC-XD");
 
-    [ModdedNumberOption("ExtensionOptionRcXdMaxDeploys", 1f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
+    [ModdedNumberOption("ExtensionOptionRcXdMaxDeploys", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float MaxDeploys { get; set; } = 2f;
 
     [ModdedNumberOption("ExtensionOptionRcXdDriveTime", 3f, 20f, 1f, MiraNumberSuffixes.Seconds)]

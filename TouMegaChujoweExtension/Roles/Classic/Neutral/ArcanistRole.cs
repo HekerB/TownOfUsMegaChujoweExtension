@@ -47,7 +47,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         new(
             TouLocale.Get("ExtensionRoleArcanistDraw", "Draw Card"),
             TouLocale.GetParsed("ExtensionRoleArcanistDrawWikiDescription"),
-            TouExtensionIcons.ArcanistRoleIcon)
+            TouExtensionIcons.ArcanistButtonIcon)
     ];
 
     public int CardsLeft { get; set; } = 10;
@@ -78,7 +78,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = false,
-        Icon = TouExtensionIcons.ArcanistRoleIcon,
+        Icon = TouExtensionIcons.ArcanistRoleIconTraitor,
         IntroSound = TouAudio.ScientistIntroSound,
     };
 
@@ -166,7 +166,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                 $"<b>{TouExtensionColors.Arcanist.ToTextColor()}{msg}</color></b>",
                 Color.white,
                 new Vector3(0f, 1f, -20f),
-                spr: TouExtensionIcons.ArcanistRoleIcon.LoadAsset())
+                spr: TouExtensionIcons.ArcanistRoleIconTraitor.LoadAsset())
             .AdjustNotification();
         }
 
@@ -368,7 +368,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
             $"<b><color=#FF0000>{msg}</color></b>",
             Color.white,
             new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.ArcanistRoleIcon.LoadAsset())
+            spr: TouExtensionIcons.ArcanistRoleIconTraitor.LoadAsset())
         .AdjustNotification();
     }
 }

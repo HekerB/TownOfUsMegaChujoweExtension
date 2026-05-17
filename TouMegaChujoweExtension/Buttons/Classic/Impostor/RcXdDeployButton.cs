@@ -28,6 +28,16 @@ public sealed class RcXdDeployButton : TownOfUsKillRoleButton<RcXdRole>, IDiseas
     public override float EffectDuration => OptionGroupSingleton<RcXdOptions>.Instance.DriveTime;
     public override int MaxUses => (int)OptionGroupSingleton<RcXdOptions>.Instance.MaxDeploys;
     public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.RcXdDeployButton;
+    public override bool ZeroIsInfinite { get; set; } = true;
+
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        if (Button != null)
+        {
+            Button.usesRemainingSprite.gameObject.SetActive(MaxUses > 0);
+        }
+    }
 
     public void SetDiseasedTimer(float multiplier) => SetTimer(Cooldown * multiplier);
 

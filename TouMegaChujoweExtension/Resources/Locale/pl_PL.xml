@@ -1383,7 +1383,9 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionGeneralLawyerChat">Prywatny czat Prawnik/Klient</string>
   <string name="ExtensionOptionGeneralLoversChat">Prywatny czat kochanków</string>
   <string name="ExtensionOptionGeneralJackalChat">Prywatny czat Infiltratora</string>
+  <string name="ExtensionOptionGeneralJackalSeesRecruitChat">Infiltrator widzi czat rekrutów</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Rekruci widzą siebie nawzajem</string>
+  <string name="ExtensionOptionGeneralRecruitsHaveArrow">Rekruci mają strzałki do siebie</string>
   <!-- Mod Compatibility Options -->
   <string name="ExtensionOptionCompatibilityDuplicateWarnings">Pokazuj ostrzezenia o duplikatach</string>
   <string name="ExtensionOptionCompatibilityDuplicateAutoKick">Automatyczne wyrzucanie przy duplikatach</string>

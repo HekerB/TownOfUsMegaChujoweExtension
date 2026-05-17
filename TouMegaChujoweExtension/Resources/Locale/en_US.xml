@@ -1227,7 +1227,9 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionJackalShieldModifierDesc">Protects the Infiltrator from any killing attempt as long as at least one Recruit is alive.</string>
   <string name="ExtensionJackalChatTitle">Infiltrator</string>
   <string name="ExtensionOptionGeneralJackalChat">Infiltrator Private Chat</string>
+  <string name="ExtensionOptionGeneralJackalSeesRecruitChat">Infiltrator sees Recruit chat</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Recruits see each other's role</string>
+  <string name="ExtensionOptionGeneralRecruitsHaveArrow">Recruits have arrows to each other</string>
 
   <string name="Sidekick">Recruit</string>
   <string name="SidekickIntroBlurb">You have been recruited by the Infiltrator. You must betray your team.</string>

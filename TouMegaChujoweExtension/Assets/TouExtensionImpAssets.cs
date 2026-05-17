@@ -25,7 +25,7 @@ public static class TouExtensionImpAssets
     public static LoadableAsset<Sprite> DeceiveButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.DecieveButton.png");
     public static LoadableAsset<Sprite> ConcealButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.ConcealButton.png");
     public static LoadableAsset<Sprite> RcCarSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.RC_Icon.png", 50f);
-    public static LoadableAsset<Sprite> RcXdDeployButton { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Deploy_Button.png", 250f);
+    public static LoadableAsset<Sprite> RcXdDeployButton { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Deploy_Button.png", 300f);
     public static LoadableAsset<Sprite> RcXdDetonateButton { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Detonate_Button.png", 250f);
     public static LoadableAsset<Sprite> PoisonButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Poison_Button.png", 100f);
     public static LoadableAsset<Sprite> VineButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Vine_Button.png", 100f);

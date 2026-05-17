@@ -24,8 +24,9 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 public sealed class ArcanistDrawButton : TownOfUsRoleButton<ArcanistRole>
 {
     public override string Name => TouLocale.Get("ExtensionRoleArcanistDraw", "Draw Card");
-    public override LoadableAsset<Sprite> Sprite => TouExtensionIcons.ArcanistRoleIcon;
+    public override LoadableAsset<Sprite> Sprite => TouExtensionIcons.ArcanistButtonIcon;
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
+    public override Color TextOutlineColor => TouExtensionColors.Arcanist;
 
     public override float Cooldown =>
         Math.Clamp(OptionGroupSingleton<ArcanistOptions>.Instance.Cooldown * (Role?.CooldownMultiplier ?? 1f) + MapCooldown, 5f, 120f);
@@ -41,6 +42,11 @@ public sealed class ArcanistDrawButton : TownOfUsRoleButton<ArcanistRole>
             Button.transform.localScale = new Vector3(0.8f, 0.8f, 1f);
             Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterBasicSprite.LoadAsset();
             Button.usesRemainingSprite.gameObject.SetActive(MaxUses > 0);
+            Button.usesRemainingSprite.color = TouExtensionColors.Arcanist;
+            if (Button.buttonLabelText != null)
+            {
+                Button.buttonLabelText.color = TouExtensionColors.Arcanist;
+            }
         }
     }
 

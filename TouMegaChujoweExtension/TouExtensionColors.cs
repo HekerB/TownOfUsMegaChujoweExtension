@@ -17,7 +17,7 @@ public static class TouExtensionColors
     public static Color VampireHunter => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(150, 100, 200, 255);
     public static Color Falcon => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(255, 255, 255, 255);
     public static Color Doctor => Trapper;
-    public static Color Arcanist => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(128, 0, 128, 255); // Purple
+    public static Color Arcanist => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(206, 41, 96, 255); // Cherry Rose (#CE2960)
     public static Color Portalmaker => SerialKiller;
     public static Color Gardener => Trapper;
 
