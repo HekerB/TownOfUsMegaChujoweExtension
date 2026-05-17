@@ -17,8 +17,20 @@ public sealed class GardenerGardenButton : TownOfUsRoleButton<GardenerRole>
     public override string Name => TouLocale.Get("ExtensionRoleGardenerGarden", "Garden");
     public override LoadableAsset<Sprite> Sprite => TouExtensionCrewAssets.GardenerButtonSprite;
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
-    public override float Cooldown => OptionGroupSingleton<GardenerOptions>.Instance.Cooldown;
+    public override float Cooldown => OptionGroupSingleton<GardenerOptions>.Instance.TrapCooldown;
     public override float InitialCooldown => 10f;
+    public override int MaxUses => (int)OptionGroupSingleton<GardenerOptions>.Instance.MaxTraps;
+    public int ExtraUses { get; set; }
+
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        if (Button != null)
+        {
+            Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterBasicSprite.LoadAsset();
+            Button.usesRemainingSprite.gameObject.SetActive(MaxUses > 0);
+        }
+    }
 
     private bool _lastMeetingState;
 
@@ -44,5 +56,6 @@ public sealed class GardenerGardenButton : TownOfUsRoleButton<GardenerRole>
         if (Role == null) return;
 
         Role.PlaceGarden(PlayerControl.LocalPlayer.GetTruePosition());
+        TownOfUs.Assets.TouAudio.PlaySound(TownOfUs.Assets.TouAudio.TrapperPlaceSound);
     }
 }

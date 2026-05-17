@@ -19,6 +19,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> DoctorRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Doctor_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> ArcanistRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Arcanist_icon.png", 200f);
         public static LoadableAsset<Sprite> PortalmakerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.PortalMaker.png", 200f);
+        public static LoadableAsset<Sprite> GardenerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Gardener_Role_Icon.png", 50f);
         //neutrals
         public static LoadableAsset<Sprite> VultureRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Vulture_Icon.png", 200f);
         public static LoadableAsset<Sprite> PelicanRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Pelican_Role_Icon.png", 100f);

@@ -19,7 +19,7 @@ public static class TouExtensionColors
     public static Color Doctor => Trapper;
     public static Color Arcanist => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(128, 0, 128, 255); // Purple
     public static Color Portalmaker => SerialKiller;
-    public static Color Gardener => TownOfUsColors.Sonar;
+    public static Color Gardener => Trapper;
 
     //neutrals
     public static Color SerialKiller => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(40, 80, 160, 255);

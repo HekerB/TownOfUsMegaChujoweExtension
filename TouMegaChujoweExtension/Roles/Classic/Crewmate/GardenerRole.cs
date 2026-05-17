@@ -35,8 +35,9 @@ public sealed class GardenerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = false,
-        Icon = TouExtensionCrewAssets.GardenerButtonSprite,
+        Icon = TouExtensionIcons.GardenerRoleIcon,
         IntroSound = TouAudio.ScientistIntroSound,
+        OptionsScreenshot = TouBanners.CrewmateRoleBanner,
     };
 
     [HideFromIl2Cpp]
@@ -76,18 +77,21 @@ public sealed class GardenerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
         var options = OptionGroupSingleton<GardenerOptions>.Instance;
         if (options == null) return;
 
-        float radius = options.Radius;
-        float duration = options.Duration;
+        float maxLight = (ShipStatus.Instance != null && ShipStatus.Instance.MaxLightRadius > 0.1f)
+            ? ShipStatus.Instance.MaxLightRadius
+            : 3.75f;
+        float radius = options.TrapSize * maxLight;
+        float duration = float.MaxValue;
 
         GardenerSystem.SetGarden(player.PlayerId, position, radius, duration);
     }
 
 
     [MethodRpc((uint)ExtensionRpc.GardenerAttackNotify)]
-    public static void RpcGardenerAttackNotify(PlayerControl owner, byte attackerId, bool killed)
+    public static void RpcGardenerAttackNotify(PlayerControl owner, byte attackerId, byte targetId, bool killed)
     {
         if (owner == null) return;
-        GardenerSystem.RecordAttackLog(owner.PlayerId, attackerId, killed);
+        GardenerSystem.RecordAttackLog(owner.PlayerId, attackerId, targetId, killed);
     }
 
     [MethodRpc((uint)ExtensionRpc.GardenerClearGarden)]

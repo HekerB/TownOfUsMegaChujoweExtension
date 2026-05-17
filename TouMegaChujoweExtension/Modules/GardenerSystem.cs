@@ -3,6 +3,7 @@ using InnerNet;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 using MiraAPI.Modifiers;
 using TouMegaChujoweExtension.Modifiers.Crewmate;
 using TouMegaChujoweExtension.Roles.Classic.Crewmate;
@@ -15,6 +16,7 @@ using Reactor.Utilities;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Options;
 using TownOfUs.Extensions;
+using Reactor.Utilities.Extensions;
 using MiraAPI.Utilities;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
@@ -36,6 +38,7 @@ public static class GardenerSystem
     {
         public byte OwnerId { get; set; }
         public byte AttackerId { get; set; }
+        public byte TargetId { get; set; }
         public bool Killed { get; set; }
     }
 
@@ -100,11 +103,23 @@ public static class GardenerSystem
 
     private static GameObject CreateGardenVisual(Vector2 position, float radius)
     {
-        var sphere = MiscUtils.CreateSpherePrimitive(new Vector3(position.x, position.y, position.y / 1000f + 0.01f), radius);
-        if (sphere == null) return new GameObject("GardenVisual_Fallback");
+        var sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        sphere.name = "Garden Visual";
 
+        // Set position with a slight Z and Y sorting offset
+        sphere.transform.position = new Vector3(position.x, position.y, position.y / 1000f + 0.005f);
+
+        // Scale perfectly matching the actual radius (diameter = radius * 2)
         sphere.transform.localScale = new Vector3(radius * 2f, radius * 2f, radius * 2f);
 
+        // Remove the collider so players don't bump into it
+        var collider = sphere.GetComponent<SphereCollider>();
+        if (collider != null)
+        {
+            UnityEngine.Object.Destroy(collider);
+        }
+
+        // Apply Gardener's custom transparent material
         var meshRenderer = sphere.GetComponent<MeshRenderer>();
         if (meshRenderer != null)
         {
@@ -137,16 +152,17 @@ public static class GardenerSystem
         }
     }
 
-    public static void RecordAttackLog(byte ownerId, byte attackerId, bool killed)
+    public static void RecordAttackLog(byte ownerId, byte attackerId, byte targetId, bool killed)
     {
-        PendingAttackLogs.Add(new AttackLog { OwnerId = ownerId, AttackerId = attackerId, Killed = killed });
+        PendingAttackLogs.Add(new AttackLog { OwnerId = ownerId, AttackerId = attackerId, TargetId = targetId, Killed = killed });
     }
 
-    public static void HandleAttackNotification(byte ownerId, byte attackerId, bool killed, bool delayed = false)
+    public static void HandleAttackNotification(byte ownerId, byte attackerId, byte targetId, bool killed, bool delayed = false)
     {
         if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == ownerId)
         {
             var attacker = MiscUtils.PlayerById(attackerId);
+            var target = MiscUtils.PlayerById(targetId);
             var role = attacker?.Data?.Role;
             string attackerRole = "Someone";
             if (role != null)
@@ -157,14 +173,15 @@ public static class GardenerSystem
                     attackerRole = role.GetType().Name.Replace("Role", "").Replace("RoleBehaviour", "");
                 }
             }
+            string targetName = target?.Data?.PlayerName ?? "someone";
             var options = OptionGroupSingleton<GardenerOptions>.Instance;
 
             string msg;
             if (options.Feedback)
             {
                 msg = killed
-                   ? TouLocale.GetParsed("ExtensionGardenerAttackKilledFeedback", $"{attackerRole} killed someone in your garden!").Replace("{0}", attackerRole)
-                   : TouLocale.GetParsed("ExtensionGardenerAttackBlockedFeedback", $"An attack by {attackerRole} was blocked in your garden!").Replace("{0}", attackerRole);
+                   ? TouLocale.GetParsed("ExtensionGardenerAttackKilledFeedback", $"{attackerRole} killed {targetName} in your garden!").Replace("{0}", attackerRole).Replace("{1}", targetName)
+                   : TouLocale.GetParsed("ExtensionGardenerAttackBlockedFeedback", $"{attackerRole} tried to attack {targetName} in your garden!").Replace("{0}", attackerRole).Replace("{1}", targetName);
             }
             else
             {
@@ -173,16 +190,22 @@ public static class GardenerSystem
                    : TouLocale.Get("ExtensionGardenerAttackBlocked", "An attack was blocked in your garden!");
             }
 
+            if (delayed)
+            {
+                var title = $"<color=#{TouExtensionColors.Gardener.ToHtmlStringRGBA()}>{TouLocale.Get("ExtensionRoleGardenerFeedbackTitle", "Gardener Feedback")}</color>";
+                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
+            }
+            else
+            {
+                var notif = MiraAPI.Utilities.Helpers.CreateAndShowNotification(
+                    $"<b><color=#{(killed ? "FF0000" : "00FF00")}>{msg}</color></b>",
+                    Color.white,
+                    new Vector3(0f, 1f, -20f),
+                    spr: TouExtensionCrewAssets.GardenerButtonSprite.LoadAsset());
+                notif.AdjustNotification();
 
-            var notif = MiraAPI.Utilities.Helpers.CreateAndShowNotification(
-                $"<b><color=#{(killed ? "FF0000" : "00FF00")}>{msg}</color></b>",
-                Color.white,
-                new Vector3(0f, 1f, -20f),
-                spr: TouExtensionCrewAssets.GardenerButtonSprite.LoadAsset());
-            notif.AdjustNotification();
-
-            if (!delayed)
                 Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(killed ? Color.red : Color.green));
+            }
         }
     }
 
@@ -221,9 +244,6 @@ public static class GardenerSystem
     {
         try
         {
-            if (OptionGroupSingleton<GardenerOptions>.Instance != null &&
-                OptionGroupSingleton<GardenerOptions>.Instance.CanKillInGarden) return;
-
             if (@event.Source == null || @event.Target == null) return;
 
             bool targetInGarden = IsInAnyGarden(@event.Target);
@@ -250,7 +270,7 @@ public static class GardenerSystem
                         var owner = MiscUtils.PlayerById(garden.OwnerId);
                         if (owner != null)
                         {
-                            GardenerRole.RpcGardenerAttackNotify(owner, @event.Source.PlayerId, false);
+                            GardenerRole.RpcGardenerAttackNotify(owner, @event.Source.PlayerId, @event.Target.PlayerId, false);
                         }
                     }
                 }
@@ -269,7 +289,7 @@ public static class GardenerSystem
 
         foreach (var log in PendingAttackLogs.Where(l => l.OwnerId == PlayerControl.LocalPlayer?.PlayerId))
         {
-            HandleAttackNotification(log.OwnerId, log.AttackerId, log.Killed, true);
+            HandleAttackNotification(log.OwnerId, log.AttackerId, log.TargetId, log.Killed, true);
         }
         PendingAttackLogs.Clear();
     }
@@ -312,8 +332,12 @@ public static class GardenerSystem
                     }
                 }
 
-                var allPlayerIds = PlayerControl.AllPlayerControls.ToArray().Select(p => p.PlayerId).ToHashSet();
-                var ownersToRemove = ActiveGardens.Keys.Where(id => !allPlayerIds.Contains(id)).ToList();
+                var aliveGardenerIds = PlayerControl.AllPlayerControls.ToArray()
+                    .Where(p => p != null && p.Data != null && !p.Data.IsDead && p.Data.Role is GardenerRole)
+                    .Select(p => p.PlayerId)
+                    .ToHashSet();
+
+                var ownersToRemove = ActiveGardens.Keys.Where(id => !aliveGardenerIds.Contains(id)).ToList();
                 foreach (var id in ownersToRemove)
                 {
                     if (ActiveGardens.TryGetValue(id, out var g))

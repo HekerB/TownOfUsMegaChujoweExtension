@@ -1285,9 +1285,11 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
 
   <!-- Gardener -->
   <string name="ExtensionRoleGardener">Gardener</string>
-  <string name="ExtensionRoleGardenerIntroBlurb">Plant gardens that grant bonuses to crewmates.</string>
-  <string name="ExtensionRoleGardenerTabDescription">You can plant a garden. Crewmates inside the garden receive bonuses (e.g., vision).</string>
-  <string name="ExtensionRoleGardenerWikiDescription">The Gardener is a Crewmate Support role that creates protective and supportive zones on the map.</string>
+  <string name="ExtensionRoleGardenerIntroBlurb">Create protective garden zones to shield your allies.</string>
+  <string name="ExtensionRoleGardenerTabDescription">You can plant a garden. Crewmates inside the garden are immune to attacks. You receive alerts if an attack is attempted inside.</string>
+  <string name="ExtensionRoleGardenerWikiDescription">The Gardener is a Crewmate Protective role that can place protective garden zones. Anyone inside a garden is completely shielded from kills. If a kill is attempted, it is blocked, and you are immediately notified.</string>
+  <string name="ExtensionRoleGardenerGarden">Garden</string>
+  <string name="ExtensionRoleGardenerGardenWikiDescription">Plants a protective garden zone. Crewmates within the garden are shielded from attacks, and any attacks attempted or made inside the garden are immediately notified to the Gardener.</string>
 
   <!-- Arcanist Options -->
   <string name="ExtensionOptionArcanistCooldown">Card Cooldown</string>
@@ -1338,11 +1340,15 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRolePortalmakerTeleportWikiDescription">Transports the player to the other portal in the pair.</string>
 
   <!-- Gardener Options -->
-  <string name="ExtensionOptionGardenerRadius">Garden Radius</string>
   <string name="ExtensionOptionGardenerCooldown">Garden Cooldown</string>
-  <string name="ExtensionOptionGardenerDuration">Garden Duration</string>
-  <string name="ExtensionOptionGardenerCanKillInGarden">Can Kill In Garden</string>
+  <string name="ExtensionOptionGardenerMaxGardens">Max Number Of Gardens</string>
+  <string name="ExtensionOptionGardenerTrapSize">Garden Size</string>
+  <string name="ExtensionOptionGardenerGardensRemovedAfterRound">Gardens Removed After Round</string>
+  <string name="ExtensionOptionGardenerGetUsesFromTasks">Get Uses From Tasks</string>
   <string name="ExtensionOptionGardenerFeedback">Visual Feedback</string>
+  <string name="ExtensionRoleGardenerFeedbackTitle">Gardener Feedback</string>
+  <string name="ExtensionGardenerAttackBlockedFeedback">{0} tried to attack someone in your garden!</string>
+  <string name="ExtensionGardenerAttackKilledFeedback">{0} killed someone in your garden!</string>
 
   <!-- Jackal Rework Options -->
   <string name="ExtensionOptionJackalKillCooldown">Kill Cooldown</string>

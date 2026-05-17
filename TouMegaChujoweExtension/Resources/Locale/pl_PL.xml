@@ -1473,9 +1473,11 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
 
   <!-- Gardener -->
   <string name="ExtensionRoleGardener">Gardener</string>
-  <string name="ExtensionRoleGardenerIntroBlurb">Sadź ogrody, które dają bonusy załogantom.</string>
-  <string name="ExtensionRoleGardenerTabDescription">Możesz zasadzić ogród. Załoganci wewnątrz ogrodu otrzymują bonusy (np. widzenie).</string>
-  <string name="ExtensionRoleGardenerWikiDescription">Gardener to rola Crewmate Support, która tworzy strefy ochronne i wspomagające na mapie.</string>
+  <string name="ExtensionRoleGardenerIntroBlurb">Twórz ochronne strefy ogrodów, aby osłaniać swoich sojuszników.</string>
+  <string name="ExtensionRoleGardenerTabDescription">Możesz zasadzić ogród. Załoganci wewnątrz ogrodu są odporni na ataki. Otrzymasz powiadomienie, jeśli ktoś spróbuje zaatakować wewnątrz.</string>
+  <string name="ExtensionRoleGardenerWikiDescription">Gardener to rola Crewmate Protective, która może stawiać strefy ogrodów. Każdy wewnątrz ogrodu jest w pełni chroniony przed śmiercią. Jeśli ktoś spróbuje tam zaatakować, atak zostanie zablokowany, a Ty zostaniesz natychmiast powiadomiony.</string>
+  <string name="ExtensionRoleGardenerGarden">Ogród</string>
+  <string name="ExtensionRoleGardenerGardenWikiDescription">Sadzi ochronną strefę ogrodu. Załoganci wewnątrz ogrodu są chronieni przed atakami, a każda próba lub dokonanie ataku wewnątrz ogrodu jest natychmiast zgłaszane Ogrodnikowi.</string>
 
   <!-- Arcanist Options -->
   <string name="ExtensionOptionArcanistCooldown">Czas odnowienia kart</string>
@@ -1526,11 +1528,15 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRolePortalmakerTeleportWikiDescription">Przenosi gracza do drugiego portalu w parze.</string>
 
   <!-- Gardener Options -->
-  <string name="ExtensionOptionGardenerRadius">Promień ogrodu</string>
   <string name="ExtensionOptionGardenerCooldown">Czas odnowienia ogrodu</string>
-  <string name="ExtensionOptionGardenerDuration">Czas trwania ogrodu</string>
-  <string name="ExtensionOptionGardenerCanKillInGarden">Można zabijać w ogrodzie</string>
+  <string name="ExtensionOptionGardenerMaxGardens">Maksymalna liczba ogrodów</string>
+  <string name="ExtensionOptionGardenerTrapSize">Wielkość ogrodu</string>
+  <string name="ExtensionOptionGardenerGardensRemovedAfterRound">Ogrody usuwane po rundzie</string>
+  <string name="ExtensionOptionGardenerGetUsesFromTasks">Otrzymywanie użyć z zadań</string>
   <string name="ExtensionOptionGardenerFeedback">Informacja zwrotna (wizualna)</string>
+  <string name="ExtensionRoleGardenerFeedbackTitle">Feedback Ogrodnika</string>
+  <string name="ExtensionGardenerAttackBlockedFeedback">{0} próbował zaatakować kogoś w Twoim ogrodzie!</string>
+  <string name="ExtensionGardenerAttackKilledFeedback">{0} zabił kogoś w Twoim ogrodzie!</string>
 
   <!-- Jackal Rework Options -->
   <string name="ExtensionOptionJackalKillCooldown">Czas odnowienia zabójstwa</string>
