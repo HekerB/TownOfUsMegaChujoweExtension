@@ -131,6 +131,42 @@ public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, Playe
     {
         base.FixedUpdate(playerControl);
         RefreshUses();
+
+        if (playerControl != null)
+        {
+            var target = GetTarget();
+            var max = Mathf.Max(1, (int)OptionGroupSingleton<PelicanOptions>.Instance.MaxSwallowed);
+            var currentCount = PelicanSystem.GetSwallowedByPelican(playerControl.PlayerId).Count;
+            bool hasRoom = currentCount < max;
+            bool shouldBeBright = target != null && !playerControl.HasDied() && hasRoom;
+
+            SetButtonState(shouldBeBright);
+        }
+    }
+
+    private void SetButtonState(bool shouldBeBright)
+    {
+        if (Button == null) return;
+
+        if (Button.cooldownTimerText != null && Button.cooldownTimerText.gameObject.activeSelf)
+        {
+            Button.cooldownTimerText.color = Color.white;
+        }
+
+        if (Button.buttonLabelText != null)
+        {
+            Button.buttonLabelText.color = shouldBeBright ? Color.white : new Color(1f, 1f, 1f, 0.5f);
+        }
+
+        if (Button.graphic != null)
+        {
+            float alpha = shouldBeBright ? 1f : 0.5f;
+            Button.graphic.color = new Color(1f, 1f, 1f, alpha);
+            if (Button.graphic.material != null)
+            {
+                Button.graphic.material.SetFloat("_Desat", shouldBeBright ? 0f : 1f);
+            }
+        }
     }
 
     public override void ClickHandler()
@@ -143,7 +179,7 @@ public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, Playe
 
         var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
         MiraEventManager.InvokeEvent(beforeMurderEvent);
-        
+
         if (beforeMurderEvent.IsCancelled)
         {
             RefreshUses();

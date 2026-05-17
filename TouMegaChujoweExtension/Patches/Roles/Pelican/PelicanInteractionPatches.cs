@@ -42,18 +42,45 @@ public static class PelicanInteractionPatches
         var local = PlayerControl.LocalPlayer;
         bool isSwallowed = local != null && PelicanSystem.IsSwallowed(local.PlayerId);
 
-        if (isSwallowed && !_wasSwallowedLastFrame)
+        if (isSwallowed)
         {
-            foreach (var button in CustomButtonManager.Buttons)
+            if (HudManager.Instance != null && HudManager.Instance.ShadowQuad != null && HudManager.Instance.ShadowQuad.gameObject.activeSelf)
             {
-                if (button?.Button != null && button.Button.gameObject.activeSelf)
+                HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
+            }
+
+            if (!_wasSwallowedLastFrame)
+            {
+                foreach (var button in CustomButtonManager.Buttons)
                 {
-                    button.Button.gameObject.SetActive(false);
+                    if (button?.Button != null && button.Button.gameObject.activeSelf)
+                    {
+                        button.Button.gameObject.SetActive(false);
+                    }
                 }
+            }
+        }
+        else if (_wasSwallowedLastFrame)
+        {
+            if (HudManager.Instance != null && HudManager.Instance.ShadowQuad != null && !HudManager.Instance.ShadowQuad.gameObject.activeSelf)
+            {
+                HudManager.Instance.ShadowQuad.gameObject.SetActive(true);
             }
         }
         
         _wasSwallowedLastFrame = isSwallowed;
+    }
+
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
+    [HarmonyPostfix]
+    [HarmonyPriority(Priority.Last)]
+    public static void CalculateLightRadiusPostfix(ShipStatus __instance, NetworkedPlayerInfo player, ref float __result)
+    {
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer != null && PelicanSystem.IsSwallowed(localPlayer.PlayerId))
+        {
+            __result = 100f; // Extremely large vision radius (super-torch) to illuminate the entire map
+        }
     }
 
     [HarmonyPatch(typeof(TownOfUsButton), nameof(TownOfUsButton.ClickHandler))]
@@ -180,6 +207,9 @@ public static class PelicanInteractionPatches
             if (__instance.Visible) __instance.Visible = false;
             if (__instance.moveable) __instance.moveable = false;
 
+            var col = __instance.GetComponent<UnityEngine.Collider2D>();
+            if (col != null && col.enabled) col.enabled = false;
+
             var pelicanId = PelicanSystem.GetPelicanOf(__instance.PlayerId);
             if (pelicanId.HasValue)
             {
@@ -188,6 +218,11 @@ public static class PelicanInteractionPatches
                 {
                     var pelicanPos = pelican.GetTruePosition();
                     __instance.transform.position = new Vector3(pelicanPos.x, pelicanPos.y, __instance.transform.position.z);
+                    if (__instance.MyPhysics != null && __instance.MyPhysics.body != null)
+                    {
+                        __instance.MyPhysics.body.position = pelicanPos;
+                        __instance.MyPhysics.body.velocity = Vector2.zero;
+                    }
                 }
             }
         }

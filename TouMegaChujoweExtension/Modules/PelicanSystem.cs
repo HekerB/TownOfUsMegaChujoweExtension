@@ -166,11 +166,19 @@ public static class PelicanSystem
             victim.moveable = false;
             victim.Visible = false;
 
+            var col = victim.GetComponent<UnityEngine.Collider2D>();
+            if (col != null) col.enabled = false;
+
             var pelican = MiscUtils.PlayerById(pelicanId);
             if (pelican != null)
             {
                 var pelicanPos = pelican.GetTruePosition();
                 victim.transform.position = new Vector3(pelicanPos.x, pelicanPos.y, victim.transform.position.z);
+                if (victim.MyPhysics != null && victim.MyPhysics.body != null)
+                {
+                    victim.MyPhysics.body.position = pelicanPos;
+                    victim.MyPhysics.body.velocity = Vector2.zero;
+                }
                 victim.NetTransform.SnapTo(pelicanPos);
             }
 
@@ -431,6 +439,13 @@ public static class PelicanSystem
                     victim.Visible = true;
                     victim.moveable = true;
                     victim.transform.position = new Vector3(safePosition.x, safePosition.y, 0f);
+                    if (victim.MyPhysics != null && victim.MyPhysics.body != null)
+                    {
+                        victim.MyPhysics.body.position = safePosition;
+                        victim.MyPhysics.body.velocity = Vector2.zero;
+                    }
+                    var col = victim.GetComponent<UnityEngine.Collider2D>();
+                    if (col != null) col.enabled = true;
                     victim.NetTransform.SnapTo(safePosition);
 
                     RestoreFootstepsIfNeeded(victim);
@@ -482,8 +497,15 @@ public static class PelicanSystem
                 if (OriginalPositions.TryGetValue(victimId, out var origPos))
                 {
                     victim.transform.position = new Vector3(origPos.x, origPos.y, 0f);
+                    if (victim.MyPhysics != null && victim.MyPhysics.body != null)
+                    {
+                        victim.MyPhysics.body.position = origPos;
+                        victim.MyPhysics.body.velocity = Vector2.zero;
+                    }
                     victim.NetTransform.SnapTo(origPos);
                 }
+                var col = victim.GetComponent<UnityEngine.Collider2D>();
+                if (col != null) col.enabled = true;
 
                 RestoreFootstepsIfNeeded(victim);
             }
@@ -612,15 +634,32 @@ public static class PelicanSystem
                 !AmongUsClient.Instance.IsGameStarted)
                 yield break;
 
-            if (!IsSwallowed(localPlayer.PlayerId)) yield break;
-
-            var pelican = MiscUtils.PlayerById(pelicanId);
-            if (pelican == null || pelican.HasDied()) yield break;
-
-            if (Camera.main != null)
+            if (IsSwallowed(localPlayer.PlayerId))
             {
-                var follower = Camera.main.GetComponent<FollowerCamera>();
-                follower?.SetTarget(pelican);
+                var pelican = MiscUtils.PlayerById(pelicanId);
+                if (pelican != null && !pelican.HasDied())
+                {
+                    if (Camera.main != null)
+                    {
+                        var follower = Camera.main.GetComponent<FollowerCamera>();
+                        if (follower != null && follower.Target != pelican)
+                        {
+                            follower.SetTarget(pelican);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (Camera.main != null)
+                {
+                    var follower = Camera.main.GetComponent<FollowerCamera>();
+                    if (follower != null && follower.Target != localPlayer)
+                    {
+                        follower.SetTarget(localPlayer);
+                    }
+                }
+                yield break;
             }
 
             yield return null;
@@ -726,6 +765,8 @@ public static class PelicanSystem
                         RemoveSwallowedModifier(victim);
                         victim.Visible = true;
                         victim.moveable = true;
+                        var col = victim.GetComponent<UnityEngine.Collider2D>();
+                        if (col != null) col.enabled = true;
                         RestoreFootstepsIfNeeded(victim);
                     }
                 }
@@ -755,6 +796,8 @@ public static class PelicanSystem
             try { RemoveSwallowedModifier(player); } catch { /* ignore cleanup error */ }
             player.Visible = true;
             player.moveable = true;
+            var col = player.GetComponent<UnityEngine.Collider2D>();
+            if (col != null) col.enabled = true;
             RestoreFootstepsIfNeeded(player);
             try { player.NetTransform.Halt(); } catch { /* ignore halt error */ }
         }
