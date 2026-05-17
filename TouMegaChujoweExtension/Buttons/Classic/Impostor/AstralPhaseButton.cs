@@ -70,6 +70,20 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
         // Logic handled in ClickHandler
     }
 
+    private void ExitVentIfNeeded(PlayerControl player)
+    {
+        if (player != null && player.inVent)
+        {
+            var currentVent = Vent.currentVent;
+            if (currentVent != null)
+            {
+                currentVent.SetButtons(false);
+                player.MyPhysics.RpcExitVent(currentVent.Id);
+            }
+            player.MyPhysics.ExitAllVents();
+        }
+    }
+
     private void Materialize(PlayerControl player)
     {
         bool shouldDie = false;
@@ -87,11 +101,13 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
 
         if (shouldDie)
         {
+            ExitVentIfNeeded(player);
             player.NetTransform.SnapTo(_startPosition);
             player.RpcSpecialMurder(player, causeOfDeath: "AstralShatter");
             return;
         }
 
+        ExitVentIfNeeded(player);
         player.NetTransform.SnapTo(_startPosition);
 
         if (options.InvisibilityAfterTeleport)
@@ -122,6 +138,7 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
             _isPhasing = false;
             EffectActive = false;
             player.RpcRemoveModifier<AstralPhaseModifier>();
+            ExitVentIfNeeded(player);
             player.NetTransform.SnapTo(_startPosition);
             player.RpcSpecialMurder(player, causeOfDeath: "AstralShatter");
         }

@@ -115,10 +115,15 @@ public static class RoleUIExtensionPatch
         }
     }
 
+    private static readonly System.Reflection.FieldInfo? MapButtonField = AccessTools.Field(typeof(MeetingHud), "MapButton");
+    private static MeetingHud? _lastSetupMeetingHud;
+
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
     [HarmonyPostfix]
     public static void MeetingHudUpdatePostfix(MeetingHud __instance)
     {
+        if (_lastSetupMeetingHud == __instance) return;
+
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.Data.IsDead) return;
 
@@ -128,9 +133,8 @@ public static class RoleUIExtensionPatch
             var options = OptionGroupSingleton<VampireExtendedOptions>.Instance;
             if (options != null && options.CanOnlySabotageLights)
             {
-                // Find MapButton using reflection to enable normal map opening during meetings
-                var mapButtonField = AccessTools.Field(typeof(MeetingHud), "MapButton");
-                var mapButtonObj = mapButtonField?.GetValue(__instance) as Component;
+                // Find MapButton using cached reflection to enable normal map opening during meetings
+                var mapButtonObj = MapButtonField?.GetValue(__instance) as Component;
                 
                 if (mapButtonObj != null)
                 {
@@ -140,6 +144,7 @@ public static class RoleUIExtensionPatch
                     {
                         passiveButton.enabled = true;
                     }
+                    _lastSetupMeetingHud = __instance;
                 }
             }
         }
