@@ -1221,7 +1221,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionJackalNotifySidekickDeath">Notify on Recruit death</string>
   <string name="ExtensionJackalSidekickDiedAlert">Recruit {0} has died!</string>
   <string name="ExtensionJackalShieldLostAlert">You lost your shield!</string>
-  <string name="ExtensionJackalKillAbilityAlert">You can now kill!</string>
+  <string name="ExtensionJackalKillAbilityAlert">Your recruits are dead! Kill ability unlocks in 10s.</string>
   <string name="ExtensionModifierSidekickShortName">REC</string>
   <string name="ExtensionJackalShieldModifierTitle">RECRUIT ALIVE SHIELD</string>
   <string name="ExtensionJackalShieldModifierDesc">Protects the Infiltrator from any killing attempt as long as at least one Recruit is alive.</string>
@@ -1231,6 +1231,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
 
   <string name="Sidekick">Recruit</string>
   <string name="SidekickIntroBlurb">You have been recruited by the Infiltrator. You must betray your team.</string>
+  <string name="ExtensionJackalSidekickIntroHeader">&lt;color=#E0E0E0&gt;You have been recruited by the Infiltrator, betray your team!&lt;/color&gt;</string>
   <string name="SidekickTabDescription">You have been recruited. Protect the Infiltrator to win alongside them.\%nl\%&lt;color=#FF3B3B&gt;&lt;b&gt;You have joined a new team and have a new win condition!&lt;/b&gt;&lt;/color&gt;</string>
   <string name="SidekickWikiDescription">Protect the Infiltrator and help them eliminate other factions. You are lifelinked to another Recruit.</string>
   <string name="DiedToJackal">Assassinated by Infiltrator</string>

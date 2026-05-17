@@ -1411,7 +1411,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionJackalNotifySidekickDeath">Powiadomienie o śmierci rekruta</string>
   <string name="ExtensionJackalSidekickDiedAlert">Rekrut {0} zginął!</string>
   <string name="ExtensionJackalShieldLostAlert">Straciłeś tarczę!</string>
-  <string name="ExtensionJackalKillAbilityAlert">Możesz teraz zabijać!</string>
+  <string name="ExtensionJackalKillAbilityAlert">Twoi rekruci nie żyją! Zdolność zabijania odblokuje się za 10s!</string>
   <string name="ExtensionModifierSidekickShortName">REC</string>
   <string name="ExtensionJackalShieldModifierTitle">TARCZA ŻYWEGO REKRUTA</string>
   <string name="ExtensionJackalShieldModifierDesc">Chroni Infiltratora przed próbami zabójstwa, dopóki żyje przynajmniej jeden Rekrut.</string>
@@ -1419,6 +1419,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
 
   <string name="Sidekick">Rekrut</string>
   <string name="SidekickIntroBlurb">Zostałeś zwerbowany przez Infiltratora. Musisz zdradzić swoją drużynę.</string>
+  <string name="ExtensionJackalSidekickIntroHeader">&lt;color=#E0E0E0&gt;Zostałeś zrekrutowany przez infiltratora, zdradź swoją drużynę!&lt;/color&gt;</string>
   <string name="SidekickTabDescription">Zostałeś zrekrutowany. Musisz chronić Infiltratora, aby wygrać wraz z nim.\%nl\%&lt;color=#FF3B3B&gt;&lt;b&gt;Zmieniłeś drużynę i masz nowy cel zwycięstwa!&lt;/b&gt;&lt;/color&gt;</string>
   <string name="SidekickWikiDescription">Chroń Infiltratora i pomóż mu wyeliminować inne frakcje. Jesteś połączony życiem z drugim Rekrutem.</string>
   <string name="DiedToJackal">Zabity przez Infiltratora</string>

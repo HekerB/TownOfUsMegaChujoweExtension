@@ -82,13 +82,19 @@ public static class GardenerSystem
             UnityEngine.Object.Destroy(oldGarden.Visual);
         }
 
+        GameObject? visual = null;
+        if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == ownerId)
+        {
+            visual = CreateGardenVisual(position, radius);
+        }
+
         ActiveGardens[ownerId] = new ActiveGarden
         {
             Position = position,
             Radius = radius,
             RemainingTime = duration,
             OwnerId = ownerId,
-            Visual = CreateGardenVisual(position, radius)
+            Visual = visual
         };
     }
 

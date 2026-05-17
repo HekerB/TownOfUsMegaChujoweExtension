@@ -24,6 +24,8 @@ using TownOfUs.Buttons;
 using TownOfUs;
 using TownOfUs.Modifiers;
 using TownOfUs.Events;
+using TownOfUs.Modules;
+using TownOfUs.Utilities.Appearances;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Jackal;
 
@@ -75,15 +77,14 @@ public static class JackalMechanicsPatch
 
                 if (sidekicksAlive && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
                 {
-                    UnityEngine.Debug.Log($"[TOUMCE] Jackal Block: Shield active for {victim.Data.PlayerName}");
                     if (victim.AmOwner)
                     {
                         Helpers.CreateAndShowNotification(
                             TouLocale.Get("ExtensionJackalShieldModifierDesc"),
                             Color.white,
                             new Vector3(0f, 1f, -20f),
-                            spr: TouRoleIcons.Jackal.LoadAsset()
-                        ).AdjustNotification();
+                            spr: TouRoleIcons.Jackal?.LoadAsset()
+                        )?.AdjustNotification();
                         Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
                     }
                     return true;
@@ -171,25 +172,30 @@ public static class JackalMechanicsPatch
             bool isPcRecruit = (pc.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == teamJackalId) ||
                                 (JackalStartPatch.PendingAssignments.TryGetValue(pc.PlayerId, out var jId) && jId == teamJackalId);
 
-            bool shouldColor = false;
             bool shouldShowArrow = false;
 
             if (jackal != null)
             {
-                shouldColor = isPcJackal || isPcRecruit;
+                if (isPcJackal)
+                {
+                    pc.cosmetics.nameText.color = TouExtensionColors.Jackal;
+                }
+                else if (isPcRecruit)
+                {
+                    pc.cosmetics.nameText.color = new Color32(138, 138, 138, 255); // Gray #8A8A8A
+                }
             }
             else if (isSidekick)
             {
-                shouldColor = isPcRecruit;
+                if (isPcRecruit)
+                {
+                    pc.cosmetics.nameText.color = new Color32(138, 138, 138, 255); // Gray #8A8A8A
+                }
+                
                 if (isPcRecruit && pc.PlayerId != __instance.PlayerId && OptionGroupSingleton<ExtensionGeneralOptions>.Instance.RecruitsHaveArrow)
                 {
                     shouldShowArrow = !pc.Data.IsDead;
                 }
-            }
-
-            if (shouldColor)
-            {
-                pc.cosmetics.nameText.color = TouExtensionColors.Jackal;
             }
 
             if (shouldShowArrow)

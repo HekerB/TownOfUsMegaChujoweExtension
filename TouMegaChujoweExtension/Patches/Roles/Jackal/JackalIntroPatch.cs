@@ -52,14 +52,21 @@ public static class JackalIntroPatch
         Coroutines.Start(CoDelayedRecruitNotification(localPlayer));
     }
 
+    public static void UpdateIntroCutscene(IntroCutscene instance)
+    {
+        ShowRecruitIntroText(instance);
+    }
+
     private static void ShowRecruitIntroText(IntroCutscene instance)
     {
+        if (instance == null) return;
+
+        var headerText = TouLocale.Get("ExtensionJackalSidekickIntroHeader");
         var jackalInfo = TouLocale.GetParsed("SidekickIntroBlurb");
         
-        if (instance.RoleText != null)
+        if (instance.YouAreText != null && !string.IsNullOrEmpty(headerText))
         {
-            instance.RoleText.text = SidekickModifier.ShortName;
-            instance.RoleText.color = TouExtensionColors.Jackal;
+            instance.YouAreText.text = headerText;
         }
 
         if (instance.BackgroundBar != null)
@@ -67,12 +74,9 @@ public static class JackalIntroPatch
             instance.BackgroundBar.material.color = TouExtensionColors.Jackal;
         }
 
-        if (!string.IsNullOrEmpty(jackalInfo))
+        if (!string.IsNullOrEmpty(jackalInfo) && instance.RoleBlurbText != null && !instance.RoleBlurbText.text.Contains(jackalInfo))
         {
-            if (instance.RoleBlurbText != null)
-            {
-                instance.RoleBlurbText.text = $"<color=#{ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Jackal)}>{jackalInfo}</color>";
-            }
+            instance.RoleBlurbText.text += $"\n<size=2.5><color=#{ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Jackal)}>{jackalInfo}</color></size>";
         }
     }
 
@@ -94,6 +98,12 @@ public static class JackalIntroPatch
                 spr: TouExtensionIcons.SidekickModifierIcon.LoadAsset()
             ).AdjustNotification();
             Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
+
+            var activeIntro = UnityEngine.Object.FindObjectOfType<IntroCutscene>();
+            if (activeIntro != null)
+            {
+                ShowRecruitIntroText(activeIntro);
+            }
         }
     }
 }

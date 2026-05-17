@@ -4,6 +4,8 @@ using MiraAPI.Hud;
 using MiraAPI.Utilities;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using Reactor.Networking.Attributes;
+using TouMegaChujoweExtension.Networking;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TownOfUs.Modules.Localization;
 using Il2CppInterop.Runtime.Attributes;
@@ -132,7 +134,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
     }
 
-    private bool _killAbilityAlertShown;
+    public bool KillAbilityAlertShown { get; set; }
 
     public void OnRecruitDie()
     {
@@ -153,9 +155,9 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
         UnityEngine.Debug.Log($"[TOUMCE] Jackal {Player.Data.PlayerName} sidekick died. Remaining: {remainingSidekicks}");
 
-        if (remainingSidekicks == 0 && !_killAbilityAlertShown)
+        if (remainingSidekicks == 0 && !KillAbilityAlertShown)
         {
-            _killAbilityAlertShown = true;
+            KillAbilityAlertShown = true;
             UnityEngine.Debug.Log("[TOUMCE] All sidekicks dead, enabling Jackal kill ability.");
 
             if (Player.AmOwner)
@@ -214,6 +216,30 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                 {
                     Player.RemoveModifier<JackalShieldModifier>();
                 }
+            }
+        }
+    }
+
+    [MethodRpc((uint)ExtensionRpc.SetSidekickAssignments)]
+    public static void RpcSetSidekickAssignments(PlayerControl sender, byte[] victims, byte[] jackalIds)
+    {
+        Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.Clear();
+        if (victims == null || jackalIds == null) return;
+
+        for (int i = 0; i < victims.Length && i < jackalIds.Length; i++)
+        {
+            Patches.Roles.Jackal.JackalStartPatch.PendingAssignments[victims[i]] = jackalIds[i];
+            UnityEngine.Debug.Log($"[TOUMCE] Synced sidekick {victims[i]} to Jackal {jackalIds[i]}");
+        }
+
+        // Update active SidekickModifiers with the synced Jackal IDs
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player != null && player.Pointer != IntPtr.Zero && player.TryGetModifier<SidekickModifier>(out var mod) &&
+                Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(player.PlayerId, out var jId))
+            {
+                mod.JackalId = jId;
+                UnityEngine.Debug.Log($"[TOUMCE] Explicitly set JackalId={jId} for Sidekick {player.Data?.PlayerName}");
             }
         }
     }

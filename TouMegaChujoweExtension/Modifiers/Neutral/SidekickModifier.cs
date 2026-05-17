@@ -74,10 +74,19 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
             UnityEngine.Debug.Log($"[TOUMCE] Sidekick {player.Data?.PlayerName} discovered their Jackal: {jId}");
         }
 
-        if (player.AmOwner && !WasNotified && JackalId != 255)
+        if (player.AmOwner)
         {
-            WasNotified = true;
-            Reactor.Utilities.Coroutines.Start(DelayedNotification());
+            var intro = UnityEngine.Object.FindObjectOfType<IntroCutscene>();
+            if (intro != null)
+            {
+                Patches.Roles.Jackal.JackalIntroPatch.UpdateIntroCutscene(intro);
+            }
+
+            if (!WasNotified && JackalId != 255)
+            {
+                WasNotified = true;
+                Reactor.Utilities.Coroutines.Start(DelayedNotification());
+            }
         }
     }
 

@@ -61,19 +61,6 @@ public static class JackalStartPatch
         Coroutines.Start(DelayedAssignment());
     }
 
-    [MethodRpc((uint)ExtensionRpc.SetSidekickAssignments)]
-    public static void RpcSetSidekickAssignments(byte[] victims, byte[] jackalIds)
-    {
-        PendingAssignments.Clear();
-        if (victims == null || jackalIds == null) return;
-
-        for (int i = 0; i < victims.Length && i < jackalIds.Length; i++)
-        {
-            PendingAssignments[victims[i]] = jackalIds[i];
-            UnityEngine.Debug.Log($"[TOUMCE] Synced sidekick {victims[i]} to Jackal {jackalIds[i]}");
-        }
-    }
-
     private static IEnumerator DelayedAssignment()
     {
         if (WasExecuted) yield break;
@@ -125,7 +112,7 @@ public static class JackalStartPatch
         {
             var victims = PendingAssignments.Keys.ToArray();
             var jackalIds = PendingAssignments.Values.ToArray();
-            RpcSetSidekickAssignments(victims, jackalIds);
+            JackalRole.RpcSetSidekickAssignments(PlayerControl.LocalPlayer, victims, jackalIds);
         }
     }
 

@@ -91,12 +91,14 @@ public static class ExtensionSymbolsPatch
         if (player.TryGetModifier<SidekickModifier>(out var mod))
         {
             bool localIsJackal = local.IsRole<JackalRole>();
-            bool isPcRecruitOfLocal = mod.JackalId == local.PlayerId || 
+            bool isPcRecruitOfLocal = (mod.JackalId != 255 && mod.JackalId == local.PlayerId) || 
                                      (Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(player.PlayerId, out var jId) && jId == local.PlayerId);
             
             bool localIsSidekick = local.TryGetModifier<SidekickModifier>(out var localMod);
-            bool isPcSameRecruitTeam = localIsSidekick && localMod != null && (localMod.JackalId == mod.JackalId || 
-                                      (Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(player.PlayerId, out var pjId) && pjId == localMod.JackalId));
+            bool isPcSameRecruitTeam = localIsSidekick && localMod != null && 
+                                       ((mod.JackalId != 255 && localMod.JackalId == mod.JackalId) || 
+                                        (Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(player.PlayerId, out var pjId) && 
+                                         Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(local.PlayerId, out var lId) && pjId == lId));
 
             bool sameTeam = (localIsJackal && isPcRecruitOfLocal) || isPcSameRecruitTeam;
             
@@ -106,12 +108,12 @@ public static class ExtensionSymbolsPatch
             {
                 string prefix = "";
                 
-                // Jackal always sees roles. Sidekicks see roles ONLY if the setting is enabled.
-                bool canSeeRole = localIsJackal || (localIsSidekick && OptionGroupSingleton<Options.ExtensionGeneralOptions>.Instance.RecruitsKnowEachOther);
+                // Jackal always sees roles.
+                bool canSeeRole = localIsJackal;
 
                 if (canSeeRole && player.PlayerId != local.PlayerId && !deadKnow && player.Data?.Role != null)
                 {
-                    var role = RoleManager.Instance?.GetRole(player.Data.Role.Role);
+                    var role = RoleManager.Instance?.GetRole(player.GetRoleWhenAlive().Role);
                     if (role != null)
                     {
                         var roleColor = (role as ITownOfUsRole)?.RoleColor ?? (role as ICustomRole)?.RoleColor ?? Color.white;
@@ -125,9 +127,9 @@ public static class ExtensionSymbolsPatch
                     }
                 }
 
-                if (!__result.Contains("(Rec)"))
+                if (!__result.Contains("(rec)"))
                 {
-                    __result = $"{prefix}<color=#{jackalHex}>{__result} (Rec)</color>";
+                    __result = $"{prefix}<color=#8A8A8A>{__result} (rec)</color>";
                 }
             }
         }
@@ -158,6 +160,43 @@ public static class ExtensionSymbolsPatch
         if (player.TryGetModifier<BodyguardShieldModifier>(out var shieldMod) && !__result.Contains('Σ') && (shieldMod.VisibleSymbol || deadKnow))
         {
             __result += " <color=#003380>Σ</color>";
+        }
+    }
+
+    [HarmonyPatch(nameof(PlayerRoleTextExtensions.UpdateTargetColor), typeof(Color), typeof(PlayerControl), typeof(bool))]
+    [HarmonyPostfix]
+    public static void UpdateTargetColorPostfix(ref Color __result, PlayerControl player, bool hidden)
+    {
+        var local = PlayerControl.LocalPlayer;
+        if (player == null || local == null || local.Data == null)
+            return;
+
+        var genOpt = OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance;
+        bool isGhost = local.HasDied();
+        bool deadKnow = isGhost && genOpt.TheDeadKnow && !hidden;
+
+        if (player.TryGetModifier<SidekickModifier>(out var mod))
+        {
+            bool localIsJackal = local.IsRole<JackalRole>();
+            bool isPcRecruitOfLocal = (mod.JackalId != 255 && mod.JackalId == local.PlayerId) || 
+                                     (Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(player.PlayerId, out var jId) && jId == local.PlayerId);
+            
+            bool localIsSidekick = local.TryGetModifier<SidekickModifier>(out var localMod);
+            bool isPcSameRecruitTeam = localIsSidekick && localMod != null && 
+                                       ((mod.JackalId != 255 && localMod.JackalId == mod.JackalId) || 
+                                        (Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(player.PlayerId, out var pjId) && 
+                                         Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(local.PlayerId, out var lId) && pjId == lId));
+
+            bool sameTeam = (localIsJackal && isPcRecruitOfLocal) || isPcSameRecruitTeam;
+            
+            if (sameTeam || deadKnow)
+            {
+                __result = new Color32(138, 138, 138, 255); // Gray #8A8A8A
+            }
+        }
+        else if (player.IsRole<JackalRole>() && (local.PlayerId == player.PlayerId || deadKnow))
+        {
+            __result = TouExtensionColors.Jackal;
         }
     }
 

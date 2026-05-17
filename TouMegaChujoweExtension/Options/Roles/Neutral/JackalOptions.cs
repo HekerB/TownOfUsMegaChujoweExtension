@@ -13,7 +13,7 @@ public sealed class JackalOptions : AbstractOptionGroup<JackalRole>
     public override string GroupName => TouLocale.Get("ExtensionRoleJackal");
 
     [ModdedNumberOption("ExtensionOptionJackalKillCooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float KillCooldown { get; set; } = 25f;
+    public float KillCooldown { get; set; } = 20f;
 
     [ModdedEnumOption("ExtensionOptionJackalKillDistance", null!, ["Short", "Medium", "Long"])]
     public int KillDistance { get; set; } = 1; // 1 = Normal
