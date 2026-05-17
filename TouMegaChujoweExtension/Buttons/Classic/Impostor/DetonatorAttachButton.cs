@@ -24,6 +24,8 @@ public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole
     private float _attachTimer;
     private bool _isAttaching;
     private PlayerControl? _lastOutlined;
+    private Image? _cooldownFillImage;
+    private ActionButton? _lastButton;
 
     public override string Name => TouLocale.Get("ExtensionRoleDetonatorAttach", "Attach Bomb");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
@@ -113,6 +115,8 @@ public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole
             Timer = playerControl.killTimer;
         }
 
+        var target = GetTarget();
+
         // Handling Attach phase (progress bar on button)
         if (_isAttaching)
         {
@@ -138,15 +142,15 @@ public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole
                 }
                 
                 // Button should be bright and outline visible during attaching
-                UpdateOutline();
+                UpdateOutline(target);
                 SetButtonState(true, hasBomb, true);
                 return; 
             }
         }
 
         base.FixedUpdate(playerControl);
-        UpdateOutline();
-        SetButtonState(hasBomb || GetTarget() != null, hasBomb, false);
+        UpdateOutline(target);
+        SetButtonState(hasBomb || target != null, hasBomb, false);
     }
 
     private void SetButtonState(bool shouldBeBright, bool hasBomb, bool isAttaching)
@@ -175,28 +179,35 @@ public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole
         // Red fill (radial cooldown) like Poisoner
         try
         {
-            var fill = Button.gameObject.transform.Find("CooldownFill")?.GetComponent<Image>();
-            if (fill != null)
+            if (_lastButton != Button)
             {
-                fill.color = (hasBomb || isAttaching) ? Palette.ImpostorRed : Color.white;
+                _lastButton = Button;
+                _cooldownFillImage = Button.gameObject.transform.Find("CooldownFill")?.GetComponent<Image>();
+            }
+
+            if (_cooldownFillImage != null)
+            {
+                _cooldownFillImage.color = (hasBomb || isAttaching) ? Palette.ImpostorRed : Color.white;
             }
         }
         catch { /* ignore */ }
     }
 
-    private void UpdateOutline()
+    private void UpdateOutline(PlayerControl? target)
     {
-        var target = GetTarget();
-        if (_lastOutlined != null && _lastOutlined != target)
+        if (_lastOutlined != target)
         {
-            _lastOutlined.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>());
-        }
+            if (_lastOutlined != null)
+            {
+                _lastOutlined.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>());
+            }
 
-        if (target != null)
-        {
-            target.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(Palette.ImpostorRed));
-        }
+            if (target != null)
+            {
+                target.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(Palette.ImpostorRed));
+            }
 
-        _lastOutlined = target;
+            _lastOutlined = target;
+        }
     }
 }

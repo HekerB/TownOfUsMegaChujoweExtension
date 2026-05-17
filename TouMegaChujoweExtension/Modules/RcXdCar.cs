@@ -179,7 +179,8 @@ public sealed class RcXdCar : IDisposable
             car._renderer.maskInteraction = SpriteMaskInteraction.None;
         }
 
-        car._renderer.enabled = true;
+        var localPlayer = PlayerControl.LocalPlayer;
+        car._renderer.enabled = localPlayer != null && (localPlayer.Data.Role.IsImpostor || localPlayer.Data.IsDead);
 
         car._audio = car._go.AddComponent<AudioSource>();
         
@@ -236,7 +237,9 @@ public sealed class RcXdCar : IDisposable
                 continue;
             }
 
-            if (_renderer != null) _renderer.enabled = true;
+            var local = PlayerControl.LocalPlayer;
+            bool shouldRender = local != null && (local.Data.Role.IsImpostor || local.Data.IsDead);
+            if (_renderer != null) _renderer.enabled = shouldRender;
 
             var cur = (Vector2)_go.transform.position;
 
@@ -431,6 +434,21 @@ public sealed class RcXdCar : IDisposable
     {
         if (_audio == null || _go == null) return;
 
+        var local = PlayerControl.LocalPlayer;
+        if (local == null)
+        {
+            _audio.volume = 0f;
+            return;
+        }
+
+        // Silent to Crewmates
+        bool isImpostorOrDead = local.Data.Role.IsImpostor || local.Data.IsDead;
+        if (!isImpostorOrDead)
+        {
+            _audio.volume = 0f;
+            return;
+        }
+
         bool isMoving = _isOwner ? _velocity.magnitude > 0.05f : _netVel.magnitude > 0.05f && (Time.time - _netLastRecvTime) < 0.35f;
 
         if (_isOwner)
@@ -439,13 +457,7 @@ public sealed class RcXdCar : IDisposable
             return;
         }
 
-        if (PlayerControl.LocalPlayer == null)
-        {
-            _audio.volume = 0f;
-            return;
-        }
-
-        var dist = Vector2.Distance(_go.transform.position, PlayerControl.LocalPlayer.transform.position);
+        var dist = Vector2.Distance(_go.transform.position, local.transform.position);
         float baseVol = isMoving ? 0.7f : 0f;
         _audio.volume = dist > AudioHearRadius ? 0f : Mathf.Clamp01(1f - (dist / AudioHearRadius)) * baseVol;
     }

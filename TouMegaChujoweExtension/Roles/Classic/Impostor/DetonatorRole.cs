@@ -85,11 +85,10 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         if (target == null || target.HasDied()) return;
 
         DetonatorSystem.AttachBomb(detonator.PlayerId, target.PlayerId);
-        RpcPlayTracker(detonator);
+        PlayTracker(detonator);
     }
 
-    [MethodRpc((uint)ExtensionRpc.DetonatorPlayTracker)]
-    public static void RpcPlayTracker(PlayerControl detonator)
+    public static void PlayTracker(PlayerControl detonator)
     {
         if (PlayerControl.LocalPlayer == null || detonator == null) return;
         if (PlayerControl.LocalPlayer.PlayerId != detonator.PlayerId) return;
@@ -148,8 +147,7 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         return sphere;
     }
 
-    [MethodRpc((uint)ExtensionRpc.DetonatorPlayBeep)]
-    public static void RpcPlayBeep(PlayerControl victim, byte detonatorId, float volume)
+    public static void PlayBeep(PlayerControl victim, byte detonatorId, float volume)
     {
         if (PlayerControl.LocalPlayer == null || victim == null) return;
         

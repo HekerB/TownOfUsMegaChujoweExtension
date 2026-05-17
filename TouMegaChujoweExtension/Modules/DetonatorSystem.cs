@@ -171,7 +171,7 @@ public static class DetonatorSystem
                 {
                     bomb.LastBeepTime = bomb.TimeElapsed;
                     float volume = Mathf.Clamp(0.2f + (timeSinceReady / 25f), 0.2f, 1.0f);
-                    DetonatorRole.RpcPlayBeep(victim, bomb.DetonatorId, volume);
+                    DetonatorRole.PlayBeep(victim, bomb.DetonatorId, volume);
                 }
             }
         }
