@@ -16,8 +16,8 @@ public sealed class EvokerOptions : AbstractOptionGroup<EvokerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleEvoker", "Evoker");
 
-    public ModdedNumberOption BlindDuration { get; } = new("ExtensionOptionEvokerBlindDuration", 10f, 5f, 30f, 1f, MiraNumberSuffixes.Seconds);
-    public ModdedNumberOption BlindCooldown { get; } = new("ExtensionOptionEvokerBlindCooldown", 25f, 5f, 60f, 2.5f, MiraNumberSuffixes.Seconds);
+    public ModdedNumberOption BlindDuration { get; } = new("ExtensionOptionEvokerBlindDuration", 8f, 5f, 30f, 1f, MiraNumberSuffixes.Seconds);
+    public ModdedNumberOption BlindCooldown { get; } = new("ExtensionOptionEvokerBlindCooldown", 37.5f, 5f, 60f, 2.5f, MiraNumberSuffixes.Seconds);
 
     public ModdedEnumOption<EvokerBlindType> BlindType { get; } = new("ExtensionOptionEvokerBlindType", EvokerBlindType.Normal,
     [
@@ -36,12 +36,12 @@ public sealed class EvokerOptions : AbstractOptionGroup<EvokerRole>
 
     public EvokerOptions()
     {
-        VerifyCooldown = new ModdedNumberOption("ExtensionOptionEvokerVerifyCooldown", 5f, 1f, 30f, 1f, MiraNumberSuffixes.Seconds)
+        VerifyCooldown = new ModdedNumberOption("ExtensionOptionEvokerVerifyCooldown", 9f, 1f, 30f, 1f, MiraNumberSuffixes.Seconds)
         {
             Visible = () => !OptionGroupSingleton<EvokerOptions>.Instance.CantVerify.Value
         };
 
-        MaxVerifications = new ModdedNumberOption("ExtensionOptionEvokerMaxVerifications", 3f, 0f, 20f, 1f, MiraNumberSuffixes.None, "0", true)
+        MaxVerifications = new ModdedNumberOption("ExtensionOptionEvokerMaxVerifications", 0f, 0f, 20f, 1f, MiraNumberSuffixes.None, "0", true)
         {
             Visible = () => !OptionGroupSingleton<EvokerOptions>.Instance.CantVerify.Value
         };

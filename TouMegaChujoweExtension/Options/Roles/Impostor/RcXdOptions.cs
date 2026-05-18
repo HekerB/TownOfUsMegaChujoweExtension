@@ -11,19 +11,19 @@ public sealed class RcXdOptions : AbstractOptionGroup<RcXdRole>
     public override string GroupName => TouLocale.Get("ExtensionRoleRcXd", "RC-XD");
 
     [ModdedNumberOption("ExtensionOptionRcXdMaxDeploys", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
-    public float MaxDeploys { get; set; } = 2f;
+    public float MaxDeploys { get; set; } = 3f;
 
     [ModdedNumberOption("ExtensionOptionRcXdDriveTime", 3f, 20f, 1f, MiraNumberSuffixes.Seconds)]
     public float DriveTime { get; set; } = 10f;
 
     [ModdedNumberOption("ExtensionOptionRcXdDetonateRadius", 0.1f, 3f, 0.1f, MiraNumberSuffixes.Multiplier, "0.00")]
-    public float DetonateRadius { get; set; } = 0.5f;
+    public float DetonateRadius { get; set; } = 0.2f;
 
     [ModdedNumberOption("ExtensionOptionRcXdMaxKills", 1f, 15f, 1f, MiraNumberSuffixes.None, "0")]
-    public float MaxKillsInDetonation { get; set; } = 5f;
+    public float MaxKillsInDetonation { get; set; } = 3f;
 
     [ModdedNumberOption("ExtensionOptionRcXdMaxSpeed", 0.5f, 6f, 0.25f, MiraNumberSuffixes.Multiplier)]
-    public float CarSpeed { get; set; } = 1.5f;
+    public float CarSpeed { get; set; } = 4.5f;
 
     [ModdedToggleOption("ExtensionOptionRcXdAllowEarlyDetonation")]
     public bool AllowEarlyDetonation { get; set; } = true;

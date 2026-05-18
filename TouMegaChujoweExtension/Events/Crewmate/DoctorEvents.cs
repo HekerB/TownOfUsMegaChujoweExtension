@@ -110,9 +110,9 @@ public static class DoctorEvents
         // Injector negative effects if enabled
         if (options.CanGiveNegativeEffects)
         {
-            effects.Add((options.ChanceNegativeSlowness, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.Impostor.InjectedSlownessModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionRoleInjectorEffectTypeEnumSlowness", "Slowness"));
-            effects.Add((options.ChanceNegativeLowVision, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.Impostor.InjectedLowVisionModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionRoleInjectorEffectTypeEnumLowVision", "Low Vision"));
-            effects.Add((options.ChanceNegativeConfused, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.Impostor.InjectedConfusedModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionRoleInjectorEffectTypeEnumConfused", "Confused"));
+            effects.Add((options.ChanceNegativeSlowness, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.Impostor.InjectedSlownessModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionInjectorNotificationSlowness", "Slowness"));
+            effects.Add((options.ChanceNegativeLowVision, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.Impostor.InjectedLowVisionModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionInjectorNotificationLowVision", "Low Vision"));
+            effects.Add((options.ChanceNegativeConfused, new Func<BaseModifier>(() => new TouMegaChujoweExtension.Modifiers.Impostor.InjectedConfusedModifier(duration, TouMegaChujoweExtension.Options.Roles.Impostor.InjectorEffectDurationType.SetTime)), "ExtensionInjectorNotificationConfused", "Confused"));
         }
 
         var totalWeight = effects.Sum(e => e.Weight);

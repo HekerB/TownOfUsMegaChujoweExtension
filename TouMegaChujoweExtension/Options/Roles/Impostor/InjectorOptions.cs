@@ -41,6 +41,9 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
     [ModdedNumberOption("ExtensionOptionInjectorInjectCooldown", 5f, 120f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float InjectCooldown { get; set; } = 25f;
 
+    [ModdedToggleOption("ExtensionOptionInjectorSharedCooldown")]
+    public bool SharedCooldown { get; set; } = true;
+
     [ModdedNumberOption("ExtensionOptionInjectorEffectDelay", 0f, 30f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float EffectDelay { get; set; } = 5f;
 
@@ -67,9 +70,6 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
 
     [ModdedNumberOption("ExtensionOptionInjectorInitialUses", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float InitialUses { get; set; } = 4f;
-
-    [ModdedToggleOption("ExtensionOptionInjectorSharedCooldown")]
-    public bool SharedCooldown { get; set; } = true;
 
     [ModdedNumberOption("ExtensionOptionInjectorDoubleInjectionMultiplier", 1f, 5f, 0.5f, MiraNumberSuffixes.Multiplier)]
     public float DoubleInjectionMultiplier { get; set; } = 2.0f;
@@ -185,7 +185,7 @@ public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOp
     public IEnumerable<string> GetWikiOptionSummaryLines()
     {
         var enabledEffects = new List<string>();
-        
+
         // Negative effects
         if (GetEffectChance(InjectorEffectType.InvertedControls) > 0)
             enabledEffects.Add($"Inverted Controls: {GetEffectChance(InjectorEffectType.InvertedControls)}%");
