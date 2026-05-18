@@ -1556,6 +1556,10 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionJackalSidekickDiedAlert">{0} nie żyje!</string>
   <string name="ExtensionJackalShieldModifierDesc">Chroniony przez Rekrutów</string>
   <string name="ExtensionSidekickRecruitedChatMsg">Zostałeś zrekrutowany przez Infiltratora! Jesteś teraz Rekrutem. Twój cel się zmienił - wygrywasz tylko z Infiltratorem.</string>
+
+  <!-- First Round Emergency Block -->
+  <string name="ExtensionOptionGeneralBlockFirstRoundEmergency">Blokuj przycisk spotkania awaryjnego w pierwszej rundzie</string>
+  <string name="ExtensionBlockFirstRoundEmergencyStatus">Spotkania awaryjne są zablokowane w pierwszej rundzie!</string>
 </resources>
 
 

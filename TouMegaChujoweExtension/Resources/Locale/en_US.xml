@@ -1368,4 +1368,8 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionJackalSidekickDiedAlert">{0} has died!</string>
   <string name="ExtensionJackalShieldModifierDesc">Protected by Recruits</string>
   <string name="ExtensionSidekickRecruitedChatMsg">You have been recruited by the Infiltrator! You are now a Recruit. Your goal has changed - you only win with the Infiltrator.</string>
+
+  <!-- First Round Emergency Block -->
+  <string name="ExtensionOptionGeneralBlockFirstRoundEmergency">Block Emergency Button In First Round</string>
+  <string name="ExtensionBlockFirstRoundEmergencyStatus">Emergency meetings are disabled in the first round!</string>
 </resources>
