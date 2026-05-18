@@ -29,4 +29,7 @@ public sealed class ExtensionGeneralOptions : AbstractOptionGroup
     [ModdedToggleOption("ExtensionOptionGeneralPreventVampiresWithJackal")]
     public bool PreventVampiresWithJackal { get; set; } = true;
 
+    [ModdedToggleOption("ExtensionOptionGeneralBlockFirstRoundEmergency")]
+    public bool BlockFirstRoundEmergency { get; set; } = false;
+
 }
