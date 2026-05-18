@@ -192,7 +192,7 @@
   <string name="ExtensionOptionShifterBecomesCrewmate">Crewmate</string>
   <string name="ExtensionOptionShifterBecomesShifter">Shifter</string>
   <string name="ExtensionOptionShifterStealModifiers">Zabierz modyfikatory</string>
-  <string name="ExtensionOptionShifterWinsWithCrew">Wygrywa z Crew</string>
+  <string name="ExtensionOptionShifterWinsWithCrew">Shifter wygrywa z crew jak jest zywy</string>
   
   <!-- Lawyer Win -->
   <string name="ExtensionLawyerWins">Prawnik i Klient wygrywaja</string>

@@ -135,7 +135,7 @@ public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
     {
         if (OptionGroupSingleton<ShifterOptions>.Instance.WinsWithCrew)
         {
-            return gameOverReason is GameOverReason.CrewmatesByVote or GameOverReason.CrewmatesByTask;
+            return !Player.HasDied() && (gameOverReason is GameOverReason.CrewmatesByVote or GameOverReason.CrewmatesByTask);
         }
         return false;
     }

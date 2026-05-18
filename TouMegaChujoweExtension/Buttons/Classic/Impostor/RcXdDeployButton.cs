@@ -36,6 +36,10 @@ public sealed class RcXdDeployButton : TownOfUsKillRoleButton<RcXdRole>, IDiseas
         if (Button != null)
         {
             Button.usesRemainingSprite.gameObject.SetActive(MaxUses > 0);
+            if (Button.usesRemainingText != null)
+            {
+                Button.usesRemainingText.gameObject.SetActive(MaxUses > 0);
+            }
         }
     }
 
@@ -126,7 +130,7 @@ public sealed class RcXdDeployButton : TownOfUsKillRoleButton<RcXdRole>, IDiseas
 
     private void ResetButton()
     {
-        if (_driving)
+        if (_driving && LimitedUses)
         {
             DecreaseUses();
         }
