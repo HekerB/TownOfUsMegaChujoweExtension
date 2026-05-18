@@ -119,7 +119,6 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         RoleBehaviourStubs.Initialize(this, player);
         if (player.AmOwner)
         {
-            CustomButtonSingleton<JackalKillButton>.Instance.Show = true;
             OffsetButtons();
             if (OptionGroupSingleton<JackalOptions>.Instance.CanVent)
             {

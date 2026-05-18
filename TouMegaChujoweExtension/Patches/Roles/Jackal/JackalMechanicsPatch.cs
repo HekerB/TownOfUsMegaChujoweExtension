@@ -66,7 +66,7 @@ public static class JackalMechanicsPatch
             {
                 var killerSidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
                     .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == killer.PlayerId);
-                
+
                 if (killerSidekicksAlive) return true;
             }
 
@@ -182,16 +182,22 @@ public static class JackalMechanicsPatch
                 }
                 else if (isPcRecruit)
                 {
-                    pc.cosmetics.nameText.color = new Color32(138, 138, 138, 255); // Gray #8A8A8A
+                    pc.cosmetics.nameText.color = TouExtensionColors.Jackal;
+
+
+                    if (pc.PlayerId != __instance.PlayerId && !pc.Data.IsDead && OptionGroupSingleton<JackalOptions>.Instance.ShowArrowToSidekicks)
+                    {
+                        shouldShowArrow = false;
+                    }
                 }
             }
             else if (isSidekick)
             {
-                if (isPcRecruit)
+                if (isPcRecruit || isPcJackal)
                 {
-                    pc.cosmetics.nameText.color = new Color32(138, 138, 138, 255); // Gray #8A8A8A
+                    pc.cosmetics.nameText.color = TouExtensionColors.Jackal;
                 }
-                
+
                 if (isPcRecruit && pc.PlayerId != __instance.PlayerId && OptionGroupSingleton<ExtensionGeneralOptions>.Instance.RecruitsHaveArrow)
                 {
                     shouldShowArrow = !pc.Data.IsDead;
