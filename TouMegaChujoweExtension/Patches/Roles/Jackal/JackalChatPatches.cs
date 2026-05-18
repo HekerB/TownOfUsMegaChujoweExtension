@@ -21,12 +21,6 @@ public static class JackalChatPatches
     [MethodRpc((uint)ExtensionRpc.SendSidekickChat)]
     public static void RpcSendSidekickChat(PlayerControl player, string text)
     {
-        var genOpt = OptionGroupSingleton<Options.ExtensionGeneralOptions>.Instance;
-        if (!genOpt.JackalChat)
-        {
-            return;
-        }
-
         var localPlayer = PlayerControl.LocalPlayer;
         if (localPlayer == null) return;
 
@@ -44,7 +38,7 @@ public static class JackalChatPatches
                 text, bubbleType: BubbleType.Other, onLeft: false);
             shouldMarkUnread = true;
         }
-        else if ((isJackal && genOpt.JackalSeesRecruitChat) || isSidekick || isDeadAndKnows)
+        else if (isJackal || isSidekick || isDeadAndKnows)
         {
             MiscUtils.AddTeamChat(player.Data,
                 $"<color=#{TouExtensionColors.Jackal.ToHtmlStringRGBA()}>{player.Data.PlayerName} (SIDE)</color>",

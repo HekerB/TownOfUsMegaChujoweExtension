@@ -103,7 +103,7 @@ public static class DraftSystem
 
         // Apply Neutral Killing streak reduction
         var nkReductionEnabled = options.ReduceKillingStreak.Value;
-        var nkBiasPercent = options.NKReductionChance.Value / 100f;
+        var nkBiasPercent = options.ReductionChance.Value / 100f;
         var random = new System.Random();
 
         for (int i = 0; i < neutralKillingCount && remaining.Count > idx; i++)
@@ -185,7 +185,7 @@ public static class DraftSystem
         if (!_roleCacheDirty && _roleCache.Count > 0) return;
         _roleCache.Clear();
 
-        var generalOptions = OptionGroupSingleton<ExtensionGeneralOptions>.Instance;
+        var generalOptions = OptionGroupSingleton<ExtensionGameMechanicOptions>.Instance;
         bool preventVampires = generalOptions.PreventVampiresWithJackal && MiscUtils.GetAssignData((AmongUs.GameOptions.RoleTypes)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Neutral.JackalRole>()).Count > 0;
 
         var allAlignments = (RoleAlignment[])Enum.GetValues(typeof(RoleAlignment));

@@ -9,7 +9,7 @@ public static class BlockFirstRoundEmergencyPatch
 {
     public static void Postfix(EmergencyMinigame __instance)
     {
-        var options = OptionGroupSingleton<Options.ExtensionGeneralOptions>.Instance;
+        var options = OptionGroupSingleton<Options.ExtensionGameMechanicOptions>.Instance;
         if (!options.BlockFirstRoundEmergency) return;
 
         if (TownOfUs.Events.DeathEventHandlers.CurrentRound <= 1)

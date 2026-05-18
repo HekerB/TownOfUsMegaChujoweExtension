@@ -12,21 +12,12 @@ public sealed class ExtensionGeneralOptions : AbstractOptionGroup
     public bool LawyerChat { get; set; } = true;
 
     [ModdedToggleOption("ExtensionOptionGeneralLoversChat")]
-    public bool LoversChat { get; set; } = true;
+    public bool LoversChat { get; set; } = false;
 
     [ModdedToggleOption("ExtensionOptionGeneralJackalChat")]
     public bool JackalChat { get; set; } = true;
 
-    [ModdedToggleOption("ExtensionOptionGeneralJackalSeesRecruitChat")]
-    public bool JackalSeesRecruitChat { get; set; } = true;
-
     [ModdedToggleOption("ExtensionOptionGeneralRecruitsKnowEachOther")]
     public bool RecruitsKnowEachOther { get; set; } = true;
-
-    [ModdedToggleOption("ExtensionOptionGeneralPreventVampiresWithJackal")]
-    public bool PreventVampiresWithJackal { get; set; } = true;
-
-    [ModdedToggleOption("ExtensionOptionGeneralBlockFirstRoundEmergency")]
-    public bool BlockFirstRoundEmergency { get; set; } = false;
 
 }

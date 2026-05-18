@@ -508,7 +508,7 @@
 
   <!-- Speedy Role -->
   <string name="ExtensionRoleSpeedy">Speedy</string>
-  <string name="ExtensionRoleSpeedyIntroBlurb">Camouflage and accelerate to eliminate the Crew.</string>
+  <string name="ExtensionRoleSpeedyIntroBlurb">Camouflage and accelerate.</string>
   <string name="ExtensionRoleSpeedyTabDescription">Use your ability to gain speed and camouflage yourself. Sneak up on Crewmates!</string>
   <string name="ExtensionRoleSpeedyWikiDescription">Speedy is an Impostor Concealing role that can become camouflaged and fast to kill Crewmates.</string>
   <string name="ExtensionRoleSpeedyAccelerate">Accelerate</string>
@@ -1226,9 +1226,10 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionJackalShieldModifierTitle">RECRUIT ALIVE SHIELD</string>
   <string name="ExtensionJackalShieldModifierDesc">Protects the Infiltrator from any killing attempt as long as at least one Recruit is alive.</string>
   <string name="ExtensionJackalChatTitle">Infiltrator</string>
-  <string name="ExtensionOptionGeneralJackalChat">Infiltrator Private Chat</string>
-  <string name="ExtensionOptionGeneralJackalSeesRecruitChat">Infiltrator sees Recruit chat</string>
-  <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Recruits see each other's role</string>
+  <string name="ExtensionOptionGeneralJackalChat">Recruits Private Chat</string>
+  <string name="ExtensionGeneralJackalChatDisplayName">Recruits Private Chat</string>
+  <string name="ExtensionGameMechanicOptionsGroupName">Game Mechanics</string>
+  <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Recruits See Each Other's Role</string>
 
   <string name="Sidekick">Recruit</string>
   <string name="SidekickIntroBlurb">You have been recruited by the Infiltrator. You must betray your team.</string>
@@ -1359,7 +1360,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionJackalNotifySidekickDeath">Notify on Recruit death</string>
   <string name="ExtensionOptionJackalLifelinkDeath">Lifelink Death with Recruits</string>
   <string name="ExtensionOptionGeneralPreventVampiresWithJackal">Prevent Vampires with Infiltrator</string>
-  <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Recruits see each other roles</string>
+  <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Recruits See Each Other Roles</string>
   
   <!-- Alerts -->
   <string name="ExtensionJackalShieldLostAlert">Your shield has been depleted!</string>

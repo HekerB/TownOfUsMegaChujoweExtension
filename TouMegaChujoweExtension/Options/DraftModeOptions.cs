@@ -36,27 +36,22 @@ public sealed class DraftModeOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
-    public ModdedNumberOption MinOtherNeutralsPerChoice { get; } = new("Min Neutrals Per Choice", 0f, 0f, 3f, 1f, MiraNumberSuffixes.None)
+    public ModdedNumberOption MinOtherNeutralsPerChoice { get; } = new("Min Neutrals Per Choice", 1f, 0f, 3f, 1f, MiraNumberSuffixes.None)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
-    public ModdedNumberOption MaxOtherNeutralsPerChoice { get; } = new("Max Neutrals Per Choice", 0f, 0f, 3f, 1f, MiraNumberSuffixes.None)
+    public ModdedNumberOption MaxOtherNeutralsPerChoice { get; } = new("Max Neutrals Per Choice", 2f, 0f, 3f, 1f, MiraNumberSuffixes.None)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
-    public ModdedToggleOption ReduceKillingStreak { get; } = new("Reduce Killing Streak", false)
+    public ModdedToggleOption ReduceKillingStreak { get; } = new("Reduce Killing Streak", true)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
-    public ModdedNumberOption ReductionChance { get; } = new("Impostor", 15f, 0f, 100f, 5f, MiraNumberSuffixes.Percent)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.ReduceKillingStreak.Value && OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    public ModdedNumberOption NKReductionChance { get; } = new("Neutral Killing", 15f, 0f, 100f, 5f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption ReductionChance { get; } = new("Imp & neu kill", 15f, 0f, 100f, 5f, MiraNumberSuffixes.Percent)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.ReduceKillingStreak.Value && OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };

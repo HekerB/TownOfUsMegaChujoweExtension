@@ -506,7 +506,7 @@
   
   <!-- Speedy Role -->
   <string name="ExtensionRoleSpeedy">Speedy</string>
-  <string name="ExtensionRoleSpeedyIntroBlurb">Zakamufluj się i przyspiesz, by eliminować Załogę.</string>
+  <string name="ExtensionRoleSpeedyIntroBlurb">Zakamufluj się i przyspiesz.</string>
   <string name="ExtensionRoleSpeedyTabDescription">Użyj swojej umiejętności, aby zyskać prędkość i zakamuflować się (szary ludzik). Zaskocz Załogantów!</string>
   <string name="ExtensionRoleSpeedyWikiDescription">Speedy to rola Impostora Concealing, która może stać się zakamuflowana i szybka, aby zabijać Załogantów.</string>
   <string name="ExtensionRoleSpeedyAccelerate">Przyspieszenie</string>
@@ -1382,8 +1382,9 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <!-- General Options -->
   <string name="ExtensionOptionGeneralLawyerChat">Prywatny czat Prawnik/Klient</string>
   <string name="ExtensionOptionGeneralLoversChat">Prywatny czat kochanków</string>
-  <string name="ExtensionOptionGeneralJackalChat">Prywatny czat Infiltratora</string>
-  <string name="ExtensionOptionGeneralJackalSeesRecruitChat">Infiltrator widzi czat rekrutów</string>
+  <string name="ExtensionOptionGeneralJackalChat">Prywatny czat rekrutów</string>
+  <string name="ExtensionGeneralJackalChatDisplayName">Prywatny czat rekrutów</string>
+  <string name="ExtensionGameMechanicOptionsGroupName">Mechaniki gry</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Rekruci widzą siebie nawzajem</string>
   <!-- Mod Compatibility Options -->
   <string name="ExtensionOptionCompatibilityDuplicateWarnings">Pokazuj ostrzezenia o duplikatach</string>

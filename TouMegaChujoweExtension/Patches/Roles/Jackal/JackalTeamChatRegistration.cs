@@ -7,6 +7,7 @@ using UnityEngine;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TouMegaChujoweExtension.Modifiers.Neutral;
 using TownOfUs.Utilities;
+using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Jackal;
 
@@ -51,14 +52,18 @@ public static class JackalTeamChatRegistration
             SendMessage = (sender, message) =>
             {
                 var localPlayer = PlayerControl.LocalPlayer;
-                if (localPlayer.TryGetModifier<SidekickModifier>(out _))
+                if (localPlayer == null) return;
+
+                var isSidekick = localPlayer.TryGetModifier<SidekickModifier>(out _);
+
+                if (isSidekick)
                 {
                     JackalChatPatches.RpcSendSidekickChat(sender, message);
                 }
             },
             GetDisplayText = () =>
             {
-                return "Infiltrator Chat";
+                return TouLocale.Get("ExtensionGeneralJackalChatDisplayName", "Recruits Chat");
             },
             DisplayTextColor = TouExtensionColors.Jackal,
             BackgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.8f),

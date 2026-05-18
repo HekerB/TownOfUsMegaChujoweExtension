@@ -12,7 +12,7 @@ public static class JackalVampirePatch
 {
     public static void Postfix(ref CustomRoleConfiguration __result)
     {
-        var generalOptions = OptionGroupSingleton<ExtensionGeneralOptions>.Instance;
+        var generalOptions = OptionGroupSingleton<Options.ExtensionGameMechanicOptions>.Instance;
 
         if (generalOptions != null && generalOptions.PreventVampiresWithJackal)
         {
