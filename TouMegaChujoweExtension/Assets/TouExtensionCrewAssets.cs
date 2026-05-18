@@ -20,6 +20,6 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> DoctorInjectButtonSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Doctor_Inject_Button.png", 200f);
         public static LoadableAsset<Sprite> PortalSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.portal.png", 100f);
         public static LoadableAsset<Sprite> PortalPlaceButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.PortalMaker.png", 100f);
-        public static LoadableAsset<Sprite> GardenerButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Gardener_Button.png", 100f);
+        public static LoadableAsset<Sprite> GardenerButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Gardener_Button.png", 200f);
     }
 }
