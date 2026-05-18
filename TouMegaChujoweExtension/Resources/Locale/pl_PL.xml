@@ -1385,7 +1385,6 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionGeneralJackalChat">Prywatny czat Infiltratora</string>
   <string name="ExtensionOptionGeneralJackalSeesRecruitChat">Infiltrator widzi czat rekrutów</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Rekruci widzą siebie nawzajem</string>
-  <string name="ExtensionOptionGeneralRecruitsHaveArrow">Rekruci mają strzałki do siebie</string>
   <!-- Mod Compatibility Options -->
   <string name="ExtensionOptionCompatibilityDuplicateWarnings">Pokazuj ostrzezenia o duplikatach</string>
   <string name="ExtensionOptionCompatibilityDuplicateAutoKick">Automatyczne wyrzucanie przy duplikatach</string>
@@ -1546,7 +1545,6 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionJackalCanVent">Może używać wentylacji</string>
   <string name="ExtensionOptionJackalShieldWhileSidekicksAlive">Tarcza gdy Rekruci żyją</string>
   <string name="ExtensionOptionJackalNotifySidekickDeath">Powiadom o śmierci Rekruta</string>
-  <string name="ExtensionOptionJackalShowArrowToSidekicks">Strzałka do sojuszników</string>
   <string name="ExtensionOptionJackalLifelinkDeath">Wspólna śmierć z Rekrutami</string>
   <string name="ExtensionOptionGeneralPreventVampiresWithJackal">Wyklucz Wampiry przy Infiltratorze</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Rekruci widzą swoje role</string>

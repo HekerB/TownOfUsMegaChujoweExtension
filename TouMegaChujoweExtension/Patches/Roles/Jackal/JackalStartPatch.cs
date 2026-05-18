@@ -100,7 +100,7 @@ public static class JackalStartPatch
                 // Add modifier with safety check
                 if (!sidekick.HasModifier<SidekickModifier>())
                 {
-                    sidekick.RpcAddModifier<SidekickModifier>();
+                    sidekick.RpcAddModifier<SidekickModifier>(jackal.PlayerId);
                     UnityEngine.Debug.Log($"[TOUMCE] Assigned sidekick {sidekick.Data.PlayerName} (ID: {sidekick.PlayerId}) to Jackal {jackal.Data.PlayerName} (ID: {jackal.PlayerId})");
                 }
             }

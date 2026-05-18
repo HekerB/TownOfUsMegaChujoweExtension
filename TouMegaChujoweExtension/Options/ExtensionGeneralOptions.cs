@@ -23,9 +23,6 @@ public sealed class ExtensionGeneralOptions : AbstractOptionGroup
     [ModdedToggleOption("ExtensionOptionGeneralRecruitsKnowEachOther")]
     public bool RecruitsKnowEachOther { get; set; } = true;
 
-    [ModdedToggleOption("ExtensionOptionGeneralRecruitsHaveArrow")]
-    public bool RecruitsHaveArrow { get; set; } = true;
-
     [ModdedToggleOption("ExtensionOptionGeneralPreventVampiresWithJackal")]
     public bool PreventVampiresWithJackal { get; set; } = true;
 

@@ -15,8 +15,8 @@ public sealed class JackalOptions : AbstractOptionGroup<JackalRole>
     [ModdedNumberOption("ExtensionOptionJackalKillCooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float KillCooldown { get; set; } = 20f;
 
-    [ModdedEnumOption("ExtensionOptionJackalKillDistance", null!, ["Short", "Medium", "Long"])]
-    public int KillDistance { get; set; } = 1; // 1 = Normal
+
+
 
     [ModdedToggleOption("ExtensionOptionJackalCanVent")]
     public bool CanVent { get; set; } = true;
@@ -26,10 +26,6 @@ public sealed class JackalOptions : AbstractOptionGroup<JackalRole>
 
     [ModdedToggleOption("ExtensionOptionJackalNotifySidekickDeath")]
     public bool NotifySidekickDeath { get; set; } = true;
-
-
-    [ModdedToggleOption("ExtensionOptionJackalShowArrowToSidekicks")]
-    public bool ShowArrowToSidekicks { get; set; } = true;
 
     [ModdedToggleOption("ExtensionOptionJackalLifelinkDeath")]
     public bool LifelinkDeath { get; set; } = true;

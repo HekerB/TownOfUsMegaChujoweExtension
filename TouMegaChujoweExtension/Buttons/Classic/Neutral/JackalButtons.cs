@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using MiraAPI.GameOptions;
 using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
@@ -28,19 +29,7 @@ public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, Player
     public override float Cooldown => Math.Clamp(
         OptionGroupSingleton<JackalOptions>.Instance.KillCooldown + MapCooldown, 5f, 120f);
 
-    public override float Distance
-    {
-        get
-        {
-            return OptionGroupSingleton<JackalOptions>.Instance.KillDistance switch
-            {
-                0 => 1.25f,
-                1 => 1.75f,
-                2 => 2.5f,
-                _ => 1.75f
-            };
-        }
-    }
+    public override float Distance => GameOptionsManager.Instance.currentNormalGameOptions.KillDistance;
 
     public override void CreateButton(Transform parent)
     {

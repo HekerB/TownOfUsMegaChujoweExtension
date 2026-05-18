@@ -147,8 +147,6 @@ public static class JackalMechanicsPatch
         }
     }
 
-    private static readonly Dictionary<byte, ArrowBehaviour> _recruitArrows = [];
-
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     [HarmonyPostfix]
     public static void FixedUpdatePostfix(PlayerControl __instance)
@@ -172,54 +170,9 @@ public static class JackalMechanicsPatch
             bool isPcRecruit = (pc.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == teamJackalId) ||
                                 (JackalStartPatch.PendingAssignments.TryGetValue(pc.PlayerId, out var jId) && jId == teamJackalId);
 
-            bool shouldShowArrow = false;
-
-            if (jackal != null)
+            if (isPcJackal || isPcRecruit)
             {
-                if (isPcJackal)
-                {
-                    pc.cosmetics.nameText.color = TouExtensionColors.Jackal;
-                }
-                else if (isPcRecruit)
-                {
-                    pc.cosmetics.nameText.color = TouExtensionColors.Jackal;
-
-
-                    if (pc.PlayerId != __instance.PlayerId && !pc.Data.IsDead && OptionGroupSingleton<JackalOptions>.Instance.ShowArrowToSidekicks)
-                    {
-                        shouldShowArrow = false;
-                    }
-                }
-            }
-            else if (isSidekick)
-            {
-                if (isPcRecruit || isPcJackal)
-                {
-                    pc.cosmetics.nameText.color = TouExtensionColors.Jackal;
-                }
-
-                if (isPcRecruit && pc.PlayerId != __instance.PlayerId && OptionGroupSingleton<ExtensionGeneralOptions>.Instance.RecruitsHaveArrow)
-                {
-                    shouldShowArrow = !pc.Data.IsDead;
-                }
-            }
-
-            if (shouldShowArrow)
-            {
-                if (!_recruitArrows.TryGetValue(pc.PlayerId, out var arrow) || arrow == null || arrow.gameObject == null)
-                {
-                    arrow = MiscUtils.CreateArrow(__instance.transform, TouExtensionColors.Jackal);
-                    _recruitArrows[pc.PlayerId] = arrow;
-                }
-                arrow.target = pc.transform.position;
-            }
-            else if (_recruitArrows.TryGetValue(pc.PlayerId, out var arrow))
-            {
-                if (arrow != null && arrow.gameObject != null)
-                {
-                    UnityEngine.Object.Destroy(arrow.gameObject);
-                }
-                _recruitArrows.Remove(pc.PlayerId);
+                pc.cosmetics.nameText.color = TouExtensionColors.Jackal;
             }
         }
 

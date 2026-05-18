@@ -93,7 +93,6 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
     public override void OnDeactivate()
     {
         base.OnDeactivate();
-        ClearArrows();
 
         var jackalPlayer = PlayerControl.AllPlayerControls.ToArray()
             .FirstOrDefault(p => p != null && p.Pointer != IntPtr.Zero && p.PlayerId == JackalId);
@@ -117,8 +116,6 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
         Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
     }
 
-    private static readonly Dictionary<byte, ArrowBehaviour> _arrows = [];
-
     public override void Update()
     {
         base.Update();
@@ -127,91 +124,22 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
         {
             JackalId = jId;
         }
-
-        if (Player == null || !Player.AmOwner || Player.Data.IsDead)
-        {
-            ClearArrows();
-            return;
-        }
-
-        var options = OptionGroupSingleton<JackalOptions>.Instance;
-        if (!options.ShowArrowToSidekicks)
-        {
-            ClearArrows();
-            return;
-        }
-
-        UpdateArrows();
-    }
-
-    [HideFromIl2Cpp]
-    private void UpdateArrows()
-    {
-        var player = Player;
-        if (player == null) return;
-
-        var teamMembers = PlayerControl.AllPlayerControls.ToArray()
-            .Where(p =>
-            {
-                if (p == null || p.Pointer == IntPtr.Zero || p.Data == null || p.Data.IsDead) return false;
-                if (p.PlayerId == player.PlayerId) return false;
-
-                if (p.PlayerId == JackalId) return true;
-
-                return p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == JackalId;
-            })
-            .ToList();
-
-        var currentIds = teamMembers.Select(p => p.PlayerId).ToHashSet();
-        var toRemove = _arrows.Keys.Where(id => !currentIds.Contains(id)).ToList();
-        foreach (var id in toRemove)
-        {
-            if (_arrows.TryGetValue(id, out var arrow) && arrow != null && arrow.gameObject != null)
-            {
-                UnityEngine.Object.Destroy(arrow.gameObject);
-            }
-            _arrows.Remove(id);
-        }
-
-        foreach (var member in teamMembers)
-        {
-            if (!_arrows.TryGetValue(member.PlayerId, out var targetArrow))
-            {
-                targetArrow = MiscUtils.CreateArrow(player.transform, TouExtensionColors.Jackal);
-                _arrows[member.PlayerId] = targetArrow;
-            }
-
-            if (targetArrow != null)
-            {
-                targetArrow.target = member.transform.position;
-                targetArrow.gameObject.SetActive(true);
-            }
-        }
-    }
-
-    [HideFromIl2Cpp]
-    private void ClearArrows()
-    {
-        foreach (var arrow in _arrows.Values)
-        {
-            if (arrow != null && arrow.gameObject != null) UnityEngine.Object.Destroy(arrow.gameObject);
-        }
-        _arrows.Clear();
     }
 
     public override bool? DidWin(GameOverReason reason)
     {
-        if (reason == MiraAPI.GameEnd.CustomGameOver.GameOverReason<TouMegaChujoweExtension.GameOver.ExtensionNeutralGameOver>()) return true;
-
-        var jackalPlayer = PlayerControl.AllPlayerControls.ToArray()
-            .FirstOrDefault(p => p != null && p.Pointer != IntPtr.Zero && p.PlayerId == JackalId);
-
-        if (jackalPlayer != null)
+        if (JackalId != 255)
         {
-            var jackal = jackalPlayer.GetRole<JackalRole>();
-            if (jackal != null)
+            var jackalPlayer = PlayerControl.AllPlayerControls.ToArray()
+                .FirstOrDefault(p => p != null && p.Pointer != IntPtr.Zero && p.PlayerId == JackalId);
+
+            if (jackalPlayer != null)
             {
-                return jackal.DidWin(reason);
+                var jackal = jackalPlayer.GetRole<JackalRole>();
+                if (jackal != null)
+                {
+                    return jackal.DidWin(reason);
+                }
             }
         }
 
