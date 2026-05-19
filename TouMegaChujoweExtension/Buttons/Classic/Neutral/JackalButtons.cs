@@ -62,7 +62,7 @@ public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, Player
     {
         if (AreSidekicksAlive()) return null;
 
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(false, Distance, false, x => IsTargetValid(x));
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, false, x => IsTargetValid(x));
     }
 
     public override bool IsTargetValid(PlayerControl? target)
