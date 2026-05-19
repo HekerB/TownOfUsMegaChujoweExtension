@@ -1443,6 +1443,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleArcanistDraw">Dobierz Kartę</string>
   <string name="ExtensionRoleArcanistDrawWikiDescription">Dobierz magiczną kartę Tarota ze swojej talii. Każda karta wywołuje inny mistyczny efekt.</string>
   <string name="ExtensionArcanistCardDrawn">Wylosowałeś: {0}!</string>
+  <string name="ExtensionArcanistDeathLuckyDay">To twój szczęśliwy dzień.</string>
   <string name="ExtensionArcanistDuplicateRole">{0}: Ta rola już istnieje w grze! Karta usunięta z talii.</string>
   <string name="ExtensionArcanistDevilMeeting">Ktoś podpisał pakt z Diabłem i został Prawnikiem!</string>
 

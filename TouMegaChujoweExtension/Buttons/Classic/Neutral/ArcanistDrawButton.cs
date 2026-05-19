@@ -105,18 +105,13 @@ public sealed class ArcanistDrawButton : TownOfUsRoleButton<ArcanistRole>
                 }
                 break;
             case TarotCard.Death:
-                if (UnityEngine.Random.Range(0, 100) < 20)
+                if (UnityEngine.Random.Range(0, 100) < 50)
                 {
-                    subRole = 0xFFFF;
+                    subRole = 0; // Die
                 }
                 else
                 {
-                    var otherRoles = new List<ushort> {
-                        RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Crewmate.DoctorRole>(),
-                        (ushort)RoleTypes.Engineer,
-                        RoleId.Get<MayorRole>()
-                    };
-                    subRole = otherRoles[UnityEngine.Random.Range(0, otherRoles.Count)];
+                    subRole = 1; // Lucky Day
                 }
                 break;
         }

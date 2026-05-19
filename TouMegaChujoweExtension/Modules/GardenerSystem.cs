@@ -261,6 +261,11 @@ public static class GardenerSystem
                         HudManager.Instance.KillButton.SetTarget(null);
                     }
 
+                    foreach (var button in MiraAPI.Hud.CustomButtonManager.Buttons.Where(button => button != null && button.Enabled(@event.Source.Data.Role) && button is IKillButton))
+                    {
+                        button.Timer = button.Cooldown;
+                    }
+
                     var garden = ActiveGardens.Values.FirstOrDefault(g =>
                         g.RemainingTime > 0 &&
                         Vector2.Distance(@event.Target.GetTruePosition(), g.Position) <= g.Radius);

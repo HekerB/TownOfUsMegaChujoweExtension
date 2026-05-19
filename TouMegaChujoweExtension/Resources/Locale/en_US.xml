@@ -1255,6 +1255,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleArcanistDraw">Draw Card</string>
   <string name="ExtensionRoleArcanistDrawWikiDescription">Draw a magical Tarot card from your deck. Each card triggers a different mystical effect.</string>
   <string name="ExtensionArcanistCardDrawn">You drew {0}!</string>
+  <string name="ExtensionArcanistDeathLuckyDay">It's your lucky day.</string>
   <string name="ExtensionArcanistDuplicateRole">{0}: Role already exists! Card removed from deck.</string>
   <string name="ExtensionArcanistDevilMeeting">Someone has made a deal with the Devil and become a Lawyer!</string>
 

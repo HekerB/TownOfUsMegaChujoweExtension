@@ -160,6 +160,11 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         var cardName = TouLocale.Get($"TarotCard{card}", card.ToString());
         var msg = TouLocale.GetParsed("ExtensionArcanistCardDrawn", $"You drew {cardName}!").Replace("{0}", cardName);
 
+        if (card == TarotCard.Death && subRole == 1)
+        {
+            msg = TouLocale.Get("ExtensionArcanistDeathLuckyDay", "It's your lucky day!.");
+        }
+
         if (player.AmOwner)
         {
             Helpers.CreateAndShowNotification(
@@ -271,7 +276,10 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                     player.ChangeRole(RoleId.Get<BountyHunterRole>());
                     break;
                 case TarotCard.Death:
-                    player.RpcSpecialMurder(player, causeOfDeath: "DeathReasonPlayingWithMagic");
+                    if (subRole == 0)
+                    {
+                        player.RpcSpecialMurder(player, causeOfDeath: "DeathReasonPlayingWithMagic");
+                    }
                     break;
                 case TarotCard.Temperance:
                     var role3 = player.GetRole<ArcanistRole>();
