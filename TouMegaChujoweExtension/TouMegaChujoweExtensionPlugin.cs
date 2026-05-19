@@ -55,6 +55,7 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 		IL2CPPChainloader.Instance.Finished += LawyerTeamChatRegistration.Register;
 		IL2CPPChainloader.Instance.Finished += Patches.Roles.Lovers.LoverMeetingChatRegistration.Register;
 		IL2CPPChainloader.Instance.Finished += Patches.Roles.Jackal.JackalTeamChatRegistration.Register;
+		IL2CPPChainloader.Instance.Finished += Patches.Roles.Pelican.PelicanTargetBlockPatches.Init;
 		IL2CPPChainloader.Instance.Finished += () => ExtensionModNewsFetcher.CheckForNews();
 	
 		PatchAllWithErrorHandling();

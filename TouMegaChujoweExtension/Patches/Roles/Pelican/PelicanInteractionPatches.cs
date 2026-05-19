@@ -34,6 +34,7 @@ public static class PelicanInteractionPatches
     }
 
     private static bool _wasSwallowedLastFrame;
+    private static float _savedKillTimer;
     
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     [HarmonyPostfix]
@@ -49,14 +50,23 @@ public static class PelicanInteractionPatches
                 HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
             }
 
-            if (!_wasSwallowedLastFrame)
+            foreach (var button in CustomButtonManager.Buttons)
             {
-                foreach (var button in CustomButtonManager.Buttons)
+                if (button?.Button != null && button.Button.gameObject.activeSelf)
                 {
-                    if (button?.Button != null && button.Button.gameObject.activeSelf)
-                    {
-                        button.Button.gameObject.SetActive(false);
-                    }
+                    button.Button.gameObject.SetActive(false);
+                }
+            }
+
+            if (HudManager.Instance != null)
+            {
+                if (HudManager.Instance.UseButton != null && HudManager.Instance.UseButton.gameObject.activeSelf)
+                {
+                    HudManager.Instance.UseButton.gameObject.SetActive(false);
+                }
+                if (HudManager.Instance.ReportButton != null && HudManager.Instance.ReportButton.gameObject.activeSelf)
+                {
+                    HudManager.Instance.ReportButton.gameObject.SetActive(false);
                 }
             }
         }
@@ -66,9 +76,29 @@ public static class PelicanInteractionPatches
             {
                 HudManager.Instance.ShadowQuad.gameObject.SetActive(true);
             }
+
+            foreach (var button in CustomButtonManager.Buttons)
+            {
+                if (button?.Button != null)
+                {
+                    button.Button.gameObject.SetActive(true);
+                }
+            }
         }
         
         _wasSwallowedLastFrame = isSwallowed;
+    }
+
+    [HarmonyPatch(typeof(CustomActionButton), nameof(CustomActionButton.FixedUpdateHandler))]
+    [HarmonyPrefix]
+    public static bool CustomActionButtonFixedUpdateHandlerPrefix()
+    {
+        var local = PlayerControl.LocalPlayer;
+        if (local != null && PelicanSystem.IsSwallowed(local.PlayerId))
+        {
+            return false;
+        }
+        return true;
     }
 
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
@@ -197,10 +227,25 @@ public static class PelicanInteractionPatches
     // ==================== POSITION SYNC + TRACKING + PRE-WIN DIGEST ====================
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
+    [HarmonyPrefix]
+    public static void PlayerFixedUpdatePrefix(PlayerControl __instance)
+    {
+        if (__instance == PlayerControl.LocalPlayer && PelicanSystem.IsSwallowed(__instance.PlayerId))
+        {
+            _savedKillTimer = __instance.killTimer;
+        }
+    }
+
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     [HarmonyPostfix]
     public static void PlayerFixedUpdatePostfix(PlayerControl __instance)
     {
         if (__instance == null || __instance.Data == null) return;
+
+        if (__instance == PlayerControl.LocalPlayer && PelicanSystem.IsSwallowed(__instance.PlayerId))
+        {
+            __instance.killTimer = _savedKillTimer;
+        }
 
         if (PelicanSystem.IsSwallowed(__instance.PlayerId) && !__instance.HasDied())
         {
@@ -314,22 +359,4 @@ public static class PelicanInteractionPatches
     {
         PelicanSystem.ForceResetAllPlayers();
     }
-
-    // ==================== MODIFIER EXCLUSIONS ====================
-    // Commented out due to signature mismatch in this TOU version
-    /*
-    [HarmonyPatch(typeof(MiniModifier), nameof(MiniModifier.IsModifierValidOn))]
-    [HarmonyPostfix]
-    public static void MiniModifierIsModifierValidOnPostfix(ref bool __result, RoleBehaviour role)
-    {
-        if (role is PelicanRole) __result = false;
-    }
-
-    [HarmonyPatch(typeof(ChildModifier), nameof(ChildModifier.IsModifierValidOn))]
-    [HarmonyPostfix]
-    public static void ChildModifierIsModifierValidOnPostfix(ref bool __result, RoleBehaviour role)
-    {
-        if (role is PelicanRole) __result = false;
-    }
-    */
 }

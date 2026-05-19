@@ -261,7 +261,7 @@
   <string name="ExtensionRolePelicanTabDescription">Swallow players to trap them in your stomach.\%nl\%They are digested when a meeting is called.\%nl\%If you die, they escape alive.</string>
   <string name="ExtensionRolePelicanWikiDescription">The Pelican is a Neutral Killing role that can swallow players and keep them in their stomach. Swallowed players die in the meeting, and can be set free if the Pelican dies before that.</string>
   <string name="ExtensionRolePelicanSwallow">Swallow</string>
-  <string name="ExtensionRolePelicanSwallowWikiDescription">Swallowing a player, as the name implies, swallows a player and keeps them in their stomach. The Pelican and swallowed players can also chat with one another. Abilities are also disabled for the swallowed players.</string>
+  <string name="ExtensionRolePelicanSwallowWikiDescription">Swallowing a player, as the name implies, swallows a player and keeps them in their stomach. Abilities are also disabled for the swallowed players.</string>
 
   <!-- Pelican Options -->
   <string name="ExtensionOptionPelicanSwallowCooldown">Swallow Cooldown</string>
@@ -856,7 +856,7 @@
   <string name="ExtensionRoleBountyHunterTabDescription">Eliminate all targets to win!</string>
   <string name="ExtensionRoleBountyHunterWikiDescription">The Bounty Hunter is a Neutral Evil role whose mission is to eliminate a specific number of targets. Only killing your assigned target brings you closer to victory.\%nl\%\%nl\%Although you are free to kill ANY player on the map, attempting to kill anyone other than your current target using your Hunt button will result in your instant execution by the Guild (Suicide). Strategy and precision are key.</string>
   <string name="ExtensionRoleBountyHunterKill">Hunt</string>
-  <string name="ExtensionRoleBountyHunterKillWikiDescription">Kill your assigned target. You cannot kill any other player.</string>
+  <string name="ExtensionRoleBountyHunterKillWikiDescription">Kill a player. If it's your assigned target, you get closer to victory. If it's NOT your target, you will die immediately (Suicide).</string>
   <string name="BountyHunterWrongVictim">Wrong Target</string>
   <string name="BountyHunterWrongVictimAlert">You broke the pact with the Guild and died!</string>
   <string name="BountyHunterWrongVictimAlertTarget">The Bounty Hunter tried to kill the wrong target and was executed!</string>
@@ -865,9 +865,15 @@
   <!-- Bounty Hunter Options -->
   <string name="ExtensionOptionBHKillCooldown">BH Kill Cooldown</string>
   <string name="ExtensionOptionBHImpostorKillCd">Bounty Hunter Has Impostor Kill Cd</string>
+  <string name="ExtensionOptionBHHasImpostorVision">Bounty Hunter Has Impostor Vision</string>
   <string name="ExtensionOptionBHCanVent">Bounty Hunter Can Vent</string>
   <string name="ExtensionOptionBHTargetsToKill">Targets BH Has To Kill</string>
   <string name="ExtensionOptionBHShowArrow">Show Arrow To Target</string>
+  <string name="ExtensionOptionBHArrowRange">Arrow Range</string>
+  <string name="ExtensionOptionBHArrowRangeShort">Short</string>
+  <string name="ExtensionOptionBHArrowRangeMedium">Medium</string>
+  <string name="ExtensionOptionBHArrowRangeLong">Long</string>
+  <string name="ExtensionOptionBHArrowRangeInfinite">Infinite</string>
   <string name="ExtensionOptionBHCanKillInRoundOne">Allow first round kill</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Arrow Update Interval</string>
   <string name="ExtensionOptionBHGameContinues">Game Continues Without Other Killers</string>
@@ -1388,7 +1394,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionJackalShieldWhileSidekicksAlive">Shield while Recruits alive</string>
   <string name="ExtensionOptionJackalNotifySidekickDeath">Notify on Recruit death</string>
   <string name="ExtensionOptionJackalLifelinkDeath">Lifelink Death with Recruits</string>
-  <string name="ExtensionOptionGeneralPreventVampiresWithJackal">Prevent Vampires with Infiltrator</string>
+  <string name="ExtensionOptionGeneralPreventVampiresWithJackal">Infiltrator &amp; Vampires Mutual Exclusion</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Recruits See Each Other Roles</string>
   
   <!-- Alerts -->

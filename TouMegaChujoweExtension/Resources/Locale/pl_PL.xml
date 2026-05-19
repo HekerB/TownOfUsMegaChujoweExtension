@@ -1576,7 +1576,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionJackalShieldWhileSidekicksAlive">Tarcza gdy Rekruci żyją</string>
   <string name="ExtensionOptionJackalNotifySidekickDeath">Powiadom o śmierci Rekruta</string>
   <string name="ExtensionOptionJackalLifelinkDeath">Wspólna śmierć z Rekrutami</string>
-  <string name="ExtensionOptionGeneralPreventVampiresWithJackal">Wyklucz Wampiry przy Infiltratorze</string>
+  <string name="ExtensionOptionGeneralPreventVampiresWithJackal">Wykluczanie Infiltratora i Wampirów</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Rekruci widzą swoje role</string>
 
   <!-- Alerts -->

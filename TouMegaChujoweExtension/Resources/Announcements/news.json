@@ -351,7 +351,10 @@
         "\n- <b>Pope Balancing</b> - limited canonization spread to a single transfer and reduced judge alarm volume (0.25f). Doctor can now cleanse the canonization modifier.",
         "\n- <b>RC-XD Meeting Fix</b> - car now detonates instantly when a meeting or exile starts, preventing it from driving during discussions.",
         "\n- <b>Victory Status Fix</b> - ensured custom neutral winners (BH, Pirate, etc.) correctly display 'Victorious' above their heads.",
-        "\n- <b>Speedy Fix</b> - camouflage now correctly applies to all players during acceleration."
+        "\n- <b>Speedy Fix</b> - camouflage now correctly applies to all players during acceleration.",
+        "\n- <b>Jackal/Vampire Mutual Exclusion</b> - implemented a 50/50 randomized exclusion for Standard mode and first-pick exclusion for Draft mode to prevent both roles from coexisting in the same match.",
+        "\n- <b>Bounty Hunter Fixes</b> - corrected Hunt button description stating you cannot kill other players, and added missing English translations for options (vision, arrow range).",
+        "\n- <b>Mirror Caster Movement Fix</b> - fixed movement bugs where players would slide indefinitely or move while typing in chat overlays (e.g., Lover Chat) with 'Can Move While Menu' enabled."
       ]
     }
   ]

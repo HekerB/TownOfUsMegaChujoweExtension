@@ -265,13 +265,3 @@ public static class JackalDeathLifelinkPatch
         }
     }
 }
-
-[HarmonyPatch(typeof(TouRoleManagerPatches), "AssignRoles")]
-public static class JackalVampireExclusionPatch
-{
-    [HarmonyPrefix]
-    public static void Prefix()
-    {
-        // Logic handled in DraftSystem or other patches
-    }
-}

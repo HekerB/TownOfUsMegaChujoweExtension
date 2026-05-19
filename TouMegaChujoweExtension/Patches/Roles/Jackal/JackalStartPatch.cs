@@ -26,6 +26,7 @@ public static class JackalLobbyPatch
     {
         JackalStartPatch.Reset();
         JackalStartPatch.StartTime = Time.time;
+        JackalVampireExclusionState.Reset();
     }
 }
 

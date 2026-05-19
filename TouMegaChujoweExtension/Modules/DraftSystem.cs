@@ -186,7 +186,27 @@ public static class DraftSystem
         _roleCache.Clear();
 
         var generalOptions = OptionGroupSingleton<ExtensionGameMechanicOptions>.Instance;
-        bool preventVampires = generalOptions.PreventVampiresWithJackal && MiscUtils.GetAssignData((AmongUs.GameOptions.RoleTypes)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Neutral.JackalRole>()).Count > 0;
+        
+        bool preventVampires = false;
+        bool preventJackal = false;
+
+        if (generalOptions != null && generalOptions.PreventVampiresWithJackal)
+        {
+            var jackalId = (ushort)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Neutral.JackalRole>();
+            var vampireId = (ushort)RoleId.Get<TownOfUs.Roles.Neutral.VampireRole>();
+
+            bool jackalPicked = AlreadyPicked.Contains(jackalId);
+            bool vampirePicked = AlreadyPicked.Contains(vampireId);
+
+            if (jackalPicked)
+            {
+                preventVampires = true;
+            }
+            else if (vampirePicked)
+            {
+                preventJackal = true;
+            }
+        }
 
         var allAlignments = (RoleAlignment[])Enum.GetValues(typeof(RoleAlignment));
         foreach (var alignment in allAlignments)
@@ -198,8 +218,11 @@ public static class DraftSystem
                 if (!CustomRoleUtils.CanSpawnOnCurrentMode(role)) continue;
                 if (roles.Any(r => r.Role == role.Role)) continue;
 
-                // Exclusion logic: No Vampires if Jackal is in the game
-                if (preventVampires && role.Role.ToString().Contains("Vampire")) continue;
+                var isJackalRole = role.Role == (AmongUs.GameOptions.RoleTypes)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Neutral.JackalRole>();
+                var isVampireRole = role.Role == (AmongUs.GameOptions.RoleTypes)RoleId.Get<TownOfUs.Roles.Neutral.VampireRole>();
+
+                if (preventVampires && isVampireRole) continue;
+                if (preventJackal && isJackalRole) continue;
 
                 var assignData = MiscUtils.GetAssignData(role.Role);
                 if (assignData.Count <= 0) continue;
@@ -553,6 +576,8 @@ public static class DraftSystem
             CurrentOfferedRoles = null;
             SelectedAlignment = null;
         }
+
+        InvalidateRoleCache();
     }
 
     public static byte? CurrentPicker => PickOrder.Count > 0 ? PickOrder[0] : null;

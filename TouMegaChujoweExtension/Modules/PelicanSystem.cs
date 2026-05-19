@@ -198,10 +198,60 @@ public static class PelicanSystem
 
             RemoveFootstepsIfPresent(victim);
 
-            if (victim.AmOwner)
+            bool isMeVictim = victim.AmOwner;
+            bool isMePelican = pelican != null && pelican.AmOwner;
+
+            if (isMeVictim || isMePelican)
+            {
+                // Play swallow sound for both the victim and the pelican
+                try
+                {
+                    TownOfUs.Assets.TouAudio.PlaySound(TouMegaChujoweExtension.Assets.TouExtensionAudio.SwallowSound);
+                }
+                catch (System.Exception ex)
+                {
+                    Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Swallow sound error: {ex.Message}");
+                }
+            }
+
+            if (isMeVictim)
             {
                 ShowSwallowedNotification();
                 StartSpectatingPelican(pelicanId);
+
+                // Flash the screen in Pelican's color for the victim
+                try
+                {
+                    PirateDuelSystem.FlashScreen(TouExtensionColors.Pelican, 0.5f, 0.5f);
+                }
+                catch (System.Exception ex)
+                {
+                    Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Screen flash error: {ex.Message}");
+                }
+
+                try
+                {
+                    if (Minigame.Instance != null)
+                    {
+                        Minigame.Instance.Close();
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Failed to close Minigame: {ex.Message}");
+                }
+
+                try
+                {
+                    if (MapBehaviour.Instance != null)
+                    {
+                        MapBehaviour.Instance.Close();
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Failed to close MapBehaviour: {ex.Message}");
+                }
             }
         }
     }
@@ -676,36 +726,96 @@ public static class PelicanSystem
             var line1 = TouLocale.Get("ExtensionPelicanSwallowedNotification", "You have been swallowed by Pelican!");
             var message = line1.Replace("/n", "\n").Replace("\\n", "\n");
 
-            var notif = Helpers.CreateAndShowNotification(
-                $"<b>{TouExtensionColors.Pelican.ToTextColor()}{message}</color></b>",
-                Color.white, new Vector3(0f, 2f, -20f));
-
-            if (notif != null)
-            {
-                _swallowedNotificationObject = notif.gameObject;
-                try { notif.AdjustNotification(); } catch { /* ignore adjustment errors */ }
-                try
-                {
-                    var canvasGroup = notif.GetComponent<CanvasGroup>();
-                    if (canvasGroup != null) canvasGroup.alpha = 1f;
-                }
-                catch { /* ignore alpha setting errors */ }
-            }
+            Coroutines.Start(CoShowNotificationThreeTimes(message));
         }
         catch (System.Exception ex)
         {
-            Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Failed to show notification: {ex.Message}");
+            Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Failed to start swallow notifications: {ex.Message}");
+        }
+    }
+
+    private static IEnumerator CoShowNotificationThreeTimes(string message)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            HideSwallowedNotification();
+            try
+            {
+                var notif = Helpers.CreateAndShowNotification(
+                    $"<b>{TouExtensionColors.Pelican.ToTextColor()}{message}</color></b>",
+                    TouExtensionColors.Pelican,
+                    new Vector3(0f, 1f, -20f),
+                    spr: TouMegaChujoweExtension.Assets.TouExtensionIcons.PelicanRoleIcon.LoadAsset());
+
+                if (notif != null)
+                {
+                    _swallowedNotificationObject = notif.gameObject;
+                    try { notif.AdjustNotification(); } catch { }
+                    try
+                    {
+                        var canvasGroup = notif.GetComponent<CanvasGroup>();
+                        if (canvasGroup != null) canvasGroup.alpha = 1f;
+                    }
+                    catch { }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Failed to show notification attempt {i}: {ex.Message}");
+            }
+            yield return new WaitForSeconds(1.0f);
         }
     }
 
     public static void ShowReleaseNotification()
     {
+        HideSwallowedNotification();
         if (HudManager.Instance == null) return;
 
-        var message = TouLocale.Get("ExtensionPelicanReleasedNotification", "You have been released from the Pelican!");
-        Helpers.CreateAndShowNotification(
-            $"<b>{TouExtensionColors.Pelican.ToTextColor()}{message}</color></b>",
-            Color.white, new Vector3(0f, 2f, -20f));
+        try
+        {
+            var line1 = TouLocale.Get("ExtensionPelicanReleasedNotification", "You have been released from the Pelican!");
+            var message = line1.Replace("/n", "\n").Replace("\\n", "\n");
+
+            Coroutines.Start(CoShowReleaseNotificationThreeTimes(message));
+        }
+        catch (System.Exception ex)
+        {
+            Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Failed to start release notifications: {ex.Message}");
+        }
+    }
+
+    private static IEnumerator CoShowReleaseNotificationThreeTimes(string message)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            HideSwallowedNotification();
+            try
+            {
+                var notif = Helpers.CreateAndShowNotification(
+                    $"<b>{TouExtensionColors.Pelican.ToTextColor()}{message}</color></b>",
+                    TouExtensionColors.Pelican,
+                    new Vector3(0f, 1f, -20f),
+                    spr: TouMegaChujoweExtension.Assets.TouExtensionIcons.PelicanRoleIcon.LoadAsset());
+
+                if (notif != null)
+                {
+                    _swallowedNotificationObject = notif.gameObject;
+                    try { notif.AdjustNotification(); } catch { }
+                    try
+                    {
+                        var canvasGroup = notif.GetComponent<CanvasGroup>();
+                        if (canvasGroup != null) canvasGroup.alpha = 1f;
+                    }
+                    catch { }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Failed to show release notification attempt {i}: {ex.Message}");
+            }
+            yield return new WaitForSeconds(1.0f);
+        }
     }
 
     public static void HideSwallowedNotification()

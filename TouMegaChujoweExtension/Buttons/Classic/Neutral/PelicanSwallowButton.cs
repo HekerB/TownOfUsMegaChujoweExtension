@@ -186,18 +186,6 @@ public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, Playe
             return;
         }
 
-        if (player.AmOwner)
-        {
-            try
-            {
-                TouAudio.PlaySound(TouExtensionAudio.SwallowSound);
-            }
-            catch (System.Exception ex)
-            {
-                Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSwallow] Sound error: {ex.Message}");
-            }
-        }
-
         OnClick();
         Timer = Cooldown;
         RefreshUses();

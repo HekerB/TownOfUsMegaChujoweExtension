@@ -19,11 +19,13 @@ public static class MirrorCasterMovePatch
     {
         if (!__instance.AmOwner || MeetingHud.Instance != null || ExileController.Instance != null) return;
 
+        // If chat is open, do not override moveable state
+        if (HudManager.Instance != null && HudManager.Instance.Chat != null && HudManager.Instance.Chat.IsOpenOrOpening) return;
+
         if (__instance.IsRole<MirrorcasterRole>() &&
             OptionGroupSingleton<MirrorCasterExtensionOptions>.Instance.MoveWhileMenu &&
             (Minigame.Instance != null || MapBehaviour.Instance != null))
         {
-
             __instance.moveable = true;
         }
     }
@@ -36,19 +38,39 @@ public static class MirrorCasterMovePatch
         if (!__instance.AmOwner || MeetingHud.Instance != null || ExileController.Instance != null) return;
 
         if (__instance.IsRole<MirrorcasterRole>() &&
-            OptionGroupSingleton<MirrorCasterExtensionOptions>.Instance.MoveWhileMenu &&
-            (Minigame.Instance != null || MapBehaviour.Instance != null))
+            OptionGroupSingleton<MirrorCasterExtensionOptions>.Instance.MoveWhileMenu)
         {
-            var horizontal = Input.GetAxisRaw("Horizontal");
-            var vertical = Input.GetAxisRaw("Vertical");
-            var move = new Vector2(horizontal, vertical);
-
-            if (move.sqrMagnitude > 0.01f)
+            // If chat is open or opening, immediately stop any movement velocity and return
+            if (HudManager.Instance != null && HudManager.Instance.Chat != null && HudManager.Instance.Chat.IsOpenOrOpening)
             {
-                move.Normalize();
-                var speed = __instance.MyPhysics.TrueSpeed;
-                __instance.MyPhysics.body.velocity = move * speed;
-                __instance.MyPhysics.HandleAnimation(__instance.Data.IsDead);
+                if (__instance.MyPhysics != null && __instance.MyPhysics.body != null)
+                {
+                    __instance.MyPhysics.body.velocity = Vector2.zero;
+                }
+                return;
+            }
+
+            if (Minigame.Instance != null || MapBehaviour.Instance != null)
+            {
+                var horizontal = Input.GetAxisRaw("Horizontal");
+                var vertical = Input.GetAxisRaw("Vertical");
+                var move = new Vector2(horizontal, vertical);
+
+                if (move.sqrMagnitude > 0.01f)
+                {
+                    move.Normalize();
+                    var speed = __instance.MyPhysics.TrueSpeed;
+                    __instance.MyPhysics.body.velocity = move * speed;
+                    __instance.MyPhysics.HandleAnimation(__instance.Data.IsDead);
+                }
+                else
+                {
+                    // Reset velocity to Vector2.zero when movement keys are released
+                    if (__instance.MyPhysics != null && __instance.MyPhysics.body != null)
+                    {
+                        __instance.MyPhysics.body.velocity = Vector2.zero;
+                    }
+                }
             }
         }
     }
