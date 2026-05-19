@@ -1258,6 +1258,32 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionArcanistDeathLuckyDay">It's your lucky day.</string>
   <string name="ExtensionArcanistDuplicateRole">{0}: Role already exists! Card removed from deck.</string>
   <string name="ExtensionArcanistDevilMeeting">Someone has made a deal with the Devil and become a Lawyer!</string>
+  <string name="DiedToDeathReasonPlayingWithMagic">Playing with Magic</string>
+  <string name="ExtensionArcanistJusticeReveal">{0} is the Arcanist!</string>
+
+  <!-- Tarot Cards Descriptions -->
+  <string name="TarotCardTheFoolDesc">Become Jester</string>
+  <string name="TarotCardTheMagicianDesc">Blind Crewmates (10s)</string>
+  <string name="TarotCardTheHighPriestessDesc">Become Doomsayer</string>
+  <string name="TarotCardTheEmpressDesc">+1 Vote (Knighted)</string>
+  <string name="TarotCardTheEmperorDesc">Drunk effect</string>
+  <string name="TarotCardTheHierophantDesc">Become Neutral Benign</string>
+  <string name="TarotCardTheLoversDesc">Link with random evil</string>
+  <string name="TarotCardTheChariotDesc">Speed boost (30s)</string>
+  <string name="TarotCardStrengthDesc">-20% Cooldown</string>
+  <string name="TarotCardTheHermitDesc">Perm speed boost</string>
+  <string name="TarotCardWheelOfFortuneDesc">NK (50%) / Amnesiac (50%)</string>
+  <string name="TarotCardJusticeDesc">Publicly reveals you</string>
+  <string name="TarotCardTheHangedManDesc">Become Bounty Hunter</string>
+  <string name="TarotCardDeathDesc">50% chance to die</string>
+  <string name="TarotCardTemperanceDesc">+20% Cooldown</string>
+  <string name="TarotCardTheDevilDesc">Become Lawyer</string>
+  <string name="TarotCardTheTowerDesc">Perm slowness</string>
+  <string name="TarotCardTheStarDesc">Perm vision boost</string>
+  <string name="TarotCardTheMoonDesc">Blind self (30s)</string>
+  <string name="TarotCardTheSunDesc">Vision boost (30s)</string>
+  <string name="TarotCardJudgementDesc">Become Pope</string>
+  <string name="TarotCardTheWorldDesc">Get Death Note</string>
 
   <string name="TarotCardTheFool">The Fool</string>
   <string name="TarotCardTheMagician">The Magician</string>

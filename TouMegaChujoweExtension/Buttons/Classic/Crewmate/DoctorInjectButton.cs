@@ -123,37 +123,22 @@ public sealed class DoctorInjectButton : TownOfUsRoleButton<DoctorRole, PlayerCo
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
-        if (Button != null)
-        {
-            if (ZeroIsInfinite && MaxUses == 0)
-            {
-                Button.usesRemainingSprite.gameObject.SetActive(false);
-                if (Button.usesRemainingText != null)
-                {
-                    Button.usesRemainingText.gameObject.SetActive(false);
-                }
-            }
-            else
-            {
-                Button.usesRemainingSprite.gameObject.SetActive(MaxUses > 0);
-                if (Button.usesRemainingText != null)
-                {
-                    Button.usesRemainingText.gameObject.SetActive(MaxUses > 0);
-                }
-            }
-        }
-
         if (MeetingHud.Instance)
         {
             if (_isInjecting) EndInjectWindow();
             base.FixedUpdate(playerControl);
+            UpdateUsesDisplay();
             return;
         }
 
         if (playerControl == null || !playerControl.IsRole<DoctorRole>())
         {
             if (_isInjecting) EndInjectWindow();
-            if (playerControl != null) base.FixedUpdate(playerControl);
+            if (playerControl != null)
+            {
+                base.FixedUpdate(playerControl);
+                UpdateUsesDisplay();
+            }
             return;
         }
 
@@ -179,10 +164,41 @@ public sealed class DoctorInjectButton : TownOfUsRoleButton<DoctorRole, PlayerCo
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
             }
+            UpdateUsesDisplay();
             return;
         }
 
         base.FixedUpdate(playerControl);
+        UpdateUsesDisplay();
+    }
+
+    public override void SetUses(int amount)
+    {
+        base.SetUses(amount);
+        UpdateUsesDisplay();
+    }
+
+    private void UpdateUsesDisplay()
+    {
+        if (Button != null)
+        {
+            if (ZeroIsInfinite && MaxUses == 0)
+            {
+                Button.usesRemainingSprite.gameObject.SetActive(false);
+                if (Button.usesRemainingText != null)
+                {
+                    Button.usesRemainingText.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                Button.usesRemainingSprite.gameObject.SetActive(MaxUses > 0);
+                if (Button.usesRemainingText != null)
+                {
+                    Button.usesRemainingText.gameObject.SetActive(MaxUses > 0);
+                }
+            }
+        }
     }
 
     private void EndInjectWindow()

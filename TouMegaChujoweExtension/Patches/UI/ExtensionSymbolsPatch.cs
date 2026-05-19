@@ -149,9 +149,9 @@ public static class ExtensionSymbolsPatch
                     }
                 }
 
-                if (!__result.Contains("(rec)"))
+                if (!__result.Contains("(Rec)") && !__result.Contains("(rec)"))
                 {
-                    __result = $"{prefix}<color=#8A8A8A>{__result} (rec)</color>";
+                    __result = $"{prefix}<color=#{jackalHex}>{__result}</color> <color=#FFFFFF>(</color><color=#{jackalHex}>Rec</color><color=#FFFFFF>)</color>";
                 }
             }
         }
@@ -236,7 +236,7 @@ public static class ExtensionSymbolsPatch
 
             if (sameTeam || deadKnow)
             {
-                __result = new Color32(138, 138, 138, 255); // Gray #8A8A8A
+                __result = TouExtensionColors.Jackal;
             }
         }
         else if (player.IsRole<JackalRole>() && (local.PlayerId == player.PlayerId || deadKnow))

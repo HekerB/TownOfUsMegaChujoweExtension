@@ -39,7 +39,38 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralOutlier;
 
-    public string GetAdvancedDescription() => TouLocale.GetParsed($"ExtensionRole{LocaleKey}WikiDescription");
+    public string GetAdvancedDescription()
+    {
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine(TouLocale.GetParsed($"ExtensionRole{LocaleKey}WikiDescription"));
+        sb.AppendLine();
+        sb.AppendLine($"<b>{RoleColor.ToTextColor()}Tarot Cards / Karty Tarota:</color></b>");
+        sb.AppendLine();
+        
+        var cards = System.Enum.GetValues<TarotCard>();
+        int half = (cards.Length + 1) / 2;
+        
+        for (int i = 0; i < half; i++)
+        {
+            var card1 = cards[i];
+            var name1 = TouLocale.Get($"TarotCard{card1}", card1.ToString());
+            var desc1 = TouLocale.Get($"TarotCard{card1}Desc", "");
+            sb.Append($"• {RoleColor.ToTextColor()}{name1}</color>: {desc1}");
+            
+            if (i + half < cards.Length)
+            {
+                var card2 = cards[i + half];
+                var name2 = TouLocale.Get($"TarotCard{card2}", card2.ToString());
+                var desc2 = TouLocale.Get($"TarotCard{card2}Desc", "");
+                sb.Append($"<pos=50%>• {RoleColor.ToTextColor()}{name2}</color>: {desc2}");
+            }
+            sb.AppendLine();
+        }
+        
+        sb.AppendLine();
+        sb.Append(MiscUtils.AppendOptionsText(GetType()));
+        return sb.ToString();
+    }
 
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities =>
@@ -177,6 +208,10 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
 
         switch (card)
         {
+            case TarotCard.Justice:
+                var revealMsg = TouLocale.GetParsed("ExtensionArcanistJusticeReveal", "{0} is the Arcanist!").Replace("{0}", player.Data.PlayerName);
+                MiscUtils.AddFakeChat(player.Data, "<color=#FF0000>System</color>", revealMsg, false, true);
+                break;
             case TarotCard.TheLovers:
                 var evil = MiscUtils.PlayerById(targetId);
                 if (evil != null)
@@ -263,9 +298,6 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                         }
                         player.ChangeRole(subRole);
                     }
-                    break;
-                case TarotCard.Justice:
-                    MiscUtils.AddFakeChat(player.Data, "<color=#FF0000>System</color>", $"{player.Data.PlayerName} is the Arcanist!", false, true);
                     break;
                 case TarotCard.TheHangedMan:
                     if (!OptionGroupSingleton<ArcanistOptions>.Instance.AllowDuplicateRoles && IsRoleAlive(RoleId.Get<BountyHunterRole>()))

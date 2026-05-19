@@ -1446,6 +1446,32 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionArcanistDeathLuckyDay">To twój szczęśliwy dzień.</string>
   <string name="ExtensionArcanistDuplicateRole">{0}: Ta rola już istnieje w grze! Karta usunięta z talii.</string>
   <string name="ExtensionArcanistDevilMeeting">Ktoś podpisał pakt z Diabłem i został Prawnikiem!</string>
+  <string name="DiedToDeathReasonPlayingWithMagic">Zabawa Magią</string>
+  <string name="ExtensionArcanistJusticeReveal">{0} to Arkanista!</string>
+
+  <!-- Tarot Cards Descriptions -->
+  <string name="TarotCardTheFoolDesc">Zmień w Błazna</string>
+  <string name="TarotCardTheMagicianDesc">Oślep załogantów (10s)</string>
+  <string name="TarotCardTheHighPriestessDesc">Zmień w Doomsayera</string>
+  <string name="TarotCardTheEmpressDesc">+1 Głos (Rycerz)</string>
+  <string name="TarotCardTheEmperorDesc">Efekt Pijaka</string>
+  <string name="TarotCardTheHierophantDesc">Zmień w Neutralnego Łagodnego</string>
+  <string name="TarotCardTheLoversDesc">Połącz z losowym złym</string>
+  <string name="TarotCardTheChariotDesc">Zwiększ prędkość (30s)</string>
+  <string name="TarotCardStrengthDesc">-20% czasu odnowienia</string>
+  <string name="TarotCardTheHermitDesc">Stały wzrost prędkości</string>
+  <string name="TarotCardWheelOfFortuneDesc">NK (50%) / Amnesiac (50%)</string>
+  <string name="TarotCardJusticeDesc">Publicznie cię ujawnia</string>
+  <string name="TarotCardTheHangedManDesc">Zmień w Łowcę Nagród</string>
+  <string name="TarotCardDeathDesc">50% szans na śmierć</string>
+  <string name="TarotCardTemperanceDesc">+20% czasu odnowienia</string>
+  <string name="TarotCardTheDevilDesc">Zmień w Prawnika</string>
+  <string name="TarotCardTheTowerDesc">Stałe spowolnienie</string>
+  <string name="TarotCardTheStarDesc">Stały wzrost wizji</string>
+  <string name="TarotCardTheMoonDesc">Oślep siebie (30s)</string>
+  <string name="TarotCardTheSunDesc">Zwiększ wizję (30s)</string>
+  <string name="TarotCardJudgementDesc">Zmień w Papieża</string>
+  <string name="TarotCardTheWorldDesc">Otrzymaj Death Note</string>
 
   <string name="TarotCardTheFool">Głupiec</string>
   <string name="TarotCardTheMagician">Magik</string>

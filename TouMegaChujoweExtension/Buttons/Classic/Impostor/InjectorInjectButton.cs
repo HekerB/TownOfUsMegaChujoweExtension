@@ -166,25 +166,7 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
-        if (Button != null)
-        {
-            if (ZeroIsInfinite && MaxUses == 0)
-            {
-                Button.usesRemainingSprite.gameObject.SetActive(false);
-                if (Button.usesRemainingText != null)
-                {
-                    Button.usesRemainingText.gameObject.SetActive(false);
-                }
-            }
-            else
-            {
-                Button.usesRemainingSprite.gameObject.SetActive(MaxUses > 0);
-                if (Button.usesRemainingText != null)
-                {
-                    Button.usesRemainingText.gameObject.SetActive(MaxUses > 0);
-                }
-            }
-        }
+        UpdateUsesDisplay();
 
         if (MeetingHud.Instance)
         {
@@ -226,6 +208,35 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
         }
 
         base.FixedUpdate(playerControl);
+    }
+
+    public override void SetUses(int amount)
+    {
+        base.SetUses(amount);
+        UpdateUsesDisplay();
+    }
+
+    private void UpdateUsesDisplay()
+    {
+        if (Button != null)
+        {
+            if (ZeroIsInfinite && MaxUses == 0)
+            {
+                Button.usesRemainingSprite.gameObject.SetActive(false);
+                if (Button.usesRemainingText != null)
+                {
+                    Button.usesRemainingText.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                Button.usesRemainingSprite.gameObject.SetActive(MaxUses > 0);
+                if (Button.usesRemainingText != null)
+                {
+                    Button.usesRemainingText.gameObject.SetActive(MaxUses > 0);
+                }
+            }
+        }
     }
 
     private void EndInjectWindow()

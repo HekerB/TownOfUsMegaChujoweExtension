@@ -106,7 +106,7 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
         if (!base.IsModifierValidOn(role))
             return false;
 
-        return role is ITownOfUsRole { RoleAlignment: RoleAlignment.NeutralKilling };
+        return role is ITownOfUsRole { RoleAlignment: RoleAlignment.NeutralKilling } || role is ArcanistRole;
     }
 
     public override void OnActivate()
