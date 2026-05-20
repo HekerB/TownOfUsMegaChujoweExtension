@@ -32,5 +32,5 @@ public sealed class AstralOptions : AbstractOptionGroup<AstralRole>
     public bool DieIfNoKillDuringPhase { get; set; } = true;
 
     [ModdedToggleOption("ExtensionOptionAstralCanVent")]
-    public bool CanVent { get; set; } = true;
+    public bool CanVent { get; set; } = false;
 }
