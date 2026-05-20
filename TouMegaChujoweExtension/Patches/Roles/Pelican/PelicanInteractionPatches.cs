@@ -427,6 +427,14 @@ public static class PelicanInteractionPatches
         DigestAllPelicans();
     }
 
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
+    [HarmonyPrefix]
+    [HarmonyPriority(Priority.First)]
+    public static void MeetingHudStartPrefix()
+    {
+        DigestAllPelicans();
+    }
+
     private static void DigestAllPelicans()
     {
         foreach (var player in PlayerControl.AllPlayerControls)
