@@ -95,14 +95,14 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="#pirate-evil"><img width="10%" src="./Images/Icons/Pirate_Role_Icon.png" /></a>
   <a href="#pope-evil"><img width="10%" src="./Images/Icons/Pope_Role_Icon.png" /></a>
   <a href="#vulture-evil"><img width="10%" src="./Images/Icons/Vulture_Icon.png" /></a>
-  <img src="./Images/Groups/NeutOutlier.png" align="center" />
-  <a href="#arcanist-outlier"><img width="10%" src="./Images/Icons/Arcanist_Role_Icon.png" /></a>
-  <a href="#infiltrator-outlier"><img width="10%" src="./Images/Icons/Jackal_Role_Icon.png" /></a>
   <img src="./Images/Groups/NeutKilling.png" align="center" />
   <a href="#doppelganger-killing"><img width="10%" src="./Images/Icons/Doppelganger_Icon.png" /></a>
   <a href="#pelican-killing"><img width="10%" src="./Images/Icons/Pelican_Role_Icon.png" /></a>
   <a href="#serial-killer-killing"><img width="10%" src="./Images/Icons/SerialKiller_Role_Icon.png" /></a>
   <a href="#shroud-killing"><img width="10%" src="./Images/Icons/Shroud_Role_Icon.png" /></a>
+  <img src="./Images/Groups/NeutOutlier.png" align="center" />
+  <a href="#arcanist-outlier"><img width="10%" src="./Images/Icons/Arcanist_Role_Icon.png" /></a>
+  <a href="#infiltrator-outlier"><img width="10%" src="./Images/Icons/Jackal_Role_Icon.png" /></a>
   <img src="./Images/Groups/CrewMods.png" align="center" />
   <a href="#publicity-crewmate"><img width="10%" src="./Images/Icons/Publicity_Modifier_Icon.png" /></a>
 
@@ -426,7 +426,7 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 - **Stellar Roles** - Role ideas, some button art
 - **[Launchpad Reloaded](https://github.com/All-Of-Us-Mods/LaunchpadReloaded)** - Doppelganger role icon (original)
 - **[All Of Us](https://github.com/All-Of-Us-Mods)** - Death Note modifier icons (from their Discord)
-- **Sidemen (YouTube) / Sidemens Mod** - Deploy & Detonate button icons for RC-XD; button assets for Detonator (Attach C4), Backlash, Bodyguard ability, Speedy ability, Poisoner Vine detonate, Injector ability, and Doctor ability
+- **Sidemen (YouTube) / Sidemens Mod** - Deploy & Detonate button icons for RC-XD; button assets for Detonator (Attach C4), Backlash, Bodyguard ability, Speedy ability, Poisoner Vine detonate and Doctor ability
 - **[TOHE (Town of Host Enhanced)](https://github.com/0xDrMoe/TownofHost-Enhanced)** - Shroud role icon
 - **Star Wars** - Bounty Hunter role icon (original concept)
 - **Our friend's girlfriend** - Publicity modifier icon
