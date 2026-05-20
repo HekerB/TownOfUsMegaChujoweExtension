@@ -79,9 +79,10 @@ public static class PortalmakerSystem
             newPortal.Visual = CreatePortalVisual(position, radius, true); // Active bright purple
             lastPair.PortalB = newPortal;
 
-            // Upgrade PortalA to active color as well!
+            // Upgrade PortalA to active color and make it visible to everyone!
             if (lastPair.PortalA != null && lastPair.PortalA.Visual != null)
             {
+                lastPair.PortalA.Visual.SetActive(true); // Show to everyone now that pair is complete
                 var sr = lastPair.PortalA.Visual.GetComponent<SpriteRenderer>();
                 if (sr != null)
                 {
@@ -113,6 +114,13 @@ public static class PortalmakerSystem
                 CreationTime = Time.time
             };
             newPortal.Visual = CreatePortalVisual(position, radius, false); // Incomplete semi-transparent white original sprite
+
+            // Only show incomplete portal (PortalA) to the Portalmaker who owns it
+            bool isLocalOwner = PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == ownerId;
+            if (!isLocalOwner && newPortal.Visual != null)
+            {
+                newPortal.Visual.SetActive(false);
+            }
             
             var newPair = new PortalPair
             {
