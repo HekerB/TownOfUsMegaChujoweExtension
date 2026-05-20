@@ -158,16 +158,8 @@ public static class SidekickFriendlyFirePatch
         var killerSidekick = __instance.GetModifier<SidekickModifier>();
         if (killerSidekick != null)
         {
-            if (target.PlayerId == killerSidekick.JackalId) return false;
-
             var targetSidekick = target.GetModifier<SidekickModifier>();
             if (targetSidekick != null && targetSidekick.JackalId == killerSidekick.JackalId) return false;
-        }
-
-        if (__instance.GetRole<JackalRole>() != null)
-        {
-            var targetSidekick = target.GetModifier<SidekickModifier>();
-            if (targetSidekick != null && targetSidekick.JackalId == __instance.PlayerId) return false;
         }
 
         return true;

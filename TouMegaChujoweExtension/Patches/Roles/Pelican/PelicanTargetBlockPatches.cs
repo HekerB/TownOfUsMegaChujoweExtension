@@ -75,13 +75,13 @@ public static class PelicanTargetBlockPatches
         return null;
     }
 
-    public static void GetClosestLivingPlayerPrefix(ref Func<PlayerControl, bool>? filter)
+    public static void GetClosestLivingPlayerPrefix(ref System.Predicate<PlayerControl>? predicate)
     {
-        var originalFilter = filter;
-        filter = new Func<PlayerControl, bool>(x =>
+        var originalPredicate = predicate;
+        predicate = new System.Predicate<PlayerControl>(x =>
         {
             if (x == null || PelicanSystem.IsSwallowed(x.PlayerId)) return false;
-            return originalFilter == null || originalFilter(x);
+            return originalPredicate == null || originalPredicate(x);
         });
     }
 

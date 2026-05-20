@@ -140,26 +140,7 @@ public static class MirageDecoyTownOfUsTargetButtonPatches
 
     private static bool TryTriggerFromLocalPlayer(float maxDistance)
     {
-        var local = PlayerControl.LocalPlayer;
-        if (local == null || local.HasDied() || MeetingHud.Instance)
-        {
-            return false;
-        }
-
-        var from = local.GetTruePosition();
-        if (!MirageDecoySystem.TryGetClosestDecoy(from, maxDistance, out var mirageId, out var decoyPos))
-        {
-            return false;
-        }
-
-        var mirage = MiscUtils.PlayerById(mirageId);
-        if (mirage == null || mirage.HasDied() || !mirage.IsRole<MirageRole>())
-        {
-            return false;
-        }
-
-        MirageRole.RpcMirageTriggerDecoy(mirage, local, decoyPos);
-        return true;
+        return MirageDecoySystem.TryTriggerFromLocalPlayer(maxDistance);
     }
 
     private static void SpendCooldownAndUses(object instance)

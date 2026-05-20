@@ -27,7 +27,6 @@ public sealed class ArcanistOptions : AbstractOptionGroup<ArcanistRole>
     [ModdedNumberOption("ExtensionOptionArcanistWeight03", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightEmpress { get; set; } = 10f;
     [ModdedNumberOption("ExtensionOptionArcanistWeight04", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightEmperor { get; set; } = 3f;
     [ModdedNumberOption("ExtensionOptionArcanistWeight05", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightHierophant { get; set; } = 5f;
-    [ModdedNumberOption("ExtensionOptionArcanistWeight06", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightLovers { get; set; } = 3f;
     [ModdedNumberOption("ExtensionOptionArcanistWeight07", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightChariot { get; set; } = 5f;
     [ModdedNumberOption("ExtensionOptionArcanistWeight08", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightStrength { get; set; } = 5f;
     [ModdedNumberOption("ExtensionOptionArcanistWeight09", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightHermit { get; set; } = 4f;
@@ -36,7 +35,6 @@ public sealed class ArcanistOptions : AbstractOptionGroup<ArcanistRole>
     [ModdedNumberOption("ExtensionOptionArcanistWeight12", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightHangedMan { get; set; } = 3f;
     [ModdedNumberOption("ExtensionOptionArcanistWeight13", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightDeath { get; set; } = 15f;
     [ModdedNumberOption("ExtensionOptionArcanistWeight14", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightTemperance { get; set; } = 3f;
-    [ModdedNumberOption("ExtensionOptionArcanistWeight15", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightDevil { get; set; } = 2f;
     [ModdedNumberOption("ExtensionOptionArcanistWeight16", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightTower { get; set; } = 5f;
     [ModdedNumberOption("ExtensionOptionArcanistWeight17", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightStar { get; set; } = 5f;
     [ModdedNumberOption("ExtensionOptionArcanistWeight18", 0f, 100f, 1f, MiraNumberSuffixes.Percent)] public float WeightMoon { get; set; } = 5f;

@@ -122,9 +122,11 @@ public static class ExtensionSymbolsPatch
                                        playerJackalId != 255 && localJackalId != 255 &&
                                        playerJackalId == localJackalId;
 
-            bool sameTeam = (localIsJackal && isPcRecruitOfLocal) || isPcSameRecruitTeam;
+            bool canSeeRecruit = (localIsJackal && isPcRecruitOfLocal) ||
+                                 (local.PlayerId == player.PlayerId) ||
+                                 isPcSameRecruitTeam;
 
-            bool canSeeTeam = sameTeam || deadKnow;
+            bool canSeeTeam = canSeeRecruit || deadKnow;
 
             if (canSeeTeam)
             {
@@ -232,9 +234,11 @@ public static class ExtensionSymbolsPatch
                                        playerJackalId != 255 && localJackalId != 255 &&
                                        playerJackalId == localJackalId;
 
-            bool sameTeam = (localIsJackal && isPcRecruitOfLocal) || isPcSameRecruitTeam;
+            bool canSeeRecruit = (localIsJackal && isPcRecruitOfLocal) ||
+                                 (local.PlayerId == player.PlayerId) ||
+                                 isPcSameRecruitTeam;
 
-            if (sameTeam || deadKnow)
+            if (canSeeRecruit || deadKnow)
             {
                 __result = TouExtensionColors.Jackal;
             }

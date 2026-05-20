@@ -3,6 +3,14 @@ using TMPro;
 using TownOfUs.Modules;
 using TownOfUs.Utilities;
 using UnityEngine;
+using TownOfUs.Roles;
+using MiraAPI.Roles;
+using MiraAPI.Utilities;
+using TownOfUs.Extensions;
+using TownOfUs;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -330,34 +338,52 @@ public static class MirageDecoySystem
                 continue;
             }
 
-            if (!mirage.AmOwner)
-            {
-                continue;
-            }
-
-            // 1. Check expiration
-            if (now >= decoy.ExpiresAt)
+            // 1. Check expiration (Only Mirage owner deletes their expired decoy)
+            if (mirage.AmOwner && now >= decoy.ExpiresAt)
             {
                 Roles.Classic.Crewmate.MirageRole.RpcMirageDestroyDecoy(mirage);
                 continue;
             }
-
-            // 2. Check proximity (touch interaction)
-            foreach (var player in PlayerControl.AllPlayerControls)
-            {
-                if (player == null || player.Data == null || player.Data.IsDead || player.PlayerId == mirageId)
-                {
-                    continue;
-                }
-
-                var dist = Vector2.Distance(player.GetTruePosition(), new Vector2(decoy.WorldPosition.x, decoy.WorldPosition.y));
-                if (dist < 0.35f)
-                {
-                    Roles.Classic.Crewmate.MirageRole.RpcMirageTriggerDecoy(mirage, player, new Vector2(decoy.WorldPosition.x, decoy.WorldPosition.y));
-                    break;
-                }
-            }
         }
+    }
+
+    public static bool TryTriggerFromLocalPlayer(float maxDistance)
+    {
+        var local = PlayerControl.LocalPlayer;
+        if (local == null || local.HasDied() || MeetingHud.Instance)
+        {
+            return false;
+        }
+
+        var from = local.GetTruePosition();
+        if (!TryGetClosestDecoy(from, maxDistance, out var mirageId, out var decoyPos))
+        {
+            return false;
+        }
+
+        var mirage = MiscUtils.PlayerById(mirageId);
+        if (mirage == null || mirage.HasDied() || !mirage.IsRole<Roles.Classic.Crewmate.MirageRole>())
+        {
+            return false;
+        }
+
+        var role = local.Data?.Role;
+        string roleName = "Unknown Player";
+        Color roleColor = Color.white;
+        if (role != null)
+        {
+            roleName = role.GetRoleName();
+            if (string.IsNullOrWhiteSpace(roleName) || roleName == "Unknown")
+            {
+                roleName = role.GetType().Name.Replace("Role", "").Replace("RoleBehaviour", "");
+                if (string.IsNullOrWhiteSpace(roleName)) roleName = "Player";
+            }
+            roleColor = role is ICustomRole customRole ? customRole.RoleColor : role.TeamColor;
+        }
+        var hex = ColorUtility.ToHtmlStringRGBA(roleColor);
+
+        Roles.Classic.Crewmate.MirageRole.RpcMirageTriggerDecoy(mirage, local, decoyPos, roleName, hex);
+        return true;
     }
 
     private static void SetAlpha(GameObject root, float alpha)

@@ -9,9 +9,9 @@ namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 public sealed class CharlatanOptions : AbstractOptionGroup<CharlatanRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleCharlatan", "Charlatan");
-    
+
     [ModdedNumberOption("ExtensionOptionCharlatanConcealCooldown", 10f, 60f, 0.5f, MiraNumberSuffixes.Seconds)]
-    public float ConcealCooldown { get; set; } = 40f;
+    public float ConcealCooldown { get; set; } = 10f;
 
     [ModdedNumberOption("ExtensionOptionCharlatanConcealUses", 0f, 10f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float ConcealUses { get; set; } = 0f;
@@ -23,7 +23,7 @@ public sealed class CharlatanOptions : AbstractOptionGroup<CharlatanRole>
     public ReportRangeType ConcealReportRange { get; set; } = ReportRangeType.VeryShort;
 
     [ModdedToggleOption("ExtensionOptionCharlatanResetKillConcealCooldownsTogether")]
-    public bool ResetKillConcealCooldownsTogether { get; set; } = false;
+    public bool ResetKillConcealCooldownsTogether { get; set; } = true;
 
     [ModdedToggleOption("ExtensionOptionCharlatanDeceiveEnabled")]
     public bool DeceiveEnabled { get; set; } = true;

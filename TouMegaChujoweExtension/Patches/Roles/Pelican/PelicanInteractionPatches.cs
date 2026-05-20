@@ -10,7 +10,9 @@ using TownOfUs.Utilities;
 using TownOfUs.Modifiers.Game.Universal;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TouMegaChujoweExtension.Modifiers.Game;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Pelican;
 
@@ -68,6 +70,19 @@ public static class PelicanInteractionPatches
                 {
                     HudManager.Instance.ReportButton.gameObject.SetActive(false);
                 }
+
+                var canUseMap = OptionGroupSingleton<PelicanOptions>.Instance.CanUseMapWhileSwallowed;
+                if (!canUseMap)
+                {
+                    if (HudManager.Instance.MapButton != null && HudManager.Instance.MapButton.gameObject.activeSelf)
+                    {
+                        HudManager.Instance.MapButton.gameObject.SetActive(false);
+                    }
+                    if (HudManager.Instance.SabotageButton != null && HudManager.Instance.SabotageButton.gameObject.activeSelf)
+                    {
+                        HudManager.Instance.SabotageButton.gameObject.SetActive(false);
+                    }
+                }
             }
         }
         else if (_wasSwallowedLastFrame)
@@ -84,9 +99,102 @@ public static class PelicanInteractionPatches
                     button.Button.gameObject.SetActive(true);
                 }
             }
+
+            if (HudManager.Instance != null)
+            {
+                if (HudManager.Instance.MapButton != null)
+                {
+                    HudManager.Instance.MapButton.gameObject.SetActive(true);
+                }
+            }
         }
         
         _wasSwallowedLastFrame = isSwallowed;
+        UpdateOverlay(isSwallowed);
+    }
+
+    private static GameObject? _pelicanOverlay;
+
+    private static void UpdateOverlay(bool isSwallowed)
+    {
+        if (isSwallowed)
+        {
+            if (_pelicanOverlay == null && HudManager.Instance != null)
+            {
+                _pelicanOverlay = new GameObject("PelicanSwallowedOverlay");
+                _pelicanOverlay.transform.SetParent(HudManager.Instance.transform, false);
+                _pelicanOverlay.transform.SetAsFirstSibling(); // Put behind other UI buttons, but in front of game screen
+                
+                var image = _pelicanOverlay.AddComponent<Image>();
+                image.color = new Color(0.3f, 0.05f, 0.05f, 0.35f); // Crimson/dark pink semi-transparent overlay
+                
+                var rect = _pelicanOverlay.GetComponent<RectTransform>();
+                if (rect != null)
+                {
+                    rect.anchorMin = Vector2.zero;
+                    rect.anchorMax = Vector2.one;
+                    rect.offsetMin = Vector2.zero;
+                    rect.offsetMax = Vector2.zero;
+                }
+            }
+            else if (_pelicanOverlay != null && !_pelicanOverlay.activeSelf)
+            {
+                _pelicanOverlay.SetActive(true);
+            }
+        }
+        else
+        {
+            if (_pelicanOverlay != null && _pelicanOverlay.activeSelf)
+            {
+                _pelicanOverlay.SetActive(false);
+            }
+        }
+    }
+
+
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.ToggleMapVisible))]
+    [HarmonyPrefix]
+    public static bool HudManagerToggleMapVisiblePrefix()
+    {
+        var local = PlayerControl.LocalPlayer;
+        if (local != null && PelicanSystem.IsSwallowed(local.PlayerId))
+        {
+            var canUseMap = OptionGroupSingleton<PelicanOptions>.Instance.CanUseMapWhileSwallowed;
+            if (!canUseMap)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CanMove), MethodType.Getter)]
+    [HarmonyPrefix]
+    public static bool PlayerControlCanMovePrefix(PlayerControl __instance, ref bool __result)
+    {
+        if (__instance == PlayerControl.LocalPlayer && PelicanSystem.IsSwallowed(__instance.PlayerId))
+        {
+            var canUseMap = OptionGroupSingleton<PelicanOptions>.Instance.CanUseMapWhileSwallowed;
+            if (canUseMap)
+            {
+                var stackTrace = new System.Diagnostics.StackTrace();
+                for (int i = 1; i < stackTrace.FrameCount; i++)
+                {
+                    var method = stackTrace.GetFrame(i)?.GetMethod();
+                    if (method == null) continue;
+                    var type = method.DeclaringType;
+                    if (type == null) continue;
+
+                    if (type.Name.Contains("Map") || type.Name.Contains("HudManager") || type.Name.Contains("Sabotage") ||
+                        method.Name.Contains("ToggleMap") || method.Name.Contains("Map") || method.Name.Contains("Sabotage"))
+                    {
+                        __result = true;
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     [HarmonyPatch(typeof(CustomActionButton), nameof(CustomActionButton.FixedUpdateHandler))]

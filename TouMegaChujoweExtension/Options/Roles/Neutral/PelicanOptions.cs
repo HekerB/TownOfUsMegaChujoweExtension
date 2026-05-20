@@ -15,6 +15,12 @@ public sealed class PelicanOptions : AbstractOptionGroup<PelicanRole>
     [ModdedNumberOption("ExtensionOptionPelicanMaxSwallowed", 1f, 10f, 1f, MiraNumberSuffixes.None)]
     public float MaxSwallowed { get; set; } = 3f;
 
+    [ModdedToggleOption("ExtensionOptionPelicanCanUseMapWhileSwallowed")]
+    public bool CanUseMapWhileSwallowed { get; set; } = false;
+
+    [ModdedToggleOption("ExtensionOptionPelicanCanSwallowThroughShields")]
+    public bool CanSwallowThroughShields { get; set; } = false;
+
     [ModdedToggleOption("ExtensionOptionPelicanCanVent")]
     public bool CanVent { get; set; } = false;
 }

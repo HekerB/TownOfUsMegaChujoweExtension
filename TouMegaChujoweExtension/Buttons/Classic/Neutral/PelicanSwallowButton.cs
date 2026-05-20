@@ -180,7 +180,8 @@ public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, Playe
         var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
         MiraEventManager.InvokeEvent(beforeMurderEvent);
 
-        if (beforeMurderEvent.IsCancelled)
+        var canSwallowThroughShields = OptionGroupSingleton<PelicanOptions>.Instance.CanSwallowThroughShields;
+        if (beforeMurderEvent.IsCancelled && !canSwallowThroughShields)
         {
             RefreshUses();
             return;

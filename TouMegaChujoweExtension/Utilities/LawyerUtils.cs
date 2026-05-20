@@ -151,20 +151,3 @@ public static class LawyerUtils
                lawyerRole.Client.PlayerId == client.PlayerId;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

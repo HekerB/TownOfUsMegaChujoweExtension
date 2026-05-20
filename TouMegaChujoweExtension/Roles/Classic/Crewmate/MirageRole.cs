@@ -136,7 +136,12 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
     }
 
     [MethodRpc((uint)ExtensionRpc.MirageTriggerDecoy)]
-    public static void RpcMirageTriggerDecoy(PlayerControl mirage, PlayerControl interactor, Vector2 pos)
+    public static void RpcMirageTriggerDecoy(
+        PlayerControl mirage,
+        PlayerControl interactor,
+        Vector2 pos,
+        string roleName,
+        string roleColorHex)
     {
         if (mirage?.Data?.Role is not MirageRole)
         {
@@ -151,27 +156,7 @@ public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
                 TriggeredRoles[mirage.PlayerId] = roles;
             }
 
-            var role = interactor.Data?.Role;
-            string roleName;
-            Color roleColor = Color.white;
-
-            if (role != null)
-            {
-                roleName = role.GetRoleName();
-                if (string.IsNullOrWhiteSpace(roleName) || roleName == "Unknown")
-                {
-                    // Fallback to class name if localization or standard retrieval fails
-                    roleName = role.GetType().Name.Replace("Role", "").Replace("RoleBehaviour", "");
-                    if (string.IsNullOrWhiteSpace(roleName)) roleName = "Player";
-                }
-                roleColor = role is ICustomRole customRole ? customRole.RoleColor : role.TeamColor;
-            }
-            else
-            {
-                roleName = "Unknown Player";
-            }
-
-            var coloredRoleName = $"<color=#{ColorUtility.ToHtmlStringRGBA(roleColor)}>{roleName}</color>";
+            var coloredRoleName = $"<color=#{roleColorHex}>{roleName}</color>";
 
             if (!roles.Contains(coloredRoleName))
             {

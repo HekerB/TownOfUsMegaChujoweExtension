@@ -43,31 +43,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     {
         var sb = new System.Text.StringBuilder();
         sb.AppendLine(TouLocale.GetParsed($"ExtensionRole{LocaleKey}WikiDescription"));
-        sb.AppendLine();
-        sb.AppendLine($"<b>{RoleColor.ToTextColor()}Tarot Cards / Karty Tarota:</color></b>");
-        sb.AppendLine();
-        
-        var cards = System.Enum.GetValues<TarotCard>();
-        int half = (cards.Length + 1) / 2;
-        
-        for (int i = 0; i < half; i++)
-        {
-            var card1 = cards[i];
-            var name1 = TouLocale.Get($"TarotCard{card1}", card1.ToString());
-            var desc1 = TouLocale.Get($"TarotCard{card1}Desc", "");
-            sb.Append($"• {RoleColor.ToTextColor()}{name1}</color>: {desc1}");
-            
-            if (i + half < cards.Length)
-            {
-                var card2 = cards[i + half];
-                var name2 = TouLocale.Get($"TarotCard{card2}", card2.ToString());
-                var desc2 = TouLocale.Get($"TarotCard{card2}Desc", "");
-                sb.Append($"<pos=50%>• {RoleColor.ToTextColor()}{name2}</color>: {desc2}");
-            }
-            sb.AppendLine();
-        }
-        
-        sb.AppendLine();
+        sb.AppendLine(" ");
         sb.Append(MiscUtils.AppendOptionsText(GetType()));
         return sb.ToString();
     }
@@ -137,7 +113,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         float wEmpress = role != null && role.DisabledCards.Contains(TarotCard.TheEmpress) ? 0f : opts.WeightEmpress;
         float wEmperor = role != null && role.DisabledCards.Contains(TarotCard.TheEmperor) ? 0f : opts.WeightEmperor;
         float wHierophant = (role != null && role.DisabledCards.Contains(TarotCard.TheHierophant)) || exeAlive ? 0f : opts.WeightHierophant;
-        float wLovers = (role != null && role.DisabledCards.Contains(TarotCard.TheLovers)) || loverAlive ? 0f : opts.WeightLovers;
+        float wLovers = 0f;
         float wChariot = role != null && role.DisabledCards.Contains(TarotCard.TheChariot) ? 0f : opts.WeightChariot;
         float wStrength = role != null && role.DisabledCards.Contains(TarotCard.Strength) ? 0f : opts.WeightStrength;
         float wHermit = role != null && role.DisabledCards.Contains(TarotCard.TheHermit) ? 0f : opts.WeightHermit;
@@ -146,7 +122,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         float wHangedMan = (role != null && role.DisabledCards.Contains(TarotCard.TheHangedMan)) || bountyAlive ? 0f : opts.WeightHangedMan;
         float wDeath = role != null && role.DisabledCards.Contains(TarotCard.Death) ? 0f : opts.WeightDeath;
         float wTemperance = role != null && role.DisabledCards.Contains(TarotCard.Temperance) ? 0f : opts.WeightTemperance;
-        float wDevil = (role != null && role.DisabledCards.Contains(TarotCard.TheDevil)) || lawyerAlive ? 0f : opts.WeightDevil;
+        float wDevil = 0f;
         float wTower = role != null && role.DisabledCards.Contains(TarotCard.TheTower) ? 0f : opts.WeightTower;
         float wStar = role != null && role.DisabledCards.Contains(TarotCard.TheStar) ? 0f : opts.WeightStar;
         float wMoon = role != null && role.DisabledCards.Contains(TarotCard.TheMoon) ? 0f : opts.WeightMoon;

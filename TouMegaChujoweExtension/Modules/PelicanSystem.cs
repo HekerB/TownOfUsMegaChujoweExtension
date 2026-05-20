@@ -16,6 +16,7 @@ using TownOfUs.Modules.Localization;
 using TownOfUs.Modules;
 using TownOfUs.Networking;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
@@ -233,7 +234,12 @@ public static class PelicanSystem
                 {
                     if (Minigame.Instance != null)
                     {
-                        Minigame.Instance.Close();
+                        var isMap = Minigame.Instance is MapBehaviour;
+                        var canUseMap = OptionGroupSingleton<PelicanOptions>.Instance.CanUseMapWhileSwallowed;
+                        if (!isMap || !canUseMap)
+                        {
+                            Minigame.Instance.Close();
+                        }
                     }
                 }
                 catch (System.Exception ex)
@@ -245,7 +251,11 @@ public static class PelicanSystem
                 {
                     if (MapBehaviour.Instance != null)
                     {
-                        MapBehaviour.Instance.Close();
+                        var canUseMap = OptionGroupSingleton<PelicanOptions>.Instance.CanUseMapWhileSwallowed;
+                        if (!canUseMap)
+                        {
+                            MapBehaviour.Instance.Close();
+                        }
                     }
                 }
                 catch (System.Exception ex)

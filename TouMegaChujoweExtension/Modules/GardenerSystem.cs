@@ -180,8 +180,8 @@ public static class GardenerSystem
             if (options.Feedback)
             {
                 msg = killed
-                   ? TouLocale.GetParsed("ExtensionGardenerAttackKilledFeedback", $"{attackerRole} killed {targetName} in your garden!").Replace("{0}", attackerRole).Replace("{1}", targetName)
-                   : TouLocale.GetParsed("ExtensionGardenerAttackBlockedFeedback", $"{attackerRole} tried to attack {targetName} in your garden!").Replace("{0}", attackerRole).Replace("{1}", targetName);
+                   ? TouLocale.GetParsed("ExtensionGardenerAttackKilledFeedback", $"Player {targetName} was eliminated in your garden!").Replace("{0}", targetName)
+                   : TouLocale.GetParsed("ExtensionGardenerAttackBlockedFeedback", $"Player {targetName} was attacked in your garden!").Replace("{0}", targetName);
             }
             else
             {

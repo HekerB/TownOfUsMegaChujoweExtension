@@ -266,8 +266,8 @@
   <!-- Pelican Options -->
   <string name="ExtensionOptionPelicanSwallowCooldown">Cooldown połykania</string>
   <string name="ExtensionOptionPelicanMaxSwallowed">Maks. liczba graczy w brzuchu</string>
-  <string name="ExtensionOptionPelicanCanUseMapWhileEaten">Może używać mapy/sabotażu po zjedzeniu</string>
-  <string name="ExtensionOptionPelicanCanEatThroughShields">Może połykać przez tarcze</string>
+  <string name="ExtensionOptionPelicanCanUseMapWhileSwallowed">Może używać mapy/sabotażu po połknięciu</string>
+  <string name="ExtensionOptionPelicanCanSwallowThroughShields">Może połykać przez tarcze</string>
   <string name="ExtensionOptionPelicanCanVent">Może używać wentylacji</string>
   
   <!-- Vampire Role -->
@@ -1427,6 +1427,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="SidekickTabDescription">Zostałeś zrekrutowany. Musisz chronić Infiltratora, aby wygrać wraz z nim.\%nl\%&lt;color=#FF3B3B&gt;&lt;b&gt;Zmieniłeś drużynę i masz nowy cel zwycięstwa!&lt;/b&gt;&lt;/color&gt;</string>
   <string name="SidekickWikiDescription">Chroń Infiltratora i pomóż mu wyeliminować inne frakcje. Jesteś połączony życiem z drugim Rekrutem.</string>
   <string name="DiedToJackal">Zabity przez Infiltratora</string>
+  <string name="ExtensionSidekickJackalEliminatedDeathReason">Infiltrator wyeliminowany</string>
 
   <string name="ExtensionRoleSidekickRecruitTeam">Rekruci</string>
   <string name="ExtensionRoleSidekickRecruitTeamWikiDescription">Zobacz informacje o swoich współtowarzyszach i status misji.</string>
@@ -1439,7 +1440,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleArcanist">Arcanist</string>
   <string name="ExtensionRoleArcanistIntroBlurb">Losuj magiczne karty, aby zmieniać losy gry.</string>
   <string name="ExtensionRoleArcanistTabDescription">Masz talię kart. Każda karta ma inny efekt. Używaj ich mądrze, by eliminować cele.</string>
-  <string name="ExtensionRoleArcanistWikiDescription">Arcanist to rola Neutral Killing, która używa magicznych kart do eliminowania przeciwników lub wspomagania siebie.</string>
+  <string name="ExtensionRoleArcanistWikiDescription">Arcanist to rola Neutral Outlier, która dobiera magiczne karty Tarota, aby zmieniać losy gry.</string>
   <string name="ExtensionRoleArcanistDraw">Dobierz Kartę</string>
   <string name="ExtensionRoleArcanistDrawWikiDescription">Dobierz magiczną kartę Tarota ze swojej talii. Każda karta wywołuje inny mistyczny efekt.</string>
   <string name="ExtensionArcanistCardDrawn">Wylosowałeś: {0}!</string>
@@ -1514,28 +1515,26 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionArcanistCooldown">Czas odnowienia kart</string>
   <string name="ExtensionOptionArcanistDeckSize">Wielkość talii</string>
   <string name="ExtensionOptionArcanistAllowDuplicateRoles">Zezwalaj na duplikaty ról</string>
-  <string name="ExtensionOptionArcanistWeight00">Waga: Głupiec</string>
-  <string name="ExtensionOptionArcanistWeight01">Waga: Magik</string>
-  <string name="ExtensionOptionArcanistWeight02">Waga: Arcykapłanka</string>
-  <string name="ExtensionOptionArcanistWeight03">Waga: Cesarzowa</string>
-  <string name="ExtensionOptionArcanistWeight04">Waga: Cesarz</string>
-  <string name="ExtensionOptionArcanistWeight05">Waga: Hierofant</string>
-  <string name="ExtensionOptionArcanistWeight06">Waga: Kochankowie</string>
-  <string name="ExtensionOptionArcanistWeight07">Waga: Rydwan</string>
-  <string name="ExtensionOptionArcanistWeight08">Waga: Siła</string>
-  <string name="ExtensionOptionArcanistWeight09">Waga: Pustelnik</string>
-  <string name="ExtensionOptionArcanistWeight10">Waga: Koło Fortuny</string>
-  <string name="ExtensionOptionArcanistWeight11">Waga: Sprawiedliwość</string>
-  <string name="ExtensionOptionArcanistWeight12">Waga: Wisielec</string>
-  <string name="ExtensionOptionArcanistWeight13">Waga: Śmierć</string>
-  <string name="ExtensionOptionArcanistWeight14">Waga: Umiarkowanie</string>
-  <string name="ExtensionOptionArcanistWeight15">Waga: Diabeł</string>
-  <string name="ExtensionOptionArcanistWeight16">Waga: Wieża</string>
-  <string name="ExtensionOptionArcanistWeight17">Waga: Gwiazda</string>
-  <string name="ExtensionOptionArcanistWeight18">Waga: Księżyc</string>
-  <string name="ExtensionOptionArcanistWeight19">Waga: Słońce</string>
-  <string name="ExtensionOptionArcanistWeight20">Waga: Sąd</string>
-  <string name="ExtensionOptionArcanistWeight21">Waga: Świat</string>
+  <string name="ExtensionOptionArcanistWeight00">Waga: Głupiec (Zmień w Błazna)</string>
+  <string name="ExtensionOptionArcanistWeight01">Waga: Magik (Oślep załogantów 10s)</string>
+  <string name="ExtensionOptionArcanistWeight02">Waga: Arcykapłanka (Zmień w Doomsayera)</string>
+  <string name="ExtensionOptionArcanistWeight03">Waga: Cesarzowa (+1 Głos)</string>
+  <string name="ExtensionOptionArcanistWeight04">Waga: Cesarz (Efekt Pijaka)</string>
+  <string name="ExtensionOptionArcanistWeight05">Waga: Hierofant (Zmień w Neutralnego Łagodnego)</string>
+  <string name="ExtensionOptionArcanistWeight07">Waga: Rydwan (Zwiększ prędkość 30s)</string>
+  <string name="ExtensionOptionArcanistWeight08">Waga: Siła (-20% czasu odnowienia)</string>
+  <string name="ExtensionOptionArcanistWeight09">Waga: Pustelnik (Stały wzrost prędkości)</string>
+  <string name="ExtensionOptionArcanistWeight10">Waga: Koło Fortuny (NK 50% / Amnesiac 50%)</string>
+  <string name="ExtensionOptionArcanistWeight11">Waga: Sprawiedliwość (Publicznie ujawnia)</string>
+  <string name="ExtensionOptionArcanistWeight12">Waga: Wisielec (Zmień w Łowcę Nagród)</string>
+  <string name="ExtensionOptionArcanistWeight13">Waga: Śmierć (50% szans na śmierć)</string>
+  <string name="ExtensionOptionArcanistWeight14">Waga: Umiarkowanie (+20% czasu odnowienia)</string>
+  <string name="ExtensionOptionArcanistWeight16">Waga: Wieża (Stałe spowolnienie)</string>
+  <string name="ExtensionOptionArcanistWeight17">Waga: Gwiazda (Stały wzrost wizji)</string>
+  <string name="ExtensionOptionArcanistWeight18">Waga: Księżyc (Oślep siebie 30s)</string>
+  <string name="ExtensionOptionArcanistWeight19">Waga: Słońce (Zwiększ wizję 30s)</string>
+  <string name="ExtensionOptionArcanistWeight20">Waga: Sąd (Zmień w Papieża)</string>
+  <string name="ExtensionOptionArcanistWeight21">Waga: Świat (Otrzymaj Death Note)</string>
 
   <!-- Portalmaker Options -->
   <string name="ExtensionOptionPortalmakerCooldown">Czas odnowienia portalu</string>
@@ -1566,8 +1565,8 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionGardenerGetUsesFromTasks">Otrzymywanie użyć z zadań</string>
   <string name="ExtensionOptionGardenerFeedback">Informacja zwrotna (wizualna)</string>
   <string name="ExtensionRoleGardenerFeedbackTitle">Feedback Ogrodnika</string>
-  <string name="ExtensionGardenerAttackBlockedFeedback">{0} próbował zaatakować kogoś w Twoim ogrodzie!</string>
-  <string name="ExtensionGardenerAttackKilledFeedback">{0} zabił kogoś w Twoim ogrodzie!</string>
+  <string name="ExtensionGardenerAttackBlockedFeedback">Gracz {0} został zaatakowany w Twoim ogrodzie!</string>
+  <string name="ExtensionGardenerAttackKilledFeedback">Gracz {0} został wyeliminowany w Twoim ogrodzie!</string>
 
   <!-- Jackal Rework Options -->
   <string name="ExtensionOptionJackalKillCooldown">Czas odnowienia zabójstwa</string>

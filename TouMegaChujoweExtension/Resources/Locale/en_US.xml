@@ -266,8 +266,9 @@
   <!-- Pelican Options -->
   <string name="ExtensionOptionPelicanSwallowCooldown">Swallow Cooldown</string>
   <string name="ExtensionOptionPelicanMaxSwallowed">Max Players In Stomach</string>
-  <string name="ExtensionOptionPelicanCanVent">Pelican Can Vent</string>
-  <string name="ExtensionOptionPelicanCanEatThroughShields">Can Swallow Through Shields</string>
+  <string name="ExtensionOptionPelicanCanVent">Can Vent</string>
+  <string name="ExtensionOptionPelicanCanUseMapWhileSwallowed">Can Use Map/Sabotage While Swallowed</string>
+  <string name="ExtensionOptionPelicanCanSwallowThroughShields">Can Swallow Through Shields</string>
   
   <!-- Vampire Role -->
   <string name="ExtensionRoleVampire">Vampire</string>
@@ -1245,6 +1246,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="SidekickTabDescription">You have been recruited. Protect the Infiltrator to win alongside them.\%nl\%&lt;color=#FF3B3B&gt;&lt;b&gt;You have joined a new team and have a new win condition!&lt;/b&gt;&lt;/color&gt;</string>
   <string name="SidekickWikiDescription">Protect the Infiltrator and help them eliminate other factions. You are lifelinked to another Recruit.</string>
   <string name="DiedToJackal">Assassinated by Infiltrator</string>
+  <string name="ExtensionSidekickJackalEliminatedDeathReason">Infiltrator eliminated</string>
 
   <string name="ExtensionRoleSidekickRecruitTeam">Recruits</string>
   <string name="ExtensionRoleSidekickRecruitTeamWikiDescription">View information about your fellow Recruits and your mission status.</string>
@@ -1257,7 +1259,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleArcanist">Arcanist</string>
   <string name="ExtensionRoleArcanistIntroBlurb">Draw magical cards to change the tide of the game.</string>
   <string name="ExtensionRoleArcanistTabDescription">You have a deck of cards. Each card has a different effect. Use them wisely to eliminate targets.</string>
-  <string name="ExtensionRoleArcanistWikiDescription">The Arcanist is a Neutral Killing role that uses magical cards to eliminate opponents or buff themselves.</string>
+  <string name="ExtensionRoleArcanistWikiDescription">The Arcanist is a Neutral Outlier role that draws random Tarot cards to affect players and change the tide of the game.</string>
   <string name="ExtensionRoleArcanistDraw">Draw Card</string>
   <string name="ExtensionRoleArcanistDrawWikiDescription">Draw a magical Tarot card from your deck. Each card triggers a different mystical effect.</string>
   <string name="ExtensionArcanistCardDrawn">You drew {0}!</string>
@@ -1332,28 +1334,26 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionArcanistCooldown">Card Cooldown</string>
   <string name="ExtensionOptionArcanistDeckSize">Deck Size</string>
   <string name="ExtensionOptionArcanistAllowDuplicateRoles">Allow Duplicate Roles</string>
-  <string name="ExtensionOptionArcanistWeight00">Weight: The Fool</string>
-  <string name="ExtensionOptionArcanistWeight01">Weight: The Magician</string>
-  <string name="ExtensionOptionArcanistWeight02">Weight: The High Priestess</string>
-  <string name="ExtensionOptionArcanistWeight03">Weight: The Empress</string>
-  <string name="ExtensionOptionArcanistWeight04">Weight: The Emperor</string>
-  <string name="ExtensionOptionArcanistWeight05">Weight: The Hierophant</string>
-  <string name="ExtensionOptionArcanistWeight06">Weight: The Lovers</string>
-  <string name="ExtensionOptionArcanistWeight07">Weight: The Chariot</string>
-  <string name="ExtensionOptionArcanistWeight08">Weight: Strength</string>
-  <string name="ExtensionOptionArcanistWeight09">Weight: The Hermit</string>
-  <string name="ExtensionOptionArcanistWeight10">Weight: Wheel of Fortune</string>
-  <string name="ExtensionOptionArcanistWeight11">Weight: Justice</string>
-  <string name="ExtensionOptionArcanistWeight12">Weight: The Hanged Man</string>
-  <string name="ExtensionOptionArcanistWeight13">Weight: Death</string>
-  <string name="ExtensionOptionArcanistWeight14">Weight: Temperance</string>
-  <string name="ExtensionOptionArcanistWeight15">Weight: The Devil</string>
-  <string name="ExtensionOptionArcanistWeight16">Weight: The Tower</string>
-  <string name="ExtensionOptionArcanistWeight17">Weight: The Star</string>
-  <string name="ExtensionOptionArcanistWeight18">Weight: The Moon</string>
-  <string name="ExtensionOptionArcanistWeight19">Weight: The Sun</string>
-  <string name="ExtensionOptionArcanistWeight20">Weight: Judgement</string>
-  <string name="ExtensionOptionArcanistWeight21">Weight: The World</string>
+  <string name="ExtensionOptionArcanistWeight00">Weight: The Fool (Become Jester)</string>
+  <string name="ExtensionOptionArcanistWeight01">Weight: The Magician (Blind Crewmates 10s)</string>
+  <string name="ExtensionOptionArcanistWeight02">Weight: The High Priestess (Become Doomsayer)</string>
+  <string name="ExtensionOptionArcanistWeight03">Weight: The Empress (+1 Vote)</string>
+  <string name="ExtensionOptionArcanistWeight04">Weight: The Emperor (Drunk effect)</string>
+  <string name="ExtensionOptionArcanistWeight05">Weight: The Hierophant (Become Neutral Benign)</string>
+  <string name="ExtensionOptionArcanistWeight07">Weight: The Chariot (Speed boost 30s)</string>
+  <string name="ExtensionOptionArcanistWeight08">Weight: Strength (-20% Cooldown)</string>
+  <string name="ExtensionOptionArcanistWeight09">Weight: The Hermit (Perm speed boost)</string>
+  <string name="ExtensionOptionArcanistWeight10">Weight: Wheel of Fortune (NK 50% / Amnesiac 50%)</string>
+  <string name="ExtensionOptionArcanistWeight11">Weight: Justice (Publicly reveals you)</string>
+  <string name="ExtensionOptionArcanistWeight12">Weight: The Hanged Man (Become Bounty Hunter)</string>
+  <string name="ExtensionOptionArcanistWeight13">Weight: Death (50% chance to die)</string>
+  <string name="ExtensionOptionArcanistWeight14">Weight: Temperance (+20% Cooldown)</string>
+  <string name="ExtensionOptionArcanistWeight16">Weight: The Tower (Perm slowness)</string>
+  <string name="ExtensionOptionArcanistWeight17">Weight: The Star (Perm vision boost)</string>
+  <string name="ExtensionOptionArcanistWeight18">Weight: The Moon (Blind self 30s)</string>
+  <string name="ExtensionOptionArcanistWeight19">Weight: The Sun (Vision boost 30s)</string>
+  <string name="ExtensionOptionArcanistWeight20">Weight: Judgement (Become Pope)</string>
+  <string name="ExtensionOptionArcanistWeight21">Weight: The World (Get Death Note)</string>
 
   <!-- Portalmaker Options -->
   <string name="ExtensionOptionPortalmakerCooldown">Portal Cooldown</string>
@@ -1384,8 +1384,8 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionGardenerGetUsesFromTasks">Get Uses From Tasks</string>
   <string name="ExtensionOptionGardenerFeedback">Visual Feedback</string>
   <string name="ExtensionRoleGardenerFeedbackTitle">Gardener Feedback</string>
-  <string name="ExtensionGardenerAttackBlockedFeedback">{0} tried to attack someone in your garden!</string>
-  <string name="ExtensionGardenerAttackKilledFeedback">{0} killed someone in your garden!</string>
+  <string name="ExtensionGardenerAttackBlockedFeedback">Player {0} was attacked in your garden!</string>
+  <string name="ExtensionGardenerAttackKilledFeedback">Player {0} was eliminated in your garden!</string>
 
   <!-- Jackal Rework Options -->
   <string name="ExtensionOptionJackalKillCooldown">Kill Cooldown</string>

@@ -63,11 +63,13 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="#president-power"><img width="10%" src="./Images/Icons/President_Role_Icon.png" /></a>
   <img src="./Images/Groups/CrewProtect.png" align="center" />
   <a href="#bodyguard-protective"><img width="10%" src="./Images/Icons/Bodyguard_Icon.png" /></a>
+  <a href="#gardener-protective"><img width="10%" src="./Images/Icons/Gardener_Role_Icon.png" /></a>
   <img src="./Images/Groups/CrewSupport.png" align="center" />
   <a href="#doctor-support"><img width="10%" src="./Images/Icons/Doctor_Role_Icon.png" /></a>
   <a href="#evoker-support"><img width="10%" src="./Images/Icons/Evoker_Role_Icon.png" /></a>
   <a href="#forestaller-support"><img width="10%" src="./Images/Icons/Forestaller_Role_Icon.png" /></a>
   <a href="#mirage-support"><img width="10%" src="./Images/Icons/Mirage_Role_Icon.png" /></a>
+  <a href="#portalmaker-support"><img width="10%" src="./Images/Icons/PortalMaker.png" /></a>
   <a href="#trapper-support"><img width="10%" src="./Images/Icons/Trapper_Role_Icon.png" /></a>
   <img src="./Images/Groups/ImpConcealing.png" align="center" />
   <a href="#astral-concealing"><img width="10%" src="./Images/Icons/Astral_Role_Icon.png" /></a>
@@ -93,6 +95,9 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="#pirate-evil"><img width="10%" src="./Images/Icons/Pirate_Role_Icon.png" /></a>
   <a href="#pope-evil"><img width="10%" src="./Images/Icons/Pope_Role_Icon.png" /></a>
   <a href="#vulture-evil"><img width="10%" src="./Images/Icons/Vulture_Icon.png" /></a>
+  <img src="./Images/Groups/NeutOutlier.png" align="center" />
+  <a href="#arcanist-outlier"><img width="10%" src="./Images/Icons/Arcanist_Role_Icon.png" /></a>
+  <a href="#infiltrator-outlier"><img width="10%" src="./Images/Icons/Jackal_Role_Icon.png" /></a>
   <img src="./Images/Groups/NeutKilling.png" align="center" />
   <a href="#doppelganger-killing"><img width="10%" src="./Images/Icons/Doppelganger_Icon.png" /></a>
   <a href="#pelican-killing"><img width="10%" src="./Images/Icons/Pelican_Role_Icon.png" /></a>
@@ -137,6 +142,9 @@ Abstain from voting to bank votes, then spend them all at once in a future meeti
 ### Bodyguard (Crewmate Protective)
 Shield a player. When they're attacked, teleport to them and eliminate the attacker but you die too.
 
+### Gardener (Crewmate Protective)
+Plant protective garden zones that shield all players inside from attacks. The Gardener receives anonymous alerts when an attack is blocked.
+
 ### Doctor (Crewmate Support)
 Inject players with beneficial chemicals. After a short delay, they receive a random positive effect like a permanent shield, speed boost, or enhanced vision.
 
@@ -148,6 +156,9 @@ Complete all tasks to disable sabotages while alive. Revealed in meetings after 
 
 ### Mirage (Crewmate Support)
 Place a decoy with the appearance of yourself or a random player. If anyone interacts with it, it vanishes and both sides are notified.
+
+### Portalmaker (Crewmate Support)
+Link two points on the map with portals that any Crewmate can use to travel quickly across the map.
 
 ### Trapper (Crewmate Support)
 Place traps on vents that immobilize players who use them. Get notifications when traps are triggered.
@@ -206,6 +217,12 @@ Challenge players to Rock-Paper-Scissors duels during meetings. Win enough duels
 
 ### Pope (Neutal Evil)
 Canonize all living players, then trigger Divine Judgement a countdown that kills everyone if it reaches zero.
+
+### Arcanist (Neutral Outlier)
+Draw Tarot cards from your deck, each with a unique effect. The effects can alter your stats, grant Death Notes, change your role, or even kill you.
+
+### Infiltrator (Neutral Outlier)
+Recruit two players from opposite teams to work for you. Protected by a silent shield while your recruits are alive. You win if your team is the last one standing.
 
 ### Vulture (Neutral Evil)
 Eat dead bodies to win. Optionally use Scavenge for arrows to corpses. If win condition becomes impossible, become a configured role.
@@ -401,15 +418,17 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 
 > **Huge shoutout to Atony**, creator of Town of Us: Mira — roughly 70% of the art assets used in this mod originate from his work, various TOU Mira builds, and resources shared on the TOU Mira Discord. We are extremely grateful for his incredible contributions to the community.
 
-- **Asterisken** - Art for Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful and Objection Button
-- **Atony / Town of Us: Mira / Town Of Us Discord** - Art for Serial Killer, Lawyer, Witch, Wraith, Kamikaze, Detonator, Astral, Speedy, Doctor, RC-XD; Shifter role icon & button; Bodyguard role icon; Vampire Hunter role icon; Vanisher icon; Sage role icon (Seer button from TOU Mira); Sage ability buttons (Salem option buttons from Seer); Bodyguard shield animation (repainted Warden shield from TOU Mira 1.5.9); Poisoner role icon & all Poisoner button icons; Evoker Verify button icon; Shroud ability button icon; Drunk modifier icon (from TOU Mira Discord); Venomous modifier icon (flipped & recolored Rotting modifier from TOU Mira)
+- **Asterisken** - Art for Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful, Objection Button, and Bodyguard Guard button
+- **Atony / Town of Us: Mira / Town Of Us Discord** - Art for Serial Killer, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Injector, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, and Detonator role icons; Shifter role icon & button; Sage role icon (Seer button from TOU Mira); Sage ability buttons (Salem option buttons from Seer); Bodyguard shield animation (repainted Warden shield from TOU Mira 1.5.9); Poisoner role icon & all Poisoner button icons; Evoker Verify button icon; Shroud ability button icon; Drunk modifier icon (from TOU Mira Discord); Venomous modifier icon (flipped & recolored Rotting modifier from TOU Mira)
 - **Atony / TOU Mira Fusion** - Vampire Hunter stake button
+- **[TownOfUsMiraDivaniModsAddOn](https://github.com/DivaniNL/TownOfUsMiraDivaniModsAddOn) / DivaniNL** - Art for Kamikaze role icon; Portal asset
+- **Syzyf (Syzyfowe TOU)** - Gardener ability button icon
 - **Stellar Roles** - Role ideas, some button art
-- **[Launchpad Reloaded](https://github.com/All-Of-Us-Mods/LaunchpadReloaded)** - Doppelganger role icon
+- **[Launchpad Reloaded](https://github.com/All-Of-Us-Mods/LaunchpadReloaded)** - Doppelganger role icon (original)
 - **[All Of Us](https://github.com/All-Of-Us-Mods)** - Death Note modifier icons (from their Discord)
-- **Sidemen (YouTube)** - RC-XD Deploy & Detonate button icons
+- **Sidemen (YouTube) / Sidemens Mod** - Deploy & Detonate button icons for RC-XD; button assets for Detonator (Attach C4), Backlash, Bodyguard ability, Speedy ability, and Poisoner Vine detonate
 - **[TOHE (Town of Host Enhanced)](https://github.com/0xDrMoe/TownofHost-Enhanced)** - Shroud role icon
-- **Star Wars** - Bounty Hunter role icon
+- **Star Wars** - Bounty Hunter role icon (original concept)
 - **Our friend's girlfriend** - Publicity modifier icon
 
 ## Sound Credits
@@ -421,14 +440,16 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 - **YouTube** - Pope alarm & Judgement end sounds (from Divine Judgement concept videos)
 - **Star Wars** - Bounty Hunter intro sound
 - **Max Verstappen memes** - RC-XD intro sound (song fragment)
-- RC-XD driving sound from a royalty-free sound website
+- RC-XD driving sound ripped from Sidemen videos
 
 ## Role Inspirations & Concepts
 - **[TOHE (Town of Host Enhanced)](https://github.com/0xDrMoe/TownofHost-Enhanced)** - Doppelganger role concept; Shroud role concept
-- **[Syzyfowe TOU ](https://github.com/LimeShep/Town-Of-Us/)** - Evoker role concept; Pelican role concept
+- **[Syzyfowe TOU ](https://github.com/LimeShep/Town-Of-Us/)** - Evoker role concept; Pelican role concept; Gardener role concept
+- **Town of Us: Mira** - Infiltrator (Jackal) role concept
 - **Tajemniczy Among Us (Tajemniczy Typiarz)** - Pirate role concept
 - **[Town of Us WYGON ](https://github.com/wygon/Town-Of-Us-WYGON)** - Falcon role concept; Kamikaze role concept
 - **Sidemen (YouTube)** - RC-XD, Detonator, Doctor, Astral, Speedy & Poisoner roles concept (recreated from their videos)
+- **[TownOfUsMiraDivaniModsAddOn](https://github.com/DivaniNL/TownOfUsMiraDivaniModsAddOn)** - Portalmaker role concept
 - **Death Note (anime)** - Death Note modifier concept
 - **Our friend Weakpass** - Added Publicity modifier
 

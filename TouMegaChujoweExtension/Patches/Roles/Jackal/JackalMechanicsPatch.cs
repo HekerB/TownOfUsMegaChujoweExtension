@@ -57,7 +57,9 @@ public static class JackalMechanicsPatch
             if (victim.GetRole<JackalRole>() != null) victimJackalId = victim.PlayerId;
             else if (victim.TryGetModifier<SidekickModifier>(out var vMod) && vMod != null) victimJackalId = vMod.JackalId;
 
-            if (killerJackalId != 255 && killerJackalId == victimJackalId)
+            if (killer.TryGetModifier<SidekickModifier>(out var kMod2) && kMod2 != null &&
+                victim.TryGetModifier<SidekickModifier>(out var vMod2) && vMod2 != null &&
+                kMod2.JackalId == vMod2.JackalId)
             {
                 return true;
             }
@@ -70,23 +72,18 @@ public static class JackalMechanicsPatch
                 if (killerSidekicksAlive) return true;
             }
 
-            if (victim.GetRole<JackalRole>() != null && meetingCheck == MeetingCheck.OutsideMeeting)
+            if (MeetingHud.Instance != null || ExileController.Instance != null)
+            {
+                return false;
+            }
+
+            if (victim.GetRole<JackalRole>() != null)
             {
                 var sidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
                     .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == victim.PlayerId);
 
                 if (sidekicksAlive && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
                 {
-                    if (victim.AmOwner)
-                    {
-                        Helpers.CreateAndShowNotification(
-                            TouLocale.Get("ExtensionJackalShieldModifierDesc"),
-                            Color.white,
-                            new Vector3(0f, 1f, -20f),
-                            spr: TouRoleIcons.Jackal?.LoadAsset()
-                        )?.AdjustNotification();
-                        Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
-                    }
                     return true;
                 }
             }
@@ -104,7 +101,9 @@ public static class JackalMechanicsPatch
     {
         if (@event.Target == null) return;
 
-        if (@event.Target.TryGetModifier<SidekickModifier>(out var mod))
+        var victim = @event.Target;
+
+        if (victim.TryGetModifier<SidekickModifier>(out var mod))
         {
             var jackal = MiscUtils.PlayerById(mod.JackalId);
             if (jackal != null && !jackal.Data.IsDead)
@@ -113,19 +112,19 @@ public static class JackalMechanicsPatch
                 jackalRole?.OnRecruitDie();
             }
         }
-        if (@event.Target.GetRole<JackalRole>() != null)
+        if (victim.GetRole<JackalRole>() != null && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
         {
             foreach (var player in PlayerControl.AllPlayerControls.ToArray())
             {
-                if (player != null && !player.Data.IsDead && player.TryGetModifier<SidekickModifier>(out var sMod) && sMod.JackalId == @event.Target.PlayerId)
+                if (player != null && !player.Data.IsDead && player.TryGetModifier<SidekickModifier>(out var sMod) && sMod.JackalId == victim.PlayerId)
                 {
                     player.RpcCustomMurder(player);
                     DeathHandlerModifier.UpdateDeathHandlerImmediate(
                         player,
-                        causeOfDeath: TouLocale.Get("DiedToJackalDeath"),
+                        causeOfDeath: TouLocale.Get("ExtensionSidekickJackalEliminatedDeathReason"),
                         roundOfDeath: DeathEventHandlers.CurrentRound,
                         diedThisRound: DeathHandlerOverride.SetTrue,
-                        killedBy: @event.Target.GetRole<JackalRole>()?.RoleName ?? "Jackal",
+                        killedBy: victim.GetRole<JackalRole>()?.RoleName ?? "Jackal",
                         lockInfo: DeathHandlerOverride.SetTrue);
                 }
             }
@@ -199,7 +198,7 @@ public static class JackalMechanicsPatch
         var victim = @event.ExileController?.initData?.networkedPlayer?.Object;
         if (victim == null) return;
 
-        if (victim.GetRole<JackalRole>() != null)
+        if (victim.GetRole<JackalRole>() != null && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
         {
             foreach (var recruit in PlayerControl.AllPlayerControls.ToArray())
             {
