@@ -19,6 +19,10 @@ public static class PelicanEvents
         PelicanSystem.StopSpectatingPelican();
         PelicanSystem.HideSwallowedNotification();
 
+        // Digest all swallowed players locally on every client to ensure correct state immediately.
+        // If we are the host, calling PelicanSystem.DigestAll will also properly sync the death to other clients.
+        DigestAllPelicans();
+
         var local = PlayerControl.LocalPlayer;
         if (local != null && local.Data?.Role is PelicanRole)
         {
@@ -26,6 +30,18 @@ public static class PelicanEvents
             if (swallowed.Count > 0)
             {
                 PelicanRole.RpcPelicanDigest(local);
+            }
+        }
+    }
+
+    private static void DigestAllPelicans()
+    {
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null) continue;
+            if (PelicanSystem.GetSwallowedByPelican(player.PlayerId).Count > 0)
+            {
+                PelicanSystem.DigestAll(player.PlayerId);
             }
         }
     }
