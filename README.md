@@ -54,9 +54,9 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
 # Roles & Modifiers
 
 > [!IMPORTANT]
-> 📖 **Full documentation for all roles, modifiers, and game options is available on the Wiki:**
+>  **Full documentation for all roles, modifiers, and game options is available on the Wiki:**
 >
-> ### **➡️ [Open the Wiki](https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki)**
+> ### ** [Open the Wiki](https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki)**
 >
 > The Wiki contains detailed descriptions, categorized by faction (Crewmate, Impostor, Neutral) and subcategory (Investigative, Killing, Support, etc.), along with all configurable game options and their default values.
 
