@@ -11,6 +11,7 @@ using MiraAPI;
 using MiraAPI.Roles;
 using TownOfUs.Roles;
 using TouMegaChujoweExtension.Options.Roles.Crewmate;
+using TouMegaChujoweExtension.Roles.Classic.Crewmate;
 using TownOfUs;
 using MiraAPI.Utilities;
 
@@ -140,6 +141,11 @@ public static class PortalmakerSystem
         }
         
         go.transform.localScale = Vector3.one * (radius * 2.0f);
+        
+        var local = PlayerControl.LocalPlayer;
+        bool isPortalmaker = local != null && local.Data != null && 
+            (local.GetRole<PortalmakerRole>() != null || local.Data.Role is PortalmakerRole);
+        renderer.enabled = isPortalmaker;
         
         return go;
     }

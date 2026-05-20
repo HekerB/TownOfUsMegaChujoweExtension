@@ -31,6 +31,8 @@ using TouMegaChujoweExtension.Modifiers.Neutral;
 using TouMegaChujoweExtension.Options;
 using HarmonyLib;
 using System.Collections.Generic;
+using TownOfUs.Modifiers;
+using TownOfUs.Events;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
@@ -142,10 +144,8 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     private System.Collections.IEnumerator CoOnRecruitDie()
     {
-        // Wait a bit to ensure the player state is updated across the network/array
         yield return new WaitForSeconds(0.1f);
 
-        // Check if all sidekicks are dead now
         var sidekicks = PlayerControl.AllPlayerControls.ToArray()
             .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == Player.PlayerId)
             .ToList();
@@ -192,33 +192,6 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                MiscUtils.AppendOptionsText(GetType());
     }
 
-    public void FixedUpdate()
-    {
-        if (Player == null || Player.Pointer == IntPtr.Zero || Player.Data == null || Player.Data.IsDead) return;
-
-        // Manage Shield Modifier
-        if (OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
-        {
-            var sidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
-                .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == Player.PlayerId);
-
-            if (sidekicksAlive)
-            {
-                if (!Player.HasModifier<JackalShieldModifier>())
-                {
-                    Player.AddModifier<JackalShieldModifier>();
-                }
-            }
-            else
-            {
-                if (Player.HasModifier<JackalShieldModifier>())
-                {
-                    Player.RemoveModifier<JackalShieldModifier>();
-                }
-            }
-        }
-    }
-
     [MethodRpc((uint)ExtensionRpc.SetSidekickAssignments)]
     public static void RpcSetSidekickAssignments(PlayerControl sender, byte[] victims, byte[] jackalIds)
     {
@@ -231,7 +204,6 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             UnityEngine.Debug.Log($"[TOUMCE] Synced sidekick {victims[i]} to Jackal {jackalIds[i]}");
         }
 
-        // Update active SidekickModifiers with the synced Jackal IDs
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player != null && player.Pointer != IntPtr.Zero && player.TryGetModifier<SidekickModifier>(out var mod) &&
@@ -252,15 +224,22 @@ public static class JackalDeathLifelinkPatch
     {
         if (__instance == null || !AmongUsClient.Instance.AmHost) return;
 
-        // If Jackal dies, kill their Sidekicks
         if (__instance.GetRole<JackalRole>() != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
         {
             var sidekicks = PlayerControl.AllPlayerControls.ToArray()
-                .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == __instance.PlayerId);
+                .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == __instance.PlayerId)
+                .ToList();
 
             foreach (var sk in sidekicks)
             {
-                sk.RpcCustomMurder(__instance);
+                sk.RpcCustomMurder(sk, showKillAnim: false);
+                DeathHandlerModifier.UpdateDeathHandlerImmediate(
+                    sk,
+                    causeOfDeath: TouLocale.Get("DiedToJackalDeath"),
+                    roundOfDeath: TownOfUs.Events.DeathEventHandlers.CurrentRound,
+                    diedThisRound: DeathHandlerOverride.SetTrue,
+                    killedBy: __instance.GetRole<JackalRole>()?.RoleName ?? "Jackal",
+                    lockInfo: DeathHandlerOverride.SetTrue);
             }
         }
     }

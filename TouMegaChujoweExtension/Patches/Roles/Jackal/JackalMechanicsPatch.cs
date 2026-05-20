@@ -32,6 +32,10 @@ namespace TouMegaChujoweExtension.Patches.Roles.Jackal;
 [HarmonyPatch]
 public static class JackalMechanicsPatch
 {
+    private static bool _lastShieldState;
+
+    public static void ResetShieldState() => _lastShieldState = false;
+
     [RegisterEvent]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
@@ -112,13 +116,13 @@ public static class JackalMechanicsPatch
                 jackalRole?.OnRecruitDie();
             }
         }
-        if (victim.GetRole<JackalRole>() != null && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
+        if (victim.GetRole<JackalRole>() != null && AmongUsClient.Instance.AmHost && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
         {
             foreach (var player in PlayerControl.AllPlayerControls.ToArray())
             {
-                if (player != null && !player.Data.IsDead && player.TryGetModifier<SidekickModifier>(out var sMod) && sMod.JackalId == victim.PlayerId)
+                if (player != null && player.Data != null && !player.Data.IsDead && player.TryGetModifier<SidekickModifier>(out var sMod) && sMod.JackalId == victim.PlayerId)
                 {
-                    player.RpcCustomMurder(player);
+                    player.RpcCustomMurder(player, showKillAnim: false);
                     DeathHandlerModifier.UpdateDeathHandlerImmediate(
                         player,
                         causeOfDeath: TouLocale.Get("ExtensionSidekickJackalEliminatedDeathReason"),
@@ -181,14 +185,20 @@ public static class JackalMechanicsPatch
                        (JackalStartPatch.PendingAssignments.TryGetValue(p.PlayerId, out var jId) && jId == teamJackalId)));
 
         var hasShieldMod = __instance.TryGetModifier<JackalShieldModifier>(out _);
+        var shouldHaveShield = jackal != null && sidekicksAlive && OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive;
 
-        if (jackal != null && sidekicksAlive && OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
+        // Only send RPC when state changes to avoid network spam
+        if (shouldHaveShield != _lastShieldState)
         {
-            if (!hasShieldMod) __instance.RpcAddModifier<JackalShieldModifier>();
-        }
-        else if (hasShieldMod)
-        {
-            __instance.RpcRemoveModifier<JackalShieldModifier>();
+            _lastShieldState = shouldHaveShield;
+            if (shouldHaveShield && !hasShieldMod)
+            {
+                __instance.RpcAddModifier<JackalShieldModifier>();
+            }
+            else if (!shouldHaveShield && hasShieldMod)
+            {
+                __instance.RpcRemoveModifier<JackalShieldModifier>();
+            }
         }
     }
 
@@ -198,12 +208,12 @@ public static class JackalMechanicsPatch
         var victim = @event.ExileController?.initData?.networkedPlayer?.Object;
         if (victim == null) return;
 
-        if (victim.GetRole<JackalRole>() != null && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
+        if (victim.GetRole<JackalRole>() != null && AmongUsClient.Instance.AmHost && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
         {
             foreach (var recruit in PlayerControl.AllPlayerControls.ToArray())
             {
                 if (recruit != null && recruit.Data != null && !recruit.Data.IsDead &&
-                    recruit.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == victim.PlayerId && recruit.AmOwner)
+                    recruit.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == victim.PlayerId)
                 {
                     MiraAPI.Networking.CustomMurderRpc.RpcCustomMurder(recruit, recruit, MeetingCheck.OutsideMeeting, showKillAnim: false);
                     DeathHandlerModifier.UpdateDeathHandlerImmediate(

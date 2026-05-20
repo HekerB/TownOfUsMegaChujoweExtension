@@ -33,6 +33,7 @@ public sealed class PortalmakerTeleportButton : TownOfUsRoleButton<RoleBehaviour
     public override bool Enabled(RoleBehaviour? role)
     {
         if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null || PlayerControl.LocalPlayer.Data.IsDead) return false;
+        if (MeetingHud.Instance != null) return false;
 
         var opts = OptionGroupSingleton<PortalmakerOptions>.Instance;
         return opts.Mode == TeleportMode.Interaction;
@@ -41,6 +42,7 @@ public sealed class PortalmakerTeleportButton : TownOfUsRoleButton<RoleBehaviour
     public override bool CanUse()
     {
         if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null || PlayerControl.LocalPlayer.Data.IsDead) return false;
+        if (MeetingHud.Instance != null) return false;
 
         var opts = OptionGroupSingleton<PortalmakerOptions>.Instance;
         if (opts.Mode != TeleportMode.Interaction) return false;
@@ -53,6 +55,7 @@ public sealed class PortalmakerTeleportButton : TownOfUsRoleButton<RoleBehaviour
 
     protected override void OnClick()
     {
+        if (MeetingHud.Instance != null) return;
         PortalmakerSystem.TriggerTeleport(PlayerControl.LocalPlayer);
     }
 
@@ -63,7 +66,7 @@ public sealed class PortalmakerTeleportButton : TownOfUsRoleButton<RoleBehaviour
         {
             var opts = OptionGroupSingleton<PortalmakerOptions>.Instance;
             bool isNear = PortalmakerSystem.IsNearPortalPair(playerControl);
-            Button?.gameObject.SetActive(opts.Mode == TeleportMode.Interaction && isNear);
+            Button?.gameObject.SetActive(opts.Mode == TeleportMode.Interaction && isNear && MeetingHud.Instance == null);
 
             if (Button != null && Button.gameObject.activeSelf)
             {

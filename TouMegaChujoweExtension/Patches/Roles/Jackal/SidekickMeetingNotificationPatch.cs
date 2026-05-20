@@ -13,7 +13,7 @@ namespace TouMegaChujoweExtension.Patches.Roles.Jackal;
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
 public static class SidekickMeetingNotificationPatch
 {
-    private static byte _lastMeetingRecruitNotified = 255;
+    private static bool _notifiedThisGame = false;
 
     [HarmonyPostfix]
     public static void Postfix()
@@ -21,9 +21,9 @@ public static class SidekickMeetingNotificationPatch
         var local = PlayerControl.LocalPlayer;
         if (local == null) return;
 
-        if (local.TryGetModifier<SidekickModifier>(out _) && _lastMeetingRecruitNotified != local.PlayerId)
+        if (local.TryGetModifier<SidekickModifier>(out _) && !_notifiedThisGame)
         {
-            _lastMeetingRecruitNotified = local.PlayerId;
+            _notifiedThisGame = true;
 
             // Show feedback that they were recruited in CHAT (like Lawyer/Lookout)
             string msg = TouLocale.GetParsed("SidekickIntroBlurb");
@@ -47,6 +47,11 @@ public static class SidekickMeetingNotificationPatch
     [HarmonyPostfix]
     public static void Reset()
     {
-        _lastMeetingRecruitNotified = 255;
+        ResetNotification();
+    }
+
+    public static void ResetNotification()
+    {
+        _notifiedThisGame = false;
     }
 }

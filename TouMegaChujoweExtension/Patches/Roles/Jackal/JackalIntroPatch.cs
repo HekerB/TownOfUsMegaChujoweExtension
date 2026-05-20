@@ -34,21 +34,18 @@ public static class JackalIntroPatch
         var localPlayer = PlayerControl.LocalPlayer;
         if (localPlayer == null || instance == null) return;
 
-        // Check if already has the modifier
         if (localPlayer.TryGetModifier<SidekickModifier>(out _))
         {
             ShowRecruitIntroText(instance);
             return;
         }
 
-        // Check PendingAssignments (modifier might not be synced yet during intro)
         if (JackalStartPatch.PendingAssignments.ContainsKey(localPlayer.PlayerId))
         {
             ShowRecruitIntroText(instance);
             return;
         }
 
-        // Start a coroutine to check again after a delay (assignment runs after 3s)
         Coroutines.Start(CoDelayedRecruitNotification(localPlayer));
     }
 
@@ -63,10 +60,17 @@ public static class JackalIntroPatch
 
         var headerText = TouLocale.Get("ExtensionJackalSidekickIntroHeader");
         var jackalInfo = TouLocale.GetParsed("SidekickIntroBlurb");
+        var recruitName = SidekickModifier.ShortName;
         
         if (instance.YouAreText != null && !string.IsNullOrEmpty(headerText))
         {
             instance.YouAreText.text = headerText;
+        }
+
+        if (instance.RoleText != null && !string.IsNullOrEmpty(recruitName))
+        {
+            instance.RoleText.text = recruitName;
+            instance.RoleText.color = TouExtensionColors.Jackal;
         }
 
         if (instance.BackgroundBar != null)
@@ -82,15 +86,44 @@ public static class JackalIntroPatch
 
     private static IEnumerator CoDelayedRecruitNotification(PlayerControl localPlayer)
     {
-        // Wait for the assignment to complete (it has a 3s delay)
-        yield return new WaitForSeconds(5f);
+        float elapsed = 0f;
+        const float maxWait = 4f;
+        const float pollInterval = 0.5f;
 
-        // Check again after assignment should have run
-        if (localPlayer != null && localPlayer.Pointer != System.IntPtr.Zero && localPlayer.TryGetModifier<SidekickModifier>(out var mod) && !mod.WasNotified)
+        while (elapsed < maxWait)
         {
-            mod.WasNotified = true;
+            yield return new WaitForSeconds(pollInterval);
+            elapsed += pollInterval;
 
-            // Show notification since we missed the intro
+            if (localPlayer == null || localPlayer.Pointer == System.IntPtr.Zero) yield break;
+
+            if (localPlayer.TryGetModifier<SidekickModifier>(out var mod) || JackalStartPatch.PendingAssignments.ContainsKey(localPlayer.PlayerId))
+            {
+                var activeIntro = UnityEngine.Object.FindObjectOfType<IntroCutscene>();
+                if (activeIntro != null)
+                {
+                    ShowRecruitIntroText(activeIntro);
+                }
+
+                if (mod != null && !mod.WasNotified)
+                {
+                    mod.WasNotified = true;
+                    Helpers.CreateAndShowNotification(
+                        TouLocale.Get("ExtensionSidekickRecruitedAlert"),
+                        TouExtensionColors.Jackal,
+                        new Vector3(0f, 1f, -20f),
+                        spr: TouExtensionIcons.SidekickModifierIcon.LoadAsset()
+                    ).AdjustNotification();
+                    Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
+                }
+
+                yield break;
+            }
+        }
+
+        if (localPlayer != null && localPlayer.Pointer != System.IntPtr.Zero && localPlayer.TryGetModifier<SidekickModifier>(out var lateMod) && !lateMod.WasNotified)
+        {
+            lateMod.WasNotified = true;
             Helpers.CreateAndShowNotification(
                 TouLocale.Get("ExtensionSidekickRecruitedAlert"),
                 TouExtensionColors.Jackal,
@@ -98,12 +131,6 @@ public static class JackalIntroPatch
                 spr: TouExtensionIcons.SidekickModifierIcon.LoadAsset()
             ).AdjustNotification();
             Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
-
-            var activeIntro = UnityEngine.Object.FindObjectOfType<IntroCutscene>();
-            if (activeIntro != null)
-            {
-                ShowRecruitIntroText(activeIntro);
-            }
         }
     }
 }
