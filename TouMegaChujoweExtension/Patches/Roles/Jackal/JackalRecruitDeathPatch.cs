@@ -30,8 +30,7 @@ public static class JackalRecruitDeathPatch
         {
             var jackalId = sidekick.JackalId;
             var jackalPlayer = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == jackalId);
-            
-            // Notify Jackal
+        
             if (jackalPlayer != null)
             {
                 var jackalRole = jackalPlayer.GetRole<JackalRole>();
@@ -54,26 +53,6 @@ public static class JackalRecruitDeathPatch
                 }
             }
             
-        }
-        
-        // If Jackal dies, all their recruits die too
-        bool isJackal = __instance.IsRole<JackalRole>();
-        
-        if (isJackal)
-        {
-            foreach (var recruit in PlayerControl.AllPlayerControls.ToArray())
-            {
-                if (recruit == null || recruit.Data == null || recruit.Data.IsDead) continue;
-                
-                if (recruit.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == __instance.PlayerId)
-                {
-                    // Suicide via lifelink
-                    if (recruit.AmOwner)
-                    {
-                        MiraAPI.Networking.CustomMurderRpc.RpcCustomMurder(recruit, recruit, MeetingCheck.OutsideMeeting, showKillAnim: false);
-                    }
-                }
-            }
         }
     }
 }

@@ -706,6 +706,9 @@ public static class ClassicAssassinSystem
         if (assassin.Player.IsLover() && player.IsLover())
             return true;
 
+        if (AreOnSameJackalTeam(assassin.Player, player))
+            return true;
+
         if (player.HasModifier<TownOfUs.Modifiers.Crewmate.JailedModifier>())
             return true;
 
@@ -728,6 +731,7 @@ public static class ClassicAssassinSystem
                (player != null && player.IsRevealed()) ||
                (player != null && IsForestallerRevealed(player)) ||
                (vigilante.Player.IsLover() && player?.IsLover() == true) ||
+               (player != null && AreOnSameJackalTeam(vigilante.Player, player)) ||
                (player != null && player.TryGetModifier<ChildModifier>(out var child) && !child.IsAdult);
     }
 
@@ -744,7 +748,36 @@ public static class ClassicAssassinSystem
                (player != null && player.IsRevealed()) ||
                (player != null && IsForestallerRevealed(player)) ||
                (doomsayer.Player.IsLover() && player?.IsLover() == true) ||
+               (player != null && AreOnSameJackalTeam(doomsayer.Player, player)) ||
                (player != null && player.TryGetModifier<ChildModifier>(out var child) && !child.IsAdult);
+    }
+
+    public static bool AreOnSameJackalTeam(PlayerControl playerA, PlayerControl playerB)
+    {
+        if (playerA == null || playerB == null) return false;
+        if (playerA.PlayerId == playerB.PlayerId) return true;
+
+        var sidekickA = playerA.GetModifier<TouMegaChujoweExtension.Modifiers.Neutral.SidekickModifier>();
+        var sidekickB = playerB.GetModifier<TouMegaChujoweExtension.Modifiers.Neutral.SidekickModifier>();
+
+        if (sidekickA != null && sidekickB != null)
+        {
+            return sidekickA.JackalId == sidekickB.JackalId && sidekickA.JackalId != 255;
+        }
+
+        var jackalA = playerA.GetRole<JackalRole>();
+        if (jackalA != null && sidekickB != null && sidekickB.JackalId == playerA.PlayerId)
+        {
+            return true;
+        }
+
+        var jackalB = playerB.GetRole<JackalRole>();
+        if (jackalB != null && sidekickA != null && sidekickA.JackalId == playerB.PlayerId)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     // =========================

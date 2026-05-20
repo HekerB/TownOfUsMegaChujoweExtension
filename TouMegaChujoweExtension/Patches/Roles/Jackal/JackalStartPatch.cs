@@ -27,6 +27,28 @@ public static class JackalLobbyPatch
         JackalStartPatch.Reset();
         JackalStartPatch.StartTime = Time.time;
         JackalVampireExclusionState.Reset();
+        JackalMechanicsPatch.ResetShieldState();
+    }
+}
+
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
+public static class JackalGameEndPatch
+{
+    [HarmonyPostfix]
+    public static void Postfix()
+    {
+        JackalStartPatch.Reset();
+        JackalMechanicsPatch.ResetShieldState();
+    }
+}
+
+[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Start))]
+public static class JackalShipStartPatch
+{
+    [HarmonyPrefix]
+    public static void Prefix()
+    {
+        JackalStartPatch.Reset();
     }
 }
 
@@ -68,7 +90,7 @@ public static class JackalStartPatch
         WasExecuted = true;
         UnityEngine.Debug.Log("[TOUMCE] Starting sidekick assignment...");
 
-        yield return new WaitForSeconds(3f); // Wait for roles to settle
+        yield return new WaitForSeconds(3f);
 
         var jackals = PlayerControl.AllPlayerControls.ToArray()
             .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead &&
@@ -98,7 +120,6 @@ public static class JackalStartPatch
                 alreadyAssigned.Add(sidekick.PlayerId);
                 PendingAssignments[sidekick.PlayerId] = jackal.PlayerId;
 
-                // Add modifier with safety check
                 if (!sidekick.HasModifier<SidekickModifier>())
                 {
                     sidekick.RpcAddModifier<SidekickModifier>(jackal.PlayerId);
@@ -108,7 +129,6 @@ public static class JackalStartPatch
         }
         UnityEngine.Debug.Log($"[TOUMCE] Finished sidekick assignment. Total assigned: {alreadyAssigned.Count}");
 
-        // Sync assignments to all clients
         if (PendingAssignments.Count > 0)
         {
             var victims = PendingAssignments.Keys.ToArray();
@@ -121,6 +141,23 @@ public static class JackalStartPatch
     {
         WasExecuted = false;
         PendingAssignments.Clear();
+        SidekickMeetingNotificationPatch.ResetNotification();
+
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.Pointer == System.IntPtr.Zero) continue;
+            try
+            {
+                if (player.HasModifier<SidekickModifier>())
+                {
+                    player.RemoveModifier<SidekickModifier>();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                UnityEngine.Debug.LogError($"[TOUMCE] Error removing SidekickModifier: {ex}");
+            }
+        }
     }
 
     public static List<PlayerControl> GetSidekicksForJackal(PlayerControl jackal, HashSet<byte> excludeIds)
@@ -138,20 +175,17 @@ public static class JackalStartPatch
 
         if (candidates.Count == 0) return [];
 
-        var rng = new System.Random(); // Truly random on host
+        var rng = new System.Random();
 
         var impostors = candidates.Where(p => p.Data != null && p.Data.Role != null && p.Data.Role.IsImpostor).OrderBy(p => p.PlayerId).ToList();
         var crewmates = candidates.Where(p => p.IsCrewmate()).OrderBy(p => p.PlayerId).ToList();
 
         List<PlayerControl> selected = [];
 
-        // Pick 1 Impostor if possible
         if (impostors.Count > 0)
         {
             selected.Add(impostors[rng.Next(impostors.Count)]);
         }
-
-        // Pick 1 Crewmate if possible
         if (crewmates.Count > 0)
         {
             selected.Add(crewmates[rng.Next(crewmates.Count)]);

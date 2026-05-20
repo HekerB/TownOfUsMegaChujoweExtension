@@ -41,6 +41,7 @@ public sealed class PortalmakerPlaceButton : TownOfUsRoleButton<PortalmakerRole>
 
     public override bool CanUse()
     {
+        if (MeetingHud.Instance != null) return false;
         if (!base.CanUse() || Role == null) return false;
         if (LimitedUses && UsesLeft <= 0) return false;
 
@@ -53,7 +54,7 @@ public sealed class PortalmakerPlaceButton : TownOfUsRoleButton<PortalmakerRole>
 
     protected override void OnClick()
     {
-        if (Role == null) return;
+        if (Role == null || MeetingHud.Instance != null) return;
 
         var delay = OptionGroupSingleton<PortalmakerOptions>.Instance.PlacementDelay;
         if (delay <= 0f)
