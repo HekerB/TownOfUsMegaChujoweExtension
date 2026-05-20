@@ -40,242 +40,91 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
 - [**Installation**](#installation)
 - [**Building**](#building)
 - [**Requirements**](#requirements)
-- [**Roles & Modifiers**](#roles--modifiers)
+- [**📖 Roles & Modifiers (Wiki)**](https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki)
 - [**Better Roles & Modifiers (Improvements)**](#better-roles--modifiers-improvements)
 - [**Draft Mode**](#draft-mode)
 - [**Security & Stability**](#security--stability)
 - [**Localization 🇵🇱 🇺🇸**](#localization--)
-- [**Chat Commands**](#chat-commands)
 - [**Credits**](#credits)
 - [**License**](#license)
 - [**Copyright**](#copyright)
 
 -----------------------
 
-<p align="center">
-  <img src="./Images/Groups/CrewInvest.png" align="center" />
-  <a href="#falcon-investigative"><img width="10%" src="./Images/Icons/Falcon_Role_Icon.png" /></a>
-  <a href="#sage-investigative"><img width="10%" src="./Images/Icons/Sage_Icon.png" /></a>
-  <a href="#vanisher-investigative"><img width="10%" src="./Images/Icons/Vanisher_Role_Icon.png" /></a>
-  <img src="./Images/Groups/CrewKilling.png" align="center" />
-  <a href="#vampire-hunter-killing"><img width="10%" src="./Images/Icons/VampireHunter_Role_Icon.png" /></a>
-  <img src="./Images/Groups/CrewPower.png" align="center" />
-  <a href="#president-power"><img width="10%" src="./Images/Icons/President_Role_Icon.png" /></a>
-  <img src="./Images/Groups/CrewProtect.png" align="center" />
-  <a href="#bodyguard-protective"><img width="10%" src="./Images/Icons/Bodyguard_Icon.png" /></a>
-  <a href="#gardener-protective"><img width="10%" src="./Images/Icons/Gardener_Role_Icon.png" /></a>
-  <img src="./Images/Groups/CrewSupport.png" align="center" />
-  <a href="#doctor-support"><img width="10%" src="./Images/Icons/Doctor_Role_Icon.png" /></a>
-  <a href="#evoker-support"><img width="10%" src="./Images/Icons/Evoker_Role_Icon.png" /></a>
-  <a href="#forestaller-support"><img width="10%" src="./Images/Icons/Forestaller_Role_Icon.png" /></a>
-  <a href="#mirage-support"><img width="10%" src="./Images/Icons/Mirage_Role_Icon.png" /></a>
-  <a href="#portalmaker-support"><img width="10%" src="./Images/Icons/PortalMaker.png" /></a>
-  <a href="#trapper-support"><img width="10%" src="./Images/Icons/Trapper_Role_Icon.png" /></a>
-  <img src="./Images/Groups/ImpConcealing.png" align="center" />
-  <a href="#astral-concealing"><img width="10%" src="./Images/Icons/Astral_Role_Icon.png" /></a>
-  <a href="#speedy-concealing"><img width="10%" src="./Images/Icons/Speedy_Role_Icon.png" /></a>
-  <img src="./Images/Groups/ImpKilling.png" align="center" />
-  <a href="#detonator-killing"><img width="10%" src="./Images/Icons/Detonator_Role_Icon.png" /></a>
-  <a href="#kamikaze-killing"><img width="10%" src="./Images/Icons/Kamikaze_Role_Icon.png" /></a>
-  <a href="#outlaw-killing"><img width="10%" src="./Images/Icons/Outlaw_Role_Icon.png" /></a>
-  <a href="#witch-killing"><img width="10%" src="./Images/Icons/Witch_Role_Icon.png" /></a>
-  <img src="./Images/Groups/ImpPower.png" align="center" />
-  <a href="#poisoner-power"><img width="10%" src="./Images/Icons/Poisoner_Icon.png" /></a>
-  <a href="#rc-xd-power"><img width="10%" src="./Images/Icons/RC-XD_Icon.png" /></a>
-  <a href="#wraith-power"><img width="10%" src="./Images/Icons/Wraith_Role_Icon.png" /></a>
-  <img src="./Images/Groups/ImpSupport.png" align="center" />
-  <a href="#charlatan-support"><img width="10%" src="./Images/Icons/Charlatan_Role_Icon.png" /></a>
-  <a href="#hacker-support"><img width="10%" src="./Images/Icons/Hacker_Role.png" /></a>
-  <a href="#injector-support"><img width="10%" src="./Images/Icons/Injector_Role_Icon.png" /></a>
-  <img src="./Images/Groups/NeutBenign.png" align="center" />
-  <a href="#lawyer-benign"><img width="10%" src="./Images/Icons/Lawyer_Role_Icon.png" /></a>
-  <a href="#shifter-benign"><img width="10%" src="./Images/Icons/Shifter_Role_Icon.png" /></a>
-  <img src="./Images/Groups/NeutEvil.png" align="center" />
-  <a href="#bounty-hunter-evil"><img width="10%" src="./Images/Icons/BountyHunter_Role_Icon.png" /></a>
-  <a href="#pirate-evil"><img width="10%" src="./Images/Icons/Pirate_Role_Icon.png" /></a>
-  <a href="#pope-evil"><img width="10%" src="./Images/Icons/Pope_Role_Icon.png" /></a>
-  <a href="#vulture-evil"><img width="10%" src="./Images/Icons/Vulture_Icon.png" /></a>
-  <img src="./Images/Groups/NeutKilling.png" align="center" />
-  <a href="#doppelganger-killing"><img width="10%" src="./Images/Icons/Doppelganger_Icon.png" /></a>
-  <a href="#pelican-killing"><img width="10%" src="./Images/Icons/Pelican_Role_Icon.png" /></a>
-  <a href="#serial-killer-killing"><img width="10%" src="./Images/Icons/SerialKiller_Role_Icon.png" /></a>
-  <a href="#shroud-killing"><img width="10%" src="./Images/Icons/Shroud_Role_Icon.png" /></a>
-  <img src="./Images/Groups/NeutOutlier.png" align="center" />
-  <a href="#arcanist-outlier"><img width="10%" src="./Images/Icons/Arcanist_Role_Icon.png" /></a>
-  <a href="#infiltrator-outlier"><img width="10%" src="./Images/Icons/Jackal_Role_Icon.png" /></a>
-  <img src="./Images/Groups/CrewMods.png" align="center" />
-  <a href="#publicity-crewmate"><img width="10%" src="./Images/Icons/Publicity_Modifier_Icon.png" /></a>
-
-  <img src="./Images/Groups/ImpMods.png" align="center" />
-  <a href="#lucky-impostor"><img width="10%" src="./Images/Icons/Lucky_Modifier_Icon.png" /></a>
-  <img src="./Images/Groups/UniMods.png" align="center" />
-  <a href="#child-universal"><img width="10%" src="./Images/Icons/Child_Modifier_Icon.png" /></a>
-  <a href="#clueless-universal"><img width="10%" src="./Images/Icons/Clueless_Modifier_Icon.png" /></a>
-  <a href="#drunk-universal"><img width="10%" src="./Images/Icons/Drunk_Modifier_Icon.png" /></a>
-  <a href="#spiteful-universal"><img width="10%" src="./Images/Icons/Spiteful_Modifier_Icon.png" /></a>
-  <img width="60%" src="./Images/Groups/NeuMods.png" align="center" /> <br>
-  <a href="#death-note-neutral-killing"><img width="10%" src="./Images/Icons/Death_Note_Icon.png" /></a>
-  <a href="#venomous-neutral-killing"><img width="10%" src="./Images/Icons/Venomous_Modifier_Icon.png" /></a>
-</p>
-
------------------------
-
 # Roles & Modifiers
 
-## Crewmate Roles
+> [!IMPORTANT]
+> 📖 **Full documentation for all roles, modifiers, and game options is available on the Wiki:**
+>
+> ### **➡️ [Open the Wiki](https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki)**
+>
+> The Wiki contains detailed descriptions, categorized by faction (Crewmate, Impostor, Neutral) and subcategory (Investigative, Killing, Support, etc.), along with all configurable game options and their default values.
 
-### Falcon (Crewmate Investigative)
-Zoom out the camera to see a wider area for a limited duration. Cannot be used during lights sabotage.
+<p align="center">
+  <img src="./Images/Groups/CrewInvest.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#falcon"><img width="10%" src="./Images/Icons/Falcon_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#sage"><img width="10%" src="./Images/Icons/Sage_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#vanisher"><img width="10%" src="./Images/Icons/Vanisher_Role_Icon.png" /></a>
+  <img src="./Images/Groups/CrewKilling.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#vampire-hunter"><img width="10%" src="./Images/Icons/VampireHunter_Role_Icon.png" /></a>
+  <img src="./Images/Groups/CrewPower.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#president"><img width="10%" src="./Images/Icons/President_Role_Icon.png" /></a>
+  <img src="./Images/Groups/CrewProtect.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#bodyguard"><img width="10%" src="./Images/Icons/Bodyguard_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#gardener"><img width="10%" src="./Images/Icons/Gardener_Role_Icon.png" /></a>
+  <img src="./Images/Groups/CrewSupport.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#doctor"><img width="10%" src="./Images/Icons/Doctor_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#evoker"><img width="10%" src="./Images/Icons/Evoker_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#forestaller"><img width="10%" src="./Images/Icons/Forestaller_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#mirage"><img width="10%" src="./Images/Icons/Mirage_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#portalmaker"><img width="10%" src="./Images/Icons/PortalMaker.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#trapper"><img width="10%" src="./Images/Icons/Trapper_Role_Icon.png" /></a>
+  <img src="./Images/Groups/ImpConcealing.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#astral"><img width="10%" src="./Images/Icons/Astral_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#speedy"><img width="10%" src="./Images/Icons/Speedy_Role_Icon.png" /></a>
+  <img src="./Images/Groups/ImpKilling.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#detonator"><img width="10%" src="./Images/Icons/Detonator_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#kamikaze"><img width="10%" src="./Images/Icons/Kamikaze_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#outlaw"><img width="10%" src="./Images/Icons/Outlaw_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#witch"><img width="10%" src="./Images/Icons/Witch_Role_Icon.png" /></a>
+  <img src="./Images/Groups/ImpPower.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#poisoner"><img width="10%" src="./Images/Icons/Poisoner_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#rc-xd"><img width="10%" src="./Images/Icons/RC-XD_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#wraith"><img width="10%" src="./Images/Icons/Wraith_Role_Icon.png" /></a>
+  <img src="./Images/Groups/ImpSupport.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#charlatan"><img width="10%" src="./Images/Icons/Charlatan_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#hacker"><img width="10%" src="./Images/Icons/Hacker_Role.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#injector"><img width="10%" src="./Images/Icons/Injector_Role_Icon.png" /></a>
+  <img src="./Images/Groups/NeutBenign.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#lawyer"><img width="10%" src="./Images/Icons/Lawyer_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#shifter"><img width="10%" src="./Images/Icons/Shifter_Role_Icon.png" /></a>
+  <img src="./Images/Groups/NeutEvil.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#bounty-hunter"><img width="10%" src="./Images/Icons/BountyHunter_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#pirate"><img width="10%" src="./Images/Icons/Pirate_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#pope"><img width="10%" src="./Images/Icons/Pope_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#vulture"><img width="10%" src="./Images/Icons/Vulture_Icon.png" /></a>
+  <img src="./Images/Groups/NeutKilling.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#doppelganger"><img width="10%" src="./Images/Icons/Doppelganger_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#pelican"><img width="10%" src="./Images/Icons/Pelican_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#serial-killer"><img width="10%" src="./Images/Icons/SerialKiller_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#shroud"><img width="10%" src="./Images/Icons/Shroud_Role_Icon.png" /></a>
+  <img src="./Images/Groups/NeutOutlier.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#arcanist"><img width="10%" src="./Images/Icons/Arcanist_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#infiltrator"><img width="10%" src="./Images/Icons/Jackal_Role_Icon.png" /></a>
+  <img src="./Images/Groups/CrewMods.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#publicity"><img width="10%" src="./Images/Icons/Publicity_Modifier_Icon.png" /></a>
 
-### Sage (Crewmate Investigative)
-Compare Players Instead of Checking Alignments. Compare the alignments of other players, learning if players are friendly or enemies.
-
-### Vanisher (Crewmate Investigative)
-Vanisher can temporarily turn invisible to avoid being seen. May Neutral and Impostor roles get alert when u are close to them.
-
-### Vampire Hunter (Crewmate Killing)
-Vampire Hunter only appears when there are vampires in the game. Vampire Hunter stakes other players; if the player is not a vampire, the stake is wasted and nothing happens. If the targeted player is a vampire, they die. If there are no vampires left in the game, Vampire Hunter receives a new role based on the game settings.
-
-### President (Crewmate Power)
-Abstain from voting to bank votes, then spend them all at once in a future meeting.
-
-### Bodyguard (Crewmate Protective)
-Shield a player. When they're attacked, teleport to them and eliminate the attacker but you die too.
-
-### Gardener (Crewmate Protective)
-Plant protective garden zones that shield all players inside from attacks. The Gardener receives anonymous alerts when an attack is blocked.
-
-### Doctor (Crewmate Support)
-Inject players with beneficial chemicals. After a short delay, they receive a random positive effect like a permanent shield, speed boost, or enhanced vision.
-
-### Evoker (Crewmate Support)
-Activate Blind to Flash all killing roles are blinded they cannot use any abilities and can only see themselves. Depending on the host settings, the Evoker may verify whether players are killing roles or not.
-
-### Forestaller (Crewmate Support)
-Complete all tasks to disable sabotages while alive. Revealed in meetings after completing all tasks.
-
-### Mirage (Crewmate Support)
-Place a decoy with the appearance of yourself or a random player. If anyone interacts with it, it vanishes and both sides are notified.
-
-### Portalmaker (Crewmate Support)
-Link two points on the map with portals that any Crewmate can use to travel quickly across the map.
-
-### Trapper (Crewmate Support)
-Place traps on vents that immobilize players who use them. Get notifications when traps are triggered.
-
-## Impostor Roles
-
-### Astral (Impostor Concealing)
-Phase through walls to bypass obstacles. Teleport back to your starting position after a delay. You must eliminate a target while phased to survive!
-
-### Speedy (Impostor Concealing)
-Gain a permanent speed boost each time you eliminate a player. Can be configured to stack or have a maximum limit.
-
-### Detonator (Impostor Killing)
-Attach a C4 bomb to a player. Detonate it manually to eliminate the target and anyone nearby.
-
-### Kamikaze (Impostor Killing)
-Detonate yourself to kill all nearby players. You die in the process.
-
-### Outlaw (Impostor Killing)
-After killing, you have a short window to kill additional players without cooldown.
-
-### Witch (Impostor Killing)
-Cast spells on players. Spellbound players are highlighted in meetings and die after a configured number of meetings. If the Witch dies, all spellbound players survive.
-
-### Poisoner (Impostor Power)
-Poison players on contact (delayed death) or use Vine to remotely kill the nearest player in range.
-
-### RC-XD (Impostor Power)
-Deploy a remote-controlled explosive car. Drive it with arrow keys and detonate it near enemies.
-
-### Wraith (Impostor Power)
-Dash for a speed boost. Place a Lantern to teleport back to it and briefly turn invisible. If the Lantern expires, it leaves permanent evidence.
-
-### Charlatan (Impostor Support)
-Deceive to report your own kills from any distance. Conceal to reduce the report range of nearby bodies.
-
-### Hacker (Impostor Support)
-Download info from Admin/Cams/Vitals to charge a portable device. Jam disrupts info systems like comms sabotage. Gain jam charges from kills.
-
-### Injector (Impostor Support)
-Inject players with a random effect (negative or positive) after a delay. Starts with limited uses, gains more from kills.
-
-## Neutral Roles
-
-### Lawyer (Neutral Benign)
-Win by keeping your assigned client from being voted out. Object to votes during meetings.
-
-### Shifter (Neutral Benign)
-Steal another player's role at the next meeting. You can only steal a Crewmate role if you attempt to steal a non-Crewmate role, you die in the process.
-
-### Bounty Hunter (Neutral Evil)
-Hunt assigned targets. The Bounty Hunter can only kill their assigned targets. Eliminate all targets to win.
-
-### Pirate (Neutral Evil)
-Challenge players to Rock-Paper-Scissors duels during meetings. Win enough duels to win the game.
-
-### Pope (Neutal Evil)
-Canonize all living players, then trigger Divine Judgement a countdown that kills everyone if it reaches zero.
-
-### Arcanist (Neutral Outlier)
-Draw Tarot cards from your deck, each with a unique effect. The effects can alter your stats, grant Death Notes, change your role, or even kill you.
-
-### Infiltrator (Neutral Outlier)
-Recruit two players from opposite teams to work for you. Protected by a silent shield while your recruits are alive. You win if your team is the last one standing.
-
-### Vulture (Neutral Evil)
-Eat dead bodies to win. Optionally use Scavenge for arrows to corpses. If win condition becomes impossible, become a configured role.
-
-### Doppelganger (Neutral Killing)
-Kill players to steal their appearance until the next meeting.
-
-### Pelican (Neutral Killing)
-Swallow players to trap them in your stomach. They're digested when a meeting is called. If you die, they escape.
-
-### Serial Killer (Neutral Killing)
-Kill everyone to win alone. Can optionally kill players in vents, but loses venting ability after.
-
-### Shroud (Neutral Killing)
-Mark a player with a deadly trap. Anyone who interacts with them dies. If no one does, the marked player dies at the meeting.
-
-## Modifiers
-
-### Child (Universal Passive)
-While underage, you cannot be killed. You age over time. Once adult, you lose protection.
-
-### Clueless (Universal Passive)
-Removes all task guidance (task list, arrows, map locations). Tasks still work normally.
-
-### Death Note (Neutral Utility)
-Find a notebook near a vent. Write a player's name to curse them with a delayed heart attack death.
-
-### Drunk (Universal Passive)
-Movement controls are inverted for a set number of meetings.
-
-### Spiteful (Universal Passive)
-When voted out, everyone who voted for you receives a negative effect (lower vision, slowness, or increased cooldowns).
-
-### Lucky (Impostor Passive)
-After each kill, your kill cooldown is randomized between a configured min and max.
-
-### Venomous (Neutral Killing)
-After a set amount of time, the body of a killed player will rot away, preventing it from being reported.
-
-### Publicity (Crewmate Passive)
-See the real colors of player's votes during meetings.
-
-
-## Additional Features & Tweaks
-
-### Polish Language Support
-An option added to use Polish localizations via `ExtensionLocalSettingUsePolish`.
-
-### Classic Assassin Guessing
-Optional cycling-style assassin guessing (arrows + guess button instead of panel menu). The advantage of this setting is that once you select a role to guess and the meeting ends, that person's role is saved on the next meeting.
-
-### Legacy Guess Death Animation
-Optional old-style death animation for guessing.
+  <img src="./Images/Groups/ImpMods.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#lucky"><img width="10%" src="./Images/Icons/Lucky_Modifier_Icon.png" /></a>
+  <img src="./Images/Groups/UniMods.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#child"><img width="10%" src="./Images/Icons/Child_Modifier_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#clueless"><img width="10%" src="./Images/Icons/Clueless_Modifier_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#drunk"><img width="10%" src="./Images/Icons/Drunk_Modifier_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#spiteful"><img width="10%" src="./Images/Icons/Spiteful_Modifier_Icon.png" /></a>
+  <img width="60%" src="./Images/Groups/NeuMods.png" align="center" /> <br>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#death-note"><img width="10%" src="./Images/Icons/Death_Note_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#venomous"><img width="10%" src="./Images/Icons/Venomous_Modifier_Icon.png" /></a>
+</p>
 
 -----------------------
 
