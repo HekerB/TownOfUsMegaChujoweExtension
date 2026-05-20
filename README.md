@@ -40,7 +40,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
 - [**Installation**](#installation)
 - [**Building**](#building)
 - [**Requirements**](#requirements)
-- [**📖 Roles & Modifiers (Wiki)**](https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki)
+- [**Roles & Modifiers (Wiki)**](https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki)
 - [**Better Roles & Modifiers (Improvements)**](#better-roles--modifiers-improvements)
 - [**Draft Mode**](#draft-mode)
 - [**Security & Stability**](#security--stability)
@@ -56,7 +56,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
 > [!IMPORTANT]
 >  **Full documentation for all roles, modifiers, and game options is available on the Wiki:**
 >
-> ### ** [Open the Wiki](https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki)**
+> ### **[Open the Wiki](https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki)**
 >
 > The Wiki contains detailed descriptions, categorized by faction (Crewmate, Impostor, Neutral) and subcategory (Investigative, Killing, Support, etc.), along with all configurable game options and their default values.
 
@@ -121,7 +121,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#clueless"><img width="10%" src="./Images/Icons/Clueless_Modifier_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#drunk"><img width="10%" src="./Images/Icons/Drunk_Modifier_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#spiteful"><img width="10%" src="./Images/Icons/Spiteful_Modifier_Icon.png" /></a>
-  <img src="./Images/Groups/NeuMods.png" align="center" /> <br>
+  <img src="./Images/Groups/NeutMods.png" align="center" /> <br>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#death-note"><img width="10%" src="./Images/Icons/Death_Note_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#venomous"><img width="10%" src="./Images/Icons/Venomous_Modifier_Icon.png" /></a>
 </p>
