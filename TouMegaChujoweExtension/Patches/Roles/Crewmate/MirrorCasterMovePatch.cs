@@ -4,7 +4,11 @@ using MiraAPI.Modifiers;
 using TownOfUs.Extensions;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Roles.Crewmate;
+using TownOfUs;
+using TownOfUs.Buttons;
+using TownOfUs.Modules;
 using TownOfUs.Utilities;
+using MiraAPI.Hud;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Crewmate;
@@ -24,7 +28,7 @@ public static class MirrorCasterMovePatch
 
         if (__instance.IsRole<MirrorcasterRole>() &&
             OptionGroupSingleton<MirrorCasterExtensionOptions>.Instance.MoveWhileMenu &&
-            (Minigame.Instance != null || MapBehaviour.Instance != null))
+            (Minigame.Instance is CustomPlayerMenu || MapBehaviour.Instance != null))
         {
             __instance.moveable = true;
         }
@@ -50,7 +54,7 @@ public static class MirrorCasterMovePatch
                 return;
             }
 
-            if (Minigame.Instance != null || MapBehaviour.Instance != null)
+            if (Minigame.Instance is CustomPlayerMenu || MapBehaviour.Instance != null)
             {
                 var horizontal = Input.GetAxisRaw("Horizontal");
                 var vertical = Input.GetAxisRaw("Vertical");
