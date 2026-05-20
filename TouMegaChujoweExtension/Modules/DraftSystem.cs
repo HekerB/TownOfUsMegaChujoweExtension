@@ -225,7 +225,7 @@ public static class DraftSystem
                 if (preventJackal && isJackalRole) continue;
 
                 var assignData = MiscUtils.GetAssignData(role.Role);
-                if (assignData.Count <= 0) continue;
+                if (assignData.Count <= 0 || assignData.Chance <= 0) continue;
 
                 roles.Add(role);
             }
