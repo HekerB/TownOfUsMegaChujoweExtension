@@ -183,13 +183,14 @@ public static class DetonatorSystem
         if (!AmongUsClient.Instance.AmHost) return;
         PlayerControl? mainTarget = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == bomb.TargetId);
         if (mainTarget == null || mainTarget.HasDied()) return;
+        if (PelicanSystem.IsSwallowed(mainTarget.PlayerId)) return;
         var options = OptionGroupSingleton<DetonatorOptions>.Instance;
         var radius = options.DetonateRadius * ShipStatus.Instance.MaxLightRadius;
         var pos = mainTarget.transform.position;
         var detonator = MiscUtils.PlayerById(bomb.DetonatorId);
         var actualKiller = detonator ?? mainTarget;
-        var victims = PlayerControl.AllPlayerControls.ToArray().Where(p => p != null && !p.HasDied() && Vector2.Distance(pos, p.transform.position) <= radius).OrderBy(p => Vector2.Distance(pos, p.transform.position)).Take((int)options.MaxKills).ToList();
-        if (!victims.Contains(mainTarget)) victims.Add(mainTarget);
+        var victims = PlayerControl.AllPlayerControls.ToArray().Where(p => p != null && !p.HasDied() && !PelicanSystem.IsSwallowed(p.PlayerId) && Vector2.Distance(pos, p.transform.position) <= radius).OrderBy(p => Vector2.Distance(pos, p.transform.position)).Take((int)options.MaxKills).ToList();
+        if (!victims.Contains(mainTarget) && !PelicanSystem.IsSwallowed(mainTarget.PlayerId)) victims.Add(mainTarget);
         foreach (var victim in victims.Where(victim => victim != null && !victim.HasDied()))
         {
                 // Check for invulnerability (e.g. Pestilence, Veteran on alert)
