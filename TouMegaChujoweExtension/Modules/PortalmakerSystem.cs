@@ -88,20 +88,21 @@ public static class PortalmakerSystem
                 if (sr != null)
                 {
                     sr.color = Color.white; // Active original sprite colors
+                    var local = PlayerControl.LocalPlayer;
+                    bool isPortalmaker = local != null && local.Data != null && 
+                        (local.GetRole<PortalmakerRole>() != null || local.Data.Role is PortalmakerRole);
+                    sr.enabled = isPortalmaker || CanPlayerUsePortal(local);
                 }
             }
         }
         else
         {
-            // Last pair is complete or empty. We need to create a new pair.
-            // Check if we exceed max pairs: MaxPairs = PortalUses / 2
             float maxUses = opts.PortalUses;
             if (maxUses > 0)
             {
                 int maxPairs = Mathf.CeilToInt(maxUses / 2f);
                 if (pairs.Count >= maxPairs)
                 {
-                    // Exceeds max pairs! Destroy oldest pair.
                     var oldestPair = pairs[0];
                     if (oldestPair.PortalA != null && oldestPair.PortalA.Visual != null) UnityEngine.Object.Destroy(oldestPair.PortalA.Visual);
                     if (oldestPair.PortalB != null && oldestPair.PortalB.Visual != null) UnityEngine.Object.Destroy(oldestPair.PortalB.Visual);
@@ -114,9 +115,8 @@ public static class PortalmakerSystem
                 Position = position,
                 CreationTime = Time.time
             };
-            newPortal.Visual = CreatePortalVisual(position, radius, false); // Incomplete semi-transparent white original sprite
+            newPortal.Visual = CreatePortalVisual(position, radius, false); 
 
-            // Only show incomplete portal (PortalA) to the Portalmaker who owns it
             bool isLocalOwner = PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == ownerId;
             if (!isLocalOwner && newPortal.Visual != null)
             {
@@ -141,11 +141,11 @@ public static class PortalmakerSystem
         
         if (isActive)
         {
-            renderer.color = Color.white; // Use original sprite texture colors!
+            renderer.color = Color.white;
         }
         else
         {
-            renderer.color = new Color(1f, 1f, 1f, 0.4f); // Original sprite texture colors, but semi-transparent!
+            renderer.color = new Color(1f, 1f, 1f, 0.4f);
         }
         
         go.transform.localScale = Vector3.one * (radius * 2.0f);
@@ -153,7 +153,7 @@ public static class PortalmakerSystem
         var local = PlayerControl.LocalPlayer;
         bool isPortalmaker = local != null && local.Data != null && 
             (local.GetRole<PortalmakerRole>() != null || local.Data.Role is PortalmakerRole);
-        renderer.enabled = isPortalmaker;
+        renderer.enabled = isPortalmaker || (isActive && CanPlayerUsePortal(local));
         
         return go;
     }
@@ -199,7 +199,6 @@ public static class PortalmakerSystem
             var player = PlayerControl.LocalPlayer;
             if (player == null || player.Data == null || player.Data.IsDead) return;
 
-            // Check if player is near a portal pair
             bool isNear = IsNearPortalPair(player);
             float cooldownRemaining = GetTeleportCooldownRemaining(player.PlayerId);
 
@@ -229,10 +228,8 @@ public static class PortalmakerSystem
                 }
             }
 
-            // Check if player is already teleporting
             if (PlayersTeleporting.Contains(player.PlayerId)) return;
 
-            // Check teleport cooldown for automatic trigger
             if (cooldownRemaining > 0f) return;
 
             if (opts.Mode != TeleportMode.Automatic) return;
@@ -244,14 +241,12 @@ public static class PortalmakerSystem
             {
                 if (pair.PortalA == null || pair.PortalB == null) continue;
 
-                // Check A -> B
                 if (Vector2.Distance(player.GetTruePosition(), pair.PortalA.Position) <= radiusCheck())
                 {
                     Reactor.Utilities.Coroutines.Start(CoTeleport(player, pair.PortalB.Position));
                     return;
                 }
 
-                // Check B -> A
                 if (Vector2.Distance(player.GetTruePosition(), pair.PortalB.Position) <= radiusCheck())
                 {
                     Reactor.Utilities.Coroutines.Start(CoTeleport(player, pair.PortalA.Position));
@@ -292,14 +287,12 @@ public static class PortalmakerSystem
         {
             if (pair.PortalA == null || pair.PortalB == null) continue;
 
-            // Check A -> B
             if (Vector2.Distance(player.GetTruePosition(), pair.PortalA.Position) <= radius)
             {
                 Reactor.Utilities.Coroutines.Start(CoTeleport(player, pair.PortalB.Position));
                 return;
             }
 
-            // Check B -> A
             if (Vector2.Distance(player.GetTruePosition(), pair.PortalB.Position) <= radius)
             {
                 Reactor.Utilities.Coroutines.Start(CoTeleport(player, pair.PortalA.Position));
@@ -313,13 +306,10 @@ public static class PortalmakerSystem
         byte playerId = player.PlayerId;
         PlayersTeleporting.Add(playerId);
 
-        // Sound effect on start
         if (player.AmOwner)
         {
             SoundManager.Instance.PlaySound(TouAudio.ScientistIntroSound.LoadAsset(), false, 1f);
         }
-
-        // Show a countdown notification above the player's head
         var notif = Helpers.CreateAndShowNotification(
             "<b>Teleporting...</b>",
             Color.cyan,

@@ -171,14 +171,3 @@ public static class DraftNetworking
         DraftLobbyPatch.ShowSystemMessage("<color=#FF4444>Draft Cancelled</color> by the Host.");
     }
 }
-
-
-
-
-
-
-
-
-
-
-
