@@ -81,6 +81,7 @@ global using WitchRole = TouMegaChujoweExtension.Roles.Classic.Impostor.WitchRol
 global using WitchOptions = TouMegaChujoweExtension.Options.Roles.Impostor.WitchOptions;
 global using WitchEvents = TouMegaChujoweExtension.Events.Impostor.WitchEvents;
 global using WitchSpellboundModifier = TouMegaChujoweExtension.Modifiers.Impostor.WitchSpellboundModifier;
+
 global using static Reactor.Utilities.Logger<TouMegaChujoweExtension.TouMegaChujoweExtensionPlugin>;
 global using TownOfUs.Networking;
 global using MiraAPI.Networking;

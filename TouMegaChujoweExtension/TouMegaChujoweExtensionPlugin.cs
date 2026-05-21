@@ -38,7 +38,7 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
     /// <summary>
     ///     Determines if the current build is a dev build or not.
     /// </summary>
-    public static bool IsDevBuild => false;
+    public static bool IsDevBuild => true;
     /// <inheritdoc />
     public ConfigFile GetConfigFile() => Config;
 	
@@ -48,21 +48,24 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 	public override void Load()
 	{
 		DuplicateChecker.Check();
+		Modules.ModUpdater.CleanOldVersions();
 		Harmony = new Harmony(Id);
+
+        Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<Modules.TomahawkAxe>();
+        Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<Modules.DeathNotePickupBehaviour>();
+        Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<Modules.DeathNoteUIController>();
+        Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<Modifiers.IcenbergOverlayAnimator>();
+        Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<Modules.DecoyBodyComponent>();
 
 		ReactorCredits.Register("Tou Mega Chujowe Extension", Version, IsDevBuild, ReactorCredits.AlwaysShow);
 		IL2CPPChainloader.Instance.Finished += Modules.ExtensionLocale.SearchInternalLocale;
 		IL2CPPChainloader.Instance.Finished += LawyerTeamChatRegistration.Register;
 		IL2CPPChainloader.Instance.Finished += Patches.Roles.Lovers.LoverMeetingChatRegistration.Register;
-		IL2CPPChainloader.Instance.Finished += Patches.SchrodingersCat.SchrodingersCatChatRegistration.Register;
-		IL2CPPChainloader.Instance.Finished += Patches.Neutral.ZombieHordeChatRegistration.Register;
 		IL2CPPChainloader.Instance.Finished += () => ExtensionModNewsFetcher.CheckForNews();
 	
 		PatchAllWithErrorHandling();
 
 		WinConditionRegistry.Register(new NeutralExtensionWinCondition());
-		WinConditionRegistry.Register(new ZombieWinCondition());
-		WinConditionRegistry.Register(new GaslighterWinCondition());
 	}
 
     private void PatchAllWithErrorHandling()

@@ -5,6 +5,9 @@ using TMPro;
 using TownOfUs.Patches;
 using TownOfUs.Utilities;
 using UnityEngine;
+using TouMegaChujoweExtension.Modifiers.Neutral;
+using TouMegaChujoweExtension.Roles.Neutral;
+using TouMegaChujoweExtension.Roles.Classic.Impostor;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Witch;
 
@@ -80,7 +83,15 @@ public static class WitchSpellboundIndicatorPatch
 
     private static bool ShouldShowHexedSprite(PlayerControl player)
     {
-        if (player == null || !player.HasModifier<WitchSpellboundModifier>())
+        if (player == null)
+        {
+            return false;
+        }
+
+        bool hasWitchSpell = player.HasModifier<WitchSpellboundModifier>();
+        bool hasGaslighterCurse = player.HasModifier<GaslighterCursedModifier>();
+
+        if (!hasWitchSpell && !hasGaslighterCurse)
         {
             return false;
         }
@@ -93,26 +104,30 @@ public static class WitchSpellboundIndicatorPatch
 
         if (MeetingHud.Instance == null)
         {
-            // Only Witch and Impostors see it during gameplay
-            if (localPlayer.IsRole<WitchRole>() || (localPlayer.Data?.Role != null && localPlayer.Data.Role.IsImpostor))
+            // Only Witch/Gaslighter and Impostors see it during gameplay
+            if (localPlayer.IsRole<WitchRole>() || localPlayer.IsRole<GaslighterRole>() || (localPlayer.Data?.Role != null && localPlayer.Data.Role.IsImpostor))
             {
                 return true;
             }
             return false;
         }
 
-        var modifier = player.GetModifier<WitchSpellboundModifier>();
-        if (modifier != null)
+        // For Witch spellbound, it might have expired. But for Gaslighter cursed, they always have it visible in the meeting.
+        if (hasWitchSpell)
         {
-            var options = OptionGroupSingleton<WitchOptions>.Instance;
-            var meetingsUntilDeath = options.MeetingsUntilDeath;
-            var currentMeetingCount = Events.Impostor.WitchEvents.GetCurrentMeetingCount();
-            var meetingsSinceSpell = (currentMeetingCount - 1) - modifier.SpellCastMeeting;
-            var meetingsRemaining = meetingsUntilDeath - meetingsSinceSpell;
-
-            if (meetingsRemaining < 0)
+            var modifier = player.GetModifier<WitchSpellboundModifier>();
+            if (modifier != null)
             {
-                return false;
+                var options = OptionGroupSingleton<WitchOptions>.Instance;
+                var meetingsUntilDeath = options.MeetingsUntilDeath;
+                var currentMeetingCount = Events.Impostor.WitchEvents.GetCurrentMeetingCount();
+                var meetingsSinceSpell = (currentMeetingCount - 1) - modifier.SpellCastMeeting;
+                var meetingsRemaining = meetingsUntilDeath - meetingsSinceSpell;
+
+                if (meetingsRemaining < 0)
+                {
+                    return false;
+                }
             }
         }
 

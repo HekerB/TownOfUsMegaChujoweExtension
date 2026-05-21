@@ -411,6 +411,10 @@
   <string name="ExtensionWitchSpellNotification">&lt;player&gt; has been cursed! They have &lt;meetings&gt; meeting(s) left. Vote out or kill the Witch to save them!</string>
   <string name="ExtensionWitchSpellNotificationMultiple">Multiple players have been cursed:\n&lt;players&gt;\nVote out or kill the Witch to save them!</string>
 
+  <!-- Gaslighter Notifications -->
+  <string name="ExtensionGaslighterCurseNotification">&lt;player&gt; has been cursed by the Gaslighter! They will die at the end of this meeting unless the Gaslighter is voted out!</string>
+  <string name="ExtensionGaslighterCurseNotificationMultiple">Multiple players have been cursed by the Gaslighter:\n&lt;players&gt;\nVote out the Gaslighter to save them!</string>
+
 
   <!-- Wraith Role -->
   <string name="ExtensionRoleWraith">Wraith</string>
@@ -1201,5 +1205,371 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="Enable Draft Mode">Enable Draft Mode</string>
   <string name="Lock Lobby During Draft">Lock Lobby During Draft</string>
   <string name="Use Role Chances">Use Role Chances</string>
-</resources>
 
+  <!-- Gaslighter Role -->
+  <string name="ExtensionRoleGaslighter">Gaslighter</string>
+  <string name="ExtensionRoleGaslighterIntroBlurb">Manipulate others' perceptions and win by survival.</string>
+  <string name="ExtensionRoleGaslighterTabDescription">Use your abilities to confuse and mark players.\%nl\%If you survive until the end, you win!</string>
+  <string name="ExtensionRoleGaslighterWikiDescription">The Gaslighter is a Neutral role that wins by surviving. They have a cycle of abilities including Knighting and Cursing players.</string>
+
+  <!-- Sandworm Role -->
+  <string name="ExtensionRoleSandworm">Sandworm</string>
+  <string name="ExtensionRoleSandwormIntroBlurb">Hide underground and strike from below.</string>
+  <string name="ExtensionRoleSandwormTabDescription">Dig underground to move freely and become a real sandworm.\%nl\%Emerge to kill players when they least expect it.</string>
+  <string name="ExtensionRoleSandwormWikiDescription">The Sandworm is an Impostor that can dig underground. While underground, they are invisible and can move through walls (if enabled). They must emerge to kill.</string>
+
+  <!-- Zapper Role -->
+  <string name="ExtensionRoleZapper">Zapper</string>
+  <string name="ExtensionRoleZapperIntroBlurb">Stun your victims with high-voltage charges.</string>
+  <string name="ExtensionRoleZapperTabDescription">Zap players to stun them and prevent them from moving or reporting.</string>
+  <string name="ExtensionRoleZapperWikiDescription">The Zapper is an Impostor who can stun players for a short duration.</string>
+
+  <!-- Confuser Role -->
+  <string name="ExtensionRoleConfuser">Confuser</string>
+  <string name="ExtensionRoleConfuserIntroBlurb">Cause chaos by scrambling player roles.</string>
+  <string name="ExtensionRoleConfuserTabDescription">Use your ability to temporarily scramble role symbols and names for others.</string>
+  <string name="ExtensionRoleConfuserWikiDescription">The Confuser is an Impostor who can scramble role information during meetings or in-game.</string>
+
+  <!-- Icenberg Role -->
+  <string name="ExtensionRoleIcenberg">Icenberg</string>
+  <string name="ExtensionRoleIcenbergIntroBlurb">Freeze the game with your icy touch.</string>
+  <string name="ExtensionRoleIcenbergTabDescription">Freeze players or trigger a Blizzard to slow everyone down.</string>
+  <string name="ExtensionRoleIcenbergWikiDescription">The Icenberg is a Neutral role that can freeze players and create blizzards.</string>
+
+  <!-- Possessor Role -->
+  <string name="ExtensionRolePossessor">Possessor</string>
+  <string name="ExtensionRolePossessorIntroBlurb">Take control of another player after your death.</string>
+  <string name="ExtensionRolePossessorTabDescription">As a ghost, possess a living player to control their movements and abilities.</string>
+  <string name="ExtensionRolePossessorWikiDescription">The Possessor is an Impostor Afterlife role. After death, they can possess a living player.</string>
+
+  <!-- Schrodingers Cat Role -->
+  <string name="ExtensionRoleSchrodingersCat">Schrodinger's Cat</string>
+  <string name="ExtensionRoleSchrodingersCatIntroBlurb">You are both dead and alive. Join the team that finds you first.</string>
+  <string name="ExtensionRoleSchrodingersCatTabDescription">You start as Neutral. The first team to interact with you becomes your team.</string>
+  <string name="ExtensionRoleSchrodingersCatWikiDescription">Schrodinger's Cat is a Neutral role that joins the team of the first person who interacts with them.</string>
+
+  <!-- Sentinel Role -->
+  <string name="ExtensionRoleSentinel">Sentinel</string>
+  <string name="ExtensionRoleSentinelIntroBlurb">Protect the crew with your watchful eye.</string>
+  <string name="ExtensionRoleSentinelTabDescription">Place a patrol zone to monitor for Impostor activity.</string>
+  <string name="ExtensionRoleSentinelWikiDescription">The Sentinel is a Crewmate who can place patrol zones that detect killers.</string>
+
+
+
+  <!-- Dumper Role -->
+  <string name="ExtensionRoleDumper">Dumper</string>
+  <string name="ExtensionRoleDumperIntroBlurb">Dump Bodies Anywhere You Wish</string>
+  <string name="ExtensionRoleDumperTabDescription">Put any bodies in your bag to take with you!</string>
+  <string name="ExtensionRoleDumperWikiDescription">The Dumper is an Impostor who can drag bodies and dump them elsewhere.</string>
+
+  <!-- Sniper Modifier -->
+  <string name="ExtensionModifierSniper">Sniper</string>
+  <string name="ExtensionModifierSniperIntroBlurb">Kill from a distance and teleport to your victim.</string>
+  <string name="ExtensionModifierSniperDesc">You can kill from a much larger distance. When you kill, you teleport to the body.</string>
+  <string name="ExtensionModifierSniperWikiDescription">The Sniper modifier allows the holder to kill from a distance and automatically teleport to the victim's location.</string>
+  <string name="ExtensionModifierSniperAmount">Sniper Amount</string>
+  <string name="ExtensionModifierSniperChance">Sniper Chance</string>
+  <string name="ExtensionModifierSniperKillDistanceMultiplier">Kill Distance Multiplier</string>
+
+  <!-- Abyssbringer Role -->
+  <string name="ExtensionRoleAbyssbringer">Abyssbringer</string>
+  <string name="ExtensionRoleAbyssbringerIntroBlurb">Consume your enemies in the void of a black hole.</string>
+  <string name="ExtensionRoleAbyssbringerTabDescription">Place a black hole that pulls players toward its center and obliterates them.</string>
+  <string name="ExtensionRoleAbyssbringerWikiDescription">The Abyssbringer is an Impostor Power role. They can spawn a black hole that pulls nearby players. Anyone who reaches the center is obliterated.</string>
+  <string name="ExtensionRoleAbyssbringerBlackHole">Black Hole</string>
+  <string name="ExtensionRoleAbyssbringerBlackHoleWikiDescription">Spawn a black hole at your current position.</string>
+  <string name="ExtensionOptionAbyssbringerBlackHoleCooldown">Black Hole Cooldown</string>
+  <string name="ExtensionOptionAbyssbringerBlackHoleDuration">Black Hole Duration</string>
+  <string name="ExtensionOptionAbyssbringerBlackHoleRadius">Black Hole Radius</string>
+  <string name="ExtensionOptionAbyssbringerPullStrength">Pull Strength</string>
+  <string name="ExtensionOptionAbyssbringerMaxKills">Max Kills Per Hole</string>
+  <string name="ExtensionOptionAbyssbringerCanVent">Can Vent</string>
+  
+  <!-- Additional Sandworm Locales -->
+  <string name="ExtensionRoleSandwormDig">Dig</string>
+  <string name="ExtensionRoleSandwormEmerge">Emerge</string>
+  <string name="ExtensionRoleSandwormDigWikiDescription">Dig underground to become invisible and move through walls.</string>
+
+  <!-- Burst Role -->
+  <string name="ExtensionRoleBurst">Burst</string>
+  <string name="ExtensionRoleBurstIntroBlurb">Turn players into living bombs.</string>
+  <string name="ExtensionRoleBurstTabDescription">Select a player to turn them into a bomb.\%nl\%They will explode after a short delay.</string>
+  <string name="ExtensionRoleBurstWikiDescription">Burst is an Impostor Killing role that can mark a player as a "ticking bomb". After a configured delay, the player explodes and dies. The Burst can cancel the process before it finishes.</string>
+  <string name="ExtensionRoleBurstBurst">Burst</string>
+  <string name="ExtensionRoleBurstBurstWikiDescription">Select a player to start the timer. If it reaches 0, they explode.</string>
+  <string name="ExtensionRoleBurstStopBurst">Stop Burst</string>
+  <string name="ExtensionRoleBurstStopBurstWikiDescription">Cancel the active burst and reset the timer.</string>
+  <string name="ExtensionRoleBurstSelectTarget">Select target for Burst</string>
+  <string name="ExtensionOptionBurstDuration">Burst Delay</string>
+  <string name="ExtensionOptionBurstCooldown">Burst Cooldown</string>
+  <string name="ExtensionOptionBurstCanVent">Can Vent</string>
+
+  <string name="DiedToBurst">Exploded</string>
+  <string name="DiedToTomahawk">Slashed</string>
+  <string name="DiedToAbyssbringer">Obliterated</string>
+
+  <string name="DiedToGaslighted">Gaslighted</string>
+
+  <string name="ExtensionRoleDumperDrag">Drag/Dump</string>
+  <string name="ExtensionRoleDumperDragWikiDescription">Drag a dead body and dump it elsewhere to hide the crime scene. Moving a body makes you slower.</string>
+  <string name="ExtensionRoleDumperTake">Store</string>
+  <string name="ExtensionRoleDumperDump">Dump</string>
+
+  <!-- Tomahawk Role -->
+  <string name="ExtensionRoleTomahawk">Tomahawk</string>
+  <string name="ExtensionRoleTomahawkIntroBlurb">Throw spinning axes that slice through the map.</string>
+  <string name="ExtensionRoleTomahawkTabDescription">Throw a tomahawk in the direction of the nearest player.\%nl\%It travels through the whole map, killing anyone it hits.</string>
+  <string name="ExtensionRoleTomahawkWikiDescription">Tomahawk is an Impostor Killing role that throws a spinning axe. The axe travels in a straight line toward the nearest player at the moment of throwing. Anyone caught in its radius is sliced and dies.</string>
+  <string name="ExtensionRoleTomahawkThrow">Throw</string>
+  <string name="ExtensionRoleTomahawkThrowWikiDescription">Throw the tomahawk.</string>
+  <string name="ExtensionOptionTomahawkSpeed">Axe Speed</string>
+  <string name="ExtensionOptionTomahawkKillRadius">Kill Radius</string>
+  <string name="ExtensionOptionTomahawkCooldown">Throw Cooldown</string>
+  <string name="ExtensionOptionTomahawkCanVent">Can Vent</string>
+
+  <!-- C4 Role -->
+  <string name="ExtensionRoleC4">C4</string>
+  <string name="ExtensionRoleC4IntroBlurb">Place a remote-controlled C4 bomb and detonate it.</string>
+  <string name="ExtensionRoleC4TabDescription">Place a bomb on the ground.\%nl\%Detonate it at any time to kill players in the explosion radius.</string>
+  <string name="ExtensionRoleC4WikiDescription">C4 is an Impostor Power role that can drop a remote-controlled explosive package (C4) on the floor. The bomb can then be detonated at any moment from anywhere, executing any crewmates caught within the blast zone.</string>
+  <string name="ExtensionRoleC4Place">Place</string>
+  <string name="ExtensionRoleC4PlaceWikiDescription">Place the C4 bomb on the ground at your feet.</string>
+  <string name="ExtensionRoleC4Detonate">Detonate</string>
+  <string name="ExtensionRoleC4DetonateWikiDescription">Trigger the explosion of your placed C4 bomb.</string>
+  <string name="ExtensionOptionC4Cooldown">C4 Cooldown</string>
+  <string name="ExtensionOptionC4ArmingDelay">Arming Delay</string>
+  <string name="ExtensionOptionC4Radius">Detonation Radius</string>
+  <string name="ExtensionOptionC4CanVent">Can Vent</string>
+
+  <!-- Shockwave Role -->
+  <string name="ExtensionRoleShockwave">Shockwave</string>
+  <string name="ExtensionRoleShockwaveIntroBlurb">Create a powerful shockwave blast that pushes players off the map!</string>
+  <string name="ExtensionRoleShockwaveTabDescription">Use your shockwave blast to throw nearby players through walls and into the void!</string>
+  <string name="ExtensionRoleShockwaveWikiDescription">Shockwave is an Impostor Support role that can trigger a massive shockwave. Any players within the blast zone are flung outward, passing through walls and flying off the map, where they are consumed by the void after 5 seconds.</string>
+  <string name="ExtensionRoleShockwaveBlast">Shockwave</string>
+  <string name="ExtensionRoleShockwaveBlastWikiDescription">Trigger a shockwave blast around yourself.</string>
+  <string name="ExtensionOptionShockwaveCooldown">Shockwave Cooldown</string>
+  <string name="ExtensionOptionShockwaveRadius">Blast Radius</string>
+  <string name="ExtensionOptionShockwavePushDistance">Knockback Distance</string>
+  <string name="ExtensionOptionShockwaveCanVent">Can Vent</string>
+  <string name="DiedToDiedInVoid">Died in the void.</string>
+
+  <!-- Sniper Role -->
+  <string name="ExtensionRoleSniper">Sniper</string>
+  <string name="ExtensionRoleSniperIntroBlurb">Acquire targets and eliminate them through solid walls with your high-caliber rifle!</string>
+  <string name="ExtensionRoleSniperTabDescription">Activate your scope to see through walls. Left-click any crewmate within range and line-of-sight to snipe them!</string>
+  <string name="ExtensionRoleSniperWikiDescription">Sniper is an Impostor Killing role that can enter tactical Scope Mode. While scoping, the Sniper can see through walls and can eliminate any crewmate in range by clicking on them with the mouse.</string>
+  <string name="ExtensionRoleSniperSnipe">Scope</string>
+  <string name="ExtensionRoleSniperSnipeWikiDescription">Toggle Sniper Scope Mode on or off.</string>
+  <string name="ExtensionOptionSniperCooldown">Sniper Cooldown</string>
+  <string name="ExtensionOptionSniperMaxRange">Maximum Snipe Range</string>
+  <string name="ExtensionOptionSniperCanVent">Can Vent</string>
+  <string name="DiedToSniperRifle">Sniped</string>
+
+  <!-- Gun Game Role -->
+  <string name="ExtensionRoleGunGame">Gun Game</string>
+  <string name="ExtensionRoleGunGameIntroBlurb">Gain a new Impostor role after every single kill!</string>
+  <string name="ExtensionRoleGunGameTabDescription">Every successful kill will change your role into another lethal Impostor archetype from the weapon chain!</string>
+  <string name="ExtensionRoleGunGameWikiDescription">Gun Game is an Impostor Power role that changes into a completely new Impostor role after every kill. The sequence of changes can follow a fixed weapon chain (Sniper -> RC-XD -> Detonator -> Vanilla Impostor) or be chosen completely at random.</string>
+  <string name="ExtensionOptionGunGameUseLethalChain">Use Fixed Weapon Chain</string>
+  <string name="ExtensionOptionGunGameCanVent">Can Vent</string>
+
+  <!-- Builder Role -->
+  <string name="ExtensionRoleBuilder">Builder</string>
+  <string name="ExtensionRoleBuilderIntroBlurb">Deploy temporary structures to block paths and protect your crew!</string>
+  <string name="ExtensionRoleBuilderTabDescription">Choose between placing a crate or a wall, then deploy it to seal off corridors and block player movement.</string>
+  <string name="ExtensionRoleBuilderWikiDescription">Builder is a Crewmate Support role that can build temporary solid physics obstacles (Crates and Walls) that block the movement of all players. Structures naturally dissipate after a short duration.</string>
+  <string name="ExtensionRoleBuilderPlace">Place</string>
+  <string name="ExtensionRoleBuilderPlaceWikiDescription">Place your active structure type.</string>
+  <string name="ExtensionRoleBuilderCycle">Switch Structure</string>
+  <string name="ExtensionRoleBuilderCycleWikiDescription">Cycle your active structure between Crate and Wall.</string>
+  <string name="ExtensionOptionBuilderCooldown">Build Cooldown</string>
+  <string name="ExtensionOptionBuilderDuration">Structure Duration</string>
+  <string name="ExtensionOptionBuilderMaxStructures">Max Structures</string>
+
+  <!-- Telecommunication Role -->
+  <string name="ExtensionRoleTelecommunication">Telecommunication</string>
+  <string name="ExtensionRoleTelecommunicationIntroBlurb">Intercept security console systems to track player activity.</string>
+  <string name="ExtensionRoleTelecommunicationTabDescription">You receive live notifications whenever any player uses or leaves a security/surveillance console (Admin, Cams, Vitals, Door Logs).</string>
+  <string name="ExtensionRoleTelecommunicationWikiDescription">Telecommunication is a Crewmate Investigative role that intercepts signals from administrative and security consoles on the ship. You are instantly notified whenever any player begins or ends their session on Cameras, the Admin Map, Vitals, or Door Logs.</string>
+  <string name="ExtensionOptionTelecommunicationNotifyAdmin">Notify Admin Map Usage</string>
+  <string name="ExtensionOptionTelecommunicationNotifyCams">Notify Camera Usage</string>
+  <string name="ExtensionOptionTelecommunicationNotifyVitals">Notify Vitals Usage</string>
+  <string name="ExtensionOptionTelecommunicationNotifyDoorLogs">Notify Door Logs Usage</string>
+  <string name="ExtensionConsoleAdmin">Admin Map</string>
+  <string name="ExtensionConsoleCameras">Cameras</string>
+  <string name="ExtensionConsoleVitals">Vitals</string>
+  <string name="ExtensionConsoleDoorLogs">Door Logs</string>
+  <string name="ExtensionConsoleUsed">started using</string>
+  <string name="ExtensionConsoleStopped">stopped using</string>
+  <string name="ExtensionConsoleSomeone">Someone</string>
+
+  <!-- Dad Role -->
+  <string name="ExtensionRoleDad">Dad</string>
+  <string name="ExtensionRoleDadIntroBlurb">Buy beer, drink alcohol and use powerful dad abilities to help the crew!</string>
+  <string name="ExtensionRoleDadTabDescription">You must maintain your alcohol level by buying beer from the shop (random vent). Jump into other vents to activate selected abilities.</string>
+  <string name="ExtensionRoleDadWikiDescription">Dad is a Crewmate Support role. He has an alcohol level that constantly decreases. If it hits zero, Dad dies of sobriety. He earns money for beer by completing tasks. The shop is located in a random vent. Hopping into a normal vent triggers the currently active ability.</string>
+  <string name="ExtensionRoleDadCycle">Cycle Ability</string>
+  <string name="ExtensionRoleDadCycleWikiDescription">Cycle the active dad ability.</string>
+  <string name="DadAbilityName0">Go For Milk</string>
+  <string name="DadAbilityName1">Super Vision</string>
+  <string name="DadAbilityName2">Sniffing</string>
+  <string name="DadAbilityName3">Resting / Sleep</string>
+  <string name="DadAbilityName4">Dad Rage</string>
+  <string name="DadAbilityName5">Give Drinks</string>
+  <string name="DadAbilityName6">Become God of Alcohol</string>
+  <string name="DadSelectedAbilityText">Selected Ability</string>
+  <string name="DadBoughtBeer">Bought beer!</string>
+  <string name="DadIsSleeping">You are sleeping! Zzz...</string>
+  <string name="DadNoAlcohol">Too sober to do that!</string>
+  <string name="DadWentForMilkNotify">Dad went for milk... He might return in 10 years.</string>
+  <string name="DadSuperVisionActive">Super vision active!</string>
+  <string name="DadNoDeadBodies">No smell of dead bodies...</string>
+  <string name="DadSleepingActive">Going to sleep... Zzz...</string>
+  <string name="DadRageActive">Rage active! Collision with a player will murder them!</string>
+  <string name="DadRageEnded">Rage satisfied!</string>
+  <string name="DadGaveDrinks">Splashed drinks to nearby players!</string>
+  <string name="DadGodOfAlcohol">Became the God of Alcohol! Alcohol starts rising!</string>
+  <string name="DadDeadBodiesDetected">Smelled dead bodies:</string>
+  <string name="DadEarnedMoney">Earned money!</string>
+  <string name="DadDrunkRoleNotify">You feel very dizzy... Your role feels like a...</string>
+  <string name="DadOptionStartingAlcohol">Starting Alcohol</string>
+  <string name="DadOptionStartingMoney">Starting Cash</string>
+  <string name="DadOptionBeerCost">Beer Cost</string>
+  <string name="DadOptionAlcoholPerBeer">Alcohol per Beer</string>
+  <string name="DadOptionDecreaseInterval">Alcohol Decrease Interval</string>
+  <string name="DadOptionDecreasePerInterval">Alcohol Decrease per Interval</string>
+  <string name="DadOptionMoneyPerTask">Cash per Task</string>
+  <string name="DadOptionAbilityAlcoholCost">Ability Alcohol Cost</string>
+  <string name="DadOptionAbilityAlcoholRequirement">Ability Alcohol Requirement</string>
+  <string name="DadOptionSuperVisionDuration">Super Vision Duration</string>
+  <string name="DadOptionGiveDrinkRange">Give Drink Range</string>
+  <string name="DadOptionDrunkIncorrectChance">Drunk Incorrect Role Chance</string>
+
+  <!-- Body Swapper Role -->
+  <string name="ExtensionRoleBodySwapper">Body Swapper</string>
+  <string name="ExtensionRoleBodySwapperIntroBlurb">Set up fake dead bodies as deadly traps for the crew.</string>
+  <string name="ExtensionRoleBodySwapperTabDescription">Place decoy fake dead bodies. Anyone who attempts to report a decoy will be instantly eaten/killed.</string>
+  <string name="ExtensionRoleBodySwapperWikiDescription">Body Swapper is an Impostor Killing role that can place fake dead bodies using the Decoy button. Reporting a decoy instantly kills the reporter instead of starting a meeting.</string>
+
+  <!-- Poltergeist Role -->
+  <string name="ExtensionRolePoltergeist">Poltergeist</string>
+  <string name="ExtensionRolePoltergeistIntroBlurb">Haunt the living with fake bodies to win from the afterlife.</string>
+  <string name="ExtensionRolePoltergeistTabDescription">Place decoy fake bodies. Each time someone tries to report your decoy, you earn a point towards your victory!</string>
+  <string name="ExtensionRolePoltergeistWikiDescription">Poltergeist is a Neutral Afterlife role. You are a ghost walker (like the Spectre). You have no tasks; instead, you can spawn decoy dead bodies using the Decoy button. If a player reports your decoy, you gain a point. Accumulate the required points to win!</string>
+
+  <!-- The Quarry Role -->
+  <string name="ExtensionRoleQuarry">The Quarry</string>
+  <string name="ExtensionRoleQuarryIntroBlurb">Swap places with a player and play cat and mouse. If they can't catch you, they die!</string>
+  <string name="ExtensionRoleQuarryTabDescription">Use Swap to teleport to a player's position (and them to yours).\%nl\%The target must find and kill you before time runs out, or they die!\%nl\%Survive to the end with at least one swap to win.</string>
+  <string name="ExtensionRoleQuarryWikiDescription">The Quarry is a Neutral Outlier role. Use the Swap ability to exchange positions with another player, starting a cat-and-mouse game. The swapped target receives a notification and screen flash, and must find and kill The Quarry before the seek timer expires. If the timer runs out, the target dies. The Quarry cannot kill their current seek target, but can kill other players. Survive to the end of the game with at least one successful swap to win alongside whoever wins.</string>
+  <string name="ExtensionRoleQuarrySwap">Swap</string>
+  <string name="ExtensionRoleQuarrySwapWikiDescription">Open a player selection menu and swap positions with the chosen player. Starts a seek timer.</string>
+  <string name="ExtensionRoleQuarryKill">Kill</string>
+  <string name="ExtensionRoleQuarryKillWikiDescription">Kill a nearby player. Cannot kill the current seek target.</string>
+  <string name="ExtensionRoleQuarryTargetKill">Defeat Quarry</string>
+  <string name="ExtensionRoleQuarryTargetKillWikiDescription">Kill The Quarry during seek time to survive.</string>
+
+  <!-- Quarry Options -->
+  <string name="ExtensionOptionQuarryTargetHasArrowToQuarry">Target Has Arrow to Quarry</string>
+  <string name="ExtensionOptionQuarryCanVentDuringSeekTime">Target Can Vent During Seek</string>
+  <string name="ExtensionOptionQuarryTargetDiesOnMeetingCall">Target Dies on Meeting Call</string>
+  <string name="ExtensionOptionQuarrySeekTime">Seek Time</string>
+  <string name="ExtensionOptionQuarrySwapCooldown">Swap Cooldown</string>
+  <string name="ExtensionOptionQuarryKillCooldown">Kill Cooldown</string>
+  <string name="ExtensionOptionQuarryCanVent">Can Vent</string>
+  <string name="ExtensionOptionQuarryImpostorVision">Impostor Vision</string>
+  <string name="ExtensionOptionQuarryAbilityUseLimit">Max Swap Uses</string>
+  <string name="ExtensionOptionQuarryAbilityUseGainWithEachKill">Swap Uses Gained Per Kill</string>
+  <string name="ExtensionOptionQuarryCooldownsResetEachOther">Kill Resets Swap Cooldown</string>
+
+  <!-- Quarry Tab Text -->
+  <string name="ExtensionQuarryTabSwapsRemaining">Swaps remaining</string>
+  <string name="ExtensionQuarryTabSeekTarget">Seek Target</string>
+  <string name="ExtensionQuarryTabTimeRemaining">Time remaining</string>
+  <string name="ExtensionQuarryTabSwapDone">Swap condition met!</string>
+
+  <!-- Quarry Notifications -->
+  <string name="ExtensionQuarryTargetNotification">You have been swapped by The Quarry! Find and kill them!</string>
+
+  <!-- Quarry Death -->
+  <string name="DiedToQuarrySeek">Hunted down by The Quarry</string>
+  <!-- Dumper Options -->
+  <string name="ExtensionOptionDumperMaxDragDuration">Max Drag Duration (s)</string>
+  <string name="ExtensionOptionDumperTakeCooldown">Pickup Cooldown (s)</string>
+  <string name="ExtensionOptionDumperDragSpeedModifier">Drag Speed Modifier</string>
+
+  <!-- Gaslighter Role -->
+  <string name="ExtensionRoleGaslighter">Gaslighter</string>
+  <string name="ExtensionRoleGaslighterIntroBlurb">Manipulate the crew with your unique abilities.</string>
+  <string name="ExtensionRoleGaslighterTabDescription">At the start of every meeting, you are assigned a random ability (Kill, Knight, Shield, or Curse). Use your action button on players to decide their fate!</string>
+  <string name="ExtensionRoleGaslighterWikiDescription">Gaslighter is a Neutral Outlier role. Instead of a single fixed ability, they receive one of four random powers at the start of each meeting: Kill (25%), Knight (25%), Shield (25%), or Curse (25%). Use your action button to apply your chosen effect to a player. Survive to fulfill your chosen win condition!</string>
+  <string name="ExtensionRoleGaslighterAction">Gaslighter Action</string>
+  <string name="ExtensionRoleGaslighterActionWikiDescription">Use your randomly assigned ability for this round.</string>
+
+  <!-- Gaslighter Options -->
+  <string name="ExtensionOptionGaslighterKillCooldown">Kill Cooldown</string>
+  <string name="ExtensionOptionGaslighterKnightCooldown">Knight Cooldown</string>
+  <string name="ExtensionOptionGaslighterCurseCooldown">Curse Cooldown</string>
+  <string name="ExtensionOptionGaslighterCurseCastingDuration">Curse Casting Duration</string>
+  <string name="ExtensionOptionGaslighterShieldCooldown">Shield Cooldown</string>
+  <string name="ExtensionOptionGaslighterMaxKnights">Max Knights</string>
+  <string name="ExtensionOptionGaslighterWinCondition">Gaslighter Win Condition</string>
+  <string name="GaslighterWinMode_CrewmateLose">Crewmate Lose</string>
+  <string name="GaslighterWinMode_LastStanding">Last Standing</string>
+  <string name="GaslighterWinMode_AliveAtEnd">Alive At End</string>
+  <string name="ExtensionOptionGaslighterCanVent">Can Vent</string>
+
+  <!-- Sandworm Options -->
+  <string name="ExtensionOptionSandwormUndergroundSpeed">Underground Speed Modifier</string>
+  <string name="ExtensionOptionSandwormDigDuration">Dig Duration (s)</string>
+  <string name="ExtensionOptionSandwormDigCooldown">Dig Cooldown (s)</string>
+  <string name="ExtensionOptionSandwormEmergeVisionDuration">Vision Restriction Duration After Emerge (s)</string>
+  <!-- Sniper Role (Missing) -->
+  <string name="ExtensionRoleSniperTabDescription">Get into position, aim, and shoot (by clicking with your mouse on a player) to eliminate your target from a distance!</string>
+  <string name="ExtensionRoleSniperWikiDescription">Sniper is an Impostor Ranged role. They have a special Aim button that immobilizes them for a few seconds and increases their vision, allowing them to see through walls. While aiming, they can use the Shoot button - simply click on a player with your mouse to shoot them! If they die, miss, or run out of time, aiming is canceled.</string>
+
+  <!-- Tomahawk Role -->
+  <string name="ExtensionRoleTomahawk">Tomahawk</string>
+  <string name="ExtensionRoleTomahawkIntroBlurb">Throw a spinning axe that travels across the map.</string>
+  <string name="ExtensionRoleTomahawkTabDescription">Enter Aim mode to see through walls and click your mouse to throw the Tomahawk in that direction!</string>
+  <string name="ExtensionRoleTomahawkWikiDescription">Tomahawk is an Impostor Killing role that throws a spinning axe. They have a special Aim button that immobilizes them for 5 seconds and increases their vision, letting them see through walls. Just left click with your mouse to throw the tomahawk in any direction! Anyone in its path will be killed instantly.</string>
+  <string name="ExtensionRoleTomahawkThrow">Aim</string>
+  <string name="ExtensionRoleTomahawkThrowWikiDescription">Enter aim mode. Then left-click to throw your axe.</string>
+  <string name="ExtensionOptionTomahawkSpeed">Axe Speed</string>
+  <string name="ExtensionOptionTomahawkKillRadius">Kill Radius</string>
+  <string name="ExtensionOptionTomahawkCooldown">Throw Cooldown</string>
+  <string name="ExtensionOptionTomahawkCanVent">Can Vent</string>
+  <string name="DiedToTomahawk">Sliced</string>
+  <!-- Boot Role -->
+  <string name="ExtensionRoleBoot">Boot</string>
+  <string name="ExtensionRoleBootIntroBlurb">Get rid of evidence - teleport bodies to random locations on the map!</string>
+  <string name="ExtensionRoleBootTabDescription">Boot is an Impostor Support role. You have a special Boot button that you can use to target a nearby dead body and teleport it to a completely random, safe location on the map!</string>
+  <string name="ExtensionRoleBootWikiDescription">Boot is an Impostor Support that has a body teleportation button (Boot). It allows a targeted body to instantly disappear and reappear in a completely different spot on the map! Bodies never spawn in walls or outside the map boundaries.</string>
+  <string name="ExtensionRoleBootAction">Boot</string>
+  <string name="ExtensionRoleBootActionWikiDescription">Teleport the nearest body.</string>
+  
+  <string name="ExtensionOptionBootKillCooldown">Kill Cooldown</string>
+  <string name="ExtensionOptionBootCooldown">Boot Cooldown</string>
+  <string name="ExtensionOptionBootSyncCooldowns">Synchronize Cooldowns (Kill/Boot)</string>
+  <string name="ExtensionOptionBootCanVent">Can Vent</string>
+  <!-- Innocent Role -->
+  <string name="ExtensionRoleInnocent">Innocent</string>
+  <string name="ExtensionRoleInnocentIntroBlurb">Taunt someone into killing you!</string>
+  <string name="ExtensionRoleInnocentTabDescription">Use Taunt on another player to make them immediately kill you.\%nl\%If that player is voted out in the next meeting, you win.</string>
+  <string name="ExtensionRoleInnocentWikiDescription">Innocent is a Neutral Evil role. Use Taunt on another player to make them immediately kill you. If that player is voted out in the next meeting, you win. To assist you in meetings, a special symbol will appear next to the killer's name (only visible to you).</string>
+  <string name="ExtensionRoleInnocentTaunt">Taunt</string>
+  <string name="ExtensionRoleInnocentTauntWikiDescription">Taunt a player into killing you.</string>
+  
+  <string name="ExtensionOptionInnocentTauntCooldown">Taunt Cooldown</string>
+  <string name="ExtensionOptionInnocentCanTauntFirstRound">Can Taunt in First Round</string>
+  <string name="ExtensionOptionInnocentForceReport">Force Killer to Report Body</string>
+
+  <!-- Insane Modifier -->
+  <string name="ExtensionModifierInsane">Insane</string>
+  <string name="ExtensionModifierInsaneIntroBlurb">Your role returns fake/scrambled information to you!</string>
+  <string name="ExtensionModifierInsaneTabDescription">You have the Insane modifier. Your role behaves in reverse or shows incorrect data.</string>
+  <string name="ExtensionModifierInsaneWikiDescription">Insane is a universal passive modifier that can be assigned to any player. When active, it scrambles, reverses, or interferes with the information provided by the player's role.</string>
+  <string name="ExtensionModifierInsaneAmount">Insane Count</string>
+  <string name="ExtensionModifierInsaneChance">Insane Chance</string>
+</resources>

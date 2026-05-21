@@ -26,5 +26,6 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> DeathNoteUISprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Death_Note_UI.png", 650f);
         public static LoadableAsset<Sprite> LanternSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Lantern.png");
         public static LoadableAsset<Sprite> BrokenLanternSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.BrokenLantern.png");
+        public static LoadableAsset<Sprite> AxeSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Axe_Sprite.png");
     }
 }

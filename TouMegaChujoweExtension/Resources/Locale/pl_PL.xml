@@ -410,6 +410,10 @@
   <string name="ExtensionWitchSpellNotification">&lt;player&gt; zostal przeklety! Pozostalo mu &lt;meetings&gt; spotkanie(a). Wyrzuccie lub zabijcie Witch, aby go uratowac!</string>
   <string name="ExtensionWitchSpellNotificationMultiple">Wielu graczy zostalo przekletych:\n&lt;players&gt;\nWyrzuccie lub zabijcie Witch, aby ich uratowac!</string>
 
+  <!-- Gaslighter Notifications -->
+  <string name="ExtensionGaslighterCurseNotification">&lt;player&gt; zostal przeklety przez Gaslightera! Umrze na koncu tego spotkania, chyba ze Gaslighter zostanie wykluczony!</string>
+  <string name="ExtensionGaslighterCurseNotificationMultiple">Wielu graczy zostalo przekletych przez Gaslightera:\n&lt;players&gt;\nWykluczcie Gaslightera, aby ich uratowac!</string>
+
   <!-- Wraith Role -->
   <string name="ExtensionRoleWraith">Wraith</string>
   <string name="ExtensionRoleWraithIntroBlurb">Teleportuj sie do latarni i uderzaj z cienia.</string>
@@ -1200,7 +1204,33 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="Min Other Neutrals">Min Innych Neutrali</string>
   <string name="Max Other Neutrals">Max Innych Neutrali</string>
   <string name="Min Neutral Killing">Min Neutral Killing</string>
-  <string name="Max Neutral Killing">Max Neutral Killing</string>
-  <string name="Neutral Killing">Neutral Killing</string>
+  <!-- Gun Game Role -->
+  <string name="ExtensionRoleGunGame">Gun Game</string>
+  <string name="ExtensionRoleGunGameIntroBlurb">Otrzymaj nową rolę Impostora po każdym zabójstwie!</string>
+  <string name="ExtensionRoleGunGameTabDescription">Każde udane zabójstwo zmieni Twoją rolę w inny zabójczy archetyp Impostora z łańcucha broni!</string>
+  <string name="ExtensionRoleGunGameWikiDescription">Gun Game to rola Impostora, która zmienia się w zupełnie nową rolę Impostora po każdym zabójstwie. Kolejność zmian może przebiegać według stałego łańcucha broni (Snajper -> RC-XD -> Detonator -> Zwykły Impostor) lub być wybierana całkowicie losowo.</string>
+  <string name="ExtensionOptionGunGameUseLethalChain">Użyj stałego łańcucha broni</string>
+  <string name="ExtensionOptionGunGameCanVent">Może używać wentylacji</string>
+
+  <!-- Gaslighter Role -->
+  <string name="ExtensionRoleGaslighter">Gaslighter</string>
+  <string name="ExtensionRoleGaslighterIntroBlurb">Manipuluj załogą za pomocą swoich unikalnych zdolności.</string>
+  <string name="ExtensionRoleGaslighterTabDescription">Na początku każdego spotkania otrzymujesz losową zdolność (Zabójstwo, Pasowanie (Knight), Tarcza lub Klątwa). Użyj przycisku akcji na innych graczach, aby wpłynąć na ich los!</string>
+  <string name="ExtensionRoleGaslighterWikiDescription">Gaslighter to rola Neutral Outlier. Zamiast jednej stałej zdolności, na początku każdego spotkania otrzymuje on jedną z czterech losowych mocy: Zabójstwo (25%), Pasowanie (25%), Tarcza (25%) lub Klątwa (25%). Używa głównego przycisku akcji, aby nałożyć wybrany efekt na innego gracza. Przeżyj, by wygrać według wybranego warunku!</string>
+  <string name="ExtensionRoleGaslighterAction">Akcja Gaslightera</string>
+  <string name="ExtensionRoleGaslighterActionWikiDescription">Użyj wylosowanej na tę rundę zdolności.</string>
+
+  <!-- Gaslighter Options -->
+  <string name="ExtensionOptionGaslighterKillCooldown">Cooldown zabójstwa</string>
+  <string name="ExtensionOptionGaslighterKnightCooldown">Cooldown Pasowania (Knight)</string>
+  <string name="ExtensionOptionGaslighterCurseCooldown">Cooldown Klątwy (Curse)</string>
+  <string name="ExtensionOptionGaslighterCurseCastingDuration">Czas rzucania Klątwy (Curse)</string>
+  <string name="ExtensionOptionGaslighterShieldCooldown">Cooldown Tarczy (Shield)</string>
+  <string name="ExtensionOptionGaslighterMaxKnights">Maksymalna liczba Rycerzy</string>
+  <string name="ExtensionOptionGaslighterWinCondition">Warunek wygranej Gaslightera</string>
+  <string name="GaslighterWinMode_CrewmateLose">Porażka Crewmate</string>
+  <string name="GaslighterWinMode_LastStanding">Ostatni ocalały</string>
+  <string name="GaslighterWinMode_AliveAtEnd">Żywy na końcu</string>
+  <string name="ExtensionOptionGaslighterCanVent">Może używać wentów</string>
 </resources>
 

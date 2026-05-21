@@ -15,4 +15,7 @@ public sealed class DumperOptions : AbstractOptionGroup<DumperRole>
 
     [ModdedNumberOption("ExtensionOptionDumperTakeCooldown", 5f, 60f, 1f, MiraNumberSuffixes.Seconds, "0")]
     public float TakeCooldown { get; set; } = 20f;
+
+    [ModdedNumberOption("ExtensionOptionDumperDragSpeedModifier", 0.1f, 1f, 0.1f, MiraNumberSuffixes.Multiplier, "0.0")]
+    public float DragSpeedModifier { get; set; } = 0.5f;
 }

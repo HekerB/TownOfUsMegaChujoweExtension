@@ -1,108 +1,193 @@
+using Reactor.Networking.Attributes;
 using System.Collections.Generic;
 using System.Linq;
-using TouMegaChujoweExtension.Roles.Impostor;
-using TouMegaChujoweExtension.Networking;
-using TownOfUs.Utilities;
-using TownOfUs.Extensions;
-using UnityEngine;
-using Reactor.Networking.Attributes;
 using MiraAPI.GameOptions;
+using MiraAPI.Utilities;
+using TouMegaChujoweExtension.Networking;
+using TouMegaChujoweExtension.Options.Roles.Impostor;
+using TouMegaChujoweExtension.Roles.Impostor;
+using TownOfUs.Extensions;
+using TownOfUs.Utilities;
+using MiraAPI.Modifiers;
+using TownOfUs;
+using TownOfUs.Modifiers;
+using TownOfUs.Modifiers.Impostor;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
 
 public static class DumperSystem
 {
-    private static readonly Dictionary<byte, DeadBody> DraggedBodies = new();
-    private static readonly Dictionary<byte, float> DragTimers = new();
-    public static readonly HashSet<byte> MyKills = new();
+    private static readonly Dictionary<byte, byte> DraggingBodies = new(); // DumperPlayerId -> BodyId (ParentId)
+    private static readonly Dictionary<byte, float> AutoDumpTimes = new(); // DumperPlayerId -> AutoDumpTime
+    private static readonly Dictionary<byte, DeadBody> DraggingBodyObjects = new(); // DumperPlayerId -> DeadBody object
 
-    public static bool IsDragging(byte playerId) => DraggedBodies.ContainsKey(playerId);
-    public static float GetDragTimer(byte playerId) => DragTimers.GetValueOrDefault(playerId, 0f);
-
-    public static void Reset()
+    public static byte? GetDraggedBodyId(byte playerId)
     {
-        foreach (var body in DraggedBodies.Values)
-        {
-            if (body != null)
-            {
-                SetBodyVisibility(body, true);
-            }
-        }
-        DraggedBodies.Clear();
-        DragTimers.Clear();
-        MyKills.Clear();
+        return DraggingBodies.TryGetValue(playerId, out var bodyId) ? bodyId : null;
     }
 
-    [MethodRpc((uint)ExtensionRpc.DumperPickupBody)]
-    public static void RpcPickupBody(PlayerControl dumper, byte bodyId)
+    public static float? GetAutoDumpTime(byte playerId)
     {
-        var body = UnityEngine.Object.FindObjectsOfType<DeadBody>().FirstOrDefault(b => b.ParentId == bodyId);
-        if (body == null) return;
-
-        DraggedBodies[dumper.PlayerId] = body;
-        DragTimers[dumper.PlayerId] = OptionGroupSingleton<Options.Roles.Impostor.DumperOptions>.Instance.MaxDragDuration;
-        SetBodyVisibility(body, false);
-    }
-
-    [MethodRpc((uint)ExtensionRpc.DumperDropBody)]
-    public static void RpcDropBody(PlayerControl dumper)
-    {
-        if (dumper == null) return;
-        if (DraggedBodies.TryGetValue(dumper.PlayerId, out var body))
-        {
-            SetBodyVisibility(body, true);
-            body.transform.position = dumper.transform.position;
-            DraggedBodies.Remove(dumper.PlayerId);
-            DragTimers.Remove(dumper.PlayerId);
-        }
-    }
-
-    private static void SetBodyVisibility(DeadBody body, bool visible)
-    {
-        var renderers = body.GetComponentsInChildren<SpriteRenderer>();
-        foreach (var r in renderers) r.enabled = visible;
-        
-        var collider = body.GetComponent<Collider2D>();
-        if (collider != null) collider.enabled = visible;
+        return AutoDumpTimes.TryGetValue(playerId, out var time) ? time : null;
     }
 
     public static void Update()
     {
-        var toDrop = new List<byte>();
-        foreach (var kvp in DraggedBodies)
+        if (ShipStatus.Instance == null) return;
+
+        foreach (var player in PlayerControl.AllPlayerControls)
         {
-            var dumperId = kvp.Key;
-            var body = kvp.Value;
-            var dumper = MiscUtils.PlayerById(dumperId);
-            
-            if (dumper == null || dumper.HasDied())
+            if (player == null) continue;
+
+            if (player.Data.IsDead)
             {
-                toDrop.Add(dumperId);
+                if (IsDragging(player.PlayerId))
+                {
+                    DropBody(player);
+                }
                 continue;
             }
 
-            if (DragTimers.TryGetValue(dumperId, out var timer))
-            {
-                timer -= Time.deltaTime;
-                if (timer <= 0f)
-                {
-                    toDrop.Add(dumperId);
-                }
-                else
-                {
-                    DragTimers[dumperId] = timer;
-                }
-            }
+            if (!player.IsRole<DumperRole>()) continue;
 
-            if (body != null && dumper != null)
+            var draggedBodyId = GetDraggedBodyId(player.PlayerId);
+            var autoDumpTime = GetAutoDumpTime(player.PlayerId);
+
+            if (draggedBodyId.HasValue && autoDumpTime.HasValue)
             {
-                body.transform.position = dumper.transform.position;
+                if (player.TryGetModifier<DragModifier>(out var dragMod))
+                {
+                    dragMod.SpeedFactor = 1.0f;
+                }
+
+                if (Time.time >= autoDumpTime.Value)
+                {
+                    if (player.AmOwner)
+                    {
+                        Info($"[Dumper] Auto-dumping body for {player.Data.PlayerName} after duration elapsed!");
+                        TouMegaChujoweExtension.Roles.Impostor.DumperRole.RpcDropBody(player);
+                    }
+                }
             }
         }
+    }
 
-        foreach (var dId in toDrop)
+    public static void Reset()
+    {
+        foreach (var kvp in DraggingBodyObjects)
         {
-            RpcDropBody(MiscUtils.PlayerById(dId));
+            var body = kvp.Value;
+            if (body != null && body.gameObject != null)
+            {
+                foreach (var r in body.GetComponentsInChildren<Renderer>(true))
+                {
+                    r.enabled = true;
+                }
+                foreach (var c in body.GetComponentsInChildren<Collider2D>(true))
+                {
+                    c.enabled = true;
+                }
+            }
         }
+        DraggingBodyObjects.Clear();
+        DraggingBodies.Clear();
+        AutoDumpTimes.Clear();
+    }
+
+    public static bool IsDragging(byte playerId) 
+    {
+        return DraggingBodies.ContainsKey(playerId);
+    }
+
+    public static void PickupBody(PlayerControl player, byte bodyId)
+    {
+        if (!player.IsRole<DumperRole>()) return;
+
+        // Delegate carrying, speed reduction, and networking synchronization to base mod's DragModifier
+        // MUST do this first so that the modifier can successfully find and cache the DeadBody before we disable its components!
+        var dragMod = new DragModifier(bodyId);
+        dragMod.SpeedFactor = 1.0f; // No carry speed slowdown!
+        player.GetModifierComponent()?.AddModifier(dragMod);
+
+        // Find the DeadBody game object and make it invisible and unreportable by disabling renderers and colliders
+        var body = Helpers.GetBodyById(bodyId);
+        if (body != null)
+        {
+            foreach (var r in body.GetComponentsInChildren<Renderer>(true))
+            {
+                r.enabled = false;
+            }
+            foreach (var c in body.GetComponentsInChildren<Collider2D>(true))
+            {
+                c.enabled = false;
+            }
+            DraggingBodyObjects[player.PlayerId] = body;
+        }
+
+        DraggingBodies[player.PlayerId] = bodyId;
+        var duration = OptionGroupSingleton<DumperOptions>.Instance.MaxDragDuration;
+        AutoDumpTimes[player.PlayerId] = Time.time + duration;
+
+        if (player.Data.Role is DumperRole role)
+        {
+            role.DraggingBodyId = bodyId;
+            role.AutoDumpTime = Time.time + duration;
+        }
+
+        Info($"[Dumper] {player.Data.PlayerName} picked up body of {bodyId}");
+    }
+
+    public static void DropBody(PlayerControl player)
+    {
+        if (!player.IsRole<DumperRole>()) return;
+
+        // Cleanly remove the DragModifier
+        if (player.HasModifier<DragModifier>())
+        {
+            player.GetModifierComponent()?.RemoveModifier<DragModifier>();
+        }
+
+        DraggingBodies.Remove(player.PlayerId);
+        AutoDumpTimes.Remove(player.PlayerId);
+
+        if (player.Data.Role is DumperRole role)
+        {
+            role.DraggingBodyId = null;
+            role.AutoDumpTime = null;
+        }
+
+        // Reactivate body and drop it at player's location
+        if (DraggingBodyObjects.TryGetValue(player.PlayerId, out var body))
+        {
+            if (body != null && body.gameObject != null)
+            {
+                var dropPos = player.transform.position;
+                dropPos.z = dropPos.y / 1000f;
+                body.transform.position = dropPos;
+                
+                // Re-enable renderers and colliders
+                foreach (var r in body.GetComponentsInChildren<Renderer>(true))
+                {
+                    r.enabled = true;
+                }
+                foreach (var c in body.GetComponentsInChildren<Collider2D>(true))
+                {
+                    c.enabled = true;
+                }
+            }
+            DraggingBodyObjects.Remove(player.PlayerId);
+        }
+
+        if (player.AmOwner)
+        {
+            var instance = MiraAPI.Hud.CustomButtonSingleton<DumperDragButton>.Instance;
+            if (instance != null)
+            {
+                instance.Timer = instance.Cooldown;
+            }
+        }
+
+        Info($"[Dumper] {player.Data.PlayerName} dropped body");
     }
 }

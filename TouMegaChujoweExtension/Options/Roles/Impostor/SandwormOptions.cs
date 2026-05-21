@@ -16,9 +16,9 @@ public sealed class SandwormOptions : AbstractOptionGroup<SandwormRole>
     [ModdedNumberOption("ExtensionOptionSandwormDigDuration", 2f, 30f, 1f, MiraNumberSuffixes.Seconds, "0")]
     public float DigDuration { get; set; } = 10f;
 
-    [ModdedNumberOption("ExtensionOptionSandwormEmergeKillRadius", 0.5f, 5f, 0.1f, MiraNumberSuffixes.None, "0.0")]
-    public float EmergeKillRadius { get; set; } = 1.5f;
+    [ModdedNumberOption("ExtensionOptionSandwormDigCooldown", 5f, 60f, 1f, MiraNumberSuffixes.Seconds, "0")]
+    public float DigCooldown { get; set; } = 25f;
 
-    [ModdedNumberOption("ExtensionOptionSandwormKillCooldown", 5f, 60f, 1f, MiraNumberSuffixes.Seconds, "0")]
-    public float KillCooldown { get; set; } = 25f;
+    [ModdedNumberOption("ExtensionOptionSandwormEmergeVisionDuration", 0f, 30f, 1f, MiraNumberSuffixes.Seconds, "0")]
+    public float EmergeVisionDuration { get; set; } = 5f;
 }

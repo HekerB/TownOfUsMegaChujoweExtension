@@ -1,11 +1,18 @@
 using MiraAPI.GameEnd;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
+using MiraAPI.Modifiers;
 using TownOfUs.GameOver;
 using TownOfUs.Interfaces;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Roles.Classic.Neutral;
+using TouMegaChujoweExtension.Roles.Neutral;
+using TouMegaChujoweExtension.Modifiers.Neutral;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace TouMegaChujoweExtension.Patches.WinConditions;
 
@@ -40,7 +47,12 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         // 4. Pirate (Original Priority 12)
         if (IsPirateWinMet()) return true;
 
-        // 5. Lawyer (Original Priority 12)
+
+
+        // 6. Gaslighter (Original Priority 15)
+        if (IsGaslighterWinMet()) return true;
+
+        // 7. Lawyer (Original Priority 12)
         if (IsLawyerWinMet()) return true;
 
         return false;
@@ -94,7 +106,24 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
         }
 
-        // 5. Lawyer
+
+
+        // 6. Gaslighter
+        if (IsGaslighterWinMet())
+        {
+            var winners = new List<NetworkedPlayerInfo>();
+            foreach (var p in PlayerControl.AllPlayerControls)
+            {
+                if (p != null && !p.HasDied() && p.IsRole<GaslighterRole>())
+                {
+                    winners.Add(p.Data);
+                }
+            }
+            CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners.ToArray());
+            return;
+        }
+
+        // 7. Lawyer
         TriggerLawyerWin();
     }
 
@@ -246,6 +275,47 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         {
             LawyerWinConditionState.MarkTriggered();
             CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners.ToArray());
+        }
+    }
+
+
+
+
+    private bool IsGaslighterWinMet()
+    {
+        var options = OptionGroupSingleton<GaslighterOptions>.Instance;
+        if (options == null) return false;
+        
+        var aliveGaslighters = PlayerControl.AllPlayerControls.ToArray()
+            .Where(p => p != null && !p.HasDied() && p.IsRole<GaslighterRole>())
+            .ToList();
+        
+        if (aliveGaslighters.Count == 0) return false;
+
+        switch (options.WinCondition)
+        {
+            case GaslighterWinMode.CrewmateLose:
+                int aliveCrew = 0;
+                int aliveImpostors = 0;
+                foreach (var pc in PlayerControl.AllPlayerControls)
+                {
+                    if (pc == null || pc.HasDied()) continue;
+                    if (pc.Data.Role.IsImpostor) aliveImpostors++;
+                    else if (pc.IsRole<GaslighterRole>()) continue;
+                    else aliveCrew++;
+                }
+                
+                if (aliveImpostors >= aliveCrew && aliveCrew > 0) return true;
+                return false;
+
+            case GaslighterWinMode.LastStanding:
+                return Helpers.GetAlivePlayers().Count <= aliveGaslighters.Count + 1;
+
+            case GaslighterWinMode.AliveAtEnd:
+                return false;
+
+            default:
+                return false;
         }
     }
 

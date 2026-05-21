@@ -6,6 +6,8 @@ using TownOfUs.Modules.Localization;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
 using UnityEngine;
+using TouMegaChujoweExtension.Roles.Classic.Neutral;
+using TouMegaChujoweExtension.Roles.Neutral;
 
 namespace TouMegaChujoweExtension.GameOver;
 
@@ -39,6 +41,9 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
             _winText = TouLocale.Get("ExtensionLawyerWins", "Lawyer & Client Win");
         else if (role is BountyHunterRole)
             _winText = $"{TouLocale.Get("ExtensionRoleBountyHunter", "Bounty Hunter")} {TouLocale.Get("ExtensionBountyHunterWins", "Wins")}";
+        else if (role is GaslighterRole)
+            _winText = TouLocale.Get("ExtensionGaslighterWin", "Gaslighter wins");
+
         else
             _winText = TouLocale.GetParsed("ExtensionNeutralWinsFormat", "{0} Wins").Replace("{0}", role.GetRoleName());
 

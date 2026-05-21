@@ -21,6 +21,12 @@ public sealed class GaslighterKillButton : TownOfUsKillRoleButton<GaslighterRole
     public override Color TextOutlineColor => TouExtensionColors.Sandworm; // Placeholder until I update colors
     public override float Cooldown => OptionGroupSingleton<GaslighterOptions>.Instance.KillCooldown;
     public override LoadableAsset<Sprite> Sprite => TownOfUs.Assets.TouAssets.KillSprite;
+    public override bool CanUse()
+    {
+        var gaslighter = Role;
+        if (gaslighter == null || gaslighter.CurrentCycleAbility != GaslighterAbility.Kill) return false;
+        return base.CanUse();
+    }
 
     public override PlayerControl? GetTarget()
     {

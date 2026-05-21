@@ -17,10 +17,10 @@ public static class TouExtensionColors
     public static Color VampireHunter => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(150, 100, 200, 255);
     public static Color Doctor => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(0, 139, 139, 255);
     public static Color Falcon => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(255, 255, 255, 255);
-    public static Color Sentinel => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(50, 150, 255, 255);
-    public static Color Arcanist => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(120, 40, 140, 255);
-    public static Color Gardener => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(50, 205, 50, 255);
-    public static Color Portalmaker => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(138, 43, 226, 255);
+    public static Color Builder => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(243, 156, 18, 255);
+	public static Color Confuser => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(147, 112, 219, 255);
+
+
     //neutrals
     public static Color SerialKiller => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(58, 102, 192, 255);
     public static Color Vulture => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(139, 69, 19, 255);
@@ -32,9 +32,10 @@ public static class TouExtensionColors
 	public static Color BountyHunter => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(0, 18, 97, 255);
     public static Color Shroud => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(102, 153, 255, 255);
     public static Color Doppelganger => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(93, 63, 211, 255);
-    public static Color SchrodingersCat => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(255, 232, 132, 255);
     public static Color Icenberg => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(173, 216, 230, 255);
-    public static Color Necromancer => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(50, 10, 50, 255);
+    public static Color Poltergeist => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(102, 41, 97, 255);
+	public static Color Gaslighter => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(238, 232, 170, 255);
+	
     //impostors
     public static Color Witch => Palette.ImpostorRed;
     public static Color Wraith => Palette.ImpostorRed;
@@ -47,14 +48,20 @@ public static class TouExtensionColors
     public static Color Astral => Palette.ImpostorRed;
     public static Color Possessor => Palette.ImpostorRed;
 	public static Color Detonator => Palette.ImpostorRed;
-    public static Color Zapper => Palette.ImpostorRed;
     public static Color Speedy => Palette.ImpostorRed;
-    public static Color Zombie => new Color32(110, 150, 40, 255); // Mossy Green
-    public static Color Sandworm => new Color32(194, 178, 128, 255); // Ecru/Sand
-    public static Color Dumper => new Color32(70, 70, 70, 255); // Dark Gray
-    public static Color Confuser => new Color32(147, 112, 219, 255); // Medium Purple
-    public static Color Gaslighter => new Color32(238, 232, 170, 255); // Pale Goldenrod / Cream
+    public static Color Sandworm => Palette.ImpostorRed;
+    public static Color Dumper => Palette.ImpostorRed;
+    public static Color Tomahawk => Palette.ImpostorRed;
+	public static Color BodySwapper => Palette.ImpostorRed;
+    public static Color Boot => Palette.ImpostorRed;
+    public static Color Innocent => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(255, 141, 168, 255);
 
+    // Modifiers
+    public static Color Ventable => new Color32(51, 179, 179, 255);
+    public static Color Venomous => new Color32(0, 200, 90, 255);
+    public static Color Publicity => new Color32(51, 179, 179, 255);
+    public static Color DeathNote => new Color32(42, 10, 42, 255);
+    public static Color Sniper => new Color32(155, 165, 160, 255);
     // Shield Flash Colors
     public static class ShieldFlashes
     {
@@ -67,11 +74,4 @@ public static class TouExtensionColors
         public static Color Bodyguard => new Color32(0, 35, 255, 255); // Vibrant Royal Blue (Distinct from Mirror)
         public static Color Oracle => new Color32(191, 0, 191, 255);    // Magenta
     }
-
-    // Modifiers
-    public static Color Ventable => new Color32(51, 179, 179, 255);
-    public static Color Venomous => new Color32(0, 200, 90, 255);
-    public static Color Publicity => new Color32(51, 179, 179, 255);
-    public static Color DeathNote => new Color32(42, 10, 42, 255);
-    public static Color Sniper => new Color32(155, 165, 160, 255);
 }

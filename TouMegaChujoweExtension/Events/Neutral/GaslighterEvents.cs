@@ -1,110 +1,161 @@
 using MiraAPI.Events;
-using MiraAPI.Events.Vanilla.Meeting.Voting;
+using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
-using MiraAPI.GameOptions;
+using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Modifiers;
-using MiraAPI.Voting;
-using TouMegaChujoweExtension.Modifiers.Neutral;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
+using MiraAPI.Events.Mira;
 using TouMegaChujoweExtension.Roles.Neutral;
-using TownOfUs.Networking;
+using TouMegaChujoweExtension.Modifiers.Neutral;
+using MiraAPI.Hud;
+using MiraAPI.GameOptions;
+using TownOfUs.Buttons;
+using TownOfUs.Extensions;
+using TownOfUs.Modifiers;
 using TownOfUs.Utilities;
-using UnityEngine;
-using System.Collections;
-using System.Linq;
+using TownOfUs.Modules.Localization;
 using Reactor.Utilities;
+using UnityEngine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TouMegaChujoweExtension.Events.Neutral;
 
 public static class GaslighterEvents
 {
-    private static int _meetingCount = 0;
+    [RegisterEvent]
+    public static void OnMeetingEnd(EndMeetingEvent @event)
+    {
+        if (PlayerControl.AllPlayerControls == null) return;
 
-    public static int GetMeetingCount() => _meetingCount;
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player?.Data?.Role is GaslighterRole gaslighterRole)
+            {
+                try
+                {
+                    gaslighterRole.OnMeetingEnd();
+                }
+                catch
+                {
+                    // Ignore errors during meeting cleanup
+                }
+            }
+        }
+    }
 
     [RegisterEvent]
     public static void StartMeetingEventHandler(StartMeetingEvent @event)
     {
-        _meetingCount++;
-        
-        // Update all Gaslighters' meeting count
-        foreach (var player in PlayerControl.AllPlayerControls)
+        if (MeetingHud.Instance == null)
         {
-            if (player != null && player.Data.Role is GaslighterRole role)
-            {
-                role.MeetingCount = _meetingCount;
-            }
+            return;
         }
 
-        Coroutines.Start(CoMonitorMeetingEnd());
+        var cursedPlayers = new List<PlayerControl>();
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.HasDied() || !player.HasModifier<GaslighterCursedModifier>())
+            {
+                continue;
+            }
+
+            cursedPlayers.Add(player);
+        }
+
+        if (cursedPlayers.Count > 0)
+        {
+            var witchColor = ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Witch);
+            var title = $"<color=#{witchColor}>{TouLocale.Get("ExtensionRoleWitch", "Witch")}</color>";
+
+            string message;
+            if (cursedPlayers.Count > 1)
+            {
+                var playerNames = string.Join("\n", cursedPlayers.Select(p => $"  <color=#{witchColor}>{p.Data.PlayerName}</color>: They will die after this meeting"));
+                var baseMessage = TouLocale.GetParsed("ExtensionWitchSpellNotificationMultiple",
+                    "Multiple players have been cursed:\n<players>\nVote out or kill the Witch to save them!");
+                message = baseMessage.Replace("\\n", "\n").Replace("&lt;players&gt;", playerNames).Replace("<players>", playerNames);
+            }
+            else
+            {
+                var baseMessage = TouLocale.GetParsed("ExtensionWitchSpellNotification",
+                    "<player> has been cursed! They have <meetings> meeting(s) left. Vote out or kill the Witch to save them!");
+                message = baseMessage.Replace("\\n", "\n")
+                    .Replace("&lt;player&gt;", $"<color=#{witchColor}>{cursedPlayers[0].Data.PlayerName}</color>")
+                    .Replace("<player>", $"<color=#{witchColor}>{cursedPlayers[0].Data.PlayerName}</color>")
+                    .Replace("They have <meetings> meeting(s) left", "They will die after this meeting")
+                    .Replace("&lt;meetings&gt; meeting(s) left", "They will die after this meeting");
+            }
+
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, message, false, true);
+        }
     }
 
-    private static IEnumerator CoMonitorMeetingEnd()
+    [RegisterEvent]
+    public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
-        while (MeetingHud.Instance != null)
+        var source = @event.Source;
+        var target = @event.Target;
+
+        if (CheckForGaslighterShield(@event, source, target))
         {
-            yield return new WaitForSeconds(0.5f);
-        }
-
-        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost) yield break;
-
-        // Process Cursed players
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (player == null || player.HasDied()) continue;
-
-            var curseMod = player.GetModifier<GaslighterCursedModifier>();
-            if (curseMod == null) continue;
-
-            // If the Gaslighter is still alive and not voted out
-            var gaslighter = MiscUtils.PlayerById(curseMod.GaslighterId);
-            if (gaslighter != null && !gaslighter.HasDied())
-            {
-                // Kill the cursed player
-                CustomTouMurderRpcs.RpcSpecialMurder(gaslighter, player, causeOfDeath: "Cursed");
-            }
-            
-            // Remove curse
-            player.RemoveModifier(curseMod);
+            ResetButtonTimer(source);
         }
     }
 
     [RegisterEvent]
-    public static void ProcessVotesEventHandler(ProcessVotesEvent @event)
+    public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
     {
-        var votes = @event.Votes.ToList();
-
-        foreach (var player in PlayerControl.AllPlayerControls)
+        var source = PlayerControl.LocalPlayer;
+        var button = @event.Button as CustomActionButton<PlayerControl>;
+        var target = button?.Target;
+        if (target == null || button is not IKillButton || !button.CanClick())
         {
-            var mods = player.GetModifiers<GaslighterKnightedModifier>()?.ToList();
-            if (mods == null || mods.Count == 0) continue;
-
-            var vote = votes.FirstOrDefault(v => v.Voter == player.PlayerId);
-            if (vote == default) continue;
-
-            // Add 1 extra vote per modifier
-            for (var i = 0; i < mods.Count; i++)
-            {
-                votes.Add(new CustomVote(vote.Voter, vote.Suspect));
-            }
+            return;
         }
 
-        @event.ExiledPlayer = VotingUtils.GetExiled(votes, out _);
+        if (CheckForGaslighterShield(@event, source, target))
+        {
+            ResetButtonTimer(source, button);
+        }
     }
 
-    [RegisterEvent]
-    public static void HandleVoteEvent(HandleVoteEvent @event)
+    private static bool CheckForGaslighterShield(MiraCancelableEvent @event, PlayerControl source, PlayerControl target)
     {
-        if (!@event.VoteData.Owner.HasModifier<GaslighterKnightedModifier>()) return;
-
-        @event.VoteData.SetRemainingVotes(0);
-
-        // 1 base + 1 extra = 2 total
-        for (var i = 0; i < 2; i++)
+        if (MeetingHud.Instance || ExileController.Instance)
         {
-            @event.VoteData.VoteForPlayer(@event.TargetId);
+            return false;
+        }
+
+        if (!target.HasModifier<GaslighterShieldModifier>() ||
+            target.PlayerId == source.PlayerId ||
+            (source.TryGetModifier<IndirectAttackerModifier>(out var indirect) && indirect.IgnoreShield))
+        {
+            return false;
         }
 
         @event.Cancel();
+
+        // Visual flash for the local attacker
+        if (source.AmOwner)
+        {
+            Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.ShieldFlashes.Medic));
+        }
+
+        return true;
+    }
+
+    private static void ResetButtonTimer(PlayerControl source, CustomActionButton<PlayerControl>? button = null)
+    {
+        var reset = OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance.TempSaveCdReset;
+
+        button?.SetTimer(reset);
+
+        if (!source.AmOwner || !source.IsImpostor())
+        {
+            return;
+        }
+
+        source.SetKillTimer(reset);
     }
 }

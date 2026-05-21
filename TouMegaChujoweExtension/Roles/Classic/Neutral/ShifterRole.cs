@@ -211,7 +211,8 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
     [MethodRpc((uint)Networking.ExtensionRpc.ShifterSetTarget)]
     public static void RpcSetShiftTarget(PlayerControl shifter, byte targetId)
     {
-        if (shifter.Data?.Role is not ShifterRole shifterRole)
+        var shifterRole = shifter.GetRole<ShifterRole>();
+        if (shifterRole == null)
             return;
 
         shifterRole.PendingTargetId = targetId;
@@ -232,7 +233,7 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
     [MethodRpc((uint)Networking.ExtensionRpc.ShifterExecuteShift)]
     public static void RpcExecuteShift(PlayerControl shifter, PlayerControl target, ushort becomeRoleId, ushort stolenRoleId)
     {
-        var wasShifterRole = shifter.Data?.Role as ShifterRole;
+        var wasShifterRole = shifter.GetRole<ShifterRole>();
         if (wasShifterRole == null)
         {
             return;
@@ -324,7 +325,8 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
     [MethodRpc((uint)Networking.ExtensionRpc.ShifterCancelShift)]
     public static void RpcCancelShift(PlayerControl shifter)
     {
-        if (shifter.Data?.Role is not ShifterRole shifterRole)
+        var shifterRole = shifter.GetRole<ShifterRole>();
+        if (shifterRole == null)
             return;
         shifterRole.PendingTargetId = byte.MaxValue;
         shifterRole.PendingStolenRoleId = ushort.MaxValue;
@@ -335,7 +337,7 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
     [MethodRpc((uint)Networking.ExtensionRpc.ShifterDie)]
     public static void RpcShifterDie(PlayerControl shifter)
     {
-        if (shifter.Data?.Role is not ShifterRole)
+        if (!shifter.IsRole<ShifterRole>())
             return;
         if (AmongUsClient.Instance.AmHost)
             shifter.RpcCustomMurder(shifter);

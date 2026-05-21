@@ -15,28 +15,48 @@ public sealed class SandwormInvisibleModifier : ConcealedModifier, IVisualAppear
 
     public VisualAppearance GetVisualAppearance()
     {
-        // Invisible to non-impostors
-        var playerColor = (PlayerControl.LocalPlayer.IsImpostorAligned())
-            ? new Color(0f, 0f, 0f, 0.1f)
-            : Color.clear;
+        bool isLocal = Player == PlayerControl.LocalPlayer;
+        bool isImpostor = PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.IsImpostorAligned();
+
+        Color playerColor;
+        if (isLocal)
+        {
+            playerColor = new Color(1f, 1f, 1f, 0.5f); 
+        }
+        else if (isImpostor)
+        {
+            playerColor = new Color(1f, 0f, 0f, 0.25f);
+        }
+        else
+        {
+            playerColor = Color.clear;
+        }
+
+        Color nameColor = isLocal ? new Color(1f, 0f, 0f, 0.5f) : (isImpostor ? new Color(1f, 0f, 0f, 0.25f) : Color.clear);
 
         return new VisualAppearance(Player.GetDefaultModifiedAppearance(), TownOfUsAppearances.Swooper)
         {
-            HatId = string.Empty,
-            SkinId = string.Empty,
-            VisorId = string.Empty,
-            PlayerName = string.Empty,
-            PetId = string.Empty,
+            HatId = isLocal ? Player.GetDefaultModifiedAppearance().HatId : string.Empty,
+            SkinId = isLocal ? Player.GetDefaultModifiedAppearance().SkinId : string.Empty,
+            VisorId = isLocal ? Player.GetDefaultModifiedAppearance().VisorId : string.Empty,
+            PlayerName = isLocal || isImpostor ? Player.GetDefaultModifiedAppearance().PlayerName : string.Empty,
+            PetId = isLocal ? Player.GetDefaultModifiedAppearance().PetId : string.Empty,
             RendererColor = playerColor,
-            NameColor = Color.clear,
-            ColorBlindTextColor = Color.clear
+            NameColor = nameColor,
+            ColorBlindTextColor = nameColor
         };
     }
 
     public override void OnActivate()
     {
         Player.RawSetAppearance(this);
-        Player.cosmetics.ToggleNameVisible(false);
+        // Only toggle name invisible if not local/impostor
+        bool isLocal = Player == PlayerControl.LocalPlayer;
+        bool isImpostor = PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.IsImpostorAligned();
+        if (!isLocal && !isImpostor)
+        {
+            Player.cosmetics.ToggleNameVisible(false);
+        }
     }
 
     public override void OnDeactivate()

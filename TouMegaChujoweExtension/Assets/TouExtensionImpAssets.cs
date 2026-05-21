@@ -35,6 +35,11 @@ public static class TouExtensionImpAssets
 	public static LoadableAsset<Sprite> ZapButtonIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Vine_Button.png", 100f);
 	public static LoadableAsset<Sprite> SpeedyAccelerateButton { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Accelerate_Button.png", 100f);
     public static LoadableAsset<Sprite> SpeedyAbilitySprite => SpeedyAccelerateButton;
-    public static LoadableAsset<Sprite> DetonatorAttachSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Attach_Button.png", 100f);
+    public static LoadableAsset<Sprite> DetonatorAttachSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Attach_Button.png", 400f);
     public static LoadableAsset<Sprite> DetonatorDetonateSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Detonate_Button.png", 250f);
+    public static LoadableAsset<Sprite> SandwormDigButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Ventable_Vent_Button.png", 100f);
+
+    public static LoadableAsset<Sprite> SniperButtonSprite => TouExtensionIcons.SniperRoleIcon;
+    public static LoadableAsset<Sprite> BuilderButtonSprite => TouExtensionIcons.BuilderRoleIcon;
+
 }

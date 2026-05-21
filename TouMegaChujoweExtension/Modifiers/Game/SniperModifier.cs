@@ -28,7 +28,7 @@ public sealed class SniperModifier : TouGameModifier, IColoredModifier, IWikiDis
 
     public override string GetDescription()
     {
-        var multiplier = OptionGroupSingleton<SniperOptions>.Instance.KillDistanceMultiplier;
+        var multiplier = OptionGroupSingleton<TouMegaChujoweExtension.Options.Modifiers.SniperOptions>.Instance.KillDistanceMultiplier;
         return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}Desc", $"Kill and teleport to the body. Kill range is increased by 1.0 and multiplied by {multiplier:0.0}x.");
     }
 
@@ -43,7 +43,7 @@ public sealed class SniperModifier : TouGameModifier, IColoredModifier, IWikiDis
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
         return base.IsModifierValidOn(role) &&
-            role is ITownOfUsRole { RoleAlignment: RoleAlignment.NeutralKilling };
+            role is ITownOfUsRole { RoleAlignment: RoleAlignment.NeutralKilling or RoleAlignment.ImpostorConcealing or RoleAlignment.ImpostorPower or RoleAlignment.ImpostorSupport or RoleAlignment.ImpostorKilling };
     }
 
     public static bool LocalPlayerHasSniper()
@@ -51,19 +51,25 @@ public sealed class SniperModifier : TouGameModifier, IColoredModifier, IWikiDis
         var localPlayer = PlayerControl.LocalPlayer;
         if (localPlayer == null || localPlayer.Data == null || localPlayer.Data.Role == null) return false;
         
-        return localPlayer.Data.Role is ITownOfUsRole { RoleAlignment: RoleAlignment.NeutralKilling } &&
+        return localPlayer.Data.Role is ITownOfUsRole { RoleAlignment: RoleAlignment.NeutralKilling or RoleAlignment.ImpostorConcealing or RoleAlignment.ImpostorPower or RoleAlignment.ImpostorSupport or RoleAlignment.ImpostorKilling } &&
             localPlayer.HasModifier<SniperModifier>();
     }
 
+    /// <summary>
+    /// Applies additive kill distance upgrade:
+    /// Short (0) -> Medium (1), Medium (1) -> Long (2).
+    /// Returns the upgraded kill distance value.
+    /// </summary>
     public static float ApplyRangeMultiplier(float baseDistance)
     {
-        if (baseDistance <= 0f)
-        {
-            return baseDistance;
-        }
+        if (baseDistance <= 0f) return baseDistance;
 
-        var multiplier = OptionGroupSingleton<SniperOptions>.Instance.KillDistanceMultiplier;
-        // Instruction: change distance by 1 unit up on each stage (baseDistance + 1.0)
-        return Mathf.Min((baseDistance + 1.0f) * multiplier, MaxSniperDistance);
+        var killDistances = GameOptionsManager.Instance.currentNormalGameOptions
+            .GetFloatArray(AmongUs.GameOptions.FloatArrayOptionNames.KillDistances);
+        var currentIdx = GameOptionsManager.Instance.currentNormalGameOptions.KillDistance;
+
+        // Upgrade by one step: short(0)->medium(1), medium(1)->long(2), long(2) stays long
+        var upgradedIdx = System.Math.Min(currentIdx + 1, killDistances.Length - 1);
+        return killDistances[upgradedIdx];
     }
 }

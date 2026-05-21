@@ -46,4 +46,13 @@ public sealed class UniversalModifierOptions : AbstractOptionGroup
         {
             Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.ChildAmount > 0
         };
+
+    [ModdedNumberOption("ExtensionModifierInsaneAmount", 0, 15)]
+    public float InsaneAmount { get; set; } = 0;
+
+    public ModdedNumberOption InsaneChance { get; } =
+        new("ExtensionModifierInsaneChance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+        {
+            Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.InsaneAmount > 0
+        };
 }

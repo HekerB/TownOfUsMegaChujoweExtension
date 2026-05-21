@@ -32,5 +32,6 @@ public static class TouExtensionAudio
 	public static LoadableAsset<AudioClip> KamikazeExplodeSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.allahu_akbar.wav");    // by radzik360
     public static LoadableAsset<AudioClip> C4Beep { get; } = new LoadableAudioResourceAsset($"{AudioPath}.c4_beep.wav");
 	public static LoadableAsset<AudioClip> ZapSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.ZapSound.wav");
-	public static LoadableAsset<AudioClip> ElectricitySound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.ElectricitySound.wav"); 
+	public static LoadableAsset<AudioClip> ElectricitySound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.ZapSound.wav"); 
+	public static LoadableAsset<AudioClip> ShootSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.shoot.wav");
 }

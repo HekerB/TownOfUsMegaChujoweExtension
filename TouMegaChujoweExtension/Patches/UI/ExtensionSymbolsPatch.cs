@@ -102,15 +102,16 @@ public static class ExtensionSymbolsPatch
             }
         }
 
-        // --- GASLIGHTER KNIGHT (¤) ---
+        // --- GASLIGHTER KNIGHT (♠) ---
         if (player.TryGetModifier<GaslighterKnightedModifier>(out _))
         {
-            if (!__result.Contains("¤"))
+            var symbol = $" {TownOfUsColors.Monarch.ToTextColor()}♠</color>";
+            if (!__result.Contains("♠") && !__result.Contains(symbol))
             {
                 bool hasGaslighter = local.IsRole<GaslighterRole>();
                 if (hasGaslighter || deadKnow)
                 {
-                    __result += " <color=#FFD700>¤</color>"; // Gold for Gaslighter Knight
+                    __result += symbol;
                 }
             }
         }
@@ -142,18 +143,8 @@ public static class ExtensionSymbolsPatch
             }
         }
 
-        // --- ZOMBIE PATIENT ZERO (PZ) ---
-        if (player.HasModifier<PatientZeroModifier>())
-        {
-            if (!__result.Contains("PZ"))
-            {
-                bool isZombie = local.HasModifier<ZombieModifier>();
-                if (isZombie || deadKnow)
-                {
-                    __result += " <color=#6E9628>PZ</color>";
-                }
-            }
-        }
+        // Removed PZ name suffix as requested
+        
     }
 
     [HarmonyPatch(nameof(PlayerRoleTextExtensions.UpdateProtectionSymbols), typeof(string), typeof(PlayerControl), typeof(bool))]
@@ -222,6 +213,8 @@ public static class ExtensionSymbolsPatch
         {
             __result = Color.red;
         }
+
+
     }
 
     private static bool TryGetDeathNoteTarget(PlayerControl player)

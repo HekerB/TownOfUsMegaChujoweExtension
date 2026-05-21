@@ -7,6 +7,7 @@ using Reactor.Networking.Attributes;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Networking;
 using TouMegaChujoweExtension.Options.Roles.Impostor;
+using TouMegaChujoweExtension.Buttons.Classic.Impostor;
 using TownOfUs.Assets;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
@@ -14,6 +15,8 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 namespace TouMegaChujoweExtension.Roles.Impostor;
 
@@ -36,29 +39,46 @@ public sealed class DumperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = true,
-        Icon = TouRoleIcons.Undertaker,
+        Icon = TouExtensionIcons.DumperRoleIcon,
     };
+
+    public int MeetingCount { get; set; } = 0;
+
+    [HideFromIl2Cpp]
+    public List<Type> RoleButtons => new List<Type> { typeof(DumperDragButton) };
 
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities =>
     [
-        new(TouLocale.GetParsed("ExtensionRoleDumperTake", "Take"),
-            TouLocale.GetParsed("ExtensionRoleDumperTakeWikiDescription"),
-            TownOfUs.Assets.TouImpAssets.DragSprite),
-        new(TouLocale.GetParsed("ExtensionRoleDumperDump", "Dump"),
-            TouLocale.GetParsed("ExtensionRoleDumperDumpWikiDescription"),
-            TownOfUs.Assets.TouImpAssets.DropSprite)
+        new(TouLocale.Get("ExtensionRoleDumperDrag", "Drag/Dump"),
+            TouLocale.GetParsed("ExtensionRoleDumperDragWikiDescription"),
+            TownOfUs.Assets.TouImpAssets.DragSprite)
     ];
 
     public byte? DraggingBodyId { get; set; }
+    public float? AutoDumpTime { get; set; }
 
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
+        DraggingBodyId = null;
+        AutoDumpTime = null;
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+    }
+
+    [Reactor.Networking.Attributes.MethodRpc((uint)ExtensionRpc.DumperPickupBody, LocalHandling = Reactor.Networking.Rpc.RpcLocalHandling.Before)]
+    public static void RpcPickupBody(PlayerControl player, byte bodyId)
+    {
+        DumperSystem.PickupBody(player, bodyId);
+    }
+
+    [Reactor.Networking.Attributes.MethodRpc((uint)ExtensionRpc.DumperDropBody, LocalHandling = Reactor.Networking.Rpc.RpcLocalHandling.Before)]
+    public static void RpcDropBody(PlayerControl player)
+    {
+        DumperSystem.DropBody(player);
     }
 }

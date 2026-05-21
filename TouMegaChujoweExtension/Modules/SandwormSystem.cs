@@ -6,96 +6,58 @@ using MiraAPI.GameOptions;
 using TownOfUs.Assets;
 using TownOfUs.Utilities;
 using TownOfUs.Extensions;
+using TownOfUs.Modules;
 using HarmonyLib;
 
 namespace TouMegaChujoweExtension.Modules;
 
 public static class SandwormSystem
 {
-    private static readonly Dictionary<byte, List<ActiveHole>> PlayerHoles = new();
+    private static readonly List<Vent> SpawnedVents = new();
 
-    public class ActiveHole
+    public static Vent SpawnVent(PlayerControl player, int ventId, Vector2 position)
     {
-        public Vector2 Position;
-        public GameObject? Visual;
-    }
-
-    public static void PlaceHole(byte ownerId, Vector2 position)
-    {
-        if (!PlayerHoles.ContainsKey(ownerId))
-            PlayerHoles[ownerId] = new List<ActiveHole>();
-
-        var holes = PlayerHoles[ownerId];
-
-        var newHole = new ActiveHole
+        var ventPrefab = ShipStatus.Instance.AllVents[0];
+        
+        // Handle submerged map if needed
+        if (ModCompatibility.IsSubmerged() && ShipStatus.Instance.AllVents.Length > 15)
         {
-            Position = position,
-            Visual = CreateHoleVisual(position)
-        };
-        holes.Add(newHole);
-        
-        // If we have more than 2, maybe keep them all or just the last pair?
-        // User said "ten vent będzie prowadził do miejsca gdzie Sandworm wyskoczył", 
-        // suggesting a pair (entrance -> exit).
-    }
+            ventPrefab = (position.y > -7) ? ShipStatus.Instance.AllVents[5] : ShipStatus.Instance.AllVents[15];
+        }
 
-    private static GameObject CreateHoleVisual(Vector2 position)
-    {
-        var go = new GameObject("SandwormHole");
-        go.transform.position = new Vector3(position.x, position.y, position.y / 1000f + 0.01f);
+        var vent = UnityEngine.Object.Instantiate(ventPrefab, ventPrefab.transform.parent);
+        vent.name = $"SandwormVent-{player.PlayerId}-{ventId}";
+        vent.Id = ventId;
         
-        var renderer = go.AddComponent<SpriteRenderer>();
-        renderer.sprite = TouRoleIcons.Miner.LoadAsset(); // Using Miner icon as placeholder for vent
-        renderer.color = new Color(0.4f, 0.3f, 0.1f, 0.8f); // Sand color
-        go.transform.localScale = Vector3.one * 0.7f;
+        // Clear default connections inherited from prefab to isolate it from the map's vent network
+        vent.Left = null;
+        vent.Right = null;
         
-        return go;
+        // Z-axis positioning to avoid clipping
+        vent.transform.position = new Vector3(position.x, position.y, ventPrefab.transform.position.z);
+        
+        // Link to ShipStatus
+        var allVents = ShipStatus.Instance.AllVents.ToList();
+        allVents.Add(vent);
+        ShipStatus.Instance.AllVents = allVents.ToArray();
+        
+        SpawnedVents.Add(vent);
+        return vent;
     }
 
     public static void Reset()
     {
-        foreach (var list in PlayerHoles.Values)
+        if (ShipStatus.Instance != null && ShipStatus.Instance.AllVents != null)
         {
-            foreach (var h in list)
-            {
-                if (h.Visual != null) UnityEngine.Object.Destroy(h.Visual);
-            }
+            var list = ShipStatus.Instance.AllVents.ToList();
+            list.RemoveAll(v => v == null || v.name.StartsWith("SandwormVent-"));
+            ShipStatus.Instance.AllVents = list.ToArray();
         }
-        PlayerHoles.Clear();
-    }
 
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    public static class HudManagerUpdatePatch
-    {
-        public static void Postfix()
+        foreach (var v in SpawnedVents)
         {
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-            if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data.IsDead) return;
-
-            var player = PlayerControl.LocalPlayer;
-            float radius = 0.5f;
-
-            // Tunnel logic for holes
-            foreach (var holes in PlayerHoles.Values)
-            {
-                if (holes.Count < 2) continue;
-
-                // Simple pair-wise tunnel (1-2, 3-4, etc)
-                for (int i = 0; i < holes.Count; i++)
-                {
-                    if (Vector2.Distance(player.GetTruePosition(), holes[i].Position) <= radius)
-                    {
-                        // Teleport to the paired hole if possible
-                        int pairIndex = (i % 2 == 0) ? i + 1 : i - 1;
-                        if (pairIndex >= 0 && pairIndex < holes.Count)
-                        {
-                            // Teleport if player interacts? Or just walk over? 
-                            // User said "ten vent będzie prowadził", so probably standard vent behavior.
-                            // For simplicity, I'll make it a teleport on walk-over with a small cooldown
-                        }
-                    }
-                }
-            }
+            if (v != null) UnityEngine.Object.Destroy(v.gameObject);
         }
+        SpawnedVents.Clear();
     }
 }

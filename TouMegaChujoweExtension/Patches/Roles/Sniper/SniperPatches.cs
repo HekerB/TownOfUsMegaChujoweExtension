@@ -126,6 +126,43 @@ public static class SniperKillLogic
     }
 }
 
+[HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
+public static class SniperKillButtonPatch
+{
+    public static bool Prefix(KillButton __instance)
+    {
+        if (!SniperModifier.LocalPlayerHasSniper() || __instance.currentTarget == null)
+        {
+            return true;
+        }
+
+        return SniperKillLogic.TryMurderWithTeleport(__instance.currentTarget);
+    }
+}
+
+[HarmonyPatch(typeof(KillButton), "FixedUpdate")]
+public static class SniperKillButtonRangePatch
+{
+    public static void Postfix(KillButton __instance)
+    {
+        if (!SniperModifier.LocalPlayerHasSniper()) return;
+        if (__instance.isCoolingDown || !__instance.isActiveAndEnabled || MeetingHud.Instance) return;
+
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null || localPlayer.Data == null || localPlayer.Data.IsDead) return;
+
+        var killDistances = GameOptionsManager.Instance.currentNormalGameOptions.GetFloatArray(FloatArrayOptionNames.KillDistances);
+        var baseDistance = killDistances[GameOptionsManager.Instance.currentNormalGameOptions.KillDistance];
+        var maxDistance = SniperModifier.ApplyRangeMultiplier(baseDistance);
+
+        var closest = Helpers.GetClosestPlayers(localPlayer, maxDistance).FirstOrDefault(p => p != null && p != localPlayer && !p.Data.IsDead);
+        if (closest != null)
+        {
+            __instance.SetTarget(closest);
+        }
+    }
+}
+
 [HarmonyPatch(typeof(GlitchKillButton), "OnClick")]
 public static class SniperGlitchKillPatch
 {
@@ -166,4 +203,36 @@ public static class SniperWerewolfKillPatch
 {
     public static bool Prefix(WerewolfKillButton __instance) =>
         SniperKillLogic.TryMurderWithTeleport(__instance.Target);
+}
+
+[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
+public static class SniperScopeVisionPatch
+{
+    [HarmonyPriority(Priority.Last)]
+    public static void Postfix(NetworkedPlayerInfo player, ref float __result)
+    {
+        if (PlayerControl.LocalPlayer == null) return;
+        
+        var role = PlayerControl.LocalPlayer.GetRole<TouMegaChujoweExtension.Roles.Classic.Impostor.SniperRole>();
+        if (role != null && role.IsScopeActive)
+        {
+            __result = 25f; // Neon high-tech laser scope long-distance bypass
+        }
+    }
+}
+
+[HarmonyPatch(typeof(LogicOptions), nameof(LogicOptions.GetPlayerSpeedMod))]
+public static class SniperMovementBlockPatch
+{
+    [HarmonyPostfix]
+    public static void Postfix(PlayerControl pc, ref float __result)
+    {
+        if (pc == null || pc != PlayerControl.LocalPlayer) return;
+
+        var role = pc.GetRole<TouMegaChujoweExtension.Roles.Classic.Impostor.SniperRole>();
+        if (role != null && role.IsScopeActive)
+        {
+            __result = 0f;
+        }
+    }
 }

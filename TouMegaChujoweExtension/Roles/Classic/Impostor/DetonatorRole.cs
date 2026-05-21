@@ -24,9 +24,9 @@ using TownOfUs.Utilities;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-using TouMegaChujoweExtension.Buttons.Impostor;
+using TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
-namespace TouMegaChujoweExtension.Roles.Impostor;
+namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
 
 public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {

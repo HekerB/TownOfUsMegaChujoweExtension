@@ -15,7 +15,7 @@ using MiraAPI.Modifiers;
 using TownOfUs.Assets;
 using Reactor.Utilities;
 
-namespace TouMegaChujoweExtension.Buttons.Impostor;
+namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
 public sealed class DetonatorAttachButton : TownOfUsRoleButton<DetonatorRole, PlayerControl>
 {

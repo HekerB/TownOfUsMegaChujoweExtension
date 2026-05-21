@@ -31,7 +31,7 @@ public sealed class PirateDuelButton : TownOfUsRoleButton<PirateRole, PlayerCont
     public override PlayerControl? GetTarget()
     {
         var localPlayer = PlayerControl.LocalPlayer;
-        var pirateRole = localPlayer?.Data?.Role as PirateRole;
+        var pirateRole = localPlayer?.GetRole<PirateRole>();
 
         if (localPlayer == null || pirateRole == null)
         {
@@ -55,7 +55,7 @@ public sealed class PirateDuelButton : TownOfUsRoleButton<PirateRole, PlayerCont
     protected override void OnClick()
     {
         var localPlayer = PlayerControl.LocalPlayer;
-        var pirateRole = localPlayer?.Data?.Role as PirateRole;
+        var pirateRole = localPlayer?.GetRole<PirateRole>();
 
         if (Target == null || localPlayer == null || pirateRole == null)
         {
