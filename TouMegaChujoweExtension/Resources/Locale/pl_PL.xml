@@ -52,7 +52,7 @@
   <!-- Trapper Role -->
   <string name="ExtensionRoleTrapper">Trapper</string>
   <string name="ExtensionRoleTrapperIntroBlurb">Zastawiaj pulapki na wentylacje, by lapac graczy.</string>
-  <string name="ExtensionRoleTrapperTabDescription">Umieszczaj pulapki na wentylacjach. Gracze, ktorzy uzyja pulapki na wentylacji, zostana unieruchomieni na pewien czas.</string>
+  <string name="ExtensionRoleTrapperTabDescription">Umieszczaj pulapki na wentylacjach.\%nl\%Gracze, ktorzy uzyja pulapki na wentylacji, zostana unieruchomieni na pewien czas.</string>
   <string name="ExtensionRoleTrapperWikiDescription">Trapper to rola Crewmate, ktora moze zastawiac pulapki na wentylacjach. Gdy gracze uzyja wentylacji z pulapka, zostaja unieruchomieni na pewien czas, a Trapper otrzymuje powiadomienie.</string>
   <string name="ExtensionRoleTrapperTrap">Pulapka</string>
   <string name="ExtensionRoleTrapperTrapWikiDescription">Umiesc pulapke na wentylacji. Gracze, ktorzy uzyja tej wentylacji, zostana zlapani i unieruchomieni.</string>
@@ -355,7 +355,7 @@
   <!-- Pope Role -->
   <string name="ExtensionRolePope">Pope</string>
   <string name="ExtensionRolePopeIntroBlurb">Kanonizuj wiernych i wymierz im Boski Sad.</string>
-  <string name="ExtensionRolePopeTabDescription">Kanonizuj wszystkich zyjacych graczy, a nastepnie uruchom Judgement, aby wyeliminowac wszystkich.</string>
+  <string name="ExtensionRolePopeTabDescription">Kanonizuj wszystkich zyjacych graczy,\%nl\%a nastepnie uruchom Judgement, aby wyeliminowac wszystkich.</string>
   <string name="ExtensionRolePopeWikiDescription">Musisz kanonizowac wszystkich, aby rozpoczac Judgement. &lt;color=#FFD700&gt;Pope&lt;/color&gt; wygrywa, jesli wszyscy gracze zgina od Judgement.</string>
   <string name="ExtensionRolePopeCanonize">Kanonizuj</string>
   <string name="ExtensionRolePopeCanonizeWikiDescription">Podejdz do gracza i go zaznacz (kanonizuj). Zaznaczeni gracze swieca sie na zloto tylko dla Ciebie. Gdy zaznaczysz wszystkich zyjacych, bedziesz mogl ich ukatrupic przyciskiem Judgement.</string>
@@ -382,7 +382,7 @@
   <!-- Outlaw Role -->
   <string name="ExtensionRoleOutlaw">Outlaw</string>
   <string name="ExtensionRoleOutlawIntroBlurb">Uderzaj z zabójczą precyzją i siej podwójny chaos!</string>
-  <string name="ExtensionRoleOutlawTabDescription">Wykonuj błyskawiczne eliminacje. Po pierwszym zabójstwie wchodzisz w szał, który pozwala ci uderzyć ponownie bez czekania na cooldown.</string>
+  <string name="ExtensionRoleOutlawTabDescription">Wykonuj błyskawiczne eliminacje.\%nl\%Po pierwszym zabójstwie wchodzisz w szał, który pozwala ci uderzyć ponownie bez czekania na cooldown.</string>
   <string name="ExtensionRoleOutlawWikiDescription">Outlaw to rola Impostora, która może wykonać drugie zabójstwo niemal natychmiast po pierwszym, o ile zmieści się w krótkim oknie czasowym (Szał).</string>
 
   <!-- Outlaw Options -->
@@ -415,7 +415,7 @@
   <!-- Wraith Role -->
   <string name="ExtensionRoleWraith">Wraith</string>
   <string name="ExtensionRoleWraithIntroBlurb">Teleportuj sie do latarni i uderzaj z cienia.</string>
-  <string name="ExtensionRoleWraithTabDescription">Uzyj Dash dla szybkosci. Postaw Lantern, aby teleportowac sie z powrotem do niej.</string>
+  <string name="ExtensionRoleWraithTabDescription">Uzyj Dash dla szybkosci.\%nl\%Postaw Lantern, aby teleportowac sie z powrotem do niej.</string>
   <string name="ExtensionRoleWraithWikiDescription">&lt;color=#D62020&gt;Wraith&lt;/color&gt; to rola Impostor Power skupiona na szybkim, nieprzewidywalnym poruszaniu sie. Dash zwieksza twoja predkosc ruchu o 75% na krotki czas. Lantern pozwala ci postawic ukryty znacznik widoczny tylko dla ciebie; aktywuj go ponownie, aby teleportowac sie z powrotem i na chwile zniknac. Jesli Lantern wygasnie zanim wrocisz, peka i zostawia trwaly slad widoczny dla wszystkich graczy.</string>
   <string name="ExtensionRoleWraithDash">Dash</string>
   <string name="ExtensionRoleWraithDashWikiDescription">Tymczasowo zwieksz swoja predkosc ruchu o 75%.</string>
@@ -436,7 +436,7 @@
   <!-- Hacker Role -->
   <string name="ExtensionRoleHacker">Hacker</string>
   <string name="ExtensionRoleHackerIntroBlurb">Hakuj dane i paralizuj systemy komunikacji.</string>
-  <string name="ExtensionRoleHackerTabDescription">Pobieraj i zaklocaj urzadzenia, zabijaj, aby dostac dodatkowe ladunki Jam.</string>
+  <string name="ExtensionRoleHackerTabDescription">Pobieraj i zaklocaj urzadzenia.\%nl\%Zabijaj, aby dostac dodatkowe ladunki Jam.</string>
   <string name="ExtensionRoleHackerWikiDescription">Hacker to rola Impostor Support, ktora moze pobierac informacje z pobliskich urzadzen, aby naladowac przenosne urzadzenie. Umiejetnosc Jam zakloca systemy informacyjne (Admin, Kamery itp.) oraz blokuje wszystkim graczom mozliwosc zglaszania cial i zwolywania spotkan awaryjnych. Hacker jako jedyny moze nadal korzystac ze swojego urzadzenia przenosnego podczas trwania Jamu oraz sabotazu Komunikacji.</string>
   <string name="ExtensionRoleHackerDownload">Pobierz</string>
   <string name="ExtensionRoleHackerDownloadWikiDescription">Pobieraj dane przy konsoli (Admin, Kamery, itp.), aby naladowac baterie. Urzadzenia mozesz uzywac potem w dowolnym miejscu!</string>
@@ -484,7 +484,7 @@
   <!-- Astral Role -->
   <string name="ExtensionRoleAstral">Astral</string>
   <string name="ExtensionRoleAstralIntroBlurb">Przechodź przez ściany i wracaj na pozycję startową.</string>
-  <string name="ExtensionRoleAstralTabDescription">Przechodź przez ściany i teleportuj się z powrotem. Musisz kogoś zabić, aby przeżyć!</string>
+  <string name="ExtensionRoleAstralTabDescription">Przechodź przez ściany i teleportuj się z powrotem.\%nl\%Musisz kogoś zabić, aby przeżyć!</string>
   <string name="ExtensionRoleAstralWikiDescription">Astral to rola Impostor Concealing, która może wejść w stan astralny. W tym stanie możesz przechodzić przez ściany. Gdy faza się kończy, zostajesz teleportowany z powrotem do miejsca startu. Jeśli jest to skonfigurowane, brak zabójstwa podczas fazy skutkuje Twoją śmiercią.</string>
   <string name="ExtensionRoleAstralPhase">Faza</string>
   <string name="ExtensionRoleAstralPhaseWikiDescription">Przechodź przez ściany.</string>
@@ -507,7 +507,7 @@
   <!-- Speedy Role -->
   <string name="ExtensionRoleSpeedy">Speedy</string>
   <string name="ExtensionRoleSpeedyIntroBlurb">Zakamufluj się i przyspiesz.</string>
-  <string name="ExtensionRoleSpeedyTabDescription">Użyj swojej umiejętności, aby zyskać prędkość i zakamuflować się (szary ludzik). Zaskocz Załogantów!</string>
+  <string name="ExtensionRoleSpeedyTabDescription">Użyj swojej umiejętności, aby zyskać prędkość i zakamuflować się.\%nl\%Zaskocz Załogantów!</string>
   <string name="ExtensionRoleSpeedyWikiDescription">Speedy to rola Impostora Concealing, która może stać się zakamuflowana i szybka, aby zabijać Załogantów.</string>
   <string name="ExtensionRoleSpeedyAccelerate">Przyspieszenie</string>
   <string name="ExtensionRoleSpeedyAccelerateWikiDescription">Przyspiesz i zakamufluj się.</string>
@@ -523,7 +523,7 @@
   <!-- Detonator Role -->
   <string name="ExtensionRoleDetonator">Detonator</string>
   <string name="ExtensionRoleDetonatorIntroBlurb">Podkładaj bomby pod graczy i detonuj je w idealnym momencie.</string>
-  <string name="ExtensionRoleDetonatorTabDescription">Zakradnij się do graczy, aby podłożyć bombę. Możesz ją zdetonować ręcznie po krótkim opóźnieniu!</string>
+  <string name="ExtensionRoleDetonatorTabDescription">Zakradnij się do graczy, aby podłożyć bombę.\%nl\%Możesz ją zdetonować ręcznie po krótkim opóźnieniu!</string>
   <string name="ExtensionRoleDetonatorWikiDescription">Detonator to specjalista od materiałów wybuchowych. Może podłożyć bombę C4 pod dowolnego gracza i zdetonować ją w dowolnym momencie. Gdy detonacja stanie się dostępna, ofiara usłyszy wyraźne pipkanie. Wybuch zabija cel oraz wszystkich znajdujących się w pobliżu.</string>
   <string name="ExtensionRoleDetonatorAttach">Podłóż C4</string>
   <string name="ExtensionRoleDetonatorAttachWikiDescription">Podłóż ładunek C4 pod gracza. Musisz chwilę odczekać na uzbrojenie zapalnika przed detonacją.</string>
@@ -540,7 +540,7 @@
   <!-- Forestaller Role -->
   <string name="ExtensionRoleForestaller">Forestaller</string>
   <string name="ExtensionRoleForestallerIntroBlurb">Skoncz zadania, by na stale zablokowac sabotaze.</string>
-  <string name="ExtensionRoleForestallerTabDescription">Skoncz wszystkie swoje zadania. Gdy to zrobisz, sabotaze nie moga byc wywolywane, dopoki zyjesz.</string>
+  <string name="ExtensionRoleForestallerTabDescription">Skoncz wszystkie swoje zadania.\%nl\%Gdy to zrobisz, sabotaze nie moga byc wywolywane, dopoki zyjesz.</string>
   <string name="ExtensionRoleForestallerWikiDescription">Forestaller to rola Crewmate Support, ktora moze zapobiegac sabotazom zanim sie wydarza. Po ukonczeniu wszystkich zadan sabotaze sa wylaczone, dopoki Forestaller zyje. Forestaller zostaje ujawniony po ukonczeniu ostatniego zadania.</string>
 
   <!-- Forestaller Options -->
@@ -556,7 +556,7 @@
   <!-- Evoker Role -->
   <string name="ExtensionRoleEvoker">Evoker</string>
   <string name="ExtensionRoleEvokerIntroBlurb">Oslepiaj napastnikow i demaskuj ich blyskiem.</string>
-  <string name="ExtensionRoleEvokerTabDescription">Aktywuj Blind, aby oslepic i ogluszyc (Nausea) zabojcow. Verify graczy, aby sprawdzic ich role.</string>
+  <string name="ExtensionRoleEvokerTabDescription">Aktywuj Blind, aby oslepic i ogluszyc zabojcow.\%nl\%Verify graczy, aby sprawdzic ich role.</string>
   <string name="ExtensionRoleEvokerWikiDescription">Twoja umiejetnosc pozwala oslepic i ogluszyc (efekt Nausea) wszystkie role zabijajace. Podczas Blind mozesz sprawdzac (Verify), czy dana osoba jest zabojca. Calosc jest zoptymalizowana dla maksymalnej wydajnosci FPS.</string>
   <string name="ExtensionRoleEvokerBlind">Blind</string>
   <string name="ExtensionRoleEvokerVerify">Verify</string>
@@ -1595,8 +1595,8 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <!-- Sniper Role -->
   <string name="ExtensionRoleSniper">Snajper</string>
   <string name="ExtensionRoleSniperIntroBlurb">Celuj uważnie i eliminuj cele z dystansu.</string>
-  <string name="ExtensionRoleSniperTabDescription">Możesz wejść w tryb celowania, aby strzelać do celów zdalnie.\nPodczas celowania stoisz w miejscu, ale twój cel nie.</string>
-  <string name="ExtensionRoleSniperWikiDescription">Snajper to rola Impostora zabójcy (Killing), która może strzelać do celów na odległość.\nKiedy używasz swojej umiejętności, wchodzisz w tryb celowania i nie możesz się poruszać. Kliknij na cel na swoim ekranie, aby go wyeliminować.</string>
+  <string name="ExtensionRoleSniperTabDescription">Możesz wejść w tryb celowania, aby strzelać do celów zdalnie.\%nl\%Podczas celowania stoisz w miejscu, ale twój cel nie.</string>
+  <string name="ExtensionRoleSniperWikiDescription">Snajper to rola Impostora zabójcy (Killing), która może strzelać do celów na odległość.\%nl\%Kiedy używasz swojej umiejętności, wchodzisz w tryb celowania i nie możesz się poruszać. Kliknij na cel na swoim ekranie, aby go wyeliminować.</string>
   <string name="ExtensionRoleSniperShoot">Snajpuj</string>
   <string name="ExtensionRoleSniperAiming">Celowanie...</string>
   <string name="ExtensionRoleSniperShootWikiDescription">Wejdź w tryb celowania, stój w miejscu i kliknij cel na ekranie, aby strzelić do niego zdalnie.</string>
