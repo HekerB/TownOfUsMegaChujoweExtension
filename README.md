@@ -82,12 +82,12 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <img src="./Images/Groups/ImpConcealing.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#astral"><img width="10%" src="./Images/Icons/Astral_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#speedy"><img width="10%" src="./Images/Icons/Speedy_Role_Icon.png" /></a>
-  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#sniper"><img width="10%" src="./Images/Icons/Sniper_Role_Icon.png" /></a>
   <img src="./Images/Groups/ImpKilling.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#detonator"><img width="10%" src="./Images/Icons/Detonator_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#kamikaze"><img width="10%" src="./Images/Icons/Kamikaze_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#outlaw"><img width="10%" src="./Images/Icons/Outlaw_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#witch"><img width="10%" src="./Images/Icons/Witch_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#sniper"><img width="10%" src="./Images/Icons/Sniper_Role_Icon.png" /></a>
   <img src="./Images/Groups/ImpPower.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#poisoner"><img width="10%" src="./Images/Icons/Poisoner_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#rc-xd"><img width="10%" src="./Images/Icons/RC-XD_Icon.png" /></a>
