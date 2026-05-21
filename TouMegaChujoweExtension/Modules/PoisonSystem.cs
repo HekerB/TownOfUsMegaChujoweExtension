@@ -53,7 +53,6 @@ public static class PoisonSystem
     private static Vector3 _originalLightOffset;
     private static bool _lightMoved;
 
-    // Seeking state for manual target selection
     public static bool IsSeeking { get; set; }
     public static int StartSeekingFrame { get; set; } = -1;
 
@@ -141,7 +140,6 @@ public static class PoisonSystem
             }
         }
 
-        // If local player is the seeking Poisoner, handle mouse clicks to select target
         if (IsSeeking && localPlayer != null && !localPlayer.Data.IsDead)
         {
             if (UnityEngine.Time.frameCount > StartSeekingFrame && Input.GetMouseButtonDown(0))
@@ -167,10 +165,8 @@ public static class PoisonSystem
 
                     if (clickedTarget != null)
                     {
-                        // Check shields!
                         if (CheckAndTriggerShields(localPlayer, clickedTarget))
                         {
-                            // Shield blocked! End seeking, put button on cooldown
                             var vineBtn = CustomButtonSingleton<PoisonerVineButton>.Instance;
                             if (vineBtn != null)
                             {
@@ -179,7 +175,6 @@ public static class PoisonSystem
                         }
                         else
                         {
-                            // Success! Send Vine RPC
                             PoisonerRole.RpcVineTarget(localPlayer, clickedTarget.PlayerId);
                             var vineBtn = CustomButtonSingleton<PoisonerVineButton>.Instance;
                             if (vineBtn != null)
@@ -192,35 +187,10 @@ public static class PoisonSystem
             }
         }
 
-        // Handle ShadowQuad visibility based on Poisoner seeking/vining state
-        if (localPlayer != null)
-        {
-            var falconBtn = CustomButtonSingleton<FalconZoomButton>.Instance;
-            bool isFalconZoomed = falconBtn != null && falconBtn.IsZoomed;
-
-            bool shouldDisableShadows = IsSeeking || IsVineActive || HasActivePoison || SniperSystem.IsAiming || isFalconZoomed;
-            if (shouldDisableShadows)
-            {
-                if (HudManager.Instance != null && HudManager.Instance.ShadowQuad != null && HudManager.Instance.ShadowQuad.gameObject.activeSelf)
-                {
-                    HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
-                }
-            }
-            else
-            {
-                if (!PelicanSystem.IsSwallowed(localPlayer.PlayerId))
-                {
-                    if (HudManager.Instance != null && HudManager.Instance.ShadowQuad != null && !HudManager.Instance.ShadowQuad.gameObject.activeSelf)
-                    {
-                        HudManager.Instance.ShadowQuad.gameObject.SetActive(true);
-                    }
-                }
-            }
-        }
-
         if (ActivePoisons.Count == 0)
         {
             if (IsVineActive) EndVineCamera();
+            UpdateShadowQuad(localPlayer);
             return;
         }
 
@@ -293,6 +263,8 @@ public static class PoisonSystem
                 EndVineCamera();
             }
         }
+
+        UpdateShadowQuad(localPlayer);
     }
 
     private static void ExecuteKill(PoisonEntry entry)
@@ -359,6 +331,41 @@ public static class PoisonSystem
     {
         if (!IsVineActive) return;
         IsVineActive = false;
+    }
+
+    private static bool _shadowDisabledByUs;
+
+    private static void UpdateShadowQuad(PlayerControl? localPlayer)
+    {
+        if (localPlayer == null) return;
+
+        var falconBtn = CustomButtonSingleton<FalconZoomButton>.Instance;
+        bool isFalconZoomed = falconBtn != null && falconBtn.IsZoomed;
+
+        bool isCameraZoomed = Camera.main != null && Camera.main.orthographicSize > 3.1f;
+
+        bool shouldDisableShadows = IsSeeking || IsVineActive || HasActivePoison
+            || SniperSystem.IsAiming || isFalconZoomed || isCameraZoomed;
+
+        if (shouldDisableShadows)
+        {
+            if (HudManager.Instance != null && HudManager.Instance.ShadowQuad != null && HudManager.Instance.ShadowQuad.gameObject.activeSelf)
+            {
+                HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
+                _shadowDisabledByUs = true;
+            }
+        }
+        else if (_shadowDisabledByUs)
+        {
+            if (!PelicanSystem.IsSwallowed(localPlayer.PlayerId))
+            {
+                if (HudManager.Instance != null && HudManager.Instance.ShadowQuad != null && !HudManager.Instance.ShadowQuad.gameObject.activeSelf)
+                {
+                    HudManager.Instance.ShadowQuad.gameObject.SetActive(true);
+                }
+            }
+            _shadowDisabledByUs = false;
+        }
     }
 
     public static bool IsTargetPoisonedByPoison(byte targetId)
@@ -592,6 +599,7 @@ public static class PoisonSystem
         HasActivePoison = false;
         PoisonTimeLeft = 0f;
         IsRemoteKill = false;
+        _shadowDisabledByUs = false;
         _lastExecuteFrame = -1;
         _lastExecuteTarget = byte.MaxValue;
         
