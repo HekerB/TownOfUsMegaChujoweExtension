@@ -59,34 +59,45 @@ public static class DraftNetworking
 
     public static void ReceiveDraftStartFromReader(MessageReader reader)
     {
-        var count = reader.ReadByte();
-        var impostorIds = new HashSet<byte>();
-        for (int i = 0; i < count; i++)
-            impostorIds.Add(reader.ReadByte());
-
-        var orderCount = reader.ReadByte();
-        DraftSystem.PickOrder.Clear();
-        for (var i = 0; i < orderCount; i++)
-            DraftSystem.PickOrder.Add(reader.ReadByte());
-
-        var factionCount = reader.ReadByte();
-        DraftSystem.PlayerFactions.Clear();
-        for (int i = 0; i < factionCount; i++)
+        try
         {
-            var playerId = reader.ReadByte();
-            var faction = (DraftFaction)reader.ReadByte();
-            DraftSystem.PlayerFactions[playerId] = faction;
+            var count = reader.ReadByte();
+            var impostorIds = new HashSet<byte>();
+            for (int i = 0; i < count; i++)
+                impostorIds.Add(reader.ReadByte());
+
+            var orderCount = reader.ReadByte();
+            DraftSystem.PickOrder.Clear();
+            for (var i = 0; i < orderCount; i++)
+                DraftSystem.PickOrder.Add(reader.ReadByte());
+
+            var factionCount = reader.ReadByte();
+            DraftSystem.PlayerFactions.Clear();
+            for (int i = 0; i < factionCount; i++)
+            {
+                var playerId = reader.ReadByte();
+                var faction = (DraftFaction)reader.ReadByte();
+                DraftSystem.PlayerFactions[playerId] = faction;
+            }
+
+            DraftSystem.TargetOtherNeutralCount = reader.ReadByte();
+
+            // Info($"[DraftNetworking] Received combined draft data: {orderCount} players, {factionCount} factions, targetNeutrals={DraftSystem.TargetOtherNeutralCount}");
+
+            ReceiveDraftStart(impostorIds);
+            DraftSystem.DraftActiveThisRound = true;
+            DraftSystem.IsRunning = true;
+
+            DraftLobbyPatch.OnDraftStartedAsClient();
         }
-
-        DraftSystem.TargetOtherNeutralCount = reader.ReadByte();
-
-        // Info($"[DraftNetworking] Received combined draft data: {orderCount} players, {factionCount} factions, targetNeutrals={DraftSystem.TargetOtherNeutralCount}");
-
-        ReceiveDraftStart(impostorIds);
-        DraftSystem.DraftActiveThisRound = true;
-        DraftSystem.IsRunning = true;
-
-        DraftLobbyPatch.OnDraftStartedAsClient();
+        catch (System.Exception ex)
+        {
+            try
+            {
+                Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"[Draft] Critical exception in ReceiveDraftStartFromReader on Client: {ex}");
+            }
+            catch { }
+        }
     }
 
     public static void SendPick(byte playerId, ushort roleId)
