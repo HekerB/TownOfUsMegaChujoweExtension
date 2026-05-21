@@ -20,11 +20,9 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
     {
         get
         {
-            var baseKc = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
-            var multiplier = PlayerControl.LocalPlayer != null && baseKc > 0 
-                ? PlayerControl.LocalPlayer.GetKillCooldown() / baseKc 
-                : 1f;
-            return Math.Clamp((OptionGroupSingleton<PoisonerOptions>.Instance.PoisonCooldown + MapCooldown) * multiplier, 5f, 120f);
+            if (PlayerControl.LocalPlayer != null)
+                return PlayerControl.LocalPlayer.GetKillCooldown();
+            return GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
         }
     }
     public override float EffectDuration => 0f;
@@ -80,6 +78,14 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
 
         var player = PlayerControl.LocalPlayer;
         if (player == null || _closestTarget == null) return;
+
+        if (PoisonSystem.CheckAndTriggerShields(player, _closestTarget))
+        {
+            Timer = Cooldown;
+            player.SetKillTimer(Cooldown);
+            PoisonerVineButton.SetOwnCooldown();
+            return;
+        }
 
         PoisonerRole.RpcPoisonTarget(player, _closestTarget.PlayerId);
 

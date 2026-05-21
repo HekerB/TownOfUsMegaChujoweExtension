@@ -94,5 +94,8 @@ public enum ExtensionRpc : uint
     SendSidekickChat = 109,
     SetSidekickAssignments = 110,
     DetonatorPlayTracker = 111,
-    BountyHunterShowMisKill = 112
+    BountyHunterShowMisKill = 112,
+    PoisonerCleanse = 113,
+    SniperShoot = 114,
+    SniperPlaySound = 115
 }

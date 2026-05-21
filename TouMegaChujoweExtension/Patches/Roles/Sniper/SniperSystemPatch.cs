@@ -2,55 +2,55 @@ using HarmonyLib;
 using TouMegaChujoweExtension.Modules;
 using TownOfUs.Utilities;
 
-namespace TouMegaChujoweExtension.Patches.Roles.Poisoner;
+namespace TouMegaChujoweExtension.Patches.Roles.Sniper;
 
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-public static class PoisonSystemUpdatePatch
+public static class SniperSystemUpdatePatch
 {
     [HarmonyPostfix]
     public static void Postfix()
     {
-        PoisonSystem.Update();
+        SniperSystem.Update();
     }
 }
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
-public static class PoisonMeetingStartPatch
+public static class SniperMeetingStartPatch
 {
     [HarmonyPostfix]
     public static void Postfix()
     {
-        PoisonSystem.RoundReset();
+        SniperSystem.RoundReset();
     }
 }
 
 [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
-public static class PoisonExileWrapUpPatch
+public static class SniperExileWrapUpPatch
 {
     [HarmonyPostfix]
     public static void Postfix()
     {
-        PoisonSystem.RoundReset();
+        SniperSystem.RoundReset();
     }
 }
 
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
-public static class PoisonGameEndPatch
+public static class SniperGameEndPatch
 {
     [HarmonyPostfix]
     public static void Postfix()
     {
-        PoisonSystem.FullReset();
+        SniperSystem.RoundReset();
     }
 }
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CanMove), MethodType.Getter)]
-public static class PoisonerStasisCanMovePatch
+public static class SniperStasisCanMovePatch
 {
     [HarmonyPrefix]
     public static bool Prefix(PlayerControl __instance, ref bool __result)
     {
-        if (PoisonSystem.IsPlayerInStasis(__instance.PlayerId))
+        if (SniperSystem.IsPlayerFrozen(__instance.PlayerId))
         {
             __result = false;
             return false;
@@ -60,7 +60,7 @@ public static class PoisonerStasisCanMovePatch
 }
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-public static class PoisonerStasisFixedUpdatePatch
+public static class SniperStasisFixedUpdatePatch
 {
     public static readonly System.Collections.Generic.HashSet<byte> FrozenPlayers = new();
 
@@ -69,7 +69,7 @@ public static class PoisonerStasisFixedUpdatePatch
     {
         if (__instance == null) return;
 
-        bool inStasis = PoisonSystem.IsPlayerInStasis(__instance.PlayerId);
+        bool inStasis = SniperSystem.IsPlayerFrozen(__instance.PlayerId);
         if (inStasis && !__instance.HasDied())
         {
             if (__instance.moveable)
@@ -91,30 +91,16 @@ public static class PoisonerStasisFixedUpdatePatch
 }
 
 [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
-public static class PoisonerStasisNetworkTransformPatch
+public static class SniperStasisNetworkTransformPatch
 {
     [HarmonyPrefix]
     [HarmonyPriority(Priority.First)]
     public static bool Prefix(CustomNetworkTransform __instance)
     {
-        if (__instance.myPlayer != null && PoisonSystem.IsPlayerInStasis(__instance.myPlayer.PlayerId))
+        if (__instance.myPlayer != null && SniperSystem.IsPlayerFrozen(__instance.myPlayer.PlayerId))
         {
             return false;
         }
         return true;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

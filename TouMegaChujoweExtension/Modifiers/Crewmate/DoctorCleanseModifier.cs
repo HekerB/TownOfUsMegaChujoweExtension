@@ -40,6 +40,11 @@ public sealed class DoctorCleanseModifier : TimedModifier
             Player.RemoveModifier(mod);
         }
 
+        if (Player.AmOwner)
+        {
+            Roles.Classic.Impostor.PoisonerRole.RpcPoisonerCleanse(Player, Player.PlayerId);
+        }
+
         Player.RemoveModifier(this);
     }
 }

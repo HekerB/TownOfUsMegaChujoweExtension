@@ -8,6 +8,10 @@ using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
+using TouMegaChujoweExtension.Options.Roles.Impostor;
+using TouMegaChujoweExtension.Roles.Classic.Impostor;
+using TouMegaChujoweExtension.Assets;
+using TouMegaChujoweExtension.Modules;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
@@ -20,11 +24,9 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
     {
         get
         {
-            var baseKc = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
-            var multiplier = PlayerControl.LocalPlayer != null && baseKc > 0 
-                ? PlayerControl.LocalPlayer.GetKillCooldown() / baseKc 
-                : 1f;
-            return Math.Clamp((OptionGroupSingleton<PoisonerOptions>.Instance.VineCooldown + MapCooldown) * multiplier, 5f, 120f);
+            if (PlayerControl.LocalPlayer != null)
+                return PlayerControl.LocalPlayer.GetKillCooldown();
+            return GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
         }
     }
     public override float EffectDuration => 0f;
@@ -43,56 +45,92 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
         yield return MiscUtils.CoMoveButtonIndex(this, false);
     }
 
-    private PlayerControl? _closestInRange;
     private PlayerControl? _lastOutlined;
+    private bool _isSeeking;
+    private float _seekingTimer;
+    private float _seekingDuration;
 
-    // Countdown window
     private bool _isVining;
     private float _vineTimer;
     private float _vineDuration;
 
+    private bool IsAnyTargetInCameraRange(PlayerControl poisoner)
+    {
+        if (Camera.main == null) return false;
+        foreach (var pc in PlayerControl.AllPlayerControls)
+        {
+            if (pc == null || pc.Data.IsDead || pc.PlayerId == poisoner.PlayerId) continue;
+            if (pc.IsImpostorAligned()) continue;
 
+            // Check if player is within camera screen bounds
+            var viewportPoint = Camera.main.WorldToViewportPoint(pc.transform.position);
+            if (viewportPoint.x >= 0f && viewportPoint.x <= 1f &&
+                viewportPoint.y >= 0f && viewportPoint.y <= 1f &&
+                viewportPoint.z > 0f)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public override bool CanUse()
     {
+        if (!OptionGroupSingleton<PoisonerOptions>.Instance.VineEnabled) return false;
         if (MeetingHud.Instance || HudManager.Instance.Chat.IsOpenOrOpening) return false;
         if (PoisonSystem.IsVineActive) return false;
         if (PoisonSystem.HasActivePoison) return false;
-        if (_isVining) return false;
+        if (PoisonSystem.IsSeeking) return false;
 
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.HasDied()) return false;
         if (player.inVent) return false;
 
-        return _closestInRange != null;
+        return true;
+    }
+
+    public override bool CanClick()
+    {
+        if (!OptionGroupSingleton<PoisonerOptions>.Instance.VineEnabled) return false;
+        if (_isSeeking || _isVining) return false;
+        var player = PlayerControl.LocalPlayer;
+        if (player == null) return false;
+        return CanUse() && Timer <= 0f;
     }
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
+        if (!OptionGroupSingleton<PoisonerOptions>.Instance.VineEnabled)
+        {
+            Button?.gameObject.SetActive(false);
+            return;
+        }
+
         if (MeetingHud.Instance)
         {
-            if (_isVining) EndVineWindow();
+            if (_isSeeking) EndSeeking(false);
+            if (_isVining) EndVining();
             base.FixedUpdate(playerControl);
             return;
         }
 
         if (playerControl == null || !playerControl.IsRole<PoisonerRole>())
         {
-            _closestInRange = null;
             ClearOutline();
-            if (_isVining) EndVineWindow();
+            if (_isSeeking) EndSeeking(false);
+            if (_isVining) EndVining();
             if (playerControl != null) base.FixedUpdate(playerControl);
             return;
         }
 
-        // === Vine countdown window ===
+        // === Vining countdown phase (waiting for target to die) ===
         if (_isVining)
         {
             _vineTimer -= Time.fixedDeltaTime;
 
             if (_vineTimer <= 0f)
             {
-                EndVineWindow();
+                EndVining();
 
                 Timer = Cooldown;
                 playerControl.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
@@ -114,8 +152,52 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
                 }
             }
 
-            _closestInRange = null;
-            ClearOutline();
+            Button?.gameObject.SetActive(
+                HudManager.Instance.UseButton.isActiveAndEnabled ||
+                HudManager.Instance.PetButton.isActiveAndEnabled);
+            return;
+        }
+
+        // === Seeking countdown phase ===
+        if (_isSeeking)
+        {
+            _seekingTimer -= Time.fixedDeltaTime;
+
+            if (_seekingTimer <= 0f)
+            {
+                EndSeeking(true);
+            }
+            else
+            {
+                Timer = -1f;
+
+                if (Button != null)
+                {
+                    Button.SetEnabled();
+                    Button.SetFillUp(_seekingTimer, _seekingDuration);
+                    Button.cooldownTimerText.text = Mathf.CeilToInt(_seekingTimer).ToString();
+                    Button.cooldownTimerText.gameObject.SetActive(true);
+                }
+
+                // Check outline under mouse cursor
+                PlayerControl? mouseTarget = null;
+                if (Camera.main != null)
+                {
+                    var mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    var minClickDist = 0.8f;
+                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    {
+                        if (pc == null || pc.Data.IsDead || pc.PlayerId == playerControl.PlayerId) continue;
+                        if (pc.IsImpostorAligned()) continue;
+                        if (Vector2.Distance(mouseWorldPos, pc.transform.position) < minClickDist)
+                        {
+                            mouseTarget = pc;
+                            break;
+                        }
+                    }
+                }
+                UpdateOutline(mouseTarget);
+            }
 
             Button?.gameObject.SetActive(
                 HudManager.Instance.UseButton.isActiveAndEnabled ||
@@ -123,56 +205,31 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
             return;
         }
 
-        // === Normalny tryb ===
+        // === Normal Mode ===
         if (PoisonSystem.HasActivePoison || PoisonSystem.IsVineActive || playerControl.inVent)
         {
-            _closestInRange = null;
             ClearOutline();
             base.FixedUpdate(playerControl);
             return;
         }
 
-        _closestInRange = FindClosestInRange(playerControl);
-        UpdateOutline();
         base.FixedUpdate(playerControl);
     }
 
-    private static PlayerControl? FindClosestInRange(PlayerControl poisoner)
+    private void UpdateOutline(PlayerControl? target)
     {
-        var range = OptionGroupSingleton<PoisonerOptions>.Instance.VineRange;
-        PlayerControl? closest = null;
-        var minDist = float.MaxValue;
-
-        foreach (var pc in PlayerControl.AllPlayerControls)
-        {
-            if (pc == null || pc.Data.IsDead || pc.PlayerId == poisoner.PlayerId) continue;
-            if (pc.IsImpostorAligned()) continue;
-
-            var dist = Vector2.Distance(poisoner.transform.position, pc.transform.position);
-            if (dist <= range && dist < minDist)
-            {
-                minDist = dist;
-                closest = pc;
-            }
-        }
-
-        return closest;
-    }
-
-    private void UpdateOutline()
-    {
-        if (_lastOutlined != null && _lastOutlined != _closestInRange)
+        if (_lastOutlined != null && _lastOutlined != target)
         {
             _lastOutlined.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>());
         }
 
-        if (_closestInRange != null)
+        if (target != null)
         {
-            _closestInRange.cosmetics.SetOutline(true,
+            target.cosmetics.SetOutline(true,
                 new Il2CppSystem.Nullable<Color>(new Color(0.1f, 0.6f, 0.1f)));
         }
 
-        _lastOutlined = _closestInRange;
+        _lastOutlined = target;
     }
 
     private void ClearOutline()
@@ -187,31 +244,67 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
     protected override void OnClick()
     {
         var player = PlayerControl.LocalPlayer;
-        if (player == null || _closestInRange == null) return;
+        if (player == null) return;
 
-        PoisonerRole.RpcVineTarget(player, _closestInRange.PlayerId);
+        // Enter seeking mode
+        _seekingTimer = OptionGroupSingleton<PoisonerOptions>.Instance.VineSeekingDuration;
+        _seekingDuration = _seekingTimer;
+        _isSeeking = true;
+        PoisonSystem.IsSeeking = true;
+        PoisonSystem.StartSeekingFrame = UnityEngine.Time.frameCount;
 
-        _vineDuration = OptionGroupSingleton<PoisonerOptions>.Instance.VineDuration;
-        _vineTimer = _vineDuration;
+        OverrideSprite(TouExtensionImpAssets.VineButtonSprite.LoadAsset());
+        OverrideName(TouLocale.GetParsed("ExtensionRolePoisonerVining", "Seeking..."));
+    }
+
+    public void EndSeeking(bool putOnCooldown)
+    {
+        _isSeeking = false;
+        PoisonSystem.IsSeeking = false;
+        ClearOutline();
+        OverrideSprite(TouExtensionImpAssets.VineButtonSprite.LoadAsset());
+        OverrideName(TouLocale.GetParsed("ExtensionRolePoisonerVine", "Vine"));
+        
+        if (putOnCooldown)
+        {
+            Timer = Cooldown;
+            var local = PlayerControl.LocalPlayer;
+            if (local != null)
+            {
+                local.SetKillTimer(Cooldown);
+            }
+            PoisonerPoisonButton.SetOwnCooldown();
+        }
+        else
+        {
+            Timer = -1f;
+        }
+    }
+
+    public void StartVining(float duration)
+    {
+        _isSeeking = false;
         _isVining = true;
-
-        player.killTimer = _vineDuration + 1f;
-
+        _vineDuration = duration;
+        _vineTimer = duration;
+        ClearOutline();
         OverrideSprite(TouExtensionImpAssets.VineButtonSprite.LoadAsset());
         OverrideName(TouLocale.GetParsed("ExtensionRolePoisonerVining", "Vining..."));
     }
 
-    private void EndVineWindow()
+    public void EndVining()
     {
         _isVining = false;
         _vineTimer = 0f;
+        Button?.SetCooldownFill(0f);
+        if (Button != null)
+            Button.cooldownTimerText.gameObject.SetActive(false);
     }
 
     public override void ResetCooldownAndOrEffect()
     {
-        EndVineWindow();
-        OverrideSprite(TouExtensionImpAssets.VineButtonSprite.LoadAsset());
-        OverrideName(TouLocale.GetParsed("ExtensionRolePoisonerVine", "Vine"));
+        EndSeeking(false);
+        EndVining();
         base.ResetCooldownAndOrEffect();
     }
 
@@ -226,19 +319,3 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
 
     public override void OnEffectEnd() { }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

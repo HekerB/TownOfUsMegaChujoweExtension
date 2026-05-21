@@ -47,6 +47,19 @@ public static class PelicanInteractionPatches
 
         if (isSwallowed)
         {
+            var falconBtn = CustomButtonSingleton<FalconZoomButton>.Instance;
+            if (falconBtn != null) falconBtn.ForceReset();
+
+            var sniperBtn = CustomButtonSingleton<SniperShootButton>.Instance;
+            if (sniperBtn != null) sniperBtn.ResetCooldownAndOrEffect();
+
+            var poisonerBtn = CustomButtonSingleton<PoisonerVineButton>.Instance;
+            if (poisonerBtn != null)
+            {
+                poisonerBtn.EndSeeking(false);
+                poisonerBtn.EndVining();
+            }
+
             if (HudManager.Instance != null && HudManager.Instance.ShadowQuad != null && HudManager.Instance.ShadowQuad.gameObject.activeSelf)
             {
                 HudManager.Instance.ShadowQuad.gameObject.SetActive(false);

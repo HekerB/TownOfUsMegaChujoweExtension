@@ -518,6 +518,7 @@
   <string name="ExtensionOptionSpeedyAccelerationBuff">Moc przyspieszenia</string>
   <string name="ExtensionOptionSpeedyCanVent">Może używać wentów</string>
   <string name="DiedToDetonated">Wyleciał w powietrze</string>
+  <string name="DiedToSniped">Zastrzelony</string>
 
   <!-- Detonator Role -->
   <string name="ExtensionRoleDetonator">Detonator</string>
@@ -896,21 +897,24 @@
   <!-- Poisoner Role -->
   <string name="ExtensionRolePoisoner">Poisoner</string>
   <string name="ExtensionRolePoisonerIntroBlurb">Zatruwaj wrogow lub petaj ich pnaczami.</string>
-  <string name="ExtensionRolePoisonerTabDescription">Uzywaj Trucia, aby powoli eliminowac graczy, do ktorych podejdziesz.\%nl\%Uzywaj Pnacza, aby zdalnie zabic najblizszego gracza w zasiegu.</string>
-  <string name="ExtensionRolePoisonerWikiDescription">Impostor, ktory moze zatruwac graczy przy kontakcie lub uzywac pnaczy do zabijania z dystansu.</string>
+  <string name="ExtensionRolePoisonerTabDescription">Uzywaj Trucia, aby powoli eliminowac graczy, do ktorych podejdziesz.\%nl\%Uzywaj Pnacza, aby recznie wybrac cel i unieruchomic go w miejscu.</string>
+  <string name="ExtensionRolePoisonerWikiDescription">Impostor, ktory moze zatruwac graczy przy kontakcie lub uzywac pnaczy, aby spetac cel i go wyeliminowac po czasie paralizu.</string>
   <string name="ExtensionRolePoisonerPoison">Trucie</string>
   <string name="ExtensionRolePoisonerPoisonWikiDescription">Podejdz do gracza i go zatruj. Umrze po opoznieniu.</string>
   <string name="ExtensionRolePoisonerVine">Pnacze</string>
-  <string name="ExtensionRolePoisonerVining">Petanie...</string>
-  <string name="ExtensionRolePoisonerVineWikiDescription">Znajdz najblizszego gracza w zasiegu i zabij go po opoznieniu. Twoja kamera podaza za celem.</string>
+  <string name="ExtensionRolePoisonerVining">Szukanie...</string>
+  <string name="ExtensionRolePoisonerVineWikiDescription">Wejdz w tryb Szukania. Kliknij na gracza myszka, aby spetac was oboje w miejscu. Cel umrze po zakonczeniu paralizu.</string>
   
   <!-- Poisoner Options -->
-  <string name="ExtensionOptionPoisonerPoisonCooldown">Cooldown Trucia</string>
   <string name="ExtensionOptionPoisonerPoisonDuration">Czas trwania Trucia</string>
-  <string name="ExtensionOptionPoisonerVineCooldown">Cooldown Pnacza</string>
-  <string name="ExtensionOptionPoisonerVineDuration">Czas trwania Pnacza</string>
-  <string name="ExtensionOptionPoisonerVineRange">Zasieg Pnacza</string>
-  <string name="ExtensionOptionPoisonerCanVent">Moze uzywac wentylacji</string>
+  <string name="ExtensionOptionPoisonerVineDuration">Czas paraliżu Pnącza</string>
+  <string name="ExtensionOptionPoisonerCanVent">Może używać wentylacji</string>
+  <string name="ExtensionOptionPoisonerVineSeekingDuration">Czas szukania ofiary Pnącza</string>
+  <string name="ExtensionOptionPoisonerVineEnabled">Pnącze włączone</string>
+
+  <!-- Poisoner Notifications -->
+  <string name="ExtensionPoisonerNotificationPoisoned">Zatrułeś gracza {0}!</string>
+  <string name="ExtensionPoisonerNotificationTargetDied">Zatruta przez Ciebie osoba {0} zginęła!</string>
 
   <!-- Poisoner Death Messages -->
   <string name="DiedToPoisoner">Zabity</string>
@@ -1587,6 +1591,23 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <!-- First Round Emergency Block -->
   <string name="ExtensionOptionGeneralBlockFirstRoundEmergency">Blokuj przycisk spotkania awaryjnego w pierwszej rundzie</string>
   <string name="ExtensionBlockFirstRoundEmergencyStatus">Spotkania awaryjne są zablokowane w pierwszej rundzie!</string>
+
+  <!-- Sniper Role -->
+  <string name="ExtensionRoleSniper">Snajper</string>
+  <string name="ExtensionRoleSniperIntroBlurb">Celuj uważnie i eliminuj cele z dystansu.</string>
+  <string name="ExtensionRoleSniperTabDescription">Możesz wejść w tryb celowania, aby strzelać do celów zdalnie.\nPodczas celowania stoisz w miejscu, ale twój cel nie.</string>
+  <string name="ExtensionRoleSniperWikiDescription">Snajper to rola Impostora zabójcy (Killing), która może strzelać do celów na odległość.\nKiedy używasz swojej umiejętności, wchodzisz w tryb celowania i nie możesz się poruszać. Kliknij na cel na swoim ekranie, aby go wyeliminować.</string>
+  <string name="ExtensionRoleSniperShoot">Snajpuj</string>
+  <string name="ExtensionRoleSniperAiming">Celowanie...</string>
+  <string name="ExtensionRoleSniperShootWikiDescription">Wejdź w tryb celowania, stój w miejscu i kliknij cel na ekranie, aby strzelić do niego zdalnie.</string>
+
+  <!-- Sniper Options -->
+  <string name="ExtensionOptionSniperAimDuration">Czas na oddanie strzału</string>
+  <string name="ExtensionOptionSniperCanVent">Może używać ventów</string>
+  <string name="ExtensionOptionSniperCanCancelAiming">Może anulować celowanie</string>
+  <string name="ExtensionOptionSniperAimZoomEnabled">Oddalenie ekranu podczas celowania</string>
+  <string name="ExtensionOptionSniperZoomDistance">Dystans oddalenia</string>
+  <string name="SniperAimingCancelledPenalty">Celowanie anulowane! Nałożono karę cooldownu.</string>
 </resources>
 
 

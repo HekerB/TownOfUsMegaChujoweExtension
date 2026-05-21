@@ -13,6 +13,7 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Crewmate;
 public sealed class FalconZoomButton : TownOfUsRoleButton<FalconRole>
 {
     private bool _isZoomed;
+    public bool IsZoomed => _isZoomed;
     private float _zoomTimer;
     private IEnumerator? _activeCoroutine;
     private int _lastClickFrame = -1;
@@ -107,7 +108,7 @@ public sealed class FalconZoomButton : TownOfUsRoleButton<FalconRole>
 
         if (_isZoomed)
         {
-            if (MeetingHud.Instance || IsLightsSabotaged())
+            if (MeetingHud.Instance || IsLightsSabotaged() || playerControl == null || playerControl.HasDied())
             {
                 ForceReset();
                 return;

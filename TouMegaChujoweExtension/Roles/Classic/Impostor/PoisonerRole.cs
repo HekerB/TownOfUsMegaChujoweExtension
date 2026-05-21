@@ -92,6 +92,12 @@ public sealed class PoisonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     {
         // Kill is now handled by RpcSpecialMurder in PoisonSystem.ExecuteKill
     }
+
+    [MethodRpc((uint)ExtensionRpc.PoisonerCleanse)]
+    public static void RpcPoisonerCleanse(PlayerControl sender, byte targetId)
+    {
+        PoisonSystem.CleanseTarget(targetId);
+    }
 }
 
 

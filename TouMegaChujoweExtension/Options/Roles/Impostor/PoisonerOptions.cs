@@ -10,21 +10,26 @@ public sealed class PoisonerOptions : AbstractOptionGroup<PoisonerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRolePoisoner", "Poisoner");
 
-    [ModdedNumberOption("ExtensionOptionPoisonerPoisonCooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float PoisonCooldown { get; set; } = 25f;
-
-    [ModdedNumberOption("ExtensionOptionPoisonerVineCooldown", 15f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float VineCooldown { get; set; } = 30f;
-
     [ModdedToggleOption("ExtensionOptionPoisonerCanVent")]
     public bool CanVent { get; set; } = true;
 
     [ModdedNumberOption("ExtensionOptionPoisonerPoisonDuration", 1f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float PoisonDuration { get; set; } = 5f;
 
-    [ModdedNumberOption("ExtensionOptionPoisonerVineDuration", 1f, 10f, 0.5f, MiraNumberSuffixes.Seconds)]
-    public float VineDuration { get; set; } = 3f;
+    [ModdedToggleOption("ExtensionOptionPoisonerVineEnabled")]
+    public bool VineEnabled { get; set; } = true;
 
-    [ModdedNumberOption("ExtensionOptionPoisonerVineRange", 1f, 15f, 0.5f, MiraNumberSuffixes.None)]
-    public float VineRange { get; set; } = 5f;
+    public ModdedNumberOption VineDurationOption { get; } = new("ExtensionOptionPoisonerVineDuration", 3f, 1f, 10f, 0.5f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => OptionGroupSingleton<PoisonerOptions>.Instance.VineEnabled
+    };
+
+    public float VineDuration => VineDurationOption.Value;
+
+    public ModdedNumberOption VineSeekingDurationOption { get; } = new("ExtensionOptionPoisonerVineSeekingDuration", 10f, 1f, 20f, 0.5f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => OptionGroupSingleton<PoisonerOptions>.Instance.VineEnabled
+    };
+
+    public float VineSeekingDuration => VineSeekingDurationOption.Value;
 }

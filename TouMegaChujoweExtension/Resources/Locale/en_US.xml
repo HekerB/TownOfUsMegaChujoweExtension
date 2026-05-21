@@ -521,6 +521,7 @@
   <string name="ExtensionOptionSpeedyAccelerationBuff">Acceleration Buff</string>
   <string name="ExtensionOptionSpeedyCanVent">Can Vent</string>
   <string name="DiedToDetonated">Detonated</string>
+  <string name="DiedToSniped">Sniped</string>
 
   <!-- Detonator Role -->
   <string name="ExtensionRoleDetonator">Detonator</string>
@@ -903,21 +904,24 @@
   <!-- Poisoner Role -->
   <string name="ExtensionRolePoisoner">Poisoner</string>
   <string name="ExtensionRolePoisonerIntroBlurb">Poison enemies or trap them with vines.</string>
-  <string name="ExtensionRolePoisonerTabDescription">Use Poison to slowly kill players you approach.\%nl\%Use Vine to remotely kill the nearest player in range.</string>
-  <string name="ExtensionRolePoisonerWikiDescription">An Impostor who can poison players on contact or use vines to kill from a distance.</string>
+  <string name="ExtensionRolePoisonerTabDescription">Use Poison to slowly kill players you approach.\%nl\%Use Vine to manually select a target and trap them in place.</string>
+  <string name="ExtensionRolePoisonerWikiDescription">An Impostor who can poison players on contact or use vines to trap a target and kill them after a stasis delay.</string>
   <string name="ExtensionRolePoisonerPoison">Poison</string>
   <string name="ExtensionRolePoisonerPoisonWikiDescription">Approach a player and poison them. They will die after a delay.</string>
   <string name="ExtensionRolePoisonerVine">Vine</string>
-  <string name="ExtensionRolePoisonerVining">Vining...</string>
-  <string name="ExtensionRolePoisonerVineWikiDescription">Find the nearest player in range and kill them after a delay. Your camera follows the target.</string>
+  <string name="ExtensionRolePoisonerVining">Seeking...</string>
+  <string name="ExtensionRolePoisonerVineWikiDescription">Enter Seeking mode to find a target. Click on them to trap both of you in place. The target dies when the stasis ends.</string>
   
   <!-- Poisoner Options -->
-  <string name="ExtensionOptionPoisonerPoisonCooldown">Poison Cooldown</string>
   <string name="ExtensionOptionPoisonerPoisonDuration">Poison Duration</string>
-  <string name="ExtensionOptionPoisonerVineCooldown">Vine Cooldown</string>
-  <string name="ExtensionOptionPoisonerVineDuration">Vine Duration</string>
-  <string name="ExtensionOptionPoisonerVineRange">Vine Range</string>
+  <string name="ExtensionOptionPoisonerVineDuration">Vine Stasis Duration</string>
   <string name="ExtensionOptionPoisonerCanVent">Can Vent</string>
+  <string name="ExtensionOptionPoisonerVineSeekingDuration">Vine Seeking Duration</string>
+  <string name="ExtensionOptionPoisonerVineEnabled">Vine Enabled</string>
+
+  <!-- Poisoner Notifications -->
+  <string name="ExtensionPoisonerNotificationPoisoned">You have poisoned {0}!</string>
+  <string name="ExtensionPoisonerNotificationTargetDied">Your poisoned target {0} has died!</string>
 
   <!-- Poisoner Death Messages -->
   <string name="DiedToPoisoner">Killed</string>
@@ -1406,4 +1410,21 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- First Round Emergency Block -->
   <string name="ExtensionOptionGeneralBlockFirstRoundEmergency">Block Emergency Button In First Round</string>
   <string name="ExtensionBlockFirstRoundEmergencyStatus">Emergency meetings are disabled in the first round!</string>
+
+  <!-- Sniper Role -->
+  <string name="ExtensionRoleSniper">Sniper</string>
+  <string name="ExtensionRoleSniperIntroBlurb">Aim carefully and eliminate targets from afar.</string>
+  <string name="ExtensionRoleSniperTabDescription">You can enter aiming mode to shoot targets remotely.\nWhile aiming, you stand in place, but your target does not.</string>
+  <string name="ExtensionRoleSniperWikiDescription">The Sniper is an Impostor Killing role that can remotely shoot targets.\nWhen you use your ability, you enter aiming mode and cannot move. Click on a target on your screen to eliminate them.</string>
+  <string name="ExtensionRoleSniperShoot">Snipe</string>
+  <string name="ExtensionRoleSniperAiming">Aiming...</string>
+  <string name="ExtensionRoleSniperShootWikiDescription">Enter aiming mode, stand in place, and click on a target on your screen to shoot them remotely.</string>
+
+  <!-- Sniper Options -->
+  <string name="ExtensionOptionSniperAimDuration">Aim Duration</string>
+  <string name="ExtensionOptionSniperCanVent">Can Vent</string>
+  <string name="ExtensionOptionSniperCanCancelAiming">Can Cancel Aiming</string>
+  <string name="ExtensionOptionSniperAimZoomEnabled">Zoom Out While Aiming</string>
+  <string name="ExtensionOptionSniperZoomDistance">Zoom Distance</string>
+  <string name="SniperAimingCancelledPenalty">Aiming cancelled! Penalty cooldown applied.</string>
 </resources>
