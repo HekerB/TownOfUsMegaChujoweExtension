@@ -244,7 +244,7 @@ public static class GardenerSystem
     {
         try
         {
-            if (@event.Source == null || @event.Target == null) return;
+            if (@event.Source == null || @event.Target == null || MeetingHud.Instance != null || ExileController.Instance != null) return;
 
             bool targetInGarden = IsInAnyGarden(@event.Target);
 
