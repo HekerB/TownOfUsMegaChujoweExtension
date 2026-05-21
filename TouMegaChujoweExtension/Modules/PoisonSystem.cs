@@ -343,8 +343,9 @@ public static class PoisonSystem
         bool isFalconZoomed = falconBtn != null && falconBtn.IsZoomed;
 
         bool isCameraZoomed = Camera.main != null && Camera.main.orthographicSize > 3.1f;
+        bool isDead = localPlayer.Data != null && localPlayer.Data.IsDead;
 
-        bool shouldDisableShadows = IsSeeking || IsVineActive || HasActivePoison
+        bool shouldDisableShadows = isDead || IsSeeking || IsVineActive || HasActivePoison
             || SniperSystem.IsAiming || isFalconZoomed || isCameraZoomed;
 
         if (shouldDisableShadows)
