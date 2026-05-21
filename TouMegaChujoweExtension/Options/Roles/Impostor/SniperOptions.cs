@@ -21,7 +21,7 @@ public sealed class SniperOptions : AbstractOptionGroup<SniperRole>
     public bool CanCancelAiming { get; set; } = true;
 
     [ModdedToggleOption("ExtensionOptionSniperAimZoomEnabled")]
-    public bool AimZoomEnabled { get; set; } = true;
+    public bool AimZoomEnabled { get; set; } = false;
 
     public ModdedNumberOption ZoomDistanceOption { get; } = new("ExtensionOptionSniperZoomDistance", 6f, 4f, 30f, 0.5f, MiraNumberSuffixes.None)
     {

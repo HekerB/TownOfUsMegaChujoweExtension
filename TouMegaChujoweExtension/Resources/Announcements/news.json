@@ -366,7 +366,18 @@
         "\n- <b>Speedy Fix</b> - camouflage now correctly applies to all players during acceleration.",
         "\n- <b>Jackal/Vampire Mutual Exclusion</b> - implemented a 50/50 randomized exclusion for Standard mode and first-pick exclusion for Draft mode to prevent both roles from coexisting in the same match.",
         "\n- <b>Bounty Hunter Fixes</b> - corrected Hunt button description stating you cannot kill other players, and added missing English translations for options (vision, arrow range).",
-        "\n- <b>Mirror Caster Movement Fix</b> - fixed movement bugs where players would slide indefinitely or move while typing in chat overlays (e.g., Lover Chat) with 'Can Move While Menu' enabled."
+        "\n- <b>Mirror Caster Movement Fix</b> - fixed movement bugs where players would slide indefinitely or move while typing in chat overlays (e.g., Lover Chat) with 'Can Move While Menu' enabled.",
+        "\n\n\r<size=110%><b>★ NEW ROLE: SNIPER (Impostor Killing) ★</b></size>",
+        "\n- <b>Remote Sniping</b> - Use Snipe to enter aiming mode. Click on a target on your screen to eliminate them from afar.",
+        "\n- <b>Aiming Mechanics</b> - While aiming, you stand in place, but you gain a camera scroll to view the map. Zoom distance, Aim duration, Snipe cooldown, and Can Cancel options are fully configurable.",
+        "\n- <b>Death Reason</b> - Custom death reason (Sniped) with custom death feed translation.",
+        "\n- <b>Safety Measures</b> - Sniper aiming and camera states are properly cleared and restored if a meeting starts.",
+        "\n\n\r<size=110%><b>★ Poisoner Stabilizations ★</b></size>",
+        "\n- <b>Meeting Reset</b> - Force-terminates seeking and vining phases during meetings, completely clearing the dark overlay shadow.",
+        "\n- <b>Options Visibility</b> - Dynamically toggles visibility of Vine options in the lobby menu based on configuration.",
+        "\n\n\r<size=110%><b>★ UI & Localization Polish ★</b></size>",
+        "\n- <b>Button Position</b> - Realigned the Snipe button to match the bottom-left Detonator layout for maximum playability.",
+        "\n- <b>Tab Newline Refinement</b> - Fixed Sniper description newline rendering and systematically broke down long TabDescription lines for 10 custom roles (Trapper, Pope, Outlaw, Wraith, Hacker, Astral, Speedy, Detonator, Forestaller, Evoker) using native \\%nl\\% tags to ensure perfect layout styling."
       ]
     }
   ]
