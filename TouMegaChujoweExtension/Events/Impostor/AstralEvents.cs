@@ -24,6 +24,11 @@ public static class AstralEvents
             @event.Cancel();
             _killInProgress.Add(killer.PlayerId);
             killer.RpcSpecialMurder(@event.Target, causeOfDeath: "AstralVoid");
+
+            // Manually trigger AfterMurderEvent so the game correctly registers the kill
+            // and updates the KillMadeDuringPhase flag and statistics.
+            var afterMurderEvent = new AfterMurderEvent(killer, @event.Target, null);
+            MiraEventManager.InvokeEvent(afterMurderEvent);
         }
     }
 

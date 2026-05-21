@@ -141,7 +141,7 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
 
         if (isTarget)
         {
-            role.OnTargetKilled();
+            role.OnTargetKilled(Target.PlayerId);
         }
         else
         {
