@@ -3,6 +3,7 @@ using TouMegaChujoweExtension.Roles.Classic.Impostor;
 using TouMegaChujoweExtension.Options.Roles.Impostor;
 using TouMegaChujoweExtension.Modules;
 using MiraAPI.GameOptions;
+using MiraAPI.Events.Vanilla.Usables;
 using TownOfUs;
 using TownOfUs.Extensions;
 using TownOfUs.Utilities;
@@ -14,6 +15,23 @@ namespace TouMegaChujoweExtension.Patches.Impostor;
 [HarmonyPatch]
 public static class SandwormPatches
 {
+    [HarmonyPatch(typeof(TownOfUs.Events.TownOfUsEventHandlers), nameof(TownOfUs.Events.TownOfUsEventHandlers.PlayerCanUseEventHandler))]
+    [HarmonyPrefix]
+    public static bool PlayerCanUseEventHandlerPrefix(PlayerCanUseEvent @event)
+    {
+        if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.IsRole<SandwormRole>())
+        {
+            if (@event.IsVent)
+            {
+                if ((HudManager.Instance != null && HudManager.Instance.Chat.IsOpenOrOpening) || MeetingHud.Instance)
+                {
+                    @event.Cancel();
+                }
+                return false; // Skip TownOfUs's PlayerCanUseEventHandler to bypass vent disable in 1v1
+            }
+        }
+        return true;
+    }
     [HarmonyPatch(typeof(LogicOptions), nameof(LogicOptions.GetPlayerSpeedMod))]
     [HarmonyPostfix]
     public static void GetPlayerSpeedModPostfix(PlayerControl pc, ref float __result)

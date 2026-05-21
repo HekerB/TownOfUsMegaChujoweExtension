@@ -146,7 +146,7 @@ public sealed class GaslighterCurseButton : TownOfUsKillRoleButton<GaslighterRol
 
     public override PlayerControl? GetTarget()
     {
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(false, Distance);
     }
 
     protected override void OnClick()

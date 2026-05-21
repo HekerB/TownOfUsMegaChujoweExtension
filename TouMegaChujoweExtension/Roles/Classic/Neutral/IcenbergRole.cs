@@ -7,6 +7,7 @@ using Reactor.Networking.Rpc;
 using Reactor.Utilities.Attributes;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Networking;
+using TouMegaChujoweExtension.Modifiers;
 using TownOfUs.Assets;
 using TownOfUs.Extensions;
 using TownOfUs.Interfaces;
@@ -112,26 +113,11 @@ public sealed class IcenbergRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     [MethodRpc((uint)ExtensionRpc.IcenbergBlizzard)]
     public static void RpcBlizzard(PlayerControl icenberg, float duration)
     {
-        // Apply blizzard effect
-        
         foreach (var pc in PlayerControl.AllPlayerControls)
         {
-            if (pc != null && !pc.HasDied())
+            if (pc != null && !pc.HasDied() && pc.PlayerId != icenberg.PlayerId)
             {
-                // User said: "blizzard dla wszystkich zamrożonych"
-                if (pc.HasModifier<IcenbergFrozenModifier>())
-                {
-                    if (pc.AmOwner)
-                    {
-                        var msg = TouLocale.Get("ExtensionRoleIcenbergBlizzardNotification", "A blizzard has started!");
-                        var notif = Helpers.CreateAndShowNotification(
-                            msg,
-                            TouExtensionColors.Icenberg,
-                            new Vector3(0f, 1f, -20f),
-                            spr: TouMegaChujoweExtension.Assets.TouExtensionNeuAssets.BlizzardButtonSprite.LoadAsset());
-                        notif.AdjustNotification();
-                    }
-                }
+                pc.AddModifier(new IcenbergBlizzardModifier(duration));
             }
         }
     }

@@ -48,7 +48,12 @@ public sealed class PoltergeistRole(IntPtr cppPtr)
 
     public bool CanBeClicked
     {
-        get { return true; }
+        get
+        {
+            if (Caught) return false;
+            var req = (int)OptionGroupSingleton<PoltergeistOptions>.Instance.DecoysReportedBeforeClickable;
+            return DecoysReported >= req;
+        }
         set {}
     }
 

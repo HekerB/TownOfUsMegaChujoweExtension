@@ -1,4 +1,6 @@
 using System.Text;
+using System.Linq;
+using System.Collections.Generic;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
@@ -21,6 +23,7 @@ using TownOfUs.Roles.Impostor;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using TownOfUs.Utilities.Appearances;
+using TownOfUs.Events;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Impostor;
@@ -154,23 +157,166 @@ public sealed class PossessorRole(IntPtr cppPtr)
             or GameOverReason.ImpostorDisconnect;
     }
 	
-	[MethodRpc((uint)ExtensionRpc.PossessorChooseSuccessor)]
-	public static void RpcPossessorChooseSuccessor(PlayerControl possessor, PlayerControl target)
-	{
-		if (possessor?.Data?.Role is not PossessorRole role ||
-			target == null || target.Data == null)
-			return;
+    [MethodRpc((uint)ExtensionRpc.PossessorChooseSuccessor)]
+    public static void RpcPossessorChooseSuccessor(PlayerControl possessor, PlayerControl target)
+    {
+        if (possessor?.Data?.Role is not PossessorRole role ||
+            target == null || target.Data == null)
+            return;
 
-		if (role.SuccessorChosen ||
-			target.HasDied() ||
-			target.Data.Disconnected ||
-			target.IsImpostorAligned())
-			return;
+        if (role.SuccessorChosen ||
+            target.HasDied() ||
+            target.Data.Disconnected ||
+            target.IsImpostorAligned())
+            return;
 
-		role.SuccessorChosen = true;
-		role.Caught = true;
-		role.FadeUpdate();
+        role.SuccessorChosen = true;
+        role.Caught = true;
+        role.FadeUpdate();
 
-		target.ChangeRole(RoleId.Get<TraitorRole>());
-	}
+        target.ChangeRole(RoleId.Get<TraitorRole>());
+    }
+
+    public override bool CanUse(IUsable console)
+    {
+        var validUsable = console.TryCast<Console>() ||
+                          console.TryCast<DoorConsole>() ||
+                          console.TryCast<OpenDoorConsole>() ||
+                          console.TryCast<DeconControl>() ||
+                          console.TryCast<PlatformConsole>() ||
+                          console.TryCast<Ladder>() ||
+                          console.TryCast<ZiplineConsole>();
+
+        return GhostActive && validUsable;
+    }
+
+    [HideFromIl2Cpp]
+    public List<Type> RoleButtons => new List<Type> { typeof(PossessorSuccessorButton) };
+
+    public void FixedUpdate()
+    {
+        if (Player == null || Player.Data.Role is not PossessorRole || MeetingHud.Instance)
+        {
+            return;
+        }
+
+        FadeUpdate();
+    }
+
+    public void CheckTaskRequirements()
+    {
+        UpdateTaskStage(silent: false, forceRecalculate: false);
+    }
+
+    private void UpdateTaskStage(bool silent, bool forceRecalculate)
+    {
+        if (Caught || Player == null)
+        {
+            return;
+        }
+
+        GetTaskCounts(Player, out var completedTasks, out var totalTasks);
+        var tasksRemaining = totalTasks - completedTasks;
+
+        var clickableAt = (int)OptionGroupSingleton<PossessorOptions>.Instance.TasksLeftBeforeClickable;
+        GhostTaskStage newStage;
+        if (totalTasks > 0 && completedTasks == totalTasks)
+        {
+            newStage = GhostTaskStage.CompletedTasks;
+        }
+        else if (tasksRemaining <= clickableAt)
+        {
+            newStage = GhostTaskStage.Clickable;
+        }
+        else
+        {
+            newStage = GhostTaskStage.Unclickable;
+        }
+
+        if (!forceRecalculate)
+        {
+            if ((TaskStage is GhostTaskStage.Unclickable && newStage is GhostTaskStage.Clickable) ||
+                (totalTasks > 0 && completedTasks == totalTasks && TaskStage is not GhostTaskStage.CompletedTasks))
+            {
+                TaskStage = newStage;
+                HandleStageChange(newStage, silent);
+            }
+            else
+            {
+                var textlog = $"Possessor Stage for '{Player.Data.PlayerName}': {TaskStage.ToDisplayString()} - ({completedTasks} / {totalTasks})";
+                MiscUtils.LogInfo(TownOfUsEventHandlers.LogLevel.Error, textlog);
+            }
+        }
+        else
+        {
+            TaskStage = newStage;
+            HandleStageChange(newStage, silent);
+        }
+    }
+
+    private void HandleStageChange(GhostTaskStage stage, bool silent)
+    {
+        var textlog = $"Possessor Stage for '{Player.Data.PlayerName}': {stage.ToDisplayString()}";
+        MiscUtils.LogInfo(TownOfUsEventHandlers.LogLevel.Error, textlog);
+
+        if (stage is GhostTaskStage.Clickable)
+        {
+            if (Player.AmOwner && !silent)
+            {
+                var notif1 = Helpers.CreateAndShowNotification(
+                    $"<b>{RoleColor.ToTextColor()}You are now clickable by players!</b></color>",
+                    Color.white,
+                    new Vector3(0f, 1f, -20f), spr: Configuration.Icon.LoadAsset());
+                notif1.AdjustNotification();
+            }
+        }
+        else if (stage is GhostTaskStage.CompletedTasks)
+        {
+            if (Player.AmOwner && !silent)
+            {
+                var notif2 = Helpers.CreateAndShowNotification(
+                    $"<b>{RoleColor.ToTextColor()}Tasks completed! You can now choose a successor!</b></color>",
+                    Color.white,
+                    new Vector3(0f, 1f, -20f), spr: Configuration.Icon.LoadAsset());
+                notif2.AdjustNotification();
+            }
+        }
+    }
+
+    private static void GetTaskCounts(PlayerControl player, out int completed, out int total)
+    {
+        completed = 0;
+        total = 0;
+
+        if (player == null || player.Data == null)
+        {
+            return;
+        }
+
+        if (player.myTasks != null && player.myTasks.Count > 0)
+        {
+            var tasks = player.myTasks.ToArray().Where(x => !PlayerTask.TaskIsEmergency(x) && !x.TryCast<ImportantTextTask>());
+            foreach (var t in tasks)
+            {
+                total++;
+                var taskInfo = player.Data.FindTaskById(t.Id);
+                var isComplete = taskInfo != null ? taskInfo.Complete : t.IsComplete;
+                if (isComplete)
+                {
+                    completed++;
+                }
+            }
+
+            return;
+        }
+
+        foreach (var info in player.Data.Tasks)
+        {
+            total++;
+            if (info.Complete)
+            {
+                completed++;
+            }
+        }
+    }
 }

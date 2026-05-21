@@ -21,7 +21,7 @@ public sealed class ConfusedModifier : DisabledModifier, IVisualAppearance
     }
 
     public override string ModifierName => "Confused";
-    public override bool HideOnUi => false;
+    public override bool HideOnUi => true;
     public override bool CanReport => false;
     public override float Duration => _duration;
     public override bool AutoStart => true;

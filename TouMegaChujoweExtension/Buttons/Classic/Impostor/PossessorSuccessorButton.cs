@@ -25,8 +25,7 @@ public sealed class PossessorSuccessorButton : TownOfUsButton
 
     public override bool Enabled(RoleBehaviour? role)
     {
-        return Show &&
-               PlayerControl.LocalPlayer?.Data?.Role is PossessorRole Possessor &&
+        return PlayerControl.LocalPlayer?.Data?.Role is PossessorRole Possessor &&
                Possessor.CompletedAllTasks &&
                !Possessor.SuccessorChosen &&
                !Possessor.Caught;

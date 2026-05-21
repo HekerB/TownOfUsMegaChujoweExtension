@@ -86,7 +86,7 @@ public sealed class InsaneModifier : UniversalGameModifier, IWikiDiscoverable
         return true;
     }
 
-    private bool CompletedAllTasks()
+    public bool CompletedAllTasks()
     {
         if (Player == null || Player.Data == null) return false;
         

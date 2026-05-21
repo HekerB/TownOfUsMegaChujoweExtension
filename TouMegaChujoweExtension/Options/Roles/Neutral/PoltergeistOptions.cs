@@ -25,4 +25,7 @@ public sealed class PoltergeistOptions : AbstractOptionGroup<PoltergeistRole>
 
     [ModdedNumberOption("Decoy Cooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float DecoyCooldown { get; set; } = 30f;
+
+    [ModdedNumberOption("Decoys Triggered Before Clickable", 0f, 10f, 1f, MiraNumberSuffixes.None)]
+    public float DecoysReportedBeforeClickable { get; set; } = 1f;
 }
