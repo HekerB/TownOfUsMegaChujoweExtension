@@ -114,11 +114,9 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#infiltrator"><img width="10%" src="./Images/Icons/Jackal_Role_Icon.png" /></a>
   <img src="./Images/Groups/CrewMods.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#publicity"><img width="10%" src="./Images/Icons/Publicity_Modifier_Icon.png" /></a>
-
-  <img src="./Images/Groups/NeutMods.png" align="center" /> <br>
+  <img src="./Images/Groups/NeutMods.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#death-note"><img width="10%" src="./Images/Icons/Death_Note_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#venomous"><img width="10%" src="./Images/Icons/Venomous_Modifier_Icon.png" /></a>
-
   <img src="./Images/Groups/ImpMods.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#lucky"><img width="10%" src="./Images/Icons/Lucky_Modifier_Icon.png" /></a>
   <img src="./Images/Groups/UniMods.png" align="center" />
