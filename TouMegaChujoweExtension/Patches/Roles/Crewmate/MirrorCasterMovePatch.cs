@@ -28,7 +28,7 @@ public static class MirrorCasterMovePatch
 
         if (__instance.IsRole<MirrorcasterRole>() &&
             OptionGroupSingleton<MirrorCasterExtensionOptions>.Instance.MoveWhileMenu &&
-            (Minigame.Instance is CustomPlayerMenu || MapBehaviour.Instance != null))
+            (Minigame.Instance is CustomPlayerMenu || (MapBehaviour.Instance != null && MapBehaviour.Instance.gameObject.activeSelf)))
         {
             __instance.moveable = true;
         }
@@ -54,7 +54,7 @@ public static class MirrorCasterMovePatch
                 return;
             }
 
-            if (Minigame.Instance is CustomPlayerMenu || MapBehaviour.Instance != null)
+            if (Minigame.Instance is CustomPlayerMenu || (MapBehaviour.Instance != null && MapBehaviour.Instance.gameObject.activeSelf))
             {
                 var horizontal = Input.GetAxisRaw("Horizontal");
                 var vertical = Input.GetAxisRaw("Vertical");

@@ -475,4 +475,20 @@ public static class PelicanInteractionPatches
     {
         PelicanSystem.ForceResetAllPlayers();
     }
+
+    // ==================== BLOCK NETWORK TRANSFORM FOR SWALLOWED PLAYERS ====================
+
+    [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
+    [HarmonyPrefix]
+    [HarmonyPriority(Priority.First)]
+    public static bool CustomNetworkTransformFixedUpdatePrefix(CustomNetworkTransform __instance)
+    {
+        if (__instance.isPaused || !__instance.myPlayer) return true;
+
+        if (PelicanSystem.IsSwallowed(__instance.myPlayer.PlayerId))
+        {
+            return false;
+        }
+        return true;
+    }
 }

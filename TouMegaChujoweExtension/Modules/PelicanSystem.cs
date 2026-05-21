@@ -180,7 +180,7 @@ public static class PelicanSystem
                     victim.MyPhysics.body.position = pelicanPos;
                     victim.MyPhysics.body.velocity = Vector2.zero;
                 }
-                victim.NetTransform.SnapTo(pelicanPos);
+                ExtensionNetTransformBacklogUtils.FlushAndSnap(victim);
             }
 
             if (!victim.HasModifier<PelicanSwallowedModifier>())
@@ -506,7 +506,7 @@ public static class PelicanSystem
                     }
                     var col = victim.GetComponent<UnityEngine.Collider2D>();
                     if (col != null) col.enabled = true;
-                    victim.NetTransform.SnapTo(safePosition);
+                    ExtensionNetTransformBacklogUtils.FlushAndSnap(victim);
 
                     RestoreFootstepsIfNeeded(victim);
                 }
@@ -562,7 +562,7 @@ public static class PelicanSystem
                         victim.MyPhysics.body.position = origPos;
                         victim.MyPhysics.body.velocity = Vector2.zero;
                     }
-                    victim.NetTransform.SnapTo(origPos);
+                    ExtensionNetTransformBacklogUtils.FlushAndSnap(victim);
                 }
                 var col = victim.GetComponent<UnityEngine.Collider2D>();
                 if (col != null) col.enabled = true;
@@ -920,6 +920,7 @@ public static class PelicanSystem
             if (col != null) col.enabled = true;
             RestoreFootstepsIfNeeded(player);
             try { player.NetTransform.Halt(); } catch { /* ignore halt error */ }
+            try { ExtensionNetTransformBacklogUtils.FlushAndSnap(player); } catch { }
         }
 
         SwallowedPlayers.Clear();
