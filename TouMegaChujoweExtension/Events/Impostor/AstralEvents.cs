@@ -1,4 +1,4 @@
-gousing MiraAPI.Events;
+using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Roles;
 using TouMegaChujoweExtension.Roles.Classic.Impostor;
