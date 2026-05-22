@@ -27,9 +27,16 @@ public static class JackalButtonPositionPatch
 
         if (isJackal && !_wasJackal)
         {
-            var canVent = MiraAPI.GameOptions.OptionGroupSingleton<JackalOptions>.Instance.CanVent || LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value;
-            var kill = MiraAPI.Hud.CustomButtonSingleton<JackalKillButton>.Instance;
-            Reactor.Utilities.Coroutines.Start(MiscUtils.CoMoveButtonIndex(kill, !canVent));
+            if (MiraAPI.GameOptions.OptionGroupSingleton<JackalOptions>.Instance != null)
+            {
+                var canVent = MiraAPI.GameOptions.OptionGroupSingleton<JackalOptions>.Instance.CanVent || 
+                              (LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance != null && LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value);
+                var kill = MiraAPI.Hud.CustomButtonSingleton<JackalKillButton>.Instance;
+                if (kill != null)
+                {
+                    Reactor.Utilities.Coroutines.Start(MiscUtils.CoMoveButtonIndex(kill, !canVent));
+                }
+            }
         }
 
         _wasJackal = isJackal;

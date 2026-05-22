@@ -1352,14 +1352,18 @@ public static class DraftLobbyPatch
             float scale = Mathf.Lerp(0.5f, 1f, eased); // Start from small
             float alpha = Mathf.Clamp01(t * 2f);
 
+            if (_draftCompleteText == null) yield break;
             _draftCompleteText.transform.localScale = new Vector3(scale, scale, 1f);
             _draftCompleteText.color = new Color(origColor.r, origColor.g, origColor.b, alpha);
 
             yield return null;
         }
 
-        _draftCompleteText.transform.localScale = Vector3.one;
-        _draftCompleteText.color = origColor;
+        if (_draftCompleteText != null)
+        {
+            _draftCompleteText.transform.localScale = Vector3.one;
+            _draftCompleteText.color = origColor;
+        }
     }
 
     private static System.Collections.IEnumerator CoAnimateTimerIn()
@@ -1382,14 +1386,18 @@ public static class DraftLobbyPatch
                 ? Mathf.Lerp(0f, 1.15f, 1f - Mathf.Pow(1f - (t / 0.6f), 3f))
                 : Mathf.Lerp(1.15f, 1f, (t - 0.6f) / 0.4f);
 
+            if (_timerText == null) yield break;
             _timerText.transform.localScale = new Vector3(eased, eased, 1f);
             _timerText.color = new Color(origColor.r, origColor.g, origColor.b, Mathf.Clamp01(t * 3f));
 
             yield return null;
         }
 
-        _timerText.transform.localScale = Vector3.one;
-        _timerText.color = origColor;
+        if (_timerText != null)
+        {
+            _timerText.transform.localScale = Vector3.one;
+            _timerText.color = origColor;
+        }
     }
 
     private static System.Collections.IEnumerator CoFadeOutMusicAndPlayComplete()
@@ -1691,7 +1699,16 @@ public static class DraftLobbyPatch
             pooledBubble.Background.size = new Vector2(5.52f, h);
             pooledBubble.MaskArea.size = new Vector2(5.52f, h - 0.05f);
             pooledBubble.AlignChildren();
-            chat.AlignAllBubbles();
+            try
+            {
+                chat.AlignAllBubbles();
+            }
+            catch (System.Exception alignEx)
+            {
+                #if DEBUG
+                Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Warning($"[Draft] Failed to align chat bubbles: {alignEx.Message}");
+                #endif
+            }
 
             if (chat is { IsOpenOrOpening: false, notificationRoutine: null })
                 chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());

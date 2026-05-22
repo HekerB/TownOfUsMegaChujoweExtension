@@ -67,27 +67,24 @@ public static class PortalmakerSystem
         var opts = OptionGroupSingleton<PortalmakerOptions>.Instance;
         var radius = 0.5f;
 
-        // Check if last pair is incomplete
         PortalPair? lastPair = pairs.LastOrDefault();
         if (lastPair != null && lastPair.PortalB == null)
         {
-            // Set PortalB
             var newPortal = new ActivePortal
             {
                 Position = position,
                 CreationTime = Time.time
             };
-            newPortal.Visual = CreatePortalVisual(position, radius, true); // Active bright purple
+            newPortal.Visual = CreatePortalVisual(position, radius, true);
             lastPair.PortalB = newPortal;
 
-            // Upgrade PortalA to active color and make it visible to everyone!
             if (lastPair.PortalA != null && lastPair.PortalA.Visual != null)
             {
-                lastPair.PortalA.Visual.SetActive(true); // Show to everyone now that pair is complete
+                lastPair.PortalA.Visual.SetActive(true); 
                 var sr = lastPair.PortalA.Visual.GetComponent<SpriteRenderer>();
                 if (sr != null)
                 {
-                    sr.color = Color.white; // Active original sprite colors
+                    sr.color = Color.white; 
                     var local = PlayerControl.LocalPlayer;
                     bool isPortalmaker = local != null && local.Data != null && 
                         (local.GetRole<PortalmakerRole>() != null || local.Data.Role is PortalmakerRole);
@@ -170,7 +167,7 @@ public static class PortalmakerSystem
 
     private static void ShowCooldownNotification(PlayerControl player, float remaining)
     {
-        if (!player.AmOwner) return;
+        if (player == null || !player.AmOwner) return;
 
         if (CooldownNotification == null)
         {
@@ -179,9 +176,12 @@ public static class PortalmakerSystem
                 Color.red,
                 new Vector3(0f, 1.2f, -20f),
                 spr: TouExtensionCrewAssets.PortalSprite.LoadAsset());
-            CooldownNotification.AdjustNotification();
+            if (CooldownNotification != null)
+            {
+                CooldownNotification.AdjustNotification();
+            }
         }
-        else
+        else if (CooldownNotification.Text != null)
         {
             CooldownNotification.Text.text = $"<b>Portal Cooldown: {remaining:F1}s</b>";
         }
@@ -303,6 +303,8 @@ public static class PortalmakerSystem
 
     private static System.Collections.IEnumerator CoTeleport(PlayerControl player, Vector2 target)
     {
+        if (player == null || player.Data == null) yield break;
+
         byte playerId = player.PlayerId;
         PlayersTeleporting.Add(playerId);
 
@@ -315,15 +317,19 @@ public static class PortalmakerSystem
             Color.cyan,
             new Vector3(0f, 1.2f, -20f),
             spr: TouExtensionCrewAssets.PortalSprite.LoadAsset());
-        notif.AdjustNotification();
+        if (notif != null)
+        {
+            notif.AdjustNotification();
+        }
 
         float elapsed = 0f;
         float duration = 1.5f;
         while (elapsed < duration)
         {
-            if (MeetingHud.Instance != null || player.HasDied())
+            if (player == null || player.Data == null || MeetingHud.Instance != null || player.HasDied())
             {
                 PlayersTeleporting.Remove(playerId);
+                if (notif != null) UnityEngine.Object.Destroy(notif.gameObject);
                 yield break;
             }
 
@@ -337,14 +343,21 @@ public static class PortalmakerSystem
             yield return null;
         }
 
-        if (MeetingHud.Instance == null && !player.HasDied())
+        if (player != null && player.Data != null && MeetingHud.Instance == null && !player.HasDied())
         {
-            player.NetTransform.RpcSnapTo(target);
+            if (player.NetTransform != null)
+            {
+                player.NetTransform.RpcSnapTo(target);
+            }
             player.transform.position = new Vector3(target.x, target.y, player.transform.position.z);
             LastTeleportTime[playerId] = Time.time;
             PirateDuelSystem.FlashScreen(new Color(TouExtensionColors.Portalmaker.r, TouExtensionColors.Portalmaker.g, TouExtensionColors.Portalmaker.b, 0.4f), 0.2f, 0.1f);
         }
 
+        if (notif != null)
+        {
+            UnityEngine.Object.Destroy(notif.gameObject);
+        }
         PlayersTeleporting.Remove(playerId);
     }
 
@@ -463,4 +476,37 @@ public static class PortalmakerSystem
     {
         public static void Postfix() => Reset();
     }
+
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]
+    public static class PortalmakerDeathPatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(PlayerControl __instance)
+        {
+            if (__instance == null) return;
+
+            if (__instance.GetRole<PortalmakerRole>() != null || (__instance.Data != null && __instance.Data.Role is PortalmakerRole))
+            {
+                ClearPortals(__instance.PlayerId);
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerLeft))]
+    public static class PortalmakerDisconnectPatch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] InnerNet.ClientData client, [HarmonyArgument(1)] DisconnectReasons reason)
+        {
+            if (client?.Character != null)
+            {
+                var character = client.Character;
+                if (character.GetRole<PortalmakerRole>() != null || (character.Data != null && character.Data.Role is PortalmakerRole))
+                {
+                    ClearPortals(character.PlayerId);
+                }
+            }
+        }
+    }
 }
+

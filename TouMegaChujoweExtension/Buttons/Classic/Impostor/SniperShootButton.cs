@@ -262,6 +262,7 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
 
     private IEnumerator ZoomOutCoroutine()
     {
+        if (Camera.main == null) yield break;
         float elapsed = 0f;
         float duration = 0.5f;
         float startSize = Camera.main.orthographicSize;
@@ -287,6 +288,7 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
 
     private IEnumerator ZoomInCoroutine()
     {
+        if (Camera.main == null) yield break;
         float elapsed = 0f;
         float duration = 0.5f;
         float startSize = Camera.main.orthographicSize;

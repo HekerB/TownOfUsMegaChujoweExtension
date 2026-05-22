@@ -24,35 +24,44 @@ public static class JackalRecruitDeathPatch
     [HarmonyPostfix]
     public static void Postfix(PlayerControl __instance)
     {
-        if (__instance == null) return;
+        if (__instance == null || __instance.Data == null || AmongUsClient.Instance == null) return;
         
-        if (__instance.TryGetModifier<SidekickModifier>(out var sidekick))
+        if (__instance.TryGetModifier<SidekickModifier>(out var sidekick) && sidekick != null)
         {
             var jackalId = sidekick.JackalId;
-            var jackalPlayer = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == jackalId);
+            var jackalPlayer = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p != null && p.PlayerId == jackalId);
         
-            if (jackalPlayer != null)
+            if (jackalPlayer != null && jackalPlayer.Pointer != System.IntPtr.Zero)
             {
                 var jackalRole = jackalPlayer.GetRole<JackalRole>();
                 if (jackalRole != null)
                 {
                     jackalRole.OnRecruitDie();
                     
-                    if (jackalPlayer.AmOwner && OptionGroupSingleton<JackalOptions>.Instance.NotifySidekickDeath)
+                    if (jackalPlayer.AmOwner && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.NotifySidekickDeath)
                     {
-                        string alertMsg = string.Format(TouLocale.Get("ExtensionJackalSidekickDiedAlert"), __instance.Data.PlayerName);
-                        Helpers.CreateAndShowNotification(
-                            alertMsg, 
-                            TouExtensionColors.Jackal, 
-                            new Vector3(0f, 1f, -20f), 
-                            spr: TouExtensionIcons.SidekickModifierIcon.LoadAsset()
-                        ).AdjustNotification();
-                        
-                        Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
+                        try
+                        {
+                            string alertMsg = string.Format(TouLocale.Get("ExtensionJackalSidekickDiedAlert"), __instance.Data.PlayerName ?? "Recruit");
+                            var notification = Helpers.CreateAndShowNotification(
+                                alertMsg, 
+                                TouExtensionColors.Jackal, 
+                                new Vector3(0f, 1f, -20f), 
+                                spr: TouExtensionIcons.SidekickModifierIcon.LoadAsset()
+                            );
+                            if (notification != null)
+                            {
+                                notification.AdjustNotification();
+                            }
+                            Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
+                        }
+                        catch (System.Exception ex)
+                        {
+                            UnityEngine.Debug.LogError($"[TOUMCE] Error showing Sidekick death notification: {ex}");
+                        }
                     }
                 }
             }
-            
         }
     }
 }
