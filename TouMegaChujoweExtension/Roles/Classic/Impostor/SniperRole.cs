@@ -67,6 +67,7 @@ public sealed class SniperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     [MethodRpc((uint)ExtensionRpc.SniperShoot)]
     public static void RpcSniperShoot(PlayerControl sniper, byte targetId)
     {
+        if (sniper == null) return;
         var target = MiscUtils.PlayerById(targetId);
         if (target == null || target.Data.IsDead) return;
 
@@ -90,6 +91,7 @@ public sealed class SniperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     [MethodRpc((uint)ExtensionRpc.SniperPlaySound)]
     public static void RpcSniperPlaySound(PlayerControl sniper, byte targetId)
     {
+        if (sniper == null) return;
         var local = PlayerControl.LocalPlayer;
         if (local == null) return;
 

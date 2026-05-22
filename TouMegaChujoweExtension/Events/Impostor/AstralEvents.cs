@@ -1,4 +1,4 @@
-using MiraAPI.Events;
+gousing MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Roles;
 using TouMegaChujoweExtension.Roles.Classic.Impostor;
@@ -25,8 +25,6 @@ public static class AstralEvents
             _killInProgress.Add(killer.PlayerId);
             killer.RpcSpecialMurder(@event.Target, causeOfDeath: "AstralVoid");
 
-            // Manually trigger AfterMurderEvent so the game correctly registers the kill
-            // and updates the KillMadeDuringPhase flag and statistics.
             var afterMurderEvent = new AfterMurderEvent(killer, @event.Target, null);
             MiraEventManager.InvokeEvent(afterMurderEvent);
         }
