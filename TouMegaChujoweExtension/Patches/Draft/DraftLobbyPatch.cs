@@ -1769,7 +1769,7 @@ public static class DraftLobbyPatch
         if (picker.HasValue)
         {
             float timeLeft = Mathf.Max(0, DraftSystem.TimeToChoose - _pickTimer);
-            timeLeftInt = (int)timeLeft;
+            timeLeftInt = Mathf.CeilToInt(timeLeft);
         }
 
         float dotTime = Time.time * 2.5f;
@@ -1809,7 +1809,7 @@ public static class DraftLobbyPatch
                 float jump = Mathf.Abs(Mathf.Sin(Time.time * 10f)) * 0.15f;
                 string voffset = $"<voffset={jump:F2}em>";
 
-                _playerListBuilder.Append("<color=").Append(timerColor).Append('>').Append(voffset).Append(">>").Append((int)timeLeft).Append("</voffset></color>")
+                _playerListBuilder.Append("<color=").Append(timerColor).Append('>').Append(voffset).Append(">>").Append(Mathf.CeilToInt(timeLeft)).Append("</voffset></color>")
                                  .Append("<pos=12%><color=#FFFFFF>").Append(name).Append("</color><pos=35%>: <color=").Append(timerColor).Append(">PICKING").Append(dots).Append("</color>\n");
             }
             else
