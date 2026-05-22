@@ -147,11 +147,15 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         return sphere;
     }
 
+    private static AudioClip? _cachedBeep;
+    private static AudioClip? _cachedExplosion;
+
     public static void PlayBeep(PlayerControl victim, byte detonatorId, float volume)
     {
         if (PlayerControl.LocalPlayer == null || victim == null) return;
         
-        var clip = TouExtensionAudio.C4Beep.LoadAsset();
+        _cachedBeep ??= TouExtensionAudio.C4Beep.LoadAsset();
+        var clip = _cachedBeep;
         if (clip == null) return;
 
         var local = PlayerControl.LocalPlayer;
@@ -185,7 +189,8 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         // Play only for the detonator (as requested)
         if (PlayerControl.LocalPlayer.PlayerId == detonator.PlayerId)
         {
-            var clip = TouExtensionAudio.RcExplosionSound.LoadAsset();
+            _cachedExplosion ??= TouExtensionAudio.RcExplosionSound.LoadAsset();
+            var clip = _cachedExplosion;
             if (clip != null)
             {
                 SoundManager.Instance.PlaySound(clip, false, 1f);

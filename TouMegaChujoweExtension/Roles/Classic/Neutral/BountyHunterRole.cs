@@ -165,7 +165,7 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         }
     }
 
-    public void AssignNewTarget()
+    public void AssignNewTarget(byte? excludedPlayerId = null)
     {
         ClearArrowModifiers();
 
@@ -177,6 +177,7 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
                         && !p.Data.IsDead
                         && !p.Data.Disconnected
                         && p.PlayerId != Player.PlayerId
+                        && (excludedPlayerId == null || p.PlayerId != excludedPlayerId)
                         && (!p.TryGetModifier<ChildModifier>(out var child) || child.IsAdult))
             .ToList();
 
@@ -223,7 +224,7 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         }
     }
 
-    public void OnTargetKilled()
+    public void OnTargetKilled(byte? excludedPlayerId = null)
     {
         if (HasWon) return;
 
@@ -250,7 +251,7 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
 
         if (Player.AmOwner)
         {
-            AssignNewTarget();
+            AssignNewTarget(excludedPlayerId);
         }
     }
 

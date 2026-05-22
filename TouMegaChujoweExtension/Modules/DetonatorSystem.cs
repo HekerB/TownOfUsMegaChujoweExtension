@@ -144,6 +144,12 @@ public static class DetonatorSystem
 
     private static void UpdateTimers(float dt)
     {
+        if (_activeBombs.Count == 0) return;
+
+        float detonateCooldown = GetDetonateCooldown();
+        float timeNow = Time.time;
+        var options = OptionGroupSingleton<DetonatorOptions>.Instance;
+
         for (int i = _activeBombs.Count - 1; i >= 0; i--)
         {
             var bomb = _activeBombs[i];
@@ -160,8 +166,8 @@ public static class DetonatorSystem
             if (bomb.Detonated) continue;
             bomb.TimeElapsed += dt;
 
-            var options = OptionGroupSingleton<DetonatorOptions>.Instance;
-            float detonateRemaining = GetManualDetonateRemainingTime(bomb.DetonatorId);
+            float elapsed = timeNow - bomb.CreationTime;
+            float detonateRemaining = Mathf.Max(0, detonateCooldown - elapsed);
 
             if (detonateRemaining <= 0)
             {
