@@ -17,7 +17,7 @@ public static class AstralEvents
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
         var killer = @event.Source;
-        if (killer == null || killer.Data == null || _killInProgress.Contains(killer.PlayerId)) return;
+        if (killer == null || killer.Data == null || !killer.AmOwner || _killInProgress.Contains(killer.PlayerId)) return;
 
         if (killer.Data.Role is AstralRole && killer.HasModifier<AstralPhaseModifier>() && killer != @event.Target)
         {
