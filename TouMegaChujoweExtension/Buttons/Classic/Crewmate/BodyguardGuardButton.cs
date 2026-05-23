@@ -22,7 +22,7 @@ public sealed class BodyguardGuardButton : TownOfUsRoleButton<BodyguardRole, Pla
 
     private float _backlashEndTime = -1f;
     private bool _prevBacklashReady;
-    private float BacklashWindow => OptionGroupSingleton<BodyguardOptions>.Instance.BacklashWindow;
+    private static float BacklashWindow => OptionGroupSingleton<BodyguardOptions>.Instance.BacklashWindow;
     private bool IsInBacklashWindow => Time.time < _backlashEndTime;
 
     public override string Name => TouLocale.GetParsed("ExtensionRoleBodyguardGuard", "Guard");
