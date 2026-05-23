@@ -55,9 +55,11 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
         var jackalTeamCount = jackalTeam.Count;
 
-        if (MiscUtils.ImpAliveCount > 0) return false;
-        if (MiscUtils.NKillersAliveCount > alivePlayers.Count(p => p.IsRole<JackalRole>())) return false;
-        if (alivePlayers.Any(p => p != null && p.Pointer != IntPtr.Zero && p.Is(RoleAlignment.CrewmateKilling))) return false;
+        var opponents = alivePlayers.Where(p => !jackalTeam.Contains(p)).ToList();
+
+        if (opponents.Any(p => p != null && p.Pointer != IntPtr.Zero && (p.IsImpostorAligned() || (p.Data?.Role != null && p.Data.Role.IsImpostor)))) return false;
+        if (opponents.Any(p => p != null && p.Pointer != IntPtr.Zero && p.Is(RoleAlignment.NeutralKilling))) return false;
+        if (opponents.Any(p => p != null && p.Pointer != IntPtr.Zero && p.Is(RoleAlignment.CrewmateKilling))) return false;
 
         return aliveCount <= jackalTeamCount * 2;
     }

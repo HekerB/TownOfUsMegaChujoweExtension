@@ -28,16 +28,16 @@ public static class PortalmakerSystem
 
     public class PortalPair
     {
-        public ActivePortal? PortalA;
-        public ActivePortal? PortalB;
+        public ActivePortal? PortalA { get; set; }
+        public ActivePortal? PortalB { get; set; }
     }
 
     private static readonly Dictionary<byte, List<PortalPair>> PlayerPortalPairs = [];
     private static readonly Dictionary<byte, float> LastTeleportTime = [];
     private static readonly HashSet<byte> PlayersTeleporting = [];
 
-    public static LobbyNotificationMessage? CooldownNotification;
-    private static float LastCooldownNotificationTime = 0f;
+    public static LobbyNotificationMessage? CooldownNotification { get; set; }
+    private static float LastCooldownNotificationTime;
 
     public static void Reset()
     {
@@ -70,12 +70,12 @@ public static class PortalmakerSystem
         PortalPair? lastPair = pairs.LastOrDefault();
         if (lastPair != null && lastPair.PortalB == null)
         {
-            var newPortal = new ActivePortal
+            ActivePortal newPortal = new()
             {
                 Position = position,
-                CreationTime = Time.time
+                CreationTime = Time.time,
+                Visual = CreatePortalVisual(position, radius, true)
             };
-            newPortal.Visual = CreatePortalVisual(position, radius, true);
             lastPair.PortalB = newPortal;
 
             if (lastPair.PortalA != null && lastPair.PortalA.Visual != null)
@@ -88,7 +88,7 @@ public static class PortalmakerSystem
                     var local = PlayerControl.LocalPlayer;
                     bool isPortalmaker = local != null && local.Data != null && 
                         (local.GetRole<PortalmakerRole>() != null || local.Data.Role is PortalmakerRole);
-                    sr.enabled = isPortalmaker || CanPlayerUsePortal(local);
+                    sr.enabled = isPortalmaker || (local != null && CanPlayerUsePortal(local));
                 }
             }
         }
@@ -107,12 +107,12 @@ public static class PortalmakerSystem
                 }
             }
 
-            var newPortal = new ActivePortal
+            ActivePortal newPortal = new()
             {
                 Position = position,
-                CreationTime = Time.time
-            };
-            newPortal.Visual = CreatePortalVisual(position, radius, false); 
+                CreationTime = Time.time,
+                Visual = CreatePortalVisual(position, radius, false)
+            }; 
 
             bool isLocalOwner = PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == ownerId;
             if (!isLocalOwner && newPortal.Visual != null)
@@ -120,7 +120,7 @@ public static class PortalmakerSystem
                 newPortal.Visual.SetActive(false);
             }
             
-            var newPair = new PortalPair
+            PortalPair newPair = new()
             {
                 PortalA = newPortal
             };
@@ -150,7 +150,7 @@ public static class PortalmakerSystem
         var local = PlayerControl.LocalPlayer;
         bool isPortalmaker = local != null && local.Data != null && 
             (local.GetRole<PortalmakerRole>() != null || local.Data.Role is PortalmakerRole);
-        renderer.enabled = isPortalmaker || (isActive && CanPlayerUsePortal(local));
+        renderer.enabled = isPortalmaker || (isActive && local != null && CanPlayerUsePortal(local));
         
         return go;
     }
@@ -165,32 +165,29 @@ public static class PortalmakerSystem
         return false;
     }
 
-    private static void ShowCooldownNotification(PlayerControl player, float remaining)
-    {
-        if (player == null || !player.AmOwner) return;
-
-        if (CooldownNotification == null)
-        {
-            CooldownNotification = Helpers.CreateAndShowNotification(
-                $"<b>Portal Cooldown: {remaining:F1}s</b>",
-                Color.red,
-                new Vector3(0f, 1.2f, -20f),
-                spr: TouExtensionCrewAssets.PortalSprite.LoadAsset());
-            if (CooldownNotification != null)
-            {
-                CooldownNotification.AdjustNotification();
-            }
-        }
-        else if (CooldownNotification.Text != null)
-        {
-            CooldownNotification.Text.text = $"<b>Portal Cooldown: {remaining:F1}s</b>";
-        }
-        LastCooldownNotificationTime = Time.time;
-    }
-
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public static class HudManagerUpdatePatch
     {
+        private static void ShowCooldownNotification(PlayerControl player, float remaining)
+        {
+            if (player == null || !player.AmOwner) return;
+
+            if (CooldownNotification == null)
+            {
+                CooldownNotification = Helpers.CreateAndShowNotification(
+                    $"<b>Portal Cooldown: {remaining:F1}s</b>",
+                    Color.red,
+                    new Vector3(0f, 1.2f, -20f),
+                    spr: TouExtensionCrewAssets.PortalSprite.LoadAsset());
+                CooldownNotification?.AdjustNotification();
+            }
+            else if (CooldownNotification.Text != null)
+            {
+                CooldownNotification.Text.text = $"<b>Portal Cooldown: {remaining:F1}s</b>";
+            }
+            LastCooldownNotificationTime = Time.time;
+        }
+
         public static void Postfix()
         {
             if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
@@ -241,13 +238,13 @@ public static class PortalmakerSystem
             {
                 if (pair.PortalA == null || pair.PortalB == null) continue;
 
-                if (Vector2.Distance(player.GetTruePosition(), pair.PortalA.Position) <= radiusCheck())
+                if (Vector2.Distance(player.GetTruePosition(), pair.PortalA.Position) <= RadiusCheck)
                 {
                     Reactor.Utilities.Coroutines.Start(CoTeleport(player, pair.PortalB.Position));
                     return;
                 }
 
-                if (Vector2.Distance(player.GetTruePosition(), pair.PortalB.Position) <= radiusCheck())
+                if (Vector2.Distance(player.GetTruePosition(), pair.PortalB.Position) <= RadiusCheck)
                 {
                     Reactor.Utilities.Coroutines.Start(CoTeleport(player, pair.PortalA.Position));
                     return;
@@ -255,7 +252,7 @@ public static class PortalmakerSystem
             }
         }
 
-        private static float radiusCheck() => 0.5f;
+        private const float RadiusCheck = 0.5f;
     }
 
     public static bool IsNearPortalPair(PlayerControl player)
@@ -317,10 +314,7 @@ public static class PortalmakerSystem
             Color.cyan,
             new Vector3(0f, 1.2f, -20f),
             spr: TouExtensionCrewAssets.PortalSprite.LoadAsset());
-        if (notif != null)
-        {
-            notif.AdjustNotification();
-        }
+        notif?.AdjustNotification();
 
         float elapsed = 0f;
         float duration = 1.5f;
@@ -345,10 +339,7 @@ public static class PortalmakerSystem
 
         if (player != null && player.Data != null && MeetingHud.Instance == null && !player.HasDied())
         {
-            if (player.NetTransform != null)
-            {
-                player.NetTransform.RpcSnapTo(target);
-            }
+            player.NetTransform?.RpcSnapTo(target);
             player.transform.position = new Vector3(target.x, target.y, player.transform.position.z);
             LastTeleportTime[playerId] = Time.time;
             PirateDuelSystem.FlashScreen(new Color(TouExtensionColors.Portalmaker.r, TouExtensionColors.Portalmaker.g, TouExtensionColors.Portalmaker.b, 0.4f), 0.2f, 0.1f);
@@ -496,7 +487,7 @@ public static class PortalmakerSystem
     public static class PortalmakerDisconnectPatch
     {
         [HarmonyPostfix]
-        public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] InnerNet.ClientData client, [HarmonyArgument(1)] DisconnectReasons reason)
+        public static void Postfix([HarmonyArgument(0)] InnerNet.ClientData client)
         {
             if (client?.Character != null)
             {

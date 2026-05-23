@@ -1,10 +1,13 @@
 using MiraAPI.GameEnd;
+using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using Object = UnityEngine.Object;
 using Reactor.Utilities.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
+using TownOfUs.Extensions;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.GameOver;
@@ -21,6 +24,19 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
     public override bool VerifyCondition(PlayerControl playerControl, NetworkedPlayerInfo[] winners)
     {
         if (winners == null || winners.Length == 0) return false;
+
+        // Check if this is a Jackal / Infiltrator win
+        bool isJackalWin = winners.Any(w => w != null && 
+            (w.Role is JackalRole || 
+             PlayerControl.AllPlayerControls.ToArray().Any(p => p != null && p.PlayerId == w.PlayerId && 
+                 (p.IsRole<JackalRole>() || p.TryGetModifier<SidekickModifier>(out _)))));
+
+        if (isJackalWin)
+        {
+            _roleColor = TouExtensionColors.Jackal;
+            _winText = $"{TouLocale.Get("ExtensionRoleJackal", "Infiltrator")} {TouLocale.Get("ExtensionJackalWins", "Wins")}";
+            return true;
+        }
 
         // Everyone sees the screen if it was triggered
         var firstWinner = winners[0];

@@ -44,6 +44,99 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         var sb = new System.Text.StringBuilder();
         sb.AppendLine(TouLocale.GetParsed($"ExtensionRole{LocaleKey}WikiDescription"));
         sb.AppendLine(" ");
+
+        var options = MiscUtils.GetModdedOptionsForRole(typeof(ArcanistRole));
+        if (options != null)
+        {
+            var weightOptions = new List<string>();
+
+            foreach (var option in options)
+            {
+                if (option == null) continue;
+
+                string title = "";
+                string valueStr = "";
+
+                switch (option)
+                {
+                    case MiraAPI.GameOptions.OptionTypes.ModdedToggleOption toggleOption:
+                        if (!toggleOption.Visible()) continue;
+                        title = TranslationController.Instance.GetString(toggleOption.StringName);
+                        valueStr = toggleOption.Value ? "True" : "False";
+                        break;
+                    case MiraAPI.GameOptions.OptionTypes.ModdedEnumOption enumOption:
+                        if (!enumOption.Visible()) continue;
+                        title = TranslationController.Instance.GetString(enumOption.StringName);
+                        valueStr = TouLocale.GetParsed(enumOption.Values[enumOption.Value], enumOption.Values[enumOption.Value]);
+                        break;
+                    case MiraAPI.GameOptions.OptionTypes.ModdedNumberOption numberOption:
+                        if (!numberOption.Visible()) continue;
+                        title = TranslationController.Instance.GetString(numberOption.StringName);
+                        var optionStr = numberOption.Data.GetValueString(numberOption.Value);
+                        if (optionStr.Contains(".000")) optionStr = optionStr.Replace(".000", "");
+                        else if (optionStr.Contains(".00")) optionStr = optionStr.Replace(".00", "");
+                        else if (optionStr.Contains(".0")) optionStr = optionStr.Replace(".0", "");
+
+                        if (numberOption is { NegativeWordValue: not "#", Value: -1 })
+                        {
+                            valueStr = numberOption.NegativeWordValue;
+                        }
+                        else if (numberOption is { ZeroWordValue: not "#", Value: 0 })
+                        {
+                            valueStr = numberOption.ZeroWordValue;
+                        }
+                        else
+                        {
+                            valueStr = optionStr;
+                        }
+                        break;
+                }
+
+                if (string.IsNullOrEmpty(title)) continue;
+
+                var cardIdentifiers = new[] {
+                    "Fool", "Głupiec", "Magician", "Magik", "Priestess", "Arcykapłanka",
+                    "Empress", "Cesarzowa", "Emperor", "Cesarz", "Hierophant", "Hierofant",
+                    "Lovers", "Kochankowie", "Chariot", "Rydwan", "Strength", "Siła",
+                    "Hermit", "Pustelnik", "Wheel", "Koło", "Justice", "Sprawiedliwość",
+                    "Hanged", "Wisielec", "Death", "Śmierć", "Temperance", "Umiarkowanie",
+                    "Devil", "Diabeł", "Tower", "Wieża", "Star", "Gwiazda", "Moon", "Księżyc",
+                    "Sun", "Słońce", "Judgement", "Sąd", "World", "Świat"
+                };
+
+                bool isWeight = cardIdentifiers.Any(id => title.Contains(id, StringComparison.OrdinalIgnoreCase));
+
+                if (isWeight)
+                {
+                    weightOptions.Add($"{title}: <b>{valueStr}</b>");
+                }
+            }
+
+            int count = weightOptions.Count;
+            if (count > 0)
+            {
+                sb.AppendLine(TownOfUs.TownOfUsPlugin.Culture, $"<b>{TouLocale.Get("ExtensionArcanistTarotCardsHeader", "Tarot Cards:")}</b>");
+                sb.AppendLine("<align=left>");
+                int half = (count + 1) / 2;
+                for (int i = 0; i < half; i++)
+                {
+                    var left = weightOptions[i];
+                    var right = (i + half < count) ? weightOptions[i + half] : "";
+
+                    if (!string.IsNullOrEmpty(right))
+                    {
+                        sb.AppendLine(TownOfUs.TownOfUsPlugin.Culture, $"<pos=5%>{left}<pos=55%>{right}");
+                    }
+                    else
+                    {
+                        sb.AppendLine(TownOfUs.TownOfUsPlugin.Culture, $"<pos=5%>{left}");
+                    }
+                }
+                sb.AppendLine("</align>");
+                sb.AppendLine(" ");
+            }
+        }
+
         sb.Append(MiscUtils.AppendOptionsText(GetType()));
         return sb.ToString();
     }
@@ -100,11 +193,9 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         var role = PlayerControl.LocalPlayer.GetRole<ArcanistRole>();
 
         bool jesterAlive = IsRoleAlive(RoleId.Get<JesterRole>());
-        bool lawyerAlive = IsRoleAlive(RoleId.Get<LawyerRole>());
         bool popeAlive = IsRoleAlive(RoleId.Get<PopeRole>());
         bool bountyAlive = IsRoleAlive(RoleId.Get<BountyHunterRole>());
         bool doomAlive = IsRoleAlive(RoleId.Get<DoomsayerRole>());
-        bool loverAlive = IsModifierAlive<LoverModifier>();
         bool exeAlive = IsRoleAlive(RoleId.Get<ExecutionerRole>());
 
         float wFool = (role != null && role.DisabledCards.Contains(TarotCard.TheFool)) || jesterAlive ? 0f : opts.WeightFool;

@@ -232,15 +232,7 @@ public static class PelicanSystem
 
                 try
                 {
-                    if (Minigame.Instance != null)
-                    {
-                        var isMap = Minigame.Instance is MapBehaviour;
-                        var canUseMap = OptionGroupSingleton<PelicanOptions>.Instance.CanUseMapWhileSwallowed;
-                        if (!isMap || !canUseMap)
-                        {
-                            Minigame.Instance.Close();
-                        }
-                    }
+                    Minigame.Instance?.Close();
                 }
                 catch (System.Exception ex)
                 {
@@ -697,15 +689,12 @@ public static class PelicanSystem
             if (IsSwallowed(localPlayer.PlayerId))
             {
                 var pelican = MiscUtils.PlayerById(pelicanId);
-                if (pelican != null && !pelican.HasDied())
+                if (pelican != null && !pelican.HasDied() && Camera.main != null)
                 {
-                    if (Camera.main != null)
+                    var follower = Camera.main.GetComponent<FollowerCamera>();
+                    if (follower != null && follower.Target != pelican)
                     {
-                        var follower = Camera.main.GetComponent<FollowerCamera>();
-                        if (follower != null && follower.Target != pelican)
-                        {
-                            follower.SetTarget(pelican);
-                        }
+                        follower.SetTarget(pelican);
                     }
                 }
             }
@@ -760,13 +749,13 @@ public static class PelicanSystem
                 if (notif != null)
                 {
                     _swallowedNotificationObject = notif.gameObject;
-                    try { notif.AdjustNotification(); } catch { }
+                    try { notif.AdjustNotification(); } catch { /* Ignore adjustment failures on certain notification templates */ }
                     try
                     {
                         var canvasGroup = notif.GetComponent<CanvasGroup>();
                         if (canvasGroup != null) canvasGroup.alpha = 1f;
                     }
-                    catch { }
+                    catch { /* Ignore canvas group failures on some notification layouts */ }
                 }
             }
             catch (System.Exception ex)
@@ -811,13 +800,13 @@ public static class PelicanSystem
                 if (notif != null)
                 {
                     _swallowedNotificationObject = notif.gameObject;
-                    try { notif.AdjustNotification(); } catch { }
+                    try { notif.AdjustNotification(); } catch { /* Ignore adjustment failures on certain notification templates */ }
                     try
                     {
                         var canvasGroup = notif.GetComponent<CanvasGroup>();
                         if (canvasGroup != null) canvasGroup.alpha = 1f;
                     }
-                    catch { }
+                    catch { /* Ignore canvas group failures on some notification layouts */ }
                 }
             }
             catch (System.Exception ex)
@@ -920,7 +909,7 @@ public static class PelicanSystem
             if (col != null) col.enabled = true;
             RestoreFootstepsIfNeeded(player);
             try { player.NetTransform.Halt(); } catch { /* ignore halt error */ }
-            try { ExtensionNetTransformBacklogUtils.FlushAndSnap(player); } catch { }
+            try { ExtensionNetTransformBacklogUtils.FlushAndSnap(player); } catch { /* Ignore errors during forced snapshot resets */ }
         }
 
         SwallowedPlayers.Clear();

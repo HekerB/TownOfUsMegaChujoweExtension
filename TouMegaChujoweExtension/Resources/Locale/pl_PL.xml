@@ -1208,6 +1208,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
 
   <!-- Jackal (Infiltrator) -->
   <string name="ExtensionRoleJackal">Infiltrator</string>
+  <string name="ExtensionJackalWins">Wygrywa</string>
   <string name="ExtensionRoleJackalIntroBlurb">Zrekrutuj rekrutów i przetrwaj, by zabijać.</string>
   <string name="ExtensionRoleJackalTabDescription">Zrekrutuj dwóch rekrutów z przeciwnych frakcji.\%nl\%Gdy zginą, zyskasz zdolność zabijania.\%nl\%Przetrwaj do końca.</string>
   <string name="ExtensionRoleJackalWikiDescription">&lt;color=#535064&gt;&lt;b&gt;Infiltrator&lt;/b&gt;&lt;/color&gt; gra na zwłokę poprzez przetrwanie swoich rekrutów. Na starcie otrzymujesz dwóch &lt;color=#FF3B3B&gt;Połączonych Życiem&lt;/color&gt; &lt;color=#535064&gt;Rekrutów&lt;/color&gt;. Chroń swoją tożsamość, podczas gdy oni pracują dla Ciebie. \%nl\%Dopóki żyją, zapewniają Ci &lt;color=#535064&gt;Tarczę&lt;/color&gt;. Zdolność &lt;b&gt;Asasynacji&lt;/b&gt; zyskujesz dopiero po śmierci wszystkich rekrutów. \%nl\% \%nl\%&lt;i&gt;"Infiltracja to powolna trucizna."&lt;/i&gt;</string>
@@ -1246,6 +1247,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleArcanistIntroBlurb">Losuj magiczne karty, aby zmieniać losy gry.</string>
   <string name="ExtensionRoleArcanistTabDescription">Masz talię kart. Każda karta ma inny efekt.\%nl\%Używaj ich mądrze, by eliminować cele.</string>
   <string name="ExtensionRoleArcanistWikiDescription">Arcanist to rola Neutral Outlier, która dobiera magiczne karty Tarota, aby zmieniać losy gry.</string>
+  <string name="ExtensionArcanistTarotCardsHeader">Karty Tarota:</string>
   <string name="ExtensionRoleArcanistDraw">Dobierz Kartę</string>
   <string name="ExtensionRoleArcanistDrawWikiDescription">Dobierz magiczną kartę Tarota ze swojej talii. Każda karta wywołuje inny mistyczny efekt.</string>
   <string name="ExtensionArcanistCardDrawn">Wylosowałeś: {0}!</string>
@@ -1320,26 +1322,25 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionArcanistCooldown">Czas odnowienia kart</string>
   <string name="ExtensionOptionArcanistDeckSize">Wielkość talii</string>
   <string name="ExtensionOptionArcanistAllowDuplicateRoles">Zezwalaj na duplikaty ról</string>
-  <string name="ExtensionOptionArcanistWeight00">Waga: Głupiec (Zmień w Błazna)</string>
-  <string name="ExtensionOptionArcanistWeight01">Waga: Magik (Oślep załogantów 10s)</string>
-  <string name="ExtensionOptionArcanistWeight02">Waga: Arcykapłanka (Zmień w Doomsayera)</string>
-  <string name="ExtensionOptionArcanistWeight03">Waga: Cesarzowa (+1 Głos)</string>
-  <string name="ExtensionOptionArcanistWeight04">Waga: Cesarz (Efekt Pijaka)</string>
-  <string name="ExtensionOptionArcanistWeight05">Waga: Hierofant (Zmień w Neutralnego Łagodnego)</string>
-  <string name="ExtensionOptionArcanistWeight07">Waga: Rydwan (Zwiększ prędkość 30s)</string>
-  <string name="ExtensionOptionArcanistWeight08">Waga: Siła (-20% czasu odnowienia)</string>
-  <string name="ExtensionOptionArcanistWeight09">Waga: Pustelnik (Stały wzrost prędkości)</string>
-  <string name="ExtensionOptionArcanistWeight10">Waga: Koło Fortuny (NK 50% / Amnesiac 50%)</string>
-  <string name="ExtensionOptionArcanistWeight11">Waga: Sprawiedliwość (Publicznie ujawnia)</string>
-  <string name="ExtensionOptionArcanistWeight12">Waga: Wisielec (Zmień w Łowcę Nagród)</string>
-  <string name="ExtensionOptionArcanistWeight13">Waga: Śmierć (50% szans na śmierć)</string>
-  <string name="ExtensionOptionArcanistWeight14">Waga: Umiarkowanie (+20% czasu odnowienia)</string>
-  <string name="ExtensionOptionArcanistWeight16">Waga: Wieża (Stałe spowolnienie)</string>
-  <string name="ExtensionOptionArcanistWeight17">Waga: Gwiazda (Stały wzrost wizji)</string>
-  <string name="ExtensionOptionArcanistWeight18">Waga: Księżyc (Oślep siebie 30s)</string>
-  <string name="ExtensionOptionArcanistWeight19">Waga: Słońce (Zwiększ wizję 30s)</string>
-  <string name="ExtensionOptionArcanistWeight20">Waga: Sąd (Zmień w Papieża)</string>
-  <string name="ExtensionOptionArcanistWeight21">Waga: Świat (Otrzymaj Death Note)</string>
+  <string name="ExtensionOptionArcanistWeight01">&lt;color=#FF3333&gt;Magik&lt;/color&gt; (Oślep załogantów 10s)</string>
+  <string name="ExtensionOptionArcanistWeight02">&lt;color=#33CCFF&gt;Arcykapłanka&lt;/color&gt; (Zmień w Doomsayera)</string>
+  <string name="ExtensionOptionArcanistWeight03">&lt;color=#82E0AA&gt;Cesarzowa&lt;/color&gt; (+1 Głos)</string>
+  <string name="ExtensionOptionArcanistWeight04">&lt;color=#D63031&gt;Cesarz&lt;/color&gt; (Efekt Pijaka)</string>
+  <string name="ExtensionOptionArcanistWeight05">&lt;color=#33CCFF&gt;Hierofant&lt;/color&gt; (Zmień w Neutralnego Łagodnego)</string>
+  <string name="ExtensionOptionArcanistWeight07">&lt;color=#33FF33&gt;Rydwan&lt;/color&gt; (Zwiększ prędkość 30s)</string>
+  <string name="ExtensionOptionArcanistWeight08">&lt;color=#82E0AA&gt;Siła&lt;/color&gt; (-20% czasu odnowienia)</string>
+  <string name="ExtensionOptionArcanistWeight09">&lt;color=#82E0AA&gt;Pustelnik&lt;/color&gt; (Stały wzrost prędkości)</string>
+  <string name="ExtensionOptionArcanistWeight10">&lt;color=#33CCFF&gt;Koło Fortuny&lt;/color&gt; (NK 50% / Amnesiac 50%)</string>
+  <string name="ExtensionOptionArcanistWeight11">&lt;color=#D63031&gt;Sprawiedliwość&lt;/color&gt; (Publicznie ujawnia)</string>
+  <string name="ExtensionOptionArcanistWeight12">&lt;color=#33CCFF&gt;Wisielec&lt;/color&gt; (Zmień w Łowcę Nagród)</string>
+  <string name="ExtensionOptionArcanistWeight13">&lt;color=#D63031&gt;Śmierć&lt;/color&gt; (50% szans na śmierć)</string>
+  <string name="ExtensionOptionArcanistWeight14">&lt;color=#D63031&gt;Umiarkowanie&lt;/color&gt; (+20% czasu odnowienia)</string>
+  <string name="ExtensionOptionArcanistWeight16">&lt;color=#D63031&gt;Wieża&lt;/color&gt; (Stałe spowolnienie)</string>
+  <string name="ExtensionOptionArcanistWeight17">&lt;color=#82E0AA&gt;Gwiazda&lt;/color&gt; (Stały wzrost wizji)</string>
+  <string name="ExtensionOptionArcanistWeight18">&lt;color=#FF3333&gt;Księżyc&lt;/color&gt; (Oślep siebie 30s)</string>
+  <string name="ExtensionOptionArcanistWeight19">&lt;color=#33FF33&gt;Słońce&lt;/color&gt; (Zwiększ wizję 30s)</string>
+  <string name="ExtensionOptionArcanistWeight20">&lt;color=#33CCFF&gt;Sąd&lt;/color&gt; (Zmień w Papieża)</string>
+  <string name="ExtensionOptionArcanistWeight21">&lt;color=#82E0AA&gt;Świat&lt;/color&gt; (Otrzymaj Death Note)</string>
 
   <!-- Portalmaker Options -->
   <string name="ExtensionOptionPortalmakerCooldown">Czas odnowienia portalu</string>
