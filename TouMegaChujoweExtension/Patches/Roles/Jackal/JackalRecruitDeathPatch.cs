@@ -42,17 +42,14 @@ public static class JackalRecruitDeathPatch
                     {
                         try
                         {
-                            string alertMsg = string.Format(TouLocale.Get("ExtensionJackalSidekickDiedAlert"), __instance.Data.PlayerName ?? "Recruit");
+                            string alertMsg = string.Format(System.Globalization.CultureInfo.InvariantCulture, TouLocale.Get("ExtensionJackalSidekickDiedAlert"), __instance.Data.PlayerName ?? "Recruit");
                             var notification = Helpers.CreateAndShowNotification(
                                 alertMsg, 
                                 TouExtensionColors.Jackal, 
                                 new Vector3(0f, 1f, -20f), 
                                 spr: TouExtensionIcons.SidekickModifierIcon.LoadAsset()
                             );
-                            if (notification != null)
-                            {
-                                notification.AdjustNotification();
-                            }
+                            notification?.AdjustNotification();
                             Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
                         }
                         catch (System.Exception ex)
