@@ -100,7 +100,7 @@ public static class JackalStartPatch
 
         var jackals = PlayerControl.AllPlayerControls.ToArray()
             .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead &&
-                        (p.GetRole<JackalRole>() != null || (p.Data.Role != null && p.Data.Role is JackalRole)))
+                        (p.GetRole<JackalRole>() != null || p.Data.Role is JackalRole))
             .OrderBy(p => p.PlayerId)
             .ToList();
 
@@ -175,7 +175,7 @@ public static class JackalStartPatch
             .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead
                         && p.PlayerId != jackal.PlayerId
                         && p.GetRole<JackalRole>() == null
-                        && (p.Data.Role == null || p.Data.Role is not JackalRole)
+                        && p.Data.Role is not JackalRole
                         && !p.HasModifier<LoverModifier>()
                         && !p.HasModifier<EgotistModifier>()
                         && !p.HasModifier<CrewpostorModifier>()

@@ -55,13 +55,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
         var jackalTeamCount = jackalTeam.Count;
 
-        var opponents = alivePlayers.Where(p => !jackalTeam.Contains(p)).ToList();
-
-        if (opponents.Any(p => p != null && p.Pointer != IntPtr.Zero && (p.IsImpostorAligned() || (p.Data?.Role != null && p.Data.Role.IsImpostor)))) return false;
-        if (opponents.Any(p => p != null && p.Pointer != IntPtr.Zero && p.Is(RoleAlignment.NeutralKilling))) return false;
-        if (opponents.Any(p => p != null && p.Pointer != IntPtr.Zero && p.Is(RoleAlignment.CrewmateKilling))) return false;
-
-        return aliveCount <= jackalTeamCount * 2;
+        return aliveCount == jackalTeamCount;
     }
 
     public override bool DidWin(GameOverReason gameOverReason)
@@ -111,7 +105,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     public void OffsetButtons()
     {
         if (OptionGroupSingleton<JackalOptions>.Instance == null) return;
-        var canVent = OptionGroupSingleton<JackalOptions>.Instance.CanVent || 
+        var canVent = OptionGroupSingleton<JackalOptions>.Instance.CanVent ||
                       (LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance != null && LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value);
         var kill = MiraAPI.Hud.CustomButtonSingleton<JackalKillButton>.Instance;
         if (kill != null)
@@ -126,13 +120,11 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         if (player.AmOwner)
         {
             OffsetButtons();
-            if (OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.CanVent)
+            if (OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.CanVent &&
+                HudManager.Instance != null && HudManager.Instance.ImpostorVentButton != null && HudManager.Instance.ImpostorVentButton.graphic != null)
             {
-                if (HudManager.Instance != null && HudManager.Instance.ImpostorVentButton != null && HudManager.Instance.ImpostorVentButton.graphic != null)
-                {
-                    HudManager.Instance.ImpostorVentButton.graphic.sprite = TouNeutAssets.PestVentSprite.LoadAsset();
-                    HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(RoleColor);
-                }
+                HudManager.Instance.ImpostorVentButton.graphic.sprite = TouNeutAssets.PestVentSprite.LoadAsset();
+                HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(RoleColor);
             }
         }
     }
@@ -189,18 +181,15 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                         {
                             msg += "\n" + TouLocale.Get("ExtensionJackalShieldLostAlert");
                         }
-                        
+
                         var notification = MiraAPI.Utilities.Helpers.CreateAndShowNotification(
-                            msg, 
-                            TouExtensionColors.Jackal, 
-                            new Vector3(0f, 1f, -20f), 
+                            msg,
+                            TouExtensionColors.Jackal,
+                            new Vector3(0f, 1f, -20f),
                             spr: TouRoleIcons.Jackal.LoadAsset()
                         );
-                        
-                        if (notification != null)
-                        {
-                            notification.AdjustNotification();
-                        }
+
+                        notification?.AdjustNotification();
                     }
                     Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
                 }
@@ -228,6 +217,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     [MethodRpc((uint)ExtensionRpc.SetSidekickAssignments)]
     public static void RpcSetSidekickAssignments(PlayerControl sender, byte[] victims, byte[] jackalIds)
     {
+        _ = sender;
         Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.Clear();
         if (victims == null || jackalIds == null) return;
 

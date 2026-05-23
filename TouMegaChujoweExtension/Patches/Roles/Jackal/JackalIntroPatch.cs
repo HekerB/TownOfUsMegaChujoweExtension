@@ -116,10 +116,7 @@ public static class JackalIntroPatch
                             new Vector3(0f, 1f, -20f),
                             spr: TouExtensionIcons.SidekickModifierIcon.LoadAsset()
                         );
-                        if (notification != null)
-                        {
-                            notification.AdjustNotification();
-                        }
+                        notification?.AdjustNotification();
                         Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
                     }
                     catch (System.Exception ex)
@@ -143,10 +140,7 @@ public static class JackalIntroPatch
                     new Vector3(0f, 1f, -20f),
                     spr: TouExtensionIcons.SidekickModifierIcon.LoadAsset()
                 );
-                if (notification != null)
-                {
-                    notification.AdjustNotification();
-                }
+                notification?.AdjustNotification();
                 Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
             }
             catch (System.Exception ex)

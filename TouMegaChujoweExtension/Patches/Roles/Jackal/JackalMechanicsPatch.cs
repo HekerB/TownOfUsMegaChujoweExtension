@@ -47,19 +47,11 @@ public static class JackalMechanicsPatch
 
 
 
-    private static bool IsMurderBlocked(PlayerControl killer, PlayerControl victim, MeetingCheck meetingCheck = MeetingCheck.OutsideMeeting)
+    private static bool IsMurderBlocked(PlayerControl killer, PlayerControl victim)
     {
         try
         {
             if (killer == null || killer.Pointer == IntPtr.Zero || victim == null || victim.Pointer == IntPtr.Zero || victim.Data == null) return false;
-
-            byte killerJackalId = 255;
-            if (killer.GetRole<JackalRole>() != null) killerJackalId = killer.PlayerId;
-            else if (killer.TryGetModifier<SidekickModifier>(out var kMod) && kMod != null) killerJackalId = kMod.JackalId;
-
-            byte victimJackalId = 255;
-            if (victim.GetRole<JackalRole>() != null) victimJackalId = victim.PlayerId;
-            else if (victim.TryGetModifier<SidekickModifier>(out var vMod) && vMod != null) victimJackalId = vMod.JackalId;
 
             if (killer.TryGetModifier<SidekickModifier>(out var kMod2) && kMod2 != null &&
                 victim.TryGetModifier<SidekickModifier>(out var vMod2) && vMod2 != null &&
