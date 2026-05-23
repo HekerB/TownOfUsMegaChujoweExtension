@@ -70,7 +70,7 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
         // Logic handled in ClickHandler
     }
 
-    private void ExitVentIfNeeded(PlayerControl player)
+    private static void ExitVentIfNeeded(PlayerControl player)
     {
         if (player != null && player.inVent)
         {

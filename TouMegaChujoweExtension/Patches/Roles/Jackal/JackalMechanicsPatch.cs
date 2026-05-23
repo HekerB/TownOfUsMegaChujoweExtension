@@ -6,6 +6,7 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Events.Mira;
+using MiraAPI.Hud;
 using TouMegaChujoweExtension.Modifiers.Neutral;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
@@ -42,10 +43,67 @@ public static class JackalMechanicsPatch
         if (IsMurderBlocked(@event.Source, @event.Target))
         {
             @event.Cancel();
+
+            if (@event.Source != null && @event.Source.AmOwner && IsMurderBlockedByJackalShield(@event.Source, @event.Target))
+            {
+                @event.Source.SetKillTimer(10f);
+            }
         }
     }
 
+    [RegisterEvent]
+    public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
+    {
+        var button = @event.Button;
+        if (button == null) return;
+        var source = PlayerControl.LocalPlayer;
+        if (source == null) return;
+        if (MeetingHud.Instance || ExileController.Instance) return;
 
+        var targetProp = button.GetType().GetProperty("Target", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        var target = targetProp?.GetValue(button) as PlayerControl;
+
+        if (target == null)
+        {
+            var targetField = button.GetType().GetField("_target", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            target = targetField?.GetValue(button) as PlayerControl;
+        }
+
+        if (target == null || button is not IKillButton || !button.CanClick()) return;
+
+        if (!IsMurderBlockedByJackalShield(source, target)) return;
+
+        @event.Cancel();
+
+        button.SetTimer(10f);
+        source.SetKillTimer(10f);
+    }
+
+    private static bool IsMurderBlockedByJackalShield(PlayerControl killer, PlayerControl victim)
+    {
+        try
+        {
+            if (killer == null || killer.Pointer == IntPtr.Zero || victim == null || victim.Pointer == IntPtr.Zero || victim.Data == null) return false;
+            if (MeetingHud.Instance != null || ExileController.Instance != null) return false;
+
+            if (victim.GetRole<JackalRole>() != null)
+            {
+                var sidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
+                    .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == victim.PlayerId);
+
+                if (sidekicksAlive && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
+                {
+                    return true;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            UnityEngine.Debug.LogError($"[TOUMCE] Exception in IsMurderBlockedByJackalShield: {ex}");
+        }
+
+        return false;
+    }
 
     private static bool IsMurderBlocked(PlayerControl killer, PlayerControl victim)
     {
@@ -53,9 +111,15 @@ public static class JackalMechanicsPatch
         {
             if (killer == null || killer.Pointer == IntPtr.Zero || victim == null || victim.Pointer == IntPtr.Zero || victim.Data == null) return false;
 
-            if (killer.TryGetModifier<SidekickModifier>(out var kMod2) && kMod2 != null &&
-                victim.TryGetModifier<SidekickModifier>(out var vMod2) && vMod2 != null &&
-                kMod2.JackalId == vMod2.JackalId)
+            byte killerJackalTeamId = 255;
+            if (killer.GetRole<JackalRole>() != null) killerJackalTeamId = killer.PlayerId;
+            else if (killer.TryGetModifier<SidekickModifier>(out var kMod) && kMod != null) killerJackalTeamId = kMod.JackalId;
+
+            byte victimJackalTeamId = 255;
+            if (victim.GetRole<JackalRole>() != null) victimJackalTeamId = victim.PlayerId;
+            else if (victim.TryGetModifier<SidekickModifier>(out var vMod) && vMod != null) victimJackalTeamId = vMod.JackalId;
+
+            if (killerJackalTeamId != 255 && killerJackalTeamId == victimJackalTeamId)
             {
                 return true;
             }
@@ -73,15 +137,9 @@ public static class JackalMechanicsPatch
                 return false;
             }
 
-            if (victim.GetRole<JackalRole>() != null)
+            if (IsMurderBlockedByJackalShield(killer, victim))
             {
-                var sidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
-                    .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == victim.PlayerId);
-
-                if (sidekicksAlive && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
-                {
-                    return true;
-                }
+                return true;
             }
         }
         catch (Exception ex)
