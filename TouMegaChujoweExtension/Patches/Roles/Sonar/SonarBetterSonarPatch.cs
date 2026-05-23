@@ -17,6 +17,9 @@ public static class SonarBetterSonarPatch
 {
     public static readonly Dictionary<byte, GameObject> TrackerIcons = new();
     private static readonly Dictionary<byte, Queue<(float time, Vector3 pos)>> PositionHistory = new();
+    private static readonly List<TrackerArrowTargetModifier> LocalTrackers = [];
+    private static readonly HashSet<byte> TrackedIds = [];
+    private static readonly List<byte> IdsToRemove = [];
 
     public static bool GetTrackerResetEveryRound()
     {
@@ -147,11 +150,16 @@ public static class SonarBetterSonarPatch
             return;
         }
 
-        var localTrackers = ModifierUtils.GetActiveModifiers<TrackerArrowTargetModifier>()
-            .Where(mod => mod.Owner == PlayerControl.LocalPlayer)
-            .ToList();
+        LocalTrackers.Clear();
+        foreach (var mod in ModifierUtils.GetActiveModifiers<TrackerArrowTargetModifier>())
+        {
+            if (mod.Owner == PlayerControl.LocalPlayer)
+            {
+                LocalTrackers.Add(mod);
+            }
+        }
 
-        if (localTrackers.Count == 0)
+        if (LocalTrackers.Count == 0)
         {
             ClearIcons();
             return;
@@ -159,7 +167,8 @@ public static class SonarBetterSonarPatch
 
         var xPos = TownOfUs.Utilities.MiscUtils.GetCurrentMap is TownOfUs.Utilities.ExpandedMapNames.Dleks ? -1 : 1;
 
-        foreach (var tracker in localTrackers)
+        TrackedIds.Clear();
+        foreach (var tracker in LocalTrackers)
         {
             var trackedPlayer = tracker.Player;
             if (trackedPlayer == null || trackedPlayer.Data.IsDead)
@@ -168,6 +177,7 @@ public static class SonarBetterSonarPatch
             }
 
             var playerId = trackedPlayer.PlayerId;
+            TrackedIds.Add(playerId);
 
             // Use the arrow's target, which already respects the update interval
             Vector3 targetPos;
@@ -201,10 +211,16 @@ public static class SonarBetterSonarPatch
         }
 
         // Remove icons for players who are no longer tracked
-        var trackedIds = localTrackers.Where(t => t.Player != null).Select(t => t.Player.PlayerId).ToHashSet();
-        var idsToRemove = TrackerIcons.Keys.Where(id => !trackedIds.Contains(id)).ToList();
+        IdsToRemove.Clear();
+        foreach (var id in TrackerIcons.Keys)
+        {
+            if (!TrackedIds.Contains(id))
+            {
+                IdsToRemove.Add(id);
+            }
+        }
 
-        foreach (var id in idsToRemove)
+        foreach (var id in IdsToRemove)
         {
             if (TrackerIcons.TryGetValue(id, out var icon) && icon != null)
             {
@@ -231,20 +247,31 @@ public static class SonarBetterSonarPatch
         if (!opts.BetterSonar || !GetTrackerResetEveryRound())
             return;
 
-        var localTrackers = ModifierUtils.GetActiveModifiers<TrackerArrowTargetModifier>()
-            .Where(mod => mod.Owner == PlayerControl.LocalPlayer)
-            .ToList();
+        LocalTrackers.Clear();
+        foreach (var mod in ModifierUtils.GetActiveModifiers<TrackerArrowTargetModifier>())
+        {
+            if (mod.Owner == PlayerControl.LocalPlayer)
+            {
+                LocalTrackers.Add(mod);
+            }
+        }
 
-        localTrackers.ForEach(tracker => tracker?.Owner.RemoveModifier(tracker));
+        foreach (var tracker in LocalTrackers)
+        {
+            tracker?.Owner.RemoveModifier(tracker);
+        }
 
         ClearIcons();
     }
 
     public static void ClearIcons()
     {
-        foreach (var icon in TrackerIcons.Values.Where(icon => icon != null))
+        foreach (var icon in TrackerIcons.Values)
         {
-            Object.Destroy(icon);
+            if (icon != null)
+            {
+                Object.Destroy(icon);
+            }
         }
         TrackerIcons.Clear();
         PositionHistory.Clear();

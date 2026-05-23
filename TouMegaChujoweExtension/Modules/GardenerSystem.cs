@@ -132,9 +132,12 @@ public static class GardenerSystem
     public static void ClearAll()
     {
         PendingAttackLogs.Clear();
-        foreach (var visual in ActiveGardens.Values.Select(garden => garden.Visual).Where(visual => visual != null))
+        foreach (var garden in ActiveGardens.Values)
         {
-            UnityEngine.Object.Destroy(visual);
+            if (garden.Visual != null)
+            {
+                UnityEngine.Object.Destroy(garden.Visual);
+            }
         }
         ActiveGardens.Clear();
         _lastCleanupTime = Time.time;
@@ -235,8 +238,9 @@ public static class GardenerSystem
                         HudManager.Instance.KillButton.SetTarget(null);
                     }
 
-                    foreach (var button in MiraAPI.Hud.CustomButtonManager.Buttons.Where(button => button != null && button.Enabled(@event.Source.Data.Role) && button is IKillButton))
+                    foreach (var button in MiraAPI.Hud.CustomButtonManager.Buttons)
                     {
+                        if (button == null || !button.Enabled(@event.Source.Data.Role) || button is not IKillButton) continue;
                         button.Timer = button.Cooldown;
                     }
 
@@ -265,8 +269,10 @@ public static class GardenerSystem
     {
         if (PendingAttackLogs.Count == 0) return;
 
-        foreach (var log in PendingAttackLogs.Where(l => l.OwnerId == PlayerControl.LocalPlayer?.PlayerId))
+        var localId = PlayerControl.LocalPlayer?.PlayerId;
+        foreach (var log in PendingAttackLogs)
         {
+            if (log.OwnerId != localId) continue;
             HandleAttackNotification(log.OwnerId, log.AttackerId, log.TargetId, log.Killed);
         }
         PendingAttackLogs.Clear();
@@ -285,14 +291,19 @@ public static class GardenerSystem
             {
                 _lastCleanupTime = Time.time;
 
-                var aliveGardenerIds = PlayerControl.AllPlayerControls.ToArray()
-                    .Where(p => p != null && p.Data != null && !p.Data.IsDead && p.Data.Role is GardenerRole)
-                    .Select(p => p.PlayerId)
-                    .ToHashSet();
-
-                var ownersToRemove = ActiveGardens.Keys.Where(id => !aliveGardenerIds.Contains(id)).ToList();
-                foreach (var id in ownersToRemove)
+                foreach (var id in ActiveGardens.Keys.ToArray())
                 {
+                    var alive = false;
+                    foreach (var player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player != null && player.PlayerId == id && player.Data != null && !player.Data.IsDead && player.Data.Role is GardenerRole)
+                        {
+                            alive = true;
+                            break;
+                        }
+                    }
+
+                    if (alive) continue;
                     if (ActiveGardens.TryGetValue(id, out var g))
                     {
                         if (g.Visual != null) UnityEngine.Object.Destroy(g.Visual);

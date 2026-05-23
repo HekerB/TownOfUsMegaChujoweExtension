@@ -48,9 +48,10 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = true,
-        Icon = TouExtensionIcons.DetonatorRoleIcon, 
+        Icon = TouExtensionIcons.DetonatorRoleIcon,
         IntroSound = TouAudio.ArsoIgniteSound,
-        CanUseVent = OptionGroupSingleton<DetonatorOptions>.Instance.CanVent
+        CanUseVent = OptionGroupSingleton<DetonatorOptions>.Instance.CanVent,
+        OptionsScreenshot = TouBanners.ImpostorRoleBanner,
     };
 
     [HideFromIl2Cpp]
@@ -117,7 +118,7 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         {
             // Create premium sphere like Kamikaze/RC-XD
             var sphere = CreateRadiusSphere(position, radius, 0.35f);
-            
+
             // Add a brief bomb sprite at the center for extra feedback
             var bombGo = new GameObject("DetonatorVisual");
             bombGo.transform.position = new Vector3(position.x, position.y, position.y / 1000f - 0.1f);
@@ -153,7 +154,7 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     public static void PlayBeep(PlayerControl victim, byte detonatorId, float volume)
     {
         if (PlayerControl.LocalPlayer == null || victim == null) return;
-        
+
         _cachedBeep ??= TouExtensionAudio.C4Beep.LoadAsset();
         var clip = _cachedBeep;
         if (clip == null) return;
@@ -185,7 +186,7 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     public static void RpcPlayExplosion(PlayerControl detonator)
     {
         if (PlayerControl.LocalPlayer == null || detonator == null) return;
-        
+
         // Play only for the detonator (as requested)
         if (PlayerControl.LocalPlayer.PlayerId == detonator.PlayerId)
         {

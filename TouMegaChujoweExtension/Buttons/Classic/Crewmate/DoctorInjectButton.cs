@@ -93,7 +93,7 @@ public sealed class DoctorInjectButton : TownOfUsRoleButton<DoctorRole, PlayerCo
                 SetUses(UsesLeft);
             }
 
-            OverrideName(TouLocale.GetParsed("ExtensionRoleDoctorInjecting", "Injecting..."));
+            OverrideName(TouLocale.GetParsed("ExtensionRoleDoctorInjecting", "Injecting"));
             Button?.SetCooldownFill(1f);
         }
         else

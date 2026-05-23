@@ -14,6 +14,9 @@ using TownOfUs.Roles.Crewmate;
 using TownOfUs.Modules.Localization;
 using System.Collections;
 using MiraAPI.Hud;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Networking;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
 using UnityEngine.UI;
@@ -23,6 +26,7 @@ using TouMegaChujoweExtension.Modifiers.Crewmate;
 using MiraAPI.Modifiers;
 using BepInEx.Logging;
 using TownOfUs;
+using TownOfUs.Options.Roles.Crewmate;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -175,12 +179,12 @@ public static class PoisonSystem
                         }
                         else
                         {
-                            PoisonerRole.RpcVineTarget(localPlayer, clickedTarget.PlayerId);
                             var vineBtn = CustomButtonSingleton<PoisonerVineButton>.Instance;
                             if (vineBtn != null)
                             {
                                 vineBtn.EndSeeking(false);
                             }
+                            PoisonerRole.RpcVineTarget(localPlayer, clickedTarget.PlayerId);
                         }
                     }
                 }
@@ -278,6 +282,7 @@ public static class PoisonSystem
 
             if (PelicanSystem.IsSwallowed(entry.PoisonerId)) return;
             if (PelicanSystem.IsSwallowed(entry.TargetId)) return;
+            if (TryBlockKnownProtection(poisoner, target)) return;
 
             var localPlayer = PlayerControl.LocalPlayer;
             if (localPlayer != null && localPlayer.PlayerId == entry.PoisonerId)
@@ -345,7 +350,7 @@ public static class PoisonSystem
         bool isCameraZoomed = Camera.main != null && Camera.main.orthographicSize > 3.1f;
         bool isDead = localPlayer.Data != null && localPlayer.Data.IsDead;
 
-        bool shouldDisableShadows = isDead || IsSeeking || IsVineActive || HasActivePoison
+        bool shouldDisableShadows = isDead || IsSeeking || IsVineActive
             || SniperSystem.IsAiming || isFalconZoomed || isCameraZoomed;
 
         if (shouldDisableShadows)
@@ -438,6 +443,58 @@ public static class PoisonSystem
     {
         if (target == null || poisoner == null) return false;
 
+        var beforeMurderEvent = new BeforeMurderEvent(poisoner, target, MeetingCheck.OutsideMeeting);
+        MiraEventManager.InvokeEvent(beforeMurderEvent);
+        if (beforeMurderEvent.IsCancelled)
+        {
+            return true;
+        }
+
+        return TryBlockKnownProtection(poisoner, target);
+    }
+
+    private static bool TryBlockKnownProtection(PlayerControl poisoner, PlayerControl target)
+    {
+        if (target == null || poisoner == null || target == poisoner) return false;
+
+        // Pestilence and other invulnerable states block direct attacks and may punish the attacker.
+        if (target.TryGetModifier<InvulnerabilityModifier>(out var invulnerability) &&
+            !poisoner.HasModifier<IgnoreInvulnerabilityModifier>())
+        {
+            if (invulnerability.AttackMurderer && poisoner.AmOwner)
+            {
+                target.RpcCustomMurder(poisoner, MeetingCheck.OutsideMeeting);
+            }
+
+            if (invulnerability.StopInteractions || invulnerability.AttackMurderer)
+            {
+                return true;
+            }
+        }
+
+        // Veteran alert is an attack interaction, so Sniper/Poisoner should respect the counter-kill.
+        if (target.HasModifier<VeteranAlertModifier>())
+        {
+            if (target.Data?.Role is VeteranRole veteran)
+            {
+                if (poisoner.AmOwner)
+                {
+                    VeteranRole.RpcRecentVetAttack(target);
+                }
+                else
+                {
+                    veteran.AttackedRecently = true;
+                }
+            }
+
+            if (!poisoner.HasModifier<InvulnerabilityModifier>() && poisoner.AmOwner)
+            {
+                target.RpcCustomMurder(poisoner, MeetingCheck.OutsideMeeting);
+            }
+
+            return !OptionGroupSingleton<VeteranOptions>.Instance.KilledOnAlert;
+        }
+
         // 1. Medic Shield
         if (target.TryGetModifier<TownOfUs.Modifiers.Crewmate.MedicShieldModifier>(out var medMod))
         {
@@ -474,7 +531,8 @@ public static class PoisonSystem
             target.HasModifier<TownOfUs.Modifiers.Crewmate.MagicMirrorModifier>() ||
             target.HasModifier<TownOfUs.Modifiers.FirstDeadShield>() ||
             target.HasModifier<TownOfUs.Modifiers.Neutral.GuardianAngelProtectModifier>() ||
-            target.HasModifier<TownOfUs.Modifiers.Crewmate.ClericBarrierModifier>())
+            target.HasModifier<TownOfUs.Modifiers.Crewmate.ClericBarrierModifier>() ||
+            target.HasModifier<BaseShieldModifier>())
         {
             return true;
         }
@@ -507,10 +565,10 @@ public static class PoisonSystem
             try
             {
                 var notif = Helpers.CreateAndShowNotification(
-                    $"<b>{Palette.ImpostorRed.ToTextColor()}{message}</color></b>",
-                    Palette.ImpostorRed,
-                    new Vector3(0f, 1f, -20f),
-                    spr: TouMegaChujoweExtension.Assets.TouExtensionIcons.PoisonerRole.LoadAsset());
+                    $"<b><color=#{ColorUtility.ToHtmlStringRGBA(Palette.ImpostorRed)}>{message}</color></b>",
+                    Color.white,
+                    new Vector3(0f, 1.5f, -20f),
+                    spr: TownOfUs.Assets.TouRoleIcons.Poisoner.LoadAsset());
 
                 if (notif != null)
                 {
@@ -557,10 +615,10 @@ public static class PoisonSystem
             try
             {
                 var notif = Helpers.CreateAndShowNotification(
-                    $"<b>{Palette.ImpostorRed.ToTextColor()}{message}</color></b>",
-                    Palette.ImpostorRed,
-                    new Vector3(0f, 1f, -20f),
-                    spr: TouMegaChujoweExtension.Assets.TouExtensionIcons.PoisonerRole.LoadAsset());
+                    $"<b><color=#{ColorUtility.ToHtmlStringRGBA(Palette.ImpostorRed)}>{message}</color></b>",
+                    Color.white,
+                    new Vector3(0f, 1.5f, -20f),
+                    spr: TownOfUs.Assets.TouRoleIcons.Poisoner.LoadAsset());
 
                 if (notif != null)
                 {

@@ -39,6 +39,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralOutlier;
 
+
     public string GetAdvancedDescription()
     {
         var sb = new System.Text.StringBuilder();
@@ -180,6 +181,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         UseVanillaKillButton = false,
         Icon = TouExtensionIcons.ArcanistRoleIconTraitor,
         IntroSound = TouAudio.ScientistIntroSound,
+        OptionsScreenshot = TouBanners.NeutralRoleBanner,
     };
 
     [HideFromIl2Cpp]

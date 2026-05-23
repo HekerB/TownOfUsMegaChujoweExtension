@@ -7,6 +7,10 @@ namespace TouMegaChujoweExtension.Patches.Roles.MirageDecoy;
 [HarmonyPatch]
 public static class MirageDecoyHighlightPatches
 {
+    private static ActionButton? _cachedButton;
+    private static SpriteRenderer[] _cachedRenderers = [];
+    private static TMPro.TMP_Text[] _cachedTexts = [];
+
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     [HarmonyPriority(Priority.Last)]
     [HarmonyPostfix]
@@ -64,8 +68,14 @@ public static class MirageDecoyHighlightPatches
     {
         try
         {
-            var renderers = button.GetComponentsInChildren<SpriteRenderer>(true);
-            foreach (var sr in renderers)
+            if (_cachedButton != button)
+            {
+                _cachedButton = button;
+                _cachedRenderers = button.GetComponentsInChildren<SpriteRenderer>(true);
+                _cachedTexts = button.GetComponentsInChildren<TMPro.TMP_Text>(true);
+            }
+
+            foreach (var sr in _cachedRenderers)
             {
                 if (sr == null) continue;
                 sr.color = Palette.EnabledColor;
@@ -75,8 +85,7 @@ public static class MirageDecoyHighlightPatches
                 }
             }
 
-            var tmps = button.GetComponentsInChildren<TMPro.TMP_Text>(true);
-            foreach (var tmp in tmps)
+            foreach (var tmp in _cachedTexts)
             {
                 if (tmp == null) continue;
                 tmp.color = Palette.EnabledColor;
