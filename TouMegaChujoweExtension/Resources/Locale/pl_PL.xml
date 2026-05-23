@@ -1322,6 +1322,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionArcanistCooldown">Czas odnowienia kart</string>
   <string name="ExtensionOptionArcanistDeckSize">Wielkość talii</string>
   <string name="ExtensionOptionArcanistAllowDuplicateRoles">Zezwalaj na duplikaty ról</string>
+  <string name="ExtensionOptionArcanistWeight00">&lt;color=#33CCFF&gt;Głupiec&lt;/color&gt; (Zmień w Błazna)</string>
   <string name="ExtensionOptionArcanistWeight01">&lt;color=#FF3333&gt;Magik&lt;/color&gt; (Oślep załogantów 10s)</string>
   <string name="ExtensionOptionArcanistWeight02">&lt;color=#33CCFF&gt;Arcykapłanka&lt;/color&gt; (Zmień w Doomsayera)</string>
   <string name="ExtensionOptionArcanistWeight03">&lt;color=#82E0AA&gt;Cesarzowa&lt;/color&gt; (+1 Głos)</string>
