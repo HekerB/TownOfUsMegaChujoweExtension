@@ -64,6 +64,14 @@ public static class PortalmakerSystem
             PlayerPortalPairs[ownerId] = [];
 
         var pairs = PlayerPortalPairs[ownerId];
+
+        if (pairs.Any(p =>
+            (p.PortalA != null && Vector2.Distance(p.PortalA.Position, position) < 0.2f) ||
+            (p.PortalB != null && Vector2.Distance(p.PortalB.Position, position) < 0.2f)))
+        {
+            return;
+        }
+
         var opts = OptionGroupSingleton<PortalmakerOptions>.Instance;
         var radius = 0.5f;
 
@@ -80,13 +88,13 @@ public static class PortalmakerSystem
 
             if (lastPair.PortalA != null && lastPair.PortalA.Visual != null)
             {
-                lastPair.PortalA.Visual.SetActive(true); 
+                lastPair.PortalA.Visual.SetActive(true);
                 var sr = lastPair.PortalA.Visual.GetComponent<SpriteRenderer>();
                 if (sr != null)
                 {
-                    sr.color = Color.white; 
+                    sr.color = Color.white;
                     var local = PlayerControl.LocalPlayer;
-                    bool isPortalmaker = local != null && local.Data != null && 
+                    bool isPortalmaker = local != null && local.Data != null &&
                         (local.GetRole<PortalmakerRole>() != null || local.Data.Role is PortalmakerRole);
                     sr.enabled = isPortalmaker || (local != null && CanPlayerUsePortal(local));
                 }
@@ -112,14 +120,14 @@ public static class PortalmakerSystem
                 Position = position,
                 CreationTime = Time.time,
                 Visual = CreatePortalVisual(position, radius, false)
-            }; 
+            };
 
             bool isLocalOwner = PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == ownerId;
             if (!isLocalOwner && newPortal.Visual != null)
             {
                 newPortal.Visual.SetActive(false);
             }
-            
+
             PortalPair newPair = new()
             {
                 PortalA = newPortal
@@ -132,10 +140,10 @@ public static class PortalmakerSystem
     {
         var go = new GameObject("PortalVisual");
         go.transform.position = new Vector3(position.x, position.y, position.y / 1000f + 0.05f);
-        
+
         var renderer = go.AddComponent<SpriteRenderer>();
         renderer.sprite = TouExtensionCrewAssets.PortalSprite.LoadAsset();
-        
+
         if (isActive)
         {
             renderer.color = Color.white;
@@ -144,14 +152,14 @@ public static class PortalmakerSystem
         {
             renderer.color = new Color(1f, 1f, 1f, 0.4f);
         }
-        
+
         go.transform.localScale = Vector3.one * (radius * 2.0f);
-        
+
         var local = PlayerControl.LocalPlayer;
-        bool isPortalmaker = local != null && local.Data != null && 
+        bool isPortalmaker = local != null && local.Data != null &&
             (local.GetRole<PortalmakerRole>() != null || local.Data.Role is PortalmakerRole);
         renderer.enabled = isPortalmaker || (isActive && local != null && CanPlayerUsePortal(local));
-        
+
         return go;
     }
 
@@ -500,4 +508,3 @@ public static class PortalmakerSystem
         }
     }
 }
-

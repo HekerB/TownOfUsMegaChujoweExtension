@@ -61,25 +61,6 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
         OptionGroupSingleton<PoisonerOptions>.Instance.CanCancelVineSeeking &&
         Time.time >= _cancelUnlockTime;
 
-    private bool IsAnyTargetInCameraRange(PlayerControl poisoner)
-    {
-        if (Camera.main == null) return false;
-        foreach (var pc in PlayerControl.AllPlayerControls)
-        {
-            if (pc == null || pc.Data.IsDead || pc.PlayerId == poisoner.PlayerId) continue;
-            if (pc.IsImpostorAligned()) continue;
-
-            // Check if player is within camera screen bounds
-            var viewportPoint = Camera.main.WorldToViewportPoint(pc.transform.position);
-            if (viewportPoint.x >= 0f && viewportPoint.x <= 1f &&
-                viewportPoint.y >= 0f && viewportPoint.y <= 1f &&
-                viewportPoint.z > 0f)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public override bool CanUse()
     {
@@ -161,7 +142,7 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
                 {
                     Button.SetEnabled();
                     Button.SetFillUp(_vineTimer, _vineDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_vineTimer).ToString();
+                    Button.cooldownTimerText.text = Mathf.CeilToInt(_vineTimer).ToString(System.Globalization.CultureInfo.InvariantCulture);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
             }
@@ -198,7 +179,7 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
                         Button.SetDisabled();
                     }
                     Button.SetFillUp(_seekingTimer, _seekingDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_seekingTimer).ToString();
+                    Button.cooldownTimerText.text = Mathf.CeilToInt(_seekingTimer).ToString(System.Globalization.CultureInfo.InvariantCulture);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
 
@@ -313,7 +294,7 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
             OverrideSprite(TouExtensionImpAssets.VineButtonSprite.LoadAsset());
             OverrideName(TouLocale.GetParsed("ExtensionRolePoisonerVine", "Vine"));
         }
-        
+
         if (putOnCooldown)
         {
             Timer = Cooldown;
@@ -367,5 +348,8 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
         }
     }
 
-    public override void OnEffectEnd() { }
+    public override void OnEffectEnd()
+    {
+        // No effect end action required for PoisonerVineButton
+    }
 }
