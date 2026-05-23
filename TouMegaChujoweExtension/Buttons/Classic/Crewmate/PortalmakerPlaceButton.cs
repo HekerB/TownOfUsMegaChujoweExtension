@@ -22,6 +22,7 @@ public sealed class PortalmakerPlaceButton : TownOfUsRoleButton<PortalmakerRole>
     public override float Cooldown => OptionGroupSingleton<PortalmakerOptions>.Instance.Cooldown;
 
     public override float EffectDuration => OptionGroupSingleton<PortalmakerOptions>.Instance.PlacementDelay;
+    public override bool HasEffect => OptionGroupSingleton<PortalmakerOptions>.Instance.PlacementDelay > 0f;
 
     public override int MaxUses => (int)OptionGroupSingleton<PortalmakerOptions>.Instance.PortalUses;
     public override bool ZeroIsInfinite { get; set; } = true;

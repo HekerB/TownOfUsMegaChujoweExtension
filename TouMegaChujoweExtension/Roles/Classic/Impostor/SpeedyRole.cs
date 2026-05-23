@@ -37,7 +37,7 @@ public sealed class SpeedyRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     public string LocaleKey => "Speedy";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.Get($"ExtensionRole{LocaleKey}IntroBlurb");
-    public string RoleLongDescription => TouLocale.Get($"ExtensionRole{LocaleKey}TabDescription");
+    public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
 
     [HideFromIl2Cpp]
     public int KillsCount { get; set; } = 0;

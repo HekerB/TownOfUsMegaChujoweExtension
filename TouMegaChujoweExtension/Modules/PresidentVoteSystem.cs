@@ -37,17 +37,3 @@ public static class PresidentVoteSystem
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

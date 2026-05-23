@@ -52,7 +52,7 @@ public static class WitchSpellboundColorPatch
         {
             if (localPlayer.IsImpostorAligned())
             {
-                __result = new Color32(0, 255, 0, 255); // Green %
+                __result = Color.red; // Red %
             }
         }
     }

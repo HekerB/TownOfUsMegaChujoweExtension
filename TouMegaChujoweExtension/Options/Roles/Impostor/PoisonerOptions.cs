@@ -32,4 +32,11 @@ public sealed class PoisonerOptions : AbstractOptionGroup<PoisonerRole>
     };
 
     public float VineSeekingDuration => VineSeekingDurationOption.Value;
+
+    public ModdedToggleOption CanCancelVineSeekingOption { get; } = new("ExtensionOptionPoisonerCanCancelVineSeeking", true)
+    {
+        Visible = () => OptionGroupSingleton<PoisonerOptions>.Instance.VineEnabled
+    };
+
+    public bool CanCancelVineSeeking => CanCancelVineSeekingOption.Value;
 }

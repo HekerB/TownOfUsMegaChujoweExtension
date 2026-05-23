@@ -51,42 +51,51 @@ public static class DraftNetworking
         DraftSystem.DraftActiveThisRound = true;
         DraftSystem.IsRunning = true;
 
-        var myId = PlayerControl.LocalPlayer?.PlayerId ?? 255;
-        // Info($"[DraftNetworking] Draft started. I am {(impostorIds.Contains(myId) ? "IMPOSTOR" : "CREWMATE")}");
-
         DraftLobbyPatch.ShowSystemMessage("<color=#FF0000>Draft Mode</color> has Started. Be Ready to Pick Your Role!");
     }
 
     public static void ReceiveDraftStartFromReader(MessageReader reader)
     {
-        var count = reader.ReadByte();
-        var impostorIds = new HashSet<byte>();
-        for (int i = 0; i < count; i++)
-            impostorIds.Add(reader.ReadByte());
-
-        var orderCount = reader.ReadByte();
-        DraftSystem.PickOrder.Clear();
-        for (var i = 0; i < orderCount; i++)
-            DraftSystem.PickOrder.Add(reader.ReadByte());
-
-        var factionCount = reader.ReadByte();
-        DraftSystem.PlayerFactions.Clear();
-        for (int i = 0; i < factionCount; i++)
+        try
         {
-            var playerId = reader.ReadByte();
-            var faction = (DraftFaction)reader.ReadByte();
-            DraftSystem.PlayerFactions[playerId] = faction;
+            var count = reader.ReadByte();
+            var impostorIds = new HashSet<byte>();
+            for (int i = 0; i < count; i++)
+                impostorIds.Add(reader.ReadByte());
+
+            var orderCount = reader.ReadByte();
+            DraftSystem.PickOrder.Clear();
+            for (var i = 0; i < orderCount; i++)
+                DraftSystem.PickOrder.Add(reader.ReadByte());
+
+            var factionCount = reader.ReadByte();
+            DraftSystem.PlayerFactions.Clear();
+            for (int i = 0; i < factionCount; i++)
+            {
+                var playerId = reader.ReadByte();
+                var faction = (DraftFaction)reader.ReadByte();
+                DraftSystem.PlayerFactions[playerId] = faction;
+            }
+
+            DraftSystem.TargetOtherNeutralCount = reader.ReadByte();
+
+            ReceiveDraftStart(impostorIds);
+            DraftSystem.DraftActiveThisRound = true;
+            DraftSystem.IsRunning = true;
+
+            DraftLobbyPatch.OnDraftStartedAsClient();
         }
-
-        DraftSystem.TargetOtherNeutralCount = reader.ReadByte();
-
-        // Info($"[DraftNetworking] Received combined draft data: {orderCount} players, {factionCount} factions, targetNeutrals={DraftSystem.TargetOtherNeutralCount}");
-
-        ReceiveDraftStart(impostorIds);
-        DraftSystem.DraftActiveThisRound = true;
-        DraftSystem.IsRunning = true;
-
-        DraftLobbyPatch.OnDraftStartedAsClient();
+        catch (System.Exception ex)
+        {
+            try
+            {
+                Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"[Draft] Critical exception in ReceiveDraftStartFromReader on Client: {ex}");
+            }
+            catch
+            {
+                // Ignored: logging failure should not crash the game or disrupt execution
+            }
+        }
     }
 
     public static void SendPick(byte playerId, ushort roleId)
@@ -107,9 +116,6 @@ public static class DraftNetworking
     public static void ReceivePick(byte playerId, ushort roleId)
     {
         DraftSystem.RegisterPick(playerId, roleId);
-
-        var role = RoleManager.Instance.GetRole((RoleTypes)roleId);
-        // Info($"[DraftNetworking] Player {playerId} picked {role?.GetRoleName() ?? $"Unknown({roleId})"}");
 
         DraftLobbyPatch.OnPickReceived(playerId, roleId);
     }
@@ -132,7 +138,6 @@ public static class DraftNetworking
     {
         DraftSystem.IsRunning = false;
         DraftSystem.DraftComplete = true;
-        // Info("[DraftNetworking] Draft complete!");
 
         DraftLobbyPatch.ShowSystemMessage("<color=#00FF00>Draft Complete!</color> The game is starting soon.");
     }
@@ -155,19 +160,7 @@ public static class DraftNetworking
     {
         DraftSystem.Reset();
         DraftLobbyPatch.ForceCancelDraft();
-        // Info("[DraftNetworking] Draft cancelled by host.");
 
         DraftLobbyPatch.ShowSystemMessage("<color=#FF4444>Draft Cancelled</color> by the Host.");
     }
 }
-
-
-
-
-
-
-
-
-
-
-

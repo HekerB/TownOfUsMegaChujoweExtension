@@ -144,6 +144,12 @@ public static class DetonatorSystem
 
     private static void UpdateTimers(float dt)
     {
+        if (_activeBombs.Count == 0) return;
+
+        float detonateCooldown = GetDetonateCooldown();
+        float timeNow = Time.time;
+        var options = OptionGroupSingleton<DetonatorOptions>.Instance;
+
         for (int i = _activeBombs.Count - 1; i >= 0; i--)
         {
             var bomb = _activeBombs[i];
@@ -160,8 +166,8 @@ public static class DetonatorSystem
             if (bomb.Detonated) continue;
             bomb.TimeElapsed += dt;
 
-            var options = OptionGroupSingleton<DetonatorOptions>.Instance;
-            float detonateRemaining = GetManualDetonateRemainingTime(bomb.DetonatorId);
+            float elapsed = timeNow - bomb.CreationTime;
+            float detonateRemaining = Mathf.Max(0, detonateCooldown - elapsed);
 
             if (detonateRemaining <= 0)
             {
@@ -183,13 +189,14 @@ public static class DetonatorSystem
         if (!AmongUsClient.Instance.AmHost) return;
         PlayerControl? mainTarget = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == bomb.TargetId);
         if (mainTarget == null || mainTarget.HasDied()) return;
+        if (PelicanSystem.IsSwallowed(mainTarget.PlayerId)) return;
         var options = OptionGroupSingleton<DetonatorOptions>.Instance;
         var radius = options.DetonateRadius * ShipStatus.Instance.MaxLightRadius;
         var pos = mainTarget.transform.position;
         var detonator = MiscUtils.PlayerById(bomb.DetonatorId);
         var actualKiller = detonator ?? mainTarget;
-        var victims = PlayerControl.AllPlayerControls.ToArray().Where(p => p != null && !p.HasDied() && Vector2.Distance(pos, p.transform.position) <= radius).OrderBy(p => Vector2.Distance(pos, p.transform.position)).Take((int)options.MaxKills).ToList();
-        if (!victims.Contains(mainTarget)) victims.Add(mainTarget);
+        var victims = PlayerControl.AllPlayerControls.ToArray().Where(p => p != null && !p.HasDied() && !PelicanSystem.IsSwallowed(p.PlayerId) && Vector2.Distance(pos, p.transform.position) <= radius).OrderBy(p => Vector2.Distance(pos, p.transform.position)).Take((int)options.MaxKills).ToList();
+        if (!victims.Contains(mainTarget) && !PelicanSystem.IsSwallowed(mainTarget.PlayerId)) victims.Add(mainTarget);
         foreach (var victim in victims.Where(victim => victim != null && !victim.HasDied()))
         {
                 // Check for invulnerability (e.g. Pestilence, Veteran on alert)

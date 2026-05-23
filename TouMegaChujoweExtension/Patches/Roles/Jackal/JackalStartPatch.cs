@@ -92,6 +92,12 @@ public static class JackalStartPatch
 
         yield return new WaitForSeconds(3f);
 
+        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost || GameManager.Instance == null)
+        {
+            UnityEngine.Debug.Log("[TOUMCE] Host disconnected or game not started, ending sidekick assignment.");
+            yield break;
+        }
+
         var jackals = PlayerControl.AllPlayerControls.ToArray()
             .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead &&
                         (p.GetRole<JackalRole>() != null || p.Data.Role is JackalRole))
@@ -110,12 +116,13 @@ public static class JackalStartPatch
 
         foreach (var jackal in jackals)
         {
+            if (jackal == null || jackal.Data == null) continue;
             UnityEngine.Debug.Log($"[TOUMCE] Picking sidekicks for Jackal {jackal.Data.PlayerName} (ID: {jackal.PlayerId})");
             var selected = GetSidekicksForJackal(jackal, alreadyAssigned);
             UnityEngine.Debug.Log($"[TOUMCE] Selected {selected.Count} sidekicks for Jackal {jackal.PlayerId}");
             foreach (var sidekick in selected)
             {
-                if (alreadyAssigned.Contains(sidekick.PlayerId)) continue;
+                if (sidekick == null || sidekick.Data == null || alreadyAssigned.Contains(sidekick.PlayerId)) continue;
 
                 alreadyAssigned.Add(sidekick.PlayerId);
                 PendingAssignments[sidekick.PlayerId] = jackal.PlayerId;
@@ -129,7 +136,7 @@ public static class JackalStartPatch
         }
         UnityEngine.Debug.Log($"[TOUMCE] Finished sidekick assignment. Total assigned: {alreadyAssigned.Count}");
 
-        if (PendingAssignments.Count > 0)
+        if (PendingAssignments.Count > 0 && PlayerControl.LocalPlayer != null)
         {
             var victims = PendingAssignments.Keys.ToArray();
             var jackalIds = PendingAssignments.Values.ToArray();
@@ -162,6 +169,8 @@ public static class JackalStartPatch
 
     public static List<PlayerControl> GetSidekicksForJackal(PlayerControl jackal, HashSet<byte> excludeIds)
     {
+        if (jackal == null) return [];
+
         var candidates = PlayerControl.AllPlayerControls.ToArray()
             .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead
                         && p.PlayerId != jackal.PlayerId

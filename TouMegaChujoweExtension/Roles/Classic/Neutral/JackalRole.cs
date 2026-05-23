@@ -55,11 +55,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
         var jackalTeamCount = jackalTeam.Count;
 
-        if (MiscUtils.ImpAliveCount > 0) return false;
-        if (MiscUtils.NKillersAliveCount > alivePlayers.Count(p => p.IsRole<JackalRole>())) return false;
-        if (alivePlayers.Any(p => p != null && p.Pointer != IntPtr.Zero && p.Is(RoleAlignment.CrewmateKilling))) return false;
-
-        return aliveCount <= jackalTeamCount * 2;
+        return aliveCount == jackalTeamCount;
     }
 
     public override bool DidWin(GameOverReason gameOverReason)
@@ -108,7 +104,9 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public void OffsetButtons()
     {
-        var canVent = MiraAPI.GameOptions.OptionGroupSingleton<JackalOptions>.Instance.CanVent || LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value;
+        if (OptionGroupSingleton<JackalOptions>.Instance == null) return;
+        var canVent = OptionGroupSingleton<JackalOptions>.Instance.CanVent ||
+                      (LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance != null && LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value);
         var kill = MiraAPI.Hud.CustomButtonSingleton<JackalKillButton>.Instance;
         if (kill != null)
         {
@@ -122,7 +120,8 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         if (player.AmOwner)
         {
             OffsetButtons();
-            if (OptionGroupSingleton<JackalOptions>.Instance.CanVent)
+            if (OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.CanVent &&
+                HudManager.Instance != null && HudManager.Instance.ImpostorVentButton != null && HudManager.Instance.ImpostorVentButton.graphic != null)
             {
                 HudManager.Instance.ImpostorVentButton.graphic.sprite = TouNeutAssets.PestVentSprite.LoadAsset();
                 HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(RoleColor);
@@ -146,6 +145,11 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     {
         yield return new WaitForSeconds(0.1f);
 
+        if (AmongUsClient.Instance == null || Player == null || Player.Pointer == IntPtr.Zero || Player.Data == null)
+        {
+            yield break;
+        }
+
         var sidekicks = PlayerControl.AllPlayerControls.ToArray()
             .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == Player.PlayerId)
             .ToList();
@@ -159,7 +163,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             KillAbilityAlertShown = true;
             UnityEngine.Debug.Log("[TOUMCE] All sidekicks dead, enabling Jackal kill ability.");
 
-            if (Player.AmOwner)
+            if (Player.AmOwner && AmongUsClient.Instance != null)
             {
                 var killButton = MiraAPI.Hud.CustomButtonSingleton<JackalKillButton>.Instance;
                 if (killButton != null)
@@ -168,13 +172,31 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                     UnityEngine.Debug.Log("[TOUMCE] Set Jackal Kill Timer to 10s");
                 }
 
-                string msg = TouLocale.Get("ExtensionJackalKillAbilityAlert");
-                if (OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
+                try
                 {
-                    msg += "\n" + TouLocale.Get("ExtensionJackalShieldLostAlert");
+                    if (OptionGroupSingleton<JackalOptions>.Instance != null)
+                    {
+                        string msg = TouLocale.Get("ExtensionJackalKillAbilityAlert");
+                        if (OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
+                        {
+                            msg += "\n" + TouLocale.Get("ExtensionJackalShieldLostAlert");
+                        }
+
+                        var notification = MiraAPI.Utilities.Helpers.CreateAndShowNotification(
+                            msg,
+                            TouExtensionColors.Jackal,
+                            new Vector3(0f, 1f, -20f),
+                            spr: TouRoleIcons.Jackal.LoadAsset()
+                        );
+
+                        notification?.AdjustNotification();
+                    }
+                    Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
                 }
-                MiraAPI.Utilities.Helpers.CreateAndShowNotification(msg, TouExtensionColors.Jackal, new Vector3(0f, 1f, -20f), spr: TouRoleIcons.Jackal.LoadAsset()).AdjustNotification();
-                Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
+                catch (System.Exception ex)
+                {
+                    UnityEngine.Debug.LogError($"[TOUMCE] Error showing Jackal kill ability notification: {ex}");
+                }
             }
         }
     }
@@ -195,6 +217,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     [MethodRpc((uint)ExtensionRpc.SetSidekickAssignments)]
     public static void RpcSetSidekickAssignments(PlayerControl sender, byte[] victims, byte[] jackalIds)
     {
+        _ = sender;
         Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.Clear();
         if (victims == null || jackalIds == null) return;
 

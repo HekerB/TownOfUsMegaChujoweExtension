@@ -131,7 +131,7 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
                 SetUses(UsesLeft);
             }
 
-            OverrideName(TouLocale.GetParsed("ExtensionRoleInjectorInjecting", "Injecting..."));
+            OverrideName(TouLocale.GetParsed("ExtensionRoleInjectorInjecting", "Injecting"));
             Button?.SetCooldownFill(1f);
         }
         else

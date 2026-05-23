@@ -17,6 +17,7 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
 public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
 {
+    private const float CancelLockDuration = 2f;
     public override string Name => TouLocale.GetParsed("ExtensionRoleSniperShoot", "Snipe");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => Palette.ImpostorRed;
@@ -47,6 +48,11 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
     private bool _isAimingLocal;
     private float _aimTimer;
     private float _aimDuration;
+    private float _cancelUnlockTime;
+
+    private bool CanCancelAimingNow =>
+        OptionGroupSingleton<SniperOptions>.Instance.CanCancelAiming &&
+        Time.time >= _cancelUnlockTime;
 
     public override bool CanUse()
     {
@@ -58,7 +64,7 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
 
         if (SniperSystem.IsAiming)
         {
-            return OptionGroupSingleton<SniperOptions>.Instance.CanCancelAiming;
+            return _isAimingLocal && CanCancelAimingNow;
         }
 
         return true;
@@ -66,12 +72,16 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
 
     public override bool CanClick()
     {
+        if (MeetingHud.Instance || HudManager.Instance.Chat.IsOpenOrOpening) return false;
+
+        var player = PlayerControl.LocalPlayer;
+        if (player == null || player.HasDied()) return false;
+
         if (_isAimingLocal)
         {
-            return OptionGroupSingleton<SniperOptions>.Instance.CanCancelAiming;
+            return CanCancelAimingNow;
         }
-        var player = PlayerControl.LocalPlayer;
-        if (player == null) return false;
+
         return CanUse() && Timer <= 0f;
     }
 
@@ -100,6 +110,8 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
             if (_aimTimer <= 0f)
             {
                 EndAiming(true);
+                ShowAimingPenaltyNotification(
+                    TouLocale.Get("SniperAimingExpiredPenalty", "Aiming expired! Penalty cooldown applied."));
             }
             else
             {
@@ -107,7 +119,14 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
 
                 if (Button != null)
                 {
-                    Button.SetEnabled();
+                    if (CanCancelAimingNow)
+                    {
+                        Button.SetEnabled();
+                    }
+                    else
+                    {
+                        Button.SetDisabled();
+                    }
                     Button.SetFillUp(_aimTimer, _aimDuration);
                     Button.cooldownTimerText.text = Mathf.CeilToInt(_aimTimer).ToString();
                     Button.cooldownTimerText.gameObject.SetActive(true);
@@ -175,17 +194,11 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
 
         if (_isAimingLocal)
         {
-            if (OptionGroupSingleton<SniperOptions>.Instance.CanCancelAiming)
+            if (CanCancelAimingNow)
             {
                 EndAiming(true);
-
-                var alertMsg = TouLocale.Get("SniperAimingCancelledPenalty", "Aiming cancelled! Penalty cooldown applied.");
-                MiraAPI.Utilities.Helpers.CreateAndShowNotification(
-                    $"<b><size=120%><color=#{ColorUtility.ToHtmlStringRGBA(Palette.ImpostorRed)}>{alertMsg}</color></size></b>",
-                    Color.white,
-                    new Vector3(0f, 1.5f, -20f),
-                    spr: TouExtensionIcons.SniperRoleIcon.LoadAsset()
-                );
+                ShowAimingPenaltyNotification(
+                    TouLocale.Get("SniperAimingCancelledPenalty", "Aiming cancelled! Penalty cooldown applied."));
             }
             return;
         }
@@ -196,14 +209,25 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
         _isAimingLocal = true;
         SniperSystem.IsAiming = true;
         SniperSystem.StartAimingFrame = UnityEngine.Time.frameCount;
+        _cancelUnlockTime = Time.time + CancelLockDuration;
 
         OverrideSprite(TouExtensionImpAssets.SniperShootButtonSprite.LoadAsset());
-        OverrideName(TouLocale.GetParsed("ExtensionRoleSniperAiming", "Aiming..."));
+        OverrideName(TouLocale.GetParsed("ExtensionRoleSniperAiming", "Aiming"));
 
         if (OptionGroupSingleton<SniperOptions>.Instance.AimZoomEnabled)
         {
             DoZoomOut();
         }
+    }
+
+    private static void ShowAimingPenaltyNotification(string message)
+    {
+        MiraAPI.Utilities.Helpers.CreateAndShowNotification(
+            $"<b><color=#{ColorUtility.ToHtmlStringRGBA(Palette.ImpostorRed)}>{message}</color></b>",
+            Color.white,
+            new Vector3(0f, 1.5f, -20f),
+            spr: TouExtensionIcons.SniperRoleIcon.LoadAsset()
+        );
     }
 
     public void EndAiming(bool putOnCooldown)
@@ -262,6 +286,7 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
 
     private IEnumerator ZoomOutCoroutine()
     {
+        if (Camera.main == null) yield break;
         float elapsed = 0f;
         float duration = 0.5f;
         float startSize = Camera.main.orthographicSize;
@@ -287,6 +312,7 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
 
     private IEnumerator ZoomInCoroutine()
     {
+        if (Camera.main == null) yield break;
         float elapsed = 0f;
         float duration = 0.5f;
         float startSize = Camera.main.orthographicSize;

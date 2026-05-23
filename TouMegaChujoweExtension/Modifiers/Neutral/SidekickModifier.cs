@@ -94,6 +94,8 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
     {
         base.OnDeactivate();
 
+        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost || GameManager.Instance == null) return;
+
         var jackalPlayer = PlayerControl.AllPlayerControls.ToArray()
             .FirstOrDefault(p => p != null && p.Pointer != IntPtr.Zero && p.PlayerId == JackalId);
 
@@ -107,13 +109,30 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
     {
         yield return new WaitForSeconds(3f);
 
-        if (Player != null)
-        {
-            HudManager.Instance.Chat.AddChat(Player, TouLocale.Get("ExtensionSidekickRecruitedChatMsg"));
-        }
+        if (AmongUsClient.Instance == null || Player == null || Player.Pointer == IntPtr.Zero) yield break;
 
-        MiraAPI.Utilities.Helpers.CreateAndShowNotification(TouLocale.Get("ExtensionSidekickRecruitedAlert"), TouExtensionColors.Jackal, spr: TouRoleIcons.Jackal.LoadAsset()).AdjustNotification();
-        Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
+        try
+        {
+            if (HudManager.Instance != null && HudManager.Instance.Chat != null)
+            {
+                HudManager.Instance.Chat.AddChat(Player, TouLocale.Get("ExtensionSidekickRecruitedChatMsg"));
+            }
+
+            var notification = MiraAPI.Utilities.Helpers.CreateAndShowNotification(
+                TouLocale.Get("ExtensionSidekickRecruitedAlert"), 
+                TouExtensionColors.Jackal, 
+                spr: TouRoleIcons.Jackal.LoadAsset()
+            );
+            if (notification != null)
+            {
+                notification.AdjustNotification();
+            }
+            Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
+        }
+        catch (System.Exception ex)
+        {
+            UnityEngine.Debug.LogError($"[TOUMCE] Error showing Sidekick recruited notification: {ex}");
+        }
     }
 
     public override void Update()

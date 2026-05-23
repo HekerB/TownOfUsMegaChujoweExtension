@@ -25,7 +25,7 @@ public static class TouExtensionColors
     public static Color SerialKiller => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(40, 80, 160, 255);
     public static Color Vulture => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(139, 69, 19, 255);
     public static Color Pelican => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(106, 21, 171, 255);
-    public static Color Pirate => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(255, 247, 0, 255);
+    public static Color Pirate => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(235, 193, 62, 255);
     public static Color Joker => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(138, 43, 226, 255);
     public static Color Shifter => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(186, 186, 186, 255);
     public static Color Pope => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(255, 215, 0, 255);

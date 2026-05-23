@@ -173,11 +173,12 @@ public static class ExtensionSymbolsPatch
 
         var genOpt = OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance;
         bool deadKnow = local.HasDied() && genOpt.TheDeadKnow && !hidden;
+        bool canSeePoison = CanSeePoisonedIndicator(local, hidden);
 
         // --- POISONER (%) ---
-        if (PoisonSystem.IsTargetPoisonedByPoison(player.PlayerId) && !__result.Contains('%') && (local.IsImpostorAligned() || deadKnow))
+        if (PoisonSystem.IsTargetPoisonedByPoison(player.PlayerId) && !__result.Contains('%') && canSeePoison)
         {
-            __result += " <color=#00FF00>%</color>";
+            __result += " <color=#FF0000>%</color>";
         }
 
         // --- BODYGUARD (Σ) ---
@@ -198,6 +199,12 @@ public static class ExtensionSymbolsPatch
         var genOpt = OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance;
         bool isGhost = local.HasDied();
         bool deadKnow = isGhost && genOpt.TheDeadKnow && !hidden;
+
+        if (PoisonSystem.IsTargetPoisonedByPoison(player.PlayerId) && CanSeePoisonedIndicator(local, hidden))
+        {
+            __result = Color.red;
+            return;
+        }
 
         var pendingAssignments = Patches.Roles.Jackal.JackalStartPatch.PendingAssignments;
         bool playerIsRecruit = player.TryGetModifier<SidekickModifier>(out var mod);
@@ -261,5 +268,16 @@ public static class ExtensionSymbolsPatch
             }
         }
         return false;
+    }
+
+    private static bool CanSeePoisonedIndicator(PlayerControl local, bool hidden)
+    {
+        if (local.IsImpostorAligned())
+        {
+            return true;
+        }
+
+        var genOpt = OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance;
+        return local.HasDied() && genOpt.TheDeadKnow && !hidden;
     }
 }

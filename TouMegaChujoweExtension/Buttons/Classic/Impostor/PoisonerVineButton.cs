@@ -17,6 +17,8 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
 public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
 {
+    private const float CancelLockDuration = 2f;
+
     public override string Name => TouLocale.GetParsed("ExtensionRolePoisonerVine", "Vine");
     public override BaseKeybind Keybind => Keybinds.TertiaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Poisoner;
@@ -49,30 +51,16 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
     private bool _isSeeking;
     private float _seekingTimer;
     private float _seekingDuration;
+    private float _cancelUnlockTime;
 
     private bool _isVining;
     private float _vineTimer;
     private float _vineDuration;
 
-    private bool IsAnyTargetInCameraRange(PlayerControl poisoner)
-    {
-        if (Camera.main == null) return false;
-        foreach (var pc in PlayerControl.AllPlayerControls)
-        {
-            if (pc == null || pc.Data.IsDead || pc.PlayerId == poisoner.PlayerId) continue;
-            if (pc.IsImpostorAligned()) continue;
+    private bool CanCancelSeekingNow =>
+        OptionGroupSingleton<PoisonerOptions>.Instance.CanCancelVineSeeking &&
+        Time.time >= _cancelUnlockTime;
 
-            // Check if player is within camera screen bounds
-            var viewportPoint = Camera.main.WorldToViewportPoint(pc.transform.position);
-            if (viewportPoint.x >= 0f && viewportPoint.x <= 1f &&
-                viewportPoint.y >= 0f && viewportPoint.y <= 1f &&
-                viewportPoint.z > 0f)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public override bool CanUse()
     {
@@ -80,6 +68,8 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
         if (MeetingHud.Instance || HudManager.Instance.Chat.IsOpenOrOpening) return false;
         if (PoisonSystem.IsVineActive) return false;
         if (PoisonSystem.HasActivePoison) return false;
+
+        if (_isSeeking) return CanCancelSeekingNow;
         if (PoisonSystem.IsSeeking) return false;
 
         var player = PlayerControl.LocalPlayer;
@@ -92,9 +82,14 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
     public override bool CanClick()
     {
         if (!OptionGroupSingleton<PoisonerOptions>.Instance.VineEnabled) return false;
-        if (_isSeeking || _isVining) return false;
+        if (MeetingHud.Instance || HudManager.Instance.Chat.IsOpenOrOpening) return false;
+
         var player = PlayerControl.LocalPlayer;
-        if (player == null) return false;
+        if (player == null || player.HasDied()) return false;
+
+        if (_isSeeking) return CanCancelSeekingNow;
+        if (_isVining) return false;
+
         return CanUse() && Timer <= 0f;
     }
 
@@ -147,7 +142,7 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
                 {
                     Button.SetEnabled();
                     Button.SetFillUp(_vineTimer, _vineDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_vineTimer).ToString();
+                    Button.cooldownTimerText.text = Mathf.CeilToInt(_vineTimer).ToString(System.Globalization.CultureInfo.InvariantCulture);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
             }
@@ -166,6 +161,8 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
             if (_seekingTimer <= 0f)
             {
                 EndSeeking(true);
+                ShowSeekingPenaltyNotification(
+                    TouLocale.Get("PoisonerVineSeekingExpiredPenalty", "Seeking expired! Cooldown applied."));
             }
             else
             {
@@ -173,9 +170,16 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
 
                 if (Button != null)
                 {
-                    Button.SetEnabled();
+                    if (CanCancelSeekingNow)
+                    {
+                        Button.SetEnabled();
+                    }
+                    else
+                    {
+                        Button.SetDisabled();
+                    }
                     Button.SetFillUp(_seekingTimer, _seekingDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_seekingTimer).ToString();
+                    Button.cooldownTimerText.text = Mathf.CeilToInt(_seekingTimer).ToString(System.Globalization.CultureInfo.InvariantCulture);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
 
@@ -246,15 +250,37 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
         var player = PlayerControl.LocalPlayer;
         if (player == null) return;
 
+        if (_isSeeking)
+        {
+            if (CanCancelSeekingNow)
+            {
+                EndSeeking(true);
+                ShowSeekingPenaltyNotification(
+                    TouLocale.Get("PoisonerVineSeekingCancelledPenalty", "Seeking cancelled! Cooldown applied."));
+            }
+            return;
+        }
+
         // Enter seeking mode
         _seekingTimer = OptionGroupSingleton<PoisonerOptions>.Instance.VineSeekingDuration;
         _seekingDuration = _seekingTimer;
         _isSeeking = true;
         PoisonSystem.IsSeeking = true;
         PoisonSystem.StartSeekingFrame = UnityEngine.Time.frameCount;
+        _cancelUnlockTime = Time.time + CancelLockDuration;
 
         OverrideSprite(TouExtensionImpAssets.VineButtonSprite.LoadAsset());
-        OverrideName(TouLocale.GetParsed("ExtensionRolePoisonerVining", "Seeking..."));
+        OverrideName(TouLocale.GetParsed("ExtensionRolePoisonerSeeking", "Seeking"));
+    }
+
+    private static void ShowSeekingPenaltyNotification(string message)
+    {
+        MiraAPI.Utilities.Helpers.CreateAndShowNotification(
+            $"<b><color=#{ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Poisoner)}>{message}</color></b>",
+            Color.white,
+            new Vector3(0f, 1.5f, -20f),
+            spr: TouExtensionIcons.PoisonerRole.LoadAsset()
+        );
     }
 
     public void EndSeeking(bool putOnCooldown)
@@ -262,9 +288,13 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
         _isSeeking = false;
         PoisonSystem.IsSeeking = false;
         ClearOutline();
-        OverrideSprite(TouExtensionImpAssets.VineButtonSprite.LoadAsset());
-        OverrideName(TouLocale.GetParsed("ExtensionRolePoisonerVine", "Vine"));
-        
+
+        if (!_isVining)
+        {
+            OverrideSprite(TouExtensionImpAssets.VineButtonSprite.LoadAsset());
+            OverrideName(TouLocale.GetParsed("ExtensionRolePoisonerVine", "Vine"));
+        }
+
         if (putOnCooldown)
         {
             Timer = Cooldown;
@@ -284,12 +314,13 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
     public void StartVining(float duration)
     {
         _isSeeking = false;
+        PoisonSystem.IsSeeking = false;
         _isVining = true;
         _vineDuration = duration;
         _vineTimer = duration;
         ClearOutline();
         OverrideSprite(TouExtensionImpAssets.VineButtonSprite.LoadAsset());
-        OverrideName(TouLocale.GetParsed("ExtensionRolePoisonerVining", "Vining..."));
+        OverrideName(TouLocale.GetParsed("ExtensionRolePoisonerVining", "Vining"));
     }
 
     public void EndVining()
@@ -317,5 +348,8 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
         }
     }
 
-    public override void OnEffectEnd() { }
+    public override void OnEffectEnd()
+    {
+        // No effect end action required for PoisonerVineButton
+    }
 }

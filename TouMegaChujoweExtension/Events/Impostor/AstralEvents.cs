@@ -17,13 +17,16 @@ public static class AstralEvents
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
         var killer = @event.Source;
-        if (killer == null || killer.Data == null || _killInProgress.Contains(killer.PlayerId)) return;
+        if (killer == null || killer.Data == null || !killer.AmOwner || _killInProgress.Contains(killer.PlayerId)) return;
 
         if (killer.Data.Role is AstralRole && killer.HasModifier<AstralPhaseModifier>() && killer != @event.Target)
         {
             @event.Cancel();
             _killInProgress.Add(killer.PlayerId);
             killer.RpcSpecialMurder(@event.Target, causeOfDeath: "AstralVoid");
+
+            var afterMurderEvent = new AfterMurderEvent(killer, @event.Target, null);
+            MiraEventManager.InvokeEvent(afterMurderEvent);
         }
     }
 

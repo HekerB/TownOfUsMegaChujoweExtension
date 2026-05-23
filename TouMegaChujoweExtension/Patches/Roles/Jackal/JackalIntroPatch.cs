@@ -108,13 +108,21 @@ public static class JackalIntroPatch
                 if (mod != null && !mod.WasNotified)
                 {
                     mod.WasNotified = true;
-                    Helpers.CreateAndShowNotification(
-                        TouLocale.Get("ExtensionSidekickRecruitedAlert"),
-                        TouExtensionColors.Jackal,
-                        new Vector3(0f, 1f, -20f),
-                        spr: TouExtensionIcons.SidekickModifierIcon.LoadAsset()
-                    ).AdjustNotification();
-                    Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
+                    try
+                    {
+                        var notification = Helpers.CreateAndShowNotification(
+                            TouLocale.Get("ExtensionSidekickRecruitedAlert"),
+                            TouExtensionColors.Jackal,
+                            new Vector3(0f, 1f, -20f),
+                            spr: TouExtensionIcons.SidekickModifierIcon.LoadAsset()
+                        );
+                        notification?.AdjustNotification();
+                        Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
+                    }
+                    catch (System.Exception ex)
+                    {
+                        UnityEngine.Debug.LogError($"[TOUMCE] Error showing Sidekick recruited notification in intro: {ex}");
+                    }
                 }
 
                 yield break;
@@ -124,13 +132,21 @@ public static class JackalIntroPatch
         if (localPlayer != null && localPlayer.Pointer != System.IntPtr.Zero && localPlayer.TryGetModifier<SidekickModifier>(out var lateMod) && !lateMod.WasNotified)
         {
             lateMod.WasNotified = true;
-            Helpers.CreateAndShowNotification(
-                TouLocale.Get("ExtensionSidekickRecruitedAlert"),
-                TouExtensionColors.Jackal,
-                new Vector3(0f, 1f, -20f),
-                spr: TouExtensionIcons.SidekickModifierIcon.LoadAsset()
-            ).AdjustNotification();
-            Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
+            try
+            {
+                var notification = Helpers.CreateAndShowNotification(
+                    TouLocale.Get("ExtensionSidekickRecruitedAlert"),
+                    TouExtensionColors.Jackal,
+                    new Vector3(0f, 1f, -20f),
+                    spr: TouExtensionIcons.SidekickModifierIcon.LoadAsset()
+                );
+                notification?.AdjustNotification();
+                Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
+            }
+            catch (System.Exception ex)
+            {
+                UnityEngine.Debug.LogError($"[TOUMCE] Error showing late Sidekick recruited notification: {ex}");
+            }
         }
     }
 }

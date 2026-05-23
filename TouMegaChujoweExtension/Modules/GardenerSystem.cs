@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
-using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Modifiers.Crewmate;
 using TouMegaChujoweExtension.Roles.Classic.Crewmate;
 using TownOfUs.Assets;
 using TownOfUs.Utilities;
@@ -22,7 +20,7 @@ using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using TownOfUs.Buttons;
 using MiraAPI.Events.Vanilla.Meeting;
-using MiraAPI.Modifiers.Types;
+
 using TouMegaChujoweExtension.Assets;
 
 namespace TouMegaChujoweExtension.Modules;
@@ -55,7 +53,6 @@ public static class GardenerSystem
     {
         public Vector2 Position { get; set; }
         public float Radius { get; set; }
-        public float RemainingTime { get; set; }
         public byte OwnerId { get; set; }
         public GameObject? Visual { get; set; }
     }
@@ -78,7 +75,7 @@ public static class GardenerSystem
         return false;
     }
 
-    public static void SetGarden(byte ownerId, Vector2 position, float radius, float duration)
+    public static void SetGarden(byte ownerId, Vector2 position, float radius)
     {
         if (ActiveGardens.TryGetValue(ownerId, out var oldGarden) && oldGarden.Visual != null)
         {
@@ -95,7 +92,6 @@ public static class GardenerSystem
         {
             Position = position,
             Radius = radius,
-            RemainingTime = duration,
             OwnerId = ownerId,
             Visual = visual
         };
@@ -136,20 +132,15 @@ public static class GardenerSystem
     public static void ClearAll()
     {
         PendingAttackLogs.Clear();
-        foreach (var visual in ActiveGardens.Values.Select(garden => garden.Visual).Where(visual => visual != null))
+        foreach (var garden in ActiveGardens.Values)
         {
-            UnityEngine.Object.Destroy(visual);
+            if (garden.Visual != null)
+            {
+                UnityEngine.Object.Destroy(garden.Visual);
+            }
         }
         ActiveGardens.Clear();
         _lastCleanupTime = Time.time;
-
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (player != null && player.HasModifier<GardenerProtectedModifier>())
-            {
-                player.RemoveModifier<GardenerProtectedModifier>();
-            }
-        }
     }
 
     public static void RecordAttackLog(byte ownerId, byte attackerId, byte targetId, bool killed)
@@ -157,7 +148,7 @@ public static class GardenerSystem
         PendingAttackLogs.Add(new AttackLog { OwnerId = ownerId, AttackerId = attackerId, TargetId = targetId, Killed = killed });
     }
 
-    public static void HandleAttackNotification(byte ownerId, byte attackerId, byte targetId, bool killed, bool delayed = false)
+    public static void HandleAttackNotification(byte ownerId, byte attackerId, byte targetId, bool killed)
     {
         if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == ownerId)
         {
@@ -190,22 +181,8 @@ public static class GardenerSystem
                    : TouLocale.Get("ExtensionGardenerAttackBlocked", "An attack was blocked in your garden!");
             }
 
-            if (delayed)
-            {
-                var title = $"<color=#{TouExtensionColors.Gardener.ToHtmlStringRGBA()}>{TouLocale.Get("ExtensionRoleGardenerFeedbackTitle", "Gardener Feedback")}</color>";
-                MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
-            }
-            else
-            {
-                var notif = MiraAPI.Utilities.Helpers.CreateAndShowNotification(
-                    $"<b><color=#{(killed ? "FF0000" : "00FF00")}>{msg}</color></b>",
-                    Color.white,
-                    new Vector3(0f, 1f, -20f),
-                    spr: TouExtensionCrewAssets.GardenerButtonSprite.LoadAsset());
-                notif.AdjustNotification();
-
-                Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(killed ? Color.red : Color.green));
-            }
+            var title = $"<color=#{TouExtensionColors.Gardener.ToHtmlStringRGBA()}>{TouLocale.Get("ExtensionRoleGardenerFeedbackTitle", "Gardener Feedback")}</color>";
+            MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
         }
     }
 
@@ -244,7 +221,7 @@ public static class GardenerSystem
     {
         try
         {
-            if (@event.Source == null || @event.Target == null) return;
+            if (@event.Source == null || @event.Target == null || MeetingHud.Instance != null || ExileController.Instance != null) return;
 
             bool targetInGarden = IsInAnyGarden(@event.Target);
 
@@ -261,13 +238,13 @@ public static class GardenerSystem
                         HudManager.Instance.KillButton.SetTarget(null);
                     }
 
-                    foreach (var button in MiraAPI.Hud.CustomButtonManager.Buttons.Where(button => button != null && button.Enabled(@event.Source.Data.Role) && button is IKillButton))
+                    foreach (var button in MiraAPI.Hud.CustomButtonManager.Buttons)
                     {
+                        if (button == null || !button.Enabled(@event.Source.Data.Role) || button is not IKillButton) continue;
                         button.Timer = button.Cooldown;
                     }
 
                     var garden = ActiveGardens.Values.FirstOrDefault(g =>
-                        g.RemainingTime > 0 &&
                         Vector2.Distance(@event.Target.GetTruePosition(), g.Position) <= g.Radius);
 
                     if (garden != null)
@@ -292,9 +269,11 @@ public static class GardenerSystem
     {
         if (PendingAttackLogs.Count == 0) return;
 
-        foreach (var log in PendingAttackLogs.Where(l => l.OwnerId == PlayerControl.LocalPlayer?.PlayerId))
+        var localId = PlayerControl.LocalPlayer?.PlayerId;
+        foreach (var log in PendingAttackLogs)
         {
-            HandleAttackNotification(log.OwnerId, log.AttackerId, log.TargetId, log.Killed, true);
+            if (log.OwnerId != localId) continue;
+            HandleAttackNotification(log.OwnerId, log.AttackerId, log.TargetId, log.Killed);
         }
         PendingAttackLogs.Clear();
     }
@@ -310,41 +289,21 @@ public static class GardenerSystem
             // Only run cleanup every 0.1s - light on CPU
             if (Time.time - _lastCleanupTime >= 0.1f)
             {
-                var expired = new List<byte>();
-                float dt = Time.time - _lastCleanupTime;
-                foreach (var kvp in ActiveGardens)
-                {
-                    kvp.Value.RemainingTime -= dt;
-                    if (kvp.Value.RemainingTime <= 0)
-                    {
-                        expired.Add(kvp.Key);
-                    }
-                }
-
                 _lastCleanupTime = Time.time;
 
-                foreach (var key in expired)
+                foreach (var id in ActiveGardens.Keys.ToArray())
                 {
-                    if (ActiveGardens.TryGetValue(key, out var garden))
+                    var alive = false;
+                    foreach (var player in PlayerControl.AllPlayerControls)
                     {
-                        if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == key)
+                        if (player != null && player.PlayerId == id && player.Data != null && !player.Data.IsDead && player.Data.Role is GardenerRole)
                         {
-                            GardenerRole.RpcClearGarden(PlayerControl.LocalPlayer, key);
+                            alive = true;
+                            break;
                         }
-
-                        if (garden.Visual != null) UnityEngine.Object.Destroy(garden.Visual);
-                        ActiveGardens.Remove(key);
                     }
-                }
 
-                var aliveGardenerIds = PlayerControl.AllPlayerControls.ToArray()
-                    .Where(p => p != null && p.Data != null && !p.Data.IsDead && p.Data.Role is GardenerRole)
-                    .Select(p => p.PlayerId)
-                    .ToHashSet();
-
-                var ownersToRemove = ActiveGardens.Keys.Where(id => !aliveGardenerIds.Contains(id)).ToList();
-                foreach (var id in ownersToRemove)
-                {
+                    if (alive) continue;
                     if (ActiveGardens.TryGetValue(id, out var g))
                     {
                         if (g.Visual != null) UnityEngine.Object.Destroy(g.Visual);

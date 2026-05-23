@@ -10,7 +10,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> SerialKillerKillButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.SerialKiller_Kill_Button.png");
         public static LoadableAsset<Sprite> SerialKillerVentButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.SerialKiller_Vent_Button.png");
         public static LoadableAsset<Sprite> PelicanSwallowButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.SwallowButton.png");
-        public static LoadableAsset<Sprite> PirateDuelButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Pirate_Duel_Button.png");
+        public static LoadableAsset<Sprite> PirateDuelButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Pirate_Duel_Button.png", 100f);
         public static LoadableAsset<Sprite> JokerPlaceCloneButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Joker_PlaceClone_Button.png", 100f);
         public static LoadableAsset<Sprite> JokerPiPBorderSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Anims.Joker_PIP_Border.png", 100f);
         public static LoadableAsset<Sprite> ShifterButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Shifter_Button.png");

@@ -96,7 +96,7 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
         player.killTimer = _poisonDuration + 1f;
 
         OverrideSprite(TouExtensionImpAssets.PoisonedButtonSprite.LoadAsset());
-        OverrideName(TouLocale.GetParsed("ExtensionRolePoisonerPoisoning", "Poisoning..."));
+        OverrideName(TouLocale.GetParsed("ExtensionRolePoisonerPoisoning", "Poisoning"));
 
         Button?.SetCooldownFill(1f);
     }

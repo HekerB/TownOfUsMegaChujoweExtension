@@ -42,7 +42,7 @@ public static class GuesserExemptPatch
         }
 
         // Find the guesser player from the instance
-        PlayerControl guesser = null;
+        PlayerControl? guesser = null;
         if (__instance is AssassinModifier assassin)
         {
             guesser = assassin.Player;
@@ -63,7 +63,7 @@ public static class GuesserExemptPatch
         }
     }
 
-    public static bool AreOnSameJackalTeam(PlayerControl playerA, PlayerControl playerB)
+    public static bool AreOnSameJackalTeam(PlayerControl? playerA, PlayerControl? playerB)
     {
         if (playerA == null || playerB == null) return false;
         if (playerA.PlayerId == playerB.PlayerId) return true;

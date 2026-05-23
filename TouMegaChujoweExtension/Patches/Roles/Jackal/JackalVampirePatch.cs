@@ -49,12 +49,9 @@ public static class JackalVampirePatch
     {
         var generalOptions = OptionGroupSingleton<ExtensionGameMechanicOptions>.Instance;
 
-        if (generalOptions != null && generalOptions.PreventVampiresWithJackal)
+        if (generalOptions != null && generalOptions.PreventVampiresWithJackal && JackalVampireExclusionState.Decided && JackalVampireExclusionState.VampireBlocked)
         {
-            if (JackalVampireExclusionState.Decided && JackalVampireExclusionState.VampireBlocked)
-            {
-                __result.MaxRoleCount = 0;
-            }
+            __result.MaxRoleCount = 0;
         }
     }
 }
@@ -66,12 +63,9 @@ public static class JackalRoleConfigPatch
     {
         var generalOptions = OptionGroupSingleton<ExtensionGameMechanicOptions>.Instance;
 
-        if (generalOptions != null && generalOptions.PreventVampiresWithJackal)
+        if (generalOptions != null && generalOptions.PreventVampiresWithJackal && JackalVampireExclusionState.Decided && JackalVampireExclusionState.JackalBlocked)
         {
-            if (JackalVampireExclusionState.Decided && JackalVampireExclusionState.JackalBlocked)
-            {
-                __result.MaxRoleCount = 0;
-            }
+            __result.MaxRoleCount = 0;
         }
     }
 }

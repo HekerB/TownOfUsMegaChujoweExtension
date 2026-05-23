@@ -579,10 +579,41 @@ public static class DraftLobbyPatch
 
         DraftNetworking.SendDraftStart(impostors);
 
-        CreateDraftUI();
-        LockLobby();
-        UpdatePlayerList();
-        ShowRoleButtonsForCurrentPicker();
+        try
+        {
+            CreateDraftUI();
+        }
+        catch (System.Exception ex)
+        {
+            try { Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"[Draft] Failed to create Draft UI on Host: {ex}"); } catch { }
+        }
+
+        try
+        {
+            LockLobby();
+        }
+        catch (System.Exception ex)
+        {
+            try { Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"[Draft] Failed to lock lobby on Host: {ex}"); } catch { }
+        }
+
+        try
+        {
+            UpdatePlayerList();
+        }
+        catch (System.Exception ex)
+        {
+            try { Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"[Draft] Failed to update player list on Host: {ex}"); } catch { }
+        }
+
+        try
+        {
+            ShowRoleButtonsForCurrentPicker();
+        }
+        catch (System.Exception ex)
+        {
+            try { Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"[Draft] Failed to show role buttons on Host: {ex}"); } catch { }
+        }
     }
 
     public static void OnDraftStartedAsClient()
@@ -1321,14 +1352,18 @@ public static class DraftLobbyPatch
             float scale = Mathf.Lerp(0.5f, 1f, eased); // Start from small
             float alpha = Mathf.Clamp01(t * 2f);
 
+            if (_draftCompleteText == null) yield break;
             _draftCompleteText.transform.localScale = new Vector3(scale, scale, 1f);
             _draftCompleteText.color = new Color(origColor.r, origColor.g, origColor.b, alpha);
 
             yield return null;
         }
 
-        _draftCompleteText.transform.localScale = Vector3.one;
-        _draftCompleteText.color = origColor;
+        if (_draftCompleteText != null)
+        {
+            _draftCompleteText.transform.localScale = Vector3.one;
+            _draftCompleteText.color = origColor;
+        }
     }
 
     private static System.Collections.IEnumerator CoAnimateTimerIn()
@@ -1351,14 +1386,18 @@ public static class DraftLobbyPatch
                 ? Mathf.Lerp(0f, 1.15f, 1f - Mathf.Pow(1f - (t / 0.6f), 3f))
                 : Mathf.Lerp(1.15f, 1f, (t - 0.6f) / 0.4f);
 
+            if (_timerText == null) yield break;
             _timerText.transform.localScale = new Vector3(eased, eased, 1f);
             _timerText.color = new Color(origColor.r, origColor.g, origColor.b, Mathf.Clamp01(t * 3f));
 
             yield return null;
         }
 
-        _timerText.transform.localScale = Vector3.one;
-        _timerText.color = origColor;
+        if (_timerText != null)
+        {
+            _timerText.transform.localScale = Vector3.one;
+            _timerText.color = origColor;
+        }
     }
 
     private static System.Collections.IEnumerator CoFadeOutMusicAndPlayComplete()
@@ -1631,37 +1670,57 @@ public static class DraftLobbyPatch
 
     public static void ShowSystemMessage(string text)
     {
-        if (HudManager.Instance == null || HudManager.Instance.Chat == null) return;
-        var chat = HudManager.Instance.Chat;
+        try
+        {
+            if (HudManager.Instance == null || HudManager.Instance.Chat == null) return;
+            var chat = HudManager.Instance.Chat;
 
-        // Use a local player as base for cosmetics but we will override the name
-        var player = PlayerControl.LocalPlayer;
-        if (player == null) return;
+            // Use a local player as base for cosmetics but we will override the name
+            var player = PlayerControl.LocalPlayer;
+            if (player == null) return;
 
-        var pooledBubble = chat.GetPooledBubble();
-        if (pooledBubble == null) return;
+            var pooledBubble = chat.GetPooledBubble();
+            if (pooledBubble == null) return;
 
-        pooledBubble.transform.SetParent(chat.scroller.Inner);
-        pooledBubble.transform.localScale = Vector3.one;
-        pooledBubble.SetLeft();
-        pooledBubble.SetCosmetics(player.Data);
+            pooledBubble.transform.SetParent(chat.scroller.Inner);
+            pooledBubble.transform.localScale = Vector3.one;
+            pooledBubble.SetLeft();
+            pooledBubble.SetCosmetics(player.Data);
 
-        pooledBubble.NameText.text = "<color=#FFD700>SYSTEM</color>";
-        pooledBubble.NameText.color = Color.white;
-        pooledBubble.votedMark.enabled = false;
-        pooledBubble.Xmark.enabled = false;
+            pooledBubble.NameText.text = "<color=#FFD700>SYSTEM</color>";
+            pooledBubble.NameText.color = Color.white;
+            pooledBubble.votedMark.enabled = false;
+            pooledBubble.Xmark.enabled = false;
 
-        pooledBubble.TextArea.text = text;
-        pooledBubble.TextArea.ForceMeshUpdate(true, true);
+            pooledBubble.TextArea.text = text;
+            pooledBubble.TextArea.ForceMeshUpdate(true, true);
 
-        float h = pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight() + 0.4f;
-        pooledBubble.Background.size = new Vector2(5.52f, h);
-        pooledBubble.MaskArea.size = new Vector2(5.52f, h - 0.05f);
-        pooledBubble.AlignChildren();
-        chat.AlignAllBubbles();
+            float h = pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight() + 0.4f;
+            pooledBubble.Background.size = new Vector2(5.52f, h);
+            pooledBubble.MaskArea.size = new Vector2(5.52f, h - 0.05f);
+            pooledBubble.AlignChildren();
+            try
+            {
+                chat.AlignAllBubbles();
+            }
+            catch (System.Exception alignEx)
+            {
+                #if DEBUG
+                Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Warning($"[Draft] Failed to align chat bubbles: {alignEx.Message}");
+                #endif
+            }
 
-        if (chat is { IsOpenOrOpening: false, notificationRoutine: null })
-            chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());
+            if (chat is { IsOpenOrOpening: false, notificationRoutine: null })
+                chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());
+        }
+        catch (System.Exception ex)
+        {
+            try
+            {
+                Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"[Draft] Failed to show system chat message: {ex}");
+            }
+            catch { }
+        }
     }
 
     private static TextMeshPro CreateTMP(string name, Transform parent, Vector3 pos, float fontSize, TextAlignmentOptions align, bool withOutline)
@@ -1727,7 +1786,7 @@ public static class DraftLobbyPatch
         if (picker.HasValue)
         {
             float timeLeft = Mathf.Max(0, DraftSystem.TimeToChoose - _pickTimer);
-            timeLeftInt = (int)timeLeft;
+            timeLeftInt = Mathf.CeilToInt(timeLeft);
         }
 
         float dotTime = Time.time * 2.5f;
@@ -1767,7 +1826,7 @@ public static class DraftLobbyPatch
                 float jump = Mathf.Abs(Mathf.Sin(Time.time * 10f)) * 0.15f;
                 string voffset = $"<voffset={jump:F2}em>";
 
-                _playerListBuilder.Append("<color=").Append(timerColor).Append('>').Append(voffset).Append(">>").Append((int)timeLeft).Append("</voffset></color>")
+                _playerListBuilder.Append("<color=").Append(timerColor).Append('>').Append(voffset).Append(">>").Append(Mathf.CeilToInt(timeLeft)).Append("</voffset></color>")
                                  .Append("<pos=12%><color=#FFFFFF>").Append(name).Append("</color><pos=35%>: <color=").Append(timerColor).Append(">PICKING").Append(dots).Append("</color>\n");
             }
             else

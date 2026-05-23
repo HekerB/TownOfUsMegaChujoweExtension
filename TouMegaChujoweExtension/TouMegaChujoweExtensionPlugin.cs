@@ -23,11 +23,11 @@ namespace TouMegaChujoweExtension;
 [ReactorModFlags(ModFlags.RequireOnAllClients)]
 public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 {
-	/// <summary>
+    /// <summary>
     ///     Gets the specified Culture for string manipulations.
     /// </summary> 
     public static CultureInfo Culture => TownOfUsPlugin.Culture;
-	    /// <inheritdoc />
+    /// <inheritdoc />
     public string OptionsTitleText => "TOU Mega Chujowe Extension";
 
     /// <inheritdoc />
@@ -41,29 +41,29 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
     public static bool IsDevBuild => false;
     /// <inheritdoc />
     public ConfigFile GetConfigFile() => Config;
-	
+
     // public static Harmony
-	public static Harmony Harmony { get; private set; } = null!;
+    public static Harmony Harmony { get; private set; } = null!;
 
-	public override void Load()
-	{
-		DuplicateChecker.Check();
-		Harmony = new Harmony(Id);
+    public override void Load()
+    {
+        DuplicateChecker.Check();
+        Harmony = new Harmony(Id);
 
-		ReactorCredits.Register("Tou Mega Chujowe Extension", Version, IsDevBuild, ReactorCredits.AlwaysShow);
-		IL2CPPChainloader.Instance.Finished += Modules.ExtensionLocale.SearchInternalLocale;
-		IL2CPPChainloader.Instance.Finished += LawyerTeamChatRegistration.Register;
-		IL2CPPChainloader.Instance.Finished += Patches.Roles.Lovers.LoverMeetingChatRegistration.Register;
-		IL2CPPChainloader.Instance.Finished += Patches.Roles.Jackal.JackalTeamChatRegistration.Register;
-		IL2CPPChainloader.Instance.Finished += Patches.Roles.Pelican.PelicanTargetBlockPatches.Init;
-		IL2CPPChainloader.Instance.Finished += () => ExtensionModNewsFetcher.CheckForNews();
-	
-		PatchAllWithErrorHandling();
+        ReactorCredits.Register("Tou Mega Chujowe Extension", Version, IsDevBuild, ReactorCredits.AlwaysShow);
+        IL2CPPChainloader.Instance.Finished += Modules.ExtensionLocale.SearchInternalLocale;
+        IL2CPPChainloader.Instance.Finished += LawyerTeamChatRegistration.Register;
+        IL2CPPChainloader.Instance.Finished += Patches.Roles.Lovers.LoverMeetingChatRegistration.Register;
+        IL2CPPChainloader.Instance.Finished += Patches.Roles.Jackal.JackalTeamChatRegistration.Register;
+        IL2CPPChainloader.Instance.Finished += Patches.Roles.Pelican.PelicanTargetBlockPatches.Init;
+        IL2CPPChainloader.Instance.Finished += () => ExtensionModNewsFetcher.CheckForNews();
 
-		WinConditionRegistry.Register(new NeutralExtensionWinCondition());
-	}
+        PatchAllWithErrorHandling();
 
-    private void PatchAllWithErrorHandling()
+        WinConditionRegistry.Register(new NeutralExtensionWinCondition());
+    }
+
+    private static void PatchAllWithErrorHandling()
     {
         var assembly = Assembly.GetExecutingAssembly();
         var patchTypes = SafeReflection.GetTypesSafe(assembly)
@@ -72,7 +72,7 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 
         int successCount = 0;
         int failCount = 0;
-        List<string> failedTypes = new();
+        List<string> failedTypes = [];
 
         foreach (var type in patchTypes)
         {

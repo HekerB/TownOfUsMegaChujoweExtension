@@ -1,6 +1,9 @@
 using HarmonyLib;
 using MiraAPI.GameOptions;
+using MiraAPI.GameOptions.OptionTypes;
+using AmongUs.Data;
 using System;
+using System.Collections.Generic;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Roles.Crewmate;
@@ -101,6 +104,87 @@ public static class WikiAppendOptionsPatch
             {
                 // Clear default "Amount: X, Chance: Y" strings for Recruit
                 __result = "";
+            }
+            else if (classType == typeof(ArcanistRole))
+            {
+                var options = MiscUtils.GetModdedOptionsForRole(typeof(ArcanistRole));
+                if (options != null)
+                {
+                    var builder = new System.Text.StringBuilder();
+                    builder.AppendLine(TownOfUs.TownOfUsPlugin.Culture,
+                        $"\n<size=50%> \n</size><b>{TownOfUs.TownOfUsColors.Vigilante.ToTextColor()}{TouLocale.Get("Options")}</color></b>");
+
+                    var generalOptions = new List<string>();
+
+                    foreach (var option in options)
+                    {
+                        if (option == null) continue;
+
+                        string title = "";
+                        string valueStr = "";
+
+                        switch (option)
+                        {
+                            case ModdedToggleOption toggleOption:
+                                if (!toggleOption.Visible()) continue;
+                                title = TranslationController.Instance.GetString(toggleOption.StringName);
+                                valueStr = toggleOption.Value ? "True" : "False";
+                                break;
+                            case ModdedEnumOption enumOption:
+                                if (!enumOption.Visible()) continue;
+                                title = TranslationController.Instance.GetString(enumOption.StringName);
+                                valueStr = TouLocale.GetParsed(enumOption.Values[enumOption.Value], enumOption.Values[enumOption.Value]);
+                                break;
+                            case ModdedNumberOption numberOption:
+                                if (!numberOption.Visible()) continue;
+                                title = TranslationController.Instance.GetString(numberOption.StringName);
+                                var optionStr = numberOption.Data.GetValueString(numberOption.Value);
+                                if (optionStr.Contains(".000")) optionStr = optionStr.Replace(".000", "");
+                                else if (optionStr.Contains(".00")) optionStr = optionStr.Replace(".00", "");
+                                else if (optionStr.Contains(".0")) optionStr = optionStr.Replace(".0", "");
+
+                                if (numberOption is { NegativeWordValue: not "#", Value: -1 })
+                                {
+                                    valueStr = numberOption.NegativeWordValue;
+                                }
+                                else if (numberOption is { ZeroWordValue: not "#", Value: 0 })
+                                {
+                                    valueStr = numberOption.ZeroWordValue;
+                                }
+                                else
+                                {
+                                    valueStr = optionStr;
+                                }
+                                break;
+                        }
+
+                        if (string.IsNullOrEmpty(title)) continue;
+
+                        var cardIdentifiers = new[] {
+                            "Fool", "Głupiec", "Magician", "Magik", "Priestess", "Arcykapłanka",
+                            "Empress", "Cesarzowa", "Emperor", "Cesarz", "Hierophant", "Hierofant",
+                            "Lovers", "Kochankowie", "Chariot", "Rydwan", "Strength", "Siła",
+                            "Hermit", "Pustelnik", "Wheel", "Koło", "Justice", "Sprawiedliwość",
+                            "Hanged", "Wisielec", "Death", "Śmierć", "Temperance", "Umiarkowanie",
+                            "Devil", "Diabeł", "Tower", "Wieża", "Star", "Gwiazda", "Moon", "Księżyc",
+                            "Sun", "Słońce", "Judgement", "Sąd", "World", "Świat"
+                        };
+
+                        bool isWeight = System.Linq.Enumerable.Any(cardIdentifiers, id => title.Contains(id, StringComparison.OrdinalIgnoreCase));
+
+                        if (!isWeight)
+                        {
+                            generalOptions.Add($"{title}: {valueStr}");
+                        }
+                    }
+
+                    foreach (var opt in generalOptions)
+                    {
+                        builder.AppendLine(opt);
+                    }
+
+                    __result = builder.ToString();
+                }
             }
             /* Jackal options are handled automatically because they are registered as AbstractOptionGroup<JackalRole> */
         }

@@ -69,7 +69,7 @@ public sealed class PopeRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole
         var canVent = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value;
         var canonize = MiraAPI.Hud.CustomButtonSingleton<PopeCanonizeButton>.Instance;
         var judgement = MiraAPI.Hud.CustomButtonSingleton<PopeJudgementButton>.Instance;
-        
+
         Reactor.Utilities.Coroutines.Start(MiscUtils.CoMoveButtonIndex(canonize, !canVent));
         Reactor.Utilities.Coroutines.Start(MiscUtils.CoMoveButtonIndex(judgement, !canVent));
     }

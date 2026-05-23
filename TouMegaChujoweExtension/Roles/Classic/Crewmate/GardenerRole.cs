@@ -81,9 +81,7 @@ public sealed class GardenerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfU
             ? ShipStatus.Instance.MaxLightRadius
             : 3.75f;
         float radius = options.TrapSize * maxLight;
-        float duration = float.MaxValue;
-
-        GardenerSystem.SetGarden(player.PlayerId, position, radius, duration);
+        GardenerSystem.SetGarden(player.PlayerId, position, radius);
     }
 
 

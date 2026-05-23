@@ -67,6 +67,7 @@ public sealed class SniperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     [MethodRpc((uint)ExtensionRpc.SniperShoot)]
     public static void RpcSniperShoot(PlayerControl sniper, byte targetId)
     {
+        if (sniper == null) return;
         var target = MiscUtils.PlayerById(targetId);
         if (target == null || target.Data.IsDead) return;
 
@@ -90,6 +91,7 @@ public sealed class SniperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     [MethodRpc((uint)ExtensionRpc.SniperPlaySound)]
     public static void RpcSniperPlaySound(PlayerControl sniper, byte targetId)
     {
+        if (sniper == null) return;
         var local = PlayerControl.LocalPlayer;
         if (local == null) return;
 
@@ -101,21 +103,17 @@ public sealed class SniperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
         var targetPos = target != null ? target.transform.position : sniperPos;
         var localPos = local.transform.position;
 
-        const float maxRange = 8f;
+        const float shooterHearRange = 4f;
+        const float bodyHearRange = 1.35f;
 
-        // Distance to the shooter
         float distToShooter = Vector2.Distance(localPos, sniperPos);
-        // Distance to the victim / body
         float distToVictim = Vector2.Distance(localPos, targetPos);
 
-        // Use the closer of the two positions for volume
-        float closestDist = Mathf.Min(distToShooter, distToVictim);
+        float shooterVolume = GetRangedVolume(distToShooter, shooterHearRange, 1f);
+        float bodyVolume = GetRangedVolume(distToVictim, bodyHearRange, 0.45f);
+        float volume = Mathf.Max(shooterVolume, bodyVolume);
 
-        if (closestDist >= maxRange) return;
-
-        // Quadratic falloff for a natural Doppler-like feel
-        float t = 1f - (closestDist / maxRange);
-        float volume = t * t; // Quadratic: loud up close, fades fast
+        if (volume <= 0f) return;
 
         // Sniper themselves always hear it full volume
         if (local.PlayerId == sniper.PlayerId)
@@ -126,8 +124,15 @@ public sealed class SniperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
         var source = SoundManager.Instance.PlaySound(clip, false, Mathf.Clamp(volume, 0.05f, 1f));
         if (source != null)
         {
-            Coroutines.Start(CoFadeOutSound(source, clip.length, 0.35f));
+            Coroutines.Start(CoFadeOutSound(source, clip.length, 0.55f));
         }
+    }
+
+    private static float GetRangedVolume(float distance, float range, float maxVolume)
+    {
+        if (distance >= range) return 0f;
+        var t = 1f - (distance / range);
+        return t * t * maxVolume;
     }
 
     private static IEnumerator CoFadeOutSound(AudioSource source, float clipLength, float fadeDuration)

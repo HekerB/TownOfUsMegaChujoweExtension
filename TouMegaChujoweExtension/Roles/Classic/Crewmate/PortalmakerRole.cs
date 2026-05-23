@@ -34,7 +34,8 @@ public sealed class PortalmakerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     {
         UseVanillaKillButton = false,
         Icon = TouExtensionIcons.PortalmakerRoleIcon,
-        IntroSound = TouAudio.TimeLordIntroSound
+        IntroSound = TouAudio.TimeLordIntroSound,
+        OptionsScreenshot = TouBanners.CrewmateRoleBanner,
     };
 
     [HideFromIl2Cpp]

@@ -38,7 +38,7 @@ public sealed class AstralRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     public string LocaleKey => "Astral";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Astral");
     public string RoleDescription => TouLocale.Get($"ExtensionRole{LocaleKey}IntroBlurb", "Phase through walls and return to your start position.");
-    public string RoleLongDescription => TouLocale.Get($"ExtensionRole{LocaleKey}TabDescription", "Phase through walls and teleport back. You must kill someone to survive!");
+    public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription", "Phase through walls and teleport back. You must kill someone to survive!");
 
     public bool KillMadeDuringPhase { get; set; }
 

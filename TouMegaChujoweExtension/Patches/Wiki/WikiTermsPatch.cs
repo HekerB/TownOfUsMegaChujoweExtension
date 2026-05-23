@@ -13,7 +13,7 @@ namespace TouMegaChujoweExtension.Patches.Wiki;
 [HarmonyPatch]
 public static class WikiTermsPatch
 {
-    private static MethodBase TargetMethod()
+    public static MethodInfo TargetMethod()
     {
         var wikiType = AccessTools.TypeByName("TownOfUs.Modules.Wiki.IngameWikiMinigame");
         return AccessTools.Method(wikiType, "AddNewTerms");
@@ -48,42 +48,42 @@ public static class WikiTermsPatch
                 "TOUMCETermsSymbolsTitle",
                 "TOUMCETermsSymbolsInfo",
                 (object)TouRoleIcons.Lawyer);
-            addMethod.Invoke(termsList, new[] { symbolsTerm });
+            addMethod.Invoke(termsList, [symbolsTerm]);
 
             // Page 2: Shield Flashes
             var flashesTerm = Activator.CreateInstance(termType,
                 "TOUMCETermsShieldFlashesTitle",
                 "TOUMCETermsShieldFlashesInfo",
                 (object)TouRoleIcons.Medic);
-            addMethod.Invoke(termsList, new[] { flashesTerm });
+            addMethod.Invoke(termsList, [flashesTerm]);
 
             // Page 3: Draft Mode
             var draftModeTerm = Activator.CreateInstance(termType,
                 "TOUMCETermsDraftModeTitle",
                 "TOUMCETermsDraftModeInfo",
                 (object)TouRoleIcons.Traitor);
-            addMethod.Invoke(termsList, new[] { draftModeTerm });
+            addMethod.Invoke(termsList, [draftModeTerm]);
 
             // Page 4: Draft Factions
             var draftFactionsTerm = Activator.CreateInstance(termType,
                 "TOUMCETermsDraftFactionsTitle",
                 "TOUMCETermsDraftFactionsInfo",
                 (object)TouRoleIcons.Jackal);
-            addMethod.Invoke(termsList, new[] { draftFactionsTerm });
+            addMethod.Invoke(termsList, [draftFactionsTerm]);
 
             // Page 5: Infiltrator
             var infiltratorTerm = Activator.CreateInstance(termType,
                 "TOUMCETermsInfiltratorTitle",
                 "TOUMCETermsInfiltratorInfo",
                 (object)TouRoleIcons.Jackal);
-            addMethod.Invoke(termsList, new[] { infiltratorTerm });
+            addMethod.Invoke(termsList, [infiltratorTerm]);
 
             // Page 6: Vampire Sabotage
             var vampireSabotageTerm = Activator.CreateInstance(termType,
                 "TOUMCETermsVampireSabotageTitle",
                 "TOUMCETermsVampireSabotageInfo",
                 (object)TouRoleIcons.Vampire);
-            addMethod.Invoke(termsList, new[] { vampireSabotageTerm });
+            addMethod.Invoke(termsList, [vampireSabotageTerm]);
 
             Info("TOUMCE wiki terms added successfully");
         }
@@ -97,7 +97,7 @@ public static class WikiTermsPatch
 [HarmonyPatch]
 public static class WikiSettingsPatch
 {
-    private static MethodBase TargetMethod()
+    public static MethodInfo TargetMethod()
     {
         var wikiType = AccessTools.TypeByName("TownOfUs.Modules.Wiki.IngameWikiMinigame");
         return AccessTools.Method(wikiType, "AddNewSettings");
@@ -132,7 +132,7 @@ public static class WikiSettingsPatch
                 (object)TouExtensionIcons.HackerRole,
                 false);
 
-            addMethod.Invoke(settingsList, new[] { draftSettings });
+            addMethod.Invoke(settingsList, [draftSettings]);
 
             // Create List<AbstractOptionGroup> for Role Extensions
             var extensionGroupList = new List<MiraAPI.GameOptions.AbstractOptionGroup>
@@ -154,7 +154,7 @@ public static class WikiSettingsPatch
                 (object)TouRoleIcons.Engineer,
                 false);
 
-            addMethod.Invoke(settingsList, new[] { roleExtensionsSettings });
+            addMethod.Invoke(settingsList, [roleExtensionsSettings]);
 
             Info("TOUMCE draft and role extension settings added to wiki successfully");
         }
@@ -164,18 +164,3 @@ public static class WikiSettingsPatch
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

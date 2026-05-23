@@ -13,7 +13,7 @@ namespace TouMegaChujoweExtension.Patches.Roles.Jackal;
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
 public static class SidekickMeetingNotificationPatch
 {
-    private static bool _notifiedThisGame = false;
+    private static bool _notifiedThisGame;
 
     [HarmonyPostfix]
     public static void Postfix()
