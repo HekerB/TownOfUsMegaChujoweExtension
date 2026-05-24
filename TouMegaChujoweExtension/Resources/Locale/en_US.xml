@@ -61,6 +61,8 @@
   <string name="ExtensionRoleTrapperTriggered">Your trap was triggered in &lt;room&gt;!</string>
   <string name="ExtensionRoleTrapperCaught">You were caught in a trap in &lt;room&gt;!</string>
   <string name="ExtensionRoleTrapperTabHeader">Active Traps:</string>
+  <string name="ExtensionRoleTrapperVentLabelTabText">&lt;room&gt; Vent</string>
+  <string name="ExtensionRoleTrapperVentRoundsTabText">&lt;rounds&gt; Round(s) Remaining</string>
 
   <!-- Trapper Options -->
   <string name="ExtensionOptionTrapperTrapCooldown">Trap Cooldown</string>

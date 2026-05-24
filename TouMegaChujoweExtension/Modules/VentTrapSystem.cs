@@ -143,6 +143,13 @@ public static class VentTrapSystem
     {
         return Traps.Where(kvp => kvp.Value.OwnerId == traprId).Select(kvp => kvp.Key);
     }
+
+    public static IEnumerable<KeyValuePair<int, int>> GetTrapEntriesOwnedBy(byte traprId)
+    {
+        return Traps
+            .Where(kvp => kvp.Value.OwnerId == traprId)
+            .Select(kvp => new KeyValuePair<int, int>(kvp.Key, kvp.Value.RoundsRemaining));
+    }
 }
 
 

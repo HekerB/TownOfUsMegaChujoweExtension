@@ -60,6 +60,8 @@
   <string name="ExtensionRoleTrapperTriggered">Twoja pulapka zostala uruchomiona w &lt;room&gt;!</string>
   <string name="ExtensionRoleTrapperCaught">Zostales zlapany w pulapke w &lt;room&gt;!</string>
   <string name="ExtensionRoleTrapperTabHeader">Aktywne pulapki:</string>
+  <string name="ExtensionRoleTrapperVentLabelTabText">Wentylacja w &lt;room&gt;</string>
+  <string name="ExtensionRoleTrapperVentRoundsTabText">Pozostalo rund: &lt;rounds&gt;</string>
 
   <!-- Trapper Options -->
   <string name="ExtensionOptionTrapperTrapCooldown">Czas odnowienia pulapki</string>
