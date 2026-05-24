@@ -97,5 +97,7 @@ public enum ExtensionRpc : uint
     BountyHunterShowMisKill = 112,
     PoisonerCleanse = 113,
     SniperShoot = 114,
-    SniperPlaySound = 115
+    SniperPlaySound = 115,
+    SpiritMasterMediate = 116,
+    GunGameMutate = 117
 }

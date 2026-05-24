@@ -1,5 +1,6 @@
 using TownOfUs.Utilities;
 using HarmonyLib;
+using TouMegaChujoweExtension.Assets;
 using TownOfUs.Extensions;
 using UnityEngine;
 
@@ -25,6 +26,10 @@ public static class NeutralVentButtonPatch
         else if (player.IsRole<ShroudRole>())
         {
             customSprite = TouExtensionNeuAssets.ShroudVentSprite.LoadAsset();
+        }
+        else if (player.IsRole<DoppelgangerRole>())
+        {
+            customSprite = TouExtensionNeuAssets.DoppelgangerVentSprite.LoadAsset();
         }
         else if (player.IsRole<VultureRole>())
         {
@@ -52,6 +57,7 @@ public static class NeutralVentButtonPatch
 
         if (role is SerialKillerRole) roleColor = TouExtensionColors.SerialKiller;
         else if (role is ShroudRole) roleColor = TouExtensionColors.Shroud;
+        else if (role is DoppelgangerRole) roleColor = TouExtensionColors.Doppelganger;
         else if (role is VultureRole) roleColor = TouExtensionColors.Vulture;
         else if (role is PelicanRole) roleColor = TouExtensionColors.Pelican;
         else if (role is JackalRole) roleColor = TouExtensionColors.Jackal;

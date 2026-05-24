@@ -14,7 +14,7 @@ public sealed class ForensicExtensionOptions : AbstractOptionGroup
     public override Color GroupColor => TownOfUsColors.Forensic;
     public override bool ShowInModifiersMenu => false;
     public override MenuCategory ParentMenu => MenuCategory.CustomOne;
-    public override uint GroupPriority => 101;
+    public override uint GroupPriority => 102;
 
     [ModdedToggleOption("ExtensionOptionForensicFreezeOnMeeting")]
     public bool FreezeOnMeeting { get; set; } = true;

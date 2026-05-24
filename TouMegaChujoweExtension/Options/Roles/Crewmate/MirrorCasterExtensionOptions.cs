@@ -13,7 +13,7 @@ public sealed class MirrorCasterExtensionOptions : AbstractOptionGroup
     public override Color GroupColor => TouExtensionColors.ShieldFlashes.Mirrorcaster;
     public override bool ShowInModifiersMenu => false;
     public override MenuCategory ParentMenu => MenuCategory.CustomOne;
-    public override uint GroupPriority => 103;
+    public override uint GroupPriority => 104;
 
     [ModdedToggleOption("ExtensionOptionMirrorCasterMoveWhileMenu")]
     public bool MoveWhileMenu { get; set; } = false;

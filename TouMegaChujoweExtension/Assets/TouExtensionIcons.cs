@@ -17,6 +17,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> SageRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Sage_Icon.png", 70f);
         public static LoadableAsset<Sprite> VampireHunterRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.VampireHunter_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> DoctorRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Doctor_Role_Icon.png", 100f);
+        public static LoadableAsset<Sprite> SpiritMasterIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Spirit_Master_Icon.png", 100f);
         public static LoadableAsset<Sprite> ArcanistButtonIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Arcanist_Button_Icon.png", 100f);
         public static LoadableAsset<Sprite> ArcanistRoleIconTraitor { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Arcanist_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> PortalmakerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.PortalMaker.png", 200f);
@@ -43,6 +44,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> SpeedyRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Speedy_Role_Icon.png", 200f);
         public static LoadableAsset<Sprite> DetonatorRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Detonator_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> SniperRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Sniper_Role_Icon.png", 100f);
+        public static LoadableAsset<Sprite> GunGameRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.GunGame_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> SidekickModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Sidekick_Modifier_Icon.png", 200f);
     }
 }

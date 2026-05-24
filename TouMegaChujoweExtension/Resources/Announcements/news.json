@@ -377,7 +377,15 @@
         "\n- <b>Options Visibility</b> - Dynamically toggles visibility of Vine options in the lobby menu based on configuration.",
         "\n\n\r<size=110%><b>★ UI & Localization Polish ★</b></size>",
         "\n- <b>Button Position</b> - Realigned the Snipe button to match the bottom-left Detonator layout for maximum playability.",
-        "\n- <b>Tab Newline Refinement</b> - Fixed Sniper description newline rendering and systematically broke down long TabDescription lines for 10 custom roles (Trapper, Pope, Outlaw, Wraith, Hacker, Astral, Speedy, Detonator, Forestaller, Evoker) using native \\%nl\\% tags to ensure perfect layout styling."
+        "\n- <b>Tab Newline Refinement</b> - Fixed Sniper description newline rendering and systematically broke down long TabDescription lines for 10 custom roles (Trapper, Pope, Outlaw, Wraith, Hacker, Astral, Speedy, Detonator, Forestaller, Evoker) using native \\%nl\\% tags to ensure perfect layout styling.",
+        "\n\n\r<size=110%><b>★ NEW ROLE: SPIRIT MASTER (old Medium) (Crewmate Investigative) ★</b></size>",
+        "\n- <b>Spirit Mediation</b> - Reworked classic Medium-style gameplay into a separate role that can mediate with dead players.",
+        "\n- <b>Spirit Tracking</b> - Links living and dead players with role-colored arrows until the next meeting.",
+        "\n- <b>Custom Options</b> - Configure mediate cooldown, reveal behavior, arrow visibility, and which dead player is revealed.",
+        "\n\n\r<size=110%><b>★ NEW ROLE: GUN GAME (Impostor Power) ★</b></size>",
+        "\n- <b>Role Mutation</b> - Changes into a random non-power impostor role after the configured number of kills.",
+        "\n- <b>Role Memory</b> - Optional remembered-role pool can limit or recycle mutation targets, including infinite mode.",
+        "\n- <b>Cooldown Safety</b> - New role buttons and kill cooldowns now start with their configured timers after mutation."
       ]
     }
   ]

@@ -575,6 +575,29 @@
   <string name="ExtensionOptionEvokerBlindTypeEnumNormal">Normalny</string>
   <string name="ExtensionOptionEvokerBlindTypeEnumShowOnlySelf">Pokazuj tylko siebie</string>
 
+  <!-- Spirit Master Role -->
+  <string name="ExtensionRoleSpiritMaster">Spirit Master</string>
+  <string name="ExtensionRoleSpiritMasterIntroBlurb">Sluchaj zmarlych</string>
+  <string name="ExtensionRoleSpiritMasterTabDescription">Medytuj, aby ujawnic martwych graczy z cialami.\%nl\%Ty i ujawnione duchy mozecie dostac strzalki do siebie.</string>
+  <string name="ExtensionRoleSpiritMasterWikiDescription">Spirit Master to rola Crewmate Investigative, ktora moze medytowac z martwymi graczami, ktorych ciala nadal istnieja. Ujawniony duch staje sie widoczny dla Spirit Mastera i moze prowadzic go strzalkami.</string>
+  <string name="ExtensionRoleSpiritMasterMediate">Medytuj</string>
+  <string name="ExtensionRoleSpiritMasterMediateWikiDescription">Komunikuj sie ze zmarlymi, aby mogli doprowadzic cie do wskazowek.</string>
+
+  <!-- Spirit Master Options -->
+  <string name="ExtensionOptionSpiritMasterMediateCooldown">Cooldown medytacji</string>
+  <string name="ExtensionOptionSpiritMasterRevealAppearanceOfMediateTarget">Ujawniaj wyglad celu medytacji</string>
+  <string name="ExtensionOptionSpiritMasterArrowVisibility">Widocznosc strzalek</string>
+  <string name="ExtensionOptionSpiritMasterArrowEnumShowSpiritMaster">Spirit Master</string>
+  <string name="ExtensionOptionSpiritMasterArrowEnumShowMediated">Mediowany</string>
+  <string name="ExtensionOptionSpiritMasterArrowEnumBoth">Spirit Master + Mediowany</string>
+  <string name="ExtensionOptionSpiritMasterArrowEnumNone">Wylaczone</string>
+  <string name="ExtensionOptionSpiritMasterWhoIsRevealed">Kto jest ujawniany</string>
+  <string name="ExtensionOptionSpiritMasterGhostEnumOldestDead">Najstarszy martwy</string>
+  <string name="ExtensionOptionSpiritMasterGhostEnumNewestDead">Najnowszy martwy</string>
+  <string name="ExtensionOptionSpiritMasterGhostEnumRandomDead">Losowy martwy</string>
+  <string name="ExtensionOptionSpiritMasterGhostEnumAllDead">Wszyscy martwi</string>
+  <string name="ExtensionModifierSpiritMasterMediated">Mediowany</string>
+
   <!-- Doctor Role -->
   <string name="ExtensionRoleDoctor">Doktor</string>
   <string name="ExtensionRoleDoctorIntroBlurb">Wstrzykuj graczom pozytywne efekty,\%nl\%aby pomoc Zalodze.</string>
@@ -876,6 +899,7 @@
   <string name="ExtensionOptionBHArrowRangeMedium">Średni</string>
   <string name="ExtensionOptionBHArrowRangeLong">Długi</string>
   <string name="ExtensionOptionBHArrowRangeInfinite">Nieskończony</string>
+  <string name="ExtensionOptionFairyKeepsProtectAfterDeath">Fairy zachowuje ochrone po smierci</string>
   
   <string name="ExtensionBHTabTargetsKilled">Zabite cele: {0} / {1}</string>
   <string name="ExtensionBHTabCurrentTarget">Aktualny cel: {0}</string>
@@ -1399,9 +1423,9 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
 
   <!-- Alerts -->
 
-  <!-- First Round Emergency Block -->
-  <string name="ExtensionOptionGeneralBlockFirstRoundEmergency">Blokuj przycisk spotkania awaryjnego w pierwszej rundzie</string>
-  <string name="ExtensionBlockFirstRoundEmergencyStatus">Spotkania awaryjne są zablokowane w pierwszej rundzie!</string>
+  <!-- First Round Emergency Cooldown -->
+  <string name="ExtensionOptionGeneralBlockFirstRoundEmergency">Uzyj cooldownu spotkania awaryjnego w pierwszej rundzie</string>
+  <string name="ExtensionFirstRoundEmergencyCooldownStatus">Cooldown spotkania awaryjnego: &lt;time&gt;s</string>
 
   <!-- Sniper Role -->
   <string name="ExtensionRoleSniper">Snajper</string>
@@ -1420,6 +1444,25 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionSniperZoomDistance">Dystans oddalenia</string>
   <string name="SniperAimingCancelledPenalty">Celowanie anulowane! Nałożono karę cooldownu.</string>
   <string name="SniperAimingExpiredPenalty">Celowanie wygaslo! Nalozono kare cooldownu.</string>
+  <!-- Gun Game Role -->
+  <string name="ExtensionRoleGunGame">Gun Game</string>
+  <string name="ExtensionRoleGunGameIntroBlurb">Zmieniaj bron po wymaganej liczbie zabojstw.</string>
+  <string name="ExtensionRoleGunGameTabDescription">Po wymaganej liczbie zabojstw Twoja rola mutuje w inna role Impostora.\%nl\%Wyswietlasz sie jako obecna rola z Gun Game obok.</string>
+  <string name="ExtensionRoleGunGameWikiDescription">Gun Game to rola Impostora Power oparta na rotacji narzedzi do zabijania.\%nl\%Po wymaganej liczbie zabojstw mutujesz w nastepna role. Gun Game jest zapamietane obok obecnej roli, a opcje decyduja czy systemy zgadywania traktuja Cie jako Gun Game, aktualna zmutowana role albo obie. Jesli opcja zachowania obecnej roli po spotkaniu jest wylaczona, zywi gracze Gun Game wracaja na poczatku spotkania do Gun Game.</string>
+
+  <string name="ExtensionOptionGunGameCanVent">Moze uzywac ventow</string>
+  <string name="ExtensionOptionGunGameGuessAs">Gun Game musi byc zgadywany jako</string>
+  <string name="ExtensionOptionGunGameGuessAsEnumGunGame">Gun Game</string>
+  <string name="ExtensionOptionGunGameGuessAsEnumCurrentRole">Obecna rola</string>
+  <string name="ExtensionOptionGunGameGuessAsEnumGunGameOrCurrentRole">Gun Game albo obecna rola</string>
+  <string name="ExtensionOptionGunGameKeepRoleAfterMeeting">Zachowaj obecna role po spotkaniu</string>
+  <string name="ExtensionOptionGunGameKillsNeededToChangeRole">Zabojstwa potrzebne do zmiany roli</string>
+  <string name="ExtensionOptionGunGameMaxRememberedRoles">Maks. zapamietanych rol</string>
+  <string name="ExtensionOptionGunGameRemoveExistingImpostorRoles">Omijaj istniejace role Impostora</string>
+
+  <string name="ExtensionRoleGunGameMutationNotification">ROLA ZMIENIONA! Teraz jestes &lt;role&gt;!</string>
+  <string name="ExtensionRoleGunGameProgressRandom">Tryb: losowa rola po wymaganych zabojstwach</string>
+  <string name="ExtensionRoleGunGameProgressChain">Nastepna bron: &lt;role&gt;</string>
 </resources>
 
 

@@ -579,6 +579,29 @@
   <string name="ExtensionOptionEvokerBlindTypeEnumNormal">Normal</string>
   <string name="ExtensionOptionEvokerBlindTypeEnumShowOnlySelf">Show Only Yourself</string>
 
+  <!-- Spirit Master Role -->
+  <string name="ExtensionRoleSpiritMaster">Spirit Master</string>
+  <string name="ExtensionRoleSpiritMasterIntroBlurb">Listen to the dead</string>
+  <string name="ExtensionRoleSpiritMasterTabDescription">Mediate to reveal dead players with bodies.\%nl\%You and the revealed ghosts may receive arrows to each other.</string>
+  <string name="ExtensionRoleSpiritMasterWikiDescription">The Spirit Master is a Crewmate Investigative role that can mediate with dead players whose bodies still exist. The mediated ghost becomes visible to the Spirit Master and can guide them with arrows.</string>
+  <string name="ExtensionRoleSpiritMasterMediate">Mediate</string>
+  <string name="ExtensionRoleSpiritMasterMediateWikiDescription">Communicate with the dead so they can lead you toward clues.</string>
+
+  <!-- Spirit Master Options -->
+  <string name="ExtensionOptionSpiritMasterMediateCooldown">Mediate Cooldown</string>
+  <string name="ExtensionOptionSpiritMasterRevealAppearanceOfMediateTarget">Reveal Mediate Target Appearance</string>
+  <string name="ExtensionOptionSpiritMasterArrowVisibility">Arrow Visibility</string>
+  <string name="ExtensionOptionSpiritMasterArrowEnumShowSpiritMaster">Spirit Master</string>
+  <string name="ExtensionOptionSpiritMasterArrowEnumShowMediated">Mediated</string>
+  <string name="ExtensionOptionSpiritMasterArrowEnumBoth">Spirit Master + Mediated</string>
+  <string name="ExtensionOptionSpiritMasterArrowEnumNone">Disabled</string>
+  <string name="ExtensionOptionSpiritMasterWhoIsRevealed">Who is Revealed</string>
+  <string name="ExtensionOptionSpiritMasterGhostEnumOldestDead">Oldest Dead</string>
+  <string name="ExtensionOptionSpiritMasterGhostEnumNewestDead">Newest Dead</string>
+  <string name="ExtensionOptionSpiritMasterGhostEnumRandomDead">Random Dead</string>
+  <string name="ExtensionOptionSpiritMasterGhostEnumAllDead">All Dead</string>
+  <string name="ExtensionModifierSpiritMasterMediated">Mediated</string>
+
   <!-- Doctor Role -->
   <string name="ExtensionRoleDoctor">Doctor</string>
   <string name="ExtensionRoleDoctorIntroBlurb">Inject players with beneficial effects\%nl\%to aid the Crew.</string>
@@ -876,6 +899,7 @@
   <string name="ExtensionOptionBHArrowRangeMedium">Medium</string>
   <string name="ExtensionOptionBHArrowRangeLong">Long</string>
   <string name="ExtensionOptionBHArrowRangeInfinite">Infinite</string>
+  <string name="ExtensionOptionFairyKeepsProtectAfterDeath">Fairy keeps protect after death</string>
   <string name="ExtensionOptionBHCanKillInRoundOne">Allow first round kill</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Arrow Update Interval</string>
   <string name="ExtensionOptionBHGameContinues">Game Continues Without Other Killers</string>
@@ -1398,9 +1422,25 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   
   <!-- Alerts -->
 
-  <!-- First Round Emergency Block -->
-  <string name="ExtensionOptionGeneralBlockFirstRoundEmergency">Block Emergency Button In First Round</string>
-  <string name="ExtensionBlockFirstRoundEmergencyStatus">Emergency meetings are disabled in the first round!</string>
+  <!-- First Round Emergency Cooldown -->
+  <string name="ExtensionOptionGeneralBlockFirstRoundEmergency">Use Emergency Cooldown In First Round</string>
+  <string name="ExtensionFirstRoundEmergencyCooldownStatus">Emergency meeting cooldown: &lt;time&gt;s</string>
+
+  <!-- Sniper Role -->
+  <string name="ExtensionRoleSniper">Sniper</string>
+  <string name="ExtensionRoleSniperIntroBlurb">Aim carefully and eliminate targets from afar.</string>
+  <string name="ExtensionRoleSniperTabDescription">Enter Aiming to shoot from range.\%nl\%Click visible targets while standing still.</string>
+  <string name="ExtensionRoleSniperWikiDescription">The Sniper is an Impostor Killing role that can remotely shoot targets.\%nl\%When you use your ability, you enter aiming mode and cannot move. Click on a target on your screen to eliminate them.</string>
+  <string name="ExtensionRoleSniperShoot">Snipe</string>
+  <string name="ExtensionRoleSniperAiming">Aiming</string>
+  <string name="ExtensionRoleSniperShootWikiDescription">Enter aiming mode, stand in place, and click on a target on your screen to shoot them remotely.</string>
+
+  <!-- Sniper Options -->
+  <string name="ExtensionOptionSniperAimDuration">Aim Duration</string>
+  <string name="ExtensionOptionSniperCanVent">Can Vent</string>
+  <string name="ExtensionOptionSniperCanCancelAiming">Can Cancel Aiming</string>
+  <string name="ExtensionOptionSniperAimZoomEnabled">Zoom Out While Aiming</string>
+  <string name="ExtensionOptionSniperZoomDistance">Zoom Distance</string>
 
   <!-- Sniper Role -->
   <string name="ExtensionRoleSniper">Sniper</string>
@@ -1419,4 +1459,22 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionSniperZoomDistance">Zoom Distance</string>
   <string name="SniperAimingCancelledPenalty">Aiming cancelled! Penalty cooldown applied.</string>
   <string name="SniperAimingExpiredPenalty">Aiming expired! Penalty cooldown applied.</string>
+  <!-- Gun Game Role -->
+  <string name="ExtensionRoleGunGame">Gun Game</string>
+  <string name="ExtensionRoleGunGameIntroBlurb">Change weapons after enough kills.</string>
+  <string name="ExtensionRoleGunGameTabDescription">After enough kills, your role changes into another role.\%nl\%\%b\%Cannot become an Impostor Power role.\%/b\%</string>
+  <string name="ExtensionRoleGunGameWikiDescription">Gun Game is an Impostor role that cycles through weapons after enough kills. Settings control guessing behavior, kills needed to change role, and role retention after meetings.</string>
+  <string name="ExtensionOptionGunGameCanVent">Can Vent</string>
+  <string name="ExtensionOptionGunGameGuessAs">Gun Game Must Be Guessed As</string>
+  <string name="ExtensionOptionGunGameGuessAsEnumGunGame">Gun Game</string>
+  <string name="ExtensionOptionGunGameGuessAsEnumCurrentRole">Current Role</string>
+  <string name="ExtensionOptionGunGameGuessAsEnumGunGameOrCurrentRole">Gun Game or Current Role</string>
+  <string name="ExtensionOptionGunGameKeepRoleAfterMeeting">Keep Current Role After Meeting</string>
+  <string name="ExtensionOptionGunGameKillsNeededToChangeRole">Kills Needed To Change Role</string>
+  <string name="ExtensionOptionGunGameMaxRememberedRoles">Max Remembered Roles</string>
+  <string name="ExtensionOptionGunGameRemoveExistingImpostorRoles">Avoid Existing Impostor Roles</string>
+
+  <string name="ExtensionRoleGunGameMutationNotification">ROLE CHANGED! You are now &lt;role&gt;!</string>
+  <string name="ExtensionRoleGunGameProgressRandom">Mode: Random role after enough kills</string>
+  <string name="ExtensionRoleGunGameProgressChain">Next weapon: &lt;role&gt;</string>
 </resources>
