@@ -64,6 +64,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <img src="./Images/Groups/CrewInvest.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#falcon"><img width="10%" src="./Images/Icons/Falcon_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#sage"><img width="10%" src="./Images/Icons/Sage_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#spirit-master"><img width="10%" src="./Images/Icons/SpiritMaster_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#vanisher"><img width="10%" src="./Images/Icons/Vanisher_Role_Icon.png" /></a>
   <img src="./Images/Groups/CrewKilling.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#vampire-hunter"><img width="10%" src="./Images/Icons/VampireHunter_Role_Icon.png" /></a>
@@ -89,6 +90,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#witch"><img width="10%" src="./Images/Icons/Witch_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#sniper"><img width="10%" src="./Images/Icons/Sniper_Role_Icon.png" /></a>
   <img src="./Images/Groups/ImpPower.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#gun-game"><img width="10%" src="./Images/Icons/GunGame_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#poisoner"><img width="10%" src="./Images/Icons/Poisoner_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#rc-xd"><img width="10%" src="./Images/Icons/RC-XD_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#wraith"><img width="10%" src="./Images/Icons/Wraith_Role_Icon.png" /></a>
