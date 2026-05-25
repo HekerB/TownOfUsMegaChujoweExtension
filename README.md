@@ -9,7 +9,7 @@
 > **AI Usage:** Artificial Intelligence was used during development to help with code and documentation.
 
 >  [!TIP]
->**Join** [Discord](https://discord.gg/qaQZAmAVh4) if you have any problem or give sugestion join!
+> Want to suggest ideas, help with graphics, report issues, or find people to play with? Join our [Discord](https://discord.gg/qaQZAmAVh4)) — we have a diverse and friendly community!
 -----------------------
 
 <div align="center">
