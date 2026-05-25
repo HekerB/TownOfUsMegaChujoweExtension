@@ -1462,6 +1462,23 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionGunGameMaxRememberedRoles">Maks. zapamietanych rol</string>
   <string name="ExtensionOptionGunGameRemoveExistingImpostorRoles">Omijaj istniejace role Impostora</string>
 
+  <!-- Loner Role -->
+  <string name="ExtensionRoleLoner">Loner</string>
+  <string name="ExtensionRoleLonerIntroBlurb">Zwerbuj Impostora z ukrycia.</string>
+  <string name="ExtensionRoleLonerTabDescription">Zaczynasz z jednym Impostorem mniej niz ustawiono w lobby.\%nl\%Podczas spotkan zwerbuj gracza, aby odbudowac druzyne.\%nl\%\%b\%Nie moze stac sie rola Impostor Power ani Impostor Killing.\%/b\%</string>
+  <string name="ExtensionRoleLonerWikiDescription">Loner to rola Impostor Power, ktora zaczyna gre z jednym Impostorem mniej niz ustawiono w lobby. Podczas spotkania Loner moze zwerbowac zywego gracza spoza druzyny Impostorow do swojej druzyny. Jesli po wymaganych zabojstwach staje sie losowa rola Impostora, nie moze stac sie rola Impostor Power ani Impostor Killing.</string>
+  <string name="ExtensionRoleLonerRecruitSuccess">Zwerbowales &lt;player&gt; jako Impostora!</string>
+  <string name="ExtensionRoleLonerRecruited">Loner zwerbowal cie do Impostorow!</string>
+  <string name="ExtensionRoleLonerMutationNotification">Twoja przykrywka Lonera pekla. Teraz jestes &lt;role&gt;!</string>
+  <string name="ExtensionRoleLonerTabKillsAfterRecruit">Zabojstwa po rekrutacji: {0} / {1}</string>
+
+  <!-- Loner Options -->
+  <string name="ExtensionOptionLonerChangeRoleAfterKills">Loner staje sie losowa rola Impostora</string>
+  <string name="ExtensionOptionLonerKillsNeededToChangeRole">Zabojstwa po rekrutacji potrzebne do nowej roli</string>
+  <string name="ExtensionOptionLonerRecruitedImpostorBecomesAssassin">Zwerbowany Impostor staje sie Assassinem</string>
+  <string name="ExtensionOptionLonerRecruitBecomesTraitor">Rekrut staje sie Traitorem</string>
+  <string name="ExtensionOptionLonerRemoveExistingImpostorRoles">Omijaj role Impostora uzyte w tej grze</string>
+
   <string name="ExtensionRoleGunGameMutationNotification">ROLA ZMIENIONA! Teraz jestes &lt;role&gt;!</string>
   <string name="ExtensionRoleGunGameProgressRandom">Tryb: losowa rola po wymaganych zabojstwach</string>
   <string name="ExtensionRoleGunGameProgressChain">Nastepna bron: &lt;role&gt;</string>

@@ -27,7 +27,7 @@ public sealed class SpeedyAccelerateButton : TownOfUsRoleButton<SpeedyRole>
         }
     }
     public override float EffectDuration => OptionGroupSingleton<SpeedyOptions>.Instance.AccelerateDuration;
-    public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.SpeedyAbilitySprite;
+    public override LoadableAsset<Sprite> Sprite => TouImpAssets.SprintSprite;
 
     public override bool HasEffect => true;
     public override bool ZeroIsInfinite { get; set; } = true;
@@ -65,7 +65,7 @@ public sealed class SpeedyAccelerateButton : TownOfUsRoleButton<SpeedyRole>
         {
             PlayerControl.LocalPlayer.RpcRemoveModifier<SpeedyAccelerateModifier>();
         }
-        
+
         EffectActive = false;
         Timer = Cooldown;
     }
@@ -81,7 +81,7 @@ public sealed class SpeedyAccelerateButton : TownOfUsRoleButton<SpeedyRole>
         bool killMade = Role != null && Role.KillsCount > 0;
         if (Button != null)
         {
-            Button.gameObject.SetActive(killMade && (HudManager.Instance.UseButton.isActiveAndEnabled || 
+            Button.gameObject.SetActive(killMade && (HudManager.Instance.UseButton.isActiveAndEnabled ||
                                                      HudManager.Instance.PetButton.isActiveAndEnabled));
         }
 

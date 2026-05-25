@@ -14,9 +14,11 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Crewmate;
 
 public sealed class SageIntuitButton : TownOfUsRoleButton<SageRole, PlayerControl>
 {
+    public static readonly Color AbilityColor = new(1f, 0.48f, 0.78f, 1f);
+
     public override string Name => "Intuit";
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
-    public override Color TextOutlineColor => TouExtensionColors.Sage;
+    public override Color TextOutlineColor => AbilityColor;
     public override int MaxUses => (int)OptionGroupSingleton<SageOptions>.Instance.MaxCompares;
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<SageOptions>.Instance.SageCooldown + MapCooldown, 5f, 120f);
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.IntuitSprite;
@@ -52,9 +54,9 @@ public sealed class SageIntuitButton : TownOfUsRoleButton<SageRole, PlayerContro
         else
         {
             var notif = Helpers.CreateAndShowNotification(
-                $"<b>You are intuiting {Target.Data.PlayerName}</b>",
+                $"<b><color=#{ColorUtility.ToHtmlStringRGBA(AbilityColor)}>You are intuiting {Target.Data.PlayerName}</color></b>",
                 Color.white, new Vector3(0f, 1f, -20f),
-                spr: TouExtensionIcons.SageRoleIcon.LoadAsset());
+                spr: TouCrewAssets.IntuitSprite.LoadAsset());
             notif.AdjustNotification();
         }
     }

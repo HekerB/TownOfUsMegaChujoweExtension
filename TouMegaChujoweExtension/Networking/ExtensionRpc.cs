@@ -99,5 +99,7 @@ public enum ExtensionRpc : uint
     SniperShoot = 114,
     SniperPlaySound = 115,
     SpiritMasterMediate = 116,
-    GunGameMutate = 117
+    GunGameMutate = 117,
+    LonerRecruit = 118,
+    LonerMutate = 119
 }

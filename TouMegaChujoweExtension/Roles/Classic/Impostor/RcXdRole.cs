@@ -31,8 +31,8 @@ public sealed class RcXdRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRol
             "The RC-XD is an Impostor Power role that can deploy and detonate an RC-XD car to kill players around the map. Use arrow keys to steer it and detonate near enemies.") +
                MiscUtils.AppendOptionsText(GetType());
     }
-	
-	[HideFromIl2Cpp]
+
+    [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities =>
     [
         new(
@@ -50,13 +50,12 @@ public sealed class RcXdRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRol
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorPower;
 
     public CustomRoleConfiguration Configuration => new(this)
-	{
-		UseVanillaKillButton = true,  // ← ZMIANA: zwykły kill button obok ability
-		Icon = TouExtensionIcons.RcXdRoleIcon,
-		IntroSound = TouExtensionAudio.RCXDIntro,
-		CanUseVent = OptionGroupSingleton<RcXdOptions>.Instance.CanVent,
+    {
+        UseVanillaKillButton = true,
+        Icon = TouExtensionIcons.RcXdRoleIcon,
+        CanUseVent = OptionGroupSingleton<RcXdOptions>.Instance.CanVent,
         OptionsScreenshot = TouBanners.ImpostorRoleBanner,
-	};
+    };
 
     public override void Initialize(PlayerControl player)
     {

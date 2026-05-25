@@ -116,19 +116,10 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         // Show only to Impostors and dead players
         if (local.Data.Role.IsImpostor || local.Data.IsDead)
         {
-            // Create premium sphere like Kamikaze/RC-XD
+            // Match Bomber's explosion visual.
             var sphere = CreateRadiusSphere(position, radius, 0.35f);
 
-            // Add a brief bomb sprite at the center for extra feedback
-            var bombGo = new GameObject("DetonatorVisual");
-            bombGo.transform.position = new Vector3(position.x, position.y, position.y / 1000f - 0.1f);
-            var renderer = bombGo.AddComponent<SpriteRenderer>();
-            renderer.sprite = TouExtensionImpAssets.DetonatorDetonateSprite.LoadAsset();
-            renderer.color = new Color(1f, 0.2f, 0.2f, 0.8f); // Reddish bomb
-            renderer.transform.localScale = Vector3.one * 0.7f;
-
             Coroutines.Start(CoDestroyObjAfter(sphere, 0.6f));
-            Coroutines.Start(CoDestroyObjAfter(bombGo, 0.6f));
         }
     }
 
@@ -138,8 +129,8 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         var meshRenderer = sphere.GetComponent<MeshRenderer>();
         if (meshRenderer != null)
         {
-            var mat = new Material(AuAvengersAnims.IgniteMaterial.LoadAsset());
-            var color = Color.red; // Detonator is red
+            var mat = new Material(AuAvengersAnims.BombMaterial.LoadAsset());
+            var color = Color.white;
             color.a = alpha;
             mat.color = color;
             meshRenderer.material = mat;
@@ -149,7 +140,7 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     }
 
     private static AudioClip? _cachedBeep;
-    private static AudioClip? _cachedExplosion;
+    private static AudioClip? _cachedTrackerDeactivate;
 
     public static void PlayBeep(PlayerControl victim, byte detonatorId, float volume)
     {
@@ -190,8 +181,8 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         // Play only for the detonator (as requested)
         if (PlayerControl.LocalPlayer.PlayerId == detonator.PlayerId)
         {
-            _cachedExplosion ??= TouExtensionAudio.RcExplosionSound.LoadAsset();
-            var clip = _cachedExplosion;
+            _cachedTrackerDeactivate ??= TouAudio.TrackerDeactivateSound.LoadAsset();
+            var clip = _cachedTrackerDeactivate;
             if (clip != null)
             {
                 SoundManager.Instance.PlaySound(clip, false, 1f);

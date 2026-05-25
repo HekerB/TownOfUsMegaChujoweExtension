@@ -45,6 +45,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> DetonatorRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Detonator_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> SniperRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Sniper_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> GunGameRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.GunGame_Role_Icon.png", 100f);
+        public static LoadableAsset<Sprite> LonerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Loner_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> SidekickModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Sidekick_Modifier_Icon.png", 200f);
     }
 }

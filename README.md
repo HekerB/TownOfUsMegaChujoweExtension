@@ -91,6 +91,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#sniper"><img width="10%" src="./Images/Icons/Sniper_Role_Icon.png" /></a>
   <img src="./Images/Groups/ImpPower.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#gun-game"><img width="10%" src="./Images/Icons/GunGame_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#loner"><img width="10%" src="./Images/Icons/Loner_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#poisoner"><img width="10%" src="./Images/Icons/Poisoner_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#rc-xd"><img width="10%" src="./Images/Icons/RC-XD_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#wraith"><img width="10%" src="./Images/Icons/Wraith_Role_Icon.png" /></a>
@@ -304,7 +305,7 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 - **Town of Us: Mira** - Infiltrator (Jackal) role concept
 - **Tajemniczy Among Us (Tajemniczy Typiarz)** - Pirate role concept
 - **[Town of Us WYGON ](https://github.com/wygon/Town-Of-Us-WYGON)** - Falcon role concept; Kamikaze role concept
-- **Sidemen (YouTube)** - RC-XD, Detonator, Doctor, Astral, Speedy, Sniper & Poisoner roles concept (recreated from their videos)
+- **Sidemen (YouTube)** - RC-XD, Detonator, Doctor, Astral, Speedy, Sniper, Poisoner & Loner roles concept (recreated from their videos)
 - **[TownOfUsMiraDivaniModsAddOn](https://github.com/DivaniNL/TownOfUsMiraDivaniModsAddOn)** - Portalmaker role concept
 - **Death Note (anime)** - Death Note modifier concept
 - **Our friend Weakpass** - Added Publicity modifier

@@ -14,9 +14,11 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Crewmate;
 
 public sealed class SageGazeButton : TownOfUsRoleButton<SageRole, PlayerControl>
 {
+    public static readonly Color AbilityColor = new(0.46f, 0.86f, 1f, 1f);
+
     public override string Name => "Gaze";
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
-    public override Color TextOutlineColor => TouExtensionColors.Sage;
+    public override Color TextOutlineColor => AbilityColor;
     public override int MaxUses => (int)OptionGroupSingleton<SageOptions>.Instance.MaxCompares;
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<SageOptions>.Instance.SageCooldown + MapCooldown, 5f, 120f);
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.GazeSprite;
@@ -52,9 +54,9 @@ public sealed class SageGazeButton : TownOfUsRoleButton<SageRole, PlayerControl>
         else
         {
             var notif = Helpers.CreateAndShowNotification(
-                $"<b>You are gazing at {Target.Data.PlayerName}</b>",
+                $"<b><color=#{ColorUtility.ToHtmlStringRGBA(AbilityColor)}>You are gazing at {Target.Data.PlayerName}</color></b>",
                 Color.white, new Vector3(0f, 1f, -20f),
-                spr: TouExtensionIcons.SageRoleIcon.LoadAsset());
+                spr: TouCrewAssets.GazeSprite.LoadAsset());
             notif.AdjustNotification();
         }
     }

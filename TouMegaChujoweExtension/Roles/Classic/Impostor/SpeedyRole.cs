@@ -64,7 +64,7 @@ public sealed class SpeedyRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
         new(
             TouLocale.GetParsed($"ExtensionRole{LocaleKey}Accelerate", "Accelerate"),
             TouLocale.GetParsed($"ExtensionRole{LocaleKey}AccelerateWikiDescription"),
-            TouExtensionImpAssets.SpeedyAbilitySprite)
+            TouImpAssets.SprintSprite)
     ];
 
     public override void Initialize(PlayerControl player)

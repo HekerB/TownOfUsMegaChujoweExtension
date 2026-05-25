@@ -1476,6 +1476,23 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionGunGameMaxRememberedRoles">Max Remembered Roles</string>
   <string name="ExtensionOptionGunGameRemoveExistingImpostorRoles">Avoid Existing Impostor Roles</string>
 
+  <!-- Loner Role -->
+  <string name="ExtensionRoleLoner">Loner</string>
+  <string name="ExtensionRoleLonerIntroBlurb">Recruit an Impostor from the shadows.</string>
+  <string name="ExtensionRoleLonerTabDescription">You start with one fewer Impostor teammate.\%nl\%During meetings, recruit a player to restore your team.\%nl\%\%b\%Cannot become an Impostor Power or Impostor Killing role.\%/b\%</string>
+  <string name="ExtensionRoleLonerWikiDescription">The Loner is an Impostor Power role that starts the game with one fewer Impostor teammate than the lobby setting. During a meeting, the Loner can recruit a living non-Impostor into the Impostor team. If Loner becomes a random Impostor role after enough kills, it cannot become an Impostor Power or Impostor Killing role.</string>
+  <string name="ExtensionRoleLonerRecruitSuccess">You recruited &lt;player&gt; as an Impostor!</string>
+  <string name="ExtensionRoleLonerRecruited">You were recruited by the Loner!</string>
+  <string name="ExtensionRoleLonerMutationNotification">Your Loner cover broke. You are now &lt;role&gt;!</string>
+  <string name="ExtensionRoleLonerTabKillsAfterRecruit">Kills After Recruit: {0} / {1}</string>
+
+  <!-- Loner Options -->
+  <string name="ExtensionOptionLonerChangeRoleAfterKills">Loner Becomes Random Impostor Role</string>
+  <string name="ExtensionOptionLonerKillsNeededToChangeRole">Kills After Recruit Needed To Gain New Role</string>
+  <string name="ExtensionOptionLonerRecruitedImpostorBecomesAssassin">Recruited Impostor Becomes Assassin</string>
+  <string name="ExtensionOptionLonerRecruitBecomesTraitor">Recruit Becomes Traitor</string>
+  <string name="ExtensionOptionLonerRemoveExistingImpostorRoles">Avoid Impostor Roles Used This Game</string>
+
   <string name="ExtensionRoleGunGameMutationNotification">ROLE CHANGED! You are now &lt;role&gt;!</string>
   <string name="ExtensionRoleGunGameProgressRandom">Mode: Random role after enough kills</string>
   <string name="ExtensionRoleGunGameProgressChain">Next weapon: &lt;role&gt;</string>
