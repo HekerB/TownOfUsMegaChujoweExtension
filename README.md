@@ -7,7 +7,9 @@
 > This project is under constant development. Expect bugs, weird edge cases, and frequent changes! Please report any issues you find.
 > 
 > **AI Usage:** Artificial Intelligence was used during development to help with code and documentation.
-
+>
+>  [!TIP]
+>**Join** [Discord](https://discord.gg/CxJjmXyjZT) if you have any problem or give sugestion join!
 -----------------------
 
 <div align="center">
