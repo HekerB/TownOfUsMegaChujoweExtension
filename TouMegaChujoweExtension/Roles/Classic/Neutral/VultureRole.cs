@@ -266,7 +266,7 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
                 _ => (ushort)RoleTypes.Crewmate
             };
 
-            Vulture.ChangeRole(roleType);
+            Vulture.RpcChangeRole(roleType, false);
         }
     }
 
