@@ -9,6 +9,7 @@ using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
+using TownOfUs.Assets;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
@@ -19,7 +20,7 @@ public sealed class PopeCanonizeButton : TownOfUsRoleButton<PopeRole, PlayerCont
     public override Color TextOutlineColor => TouExtensionColors.Pope;
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<PopeOptions>.Instance.CanonizeCooldown + MapCooldown, 5f, 120f);
     public override int MaxUses => (int)OptionGroupSingleton<PopeOptions>.Instance.MaxCanonizations;
-    public override LoadableAsset<Sprite> Sprite => TouExtensionNeuAssets.PopeCanonizeButtonSprite;
+    public override LoadableAsset<Sprite> Sprite => TouNeutAssets.ChefServeCakeSprite;
 
     public override bool Enabled(RoleBehaviour? role)
     {

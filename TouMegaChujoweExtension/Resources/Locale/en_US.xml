@@ -1501,7 +1501,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- Loner Role -->
   <string name="ExtensionRoleLoner">Loner</string>
   <string name="ExtensionRoleLonerIntroBlurb">Recruit your missing teammate</string>
-  <string name="ExtensionRoleLonerTabDescription">Recruit during meetings to restore your team. \%b\%Cannot become an Impostor Power or Killing role.\%/b\%</string>
+  <string name="ExtensionRoleLonerTabDescription">Recruit during meetings to restore your team. \%nl\%Cannot become an Impostor Power or Killing role.\%/b\%</string>
   <string name="ExtensionRoleLonerWikiDescription">The Loner is an Impostor Power role that starts with one fewer teammate. Recruit a non-Impostor during a meeting to restore your team. After recruiting, kill enough players to gain a new Impostor role. \%b\%Cannot become an Impostor Power or Killing role.\%/b\%</string>
   <string name="ExtensionRoleLonerRecruitSuccess">You recruited &lt;player&gt; as an Impostor!</string>
   <string name="ExtensionRoleLonerRecruited">You were recruited by the Loner!</string>

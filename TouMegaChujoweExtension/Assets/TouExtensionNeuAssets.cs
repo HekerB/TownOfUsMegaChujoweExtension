@@ -15,7 +15,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> JokerPiPBorderSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Anims.Joker_PIP_Border.png", 100f);
         public static LoadableAsset<Sprite> ShifterButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Shifter_Button.png");
         public static LoadableAsset<Sprite> PopeCanonizeButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Pope_Canonize_Button.png", 200f);
-        public static LoadableAsset<Sprite> PopeJudgementButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Pope_Judgement_Button.png", 200f);
+        public static LoadableAsset<Sprite> PopeJudgementButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Pope_Judgement_Button.png", 100f);
         public static LoadableAsset<Sprite> BountyHunterKillButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.BountyHunter_kill_button.png");
         public static LoadableAsset<Sprite> ShroudAbilitySprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Shroud_Role_Icon.png", 180f);
         public static LoadableAsset<Sprite> ShroudKillButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Shroud_Kill_Button.png", 100f);
@@ -23,6 +23,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> DoppelgangerKillButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Doppelganger_Kill_Button.png", 100f);
         public static LoadableAsset<Sprite> DoppelgangerVentSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Doppelganger_Vent_Button.png", 90f);
         public static LoadableAsset<Sprite> BakerGiveButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Baker_Give_Button.png", 100f);
+        public static LoadableAsset<Sprite> JokerCloneButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Joker_Clone_Button.png", 100f);
 
     }
 }
