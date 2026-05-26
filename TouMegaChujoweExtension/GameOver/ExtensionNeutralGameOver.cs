@@ -6,6 +6,7 @@ using Reactor.Utilities.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
+using TownOfUs.Roles.Neutral;
 using TownOfUs.Extensions;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -38,6 +39,15 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
             return true;
         }
 
+        var isBakerFaminePlagueWin = winners.Any(w => w?.Role is BakerRole or FamineRole) &&
+                                     winners.Any(w => w?.Role is PlaguebearerRole or PestilenceRole);
+        if (isBakerFaminePlagueWin)
+        {
+            _roleColor = TouExtensionColors.Famine;
+            _winText = TouLocale.Get("ExtensionBakerFaminePlagueWins", "Famine & Plague Win");
+            return true;
+        }
+
         // Everyone sees the screen if it was triggered
         var firstWinner = winners[0];
         if (firstWinner?.Role == null) return true;
@@ -52,6 +62,8 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
             PirateRole => $"{TouLocale.Get("ExtensionRolePirate", "Pirate")} {TouLocale.Get("ExtensionPirateWins", "Wins")}",
             LawyerRole => TouLocale.Get("ExtensionLawyerWins", "Lawyer & Client Win"),
             BountyHunterRole => $"{TouLocale.Get("ExtensionRoleBountyHunter", "Bounty Hunter")} {TouLocale.Get("ExtensionBountyHunterWins", "Wins")}",
+            JokerRole => $"{TouLocale.Get("ExtensionRoleJoker", "Joker")} {TouLocale.Get("ExtensionJokerWins", "Wins")}",
+            FamineRole => $"{TouLocale.Get("ExtensionRoleFamine", "Famine")} {TouLocale.Get("ExtensionFamineWins", "Wins")}",
             _ => TouLocale.GetParsed("ExtensionNeutralWinsFormat", "{0} Wins").Replace("{0}", role.GetRoleName())
         };
 

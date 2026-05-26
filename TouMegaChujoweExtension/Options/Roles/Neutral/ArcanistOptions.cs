@@ -12,11 +12,11 @@ public sealed class ArcanistOptions : AbstractOptionGroup<ArcanistRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleArcanist", "Arcanist");
 
-    [ModdedNumberOption("ExtensionOptionArcanistCooldown", 3f, 60f, 5f, MiraNumberSuffixes.Seconds)]
+    [ModdedNumberOption("ExtensionOptionArcanistCooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float Cooldown { get; set; } = 13f;
 
     [ModdedNumberOption("ExtensionOptionArcanistDeckSize", 1f, 22f, 1f)]
-    public float DeckSize { get; set; } = 13f;
+    public float DeckSize { get; set; } = 10f;
 
     [ModdedToggleOption("ExtensionOptionArcanistAllowDuplicateRoles")]
     public bool AllowDuplicateRoles { get; set; } = false;

@@ -27,7 +27,7 @@ public sealed class RcXdDeployButton : TownOfUsKillRoleButton<RcXdRole>, IDiseas
     public override float Cooldown => PlayerControl.LocalPlayer?.GetKillCooldown() ?? 25f;
     public override float EffectDuration => OptionGroupSingleton<RcXdOptions>.Instance.DriveTime;
     public override int MaxUses => (int)OptionGroupSingleton<RcXdOptions>.Instance.MaxDeploys;
-    public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.RcXdDeployButton;
+    public override LoadableAsset<Sprite> Sprite => TouImpAssets.MarkSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
 
     public override void CreateButton(Transform parent)
@@ -81,7 +81,7 @@ public sealed class RcXdDeployButton : TownOfUsKillRoleButton<RcXdRole>, IDiseas
         if (_driving && Role.ActiveCar != null && Role.ActiveCar.IsDriving)
         {
             if (_deployGrace > 0f) return;
-            
+
             var opts = OptionGroupSingleton<RcXdOptions>.Instance;
             if (!opts.AllowEarlyDetonation) return;
 
@@ -103,15 +103,15 @@ public sealed class RcXdDeployButton : TownOfUsKillRoleButton<RcXdRole>, IDiseas
         if (IsNearWall(PlayerControl.LocalPlayer.transform.position)) return;
 
         var pos = (Vector2)PlayerControl.LocalPlayer.transform.position;
-		var clip = TouAudio.TrackerActivateSound.LoadAsset();
-		Info($"[RC-XD] Deploy sound clip: {clip?.name ?? "NULL"}, ShouldPlaySfx: {Constants.ShouldPlaySfx()}");
-		TouAudio.PlaySound(TouAudio.TrackerActivateSound, 0.8f);
+        var clip = TouAudio.TrackerActivateSound.LoadAsset();
+        Info($"[RC-XD] Deploy sound clip: {clip?.name ?? "NULL"}, ShouldPlaySfx: {Constants.ShouldPlaySfx()}");
+        TouAudio.PlaySound(TouAudio.TrackerActivateSound, 0.8f);
 
         RcXdRole.RpcDeployCar(PlayerControl.LocalPlayer, pos);
 
         _driving = true;
         _deployGrace = 0.5f;
-        OverrideSprite(TouExtensionImpAssets.RcXdDetonateButton.LoadAsset());
+        OverrideSprite(TouImpAssets.HexBombSprite.LoadAsset());
         OverrideName(TouLocale.Get("ExtensionRoleRcXdDetonate", "Detonate"));
 
         // Zablokuj kill na czas jazdy

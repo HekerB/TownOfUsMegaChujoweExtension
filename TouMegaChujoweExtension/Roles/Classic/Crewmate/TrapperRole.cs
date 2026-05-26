@@ -202,16 +202,22 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
-        var myTraps = VentTrapSystem.GetTrapsOwnedBy(Player.PlayerId).ToList();
+        var myTraps = VentTrapSystem.GetTrapEntriesOwnedBy(Player.PlayerId).ToList();
 
         if (myTraps.Count != 0)
         {
-            stringB.AppendLine($"\n<b>{TouLocale.Get("ExtensionRoleTrapperTabHeader", "Active Traps:")}</b>");
-            foreach (var ventId in myTraps)
+            stringB.AppendLine($"\n<b>{TouLocale.GetParsed("ExtensionRoleTrapperTabHeader", "Active Traps:")}</b>");
+            var roundsLast = (int)OptionGroupSingleton<TrapperOptions>.Instance.TrapRoundsLast;
+            foreach (var trap in myTraps)
             {
-                var vent = Helpers.GetVentById(ventId);
+                var vent = Helpers.GetVentById(trap.Key);
                 var room = vent != null ? MiscUtils.GetRoomName(vent.transform.position) : TouLocale.Get("Unknown", "Unknown");
-                stringB.AppendLine($"<b><size=70%>{room}</size></b>");
+                var ventLabel = TouLocale.GetParsed("ExtensionRoleTrapperVentLabelTabText", "<room> Vent")
+                    .Replace("<room>", room);
+                var roundsText = roundsLast <= 0
+                    ? string.Empty
+                    : $": {TouLocale.GetParsed("ExtensionRoleTrapperVentRoundsTabText", "<rounds> Round(s) Remaining").Replace("<rounds>", trap.Value.ToString())}";
+                stringB.AppendLine($"<b><size=70%>{ventLabel}{roundsText}</size></b>");
             }
         }
 

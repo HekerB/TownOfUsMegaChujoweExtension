@@ -93,6 +93,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#sniper"><img width="10%" src="./Images/Icons/Sniper_Role_Icon.png" /></a>
   <img src="./Images/Groups/ImpPower.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#gun-game"><img width="10%" src="./Images/Icons/GunGame_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#loner"><img width="10%" src="./Images/Icons/Loner_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#poisoner"><img width="10%" src="./Images/Icons/Poisoner_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#rc-xd"><img width="10%" src="./Images/Icons/RC-XD_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#wraith"><img width="10%" src="./Images/Icons/Wraith_Role_Icon.png" /></a>
@@ -269,18 +270,18 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 
 ## Art Credits
 
-> **Huge shoutout to Atony**, creator of Town of Us: Mira — roughly 70% of the art assets used in this mod originate from his work, various TOU Mira builds, and resources shared on the TOU Mira Discord. We are extremely grateful for his incredible contributions to the community.
+> **Huge shoutout to Atony**, creator of Town of Us: Mira — roughly 80% of the art assets used in this mod originate from his work, various TOU Mira builds, and resources shared on the TOU Mira Discord. We are extremely grateful for his incredible contributions to the community.
 
 - **Asterisken** - Art for Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful, Objection Button, and Bodyguard Guard button
 - **CraftR / Town of Us Discord** - Pirate role icon & Pirate Duel button
-- **Atony / Town of Us: Mira / Town Of Us Discord** - Art for Serial Killer, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, and Detonator role icons; Shifter role icon & button; Sage role icon (Seer button from TOU Mira); Sage ability buttons (Salem option buttons from Seer); Bodyguard shield animation (repainted Warden shield from TOU Mira 1.5.9); Poisoner role icon & all Poisoner button icons; Evoker Verify button icon; Gun Game Icon; Drunk modifier icon (from TOU Mira Discord); Venomous modifier icon (flipped & recolored Rotting modifier from TOU Mira)
+- **Atony / Town of Us: Mira / Town Of Us Discord** - Art for Serial Killer, Kamikaze, Loner, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, and Detonator role icons; Shifter role icon & button; Sage role icon (Seer button from TOU Mira); Sage ability buttons (Salem option buttons from Seer); Bodyguard shield animation (repainted Warden shield from TOU Mira 1.5.9); Poisoner role icon & all Poisoner button icons; Evoker Verify button icon; Drunk modifier icon (from TOU Mira Discord); Venomous modifier icon (flipped & recolored Rotting modifier from TOU Mira)
 - **Atony / TOU Mira Fusion** - Vampire Hunter stake button
 - **[TownOfUsMiraDivaniModsAddOn](https://github.com/DivaniNL/TownOfUsMiraDivaniModsAddOn) / DivaniNL** - Art for Kamikaze role icon; Portal asset
 - **Syzyf (Syzyfowe TOU)** - Gardener ability button icon
 - **Stellar Roles** - Role ideas, some button art
-- **[Launchpad Reloaded](https://github.com/All-Of-Us-Mods/LaunchpadReloaded)** - Doppelganger role icon (original)
 - **[All Of Us](https://github.com/All-Of-Us-Mods)** - Death Note modifier icons (from their Discord)
-- **Sidemen (YouTube) / Sidemens Mod** - Deploy & Detonate button icons for RC-XD; button assets for Detonator (Attach C4), Backlash, Bodyguard ability, Speedy ability, Sniper shoot ability, Poisoner Vine detonate and Doctor ability
+- **Sidemen (YouTube) / Sidemens Mod** - Role concept inspiration.
+- **Town of Salem** - Source inspiration/assets for Shroud visuals.
 - **[TOHE (Town of Host Enhanced)](https://github.com/0xDrMoe/TownofHost-Enhanced)** - Shroud role icon
 - **Star Wars** - Bounty Hunter role icon (original concept)
 - **Our friend's girlfriend** - Publicity modifier icon
@@ -294,7 +295,8 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 - **YouTube** - Pope alarm & Judgement end sounds (from Divine Judgement concept videos)
 - **Star Wars** - Bounty Hunter intro sound
 - **Max Verstappen memes** - RC-XD intro sound (song fragment)
-- **RC-XD driving sound ripped from Sidemen videos**
+- **Free sound library** - RC-XD driving sound
+- **Minecraft** - Creeper explosion sound used for RC-XD explosion
 - **Fortnite** - Sniper shot sound
 - **Counter Strike** - Detonator beeping sound
 
@@ -304,7 +306,7 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 - **Town of Us: Mira** - Infiltrator (Jackal) role concept
 - **Tajemniczy Among Us (Tajemniczy Typiarz)** - Pirate role concept
 - **[Town of Us WYGON ](https://github.com/wygon/Town-Of-Us-WYGON)** - Falcon role concept; Kamikaze role concept
-- **Sidemen (YouTube)** - RC-XD, Detonator, Doctor, Astral, Speedy, Sniper, Poisoner & Gun Game roles concept (recreated from their videos)
+- **Sidemen (YouTube)** - RC-XD, Detonator, Doctor, Astral, Speedy, Sniper, Poisoner & Loner roles concept (recreated from their videos)
 - **[TownOfUsMiraDivaniModsAddOn](https://github.com/DivaniNL/TownOfUsMiraDivaniModsAddOn)** - Portalmaker role concept
 - **Death Note (anime)** - Death Note modifier concept
 - **Our friend Weakpass** - Added Publicity modifier

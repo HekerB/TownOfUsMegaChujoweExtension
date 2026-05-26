@@ -36,12 +36,12 @@ public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole
         {
             var local = PlayerControl.LocalPlayer;
             if (local == null) return DetonatorSystem.GetDetonateCooldown();
-            
+
             bool hasBomb = DetonatorSystem.HasAnyActiveBomb(local.PlayerId);
             return hasBomb ? DetonatorSystem.GetDetonateCooldown() : local.GetKillCooldown();
         }
     }
-    public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.DetonatorAttachSprite;
+    public override LoadableAsset<Sprite> Sprite => TouImpAssets.PursueSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
 
     public override PlayerControl? GetTarget()
@@ -104,14 +104,14 @@ public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole
             _attachTimer = 0f;
             OverrideName(TouLocale.Get("ExtensionRoleDetonatorDetonate", "Detonate"));
             OverrideSprite(TouExtensionImpAssets.DetonatorDetonateSprite.LoadAsset());
-            
+
             Timer = DetonatorSystem.GetManualDetonateRemainingTime(playerControl.PlayerId);
         }
         else
         {
             OverrideName(TouLocale.Get("ExtensionRoleDetonatorAttach", "Attach Bomb"));
             OverrideSprite(TouExtensionImpAssets.DetonatorAttachSprite.LoadAsset());
-            
+
             Timer = playerControl.killTimer;
         }
 
@@ -140,11 +140,11 @@ public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole
                     _attachTimer = 0f;
                     _attachTarget = null;
                 }
-                
+
                 // Button should be bright and outline visible during attaching
                 UpdateOutline(target);
                 SetButtonState(true, hasBomb, true);
-                return; 
+                return;
             }
         }
 

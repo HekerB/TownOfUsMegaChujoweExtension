@@ -36,6 +36,7 @@ public static class DraftSystem
     public static List<RoleBehaviour>? CurrentOfferedRoles { get; set; }
     public static RoleAlignment? SelectedAlignment { get; set; }
     public static int TargetOtherNeutralCount { get; set; } // Global target for benign/evil/outliers
+    public static bool LonerReducedImpostorSlot { get; set; }
 
     // === FACTION ASSIGNMENTS ===
     private static int GetSafeCount(float min, float max)
@@ -260,6 +261,37 @@ public static class DraftSystem
         return result;
     }
 
+    private static bool CanCurrentPickerTakeLoner()
+    {
+        var myId = PlayerControl.LocalPlayer?.PlayerId;
+        if (!myId.HasValue || LonerReducedImpostorSlot)
+        {
+            return false;
+        }
+
+        if (!PlayerFactions.TryGetValue(myId.Value, out var faction) || faction != DraftFaction.Impostor)
+        {
+            return false;
+        }
+
+        var futureImpostorSlots = PickOrder.Count(id =>
+            id != myId.Value &&
+            PlayerFactions.TryGetValue(id, out var futureFaction) &&
+            futureFaction == DraftFaction.Impostor);
+
+        return futureImpostorSlots == 1;
+    }
+
+    private static List<RoleBehaviour> FilterLonerForCurrentPicker(IEnumerable<RoleBehaviour> roles)
+    {
+        var lonerRole = (RoleTypes)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Impostor.LonerRole>();
+        var canTakeLoner = CanCurrentPickerTakeLoner();
+
+        return roles
+            .Where(role => canTakeLoner || role.Role != lonerRole)
+            .ToList();
+    }
+
     private static IEnumerable<T> WeightedShuffle<T>(IEnumerable<T> items, System.Func<T, float> weightSelector)
     {
         var pool = items.ToList();
@@ -432,7 +464,9 @@ public static class DraftSystem
         }
 
         // Standard flow for others (Impostor, NeutralKilling)
-        var allRoles = GetRolesForAlignments(enabledAlignments);
+        var allRoles = faction == DraftFaction.Impostor
+            ? FilterLonerForCurrentPicker(GetRolesForAlignments(enabledAlignments))
+            : GetRolesForAlignments(enabledAlignments);
         if (allRoles.Count == 0) return new List<RoleBehaviour>();
 
         SelectedAlignment = null;
@@ -463,7 +497,9 @@ public static class DraftSystem
         var enabledAlignments = GetAlignmentsForFaction(faction);
 
         // Fallback w razie braku puli ofert (np. błąd UI)
-        var allRoles = GetRolesForAlignments(enabledAlignments);
+        var allRoles = faction == DraftFaction.Impostor
+            ? FilterLonerForCurrentPicker(GetRolesForAlignments(enabledAlignments))
+            : GetRolesForAlignments(enabledAlignments);
         if (allRoles.Count == 0) return null;
 
         return OrderRoles(allRoles).FirstOrDefault();
@@ -481,6 +517,7 @@ public static class DraftSystem
         DraftPicks.Clear();
         ImpostorPlayerIds.Clear();
         PlayerFactions.Clear();
+        LonerReducedImpostorSlot = false;
         LocalPlayerPicked = false;
         PickTimer = 0f;
         CurrentOfferedRoles = null;
@@ -569,6 +606,7 @@ public static class DraftSystem
         DraftPicks[playerId] = roleId;
         PickOrder.Remove(playerId);
         PickTimer = 0f;
+        ApplyLonerImpostorSlotReduction(playerId, roleId);
 
         if (playerId == PlayerControl.LocalPlayer?.PlayerId)
         {
@@ -577,6 +615,33 @@ public static class DraftSystem
             SelectedAlignment = null;
         }
 
+        InvalidateRoleCache();
+    }
+
+    private static void ApplyLonerImpostorSlotReduction(byte playerId, ushort roleId)
+    {
+        if (LonerReducedImpostorSlot ||
+            roleId != RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Impostor.LonerRole>())
+        {
+            return;
+        }
+
+        byte? futureImpostor = PickOrder
+            .Cast<byte?>()
+            .FirstOrDefault(id =>
+                id != null &&
+                id != playerId &&
+                PlayerFactions.TryGetValue(id.Value, out var faction) &&
+                faction == DraftFaction.Impostor);
+
+        if (!futureImpostor.HasValue)
+        {
+            return;
+        }
+
+        PlayerFactions[futureImpostor.Value] = DraftFaction.CrewOther;
+        ImpostorPlayerIds.Remove(futureImpostor.Value);
+        LonerReducedImpostorSlot = true;
         InvalidateRoleCache();
     }
 

@@ -26,24 +26,26 @@ public static class ExtensionLocale
         }
         catch { /* Fallback */ }
 
-        string targetFile = forcePolish ? "pl_PL.xml" : "en_US.xml";
+        string resourceName = forcePolish
+            ? "TouMegaChujoweExtension.Resources.Locale.pl_PL.xml"
+            : "TouMegaChujoweExtension.Resources.Locale.en_US.xml";
 
-        using var resourceStream = assembly.GetManifestResourceStream("TouMegaChujoweExtension.Resources.Locale." + targetFile);
+        using var resourceStream = assembly.GetManifestResourceStream(resourceName);
 
-        if (resourceStream == null)
+        if (resourceStream == null && forcePolish)
         {
-
-
-            if (forcePolish)
+            using var fallbackStream = assembly.GetManifestResourceStream("TouMegaChujoweExtension.Resources.Locale.en_US.xml");
+            if (fallbackStream != null)
             {
-                using var fallbackStream = assembly.GetManifestResourceStream("TouMegaChujoweExtension.Resources.Locale.en_US.xml");
-                if (fallbackStream != null) ForceInjectTranslations(fallbackStream);
+                ForceInjectTranslations(fallbackStream);
             }
             return;
         }
 
-        ForceInjectTranslations(resourceStream);
-
+        if (resourceStream != null)
+        {
+            ForceInjectTranslations(resourceStream);
+        }
     }
 
     private static void ForceInjectTranslations(Stream stream)

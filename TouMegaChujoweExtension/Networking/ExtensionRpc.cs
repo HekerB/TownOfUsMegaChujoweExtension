@@ -99,5 +99,14 @@ public enum ExtensionRpc : uint
     SniperShoot = 114,
     SniperPlaySound = 115,
     SpiritMasterMediate = 116,
-    GunGameMutate = 117
+    GunGameMutate = 117,
+    LonerRecruit = 118,
+    LonerMutate = 119,
+    BurrowerUnderground = 120,
+    BurrowerEmerge = 121,
+    BakerGiveBread = 122,
+    BakerTransformToFamine = 123,
+    FamineStarve = 124,
+    FamineUnlock = 125,
+    BurrowerCancel = 126
 }

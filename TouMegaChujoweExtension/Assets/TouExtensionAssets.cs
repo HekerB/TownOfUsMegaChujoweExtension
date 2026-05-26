@@ -15,6 +15,8 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> CycleBack { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.MeetingButtons.CycleBack.png");
         public static LoadableAsset<Sprite> CycleForward { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.MeetingButtons.CycleForward.png");
         public static LoadableAsset<Sprite> GuessButton { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.MeetingButtons.GuessButton.png");
+        public static LoadableAsset<Sprite> LonerCrewSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.LonerCrewSprite.png", 440f);
+        public static LoadableAsset<Sprite> LonerImpostorSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Impostor.png", 440f);
         public static LoadableAsset<Sprite> ObjectionButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Object.png");
         public static LoadableAsset<Sprite> PirateDuelAttack1 { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.MeetingButtons.Pirate_Duel_Attack1.png");
         public static LoadableAsset<Sprite> PirateDuelAttack2 { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.MeetingButtons.Pirate_Duel_Attack2.png");
