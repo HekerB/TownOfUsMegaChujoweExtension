@@ -10,6 +10,7 @@ using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TownOfUs.Modules.Localization;
 using Il2CppInterop.Runtime.Attributes;
 using TownOfUs.Roles;
+using TownOfUs.Modules;
 using System;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Modifiers.Game.Alliance;
@@ -247,8 +248,9 @@ public static class JackalDeathLifelinkPatch
     {
         if (__instance == null || !AmongUsClient.Instance.AmHost) return;
 
-        if (__instance.GetRole<JackalRole>() != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
+        if (__instance.IsRole<JackalRole>() && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
         {
+            var jackalRoleName = (__instance.GetRoleWhenAlive() as ITownOfUsRole)?.RoleName ?? "Jackal";
             var sidekicks = PlayerControl.AllPlayerControls.ToArray()
                 .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == __instance.PlayerId)
                 .ToList();
@@ -261,7 +263,7 @@ public static class JackalDeathLifelinkPatch
                     causeOfDeath: TouLocale.Get("DiedToJackalDeath"),
                     roundOfDeath: TownOfUs.Events.DeathEventHandlers.CurrentRound,
                     diedThisRound: DeathHandlerOverride.SetTrue,
-                    killedBy: __instance.GetRole<JackalRole>()?.RoleName ?? "Jackal",
+                    killedBy: jackalRoleName,
                     lockInfo: DeathHandlerOverride.SetTrue);
             }
         }

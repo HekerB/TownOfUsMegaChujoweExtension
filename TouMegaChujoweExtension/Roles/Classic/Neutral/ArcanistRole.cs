@@ -310,7 +310,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                         HandleDuplicateRole(player, card);
                         break;
                     }
-                    player.ChangeRole(RoleId.Get<JesterRole>());
+                    player.RpcChangeRole(RoleId.Get<JesterRole>(), false);
                     break;
                 case TarotCard.TheMagician:
                     foreach (var pc in PlayerControl.AllPlayerControls)
@@ -327,7 +327,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                         HandleDuplicateRole(player, card);
                         break;
                     }
-                    player.ChangeRole(RoleId.Get<DoomsayerRole>());
+                    player.RpcChangeRole(RoleId.Get<DoomsayerRole>(), false);
                     break;
                 case TarotCard.TheEmpress:
                     player.RpcAddModifier<KnightedModifier>();
@@ -343,7 +343,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                             HandleDuplicateRole(player, card);
                             break;
                         }
-                        player.ChangeRole(subRole);
+                        player.RpcChangeRole(subRole, false);
                     }
                     break;
                 case TarotCard.TheLovers:
@@ -365,7 +365,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                             HandleDuplicateRole(player, card);
                             break;
                         }
-                        player.ChangeRole(subRole);
+                        player.RpcChangeRole(subRole, false);
                     }
                     break;
                 case TarotCard.TheHangedMan:
@@ -374,7 +374,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                         HandleDuplicateRole(player, card);
                         break;
                     }
-                    player.ChangeRole(RoleId.Get<BountyHunterRole>());
+                    player.RpcChangeRole(RoleId.Get<BountyHunterRole>(), false);
                     break;
                 case TarotCard.Death:
                     if (subRole == 0)
@@ -392,7 +392,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                         HandleDuplicateRole(player, card);
                         break;
                     }
-                    player.ChangeRole(RoleId.Get<LawyerRole>());
+                    player.RpcChangeRole(RoleId.Get<LawyerRole>(), false);
                     break;
                 case TarotCard.TheTower:
                     break;
@@ -410,7 +410,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                         HandleDuplicateRole(player, card);
                         break;
                     }
-                    player.ChangeRole(RoleId.Get<PopeRole>());
+                    player.RpcChangeRole(RoleId.Get<PopeRole>(), false);
                     break;
                 case TarotCard.TheWorld:
                     player.RpcAddModifier<TouMegaChujoweExtension.Modifiers.Neutral.DeathNoteModifier>();
