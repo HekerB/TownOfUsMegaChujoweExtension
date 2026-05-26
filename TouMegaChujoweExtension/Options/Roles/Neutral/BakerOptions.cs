@@ -10,10 +10,10 @@ public sealed class BakerOptions : AbstractOptionGroup<BakerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleBaker", "Baker");
 
-    [ModdedNumberOption("ExtensionOptionBakerInstantFamineChance", 0f, 100f, 5f, MiraNumberSuffixes.Percent, "0")]
+    [ModdedNumberOption("ExtensionOptionBakerInstantFamineChance", 0f, 100f, 5f, MiraNumberSuffixes.Percent)]
     public float InstantFamineChance { get; set; } = 0f;
 
-    [ModdedNumberOption("ExtensionOptionBakerGiveCooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds, "0")]
+    [ModdedNumberOption("ExtensionOptionBakerGiveCooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float GiveCooldown { get; set; } = 25f;
 
     [ModdedNumberOption("ExtensionOptionBakerBreadNeeded", 1f, 10f, 1f, MiraNumberSuffixes.None)]
@@ -22,7 +22,7 @@ public sealed class BakerOptions : AbstractOptionGroup<BakerRole>
     [ModdedToggleOption("ExtensionOptionBakerAnnounceFamine")]
     public bool AnnounceFamine { get; set; } = true;
 
-    [ModdedNumberOption("ExtensionOptionBakerStarveCooldown", 5f, 60f, 2.5f, MiraNumberSuffixes.Seconds, "0")]
+    [ModdedNumberOption("ExtensionOptionBakerStarveCooldown", 5f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float StarveCooldown { get; set; } = 25f;
 
     [ModdedToggleOption("ExtensionOptionBakerCanVent")]

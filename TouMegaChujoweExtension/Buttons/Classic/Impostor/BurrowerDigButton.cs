@@ -32,6 +32,11 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
         get
         {
             var role = PlayerControl.LocalPlayer?.GetRole<BurrowerRole>();
+            if (role != null && role.IsPreparingDig)
+            {
+                return TouLocale.Get("ExtensionRoleBurrowerDig", "Dig");
+            }
+
             return role != null && role.IsUnderground
                 ? TouLocale.Get("ExtensionRoleBurrowerEmerge", "Emerge")
                 : TouLocale.Get("ExtensionRoleBurrowerDig", "Dig");
@@ -86,7 +91,17 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
             return false;
         }
 
-        return CanUse() && (role.IsDigging || role.IsUnderground || Timer <= 0f);
+        if (role.IsPreparingDig)
+        {
+            return false;
+        }
+
+        if (role.IsUnderground || role.IsDigging)
+        {
+            return CanUse() && role.CanCancelUndergroundDig();
+        }
+
+        return CanUse() && Timer <= 0f;
     }
 
     public override void ClickHandler()
@@ -109,13 +124,14 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
                     return;
                 }
 
+                var wasPreparing = role.IsPreparingDig;
                 var wasUnderground = role.IsUnderground;
                 if (!TryPerformBurrowAction(player, role))
                 {
                     return;
                 }
 
-                if (!wasUnderground && role.IsUnderground && LimitedUses && !(ZeroIsInfinite && MaxUses == 0))
+                if (!wasPreparing && !wasUnderground && LimitedUses && !(ZeroIsInfinite && MaxUses == 0))
                 {
                     UsesLeft--;
                     Button?.SetUsesRemaining(UsesLeft);
@@ -151,9 +167,30 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
 
         if (Button != null)
         {
-            OverrideName(role != null && role.IsUnderground
-                ? TouLocale.Get("ExtensionRoleBurrowerEmerge", "Emerge")
-                : TouLocale.Get("ExtensionRoleBurrowerDig", "Dig"));
+            if (role != null && role.IsPreparingDig)
+            {
+                OverrideName(TouLocale.Get("ExtensionRoleBurrowerDig", "Dig"));
+            }
+            else
+            {
+                OverrideName(role != null && role.IsUnderground
+                    ? TouLocale.Get("ExtensionRoleBurrowerEmerge", "Emerge")
+                    : TouLocale.Get("ExtensionRoleBurrowerDig", "Dig"));
+            }
+        }
+
+        if (role != null && role.IsPreparingDig)
+        {
+            var remaining = Mathf.Max(0f, role.PrepareDigEndTime - Time.time);
+            Button?.SetFillUp(remaining, OptionGroupSingleton<BurrowerOptions>.Instance.EnterDelay);
+
+            if (Button?.cooldownTimerText != null)
+            {
+                Button.cooldownTimerText.text = Mathf.Ceil(remaining).ToString();
+                Button.cooldownTimerText.gameObject.SetActive(true);
+            }
+
+            return;
         }
 
         if (role != null && role.IsDigging)
@@ -187,8 +224,18 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
 
     private bool TryPerformBurrowAction(PlayerControl player, BurrowerRole role)
     {
+        if (role.IsPreparingDig)
+        {
+            return false;
+        }
+
         if (role.IsDigging)
         {
+            if (!role.CanCancelUndergroundDig())
+            {
+                return false;
+            }
+
             BurrowerRole.RpcCancel(player);
             Timer = Cooldown;
             return true;
@@ -240,13 +287,14 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
             return false;
         }
 
-        return role.IsDigging || BurrowerSystem.TryFindVentPlacementPosition(player, position, out _);
+        return role.IsPreparingDig || role.IsDigging || BurrowerSystem.TryFindVentPlacementPosition(player, position, out _);
     }
 
     private bool HasNoDigUsesLeft(BurrowerRole role)
     {
         return !role.IsUnderground &&
                !role.IsDigging &&
+               !role.IsPreparingDig &&
                LimitedUses &&
                !(ZeroIsInfinite && MaxUses == 0) &&
                UsesLeft <= 0;

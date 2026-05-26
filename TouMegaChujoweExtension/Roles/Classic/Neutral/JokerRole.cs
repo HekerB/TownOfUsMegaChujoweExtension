@@ -148,12 +148,12 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
     [MethodRpc((uint)Networking.ExtensionRpc.JokerCloneKilled)]
     public static void RpcJokerCloneKilled(PlayerControl killer, byte jokerId, byte cloneIndex)
     {
-        JokerCloneSystem.AddKill();
-
         if (!JokerCloneSystem.TryRemoveClone(cloneIndex, out _))
         {
             return;
         }
+
+        JokerCloneSystem.AddKill();
 
         if (killer.AmOwner)
         {

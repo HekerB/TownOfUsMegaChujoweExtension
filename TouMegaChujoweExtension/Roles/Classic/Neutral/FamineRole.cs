@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -134,11 +135,28 @@ public sealed class FamineRole(IntPtr cppPtr)
         CanStarveAnyone = false;
         HadBreadTargets = PlayerControl.AllPlayerControls.ToArray()
             .Any(x => x != null && !x.HasDied() && x != player && x.HasModifier<BakerBreadModifier>());
+        if (!HadBreadTargets)
+        {
+            CanStarveAnyone = true;
+        }
+
         EnsureFamineInvulnerability(Player);
 
         if (player.AmOwner)
         {
             OffsetButtons();
+            Reactor.Utilities.Coroutines.Start(CoStartStarveCooldown());
+        }
+    }
+
+    private static IEnumerator CoStartStarveCooldown()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        var starveButton = MiraAPI.Hud.CustomButtonSingleton<FamineStarveButton>.Instance;
+        if (starveButton != null)
+        {
+            starveButton.Timer = starveButton.Cooldown;
         }
     }
 

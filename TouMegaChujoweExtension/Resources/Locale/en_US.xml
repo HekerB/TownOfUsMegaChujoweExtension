@@ -1218,7 +1218,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionGeneralJackalChatDisplayName">Recruits Private Chat</string>
   <string name="ExtensionGameMechanicOptionsGroupName">Game Mechanics</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Recruits See Each Other's Role</string>
-  <string name="ExtensionOptionGameMechanicBakerFaminePlagueAlliance">Baker/Famine &amp; Plaguebearer/Pestilence Win Together</string>
+  <string name="ExtensionOptionGameMechanicBakerFaminePlagueAlliance">Baker and Plaguebearer win together</string>
 
   <string name="Sidekick">Recruit</string>
   <string name="SidekickIntroBlurb">You have been recruited by the Infiltrator. You must betray your team.</string>
@@ -1417,9 +1417,9 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="SniperAimingExpiredPenalty">Aiming expired! Penalty cooldown applied.</string>
   <!-- Gun Game Role -->
   <string name="ExtensionRoleGunGame">Gun Game</string>
-  <string name="ExtensionRoleGunGameIntroBlurb">Change weapons after enough kills.</string>
-  <string name="ExtensionRoleGunGameTabDescription">After enough kills, your role changes into another role.\%nl\%\%b\%Cannot become an Impostor Power role.\%/b\%</string>
-  <string name="ExtensionRoleGunGameWikiDescription">Gun Game is an Impostor role that cycles through weapons after enough kills. Settings control guessing behavior, kills needed to change role, and role retention after meetings.</string>
+  <string name="ExtensionRoleGunGameIntroBlurb">Kill to swap roles</string>
+  <string name="ExtensionRoleGunGameTabDescription">Kill players to cycle through Impostor roles. \%b\%Cannot become an Impostor Power role.\%/b\%</string>
+  <string name="ExtensionRoleGunGameWikiDescription">The Gun Game is an Impostor Power role that changes role after enough kills. Each new role gives you different abilities and cooldowns. \%b\%Cannot become an Impostor Power role.\%/b\%</string>
   <string name="ExtensionOptionGunGameCanVent">Can Vent</string>
   <string name="ExtensionOptionGunGameGuessAs">Gun Game Must Be Guessed As</string>
   <string name="ExtensionOptionGunGameGuessAsEnumGunGame">Gun Game</string>
@@ -1447,14 +1447,14 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
 
   <!-- Joker Role -->
   <string name="ExtensionRoleJoker">Joker</string>
-  <string name="ExtensionRoleJokerIntroBlurb">Trick killers into attacking your clones.</string>
-  <string name="ExtensionRoleJokerTabDescription">Place clones of real players.\%nl\%Win if killers destroy enough clones.</string>
-  <string name="ExtensionRoleJokerWikiDescription">The Joker is a Neutral Evil role that places clones of living players around the map. The tablet shows every living player, including the Joker, so the clone can copy any living appearance. If killing roles destroy enough clones, the Joker either ends the game with a solo win or earns Victorious status and wins with the eventual winners, depending on the lobby option.</string>
+  <string name="ExtensionRoleJokerIntroBlurb">Fool killers with clones</string>
+  <string name="ExtensionRoleJokerTabDescription">Place clones of living players. Win when enough clones are killed.</string>
+  <string name="ExtensionRoleJokerWikiDescription">The Joker is a Neutral Evil role that places clones of living players. When a clone is killed, it counts toward your win. Win after enough clones are killed.</string>
   <string name="ExtensionRoleJokerTabClonesKilled">Clones Killed: {0} / {1}</string>
   <string name="ExtensionRoleJokerTabObjectiveComplete">&lt;b&gt;Objective Complete!&lt;/b&gt;</string>
   <string name="ExtensionRoleJokerPlaceClone">Place Clone</string>
   <string name="ExtensionRoleJokerPlaceCloneWiki">Place Clone</string>
-  <string name="ExtensionRoleJokerPlaceCloneWikiDescription">Open a player menu with all living players, choose whose appearance to copy, preview their clone at your current location, then confirm to place it.</string>
+  <string name="ExtensionRoleJokerPlaceCloneWikiDescription">Place a clone of a living player.</string>
   <string name="ExtensionOptionJokerKillsToWin">Clone Kills Needed To Win</string>
   <string name="ExtensionOptionJokerCloneCooldown">Clone Cooldown</string>
   <string name="ExtensionOptionJokerMaxClones">Max Clones</string>
@@ -1465,27 +1465,27 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="JokerWinOptionsWinWithWinners">Win With Winners</string>
   <string name="ExtensionRoleJokerFooledNotif">You've been fooled!</string>
   <string name="ExtensionRoleJokerCloneKilledNotif">Clone killed!</string>
-  <string name="ExtensionRoleJokerObjectiveCompleteNotif">Objective complete! You are now Victorious.</string>
+  <string name="ExtensionRoleJokerObjectiveCompleteNotif">Objective complete! You are now Victorious</string>
   <string name="ExtensionRoleJokerWinText">Joker Wins!</string>
   <string name="ExtensionJokerWins">Wins</string>
 
   <!-- Baker / Famine Role -->
   <string name="ExtensionRoleBaker">Baker</string>
-  <string name="ExtensionRoleBakerIntroBlurb">Give bread to become &lt;b&gt;&lt;color=#B2672E&gt;Famine&lt;/color&gt;&lt;/b&gt;</string>
-  <string name="ExtensionRoleBakerTabDescription">Give bread to living players.\%nl\%At a meeting, enough bread recipients transform you into Famine.</string>
-  <string name="ExtensionRoleBakerWikiDescription">The Baker is a Neutral Killing role that starts by giving bread to other players. Each round, the Baker can give bread to one living player who does not already have bread. When enough living players have bread at the start of a meeting, the Baker transforms into Famine.</string>
+  <string name="ExtensionRoleBakerIntroBlurb">Give bread to become \%color=#B2672EFF\%Famine\%/color\%</string>
+  <string name="ExtensionRoleBakerTabDescription">Give enough bread to become \%color=#B2672EFF\%Famine\%/color\%.</string>
+  <string name="ExtensionRoleBakerWikiDescription">The Baker is a Neutral Killing role that gives bread to living players. Breaded players are marked for you and trigger alerts when they die. Give enough bread to become \%color=#B2672EFF\%Famine\%/color\%.</string>
   <string name="ExtensionRoleBakerGive">Give Bread</string>
-  <string name="ExtensionRoleBakerGiveWikiDescription">Give bread to a nearby living player. A player can only receive bread once.</string>
+  <string name="ExtensionRoleBakerGiveWikiDescription">Give bread to a nearby living player.</string>
   <string name="ExtensionRoleBakerFamineAnnouncement">&lt;b&gt;The bread giver has risen as Famine, Horseman of the Apocalypse!&lt;/b&gt;</string>
   <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} died with your bread!</string>
-  <string name="ExtensionRoleFamineAllBreadTargetsDead">All your breaded targets have died. You can now starve anyone!</string>
+  <string name="ExtensionRoleFamineAllBreadTargetsDead">All your breaded targets died! You can now starve anyone!</string>
   <string name="ExtensionBakerFaminePlagueWins">Famine &amp; Plague Win</string>
   <string name="ExtensionRoleFamine">Famine</string>
-  <string name="ExtensionRoleFamineIntroBlurb">Starve the fed and end the world.</string>
-  <string name="ExtensionRoleFamineTabDescription">Starve players who have bread.\%nl\%Starved players die at the next meeting.</string>
-  <string name="ExtensionRoleFamineWikiDescription">Famine is the transformed Baker. Famine is unguessable, has Impostor vision, and is protected. Famine can mark players who have bread; marked players starve and die at the next meeting. Once no bread or starving targets remain alive, Famine starves everyone else.</string>
+  <string name="ExtensionRoleFamineIntroBlurb">Starve the fed</string>
+  <string name="ExtensionRoleFamineTabDescription">Starve breaded players. Starved players die next meeting.</string>
+  <string name="ExtensionRoleFamineWikiDescription">The Famine is an invincible Neutral Killing role. At first, Famine can only starve breaded players. After all breaded players die, Famine can starve anyone.</string>
   <string name="ExtensionRoleFamineStarve">Starve</string>
-  <string name="ExtensionRoleFamineStarveWikiDescription">Mark a nearby player who has bread. They will die from starvation at the next meeting.</string>
+  <string name="ExtensionRoleFamineStarveWikiDescription">Mark a breaded player to die next meeting.</string>
   <string name="ExtensionOptionBakerBreadNeeded">Bread Needed</string>
   <string name="ExtensionOptionBakerGiveCooldown">Give Cooldown</string>
   <string name="ExtensionOptionBakerInstantFamineChance">Instant Famine Chance</string>
@@ -1500,12 +1500,12 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
 
   <!-- Loner Role -->
   <string name="ExtensionRoleLoner">Loner</string>
-  <string name="ExtensionRoleLonerIntroBlurb">Recruit an Impostor from the shadows.</string>
-  <string name="ExtensionRoleLonerTabDescription">You start with one fewer Impostor teammate.\%nl\%During meetings, recruit a player to restore your team.\%nl\%\%b\%Cannot become an Impostor Power or Impostor Killing role.\%/b\%</string>
-  <string name="ExtensionRoleLonerWikiDescription">The Loner is an Impostor Power role that starts the game with one fewer Impostor teammate than the lobby setting. During a meeting, the Loner can recruit a living non-Impostor into the Impostor team. If Loner becomes a random Impostor role after enough kills, it cannot become an Impostor Power or Impostor Killing role.</string>
+  <string name="ExtensionRoleLonerIntroBlurb">Recruit your missing teammate</string>
+  <string name="ExtensionRoleLonerTabDescription">Recruit during meetings to restore your team. \%b\%Cannot become an Impostor Power or Killing role.\%/b\%</string>
+  <string name="ExtensionRoleLonerWikiDescription">The Loner is an Impostor Power role that starts with one fewer teammate. Recruit a non-Impostor during a meeting to restore your team. After recruiting, kill enough players to gain a new Impostor role. \%b\%Cannot become an Impostor Power or Killing role.\%/b\%</string>
   <string name="ExtensionRoleLonerRecruitSuccess">You recruited &lt;player&gt; as an Impostor!</string>
   <string name="ExtensionRoleLonerRecruited">You were recruited by the Loner!</string>
-  <string name="ExtensionRoleLonerMutationNotification">Your Loner cover broke. You are now &lt;role&gt;!</string>
+  <string name="ExtensionRoleLonerMutationNotification">Your Loner cover broke! You are now &lt;role&gt;!</string>
   <string name="ExtensionRoleLonerTabKillsAfterRecruit">Kills After Recruit: {0} / {1}</string>
 
   <!-- Loner Options -->
@@ -1517,15 +1517,16 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
 
   <!-- Burrower Role -->
   <string name="ExtensionRoleBurrower">Burrower</string>
-  <string name="ExtensionRoleBurrowerIntroBlurb">Dig your own tunnel network.</string>
-  <string name="ExtensionRoleBurrowerTabDescription">Dig underground to create a vent, move while hidden, then emerge to place a linked exit vent.</string>
-  <string name="ExtensionRoleBurrowerWikiDescription">The Burrower is an Impostor Concealing role that can dig underground from a valid spot. When digging begins, the Burrower creates an entrance vent and becomes hidden while moving. When the ability ends or is used again, the Burrower emerges and creates a linked exit vent.</string>
+  <string name="ExtensionRoleBurrowerIntroBlurb">Dig hidden tunnels</string>
+  <string name="ExtensionRoleBurrowerTabDescription">Dig underground and emerge to link two vents.</string>
+  <string name="ExtensionRoleBurrowerWikiDescription">The Burrower is an Impostor Concealing role that creates hidden tunnels. Dig to enter a vent after a short delay and travel underground. Emerge to create a linked vent pair.</string>
   <string name="ExtensionRoleBurrowerDig">Dig</string>
   <string name="ExtensionRoleBurrowerEmerge">Emerge</string>
-  <string name="ExtensionRoleBurrowerDigWikiDescription">Dig underground, move while concealed, and emerge to create a linked pair of vents.</string>
+  <string name="ExtensionRoleBurrowerDigWikiDescription">Dig underground and emerge through a linked vent.</string>
 
   <!-- Burrower Options -->
   <string name="ExtensionOptionBurrowerUndergroundSpeed">Underground Max Speed</string>
+  <string name="ExtensionOptionBurrowerEnterDelay">Enter Vent Delay</string>
   <string name="ExtensionOptionBurrowerDigDuration">Dig Duration</string>
   <string name="ExtensionOptionBurrowerDigCooldown">Dig Cooldown</string>
   <string name="ExtensionOptionBurrowerMaxBurrows">Max Burrows</string>

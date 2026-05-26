@@ -64,7 +64,7 @@ public sealed class BakerRole(IntPtr cppPtr)
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = OptionGroupSingleton<BakerOptions>.Instance.CanVent,
+        CanUseVent = false,
         IntroSound = TouAudio.ToppatIntroSound,
         Icon = TouExtensionIcons.BakerRoleIcon,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),

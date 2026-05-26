@@ -55,9 +55,19 @@ public static class BurrowerPatches
     {
         var player = __instance?.myPlayer;
         var role = player?.GetRole<BurrowerRole>();
-        if (player == null || role == null || !role.IsUnderground)
+        if (player == null || role == null || (!role.IsPreparingDig && !role.IsUnderground))
         {
             return true;
+        }
+
+        if (role.IsPreparingDig)
+        {
+            if (player.AmOwner)
+            {
+                AdvancedMovementUtilities.ApplyControlledMovement(__instance, Vector2.zero, stopIfZero: true);
+            }
+
+            return false;
         }
 
         if (player.AmOwner)
@@ -103,14 +113,19 @@ public static class BurrowerPatches
                 continue;
             }
 
+            role.IsPreparingDig = false;
             role.IsUnderground = false;
             role.IsDigging = false;
+            role.PrepareDigEndTime = 0f;
             player!.Visible = true;
             player.RemoveModifier<BurrowerInvisibleModifier>();
             player.RemoveModifier<BurrowerSpeedModifier>();
         }
 
-        BurrowerSystem.Reset();
+        if (!OptionGroupSingleton<BurrowerOptions>.Instance.VentsStayAfterMeeting)
+        {
+            BurrowerSystem.Reset();
+        }
     }
 
     [HarmonyPatch(typeof(FootstepsModifier), nameof(FootstepsModifier.FixedUpdate))]
