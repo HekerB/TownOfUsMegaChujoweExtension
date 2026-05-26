@@ -12,7 +12,7 @@ public sealed class LonerOptions : AbstractOptionGroup<LonerRole>
     public override string GroupName => TouLocale.Get("ExtensionRoleLoner", "Loner");
 
     [ModdedToggleOption("ExtensionOptionLonerChangeRoleAfterKills")]
-    public bool ChangeRoleAfterKills { get; set; } = true;
+    public bool ChangeRoleAfterKills { get; set; } = false;
 
     public ModdedNumberOption KillsNeededToChangeRole { get; } = new("ExtensionOptionLonerKillsNeededToChangeRole", 2f, 1f, 5f, 1f, MiraNumberSuffixes.None)
     {
@@ -23,7 +23,7 @@ public sealed class LonerOptions : AbstractOptionGroup<LonerRole>
     public bool RecruitedImpostorBecomesAssassin { get; set; } = false;
 
     [ModdedToggleOption("ExtensionOptionLonerRecruitBecomesTraitor")]
-    public bool RecruitBecomesTraitor { get; set; } = true;
+    public bool RecruitBecomesTraitor { get; set; } = false;
 
     [ModdedToggleOption("ExtensionOptionLonerRemoveExistingImpostorRoles")]
     public bool RemoveExistingImpostorRoles { get; set; } = true;

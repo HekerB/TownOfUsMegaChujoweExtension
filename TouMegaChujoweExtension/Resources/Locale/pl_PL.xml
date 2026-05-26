@@ -18,25 +18,6 @@
   <string name="DraftAlertStartOnly">Tylko na poczatku</string>
   <string name="DraftAlertEndOnly">Tylko na koncu</string>
   <string name="DraftAlertStartAndEnd">Na poczatku i koncu</string>
-  
-  <!-- Joker PiP Local Settings -->
-  <string name="JokerPiPLocation">Polozenie okna PiP Jokera</string>
-  <string name="JokerPiPSize">Rozmiar okna PiP Jokera</string>
-
-  <!-- Joker PiP Location enum values -->
-  <string name="PiPLocationTopLeft">Gorny lewy</string>
-  <string name="PiPLocationMiddleLeft">Srodkowy lewy</string>
-  <string name="PiPLocationBottomLeft">Dolny lewy</string>
-  <string name="PiPLocationTopRight">Gorny prawy</string>
-  <string name="PiPLocationMiddleRight">Srodkowy prawy</string>
-  <string name="PiPLocationBottomRight">Dolny prawy</string>
-  <string name="PiPLocationDynamic">Dynamiczny</string>
-
-  <!-- Joker PiP Size enum values -->
-  <string name="PiPSizeNormal">Normalny</string>
-  <string name="PiPSizeSmall">Maly</string>
-  <string name="PiPSizeLarge">Duzy</string>
-  
   <!-- Renamed Trapper to Revealer -->
   <string name="TouRoleRevealer">Revealer</string>
   <string name="TouRoleRevealerIntroBlurb">Rozstawiaj pulapki, aby ujawniac role graczy.</string>
@@ -325,34 +306,6 @@
   <!-- Pirate Death Message -->
   <string name="ExtensionDiedToPirate">Przegral pojedynek</string>
   <string name="ExtensionDiedByPirateDuel">Pokonany w pojedynku przez &lt;player&gt;</string>
-  
-  <!-- Joker Role -->
-  <string name="ExtensionRoleJoker">Joker</string>
-  <string name="ExtensionRoleJokerIntroBlurb">Myl mordercow klonami, aby wygrac jako cel.</string>
-  <string name="ExtensionRoleJokerTabDescription">Stawiaj klony prawdziwych graczy.\%nl\%Wygrywasz, gdy zabojcy niszcza klony.</string>
-  <string name="ExtensionRoleJokerWikiDescription">Joker moze umieszczac klony wybranego gracza na mapie. Jesli role zabijajace wyeliminuja wystarczajaco duzo klonow, wygrywasz!</string>
-
-  <string name="ExtensionRoleJokerPlaceClone">Postaw klona</string>
-  <string name="ExtensionRoleJokerPlaceCloneWiki">Postaw klona</string>
-  <string name="ExtensionRoleJokerPlaceCloneWikiDescription">Otworz menu wyboru gracza, a nastepnie postaw klona z jego wygladem w swojej obecnej lokalizacji.</string>
-
-  <!-- Joker Options (removed MaxClones + Lifespan) -->
-  <string name="ExtensionOptionJokerKillsToWin">Liczba zabojstw potrzebnych do wygranej</string>
-  <string name="ExtensionOptionJokerCloneCooldown">Cooldown klona</string>
-  <string name="ExtensionOptionJokerCloneSpeed">Predkosc klona</string>
-
-  <string name="ExtensionOptionJokerWinMode">Warunek wygranej</string>
-  <string name="JokerWinOptionsSoloWin">Konczy gre (samotna wygrana)</string>
-  <string name="JokerWinOptionsWinWithWinners">Wygrywa ze zwyciezcami</string>
-
-  <!-- Joker Notifications -->
-  <string name="ExtensionRoleJokerFooledNotif">Dales sie nabrac!</string>
-  <string name="ExtensionRoleJokerCloneKilledNotif">Klon zabity!</string>
-  <string name="ExtensionRoleJokerObjectiveCompleteNotif">Cel osiagniety! Przezyj, aby wygrac.</string>
-
-  <!-- Joker Win -->
-  <string name="ExtensionRoleJokerWinText">Joker wygrywa!</string>
-  <string name="ExtensionJokerWins">Wygrywa</string>
   
   <!-- Pope Role -->
   <string name="ExtensionRolePope">Pope</string>
@@ -1266,6 +1219,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionGeneralJackalChatDisplayName">Prywatny czat Rekrutow</string>
   <string name="ExtensionGameMechanicOptionsGroupName">Mechaniki gry</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Rekruci widza swoje role</string>
+  <string name="ExtensionOptionGameMechanicBakerFaminePlagueAlliance">Baker/Famine i Plaguebearer/Pestilence wygrywaja razem</string>
 
   <string name="Sidekick">Rekrut</string>
   <string name="SidekickIntroBlurb">Zostałeś zwerbowany przez Infiltratora. Musisz zdradzić swoją drużynę.</string>
@@ -1462,6 +1416,74 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionGunGameMaxRememberedRoles">Maks. zapamietanych rol</string>
   <string name="ExtensionOptionGunGameRemoveExistingImpostorRoles">Omijaj istniejace role Impostora</string>
 
+  <!-- Joker Local Settings -->
+  <string name="JokerPiPLocation">Polozenie okna PiP Jokera</string>
+  <string name="JokerPiPSize">Rozmiar okna PiP Jokera</string>
+  <string name="PiPLocationOff">Wylaczone</string>
+  <string name="PiPLocationTopLeft">Lewy gorny rog</string>
+  <string name="PiPLocationTopRight">Prawy gorny rog</string>
+  <string name="PiPLocationBottomLeft">Lewy dolny rog</string>
+  <string name="PiPLocationBottomRight">Prawy dolny rog</string>
+  <string name="PiPLocationCenterLeft">Srodek po lewej</string>
+  <string name="PiPLocationCenterRight">Srodek po prawej</string>
+  <string name="PiPLocationAboveTasks">Nad zadaniami</string>
+  <string name="PiPSizeSmall">Maly</string>
+  <string name="PiPSizeMedium">Sredni</string>
+  <string name="PiPSizeLarge">Duzy</string>
+
+  <!-- Joker Role -->
+  <string name="ExtensionRoleJoker">Joker</string>
+  <string name="ExtensionRoleJokerIntroBlurb">Nabieraj zabojcow na swoje klony.</string>
+  <string name="ExtensionRoleJokerTabDescription">Stawiaj klony prawdziwych graczy.\%nl\%Wygrywasz, gdy zabojcy zniszcza wystarczajaco duzo klonow.</string>
+  <string name="ExtensionRoleJokerWikiDescription">Joker to rola Neutral Evil, ktora stawia na mapie klony zywych graczy. Tablet pokazuje wszystkich zywych graczy, lacznie z Jokerem, wiec klon moze skopiowac dowolny zywy wyglad. Jesli role zabijajace zniszcza wystarczajaco duzo klonow, Joker albo konczy gre samotna wygrana, albo dostaje status Victorious i wygrywa razem z koncowymi zwyciezcami, zaleznie od opcji lobby.</string>
+  <string name="ExtensionRoleJokerTabClonesKilled">Zabite klony: {0} / {1}</string>
+  <string name="ExtensionRoleJokerTabObjectiveComplete">&lt;b&gt;Cel osiagniety!&lt;/b&gt;</string>
+  <string name="ExtensionRoleJokerPlaceClone">Postaw klona</string>
+  <string name="ExtensionRoleJokerPlaceCloneWiki">Postaw klona</string>
+  <string name="ExtensionRoleJokerPlaceCloneWikiDescription">Otworz menu ze wszystkimi zywymi graczami, wybierz czyj wyglad skopiowac, podejrzyj klona w swojej obecnej pozycji, a potem potwierdz postawienie.</string>
+  <string name="ExtensionOptionJokerKillsToWin">Zabojstwa klonow potrzebne do wygranej</string>
+  <string name="ExtensionOptionJokerCloneCooldown">Cooldown klona</string>
+  <string name="ExtensionOptionJokerMaxClones">Maksymalna liczba klonow</string>
+  <string name="ExtensionOptionJokerResetClonesEachMeeting">Resetuj klony po kazdym spotkaniu</string>
+  <string name="ExtensionOptionJokerMoveWithTablet">Moze chodzic z tabletem</string>
+  <string name="ExtensionOptionJokerWinMode">Warunek wygranej</string>
+  <string name="JokerWinOptionsSoloWin">Konczy gre (samotna wygrana)</string>
+  <string name="JokerWinOptionsWinWithWinners">Wygrywa ze zwyciezcami</string>
+  <string name="ExtensionRoleJokerFooledNotif">Dales sie nabrac!</string>
+  <string name="ExtensionRoleJokerCloneKilledNotif">Klon zabity!</string>
+  <string name="ExtensionRoleJokerObjectiveCompleteNotif">Cel osiagniety! Masz teraz status Victorious.</string>
+  <string name="ExtensionRoleJokerWinText">Joker wygrywa!</string>
+  <string name="ExtensionJokerWins">Wygrywa</string>
+
+  <!-- Baker / Famine Role -->
+  <string name="ExtensionRoleBaker">Baker</string>
+  <string name="ExtensionRoleBakerIntroBlurb">Daj chleb, aby zostac &lt;b&gt;&lt;color=#B2672E&gt;Famine&lt;/color&gt;&lt;/b&gt;</string>
+  <string name="ExtensionRoleBakerTabDescription">Dawaj chleb zywym graczom.\%nl\%Na meetingu wystarczajaca liczba graczy z chlebem przemienia Cie w Famine.</string>
+  <string name="ExtensionRoleBakerWikiDescription">Baker to rola Neutral Killing, ktora zaczyna od rozdawania chleba innym graczom. W kazdej rundzie Baker moze dac chleb jednemu zyjacego graczowi, ktory jeszcze go nie ma. Gdy na poczatku meetingu wystarczajaco wielu zywych graczy ma chleb, Baker przemienia sie w Famine.</string>
+  <string name="ExtensionRoleBakerGive">Daj chleb</string>
+  <string name="ExtensionRoleBakerGiveWikiDescription">Daj chleb pobliskiemu zyjacego graczowi. Gracz moze dostac chleb tylko raz.</string>
+  <string name="ExtensionRoleBakerFamineAnnouncement">&lt;b&gt;Rozdawca chleba powstal jako Famine, Jezdziec Apokalipsy!&lt;/b&gt;</string>
+  <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} umarl z Twoim chlebem!</string>
+  <string name="ExtensionRoleFamineAllBreadTargetsDead">Wszyscy oznaczeni chlebem gracze umarli. Mozesz teraz glodzic kazdego!</string>
+  <string name="ExtensionBakerFaminePlagueWins">Famine i Plague wygrywaja</string>
+  <string name="ExtensionRoleFamine">Famine</string>
+  <string name="ExtensionRoleFamineIntroBlurb">Zaglodz nakarmionych i zakoncz swiat.</string>
+  <string name="ExtensionRoleFamineTabDescription">Glodz graczy, ktorzy maja chleb.\%nl\%Oznaczeni gracze umieraja na nastepnym meetingu.</string>
+  <string name="ExtensionRoleFamineWikiDescription">Famine to przemieniony Baker. Famine jest niezgadywalny, ma wizje Impostora i ochrone. Famine moze oznaczac graczy z chlebem; oznaczeni gracze gloduja i umieraja na kolejnym meetingu. Gdy zaden zywy cel z chlebem albo glodem nie zostanie, Famine zagladza wszystkich pozostalych.</string>
+  <string name="ExtensionRoleFamineStarve">Glodz</string>
+  <string name="ExtensionRoleFamineStarveWikiDescription">Oznacz pobliskiego gracza z chlebem. Umrze z glodu na nastepnym meetingu.</string>
+  <string name="ExtensionOptionBakerBreadNeeded">Potrzebny chleb</string>
+  <string name="ExtensionOptionBakerGiveCooldown">Cooldown dawania chleba</string>
+  <string name="ExtensionOptionBakerInstantFamineChance">Szansa na instant Famine</string>
+  <string name="ExtensionOptionBakerStarveCooldown">Cooldown glodzenia</string>
+  <string name="ExtensionOptionBakerCanVent">Famine moze uzywac ventow</string>
+  <string name="ExtensionOptionBakerAnnounceFamine">Oglos przemiane w Famine</string>
+  <string name="ExtensionModifierBakerBread">Ma chleb</string>
+  <string name="ExtensionModifierBakerBreadReveal">Znak chleba</string>
+  <string name="ExtensionModifierFamineStarved">Gloduje</string>
+  <string name="DiedToStarved">Zagłodzony</string>
+  <string name="ExtensionFamineWins">Wygrywa</string>
+
   <!-- Loner Role -->
   <string name="ExtensionRoleLoner">Loner</string>
   <string name="ExtensionRoleLonerIntroBlurb">Zwerbuj Impostora z ukrycia.</string>
@@ -1478,6 +1500,23 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionLonerRecruitedImpostorBecomesAssassin">Zwerbowany Impostor staje sie Assassinem</string>
   <string name="ExtensionOptionLonerRecruitBecomesTraitor">Rekrut staje sie Traitorem</string>
   <string name="ExtensionOptionLonerRemoveExistingImpostorRoles">Omijaj role Impostora uzyte w tej grze</string>
+
+  <!-- Burrower Role -->
+  <string name="ExtensionRoleBurrower">Burrower</string>
+  <string name="ExtensionRoleBurrowerIntroBlurb">Wykop wlasna siec tuneli.</string>
+  <string name="ExtensionRoleBurrowerTabDescription">Zakop sie pod ziemie, aby stworzyc vent, poruszaj sie w ukryciu, a potem wynurz sie i postaw polaczony vent wyjsciowy.</string>
+  <string name="ExtensionRoleBurrowerWikiDescription">Burrower to rola Impostor Concealing, ktora moze zakopac sie pod ziemie w poprawnym miejscu. Przy rozpoczeciu kopania tworzy wejscie do venta i ukrywa sie podczas ruchu. Gdy umiejetnosc sie skonczy albo zostanie uzyta ponownie, Burrower wynurza sie i tworzy polaczony vent wyjsciowy.</string>
+  <string name="ExtensionRoleBurrowerDig">Kop</string>
+  <string name="ExtensionRoleBurrowerEmerge">Wynurz</string>
+  <string name="ExtensionRoleBurrowerDigWikiDescription">Zakop sie pod ziemie, poruszaj sie w ukryciu i wynurz sie, aby stworzyc polaczona pare ventow.</string>
+
+  <!-- Burrower Options -->
+  <string name="ExtensionOptionBurrowerUndergroundSpeed">Maks. predkosc pod ziemia</string>
+  <string name="ExtensionOptionBurrowerDigDuration">Czas kopania</string>
+  <string name="ExtensionOptionBurrowerDigCooldown">Cooldown kopania</string>
+  <string name="ExtensionOptionBurrowerMaxBurrows">Maks. wykopy</string>
+  <string name="ExtensionOptionBurrowerEmergeVisionDuration">Czas slabej wizji po wynurzeniu</string>
+  <string name="ExtensionOptionBurrowerVentsStayAfterMeeting">Venty zostaja po meetingu</string>
 
   <string name="ExtensionRoleGunGameMutationNotification">ROLA ZMIENIONA! Teraz jestes &lt;role&gt;!</string>
   <string name="ExtensionRoleGunGameProgressRandom">Tryb: losowa rola po wymaganych zabojstwach</string>

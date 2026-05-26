@@ -1,0 +1,242 @@
+using System;
+using System.Collections.Generic;
+using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
+using MiraAPI.Patches.Stubs;
+using MiraAPI.Roles;
+using Reactor.Networking.Attributes;
+using TouMegaChujoweExtension.Assets;
+using TouMegaChujoweExtension.Buttons.Classic.Impostor;
+using TouMegaChujoweExtension.Modifiers.Impostor;
+using TouMegaChujoweExtension.Networking;
+using TouMegaChujoweExtension.Options.Roles.Impostor;
+using TownOfUs.Assets;
+using TownOfUs.Extensions;
+using TownOfUs.Interfaces;
+using TownOfUs.Modules.Localization;
+using TownOfUs.Modules.Wiki;
+using TownOfUs.Roles;
+using TownOfUs.Roles.Impostor;
+using TownOfUs.Utilities;
+using UnityEngine;
+
+namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
+
+public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+{
+    public string LocaleKey => "Burrower";
+    public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Burrower");
+    public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
+    public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
+
+    public string GetAdvancedDescription()
+    {
+        return TouLocale.GetParsed($"ExtensionRole{LocaleKey}WikiDescription") + MiscUtils.AppendOptionsText(GetType());
+    }
+
+    public Color RoleColor => TouExtensionColors.Burrower;
+    public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
+    public RoleAlignment RoleAlignment => RoleAlignment.ImpostorConcealing;
+
+    public CustomRoleConfiguration Configuration => new(this)
+    {
+        Icon = TouExtensionIcons.BurrowerRoleIcon,
+        OptionsScreenshot = TouBanners.ImpostorRoleBanner
+    };
+
+    [HideFromIl2Cpp]
+    public List<Type> RoleButtons => [typeof(BurrowerDigButton)];
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities =>
+    [
+        new(TouLocale.GetParsed("ExtensionRoleBurrowerDig", "Dig"),
+            TouLocale.GetParsed("ExtensionRoleBurrowerDigWikiDescription"),
+            TouImpAssets.MineSprite)
+    ];
+
+    public bool IsUnderground { get; set; }
+    public bool IsDigging { get; set; }
+    public float BurrowStartTime { get; set; }
+    public float DigEndTime { get; set; }
+    public float EmergeTime { get; set; }
+    public int NextVentIndex { get; set; }
+    private const float UndergroundAccelerationDuration = 1.5f;
+
+    [HideFromIl2Cpp]
+    public Vent? FirstVent { get; set; }
+
+    public override void Initialize(PlayerControl player)
+    {
+        RoleBehaviourStubs.Initialize(this, player);
+        IsUnderground = false;
+        IsDigging = false;
+        BurrowStartTime = 0f;
+        EmergeTime = -999f;
+        FirstVent = null;
+        NextVentIndex = 0;
+    }
+
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+        Modules.BurrowerSystem.Reset();
+    }
+
+    public void Update()
+    {
+        if (Player == null || !Player.AmOwner || !IsDigging)
+        {
+            return;
+        }
+
+        if (Time.time >= DigEndTime)
+        {
+            if (!Modules.BurrowerSystem.TryFindVentPlacementPosition(Player, Player.GetTruePosition(), out var emergePosition))
+            {
+                return;
+            }
+
+            RpcEmerge(Player, emergePosition);
+        }
+    }
+
+    public float GetUndergroundSpeedMultiplier()
+    {
+        var maxSpeed = OptionGroupSingleton<BurrowerOptions>.Instance.UndergroundSpeed;
+        var acceleration = Mathf.Clamp01((Time.time - BurrowStartTime) / UndergroundAccelerationDuration);
+        return Mathf.Lerp(1f, maxSpeed, acceleration);
+    }
+
+    [MethodRpc((uint)ExtensionRpc.BurrowerUnderground)]
+    public static void RpcUnderground(PlayerControl player, Vector2 position)
+    {
+        if (!player.IsRole<BurrowerRole>())
+        {
+            return;
+        }
+
+        var role = player.GetRole<BurrowerRole>();
+        if (role == null || role.IsUnderground)
+        {
+            return;
+        }
+
+        if (!Modules.BurrowerSystem.TryFindVentPlacementPosition(player, position, out var ventPosition))
+        {
+            return;
+        }
+
+        role.IsUnderground = true;
+        role.IsDigging = true;
+        role.BurrowStartTime = Time.time;
+        role.DigEndTime = Time.time + OptionGroupSingleton<BurrowerOptions>.Instance.DigDuration;
+
+        var ventId = 5200 + player.PlayerId * 100 + role.NextVentIndex * 2;
+        var vent = Modules.BurrowerSystem.SpawnVent(player, ventId, ventPosition);
+        role.FirstVent = vent;
+
+        player.AddModifier<BurrowerInvisibleModifier>();
+        player.AddModifier<BurrowerSpeedModifier>(OptionGroupSingleton<BurrowerOptions>.Instance.UndergroundSpeed);
+        TouAudio.PlaySound(TouAudio.MineSound, 0.8f);
+
+        if (player.AmOwner && player.MyPhysics != null)
+        {
+            player.MyPhysics.RpcEnterVent(ventId);
+        }
+    }
+
+    [MethodRpc((uint)ExtensionRpc.BurrowerEmerge)]
+    public static void RpcEmerge(PlayerControl player, Vector2 position)
+    {
+        if (!player.IsRole<BurrowerRole>())
+        {
+            return;
+        }
+
+        var role = player.GetRole<BurrowerRole>();
+        if (role == null || !role.IsUnderground)
+        {
+            return;
+        }
+
+        if (!Modules.BurrowerSystem.TryFindVentPlacementPosition(player, position, out var ventPosition))
+        {
+            return;
+        }
+
+        role.IsUnderground = false;
+        role.IsDigging = false;
+
+        var ventId = 5200 + player.PlayerId * 100 + role.NextVentIndex * 2 + 1;
+        var vent = Modules.BurrowerSystem.SpawnVent(player, ventId, ventPosition);
+        role.NextVentIndex++;
+        TouAudio.PlaySound(TouAudio.MineSound, 0.8f);
+
+        var firstVent = role.FirstVent;
+        if (firstVent != null)
+        {
+            firstVent.Left = vent;
+            firstVent.Right = vent;
+            vent.Left = firstVent;
+            vent.Right = firstVent;
+        }
+
+        player.RemoveModifier<BurrowerInvisibleModifier>();
+        player.RemoveModifier<BurrowerSpeedModifier>();
+
+        if (!player.AmOwner)
+        {
+            return;
+        }
+
+        role.EmergeTime = Time.time;
+        player.MyPhysics?.RpcExitVent(ventId);
+
+        if (BurrowerDigButton.Instance != null)
+        {
+            BurrowerDigButton.Instance.Timer = BurrowerDigButton.Instance.Cooldown;
+        }
+    }
+
+    [MethodRpc((uint)ExtensionRpc.BurrowerCancel)]
+    public static void RpcCancel(PlayerControl player)
+    {
+        if (!player.IsRole<BurrowerRole>())
+        {
+            return;
+        }
+
+        var role = player.GetRole<BurrowerRole>();
+        if (role == null || !role.IsUnderground || !role.IsDigging)
+        {
+            return;
+        }
+
+        var firstVent = role.FirstVent;
+        role.IsUnderground = false;
+        role.IsDigging = false;
+        role.FirstVent = null;
+
+        player.RemoveModifier<BurrowerInvisibleModifier>();
+        player.RemoveModifier<BurrowerSpeedModifier>();
+
+        if (player.AmOwner)
+        {
+            role.EmergeTime = Time.time;
+
+            if (firstVent != null)
+            {
+                player.MyPhysics?.RpcExitVent(firstVent.Id);
+            }
+
+            if (BurrowerDigButton.Instance != null)
+            {
+                BurrowerDigButton.Instance.Timer = BurrowerDigButton.Instance.Cooldown;
+            }
+        }
+
+        Modules.BurrowerSystem.RemoveVent(firstVent);
+    }
+}

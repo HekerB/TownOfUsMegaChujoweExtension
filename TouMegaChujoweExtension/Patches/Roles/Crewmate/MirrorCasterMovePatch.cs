@@ -9,6 +9,8 @@ using TownOfUs.Buttons;
 using TownOfUs.Modules;
 using TownOfUs.Utilities;
 using MiraAPI.Hud;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
+using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Crewmate;
@@ -26,9 +28,7 @@ public static class MirrorCasterMovePatch
         // If chat is open, do not override moveable state
         if (HudManager.Instance != null && HudManager.Instance.Chat != null && HudManager.Instance.Chat.IsOpenOrOpening) return;
 
-        if (__instance.IsRole<MirrorcasterRole>() &&
-            OptionGroupSingleton<MirrorCasterExtensionOptions>.Instance.MoveWhileMenu &&
-            (Minigame.Instance is CustomPlayerMenu || (MapBehaviour.Instance != null && MapBehaviour.Instance.gameObject.activeSelf)))
+        if (CanMoveWithOpenMenu(__instance))
         {
             __instance.moveable = true;
         }
@@ -41,8 +41,7 @@ public static class MirrorCasterMovePatch
     {
         if (!__instance.AmOwner || MeetingHud.Instance != null || ExileController.Instance != null) return;
 
-        if (__instance.IsRole<MirrorcasterRole>() &&
-            OptionGroupSingleton<MirrorCasterExtensionOptions>.Instance.MoveWhileMenu)
+        if (CanMoveWithOpenMenu(__instance))
         {
             // If chat is open or opening, immediately stop any movement velocity and return
             if (HudManager.Instance != null && HudManager.Instance.Chat != null && HudManager.Instance.Chat.IsOpenOrOpening)
@@ -77,5 +76,18 @@ public static class MirrorCasterMovePatch
                 }
             }
         }
+    }
+
+    private static bool CanMoveWithOpenMenu(PlayerControl player)
+    {
+        var customPlayerMenuOpen = Minigame.Instance is CustomPlayerMenu;
+        var mapOpen = MapBehaviour.Instance != null && MapBehaviour.Instance.gameObject.activeSelf;
+
+        return player.IsRole<MirrorcasterRole>() &&
+                   OptionGroupSingleton<MirrorCasterExtensionOptions>.Instance.MoveWhileMenu &&
+                   (customPlayerMenuOpen || mapOpen) ||
+               player.IsRole<JokerRole>() &&
+                   OptionGroupSingleton<JokerOptions>.Instance.MoveWithTablet &&
+                   customPlayerMenuOpen;
     }
 }

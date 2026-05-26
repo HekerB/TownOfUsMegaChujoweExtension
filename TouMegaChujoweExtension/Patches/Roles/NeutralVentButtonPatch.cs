@@ -31,6 +31,10 @@ public static class NeutralVentButtonPatch
         {
             customSprite = TouExtensionNeuAssets.DoppelgangerVentSprite.LoadAsset();
         }
+        else if (player.IsRole<FamineRole>())
+        {
+            customSprite = TouExtensionNeuAssets.DoppelgangerVentSprite.LoadAsset();
+        }
         else if (player.IsRole<VultureRole>())
         {
             customSprite = TownOfUs.Assets.TouNeutAssets.WerewolfVentSprite.LoadAsset();
@@ -58,6 +62,7 @@ public static class NeutralVentButtonPatch
         if (role is SerialKillerRole) roleColor = TouExtensionColors.SerialKiller;
         else if (role is ShroudRole) roleColor = TouExtensionColors.Shroud;
         else if (role is DoppelgangerRole) roleColor = TouExtensionColors.Doppelganger;
+        else if (role is FamineRole) roleColor = TouExtensionColors.Famine;
         else if (role is VultureRole) roleColor = TouExtensionColors.Vulture;
         else if (role is PelicanRole) roleColor = TouExtensionColors.Pelican;
         else if (role is JackalRole) roleColor = TouExtensionColors.Jackal;

@@ -27,7 +27,7 @@ public sealed class SpeedyAccelerateButton : TownOfUsRoleButton<SpeedyRole>
         }
     }
     public override float EffectDuration => OptionGroupSingleton<SpeedyOptions>.Instance.AccelerateDuration;
-    public override LoadableAsset<Sprite> Sprite => TouImpAssets.SprintSprite;
+    public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.NoAbilityButtonSprite;
 
     public override bool HasEffect => true;
     public override bool ZeroIsInfinite { get; set; } = true;
@@ -78,28 +78,35 @@ public sealed class SpeedyAccelerateButton : TownOfUsRoleButton<SpeedyRole>
             return;
         }
 
-        bool killMade = Role != null && Role.KillsCount > 0;
+        var killMade = Role != null && Role.KillsCount > 0;
         if (Button != null)
         {
-            Button.gameObject.SetActive(killMade && (HudManager.Instance.UseButton.isActiveAndEnabled ||
-                                                     HudManager.Instance.PetButton.isActiveAndEnabled));
+            Button.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled ||
+                                        HudManager.Instance.PetButton.isActiveAndEnabled);
         }
-
-        if (!killMade) return;
 
         base.FixedUpdate(playerControl);
 
         if (Button == null) return;
 
+        OverrideSprite(killMade
+            ? TouImpAssets.SprintSprite.LoadAsset()
+            : TouExtensionImpAssets.NoAbilityButtonSprite.LoadAsset());
+
         if (Button.graphic != null)
         {
-            Button.graphic.color = Color.white;
-            Button.graphic.material.SetFloat("_Desat", 0f);
+            Button.graphic.color = killMade ? Color.white : Palette.DisabledClear;
+            Button.graphic.material.SetFloat("_Desat", killMade ? 0f : 1f);
         }
 
         if (Button.buttonLabelText != null)
         {
-            if (EffectActive)
+            if (!killMade)
+            {
+                Button.buttonLabelText.color = Palette.DisabledClear;
+                Button.buttonLabelText.alpha = 0.75f;
+            }
+            else if (EffectActive)
             {
                 Button.buttonLabelText.color = Color.white;
                 Button.buttonLabelText.alpha = 1f;

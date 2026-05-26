@@ -19,25 +19,6 @@
   <string name="DraftAlertEndOnly">End Only</string>
   <string name="DraftAlertStartAndEnd">Start and End</string>
 
-  
-  <!-- Joker PiP Local Settings  -->
-  <string name="JokerPiPLocation">Joker PiP Location</string>
-  <string name="JokerPiPSize">Joker PiP Size</string>
-
-  <!-- Joker PiP Location enum values -->
-  <string name="PiPLocationTopLeft">Top Left</string>
-  <string name="PiPLocationMiddleLeft">Middle Left</string>
-  <string name="PiPLocationBottomLeft">Bottom Left</string>
-  <string name="PiPLocationTopRight">Top Right</string>
-  <string name="PiPLocationMiddleRight">Middle Right</string>
-  <string name="PiPLocationBottomRight">Bottom Right</string>
-  <string name="PiPLocationDynamic">Dynamic</string>
-
-  <!-- Joker PiP Size enum values -->
-  <string name="PiPSizeNormal">Normal</string>
-  <string name="PiPSizeSmall">Small</string>
-  <string name="PiPSizeLarge">Large</string>
-  
   <!-- Renamed Trapper to Revealer -->
   <string name="TouRoleRevealer">Revealer</string>
   <string name="TouRoleRevealerIntroBlurb">Place traps to reveal players' roles.</string>
@@ -327,34 +308,6 @@
   <!-- Pirate Death Message -->
   <string name="ExtensionDiedToPirate">Lost Duel</string>
   <string name="ExtensionDiedByPirateDuel">Dueled by &lt;player&gt;</string>
-  
-  <!-- Joker Role -->
-  <string name="ExtensionRoleJoker">Joker</string>
-  <string name="ExtensionRoleJokerIntroBlurb">Trick killers into attacking your clones!</string>
-  <string name="ExtensionRoleJokerTabDescription">Place clones of real players.\%nl\%Win if killers destroy enough clones.</string>
-  <string name="ExtensionRoleJokerWikiDescription">The Joker can place clones of chosen player around map. If killing roles eliminate enough clones, you win!</string>
-
-  <string name="ExtensionRoleJokerPlaceClone">Place Clone</string>
-  <string name="ExtensionRoleJokerPlaceCloneWiki">Place Clone</string>
-  <string name="ExtensionRoleJokerPlaceCloneWikiDescription">Open a menu to select a player, then place a clone with their appearance at your current location.</string>
-
-  <!-- Joker Options -->
-  <string name="ExtensionOptionJokerKillsToWin">Kills Needed to Win</string>
-  <string name="ExtensionOptionJokerCloneCooldown">Clone Cooldown</string>
-  <string name="ExtensionOptionJokerCloneSpeed">Clone Speed</string>
-
-  <string name="ExtensionOptionJokerWinMode">Win Condition</string>
-  <string name="JokerWinOptionsSoloWin">Ends Game (Solo)</string>
-  <string name="JokerWinOptionsWinWithWinners">Win With Winners</string>
-
-  <!-- Joker Notifications -->
-  <string name="ExtensionRoleJokerFooledNotif">You've been fooled!</string>
-  <string name="ExtensionRoleJokerCloneKilledNotif">Clone killed!</string>
-  <string name="ExtensionRoleJokerObjectiveCompleteNotif">Objective Complete! Survive to win.</string>
-
-  <!-- Joker Win -->
-  <string name="ExtensionRoleJokerWinText">Joker Wins!</string>
-  <string name="ExtensionJokerWins">Wins</string>
   
   <!-- Pope Role -->
   <string name="ExtensionRolePope">Pope</string>
@@ -1265,6 +1218,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionGeneralJackalChatDisplayName">Recruits Private Chat</string>
   <string name="ExtensionGameMechanicOptionsGroupName">Game Mechanics</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Recruits See Each Other's Role</string>
+  <string name="ExtensionOptionGameMechanicBakerFaminePlagueAlliance">Baker/Famine &amp; Plaguebearer/Pestilence Win Together</string>
 
   <string name="Sidekick">Recruit</string>
   <string name="SidekickIntroBlurb">You have been recruited by the Infiltrator. You must betray your team.</string>
@@ -1476,6 +1430,74 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionGunGameMaxRememberedRoles">Max Remembered Roles</string>
   <string name="ExtensionOptionGunGameRemoveExistingImpostorRoles">Avoid Existing Impostor Roles</string>
 
+  <!-- Joker Local Settings -->
+  <string name="JokerPiPLocation">Joker PiP Location</string>
+  <string name="JokerPiPSize">Joker PiP Size</string>
+  <string name="PiPLocationOff">Off</string>
+  <string name="PiPLocationTopLeft">Top Left</string>
+  <string name="PiPLocationTopRight">Top Right</string>
+  <string name="PiPLocationBottomLeft">Bottom Left</string>
+  <string name="PiPLocationBottomRight">Bottom Right</string>
+  <string name="PiPLocationCenterLeft">Center Left</string>
+  <string name="PiPLocationCenterRight">Center Right</string>
+  <string name="PiPLocationAboveTasks">Above Tasks</string>
+  <string name="PiPSizeSmall">Small</string>
+  <string name="PiPSizeMedium">Medium</string>
+  <string name="PiPSizeLarge">Large</string>
+
+  <!-- Joker Role -->
+  <string name="ExtensionRoleJoker">Joker</string>
+  <string name="ExtensionRoleJokerIntroBlurb">Trick killers into attacking your clones.</string>
+  <string name="ExtensionRoleJokerTabDescription">Place clones of real players.\%nl\%Win if killers destroy enough clones.</string>
+  <string name="ExtensionRoleJokerWikiDescription">The Joker is a Neutral Evil role that places clones of living players around the map. The tablet shows every living player, including the Joker, so the clone can copy any living appearance. If killing roles destroy enough clones, the Joker either ends the game with a solo win or earns Victorious status and wins with the eventual winners, depending on the lobby option.</string>
+  <string name="ExtensionRoleJokerTabClonesKilled">Clones Killed: {0} / {1}</string>
+  <string name="ExtensionRoleJokerTabObjectiveComplete">&lt;b&gt;Objective Complete!&lt;/b&gt;</string>
+  <string name="ExtensionRoleJokerPlaceClone">Place Clone</string>
+  <string name="ExtensionRoleJokerPlaceCloneWiki">Place Clone</string>
+  <string name="ExtensionRoleJokerPlaceCloneWikiDescription">Open a player menu with all living players, choose whose appearance to copy, preview their clone at your current location, then confirm to place it.</string>
+  <string name="ExtensionOptionJokerKillsToWin">Clone Kills Needed To Win</string>
+  <string name="ExtensionOptionJokerCloneCooldown">Clone Cooldown</string>
+  <string name="ExtensionOptionJokerMaxClones">Max Clones</string>
+  <string name="ExtensionOptionJokerResetClonesEachMeeting">Reset Clones Each Meeting</string>
+  <string name="ExtensionOptionJokerMoveWithTablet">Can Move With Tablet</string>
+  <string name="ExtensionOptionJokerWinMode">Win Condition</string>
+  <string name="JokerWinOptionsSoloWin">Ends Game (Solo)</string>
+  <string name="JokerWinOptionsWinWithWinners">Win With Winners</string>
+  <string name="ExtensionRoleJokerFooledNotif">You've been fooled!</string>
+  <string name="ExtensionRoleJokerCloneKilledNotif">Clone killed!</string>
+  <string name="ExtensionRoleJokerObjectiveCompleteNotif">Objective complete! You are now Victorious.</string>
+  <string name="ExtensionRoleJokerWinText">Joker Wins!</string>
+  <string name="ExtensionJokerWins">Wins</string>
+
+  <!-- Baker / Famine Role -->
+  <string name="ExtensionRoleBaker">Baker</string>
+  <string name="ExtensionRoleBakerIntroBlurb">Give bread to become &lt;b&gt;&lt;color=#B2672E&gt;Famine&lt;/color&gt;&lt;/b&gt;</string>
+  <string name="ExtensionRoleBakerTabDescription">Give bread to living players.\%nl\%At a meeting, enough bread recipients transform you into Famine.</string>
+  <string name="ExtensionRoleBakerWikiDescription">The Baker is a Neutral Killing role that starts by giving bread to other players. Each round, the Baker can give bread to one living player who does not already have bread. When enough living players have bread at the start of a meeting, the Baker transforms into Famine.</string>
+  <string name="ExtensionRoleBakerGive">Give Bread</string>
+  <string name="ExtensionRoleBakerGiveWikiDescription">Give bread to a nearby living player. A player can only receive bread once.</string>
+  <string name="ExtensionRoleBakerFamineAnnouncement">&lt;b&gt;The bread giver has risen as Famine, Horseman of the Apocalypse!&lt;/b&gt;</string>
+  <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} died with your bread!</string>
+  <string name="ExtensionRoleFamineAllBreadTargetsDead">All your breaded targets have died. You can now starve anyone!</string>
+  <string name="ExtensionBakerFaminePlagueWins">Famine &amp; Plague Win</string>
+  <string name="ExtensionRoleFamine">Famine</string>
+  <string name="ExtensionRoleFamineIntroBlurb">Starve the fed and end the world.</string>
+  <string name="ExtensionRoleFamineTabDescription">Starve players who have bread.\%nl\%Starved players die at the next meeting.</string>
+  <string name="ExtensionRoleFamineWikiDescription">Famine is the transformed Baker. Famine is unguessable, has Impostor vision, and is protected. Famine can mark players who have bread; marked players starve and die at the next meeting. Once no bread or starving targets remain alive, Famine starves everyone else.</string>
+  <string name="ExtensionRoleFamineStarve">Starve</string>
+  <string name="ExtensionRoleFamineStarveWikiDescription">Mark a nearby player who has bread. They will die from starvation at the next meeting.</string>
+  <string name="ExtensionOptionBakerBreadNeeded">Bread Needed</string>
+  <string name="ExtensionOptionBakerGiveCooldown">Give Cooldown</string>
+  <string name="ExtensionOptionBakerInstantFamineChance">Instant Famine Chance</string>
+  <string name="ExtensionOptionBakerStarveCooldown">Starve Cooldown</string>
+  <string name="ExtensionOptionBakerCanVent">Famine Can Vent</string>
+  <string name="ExtensionOptionBakerAnnounceFamine">Announce Famine Transformation</string>
+  <string name="ExtensionModifierBakerBread">Has Bread</string>
+  <string name="ExtensionModifierBakerBreadReveal">Bread Mark</string>
+  <string name="ExtensionModifierFamineStarved">Starving</string>
+  <string name="DiedToStarved">Starved</string>
+  <string name="ExtensionFamineWins">Wins</string>
+
   <!-- Loner Role -->
   <string name="ExtensionRoleLoner">Loner</string>
   <string name="ExtensionRoleLonerIntroBlurb">Recruit an Impostor from the shadows.</string>
@@ -1492,6 +1514,23 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionLonerRecruitedImpostorBecomesAssassin">Recruited Impostor Becomes Assassin</string>
   <string name="ExtensionOptionLonerRecruitBecomesTraitor">Recruit Becomes Traitor</string>
   <string name="ExtensionOptionLonerRemoveExistingImpostorRoles">Avoid Impostor Roles Used This Game</string>
+
+  <!-- Burrower Role -->
+  <string name="ExtensionRoleBurrower">Burrower</string>
+  <string name="ExtensionRoleBurrowerIntroBlurb">Dig your own tunnel network.</string>
+  <string name="ExtensionRoleBurrowerTabDescription">Dig underground to create a vent, move while hidden, then emerge to place a linked exit vent.</string>
+  <string name="ExtensionRoleBurrowerWikiDescription">The Burrower is an Impostor Concealing role that can dig underground from a valid spot. When digging begins, the Burrower creates an entrance vent and becomes hidden while moving. When the ability ends or is used again, the Burrower emerges and creates a linked exit vent.</string>
+  <string name="ExtensionRoleBurrowerDig">Dig</string>
+  <string name="ExtensionRoleBurrowerEmerge">Emerge</string>
+  <string name="ExtensionRoleBurrowerDigWikiDescription">Dig underground, move while concealed, and emerge to create a linked pair of vents.</string>
+
+  <!-- Burrower Options -->
+  <string name="ExtensionOptionBurrowerUndergroundSpeed">Underground Max Speed</string>
+  <string name="ExtensionOptionBurrowerDigDuration">Dig Duration</string>
+  <string name="ExtensionOptionBurrowerDigCooldown">Dig Cooldown</string>
+  <string name="ExtensionOptionBurrowerMaxBurrows">Max Burrows</string>
+  <string name="ExtensionOptionBurrowerEmergeVisionDuration">Emerge Low Vision Duration</string>
+  <string name="ExtensionOptionBurrowerVentsStayAfterMeeting">Vents Stay After Meeting</string>
 
   <string name="ExtensionRoleGunGameMutationNotification">ROLE CHANGED! You are now &lt;role&gt;!</string>
   <string name="ExtensionRoleGunGameProgressRandom">Mode: Random role after enough kills</string>

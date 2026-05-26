@@ -4,6 +4,7 @@ using TownOfUs.Extensions;
 using MiraAPI.Modifiers;
 using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Roles.Classic.Impostor;
+using TouMegaChujoweExtension.Modifiers.Neutral;
 using System.Collections.Generic;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Crewmate;
@@ -19,17 +20,34 @@ public static class ClericCleansePatch
             bool isVine = PoisonSystem.IsTargetVined(__instance.Player.PlayerId);
             bool isPoison = PoisonSystem.IsTargetPoisoned(__instance.Player.PlayerId);
             bool isWitchSpell = __instance.Player.HasModifier<WitchSpellboundModifier>();
+            bool hasBread = __instance.Player.HasModifier<BakerBreadModifier>();
+            bool isStarving = __instance.Player.HasModifier<FamineStarvedModifier>();
 
             var effects = new List<string>();
             if (isVine) effects.Add("Vine");
             if (isPoison) effects.Add("Poison");
             if (isWitchSpell) effects.Add("Witch Spell");
+            if (hasBread) effects.Add("Bread");
+            if (isStarving) effects.Add("Starving");
 
             if (effects.Count > 0)
             {
                 if (__instance.Cleric.AmOwner)
                 {
                     ClericCleanseOnMeetingStartPatch.CleansedPoisonPlayers[__instance.Player.PlayerId] = string.Join(", ", effects);
+                }
+
+                if (hasBread)
+                {
+                    __instance.Player.RemoveModifier<BakerBreadModifier>();
+                }
+                if (isStarving)
+                {
+                    __instance.Player.RemoveModifier<FamineStarvedModifier>();
+                }
+                if (hasBread || isStarving)
+                {
+                    __instance.Player.RemoveModifier<BakerBreadRevealModifier>();
                 }
 
                 if (__instance.Player.AmOwner)
