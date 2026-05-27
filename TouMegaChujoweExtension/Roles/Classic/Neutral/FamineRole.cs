@@ -182,6 +182,11 @@ public sealed class FamineRole(IntPtr cppPtr)
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
+        if (gameOverReason == MiraAPI.GameEnd.CustomGameOver.GameOverReason<GameOver.ExtensionNeutralGameOver>() &&
+            TouMegaChujoweExtension.Patches.WinConditions.NeutralExtensionWinCondition.IsBakerFaminePlagueAllianceWon)
+        {
+            return true;
+        }
         return WinConditionMet();
     }
 

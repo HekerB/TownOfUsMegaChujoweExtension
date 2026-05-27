@@ -1,3 +1,4 @@
+using HarmonyLib;
 using MiraAPI.GameEnd;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
@@ -10,30 +11,26 @@ using TownOfUs.Utilities;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TouMegaChujoweExtension.Modifiers.Neutral;
 using TouMegaChujoweExtension.Options;
+using TouMegaChujoweExtension.GameOver;
 using MiraAPI.Modifiers;
 using UnityEngine;
 using TownOfUs.Roles.Neutral;
 
 namespace TouMegaChujoweExtension.Patches.WinConditions;
 
-/// <summary>
-/// Centralized win condition manager for all neutral roles added by the extension.
-/// Merges logic from individual win condition files to stay organized like TOU-Mira.
-/// </summary>
 public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionWithBlocking
 {
     private bool _bhGameOverTriggered;
+    public static bool IsBakerFaminePlagueAllianceWon { get; private set; }
 
-    /// <summary>
-    /// Priority 4 - matches BountyHunter's original priority to run before Mira's NeutralRoleWinCondition (5).
-    /// </summary>
     public int Priority => 4;
-
     public bool BlocksOthers => true;
 
     public bool IsMet(LogicGameFlowNormal gameFlow)
     {
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost) return false;
+
+        IsBakerFaminePlagueAllianceWon = false;
 
         MarkJokerWinWithWinners();
 
@@ -135,6 +132,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             var winners = GetBakerFaminePlagueAllianceWinners();
             if (winners.Length > 0)
             {
+                IsBakerFaminePlagueAllianceWon = true;
                 CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners);
                 return;
             }
@@ -156,7 +154,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         if (winningJackalId.HasValue)
         {
             var winners = PlayerControl.AllPlayerControls.ToArray()
-                .Where(p => p.PlayerId == winningJackalId.Value || 
+                .Where(p => p.PlayerId == winningJackalId.Value ||
                             (p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == winningJackalId.Value))
                 .Select(p => p.Data)
                 .ToArray();
@@ -180,8 +178,8 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
         }
 
-        return PopeJudgementSystem.GlobalBombFinished || 
-               (PopeJudgementSystem.Instance != null && PopeJudgementSystem.Instance.Stage == PopeJudgementStage.Finished) || 
+        return PopeJudgementSystem.GlobalBombFinished ||
+               (PopeJudgementSystem.Instance != null && PopeJudgementSystem.Instance.Stage == PopeJudgementStage.Finished) ||
                popeRaceCondition;
     }
 
@@ -436,16 +434,36 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
     #endregion
 }
 
+[HarmonyPatch(typeof(PestilenceRole), nameof(PestilenceRole.DidWin))]
+public static class PestilenceAllianceDidWinPatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix(PestilenceRole __instance, GameOverReason gameOverReason, ref bool __result)
+    {
+        if (gameOverReason == CustomGameOver.GameOverReason<ExtensionNeutralGameOver>() &&
+            NeutralExtensionWinCondition.IsBakerFaminePlagueAllianceWon)
+        {
+            __result = true;
+            return false;
+        }
+        return true;
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
+[HarmonyPatch(typeof(PlaguebearerRole), nameof(PlaguebearerRole.DidWin))]
+public static class PlaguebearerAllianceDidWinPatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix(PlaguebearerRole __instance, GameOverReason gameOverReason, ref bool __result)
+    {
+        if (gameOverReason == CustomGameOver.GameOverReason<ExtensionNeutralGameOver>() &&
+            NeutralExtensionWinCondition.IsBakerFaminePlagueAllianceWon)
+        {
+            __result = true;
+            return false;
+        }
+        return true;
+    }
+}
 
 

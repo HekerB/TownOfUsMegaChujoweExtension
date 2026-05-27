@@ -136,7 +136,15 @@ public sealed class BakerRole(IntPtr cppPtr)
         return console == null || console.AllowImpostor;
     }
 
-    public override bool DidWin(GameOverReason gameOverReason) => false;
+    public override bool DidWin(GameOverReason gameOverReason)
+    {
+        if (gameOverReason == MiraAPI.GameEnd.CustomGameOver.GameOverReason<GameOver.ExtensionNeutralGameOver>() &&
+            TouMegaChujoweExtension.Patches.WinConditions.NeutralExtensionWinCondition.IsBakerFaminePlagueAllianceWon)
+        {
+            return true;
+        }
+        return false;
+    }
 
     [MethodRpc((uint)ExtensionRpc.BakerGiveBread)]
     public static void RpcGiveBread(PlayerControl baker, PlayerControl target)
