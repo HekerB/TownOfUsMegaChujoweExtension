@@ -14,7 +14,7 @@ public sealed class BakerOptions : AbstractOptionGroup<BakerRole>
     public float InstantFamineChance { get; set; } = 0f;
 
     [ModdedNumberOption("ExtensionOptionBakerGiveCooldown", 10f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float GiveCooldown { get; set; } = 25f;
+    public float GiveCooldown { get; set; } = 27.5f;
 
     [ModdedNumberOption("ExtensionOptionBakerBreadNeeded", 1f, 10f, 1f, MiraNumberSuffixes.None)]
     public float BreadNeeded { get; set; } = 3f;
@@ -23,7 +23,7 @@ public sealed class BakerOptions : AbstractOptionGroup<BakerRole>
     public bool AnnounceFamine { get; set; } = true;
 
     [ModdedNumberOption("ExtensionOptionBakerStarveCooldown", 5f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float StarveCooldown { get; set; } = 25f;
+    public float StarveCooldown { get; set; } = 20f;
 
     [ModdedToggleOption("ExtensionOptionBakerCanVent")]
     public bool CanVent { get; set; } = false;
