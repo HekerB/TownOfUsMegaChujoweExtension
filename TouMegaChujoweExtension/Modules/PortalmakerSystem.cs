@@ -93,10 +93,7 @@ public static class PortalmakerSystem
                 if (sr != null)
                 {
                     sr.color = Color.white;
-                    var local = PlayerControl.LocalPlayer;
-                    bool isPortalmaker = local != null && local.Data != null &&
-                        (local.GetRole<PortalmakerRole>() != null || local.Data.Role is PortalmakerRole);
-                    sr.enabled = isPortalmaker || (local != null && CanPlayerUsePortal(local));
+                    sr.enabled = true;
                 }
             }
         }
@@ -158,7 +155,7 @@ public static class PortalmakerSystem
         var local = PlayerControl.LocalPlayer;
         bool isPortalmaker = local != null && local.Data != null &&
             (local.GetRole<PortalmakerRole>() != null || local.Data.Role is PortalmakerRole);
-        renderer.enabled = isPortalmaker || (isActive && local != null && CanPlayerUsePortal(local));
+        renderer.enabled = isPortalmaker || isActive;
 
         return go;
     }
