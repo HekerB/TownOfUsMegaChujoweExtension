@@ -41,10 +41,10 @@ public sealed class PopeRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities =>
     [
-        new(TouLocale.GetParsed($"ExtensionRole{LocaleKey}Canonize", "Canonize"),
+        new(TouLocale.GetParsed($"ExtensionRole{LocaleKey}Canonize", "Give Cream Cake"),
             TouLocale.GetParsed($"ExtensionRole{LocaleKey}CanonizeWikiDescription"),
-            TouExtensionNeuAssets.PopeCanonizeButtonSprite),
-        new(TouLocale.GetParsed($"ExtensionRole{LocaleKey}Judgement", "Judgement"),
+            TouNeutAssets.ChefServeCakeSprite),
+        new(TouLocale.GetParsed($"ExtensionRole{LocaleKey}Judgement", "Sanctify"),
             TouLocale.GetParsed($"ExtensionRole{LocaleKey}JudgementWikiDescription"),
             TouExtensionNeuAssets.PopeJudgementButtonSprite)
     ];

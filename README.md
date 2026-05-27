@@ -84,6 +84,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#trapper"><img width="10%" src="./Images/Icons/Trapper_Role_Icon.png" /></a>
   <img src="./Images/Groups/ImpConcealing.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#astral"><img width="10%" src="./Images/Icons/Astral_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#burrower"><img width="10%" src="./Images/Icons/Burrower_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#speedy"><img width="10%" src="./Images/Icons/Speedy_Role_Icon.png" /></a>
   <img src="./Images/Groups/ImpKilling.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#detonator"><img width="10%" src="./Images/Icons/Detonator_Role_Icon.png" /></a>
@@ -106,10 +107,12 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#shifter"><img width="10%" src="./Images/Icons/Shifter_Role_Icon.png" /></a>
   <img src="./Images/Groups/NeutEvil.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#bounty-hunter"><img width="10%" src="./Images/Icons/BountyHunter_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#joker"><img width="10%" src="./Images/Icons/Joker_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#pirate"><img width="10%" src="./Images/Icons/Pirate_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#pope"><img width="10%" src="./Images/Icons/Pope_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#vulture"><img width="10%" src="./Images/Icons/Vulture_Icon.png" /></a>
   <img src="./Images/Groups/NeutKilling.png" align="center" />
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#baker--famine"><img width="10%" src="./Images/Icons/Baker_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#doppelganger"><img width="10%" src="./Images/Icons/Doppelganger_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#pelican"><img width="10%" src="./Images/Icons/Pelican_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#serial-killer"><img width="10%" src="./Images/Icons/SerialKiller_Role_Icon.png" /></a>
@@ -273,8 +276,9 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 > **Huge shoutout to Atony**, creator of Town of Us: Mira — roughly 80% of the art assets used in this mod originate from his work, various TOU Mira builds, and resources shared on the TOU Mira Discord. We are extremely grateful for his incredible contributions to the community.
 
 - **Asterisken** - Art for Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful, Objection Button, and Bodyguard Guard button
-- **CraftR / Town of Us Discord** - Pirate role icon & Pirate Duel button
-- **Atony / Town of Us: Mira / Town Of Us Discord** - Art for Serial Killer, Kamikaze, Loner, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, and Detonator role icons; Shifter role icon & button; Sage role icon (Seer button from TOU Mira); Sage ability buttons (Salem option buttons from Seer); Bodyguard shield animation (repainted Warden shield from TOU Mira 1.5.9); Poisoner role icon & all Poisoner button icons; Evoker Verify button icon; Drunk modifier icon (from TOU Mira Discord); Venomous modifier icon (flipped & recolored Rotting modifier from TOU Mira)
+- **CraftR / Town of Us Discord** - Pirate role icon & Pirate Duel button; Baker role icon and bread assets; Pope role icon and Sanctify button
+- **Xinav's** - Tarot card asset
+- **Atony / Town of Us: Mira / Town Of Us Discord** - Art for Serial Killer, Kamikaze, Loner, Joker, Burrower, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, and Detonator role icons; Shifter role icon & button; Sage role icon (Seer button from TOU Mira); Sage ability buttons (Salem option buttons from Seer); Bodyguard shield animation (repainted Warden shield from TOU Mira 1.5.9); Poisoner role icon & all Poisoner button icons; Evoker Verify button icon; Drunk modifier icon (from TOU Mira Discord); Venomous modifier icon (flipped & recolored Rotting modifier from TOU Mira)
 - **Atony / TOU Mira Fusion** - Vampire Hunter stake button
 - **[TownOfUsMiraDivaniModsAddOn](https://github.com/DivaniNL/TownOfUsMiraDivaniModsAddOn) / DivaniNL** - Art for Kamikaze role icon; Portal asset
 - **Syzyf (Syzyfowe TOU)** - Gardener ability button icon
@@ -292,7 +296,7 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 - **Innersloth & Puffballs United** - Draft music ("Seek")
 - **Tajemniczy Among Us (Tajemniczy Typiarz)** - Draft pick sound, Draft alert sound
 - **Death Note (anime)** - Death Note kill sound (Light's laugh)
-- **YouTube** - Pope alarm & Judgement end sounds (from Divine Judgement concept videos)
+- **YouTube** - Pope alarm & Sanctify end sounds
 - **Star Wars** - Bounty Hunter intro sound
 - **Max Verstappen memes** - RC-XD intro sound (song fragment)
 - **Free sound library** - RC-XD driving sound

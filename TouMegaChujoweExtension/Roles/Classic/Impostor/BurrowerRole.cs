@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
@@ -6,6 +7,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
+using Reactor.Utilities;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Buttons.Classic.Impostor;
 using TouMegaChujoweExtension.Modifiers.Impostor;
@@ -58,11 +60,14 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
 
     public bool IsUnderground { get; set; }
     public bool IsDigging { get; set; }
+    public bool IsPreparingDig { get; set; }
     public float BurrowStartTime { get; set; }
+    public float PrepareDigEndTime { get; set; }
     public float DigEndTime { get; set; }
     public float EmergeTime { get; set; }
     public int NextVentIndex { get; set; }
-    private const float UndergroundAccelerationDuration = 1.5f;
+    private const float DigCancelLockDuration = 2f;
+    private const float UndergroundInitialSpeed = 0.3f;
 
     [HideFromIl2Cpp]
     public Vent? FirstVent { get; set; }
@@ -72,7 +77,9 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         RoleBehaviourStubs.Initialize(this, player);
         IsUnderground = false;
         IsDigging = false;
+        IsPreparingDig = false;
         BurrowStartTime = 0f;
+        PrepareDigEndTime = 0f;
         EmergeTime = -999f;
         FirstVent = null;
         NextVentIndex = 0;
@@ -105,8 +112,20 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     public float GetUndergroundSpeedMultiplier()
     {
         var maxSpeed = OptionGroupSingleton<BurrowerOptions>.Instance.UndergroundSpeed;
-        var acceleration = Mathf.Clamp01((Time.time - BurrowStartTime) / UndergroundAccelerationDuration);
-        return Mathf.Lerp(1f, maxSpeed, acceleration);
+        var digDuration = OptionGroupSingleton<BurrowerOptions>.Instance.DigDuration;
+        var accelerationDuration = Mathf.Clamp(digDuration * 0.45f, 2f, 6f);
+        var acceleration = Mathf.Clamp01((Time.time - BurrowStartTime) / accelerationDuration);
+        return Mathf.Lerp(UndergroundInitialSpeed, maxSpeed, acceleration);
+    }
+
+    public bool CanCancelUndergroundDig()
+    {
+        if (!IsUnderground || !IsDigging)
+        {
+            return false;
+        }
+
+        return Time.time - BurrowStartTime >= DigCancelLockDuration;
     }
 
     [MethodRpc((uint)ExtensionRpc.BurrowerUnderground)]
@@ -118,7 +137,7 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         }
 
         var role = player.GetRole<BurrowerRole>();
-        if (role == null || role.IsUnderground)
+        if (role == null || role.IsUnderground || role.IsPreparingDig)
         {
             return;
         }
@@ -128,6 +147,46 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
             return;
         }
 
+        var enterDelay = OptionGroupSingleton<BurrowerOptions>.Instance.EnterDelay;
+        if (enterDelay <= 0f)
+        {
+            EnterUnderground(player, role, ventPosition);
+            return;
+        }
+
+        role.IsPreparingDig = true;
+        role.PrepareDigEndTime = Time.time + enterDelay;
+        Coroutines.Start(CoEnterUndergroundAfterDelay(player, ventPosition));
+    }
+
+    private static IEnumerator CoEnterUndergroundAfterDelay(PlayerControl player, Vector2 ventPosition)
+    {
+        yield return new WaitForSeconds(OptionGroupSingleton<BurrowerOptions>.Instance.EnterDelay);
+
+        if (player == null || player.HasDied() || !player.IsRole<BurrowerRole>())
+        {
+            yield break;
+        }
+
+        var role = player.GetRole<BurrowerRole>();
+        if (role == null || !role.IsPreparingDig || role.IsUnderground || MeetingHud.Instance || ExileController.Instance)
+        {
+            if (role != null)
+            {
+                role.IsPreparingDig = false;
+                role.PrepareDigEndTime = 0f;
+            }
+
+            yield break;
+        }
+
+        EnterUnderground(player, role, ventPosition);
+    }
+
+    private static void EnterUnderground(PlayerControl player, BurrowerRole role, Vector2 ventPosition)
+    {
+        role.IsPreparingDig = false;
+        role.PrepareDigEndTime = 0f;
         role.IsUnderground = true;
         role.IsDigging = true;
         role.BurrowStartTime = Time.time;
@@ -209,14 +268,16 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         }
 
         var role = player.GetRole<BurrowerRole>();
-        if (role == null || !role.IsUnderground || !role.IsDigging)
+        if (role == null || (!role.IsPreparingDig && (!role.IsUnderground || !role.IsDigging)))
         {
             return;
         }
 
         var firstVent = role.FirstVent;
+        role.IsPreparingDig = false;
         role.IsUnderground = false;
         role.IsDigging = false;
+        role.PrepareDigEndTime = 0f;
         role.FirstVent = null;
 
         player.RemoveModifier<BurrowerInvisibleModifier>();

@@ -6,6 +6,11 @@ using TouMegaChujoweExtension.Modifiers.Impostor;
 using TownOfUs.Extensions;
 using MiraAPI.Modifiers;
 using System.Collections.Generic;
+using TouMegaChujoweExtension.Modules;
+using TouMegaChujoweExtension.Modifiers.Crewmate;
+using TouMegaChujoweExtension.Modifiers.Neutral;
+using TownOfUs.Modifiers;
+using TownOfUs.Modifiers.Crewmate;
 
 namespace TouMegaChujoweExtension.Events.Impostor;
 
@@ -21,6 +26,32 @@ public static class AstralEvents
 
         if (killer.Data.Role is AstralRole && killer.HasModifier<AstralPhaseModifier>() && killer != @event.Target)
         {
+            if (@event.IsCancelled)
+            {
+                @event.Cancel();
+                return;
+            }
+
+            bool isProtected = GardenerSystem.IsInAnyGarden(@event.Target) ||
+                               @event.Target.HasModifier<DoctorShieldModifier>() ||
+                               @event.Target.HasModifier<BodyguardShieldModifier>() ||
+                               @event.Target.HasModifier<TownOfUs.Modifiers.Crewmate.MedicShieldModifier>() ||
+                               @event.Target.HasModifier<TownOfUs.Modifiers.Crewmate.WardenFortifiedModifier>() ||
+                               @event.Target.HasModifier<TownOfUs.Modifiers.Crewmate.MagicMirrorModifier>() ||
+                               @event.Target.HasModifier<TownOfUs.Modifiers.FirstDeadShield>() ||
+                               @event.Target.HasModifier<TownOfUs.Modifiers.Crewmate.ClericBarrierModifier>() ||
+                               @event.Target.HasModifier<TownOfUs.Modifiers.Neutral.GuardianAngelProtectModifier>() ||
+                               @event.Target.HasModifier<BaseShieldModifier>() ||
+                               @event.Target.HasModifier<InvulnerabilityModifier>() ||
+                               @event.Target.HasModifier<VeteranAlertModifier>() ||
+                               @event.Target.HasModifier<JackalShieldModifier>();
+
+            if (isProtected)
+            {
+                @event.Cancel();
+                return;
+            }
+
             @event.Cancel();
             _killInProgress.Add(killer.PlayerId);
             killer.RpcSpecialMurder(@event.Target, causeOfDeath: "AstralVoid");
@@ -44,3 +75,4 @@ public static class AstralEvents
         }
     }
 }
+

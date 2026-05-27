@@ -1,4 +1,5 @@
 using MiraAPI.Utilities.Assets;
+using System.Linq;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Assets
@@ -19,6 +20,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> StakeButtonIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.VH_Stake_Button.png", 350f);
         public static LoadableAsset<Sprite> DoctorInjectButtonSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Doctor_Inject_Button.png", 100f);
         public static LoadableAsset<Sprite> PortalSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.portal.png", 100f);
+        public static LoadableAsset<Sprite> PortalPlatformSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.PortalAnimation.plattform.png", 100f);
         public static LoadableAsset<Sprite> PortalPlaceButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.PortalMaker.png", 100f);
         public static LoadableAsset<Sprite> GardenerButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Gardener_Button.png", 200f);
     }

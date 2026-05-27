@@ -137,7 +137,7 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
 
                     if (deathAnim != null)
                     {
-                        deathAnim.name = "Judgement Animation";
+                        deathAnim.name = "Sanctify Animation";
                         deathAnim.SetActive(false);
                         var deathRend = deathAnim.GetComponent<SpriteRenderer>();
                         deathRend.color = new Color(0f, 0f, 0f, 0.17254903f);
@@ -207,16 +207,16 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
             color = _even ? new Color(0.8f, 0.68f, 0f) : Color.white;
         }
 
-        var text = "Divine Judgement has been triggered!";
+        var text = "Sanctify has been triggered!";
         switch (_sabotage.Stage)
         {
             case PopeJudgementStage.Initiate:
                 text =
-                    $"The Pope is unleashing Divine Judgement!\n{(int)_sabotage.TimeRemaining + 1 + (int)PopeJudgementSystem.ConfiguredDuration} seconds left!";
+                    $"The Pope is unleashing Sanctify!\n{(int)_sabotage.TimeRemaining + 1 + (int)PopeJudgementSystem.ConfiguredDuration} seconds left!";
                 break;
             case PopeJudgementStage.Countdown:
                 text =
-                    $"The Pope is unleashing Divine Judgement!\n{(int)_sabotage.TimeRemaining + 1} seconds left!";
+                    $"The Pope is unleashing Sanctify!\n{(int)_sabotage.TimeRemaining + 1} seconds left!";
                 break;
             case PopeJudgementStage.PopeDead:
                 color = Palette.CrewmateBlue;

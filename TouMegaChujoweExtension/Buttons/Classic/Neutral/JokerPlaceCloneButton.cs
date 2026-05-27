@@ -42,7 +42,7 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
     public override Color TextOutlineColor => TouExtensionColors.Joker;
     public override float Cooldown => OptionGroupSingleton<JokerOptions>.Instance.CloneCooldown + MapCooldown;
     public override int MaxUses => (int)OptionGroupSingleton<JokerOptions>.Instance.MaxClones;
-    public override LoadableAsset<Sprite> Sprite => TouExtensionCrewAssets.DecoyButtonSprite;
+    public override LoadableAsset<Sprite> Sprite => TouExtensionNeuAssets.JokerCloneButtonSprite;
 
     public override bool CanUse()
     {

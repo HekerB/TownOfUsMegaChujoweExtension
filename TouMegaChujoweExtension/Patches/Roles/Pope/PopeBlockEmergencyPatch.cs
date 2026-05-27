@@ -14,7 +14,7 @@ public static class PopeBlockEmergencyPatch
         var sabo = ShipStatus.Instance.Systems[sabId].TryCast<PopeJudgementSystem>();
         if (sabo != null && sabo.IsActive)
         {
-            __instance.StatusText.text = "Divine Judgement is active!";
+            __instance.StatusText.text = "Sanctify is active!";
             __instance.NumberText.text = string.Empty;
             
             __instance.ButtonActive = false;
