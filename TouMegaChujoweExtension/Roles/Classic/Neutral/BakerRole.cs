@@ -60,8 +60,6 @@ public sealed class BakerRole(IntPtr cppPtr)
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
     public bool HasImpostorVision => false;
 
-    public bool BreadGivenThisRound { get; set; }
-
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = false,
@@ -112,7 +110,6 @@ public sealed class BakerRole(IntPtr cppPtr)
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
-        BreadGivenThisRound = false;
 
         if (player.AmOwner)
         {

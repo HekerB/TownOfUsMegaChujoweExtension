@@ -59,11 +59,83 @@ public static class JokerCloneInteractionPatches
         return killDistances[index];
     }
 
+    private static ActionButton? _cachedKillButton;
+    private static SpriteRenderer[] _cachedKillRenderers = [];
+    private static TMPro.TMP_Text[] _cachedKillTexts = [];
+
+    private static void ForceKillButtonVisualEnabled(ActionButton button)
+    {
+        try
+        {
+            if (_cachedKillButton != button)
+            {
+                _cachedKillButton = button;
+                _cachedKillRenderers = button.GetComponentsInChildren<SpriteRenderer>(true);
+                _cachedKillTexts = button.GetComponentsInChildren<TMPro.TMP_Text>(true);
+            }
+
+            foreach (var sr in _cachedKillRenderers)
+            {
+                if (sr == null) continue;
+                sr.color = Palette.EnabledColor;
+                if (sr.material != null)
+                {
+                    sr.material.SetFloat("_Desat", 0f);
+                }
+            }
+
+            foreach (var tmp in _cachedKillTexts)
+            {
+                if (tmp == null) continue;
+                tmp.color = Palette.EnabledColor;
+            }
+        }
+        catch
+        {
+            // ignore
+        }
+    }
+
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    [HarmonyPriority(Priority.Last)]
+    [HarmonyPostfix]
+    public static void HudManagerUpdatePostfix(HudManager __instance)
+    {
+        if (__instance == null || MeetingHud.Instance || PlayerControl.LocalPlayer == null)
+        {
+            return;
+        }
+
+        if (__instance.KillButton != null &&
+            __instance.KillButton.isActiveAndEnabled &&
+            !__instance.KillButton.isCoolingDown)
+        {
+            var local = PlayerControl.LocalPlayer;
+            var dist = GetKillDistance();
+            if (local != null && JokerCloneSystem.TryGetClosestClone(local.GetTruePosition(), dist, out _, out _))
+            {
+                __instance.KillButton.SetEnabled();
+                ForceKillButtonVisualEnabled(__instance.KillButton);
+                JokerCloneSystem.UpdateLocalOutline(local.GetTruePosition(), dist, Palette.ImpostorRed);
+            }
+            else
+            {
+                JokerCloneSystem.ClearLocalOutline();
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
     [HarmonyPrefix]
     [HarmonyPriority(Priority.Last)]
     public static bool KillButtonDoClickPrefix()
     {
+        var hud = HudManager.Instance;
+        if (hud == null || hud.KillButton == null || !hud.KillButton.isActiveAndEnabled || hud.KillButton.isCoolingDown)
+        {
+            return true;
+        }
+
         if (!TryTriggerFromLocalPlayer(GetKillDistance()))
         {
             return true;

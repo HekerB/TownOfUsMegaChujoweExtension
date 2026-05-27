@@ -118,15 +118,6 @@ public static class BakerEvents
             return;
         }
 
-        // 1. Reset Baker's bread given flags
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (player != null && player.Data != null && player.Data.Role is BakerRole bakerRole)
-            {
-                bakerRole.BreadGivenThisRound = false;
-            }
-        }
-
         if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
         {
             // 2. Check for Baker transformation into Famine (host-side)
@@ -194,14 +185,7 @@ public static class BakerEvents
     [RegisterEvent]
     public static void OnMeetingEnd(EndMeetingEvent @event)
     {
-        // Reset bread given flags and buttons
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (player != null && player.Data != null && player.Data.Role is BakerRole bakerRole)
-            {
-                bakerRole.BreadGivenThisRound = false;
-            }
-        }
+        // Reset buttons
 
         var giveButton = MiraAPI.Hud.CustomButtonSingleton<BakerGiveButton>.Instance;
         if (giveButton != null)

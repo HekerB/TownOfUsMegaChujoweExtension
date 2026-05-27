@@ -43,7 +43,7 @@ public static class MeCommandPatch
             return false;
         }
 
-        if (spaceLess.StartsWith("/setname", StringComparison.OrdinalIgnoreCase) && DraftLobbyPatch._draftInProgress)
+        if (spaceLess.StartsWith("/setname", StringComparison.OrdinalIgnoreCase) && DraftLobbyPatch.DraftInProgress)
         {
             DraftLobbyPatch.ShowSystemMessage("<color=#FF0000>Draft Mode</color>: You cannot change your name during the draft.");
             ClearChat(__instance);
@@ -282,17 +282,3 @@ public static class MeCommandPatch
         chat.UpdateChatMode();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

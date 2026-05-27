@@ -9,6 +9,7 @@ using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
+using Reactor.Utilities;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Buttons.Classic.Neutral;
 using TouMegaChujoweExtension.Modules;
@@ -202,6 +203,7 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
         try
         {
             SoundManager.Instance.PlaySound(TouExtensionAudio.JokerLaugh.LoadAsset(), false, 1f);
+            Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Joker));
             var text = TouLocale.GetParsed(localeKey, fallback);
             if (currentKills.HasValue && killsNeeded.HasValue)
             {
