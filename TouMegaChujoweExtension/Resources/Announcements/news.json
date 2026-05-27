@@ -391,12 +391,12 @@
     {
       "Date": "2026-05-27T18:00:00Z",
       "Number": "200013",
-      "ShortTitle": "TOUMCE v1.1.2",
+      "ShortTitle": "TOUMCE v1.2",
       "SubTitle": "Loner, Baker, Joker & Burrower",
-      "Title": "TOU Mega Chujowe Extension v1.1.2",
+      "Title": "TOU Mega Chujowe Extension v1.2",
       "Text": [
         "\r<link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> | <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> | <link=https://discord.gg/qaQZAmAVh4>Discord</link>",
-        "\n\n\r<b>Version 1.1.2 - Loner, Baker, Joker & Burrower Update</b>",
+        "\n\n\r<b>Version 1.2 - Loner, Baker, Joker & Burrower Update</b>",
         "\n\n\r<size=110%><b>NEW ROLE: LONER (Impostor Power)</b></size>",
         "\n- <b>Solo Start</b> - Starts the match with one fewer Impostor teammate than the lobby setting.",
         "\n- <b>Meeting Recruit</b> - Can recruit a living non-Impostor during meetings to restore the Impostor team.",

@@ -40,9 +40,7 @@ public sealed class FamineStarveButton : TownOfUsRoleButton<FamineRole, PlayerCo
             return null;
         }
 
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(false, Distance, predicate: x =>
-            !x.HasModifier<FamineStarvedModifier>() &&
-            (Role.CanStarveAnyone || x.HasModifier<BakerBreadModifier>()));
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: IsTargetValid);
     }
 
     public override bool IsTargetValid(PlayerControl? target)

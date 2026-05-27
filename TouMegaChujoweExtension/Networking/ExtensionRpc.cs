@@ -108,5 +108,6 @@ public enum ExtensionRpc : uint
     BakerTransformToFamine = 123,
     FamineStarve = 124,
     FamineUnlock = 125,
-    BurrowerCancel = 126
+    BurrowerCancel = 126,
+    FamineQueueStarveAnimation = 127
 }

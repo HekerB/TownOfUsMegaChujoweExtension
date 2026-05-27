@@ -14,6 +14,7 @@ using MiraAPI.Modifiers;
 using Reactor.Networking.Attributes;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Buttons.Classic.Neutral;
+using TouMegaChujoweExtension.Events.Neutral;
 using TouMegaChujoweExtension.Networking;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Modifiers.Neutral;
@@ -239,6 +240,37 @@ public sealed class FamineRole(IntPtr cppPtr)
             new Vector3(0f, 1f, -20f),
             spr: TouExtensionIcons.BakerRoleIcon.LoadAsset());
         notif?.AdjustNotification();
+    }
+
+    [MethodRpc((uint)ExtensionRpc.FamineQueueStarveAnimation, LocalHandling = Reactor.Networking.Rpc.RpcLocalHandling.Before)]
+    public static void RpcQueueStarveAnimation(PlayerControl target)
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        BakerEvents.PendingStarvationDeaths.Add(target.PlayerId);
+
+        if (target.AmOwner)
+        {
+            Reactor.Utilities.Coroutines.Start(CoShowQueuedStarveAnimation(target));
+        }
+    }
+
+    private static IEnumerator CoShowQueuedStarveAnimation(PlayerControl target)
+    {
+        var timer = 0f;
+        while (target != null && !target.HasDied() && timer < 2f)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        if (target != null)
+        {
+            BakerEvents.TryShowStarvationAnimation(target);
+        }
     }
 
     private static void EnsureFamineInvulnerability(PlayerControl famine)

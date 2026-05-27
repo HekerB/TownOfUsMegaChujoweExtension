@@ -48,7 +48,7 @@ public sealed class BakerGiveButton : TownOfUsRoleButton<BakerRole, PlayerContro
         {
             return null;
         }
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(false, Distance);
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance, predicate: IsTargetValid);
     }
 
     public override bool IsTargetValid(PlayerControl? target)

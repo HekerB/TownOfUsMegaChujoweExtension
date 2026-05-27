@@ -27,6 +27,7 @@ using TownOfUs.Roles.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
 
+
 namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
 
 public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ITraitorIgnore
@@ -92,7 +93,7 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         UseVanillaKillButton = true,
         CanUseVent = true,
         Icon = TouExtensionIcons.LonerRoleIcon,
-        IntroSound = TouAudio.ImpostorIntroSound,
+        IntroSound = TouAudio.GlitchSound,
         OptionsScreenshot = TouBanners.ImpostorRoleBanner
     };
 

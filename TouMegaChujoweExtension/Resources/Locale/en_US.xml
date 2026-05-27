@@ -1451,6 +1451,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleJokerTabDescription">Place clones of living players. Win when enough clones are killed.</string>
   <string name="ExtensionRoleJokerWikiDescription">The Joker is a Neutral Evil role that places clones of living players. When a clone is killed, it counts toward your win. Win after enough clones are killed.</string>
   <string name="ExtensionRoleJokerTabClonesKilled">Clones Killed: {0} / {1}</string>
+  <string name="ExtensionRoleJokerTabCloneLocations">Clone Locations: {0}</string>
   <string name="ExtensionRoleJokerTabObjectiveComplete">&lt;b&gt;Objective Complete!&lt;/b&gt;</string>
   <string name="ExtensionRoleJokerPlaceClone">Place Clone</string>
   <string name="ExtensionRoleJokerPlaceCloneWiki">Place Clone</string>
@@ -1464,7 +1465,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="JokerWinOptionsSoloWin">Ends Game (Solo)</string>
   <string name="JokerWinOptionsWinWithWinners">Win With Winners</string>
   <string name="ExtensionRoleJokerFooledNotif">You've been fooled!</string>
-  <string name="ExtensionRoleJokerCloneKilledNotif">Clone killed!</string>
+  <string name="ExtensionRoleJokerCloneKilledNotif">Your clone was killed in {0}! ({1}/{2})</string>
   <string name="ExtensionRoleJokerObjectiveCompleteNotif">Objective complete! You are now Victorious</string>
   <string name="ExtensionRoleJokerWinText">Joker Wins!</string>
   <string name="ExtensionJokerWins">Wins</string>

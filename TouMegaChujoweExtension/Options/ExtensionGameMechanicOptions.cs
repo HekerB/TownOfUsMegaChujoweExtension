@@ -10,11 +10,11 @@ public sealed class ExtensionGameMechanicOptions : AbstractOptionGroup
     public override uint GroupPriority => 98;
 
     [ModdedToggleOption("ExtensionOptionGameMechanicBakerFaminePlagueAlliance")]
-    public bool BakerFaminePlagueAlliance { get; set; } = false;
+    public bool BakerFaminePlagueAlliance { get; set; } = true;
 
     [ModdedToggleOption("ExtensionOptionGeneralBlockFirstRoundEmergency")]
-    public bool BlockFirstRoundEmergency { get; set; } = false;
+    public bool BlockFirstRoundEmergency { get; set; } = true;
 
     [ModdedToggleOption("ExtensionOptionGeneralPreventVampiresWithJackal")]
-    public bool PreventVampiresWithJackal { get; set; } = false;
+    public bool PreventVampiresWithJackal { get; set; } = true;
 }

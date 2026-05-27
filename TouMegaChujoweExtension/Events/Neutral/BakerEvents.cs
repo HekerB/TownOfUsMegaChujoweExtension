@@ -7,6 +7,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Utilities;
+using System.Collections;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TouMegaChujoweExtension.Modifiers.Neutral;
@@ -17,7 +18,7 @@ using TownOfUs.Buttons;
 using TownOfUs.Utilities;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
-using TownOfUs.Roles.Neutral;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -25,12 +26,21 @@ namespace TouMegaChujoweExtension.Events.Neutral;
 
 public static class BakerEvents
 {
-    [RegisterEvent]
+    public static readonly HashSet<byte> PendingStarvationDeaths = [];
+    public static readonly HashSet<byte> ShownStarvationAnimations = [];
+
+    [RegisterEvent(10000)]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        if (!@event.TriggeredByIntro ||
-            AmongUsClient.Instance == null ||
-            !AmongUsClient.Instance.AmHost)
+        if (!@event.TriggeredByIntro)
+        {
+            return;
+        }
+
+        PendingStarvationDeaths.Clear();
+        ShownStarvationAnimations.Clear();
+
+        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
         {
             return;
         }
@@ -41,9 +51,7 @@ public static class BakerEvents
             return;
         }
 
-        var hasPestilence = PlayerControl.AllPlayerControls.ToArray()
-            .Any(x => x != null && !x.HasDied() && x.Data?.Role is PestilenceRole);
-        if (!hasPestilence || UnityEngine.Random.Range(0f, 100f) >= chance)
+        if (UnityEngine.Random.Range(0f, 100f) >= chance)
         {
             return;
         }
@@ -154,8 +162,7 @@ public static class BakerEvents
                     target.RpcSpecialMurder(target, isIndirect: false, ignoreShield: false, didSucceed: true, resetKillTimer: false, createDeadBody: false, teleportMurderer: false, showKillAnim: false, playKillSound: false, causeOfDeath: FamineRole.StarvedDeathReason);
                 }
 
-                target.RemoveModifier<FamineStarvedModifier>();
-                target.RemoveModifier<BakerBreadRevealModifier>();
+                Reactor.Utilities.Coroutines.Start(CoClearStarveMarkersAfterDeath(target));
             }
 
             // 4. If Famine is active and all bread targets are gone, unlock unrestricted starving.
@@ -216,6 +223,68 @@ public static class BakerEvents
         if (!anyBreadsAlive)
         {
             FamineRole.RpcUnlockFamine(activeFamine);
+        }
+    }
+
+    public static void TryShowStarvationAnimation(PlayerControl target)
+    {
+        if (target == null ||
+            !target.AmOwner ||
+            ShownStarvationAnimations.Contains(target.PlayerId))
+        {
+            return;
+        }
+
+        PendingStarvationDeaths.Add(target.PlayerId);
+        Reactor.Utilities.Coroutines.Start(CoTryShowStarvationAnimation(target));
+    }
+
+    private static IEnumerator CoTryShowStarvationAnimation(PlayerControl target)
+    {
+        var timer = 0f;
+        while (target != null &&
+               (!target.HasDied() ||
+                !HudManager.InstanceExists ||
+                HudManager.Instance.KillOverlay == null ||
+                target.Data == null) &&
+               timer < 3f)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        if (target == null ||
+            !target.AmOwner ||
+            !HudManager.InstanceExists ||
+            HudManager.Instance.KillOverlay == null ||
+            target.Data == null ||
+            !ShownStarvationAnimations.Add(target.PlayerId))
+        {
+            yield break;
+        }
+
+        PendingStarvationDeaths.Remove(target.PlayerId);
+        SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
+        HudManager.Instance.KillOverlay.ShowKillAnimation(target.Data, target.Data);
+    }
+
+    private static IEnumerator CoClearStarveMarkersAfterDeath(PlayerControl target)
+    {
+        yield return new WaitForSeconds(0.75f);
+
+        if (target == null)
+        {
+            yield break;
+        }
+
+        if (target.HasModifier<FamineStarvedModifier>())
+        {
+            target.RemoveModifier<FamineStarvedModifier>();
+        }
+
+        if (target.HasModifier<BakerBreadRevealModifier>())
+        {
+            target.RemoveModifier<BakerBreadRevealModifier>();
         }
     }
 }

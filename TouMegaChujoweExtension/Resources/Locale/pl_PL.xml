@@ -1437,6 +1437,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleJokerTabDescription">Stawiaj klony zywych graczy. Wygrywasz, gdy zgina.</string>
   <string name="ExtensionRoleJokerWikiDescription">Joker to rola Neutral Evil, ktora stawia klony zywych graczy. Gdy klon zostanie zabity, liczy sie do twojej wygranej. Wygrywasz po smierci wystarczajacej liczby klonow.</string>
   <string name="ExtensionRoleJokerTabClonesKilled">Zabite klony: {0} / {1}</string>
+  <string name="ExtensionRoleJokerTabCloneLocations">Miejsca klonow: {0}</string>
   <string name="ExtensionRoleJokerTabObjectiveComplete">&lt;b&gt;Cel osiagniety!&lt;/b&gt;</string>
   <string name="ExtensionRoleJokerPlaceClone">Postaw klona</string>
   <string name="ExtensionRoleJokerPlaceCloneWiki">Postaw klona</string>
@@ -1450,7 +1451,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="JokerWinOptionsSoloWin">Konczy gre (samotna wygrana)</string>
   <string name="JokerWinOptionsWinWithWinners">Wygrywa ze zwyciezcami</string>
   <string name="ExtensionRoleJokerFooledNotif">Dales sie nabrac!</string>
-  <string name="ExtensionRoleJokerCloneKilledNotif">Klon zabity!</string>
+  <string name="ExtensionRoleJokerCloneKilledNotif">Twoj klon zostal zabity w {0}! ({1}/{2})</string>
   <string name="ExtensionRoleJokerObjectiveCompleteNotif">Cel osiagniety! Masz teraz status Victorious</string>
   <string name="ExtensionRoleJokerWinText">Joker wygrywa!</string>
   <string name="ExtensionJokerWins">Wygrywa</string>

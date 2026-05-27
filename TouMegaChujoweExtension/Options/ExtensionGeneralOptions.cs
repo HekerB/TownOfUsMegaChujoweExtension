@@ -18,6 +18,6 @@ public sealed class ExtensionGeneralOptions : AbstractOptionGroup
     public bool JackalChat { get; set; } = true;
 
     [ModdedToggleOption("ExtensionOptionGeneralRecruitsKnowEachOther")]
-    public bool RecruitsKnowEachOther { get; set; } = true;
+    public bool RecruitsKnowEachOther { get; set; } = false;
 
 }

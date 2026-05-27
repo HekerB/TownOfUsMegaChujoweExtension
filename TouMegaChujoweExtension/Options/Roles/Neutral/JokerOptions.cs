@@ -17,13 +17,13 @@ public sealed class JokerOptions : AbstractOptionGroup<JokerRole>
     public override string GroupName => TouLocale.Get("ExtensionRoleJoker", "Joker");
 
     [ModdedNumberOption("ExtensionOptionJokerKillsToWin", 1f, 10f, 1f, MiraNumberSuffixes.None)]
-    public float KillsToWin { get; set; } = 4f;
+    public float KillsToWin { get; set; } = 3f;
 
     [ModdedNumberOption("ExtensionOptionJokerCloneCooldown", 5f, 60f, 2.5f, MiraNumberSuffixes.Seconds)]
-    public float CloneCooldown { get; set; } = 25f;
+    public float CloneCooldown { get; set; } = 15f;
 
     [ModdedNumberOption("ExtensionOptionJokerMaxClones", 1f, 10f, 1f, MiraNumberSuffixes.None)]
-    public float MaxClones { get; set; } = 3f;
+    public float MaxClones { get; set; } = 4f;
 
     [ModdedToggleOption("ExtensionOptionJokerResetClonesEachMeeting")]
     public bool ResetClonesEachMeeting { get; set; } = true;

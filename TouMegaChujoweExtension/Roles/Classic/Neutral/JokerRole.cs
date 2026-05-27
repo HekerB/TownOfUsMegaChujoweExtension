@@ -15,6 +15,7 @@ using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Buttons.Classic.Neutral;
 using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
+using TownOfUs.Assets;
 using TownOfUs.Events;
 using TownOfUs.Extensions;
 using TownOfUs.Interfaces;
@@ -66,6 +67,7 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
     {
         CanUseVent = false,
         Icon = TouExtensionIcons.JokerRoleIcon,
+        IntroSound = TouAudio.NoisemakerIntroSound,
         OptionsScreenshot = TouExtensionBanners.MirageBanner,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
     };
@@ -83,12 +85,34 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
             currentKills,
             killsNeeded));
 
+        var cloneLocations = GetCloneLocationText(Player.PlayerId);
+        if (!string.IsNullOrWhiteSpace(cloneLocations))
+        {
+            stringBuilder.AppendLine(TouLocale.Get("ExtensionRoleJokerTabCloneLocations", "Clone Locations: {0}")
+                .Replace("{0}", cloneLocations));
+        }
+
         if (MetWinCon)
         {
             stringBuilder.AppendLine(TouLocale.Get("ExtensionRoleJokerTabObjectiveComplete", "<b>Objective Complete!</b>"));
         }
 
         return stringBuilder;
+    }
+
+    private static string GetCloneLocationText(byte jokerId)
+    {
+        var rooms = JokerCloneSystem.Clones
+            .Where(clone => clone.JokerId == jokerId && !clone.IsPreview)
+            .Select(clone => MiscUtils.GetRoomName(clone.WorldPosition))
+            .Where(room => !string.IsNullOrWhiteSpace(room))
+            .GroupBy(room => room)
+            .Select(group => group.Count() > 1
+                ? string.Format(CultureInfo.InvariantCulture, "{0} x{1}", group.Key, group.Count())
+                : group.Key)
+            .ToList();
+
+        return rooms.Count == 0 ? string.Empty : string.Join(", ", rooms);
     }
 
     public bool WinConditionMet()
@@ -151,17 +175,12 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
     [MethodRpc((uint)Networking.ExtensionRpc.JokerCloneKilled)]
     public static void RpcJokerCloneKilled(PlayerControl killer, byte jokerId, byte cloneIndex)
     {
-        if (!JokerCloneSystem.TryRemoveClone(cloneIndex, out _))
+        if (!JokerCloneSystem.TryRemoveClone(cloneIndex, out var removedClone))
         {
             return;
         }
 
         JokerCloneSystem.AddKill();
-
-        if (killer.AmOwner)
-        {
-            ShowNotification("ExtensionRoleJokerFooledNotif", "You've been fooled!");
-        }
 
         var jokerPlayer = MiscUtils.PlayerById(jokerId);
         if (jokerPlayer == null)
@@ -188,9 +207,14 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
             }
         }
 
+        if (killer != null && killer.AmOwner)
+        {
+            ShowKillerCloneNotification();
+        }
+
         if (jokerPlayer.AmOwner)
         {
-            ShowNotification("ExtensionRoleJokerCloneKilledNotif", $"Clone killed! ({currentKills}/{killsNeeded})", currentKills, killsNeeded);
+            ShowJokerCloneKilledNotification(removedClone.WorldPosition, currentKills, killsNeeded);
         }
     }
 
@@ -200,21 +224,16 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
         JokerCloneSystem.TryRemoveClone(cloneIndex, out _);
     }
 
-    private static void ShowNotification(string localeKey, string fallback, int? currentKills = null, int? killsNeeded = null)
+    private static void ShowKillerCloneNotification()
     {
         try
         {
-            SoundManager.Instance.PlaySound(TouExtensionAudio.JokerLaugh.LoadAsset(), false, 1f);
+            SoundManager.Instance.PlaySound(TouAudio.DiscoveredSound.LoadAsset(), false, 1f);
             Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Joker));
-            var text = TouLocale.GetParsed(localeKey, fallback);
-            if (currentKills.HasValue && killsNeeded.HasValue)
-            {
-                text = $"{text} ({currentKills}/{killsNeeded})";
-            }
 
             Helpers.CreateAndShowNotification(
-                text,
-                TouExtensionColors.Joker,
+                FormatJokerNotification(TouLocale.GetParsed("ExtensionRoleJokerFooledNotif", "You've been fooled!")),
+                Color.white,
                 new Vector3(0f, 1f, -20f),
                 spr: TouExtensionIcons.JokerRoleIcon.LoadAsset())?.AdjustNotification();
         }
@@ -222,5 +241,34 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
         {
             // notification fallback
         }
+    }
+
+    private static void ShowJokerCloneKilledNotification(Vector3 clonePosition, int currentKills, int killsNeeded)
+    {
+        try
+        {
+            Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Joker));
+
+            var room = MiscUtils.GetRoomName(clonePosition);
+            var text = TouLocale.GetParsed("ExtensionRoleJokerCloneKilledNotif", "Your clone was killed in {0}! ({1}/{2})")
+                .Replace("{0}", room)
+                .Replace("{1}", currentKills.ToString(CultureInfo.InvariantCulture))
+                .Replace("{2}", killsNeeded.ToString(CultureInfo.InvariantCulture));
+
+            Helpers.CreateAndShowNotification(
+                FormatJokerNotification(text),
+                Color.white,
+                new Vector3(0f, 1f, -20f),
+                spr: TouExtensionIcons.JokerRoleIcon.LoadAsset())?.AdjustNotification();
+        }
+        catch
+        {
+            // notification fallback
+        }
+    }
+
+    private static string FormatJokerNotification(string text)
+    {
+        return $"<b>{TouExtensionColors.Joker.ToTextColor()}{text}</color></b>";
     }
 }

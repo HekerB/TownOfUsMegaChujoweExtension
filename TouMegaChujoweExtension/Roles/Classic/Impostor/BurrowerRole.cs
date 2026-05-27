@@ -45,7 +45,8 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouExtensionIcons.BurrowerRoleIcon,
-        OptionsScreenshot = TouBanners.ImpostorRoleBanner
+        OptionsScreenshot = TouBanners.ImpostorRoleBanner,
+        IntroSound = TouAudio.MineSound
     };
 
     [HideFromIl2Cpp]
