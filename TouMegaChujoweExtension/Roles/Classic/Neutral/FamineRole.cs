@@ -32,7 +32,7 @@ using UnityEngine;
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
 public sealed class FamineRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IUnguessable
+    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IUnguessable
 {
     public const string StarvedDeathReason = "Starved";
 
@@ -42,7 +42,7 @@ public sealed class FamineRole(IntPtr cppPtr)
     [HideFromIl2Cpp]
     public bool HadBreadTargets { get; set; }
 
-    public DoomableType DoomHintType => DoomableType.Fearmonger;
+
     public string YouAreText => TouLocale.Get("YouAre");
     public string YouWereText => TouLocale.Get("YouWere");
     public string LocaleKey => "Famine";

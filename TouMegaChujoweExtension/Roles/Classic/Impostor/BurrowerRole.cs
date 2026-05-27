@@ -25,8 +25,9 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
 
-public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
+    public DoomableType DoomHintType => DoomableType.Trickster;
     public string LocaleKey => "Burrower";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Burrower");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");

@@ -1626,9 +1626,9 @@ public static class DraftLobbyPatch
             }
             catch (System.Exception alignEx)
             {
-                #if DEBUG
+
                 Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Warning($"[Draft] Failed to align chat bubbles: {alignEx.Message}");
-                #endif
+
             }
 
             if (chat is { IsOpenOrOpening: false, notificationRoutine: null })

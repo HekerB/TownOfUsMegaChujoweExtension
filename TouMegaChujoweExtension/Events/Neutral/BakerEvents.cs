@@ -111,7 +111,7 @@ public static class BakerEvents
     }
 
     [RegisterEvent]
-    public static void StartMeetingEventHandler(StartMeetingEvent @event)
+    public static void StartMeetingEventHandler(StartMeetingEvent _)
     {
         if (MeetingHud.Instance == null)
         {
@@ -173,17 +173,14 @@ public static class BakerEvents
             return;
         }
 
-        if (target.Data.Role is FamineRole)
+        if (target.Data.Role is FamineRole && PlayerControl.LocalPlayer != null && (PlayerControl.LocalPlayer == target || PlayerControl.LocalPlayer == source))
         {
-            if (PlayerControl.LocalPlayer != null && (PlayerControl.LocalPlayer == target || PlayerControl.LocalPlayer == source))
-            {
-                Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(Color.white, 0.15f, 0.15f));
-            }
+            Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(Color.white, 0.15f, 0.15f));
         }
     }
 
     [RegisterEvent]
-    public static void OnMeetingEnd(EndMeetingEvent @event)
+    public static void OnMeetingEnd(EndMeetingEvent _)
     {
         // Reset buttons
 

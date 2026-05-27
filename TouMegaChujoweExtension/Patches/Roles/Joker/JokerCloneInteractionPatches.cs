@@ -1,3 +1,4 @@
+#pragma warning disable S3011
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,15 +79,11 @@ public static class JokerCloneInteractionPatches
             {
                 if (sr == null) continue;
                 sr.color = Palette.EnabledColor;
-                if (sr.material != null)
-                {
-                    sr.material.SetFloat("_Desat", 0f);
-                }
+                sr.material?.SetFloat("_Desat", 0f);
             }
 
-            foreach (var tmp in _cachedKillTexts)
+            foreach (var tmp in _cachedKillTexts.Where(tmp => tmp != null))
             {
-                if (tmp == null) continue;
                 tmp.color = Palette.EnabledColor;
             }
         }
@@ -197,6 +194,50 @@ public static class JokerCloneInteractionPatches
         {
             return HandleKillLikeButtonClick(__instance);
         }
+
+        private static IEnumerable<Type> GetLoadedTypes()
+        {
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                Type?[] types;
+                try
+                {
+                    types = assembly.GetTypes();
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    types = ex.Types;
+                }
+                catch
+                {
+                    continue;
+                }
+
+                foreach (var type in types.Where(type => type != null))
+                {
+                    yield return type!;
+                }
+            }
+        }
+
+        private static bool IsTownOfUsButtonType(Type type)
+        {
+            return typeof(TownOfUsButton).IsAssignableFrom(type) ||
+                   InheritsGenericDefinition(type, typeof(TownOfUsTargetButton<>));
+        }
+
+        private static bool InheritsGenericDefinition(Type type, Type genericDefinition)
+        {
+            for (var current = type; current != null; current = current.BaseType)
+            {
+                if (current.IsGenericType && current.GetGenericTypeDefinition() == genericDefinition)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 
     [HarmonyPatch(typeof(TownOfUsTargetButton<PlayerControl>), nameof(TownOfUsTargetButton<PlayerControl>.FixedUpdateHandler))]
@@ -234,6 +275,65 @@ public static class JokerCloneInteractionPatches
 
             JokerCloneSystem.UpdateLocalOutline(local.GetTruePosition(), distance, GetOutlineColor(__instance));
         }
+
+        private static ActionButton? GetActionButton(object instance)
+        {
+            try
+            {
+                var prop = instance.GetType().GetProperty("Button", BindingFlags.Instance | BindingFlags.Public);
+                return prop?.GetValue(instance) as ActionButton;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static void ForceActionButtonVisualEnabled(ActionButton button)
+        {
+            try
+            {
+                foreach (var spriteRenderer in button.GetComponentsInChildren<SpriteRenderer>(true))
+                {
+                    if (spriteRenderer == null)
+                    {
+                        continue;
+                    }
+
+                    spriteRenderer.color = Palette.EnabledColor;
+                    spriteRenderer.material?.SetFloat("_Desat", 0f);
+                }
+
+                foreach (var text in button.GetComponentsInChildren<TMPro.TMP_Text>(true).Where(text => text != null))
+                {
+                    text.color = Palette.EnabledColor;
+                }
+            }
+            catch
+            {
+                // visual-only fallback
+            }
+        }
+
+        private static Color GetOutlineColor(object buttonInstance)
+        {
+            try
+            {
+                var roleProp = buttonInstance.GetType().GetProperty("Role", BindingFlags.Instance | BindingFlags.Public);
+                var roleObject = roleProp?.GetValue(buttonInstance);
+                var teamColorProp = roleObject?.GetType().GetProperty("TeamColor", BindingFlags.Instance | BindingFlags.Public);
+                if (teamColorProp?.GetValue(roleObject) is Color color)
+                {
+                    return color;
+                }
+            }
+            catch
+            {
+                // fallback below
+            }
+
+            return Palette.EnabledColor;
+        }
     }
 
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
@@ -249,67 +349,7 @@ public static class JokerCloneInteractionPatches
         }
     }
 
-    private static ActionButton? GetActionButton(object instance)
-    {
-        try
-        {
-            var prop = instance.GetType().GetProperty("Button", BindingFlags.Instance | BindingFlags.Public);
-            return prop?.GetValue(instance) as ActionButton;
-        }
-        catch
-        {
-            return null;
-        }
-    }
 
-    private static void ForceActionButtonVisualEnabled(ActionButton button)
-    {
-        try
-        {
-            foreach (var spriteRenderer in button.GetComponentsInChildren<SpriteRenderer>(true))
-            {
-                if (spriteRenderer == null)
-                {
-                    continue;
-                }
-
-                spriteRenderer.color = Palette.EnabledColor;
-                spriteRenderer.material?.SetFloat("_Desat", 0f);
-            }
-
-            foreach (var text in button.GetComponentsInChildren<TMPro.TMP_Text>(true))
-            {
-                if (text != null)
-                {
-                    text.color = Palette.EnabledColor;
-                }
-            }
-        }
-        catch
-        {
-            // visual-only fallback
-        }
-    }
-
-    private static Color GetOutlineColor(object buttonInstance)
-    {
-        try
-        {
-            var roleProp = buttonInstance.GetType().GetProperty("Role", BindingFlags.Instance | BindingFlags.Public);
-            var roleObject = roleProp?.GetValue(buttonInstance);
-            var teamColorProp = roleObject?.GetType().GetProperty("TeamColor", BindingFlags.Instance | BindingFlags.Public);
-            if (teamColorProp?.GetValue(roleObject) is Color color)
-            {
-                return color;
-            }
-        }
-        catch
-        {
-            // fallback below
-        }
-
-        return Palette.EnabledColor;
-    }
 
     private static void SpendCooldownAndUses(object instance)
     {
@@ -437,39 +477,7 @@ public static class JokerCloneInteractionPatches
         return false;
     }
 
-    private static IEnumerable<Type> GetLoadedTypes()
-    {
-        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-        {
-            Type?[] types;
-            try
-            {
-                types = assembly.GetTypes();
-            }
-            catch (ReflectionTypeLoadException ex)
-            {
-                types = ex.Types;
-            }
-            catch
-            {
-                continue;
-            }
 
-            foreach (var type in types)
-            {
-                if (type != null)
-                {
-                    yield return type;
-                }
-            }
-        }
-    }
-
-    private static bool IsTownOfUsButtonType(Type type)
-    {
-        return typeof(TownOfUsButton).IsAssignableFrom(type) ||
-               InheritsGenericDefinition(type, typeof(TownOfUsTargetButton<>));
-    }
 
     private static bool IsPlayerTargetKillRoleButton(Type type)
     {
@@ -483,19 +491,6 @@ public static class JokerCloneInteractionPatches
 
             var targetType = current.GetGenericArguments()[1];
             return typeof(PlayerControl).IsAssignableFrom(targetType);
-        }
-
-        return false;
-    }
-
-    private static bool InheritsGenericDefinition(Type type, Type genericDefinition)
-    {
-        for (var current = type; current != null; current = current.BaseType)
-        {
-            if (current.IsGenericType && current.GetGenericTypeDefinition() == genericDefinition)
-            {
-                return true;
-            }
         }
 
         return false;

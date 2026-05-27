@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
@@ -77,6 +78,7 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
         var currentKills = JokerCloneSystem.KilledCloneCount;
 
         stringBuilder.AppendLine(string.Format(
+            CultureInfo.InvariantCulture,
             TouLocale.Get("ExtensionRoleJokerTabClonesKilled", "Clones Killed: {0} / {1}"),
             currentKills,
             killsNeeded));

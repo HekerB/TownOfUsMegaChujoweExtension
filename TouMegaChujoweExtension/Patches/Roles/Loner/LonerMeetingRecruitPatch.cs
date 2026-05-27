@@ -1,3 +1,4 @@
+using System.Linq;
 using HarmonyLib;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
@@ -282,12 +283,9 @@ public static class LonerMeetingRecruitPatch
 
     private static void ClearButtons()
     {
-        foreach (var button in RecruitButtons)
+        foreach (var button in RecruitButtons.Where(button => button is not null))
         {
-            if (button != null)
-            {
-                button.Destroy();
-            }
+            button.Destroy();
         }
 
         RecruitButtons.Clear();

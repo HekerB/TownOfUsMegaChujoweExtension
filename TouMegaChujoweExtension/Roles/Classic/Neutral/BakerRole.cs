@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
@@ -93,7 +94,7 @@ public sealed class BakerRole(IntPtr cppPtr)
             .Count(x => x != null && !x.HasDied() && x.HasModifier<BakerBreadModifier>());
         var breadNeeded = GetEffectiveBreadNeeded(Player);
         
-        stringB.AppendLine($"Bread Recipients: {breadGivenCount} / {breadNeeded}");
+        stringB.AppendLine(CultureInfo.InvariantCulture, $"Bread Recipients: {breadGivenCount} / {breadNeeded}");
         return stringB;
     }
 
@@ -143,7 +144,7 @@ public sealed class BakerRole(IntPtr cppPtr)
             return;
         }
 
-        if (baker.Data.Role is not BakerRole bakerRole)
+        if (baker.Data.Role is not BakerRole)
         {
             return;
         }
