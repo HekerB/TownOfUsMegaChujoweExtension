@@ -1032,11 +1032,11 @@
   
   <!-- Shroud Role -->
   <string name="ExtensionRoleShroud">Shroud</string>
-  <string name="ExtensionRoleShroudIntroBlurb">Mark players with a deadly trap.</string>
-  <string name="ExtensionRoleShroudTabDescription">Shroud a player as a trap.\%nl\%They or their visitor will die.</string>
-  <string name="ExtensionRoleShroudWikiDescription">The Shroud can mark one player per round with a deadly trap. Any player who interacts with the shrouded player will be killed instead. If no one interacts with the shrouded player before a meeting is called, the shrouded player dies shortly after the meeting begins.</string>
+  <string name="ExtensionRoleShroudIntroBlurb">Wrap a target in a lethal shadow trap.</string>
+  <string name="ExtensionRoleShroudTabDescription">Shroud a player with a lethal mark.\%nl\%Their next visitor dies, or they die at the next meeting.</string>
+  <string name="ExtensionRoleShroudWikiDescription">The Shroud is a Neutral Killing role that turns players into lethal bait. Shroud one target each round. The first player who interacts with that target dies in their place. If nobody triggers the trap before a meeting starts, the shrouded target is claimed instead.</string>
   <string name="ExtensionRoleShroudAbility">Shroud</string>
-  <string name="ExtensionRoleShroudAbilityWikiDescription">Mark a player as a trap. Anyone who interacts with them dies. If no one does before the meeting, the marked player dies right after.</string>
+  <string name="ExtensionRoleShroudAbilityWikiDescription">Place a lethal shroud on a player. Their next visitor dies instead of them; if nobody visits before the meeting, the marked player dies.</string>
   <string name="ExtensionRoleShroudShroudedPlayer">Shrouded Player</string>
 
   <!-- Shroud Cause of Death -->
@@ -1349,8 +1349,8 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionPortalmakerUses">Portal Uses</string>
   <string name="ExtensionOptionPortalmakerWhoCanUse">Who Can Use</string>
   <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateOnly">Crewmate Only</string>
-  <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateAndNeutral">Crewmate &amp; Neutral</string>
-  <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateAndImpostor">Crewmate &amp; Impostor</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateAndNeutral">Crewmate + Neutral</string>
+  <string name="ExtensionOptionPortalmakerWhoCanUseEnumCrewmateAndImpostor">Crewmate + Impostor</string>
   <string name="ExtensionOptionPortalmakerWhoCanUseEnumEveryone">Everyone</string>
   <string name="ExtensionRolePortalmakerPlace">Place Portal</string>
   <string name="ExtensionRolePortalmakerPlaceWikiDescription">Places one of two portals connecting zones.</string>

@@ -1026,11 +1026,11 @@
   
   <!-- Shroud Role -->
   <string name="ExtensionRoleShroud">Shroud</string>
-  <string name="ExtensionRoleShroudIntroBlurb">Oznaczaj graczy smiertelna pulapka.</string>
-  <string name="ExtensionRoleShroudTabDescription">Oznacz gracza pulapka.\%nl\%Zginie on albo jego visitor.</string>
-  <string name="ExtensionRoleShroudWikiDescription">Shroud moze oznaczyc jednego gracza na runde smiertelna pulapka. Kazdy gracz, ktory wejdzie w interakcje z oznaczonym graczem, zginie zamiast niego. Jesli nikt nie wejdzie w interakcje z oznaczonym graczem przed zwolaniem spotkania, oznaczony gracz umrze chwile po rozpoczeciu spotkania.</string>
+  <string name="ExtensionRoleShroudIntroBlurb">Owijaj cele smiertelna zaslona.</string>
+  <string name="ExtensionRoleShroudTabDescription">Oznacz gracza smiertelna zaslona.\%nl\%Zginie jego visitor albo on na kolejnym meetingu.</string>
+  <string name="ExtensionRoleShroudWikiDescription">Shroud to rola Neutral Killing, ktora zamienia gracza w smiertelna przynete. Raz na runde oznaczasz cel. Pierwszy gracz, ktory wejdzie z nim w interakcje, ginie zamiast niego. Jesli nikt nie uruchomi pulapki przed meetingiem, oznaczony cel zostaje zabrany.</string>
   <string name="ExtensionRoleShroudAbility">Shroud</string>
-  <string name="ExtensionRoleShroudAbilityWikiDescription">Oznacz gracza jako pulapke. Kto z nim wejdzie w interakcje, ten ginie. Jesli nikt tego nie zrobi przed spotkaniem, oznaczony gracz umrze zaraz po spotkaniu.</string>
+  <string name="ExtensionRoleShroudAbilityWikiDescription">Naloz smiertelna zaslone na gracza. Jego nastepny visitor ginie zamiast niego; jesli nikt go nie odwiedzi przed meetingiem, umiera oznaczony gracz.</string>
   <string name="ExtensionRoleShroudShroudedPlayer">Oznaczony gracz</string>
 
   <!-- Shroud Cause of Death -->
