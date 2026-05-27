@@ -311,13 +311,13 @@
   
   <!-- Pope Role -->
   <string name="ExtensionRolePope">Pope</string>
-  <string name="ExtensionRolePopeIntroBlurb">Give cream cakes and unleash Sanctify.</string>
-  <string name="ExtensionRolePopeTabDescription">Give cream cakes to every living player.\%nl\%Then use Sanctify to finish the game.</string>
-  <string name="ExtensionRolePopeWikiDescription">Give a cream cake to every living non-Pope. When everyone is marked, use Sanctify. Pope wins if the Sanctify countdown finishes.</string>
+  <string name="ExtensionRolePopeIntroBlurb">Give cream cakes and purify everyone with Sanctify.</string>
+  <string name="ExtensionRolePopeTabDescription">Give cream cakes to every living player.\%nl\%Then use Sanctify to purify everyone.</string>
+  <string name="ExtensionRolePopeWikiDescription">Give a cream cake to every living non-Pope. When everyone is marked, use Sanctify to purify everyone. Pope wins if the Sanctify countdown finishes.</string>
   <string name="ExtensionRolePopeCanonize">Cream Cake</string>
   <string name="ExtensionRolePopeCanonizeWikiDescription">Give a cream cake to a nearby player. Marked players glow gold only for you.</string>
   <string name="ExtensionRolePopeJudgement">Sanctify</string>
-  <string name="ExtensionRolePopeJudgementWikiDescription">Starts the final countdown. If it reaches zero, everyone except you dies and you win.</string>
+  <string name="ExtensionRolePopeJudgementWikiDescription">Start the final countdown to purify everyone. If it reaches zero, everyone except you dies and you win.</string>
   <string name="ExtensionRolePopeGlobalWarning">The &lt;role&gt; has begun Sanctify! &lt;time&gt; seconds remain!</string>
   <string name="ExtensionRolePopeMessageTitle">Sanctify Warning</string>
   <string name="ExtensionRolePopeWarningNotif">The &lt;role&gt; has begun Sanctify! &lt;time&gt; seconds until the end!</string>

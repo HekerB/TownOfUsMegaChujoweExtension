@@ -309,13 +309,13 @@
   
   <!-- Pope Role -->
   <string name="ExtensionRolePope">Pope</string>
-  <string name="ExtensionRolePopeIntroBlurb">Dawaj cream cakes i odpal Sanctify.</string>
-  <string name="ExtensionRolePopeTabDescription">Daj cream cake kazdemu zyjacemu graczowi.\%nl\%Potem uzyj Sanctify, aby zakonczyc gre.</string>
-  <string name="ExtensionRolePopeWikiDescription">Daj cream cake kazdemu zyjacemu graczowi spoza roli Pope. Gdy wszyscy beda oznaczeni, uzyj Sanctify. Pope wygrywa, jesli odliczanie Sanctify dojdzie do konca.</string>
+  <string name="ExtensionRolePopeIntroBlurb">Dawaj cream cakes i oczysc wszystkich przez Sanctify.</string>
+  <string name="ExtensionRolePopeTabDescription">Daj cream cake kazdemu zyjacemu graczowi.\%nl\%Potem uzyj Sanctify, aby oczyscic wszystkich.</string>
+  <string name="ExtensionRolePopeWikiDescription">Daj cream cake kazdemu zyjacemu graczowi spoza roli Pope. Gdy wszyscy beda oznaczeni, uzyj Sanctify, aby oczyscic wszystkich. Pope wygrywa, jesli odliczanie Sanctify dojdzie do konca.</string>
   <string name="ExtensionRolePopeCanonize">Give Cream Cake</string>
   <string name="ExtensionRolePopeCanonizeWikiDescription">Daj cream cake pobliskiemu graczowi. Oznaczeni gracze swieca sie na zloto tylko dla Ciebie.</string>
   <string name="ExtensionRolePopeJudgement">Sanctify</string>
-  <string name="ExtensionRolePopeJudgementWikiDescription">Rozpoczyna finalne odliczanie. Jesli dojdzie do zera, wszyscy oprocz Ciebie gina i wygrywasz.</string>
+  <string name="ExtensionRolePopeJudgementWikiDescription">Rozpoczyna finalne odliczanie, aby oczyscic wszystkich. Jesli dojdzie do zera, wszyscy oprocz Ciebie gina i wygrywasz.</string>
   <string name="ExtensionRolePopeGlobalWarning">&lt;role&gt; rozpoczal Sanctify! Pozostalo &lt;time&gt; sekund!</string>
   <string name="ExtensionRolePopeMessageTitle">Ostrzezenie Sanctify</string>
   <string name="ExtensionRolePopeWarningNotif">&lt;role&gt; rozpoczal Sanctify! Do konca pozostalo &lt;time&gt; sekund!</string>
