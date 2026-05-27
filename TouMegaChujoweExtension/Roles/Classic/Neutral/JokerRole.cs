@@ -52,7 +52,7 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
     [
         new(TouLocale.GetParsed("ExtensionRoleJokerPlaceCloneWiki", "Place Clone"),
             TouLocale.GetParsed("ExtensionRoleJokerPlaceCloneWikiDescription"),
-            TouExtensionCrewAssets.DecoyButtonSprite)
+            TouExtensionNeuAssets.JokerCloneButtonSprite)
     ];
 
     public Color RoleColor => TouExtensionColors.Joker;

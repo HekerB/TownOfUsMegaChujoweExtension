@@ -15,7 +15,7 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
 public sealed class PopeCanonizeButton : TownOfUsRoleButton<PopeRole, PlayerControl>
 {
-    public override string Name => TouLocale.GetParsed("ExtensionRolePopeCanonize", "Canonize");
+    public override string Name => TouLocale.GetParsed("ExtensionRolePopeCanonize", "Give Cream Cake");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Pope;
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<PopeOptions>.Instance.CanonizeCooldown + MapCooldown, 5f, 120f);
@@ -51,7 +51,7 @@ public sealed class PopeJudgementButton : TownOfUsRoleButton<PopeRole>
 {
     private static bool _triggered;
 
-    public override string Name => TouLocale.GetParsed("ExtensionRolePopeJudgement", "Judgement");
+    public override string Name => TouLocale.GetParsed("ExtensionRolePopeJudgement", "Sanctify");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Pope;
     public override float Cooldown => 0.001f;

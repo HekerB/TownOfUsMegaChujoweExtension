@@ -9,7 +9,7 @@ public sealed class PopeCanonizedModifier(PlayerControl pope) : BaseModifier
     public bool HasSpread { get; set; }
     private readonly Color _color = TouExtensionColors.Pope;
 
-    public override string ModifierName => "Canonized";
+    public override string ModifierName => "Cream Cake";
     public override bool HideOnUi => true;
 
     public override void FixedUpdate()

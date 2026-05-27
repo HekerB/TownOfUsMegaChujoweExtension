@@ -311,27 +311,27 @@
   
   <!-- Pope Role -->
   <string name="ExtensionRolePope">Pope</string>
-  <string name="ExtensionRolePopeIntroBlurb">Canonize everyone and unleash Divine Judgement!</string>
-  <string name="ExtensionRolePopeTabDescription">Canonize every living player.\%nl\%Then use Judgement to finish the game.</string>
-  <string name="ExtensionRolePopeWikiDescription">U need to canonize everyone to start Judgement. The &lt;color=#FFD700&gt;Pope&lt;/color&gt; wins if all players die to the Judgement.</string>
-  <string name="ExtensionRolePopeCanonize">Canonize</string>
-  <string name="ExtensionRolePopeCanonizeWikiDescription">Approach a player and mark them (canonize). Marked players glow gold only for you. When everyone is marked, you can kill them with Judgement.</string>
-  <string name="ExtensionRolePopeJudgement">Judgement</string>
-  <string name="ExtensionRolePopeJudgementWikiDescription">Starts a countdown. If it hits zero, everyone except you dies and you win.</string>
-  <string name="ExtensionRolePopeGlobalWarning">The &lt;role&gt; has unleashed Divine Judgement! &lt;time&gt; seconds remain!</string>
-  <string name="ExtensionRolePopeMessageTitle">Divine Warning</string>
-  <string name="ExtensionRolePopeWarningNotif">The &lt;role&gt; has begun Divine Judgement! &lt;time&gt; seconds until the end!</string>
-  <string name="ExtensionRolePopeTabAllCanonized">All players have been canonized! Use Judgement!</string>
-  <string name="ExtensionRolePopeTabCanonizedInfo">Canonized Players:</string>
+  <string name="ExtensionRolePopeIntroBlurb">Give cream cakes and unleash Sanctify.</string>
+  <string name="ExtensionRolePopeTabDescription">Give cream cakes to every living player.\%nl\%Then use Sanctify to finish the game.</string>
+  <string name="ExtensionRolePopeWikiDescription">Give a cream cake to every living non-Pope. When everyone is marked, use Sanctify. Pope wins if the Sanctify countdown finishes.</string>
+  <string name="ExtensionRolePopeCanonize">Give Cream Cake</string>
+  <string name="ExtensionRolePopeCanonizeWikiDescription">Give a cream cake to a nearby player. Marked players glow gold only for you.</string>
+  <string name="ExtensionRolePopeJudgement">Sanctify</string>
+  <string name="ExtensionRolePopeJudgementWikiDescription">Starts the final countdown. If it reaches zero, everyone except you dies and you win.</string>
+  <string name="ExtensionRolePopeGlobalWarning">The &lt;role&gt; has begun Sanctify! &lt;time&gt; seconds remain!</string>
+  <string name="ExtensionRolePopeMessageTitle">Sanctify Warning</string>
+  <string name="ExtensionRolePopeWarningNotif">The &lt;role&gt; has begun Sanctify! &lt;time&gt; seconds until the end!</string>
+  <string name="ExtensionRolePopeTabAllCanonized">Everyone has a cream cake! Use Sanctify!</string>
+  <string name="ExtensionRolePopeTabCanonizedInfo">Cream Cake Players:</string>
   <string name="ExtensionRolePopeTabCounter">&lt;count&gt; player(s) remaining</string>
-  <string name="ExtensionDiedToPopeJudgement">Divine Judgement</string>
+  <string name="ExtensionDiedToPopeJudgement">Sanctified</string>
   <string name="ExtensionDiedByStringBasic">Killed by &lt;player&gt;</string>
 
   <!-- Pope Options -->
-  <string name="ExtensionOptionPopeCanonizeCooldown">Canonize Cooldown</string>
-  <string name="ExtensionOptionPopeMaxCanonizations">Max Canonizations</string>
-  <string name="ExtensionOptionPopeJudgementDuration">Judgement Countdown Duration</string>
-  <string name="ExtensionOptionPopeCanonizeInteractions">Use Interactions To Spread Canonization</string>
+  <string name="ExtensionOptionPopeCanonizeCooldown">Cream Cake Cooldown</string>
+  <string name="ExtensionOptionPopeMaxCanonizations">Max Cream Cakes</string>
+  <string name="ExtensionOptionPopeJudgementDuration">Sanctify Countdown Duration</string>
+  <string name="ExtensionOptionPopeCanonizeInteractions">Use Interactions To Spread Cream Cakes</string>
   
   <!-- Pope Win -->
   <string name="ExtensionPopeWins">Wins</string>
@@ -1100,7 +1100,7 @@
 
   <!-- TOUMCE Wiki Terms - Symbols -->
   <string name="TOUMCETermsSymbolsTitle">TOUMCE Symbols</string>
-  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player canonized by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client</string>
+  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player given cream cake by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client</string>
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">General Shield Flashes</string>
@@ -1501,7 +1501,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- Loner Role -->
   <string name="ExtensionRoleLoner">Loner</string>
   <string name="ExtensionRoleLonerIntroBlurb">Recruit your missing teammate</string>
-  <string name="ExtensionRoleLonerTabDescription">Recruit during meetings to restore your team. \%nl\%Cannot become an Impostor Power or Killing role.\%/b\%</string>
+  <string name="ExtensionRoleLonerTabDescription">Recruit during meetings to restore your team. \%nl\%\%b\%Cannot become an Impostor Power or Killing role.\%/b\%</string>
   <string name="ExtensionRoleLonerWikiDescription">The Loner is an Impostor Power role that starts with one fewer teammate. Recruit a non-Impostor during a meeting to restore your team. After recruiting, kill enough players to gain a new Impostor role. \%b\%Cannot become an Impostor Power or Killing role.\%/b\%</string>
   <string name="ExtensionRoleLonerRecruitSuccess">You recruited &lt;player&gt; as an Impostor!</string>
   <string name="ExtensionRoleLonerRecruited">You were recruited by the Loner!</string>

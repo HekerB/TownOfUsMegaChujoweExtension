@@ -309,27 +309,27 @@
   
   <!-- Pope Role -->
   <string name="ExtensionRolePope">Pope</string>
-  <string name="ExtensionRolePopeIntroBlurb">Kanonizuj wiernych i wymierz im Boski Sad.</string>
-  <string name="ExtensionRolePopeTabDescription">Kanonizuj kazdego zywego gracza.\%nl\%Potem uzyj Judgement, aby zakonczyc gre.</string>
-  <string name="ExtensionRolePopeWikiDescription">Musisz kanonizowac wszystkich, aby rozpoczac Judgement. &lt;color=#FFD700&gt;Pope&lt;/color&gt; wygrywa, jesli wszyscy gracze zgina od Judgement.</string>
-  <string name="ExtensionRolePopeCanonize">Kanonizuj</string>
-  <string name="ExtensionRolePopeCanonizeWikiDescription">Podejdz do gracza i go zaznacz (kanonizuj). Zaznaczeni gracze swieca sie na zloto tylko dla Ciebie. Gdy zaznaczysz wszystkich zyjacych, bedziesz mogl ich ukatrupic przyciskiem Judgement.</string>
-  <string name="ExtensionRolePopeJudgement">Judgement</string>
-  <string name="ExtensionRolePopeJudgementWikiDescription">Rozpoczyna odliczanie do konca gry. Jesli czas dojdzie do zera, wszyscy oprocz Ciebie gina i wygrywasz.</string>
-  <string name="ExtensionRolePopeGlobalWarning">&lt;role&gt; uwolnil Boski Sad! Pozostalo &lt;time&gt; sekund!</string>
-  <string name="ExtensionRolePopeMessageTitle">Boskie ostrzezenie</string>
-  <string name="ExtensionRolePopeWarningNotif">&lt;role&gt; rozpoczal Boski Sad! Do konca pozostalo &lt;time&gt; sekund!</string>
-  <string name="ExtensionRolePopeTabAllCanonized">Wszyscy gracze zostali kanonizowani! Uzyj Judgement!</string>
-  <string name="ExtensionRolePopeTabCanonizedInfo">Kanonizowani gracze:</string>
+  <string name="ExtensionRolePopeIntroBlurb">Dawaj cream cakes i odpal Sanctify.</string>
+  <string name="ExtensionRolePopeTabDescription">Daj cream cake kazdemu zyjacemu graczowi.\%nl\%Potem uzyj Sanctify, aby zakonczyc gre.</string>
+  <string name="ExtensionRolePopeWikiDescription">Daj cream cake kazdemu zyjacemu graczowi spoza roli Pope. Gdy wszyscy beda oznaczeni, uzyj Sanctify. Pope wygrywa, jesli odliczanie Sanctify dojdzie do konca.</string>
+  <string name="ExtensionRolePopeCanonize">Give Cream Cake</string>
+  <string name="ExtensionRolePopeCanonizeWikiDescription">Daj cream cake pobliskiemu graczowi. Oznaczeni gracze swieca sie na zloto tylko dla Ciebie.</string>
+  <string name="ExtensionRolePopeJudgement">Sanctify</string>
+  <string name="ExtensionRolePopeJudgementWikiDescription">Rozpoczyna finalne odliczanie. Jesli dojdzie do zera, wszyscy oprocz Ciebie gina i wygrywasz.</string>
+  <string name="ExtensionRolePopeGlobalWarning">&lt;role&gt; rozpoczal Sanctify! Pozostalo &lt;time&gt; sekund!</string>
+  <string name="ExtensionRolePopeMessageTitle">Ostrzezenie Sanctify</string>
+  <string name="ExtensionRolePopeWarningNotif">&lt;role&gt; rozpoczal Sanctify! Do konca pozostalo &lt;time&gt; sekund!</string>
+  <string name="ExtensionRolePopeTabAllCanonized">Wszyscy maja cream cake! Uzyj Sanctify!</string>
+  <string name="ExtensionRolePopeTabCanonizedInfo">Gracze z cream cake:</string>
   <string name="ExtensionRolePopeTabCounter">Pozostalo graczy: &lt;count&gt;</string>
-  <string name="ExtensionDiedToPopeJudgement">Boski Sad</string>
+  <string name="ExtensionDiedToPopeJudgement">Sanctified</string>
   <string name="ExtensionDiedByStringBasic">Zabity przez &lt;player&gt;</string>
 
   <!-- Pope Options -->
-  <string name="ExtensionOptionPopeCanonizeCooldown">Cooldown kanonizacji</string>
-  <string name="ExtensionOptionPopeMaxCanonizations">Maksymalna liczba kanonizacji</string>
-  <string name="ExtensionOptionPopeJudgementDuration">Czas odliczania Judgement</string>
-  <string name="ExtensionOptionPopeCanonizeInteractions">Uzyj interakcji do rozprzestrzeniania kanonizacji</string>
+  <string name="ExtensionOptionPopeCanonizeCooldown">Cream Cake Cooldown</string>
+  <string name="ExtensionOptionPopeMaxCanonizations">Max Cream Cakes</string>
+  <string name="ExtensionOptionPopeJudgementDuration">Czas odliczania Sanctify</string>
+  <string name="ExtensionOptionPopeCanonizeInteractions">Uzyj interakcji do rozdawania Cream Cakes</string>
   
   <!-- Pope Win -->
   <string name="ExtensionPopeWins">Wygrywa</string>
@@ -1095,7 +1095,7 @@
 
   <!-- TOUMCE Wiki Terms - Symbols -->
   <string name="TOUMCETermsSymbolsTitle">Symbole TOUMCE</string>
-  <string name="TOUMCETermsSymbolsInfo">Glosariusz symboli TOUMCE • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Gracz kanonizowany przez Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Gracz ustawiony jako pulapka przez Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Gracz wpisany do Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Gracz chroniony przez Bodyguarda • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Gracz otruty przez Poisonera • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Klient Lawyera</string>
+  <string name="TOUMCETermsSymbolsInfo">Glosariusz symboli TOUMCE • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Gracz z cream cake od Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Gracz ustawiony jako pulapka przez Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Gracz wpisany do Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Gracz chroniony przez Bodyguarda • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Gracz otruty przez Poisonera • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Klient Lawyera</string>
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">Blyski tarczy</string>
