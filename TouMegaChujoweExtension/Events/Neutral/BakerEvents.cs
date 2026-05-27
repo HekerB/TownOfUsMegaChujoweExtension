@@ -111,20 +111,11 @@ public static class BakerEvents
     }
 
     [RegisterEvent]
-    public static void StartMeetingEventHandler(StartMeetingEvent @event)
+    public static void StartMeetingEventHandler(StartMeetingEvent _)
     {
         if (MeetingHud.Instance == null)
         {
             return;
-        }
-
-        // 1. Reset Baker's bread given flags
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (player != null && player.Data != null && player.Data.Role is BakerRole bakerRole)
-            {
-                bakerRole.BreadGivenThisRound = false;
-            }
         }
 
         if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
@@ -182,26 +173,16 @@ public static class BakerEvents
             return;
         }
 
-        if (target.Data.Role is FamineRole)
+        if (target.Data.Role is FamineRole && PlayerControl.LocalPlayer != null && (PlayerControl.LocalPlayer == target || PlayerControl.LocalPlayer == source))
         {
-            if (PlayerControl.LocalPlayer != null && (PlayerControl.LocalPlayer == target || PlayerControl.LocalPlayer == source))
-            {
-                Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(Color.white, 0.15f, 0.15f));
-            }
+            Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(Color.white, 0.15f, 0.15f));
         }
     }
 
     [RegisterEvent]
-    public static void OnMeetingEnd(EndMeetingEvent @event)
+    public static void OnMeetingEnd(EndMeetingEvent _)
     {
-        // Reset bread given flags and buttons
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (player != null && player.Data != null && player.Data.Role is BakerRole bakerRole)
-            {
-                bakerRole.BreadGivenThisRound = false;
-            }
-        }
+        // Reset buttons
 
         var giveButton = MiraAPI.Hud.CustomButtonSingleton<BakerGiveButton>.Instance;
         if (giveButton != null)
