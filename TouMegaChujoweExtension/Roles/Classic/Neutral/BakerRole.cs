@@ -65,7 +65,7 @@ public sealed class BakerRole(IntPtr cppPtr)
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = false,
-        IntroSound = TouAudio.ToppatIntroSound,
+        IntroSound = TouAudio.ChefSound,
         Icon = TouExtensionIcons.BakerRoleIcon,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
         OptionsScreenshot = TouBanners.NeutralRoleBanner,
@@ -94,7 +94,7 @@ public sealed class BakerRole(IntPtr cppPtr)
         var breadGivenCount = PlayerControl.AllPlayerControls.ToArray()
             .Count(x => x != null && !x.HasDied() && x.HasModifier<BakerBreadModifier>());
         var breadNeeded = GetEffectiveBreadNeeded(Player);
-        
+
         stringB.AppendLine($"Bread Recipients: {breadGivenCount} / {breadNeeded}");
         return stringB;
     }
@@ -174,7 +174,7 @@ public sealed class BakerRole(IntPtr cppPtr)
         {
             baker.ChangeRole(RoleId.Get<FamineRole>());
         }
-        
+
         if (PlayerControl.LocalPlayer != null && OptionGroupSingleton<BakerOptions>.Instance.AnnounceFamine)
         {
             var famineColor = TouExtensionColors.Famine.ToTextColor();
