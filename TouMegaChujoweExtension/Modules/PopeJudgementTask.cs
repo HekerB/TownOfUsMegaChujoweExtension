@@ -81,7 +81,7 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
             if (disableBlare && _sabotage.Stage != PopeJudgementStage.Finished && _sabotage.Stage != PopeJudgementStage.Ending)
             {
                 HudManager.Instance.FullScreen.gameObject.SetActive(false);
-                SoundManager.Instance.StopSound(TouExtensionAudio.PopeAlarmSound.LoadAsset());
+                SoundManager.Instance.StopSound(TouAudio.HexBombAlarmSound.LoadAsset());
                 HudManager.Instance.PlayerCam.shakeAmount = _ogShakeAmt;
                 HudManager.Instance.PlayerCam.shakePeriod = _ogShakePeriod;
                 yield return wait;
@@ -98,8 +98,8 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
                 playSound = !playSound;
                 if (playSound && !disableBlare)
                 {
-                    SoundManager.Instance.StopSound(TouExtensionAudio.PopeAlarmSound.LoadAsset());
-                    SoundManager.Instance.PlaySound(TouExtensionAudio.PopeAlarmSound.LoadAsset(), false, 0.25f);
+                    SoundManager.Instance.StopSound(TouAudio.HexBombAlarmSound.LoadAsset());
+                    SoundManager.Instance.PlaySound(TouAudio.HexBombAlarmSound.LoadAsset(), false, 0.25f);
                 }
             }
             else if (_sabotage.Stage == PopeJudgementStage.PopeDead)
@@ -115,8 +115,8 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
                     playSound = !playSound;
                     if (playSound)
                     {
-                        SoundManager.Instance.StopSound(TouExtensionAudio.PopeAlarmSound.LoadAsset());
-                        SoundManager.Instance.PlaySound(TouExtensionAudio.PopeAlarmSound.LoadAsset(), false, 0.1f);
+                        SoundManager.Instance.StopSound(TouAudio.HexBombAlarmSound.LoadAsset());
+                        SoundManager.Instance.PlaySound(TouAudio.HexBombAlarmSound.LoadAsset(), false, 0.1f);
                     }
                 }
             }
@@ -153,7 +153,7 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
                         else if (PlayerControl.LocalPlayer.HasModifier<MiniModifier>())
                             deathAnim.transform.localPosition += new Vector3(0f, -0.05f, 0f);
 
-                        SoundManager.Instance.StopSound(TouExtensionAudio.PopeAlarmSound.LoadAsset());
+                        SoundManager.Instance.StopSound(TouAudio.HexBombAlarmSound.LoadAsset());
                         SoundManager.Instance.PlaySound(TouExtensionAudio.PopeJudgementSound.LoadAsset(), false, 1f);
                         HudManager.Instance.FullScreen.gameObject.SetActive(true);
                         HudManager.Instance.FullScreen.color = goldBg;
@@ -162,7 +162,7 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
                     }
                     else
                     {
-                        SoundManager.Instance.StopSound(TouExtensionAudio.PopeAlarmSound.LoadAsset());
+                        SoundManager.Instance.StopSound(TouAudio.HexBombAlarmSound.LoadAsset());
                         SoundManager.Instance.PlaySound(TouExtensionAudio.PopeJudgementSound.LoadAsset(), false, 1f);
                         HudManager.Instance.FullScreen.gameObject.SetActive(true);
                         HudManager.Instance.FullScreen.color = goldBg;
@@ -181,8 +181,8 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
                 HudManager.Instance.FullScreen.color = goldBg;
                 if (!HudManager.Instance.FullScreen.gameObject.activeSelf && !disableBlare)
                 {
-                    SoundManager.Instance.StopSound(TouExtensionAudio.PopeAlarmSound.LoadAsset());
-                    SoundManager.Instance.PlaySound(TouExtensionAudio.PopeAlarmSound.LoadAsset(), false, 0.25f);
+                    SoundManager.Instance.StopSound(TouAudio.HexBombAlarmSound.LoadAsset());
+                    SoundManager.Instance.PlaySound(TouAudio.HexBombAlarmSound.LoadAsset(), false, 0.25f);
                 }
                 HudManager.Instance.FullScreen.gameObject.SetActive(
                     !HudManager.Instance.FullScreen.gameObject.activeSelf);
@@ -191,7 +191,7 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
             else if (_sabotage.Stage == PopeJudgementStage.Ending)
             {
                 HudManager.Instance.FullScreen.gameObject.SetActive(false);
-                SoundManager.Instance.StopSound(TouExtensionAudio.PopeAlarmSound.LoadAsset());
+                SoundManager.Instance.StopSound(TouAudio.HexBombAlarmSound.LoadAsset());
                 SoundManager.Instance.StopSound(TouExtensionAudio.PopeJudgementSound.LoadAsset());
             }
             yield return wait;
@@ -234,7 +234,7 @@ public sealed class PopeJudgementTask(nint cppPtr) : PlayerTask(cppPtr)
             HudManager.Instance.StopCoroutine(_flash);
             _flash = null;
             HudManager.Instance.FullScreen.gameObject.SetActive(false);
-            SoundManager.Instance.StopSound(TouExtensionAudio.PopeAlarmSound.LoadAsset());
+            SoundManager.Instance.StopSound(TouAudio.HexBombAlarmSound.LoadAsset());
         }
         DataManager.Settings.Gameplay.ScreenShake = _ogShakeEnabled;
         HudManager.Instance.PlayerCam.shakeAmount = _ogShakeAmt;
