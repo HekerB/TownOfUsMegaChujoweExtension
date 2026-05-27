@@ -40,7 +40,7 @@ public sealed class AstralPhaseModifier : ConcealedModifier, IVisualAppearance
     {
         Player.RawSetAppearance(this);
         Player.cosmetics.ToggleNameVisible(false);
-        
+
         // Noclip
         Player.gameObject.layer = LayerMask.NameToLayer("Ghost");
 
@@ -54,7 +54,7 @@ public sealed class AstralPhaseModifier : ConcealedModifier, IVisualAppearance
     {
         Player.ResetAppearance();
         Player.cosmetics.ToggleNameVisible(true);
-        
+
         // Restore layer
         Player.gameObject.layer = LayerMask.NameToLayer("Players");
 
@@ -80,6 +80,27 @@ public sealed class AstralPhaseModifier : ConcealedModifier, IVisualAppearance
             if (options.DieIfNoKillDuringPhase && !killMade)
             {
                 Player.RpcSpecialMurder(Player, causeOfDeath: "AstralShatter");
+            }
+            else
+            {
+                PlayerControl? otherPlayer = null;
+                foreach (var pc in PlayerControl.AllPlayerControls)
+                {
+                    if (pc != null && pc.PlayerId != Player.PlayerId && pc.Data != null && !pc.Data.IsDead && !pc.Data.Disconnected)
+                    {
+                        otherPlayer = pc;
+                        break;
+                    }
+                }
+                if (otherPlayer != null)
+                {
+                    var pos = (Vector2)otherPlayer.transform.position;
+                    Player.transform.position = pos;
+                    if (Player.NetTransform != null)
+                    {
+                        Player.NetTransform.RpcSnapTo(pos);
+                    }
+                }
             }
         }
         Player.RemoveModifier(this);

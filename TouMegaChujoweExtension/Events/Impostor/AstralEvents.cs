@@ -11,6 +11,7 @@ using TouMegaChujoweExtension.Modifiers.Crewmate;
 using TouMegaChujoweExtension.Modifiers.Neutral;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Events.Impostor;
 
@@ -32,32 +33,16 @@ public static class AstralEvents
                 return;
             }
 
-            bool isProtected = GardenerSystem.IsInAnyGarden(@event.Target) ||
-                               @event.Target.HasModifier<DoctorShieldModifier>() ||
-                               @event.Target.HasModifier<BodyguardShieldModifier>() ||
-                               @event.Target.HasModifier<TownOfUs.Modifiers.Crewmate.MedicShieldModifier>() ||
-                               @event.Target.HasModifier<TownOfUs.Modifiers.Crewmate.WardenFortifiedModifier>() ||
-                               @event.Target.HasModifier<TownOfUs.Modifiers.Crewmate.MagicMirrorModifier>() ||
-                               @event.Target.HasModifier<TownOfUs.Modifiers.FirstDeadShield>() ||
-                               @event.Target.HasModifier<TownOfUs.Modifiers.Crewmate.ClericBarrierModifier>() ||
-                               @event.Target.HasModifier<TownOfUs.Modifiers.Neutral.GuardianAngelProtectModifier>() ||
-                               @event.Target.HasModifier<BaseShieldModifier>() ||
-                               @event.Target.HasModifier<InvulnerabilityModifier>() ||
-                               @event.Target.HasModifier<VeteranAlertModifier>() ||
-                               @event.Target.HasModifier<JackalShieldModifier>();
-
-            if (isProtected)
-            {
-                @event.Cancel();
-                return;
-            }
-
             @event.Cancel();
             _killInProgress.Add(killer.PlayerId);
-            killer.RpcSpecialMurder(@event.Target, causeOfDeath: "AstralVoid");
-
-            var afterMurderEvent = new AfterMurderEvent(killer, @event.Target, null);
-            MiraEventManager.InvokeEvent(afterMurderEvent);
+            try
+            {
+                killer.RpcSpecialMurder(@event.Target, causeOfDeath: "AstralVoid");
+            }
+            finally
+            {
+                _killInProgress.Remove(killer.PlayerId);
+            }
         }
     }
 
@@ -67,11 +52,12 @@ public static class AstralEvents
         var killer = @event.Source;
         if (killer == null || killer.Data == null) return;
 
-        _killInProgress.Remove(killer.PlayerId);
-
         if (killer.Data.Role is AstralRole astral && killer.HasModifier<AstralPhaseModifier>())
         {
-            astral.KillMadeDuringPhase = true;
+            if (@event.Target != null && @event.Target.HasDied())
+            {
+                astral.KillMadeDuringPhase = true;
+            }
         }
     }
 }

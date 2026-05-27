@@ -86,7 +86,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             if (player == null || player.HasDied() || player.Data?.Role is not JokerRole jokerRole) continue;
             if (jokerRole.WinConditionMet() && player.Data != null)
             {
-                CustomGameOver.Trigger<ExtensionNeutralGameOver>(new[] { player.Data });
+                CustomGameOver.Trigger<ExtensionNeutralGameOver>([player.Data]);
                 return;
             }
         }
@@ -97,7 +97,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             if (player == null || player.HasDied() || player.Data?.Role is not PelicanRole pelicanRole) continue;
             if (pelicanRole.WinConditionMet() && player.Data != null)
             {
-                CustomGameOver.Trigger<ExtensionNeutralGameOver>(new[] { player.Data });
+                CustomGameOver.Trigger<ExtensionNeutralGameOver>([player.Data]);
                 return;
             }
         }
@@ -110,7 +110,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             {
                 if (player?.Data?.Role is BountyHunterRole && player.Data != null)
                 {
-                    CustomGameOver.Trigger<ExtensionNeutralGameOver>(new[] { player.Data });
+                    CustomGameOver.Trigger<ExtensionNeutralGameOver>([player.Data]);
                     return;
                 }
             }
@@ -121,7 +121,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         {
             if (player?.Data?.Role is PirateRole pirate && pirate.WinConditionMet() && player.Data != null)
             {
-                CustomGameOver.Trigger<ExtensionNeutralGameOver>(new[] { player.Data });
+                CustomGameOver.Trigger<ExtensionNeutralGameOver>([player.Data]);
                 return;
             }
         }
@@ -146,16 +146,18 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             if (player == null || player.HasDied() || player.Data?.Role is not FamineRole famineRole) continue;
             if (famineRole.WinConditionMet() && player.Data != null)
             {
-                CustomGameOver.Trigger<ExtensionNeutralGameOver>(new[] { player.Data });
+                CustomGameOver.Trigger<ExtensionNeutralGameOver>([player.Data]);
                 return;
             }
         }
 
         // 9. Jackal
-        if (IsJackalWinMet())
+        var winningJackalId = GetWinningJackalId();
+        if (winningJackalId.HasValue)
         {
             var winners = PlayerControl.AllPlayerControls.ToArray()
-                .Where(p => p.GetRole<JackalRole>() != null || p.TryGetModifier<SidekickModifier>(out _))
+                .Where(p => p.PlayerId == winningJackalId.Value || 
+                            (p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == winningJackalId.Value))
                 .Select(p => p.Data)
                 .ToArray();
             CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners);
@@ -164,7 +166,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
 
     #region Role Specific Checks
 
-    private bool IsPopeWinMet()
+    private static bool IsPopeWinMet()
     {
         bool isJudgementActive = PopeJudgementSystem.Instance != null && PopeJudgementSystem.Instance.Stage >= PopeJudgementStage.Countdown;
         bool popeRaceCondition = false;
@@ -191,7 +193,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode == BountyHunterWinMode.SoloWin;
     }
 
-    private bool IsPelicanWinMet()
+    private static bool IsPelicanWinMet()
     {
         foreach (var player in PlayerControl.AllPlayerControls)
         {
@@ -201,7 +203,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return false;
     }
 
-    private bool IsJokerWinMet()
+    private static bool IsJokerWinMet()
     {
         if (OptionGroupSingleton<JokerOptions>.Instance.WinMode != JokerWinOptions.SoloWin) return false;
 
@@ -240,7 +242,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         }
     }
 
-    private bool IsPirateWinMet()
+    private static bool IsPirateWinMet()
     {
         if (OptionGroupSingleton<PirateOptions>.Instance.WinMode != PirateWinMode.PirateWins) return false;
 
@@ -254,7 +256,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return false;
     }
 
-    private bool IsFamineWinMet()
+    private static bool IsFamineWinMet()
     {
         foreach (var player in PlayerControl.AllPlayerControls)
         {
@@ -265,7 +267,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return false;
     }
 
-    private bool IsBakerFaminePlagueAllianceWinMet()
+    private static bool IsBakerFaminePlagueAllianceWinMet()
     {
         if (!OptionGroupSingleton<ExtensionGameMechanicOptions>.Instance.BakerFaminePlagueAlliance)
         {
@@ -287,11 +289,10 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
 
     private static NetworkedPlayerInfo[] GetBakerFaminePlagueAllianceWinners()
     {
-        return Helpers.GetAlivePlayers()
+        return [.. Helpers.GetAlivePlayers()
             .Where(x => x != null && (IsBakerFamineAllianceRole(x) || IsPlagueAllianceRole(x)))
             .Select(x => x.Data)
-            .Where(x => x != null)
-            .ToArray();
+            .Where(x => x != null)];
     }
 
     private static bool IsBakerFamineAllianceRole(PlayerControl player)
@@ -304,7 +305,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return player?.Data?.Role is PlaguebearerRole or PestilenceRole;
     }
 
-    private bool IsLawyerWinMet()
+    private static bool IsLawyerWinMet()
     {
         if (LawyerWinConditionState.Triggered) return false;
         if (OptionGroupSingleton<LawyerOptions>.Instance.WinMode == LawyerWinMode.WinWithClient) return false;
@@ -312,7 +313,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return IsLawyerDuoMet() || IsLawyerParityMet();
     }
 
-    private bool IsLawyerDuoMet()
+    private static bool IsLawyerDuoMet()
     {
         var alivePlayers = Helpers.GetAlivePlayers();
         if (alivePlayers.Count != 2) return false;
@@ -334,7 +335,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return false;
     }
 
-    private bool IsLawyerParityMet()
+    private static bool IsLawyerParityMet()
     {
         var alivePlayers = Helpers.GetAlivePlayers();
         if (alivePlayers.Count != 3) return false;
@@ -358,7 +359,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return false;
     }
 
-    private bool ClientHasWonAlone(PlayerControl client)
+    private static bool ClientHasWonAlone(PlayerControl client)
     {
         if (client == null || client.HasDied()) return false;
         var clientRole = client.GetRoleWhenAlive();
@@ -366,12 +367,12 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return false;
     }
 
-    private bool IsKillerClient(PlayerControl client)
+    private static bool IsKillerClient(PlayerControl client)
     {
         return client != null && (client.IsImpostorAligned() || client.Is(RoleAlignment.NeutralKilling));
     }
 
-    private void TriggerLawyerWin()
+    private static void TriggerLawyerWin()
     {
         if (LawyerWinConditionState.Triggered) return;
 
@@ -398,25 +399,39 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         if (winners.Count >= 2)
         {
             LawyerWinConditionState.MarkTriggered();
-            CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners.ToArray());
+            CustomGameOver.Trigger<ExtensionNeutralGameOver>([.. winners]);
         }
     }
 
-    private bool IsJackalWinMet()
+    public static byte? GetWinningJackalId()
     {
         var alive = Helpers.GetAlivePlayers();
-        if (alive.Count == 0) return false;
+        if (alive.Count == 0) return null;
 
-        // Find the first alive Jackal to check their specific team parity
         foreach (var jackalPc in PlayerControl.AllPlayerControls)
         {
-            if (jackalPc == null || jackalPc.HasDied()) continue;
+            if (jackalPc == null) continue;
             var jackal = jackalPc.GetRole<JackalRole>();
-            if (jackal != null && jackal.WinConditionMet()) return true;
+            if (jackal == null) continue;
+
+            var jackalTeam = alive.Where(p =>
+                p != null && p.Pointer != IntPtr.Zero &&
+                (p.PlayerId == jackalPc.PlayerId ||
+                 (p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == jackalPc.PlayerId))
+            ).ToList();
+
+            var jackalTeamCount = jackalTeam.Count;
+
+            if (jackalTeamCount > 0 && alive.Count == jackalTeamCount)
+            {
+                return jackalPc.PlayerId;
+            }
         }
 
-        return false;
+        return null;
     }
+
+    private static bool IsJackalWinMet() => GetWinningJackalId().HasValue;
 
     #endregion
 }

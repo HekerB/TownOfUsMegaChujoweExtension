@@ -28,7 +28,6 @@ using TownOfUs.Buttons;
 using TownOfUs;
 using TownOfUs.Modifiers;
 using TownOfUs.Events;
-using TownOfUs.Modules;
 using TownOfUs.Utilities.Appearances;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Jackal;
@@ -68,7 +67,9 @@ public static class JackalMechanicsPatch
 
         if (target == null)
         {
+#pragma warning disable S3011
             var targetField = button.GetType().GetField("_target", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+#pragma warning restore S3011
             target = targetField?.GetValue(button) as PlayerControl;
         }
 
@@ -169,7 +170,7 @@ public static class JackalMechanicsPatch
                 jackalRole?.OnRecruitDie();
             }
         }
-        if (victim.IsRole<JackalRole>() && AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
+        if (victim.GetRoleWhenAlive() is JackalRole && AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
         {
             var jackalRoleName = (victim.GetRoleWhenAlive() as ITownOfUsRole)?.RoleName ?? "Jackal";
             foreach (var player in PlayerControl.AllPlayerControls.ToArray())
@@ -263,7 +264,7 @@ public static class JackalMechanicsPatch
         var victim = @event.ExileController.initData.networkedPlayer.Object;
         if (victim == null) return;
 
-        if (victim.IsRole<JackalRole>() && AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
+        if (victim.GetRoleWhenAlive() is JackalRole && AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
         {
             var jackalRoleName = (victim.GetRoleWhenAlive() as ITownOfUsRole)?.RoleName ?? "Jackal";
             foreach (var recruit in PlayerControl.AllPlayerControls.ToArray())

@@ -61,7 +61,10 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        if (gameOverReason == CustomGameOver.GameOverReason<ExtensionNeutralGameOver>()) return true;
+        if (gameOverReason == CustomGameOver.GameOverReason<ExtensionNeutralGameOver>())
+        {
+            return NeutralExtensionWinCondition.GetWinningJackalId() == Player.PlayerId;
+        }
         return WinConditionMet();
     }
     public string RoleName => TouLocale.Get("ExtensionRoleJackal");
@@ -248,7 +251,7 @@ public static class JackalDeathLifelinkPatch
     {
         if (__instance == null || !AmongUsClient.Instance.AmHost) return;
 
-        if (__instance.IsRole<JackalRole>() && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
+        if (__instance.GetRoleWhenAlive() is JackalRole && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
         {
             var jackalRoleName = (__instance.GetRoleWhenAlive() as ITownOfUsRole)?.RoleName ?? "Jackal";
             var sidekicks = PlayerControl.AllPlayerControls.ToArray()

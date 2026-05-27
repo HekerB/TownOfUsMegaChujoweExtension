@@ -55,7 +55,7 @@ public static class BurrowerPatches
     {
         var player = __instance?.myPlayer;
         var role = player?.GetRole<BurrowerRole>();
-        if (player == null || role == null || (!role.IsPreparingDig && !role.IsUnderground))
+        if (__instance == null || player == null || role == null || (!role.IsPreparingDig && !role.IsUnderground))
         {
             return true;
         }
@@ -138,7 +138,7 @@ public static class BurrowerPatches
 
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
     [HarmonyPostfix]
-    public static void CalculateLightRadiusPostfix(ShipStatus __instance, ref float __result)
+    public static void CalculateLightRadiusPostfix(ref float __result)
     {
         if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data.IsDead)
         {

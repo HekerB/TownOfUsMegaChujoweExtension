@@ -341,6 +341,7 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
 
     private IEnumerator CoShake()
     {
+        if (Button == null) yield break;
         _isShaking = true;
         var transform = Button.transform;
         var basePosition = transform.localPosition;
