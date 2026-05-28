@@ -10,6 +10,10 @@
 
 >  [!TIP]
 > Want to suggest ideas, help with graphics, report issues, or find people to play with? Join our [Discord](https://discord.gg/qaQZAmAVh4) — we have a diverse and friendly community!
+
+> [!IMPORTANT]
+> **Voice Chat:** For proximity voice chat with this extension, use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-Comms)**. It is a fork made specifically for **Town Of Us Mega Chujowe Extension** and works with **Town of Us: Mira**. Do **not** use the original Perfect Comms build with this extension, because extension-specific role behavior can bug out or leak information without the fork.
+
 -----------------------
 
 <div align="center">
@@ -246,6 +250,10 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 1. Ensure you have [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira) installed.
 2. Build this project or download a release.
 3. Place the compiled DLL in your `BepInEx/plugins/` folder.
+
+## Optional Voice Chat
+
+Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-Comms)** if you want in-game proximity voice chat. This fork includes compatibility for TouMCE roles such as Pelican, Infiltrator/Recruits, Lawyer, Spirit Master, and custom invisible roles. Do not install the original Perfect Comms build for TouMCE lobbies; use the fork to avoid role voice bugs.
 
 -----------------------
 
