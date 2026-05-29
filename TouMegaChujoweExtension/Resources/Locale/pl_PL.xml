@@ -241,10 +241,10 @@
   <!-- Pelican Role -->
   <string name="ExtensionRolePelican">Pelican</string>
   <string name="ExtensionRolePelicanIntroBlurb">Połykaj wszystkich graczy, aby wygrać!</string>
-  <string name="ExtensionRolePelicanTabDescription">Polykaj graczy do brzucha.\%nl\%Spotkania ich trawia, chyba ze zginiesz.</string>
-  <string name="ExtensionRolePelicanWikiDescription">Pelican to rola Neutral Killing, która może połykać graczy i trzymać ich w swoim brzuchu. Połknięci gracze giną podczas spotkania, ale mogą zostać uwolnieni, jeśli Pelican zginie wcześniej.</string>
+  <string name="ExtensionRolePelicanTabDescription">Polykaj graczy do brzucha.\%nl\%Spotkania ich trawia, chyba ze zginiesz.\%nl\%Z voice chatem mozesz prywatnie gadac z polknietymi.</string>
+  <string name="ExtensionRolePelicanWikiDescription">Pelican to rola Neutral Killing, która może połykać graczy i trzymać ich w swoim brzuchu. Połknięci gracze giną podczas spotkania, ale mogą zostać uwolnieni, jeśli Pelican zginie wcześniej. Z Mega Chujowe Perfect Comms Pelican może prywatnie rozmawiać z połkniętymi graczami, a nikt spoza brzucha ich nie słyszy.</string>
    <string name="ExtensionRolePelicanSwallow">Połknij</string>
-  <string name="ExtensionRolePelicanSwallowWikiDescription">Połknięcie gracza, jak sama nazwa wskazuje, polega na połknięciu go i trzymaniu w brzuchu. Pelican i połknięci gracze mogą rozmawiać ze sobą na czacie. Umiejętności połkniętych graczy są zablokowane.</string>
+  <string name="ExtensionRolePelicanSwallowWikiDescription">Połknij gracza i trzymaj go w brzuchu. Połknięci gracze nie mogą używać umiejętności. Z voice chatem możesz rozmawiać z połkniętymi graczami, a nikt spoza Twojego brzucha nie słyszy tej rozmowy.</string>
 
   <!-- Pelican Options -->
   <string name="ExtensionOptionPelicanSwallowCooldown">Cooldown połykania</string>

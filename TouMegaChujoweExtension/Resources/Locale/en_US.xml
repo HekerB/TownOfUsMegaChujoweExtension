@@ -242,10 +242,10 @@
   <!-- Pelican Role -->
   <string name="ExtensionRolePelican">Pelican</string>
   <string name="ExtensionRolePelicanIntroBlurb">Swallow All Players To Win!</string>
-  <string name="ExtensionRolePelicanTabDescription">Swallow players into your stomach.\%nl\%Meetings digest them unless you die first.</string>
-  <string name="ExtensionRolePelicanWikiDescription">The Pelican is a Neutral Killing role that can swallow players and keep them in their stomach. Swallowed players die in the meeting, and can be set free if the Pelican dies before that.</string>
+  <string name="ExtensionRolePelicanTabDescription">Swallow players into your stomach.\%nl\%Meetings digest them unless you die first.\%nl\%With voice chat, you can talk to swallowed players privately.</string>
+  <string name="ExtensionRolePelicanWikiDescription">The Pelican is a Neutral Killing role that can swallow players and keep them in their stomach. Swallowed players die in the meeting, and can be set free if the Pelican dies before that. With Mega Chujowe Perfect Comms, the Pelican can privately talk with swallowed players, and nobody outside the stomach can hear them.</string>
   <string name="ExtensionRolePelicanSwallow">Swallow</string>
-  <string name="ExtensionRolePelicanSwallowWikiDescription">Swallowing a player, as the name implies, swallows a player and keeps them in their stomach. Abilities are also disabled for the swallowed players.</string>
+  <string name="ExtensionRolePelicanSwallowWikiDescription">Swallow a player and keep them in your stomach. Swallowed players cannot use abilities. With voice chat, you can talk to swallowed players, and nobody outside your stomach can hear that conversation.</string>
 
   <!-- Pelican Options -->
   <string name="ExtensionOptionPelicanSwallowCooldown">Swallow Cooldown</string>
