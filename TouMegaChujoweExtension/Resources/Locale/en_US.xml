@@ -83,7 +83,7 @@
   <string name="ExtensionRoleVanisherTabDescription">Vanish to hide yourself.\%nl\%Nearby evil players are detected.</string>
   <string name="ExtensionRoleVanisherWikiDescription">You are crewmate Swooper. You can Vanish and observe neutrals/impostors.</string>
   <string name="ExtensionRoleVanisherVanish">Vanish</string>
-  <string name="ExtensionRoleVanisherUnvanish">Unvanish</string>
+  <string name="ExtensionRoleVanisherUnvanish">Appear</string>
   <string name="ExtensionRoleVanisherVanishWikiDescription">Turn invisible for a short time. Bad players nearby get a warning. You can reappear early by pressing Unvanish.</string>
 
   <!-- Vanisher Options -->

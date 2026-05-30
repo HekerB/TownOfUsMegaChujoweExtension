@@ -16,6 +16,12 @@
         <EmbeddedResource Include="Resources/**/*.*" />
     </ItemGroup>
 
+    <ItemGroup Condition="Exists('Resources/Audio/toumega-audio-win.bundle') Or Exists('Resources/Audio/toumega-audio-android.bundle')">
+        <EmbeddedResource Remove="Resources/Audio/**/*.mp3" />
+        <EmbeddedResource Remove="Resources/Audio/**/*.ogg" />
+        <EmbeddedResource Remove="Resources/Audio/**/*.wav" />
+    </ItemGroup>
+
     <Import Project="../AmongUs.props" />
 
     <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
