@@ -20,8 +20,10 @@ using TouMegaChujoweExtension.Assets;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-public sealed class PortalmakerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable
+public sealed class PortalmakerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
+    public DoomableType DoomHintType => DoomableType.Trickster;
+
     public string LocaleKey => "Portalmaker";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Portalmaker");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");

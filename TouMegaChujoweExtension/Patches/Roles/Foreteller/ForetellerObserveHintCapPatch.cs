@@ -1,7 +1,9 @@
 using HarmonyLib;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using System.Text;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TownOfUs.Extensions;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Modules.Localization;
@@ -16,8 +18,6 @@ namespace TouMegaChujoweExtension.Patches.Roles.Foreteller;
 [HarmonyPatch(typeof(DoomsayerRole), "GenerateReport")]
 public static class FortellerObserveHintCapPatch
 {
-    private const int MaxHintRoles = 10;
-
     [HarmonyPrefix]
     public static bool Prefix(DoomsayerRole __instance)
     {
@@ -83,10 +83,10 @@ public static class FortellerObserveHintCapPatch
                     .OrderBy(x => x.GetRoleName()).ToList();
             }
 
-            // CAP to MaxHintRoles, guaranteeing target's real role is included
-            if (roles.Count > MaxHintRoles)
+            var maxHintRoles = Mathf.Clamp((int)OptionGroupSingleton<ForetellerExtensionOptions>.Instance.MaxHintRoles, 3, 15);
+            if (roles.Count > maxHintRoles)
             {
-                roles = CapRoles(roles, role, MaxHintRoles);
+                roles = CapRoles(roles, role, maxHintRoles);
             }
 
             if (roles.Count != 0)

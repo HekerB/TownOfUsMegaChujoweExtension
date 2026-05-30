@@ -85,7 +85,7 @@ public sealed class FamineRole(IntPtr cppPtr)
         DefaultRoleCount = 0,
         MaxRoleCount = 0,
         IntroSound = TouAudio.PhantomIntroSound,
-        Icon = TouExtensionIcons.BakerRoleIcon,
+        Icon = TouExtensionIcons.FamineRoleIcon,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
     };
 
@@ -238,7 +238,7 @@ public sealed class FamineRole(IntPtr cppPtr)
             TouLocale.Get("ExtensionRoleFamineAllBreadTargetsDead", "All your breaded targets have died. You can now starve anyone!"),
             Color.white,
             new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.BakerRoleIcon.LoadAsset());
+            spr: TouExtensionIcons.FamineRoleIcon.LoadAsset());
         notif?.AdjustNotification();
     }
 

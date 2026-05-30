@@ -1164,6 +1164,10 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
 
   <!-- Forensic Options -->
   <string name="ExtensionOptionForensicFreezeOnMeeting">Zamroz dowody po naradzie</string>
+
+  <!-- Foreteller Options -->
+  <string name="ExtensionOptionForetellerMaxHintRoles">Maks. rol w podpowiedzi</string>
+
   <!-- Mayor Options -->
   <string name="ExtensionOptionMayorVoteCount">Liczba glosow</string>
 
@@ -1254,7 +1258,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <!-- Tarot Cards Descriptions -->
   <string name="TarotCardTheFoolDesc">Zmień w Błazna</string>
   <string name="TarotCardTheMagicianDesc">Oślep załogantów (10s)</string>
-  <string name="TarotCardTheHighPriestessDesc">Zmień w Doomsayera</string>
+  <string name="TarotCardTheHighPriestessDesc">Zmień w Foretellera</string>
   <string name="TarotCardTheEmpressDesc">+1 Głos (Rycerz)</string>
   <string name="TarotCardTheEmperorDesc">Efekt Pijaka</string>
   <string name="TarotCardTheHierophantDesc">Zmień w Neutralnego Łagodnego</string>
@@ -1318,7 +1322,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionArcanistAllowDuplicateRoles">Zezwalaj na duplikaty ról</string>
   <string name="ExtensionOptionArcanistWeight00">&lt;color=#33CCFF&gt;Głupiec&lt;/color&gt; (Zmień w Błazna)</string>
   <string name="ExtensionOptionArcanistWeight01">&lt;color=#FF3333&gt;Magik&lt;/color&gt; (Oślep załogantów 10s)</string>
-  <string name="ExtensionOptionArcanistWeight02">&lt;color=#33CCFF&gt;Arcykapłanka&lt;/color&gt; (Zmień w Doomsayera)</string>
+  <string name="ExtensionOptionArcanistWeight02">&lt;color=#33CCFF&gt;Arcykapłanka&lt;/color&gt; (Zmień w Foretellera)</string>
   <string name="ExtensionOptionArcanistWeight03">&lt;color=#82E0AA&gt;Cesarzowa&lt;/color&gt; (+1 Głos)</string>
   <string name="ExtensionOptionArcanistWeight04">&lt;color=#D63031&gt;Cesarz&lt;/color&gt; (Efekt Pijaka)</string>
   <string name="ExtensionOptionArcanistWeight05">&lt;color=#33CCFF&gt;Hierofant&lt;/color&gt; (Zmień w Neutralnego Łagodnego)</string>
@@ -1523,6 +1527,17 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleGunGameMutationNotification">ROLA ZMIENIONA! Teraz jestes &lt;role&gt;!</string>
   <string name="ExtensionRoleGunGameProgressRandom">Tryb: losowa rola po wymaganych zabojstwach</string>
   <string name="ExtensionRoleGunGameProgressChain">Nastepna bron: &lt;role&gt;</string>
+
+  <!-- Foreteller (Doomsayer Override) -->
+  <string name="TouRoleDoomsayer">Foreteller</string>
+  <string name="TouRoleDoomsayerWikiDescription">Foreteller to rola Neutral Evil, ktora wygrywa po odgadnieciu rol \%guessCount\% graczy.</string>
+  <string name="TouRoleDoomsayerWikiDescriptionIfCanObserve">Foreteller to rola Neutral Evil, ktora wygrywa po odgadnieciu rol \%guessCount\% graczy. Moze obserwowac graczy, aby na kolejnym meetingu dostac podpowiedz o ich roli.</string>
+  <string name="TouOptionDoomsayerGuessCrewInvestigative">Foreteller moze zgadywac role Crew Investigative</string>
+  <string name="TouOptionDoomsayerGuessesAllAtOnce">Foreteller zgaduje wszystkie role naraz</string>
+  <string name="TouOptionDoomsayerCantObserve">Foreteller nie moze obserwowac</string>
+  <string name="TouOptionDoomsayerWin">Wygrana Foretellera</string>
+  <string name="TouOptionDoomsayerContinuesGame">Foreteller kontynuuje gre</string>
+  <string name="TouRoleDoomsayerMessageTitle">Raport Foretellera</string>
 </resources>
 
 

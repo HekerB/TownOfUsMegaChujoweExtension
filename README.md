@@ -117,6 +117,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#vulture"><img width="10%" src="./Images/Icons/Vulture_Icon.png" /></a>
   <img src="./Images/Groups/NeutKilling.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#baker--famine"><img width="10%" src="./Images/Icons/Baker_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#baker--famine"><img width="10%" src="./Images/Icons/Famine_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#doppelganger"><img width="10%" src="./Images/Icons/Doppelganger_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#pelican"><img width="10%" src="./Images/Icons/Pelican_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#serial-killer"><img width="10%" src="./Images/Icons/SerialKiller_Role_Icon.png" /></a>
@@ -284,7 +285,7 @@ Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-C
 > **Huge shoutout to Atony**, creator of Town of Us: Mira — roughly 80% of the art assets used in this mod originate from his work, various TOU Mira builds, and resources shared on the TOU Mira Discord. We are extremely grateful for his incredible contributions to the community.
 
 - **Asterisken** - Art for Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful, Objection Button, and Bodyguard Guard button
-- **CraftR / Town of Us Discord** - Pirate role icon & Pirate Duel button; Baker role icon and bread assets; Pope role icon and Sanctify button
+- **CraftR / Town of Us Discord** - Pirate role icon & Pirate Duel button; Baker role icon and bread assets; Famine role icon from [Town-Of-Us-Mira-JK](https://github.com/JoaKing08/Town-Of-Us-Mira-JK); Pope role icon and Sanctify button
 - **Xinav's** - Tarot card asset
 - **Atony / Town of Us: Mira / Town Of Us Discord** - Art for Serial Killer, Kamikaze, Loner, Joker, Burrower, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, and Detonator role icons; Shifter role icon & button; Sage role icon (Seer button from TOU Mira); Sage ability buttons (Salem option buttons from Seer); Bodyguard shield animation (repainted Warden shield from TOU Mira 1.5.9); Poisoner role icon & all Poisoner button icons; Evoker Verify button icon; Drunk modifier icon (from TOU Mira Discord); Venomous modifier icon (flipped & recolored Rotting modifier from TOU Mira)
 - **Atony / TOU Mira Fusion** - Vampire Hunter stake button

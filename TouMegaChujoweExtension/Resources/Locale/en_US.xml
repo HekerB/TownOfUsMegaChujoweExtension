@@ -1160,6 +1160,9 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- Forensic Options -->
   <string name="ExtensionOptionForensicFreezeOnMeeting">Freeze Scenes on Meeting</string>
 
+  <!-- Foreteller Options -->
+  <string name="ExtensionOptionForetellerMaxHintRoles">Max Hint Roles</string>
+
   <!-- Mayor Options -->
   <string name="ExtensionOptionMayorVoteCount">Vote Count</string>
 
@@ -1253,7 +1256,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- Tarot Cards Descriptions -->
   <string name="TarotCardTheFoolDesc">Become Jester</string>
   <string name="TarotCardTheMagicianDesc">Blind Crewmates (10s)</string>
-  <string name="TarotCardTheHighPriestessDesc">Become Doomsayer</string>
+  <string name="TarotCardTheHighPriestessDesc">Become Foreteller</string>
   <string name="TarotCardTheEmpressDesc">+1 Vote (Knighted)</string>
   <string name="TarotCardTheEmperorDesc">Drunk effect</string>
   <string name="TarotCardTheHierophantDesc">Become Neutral Benign</string>
@@ -1317,7 +1320,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionArcanistAllowDuplicateRoles">Allow Duplicate Roles</string>
   <string name="ExtensionOptionArcanistWeight00">&lt;color=#33CCFF&gt;The Fool&lt;/color&gt; (Become Jester)</string>
   <string name="ExtensionOptionArcanistWeight01">&lt;color=#FF3333&gt;The Magician&lt;/color&gt; (Blind Crewmates 10s)</string>
-  <string name="ExtensionOptionArcanistWeight02">&lt;color=#33CCFF&gt;The High Priestess&lt;/color&gt; (Become Doomsayer)</string>
+  <string name="ExtensionOptionArcanistWeight02">&lt;color=#33CCFF&gt;The High Priestess&lt;/color&gt; (Become Foreteller)</string>
   <string name="ExtensionOptionArcanistWeight03">&lt;color=#82E0AA&gt;The Empress&lt;/color&gt; (+1 Vote)</string>
   <string name="ExtensionOptionArcanistWeight04">&lt;color=#D63031&gt;The Emperor&lt;/color&gt; (Drunk effect)</string>
   <string name="ExtensionOptionArcanistWeight05">&lt;color=#33CCFF&gt;The Hierophant&lt;/color&gt; (Become Neutral Benign)</string>
@@ -1537,4 +1540,15 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleGunGameMutationNotification">ROLE CHANGED! You are now &lt;role&gt;!</string>
   <string name="ExtensionRoleGunGameProgressRandom">Mode: Random role after enough kills</string>
   <string name="ExtensionRoleGunGameProgressChain">Next weapon: &lt;role&gt;</string>
+
+  <!-- Foreteller (Doomsayer Override) -->
+  <string name="TouRoleDoomsayer">Foreteller</string>
+  <string name="TouRoleDoomsayerWikiDescription">The Foreteller is a Neutral Evil role that wins by guessing \%guessCount\% players' roles.</string>
+  <string name="TouRoleDoomsayerWikiDescriptionIfCanObserve">The Foreteller is a Neutral Evil role that wins by guessing \%guessCount\% players' roles. They may observe players to get a hint of what their roles are the following meeting.</string>
+  <string name="TouOptionDoomsayerGuessCrewInvestigative">Foreteller Can Guess Crew Investigative Roles</string>
+  <string name="TouOptionDoomsayerGuessesAllAtOnce">Foreteller Guesses All Roles At Once</string>
+  <string name="TouOptionDoomsayerCantObserve">Foreteller Can't Observe</string>
+  <string name="TouOptionDoomsayerWin">Foreteller Win</string>
+  <string name="TouOptionDoomsayerContinuesGame">Foreteller Continues The Game</string>
+  <string name="TouRoleDoomsayerMessageTitle">Foreteller Report</string>
 </resources>

@@ -32,6 +32,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> ShroudRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Shroud_Role_Icon.png", 180f);
         public static LoadableAsset<Sprite> DoppelgangerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Doppelganger_Icon.png", 200f);
         public static LoadableAsset<Sprite> BakerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Baker_Role_Icon.png", 200f);
+        public static LoadableAsset<Sprite> FamineRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Famine_Role_Icon.png", 200f);
         //impostors
         public static LoadableAsset<Sprite> OutlawRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Outlaw_Role_Icon.png", 180f);
         public static LoadableAsset<Sprite> HackerRole { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Hacker.Hacker_Role.png");

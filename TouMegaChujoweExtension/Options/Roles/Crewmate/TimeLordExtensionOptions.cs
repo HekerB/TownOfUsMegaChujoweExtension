@@ -15,7 +15,7 @@ public sealed class TimeLordExtensionOptions : AbstractOptionGroup
     public override Color GroupColor => TownOfUsColors.TimeLord;
     public override bool ShowInModifiersMenu => false;
     public override MenuCategory ParentMenu => MenuCategory.CustomOne;
-    public override uint GroupPriority => 106;
+    public override uint GroupPriority => 107;
 
     [ModdedNumberOption("ExtensionOptionTimeLordRewindSpeed", 0.5f, 5.0f, 0.5f, MiraNumberSuffixes.None)]
     public float RewindSpeed { get; set; } = 1.0f;

@@ -14,7 +14,7 @@ public sealed class MayorExtensionOptions : AbstractOptionGroup
     public override Color GroupColor => TownOfUsColors.Mayor;
     public override bool ShowInModifiersMenu => false;
     public override MenuCategory ParentMenu => MenuCategory.CustomOne;
-    public override uint GroupPriority => 103;
+    public override uint GroupPriority => 104;
 
     [ModdedNumberOption("ExtensionOptionMayorVoteCount", 3, 10, 1, MiraNumberSuffixes.None)]
     public float VoteCount { get; set; } = 3f;
