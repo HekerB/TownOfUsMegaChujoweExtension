@@ -15,7 +15,7 @@ using TownOfUs;
 
 namespace TouMegaChujoweExtension;
 
-[BepInAutoPlugin("toumegachujowe.tou.extension", "Tou Mega Chujowe Extension")]
+[BepInAutoPlugin("toumegachujowe.tou.extension", "Tou Mega Ch**owe Extension")]
 [BepInProcess("Among Us.exe")]
 [BepInDependency(ReactorPlugin.Id)]
 [BepInDependency(MiraApiPlugin.Id)]
@@ -23,12 +23,15 @@ namespace TouMegaChujoweExtension;
 [ReactorModFlags(ModFlags.RequireOnAllClients)]
 public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 {
+    public const string UncensoredDisplayName = "Tou Mega Chujowe Extension";
+    public const string CensoredDisplayName = "Tou Mega Ch**owe Extension";
+
     /// <summary>
     ///     Gets the specified Culture for string manipulations.
     /// </summary> 
     public static CultureInfo Culture => TownOfUsPlugin.Culture;
     /// <inheritdoc />
-    public string OptionsTitleText => "TOU Mega Chujowe Extension";
+    public string OptionsTitleText => ShouldCensorModName ? "TOU Mega Ch**owe Extension" : "TOU Mega Chujowe Extension";
 
     /// <inheritdoc />
     public string CustomOptionMenuNameOne => TownOfUs.Modules.Localization.TouLocale.Get("TOUMCETabOptionBetterRoles");
@@ -39,6 +42,34 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
     ///     Determines if the current build is a dev build or not.
     /// </summary>
     public static bool IsDevBuild => false;
+    public static bool ShouldCensorModName
+    {
+        get
+        {
+            try
+            {
+                return LocalSettingsTabSingleton<TouExtensionLocalSettings>.Instance?.CensorModName.Value ?? true;
+            }
+            catch
+            {
+                return true;
+            }
+        }
+    }
+
+    public static string DisplayName => ShouldCensorModName ? CensoredDisplayName : UncensoredDisplayName;
+    public static string CensorVisibleText(string text)
+    {
+        if (!ShouldCensorModName || string.IsNullOrEmpty(text))
+            return text;
+
+        return text
+            .Replace("TOU Mega Chujowe Extension", "TOU Mega Ch**owe Extension")
+            .Replace("Tou Mega Chujowe Extension", CensoredDisplayName)
+            .Replace("Mega Chujowe Perfect Comms", "Mega Ch**owe Perfect Comms")
+            .Replace("ToU: Chujowe", "ToU: Ch**owe");
+    }
+
     /// <inheritdoc />
     public ConfigFile GetConfigFile() => Config;
 
@@ -50,7 +81,7 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
         DuplicateChecker.Check();
         Harmony = new Harmony(Id);
 
-        ReactorCredits.Register("Tou Mega Chujowe Extension", Version, IsDevBuild, ReactorCredits.AlwaysShow);
+        ReactorCredits.Register(DisplayName, Version, IsDevBuild, ReactorCredits.AlwaysShow);
         IL2CPPChainloader.Instance.Finished += Modules.ExtensionLocale.SearchInternalLocale;
         IL2CPPChainloader.Instance.Finished += LawyerTeamChatRegistration.Register;
         IL2CPPChainloader.Instance.Finished += Patches.Roles.Lovers.LoverMeetingChatRegistration.Register;

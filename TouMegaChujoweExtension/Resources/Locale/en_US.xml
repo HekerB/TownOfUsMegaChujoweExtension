@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-  <!--Doomsayer To Foreteller-->
-  <string name="ExtensionLocalSettingRenameDoomsayerToForeteller">Rename to Foreteller</string>
+  <!-- Censored mod name -->
+  <string name="ExtensionLocalSettingCensorModName">Censor Mod Name</string>
 
   <!-- Classic cycling assassin guessing -->
   <string name="ExtensionLocalSettingUseClassicAssassinGuessing">Classic Assassin Guessing (Cycling)</string>

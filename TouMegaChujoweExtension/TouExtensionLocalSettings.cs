@@ -12,13 +12,13 @@ public class TouExtensionLocalSettings : LocalSettingsTab
         EnableNauseaCameraShake = config.Bind("Accessibility", "EnableNauseaCameraShake", true);
         UseLegacyGuessDeathAnimation = config.Bind("Visuals", "UseLegacyGuessDeathAnimation", false);
         UseClassicAssassinGuessing = config.Bind("Visuals", "UseClassicAssassinGuessing", false);
-        RenameDoomsayerToForeteller = config.Bind("Visuals", "RenameDoomsayerToForeteller", true);
+        CensorModName = config.Bind("Visuals", "CensorModName", true);
         UsePolishLanguage = config.Bind("Localization", "UsePolishLanguage", false);
 
         UsePolishLanguage.SettingChanged += (s, e) => Modules.ExtensionLocale.SearchInternalLocale();
     }
 
-    public override string TabName => "ToU: Chujowe";
+    public override string TabName => TouMegaChujoweExtensionPlugin.CensorVisibleText("ToU: Chujowe");
     protected override bool ShouldCreateLabels => true;
 
     public override void Open()
@@ -53,8 +53,8 @@ public class TouExtensionLocalSettings : LocalSettingsTab
     [LocalizedLocalToggleSetting("ExtensionLocalSettingUseClassicAssassinGuessing")]
     public ConfigEntry<bool> UseClassicAssassinGuessing { get; private set; }
 	
-    [LocalizedLocalToggleSetting("ExtensionLocalSettingRenameDoomsayerToForeteller")]
-    public ConfigEntry<bool> RenameDoomsayerToForeteller { get; private set; }
+    [LocalizedLocalToggleSetting("ExtensionLocalSettingCensorModName")]
+    public ConfigEntry<bool> CensorModName { get; private set; }
 
     [LocalizedLocalToggleSetting("ExtensionLocalSettingUsePolishLanguage")]
     public ConfigEntry<bool> UsePolishLanguage { get; private set; }

@@ -8,25 +8,46 @@ namespace TouMegaChujoweExtension.Patches.UI;
 public static class ExtensionCreditsColorPatch
 {
     private const string CreditsColor = "#96456d";
-    private static readonly string CreditsLabel = "Tou Mega Chujowe Extension " + TouMegaChujoweExtensionPlugin.Version;
+    private static readonly string[] KnownLabels =
+    [
+        TouMegaChujoweExtensionPlugin.UncensoredDisplayName + " " + TouMegaChujoweExtensionPlugin.Version,
+        TouMegaChujoweExtensionPlugin.CensoredDisplayName + " " + TouMegaChujoweExtensionPlugin.Version
+    ];
 
     private static void Postfix(ref string? __result)
     {
         if (string.IsNullOrEmpty(__result))
             return;
 
-        var coloredLabel = $"<color={CreditsColor}><noparse>{CreditsLabel}</noparse></color>";
-        var updated = Regex.Replace(
-            __result,
-            $@"<color=#[0-9A-Fa-f]{{3,8}}><noparse>{Regex.Escape(CreditsLabel)}</noparse></color>",
-            coloredLabel);
+        var creditsLabel = TouMegaChujoweExtensionPlugin.DisplayName + " " + TouMegaChujoweExtensionPlugin.Version;
+        var coloredLabel = $"<color={CreditsColor}>{creditsLabel}</color>";
 
-        if (updated == __result)
-            updated = __result.Replace($"<noparse>{CreditsLabel}</noparse>", coloredLabel);
+        foreach (var knownLabel in KnownLabels)
+        {
+            var updated = Regex.Replace(
+                __result,
+                $@"<color=#[0-9A-Fa-f]{{3,8}}><noparse>{Regex.Escape(knownLabel)}</noparse></color>",
+                coloredLabel);
 
-        if (updated == __result)
-            updated = __result.Replace(CreditsLabel, coloredLabel);
+            if (updated != __result)
+            {
+                __result = updated;
+                return;
+            }
 
-        __result = updated;
+            updated = __result.Replace($"<noparse>{knownLabel}</noparse>", coloredLabel);
+            if (updated != __result)
+            {
+                __result = updated;
+                return;
+            }
+
+            updated = __result.Replace(knownLabel, coloredLabel);
+            if (updated != __result)
+            {
+                __result = updated;
+                return;
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ public static class TouExtensionColors
     public static Color Mirage => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(222, 168, 94, 255);
     public static Color President => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(150, 100, 200, 255);
     public static Color Evoker => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(128, 179, 255, 255);
-    public static Color Vanisher => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(145, 230, 184, 255);
+    public static Color Vanisher => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(88, 88, 88, 255);
     public static Color Bodyguard => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(0, 51, 128, 255);
     public static Color Sage => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(200, 162, 255, 255);
     public static Color VampireHunter => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(150, 100, 200, 255);

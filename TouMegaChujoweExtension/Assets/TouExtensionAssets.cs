@@ -6,7 +6,7 @@ namespace TouMegaChujoweExtension.Assets
     public static class TouExtensionAssets
     {
         //logo
-        public static LoadableAsset<Sprite> ExtensionLogo { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Extension_Logo_Icon.png", 600f);
+        public static LoadableAsset<Sprite> ExtensionLogo { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Extension_Logo_Icon.png", 165f);
         //draft
         public static LoadableAsset<Sprite> DraftBackground { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Draft_Background.png");
         public static LoadableAsset<Sprite> DraftRandomIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Draft_Random_Icon.png");

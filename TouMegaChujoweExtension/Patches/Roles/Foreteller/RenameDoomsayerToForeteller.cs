@@ -1,5 +1,4 @@
 using HarmonyLib;
-using MiraAPI.LocalSettings;
 using MiraAPI.Roles;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Options.Roles.Neutral;
@@ -15,8 +14,7 @@ public static class RenameDoomsayerToForeteller
     {
         get
         {
-            if (_inPatch) return false;
-            return LocalSettingsTabSingleton<TouExtensionLocalSettings>.Instance.RenameDoomsayerToForeteller.Value;
+            return !_inPatch;
         }
     }
 

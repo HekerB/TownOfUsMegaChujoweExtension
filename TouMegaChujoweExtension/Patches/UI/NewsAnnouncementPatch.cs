@@ -100,9 +100,9 @@ public static class ExtensionModNewsFetcher
                 var dateString = newsElement.GetProperty("Date").GetString() ?? "Unknown Date";
                 var numberString = newsElement.GetProperty("Number").GetString();
                 var number = numberString != null ? int.Parse(numberString, TouMegaChujoweExtensionPlugin.Culture) : 0;
-                var shortTitle = newsElement.GetProperty("ShortTitle").GetString() ?? "No Short Title";
-                var subTitle = newsElement.GetProperty("SubTitle").GetString() ?? "No Subtitle";
-                var title = newsElement.GetProperty("Title").GetString() ?? "No Title";
+                var shortTitle = CensorNewsTitle(newsElement.GetProperty("ShortTitle").GetString() ?? "No Short Title");
+                var subTitle = CensorNewsTitle(newsElement.GetProperty("SubTitle").GetString() ?? "No Subtitle");
+                var title = CensorNewsTitle(newsElement.GetProperty("Title").GetString() ?? "No Title");
                 
                 // Join with empty string to maintain formatting from news.json
                 var body = string.Join("",
@@ -145,9 +145,9 @@ public static class ExtensionModNewsFetcher
                 var dateString = newsElement.GetProperty("Date").GetString() ?? "Unknown Date";
                 var numberString = newsElement.GetProperty("Number").GetString();
                 var number = numberString != null ? int.Parse(numberString, TouMegaChujoweExtensionPlugin.Culture) : 0;
-                var shortTitle = newsElement.GetProperty("ShortTitle").GetString() ?? "No Short Title";
-                var subTitle = newsElement.GetProperty("SubTitle").GetString() ?? "No Subtitle";
-                var title = newsElement.GetProperty("Title").GetString() ?? "No Title";
+                var shortTitle = CensorNewsTitle(newsElement.GetProperty("ShortTitle").GetString() ?? "No Short Title");
+                var subTitle = CensorNewsTitle(newsElement.GetProperty("SubTitle").GetString() ?? "No Subtitle");
+                var title = CensorNewsTitle(newsElement.GetProperty("Title").GetString() ?? "No Title");
                 var body = string.Join("",
                     newsElement.GetProperty("Text").EnumerateArray().Select(element => element.GetString()));
                 
@@ -161,6 +161,9 @@ public static class ExtensionModNewsFetcher
             Error($"[ExtensionNews] Error loading local news: {ex.Message}");
         }
     }
+
+    private static string CensorNewsTitle(string text)
+        => TouMegaChujoweExtensionPlugin.CensorVisibleText(text);
 
     [HarmonyPatch]
     public static class ExtensionModNewsHistory
