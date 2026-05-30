@@ -454,20 +454,13 @@
         "\n- <b>Download Flow</b> - Clicking the banner opens the newest TouMCE release page.",
         "\n\n\r<size=110%><b>ASSET & AUDIO OPTIMIZATION</b></size>",
         "\n- <b>Audio Bundle</b> - Moved heavy audio files into an AssetBundle to reduce embedded resource bloat.",
-        "\n- <b>Fallback Support</b> - Audio loading keeps embedded-resource fallback behavior for easier testing and future rebuilds.",
-        "\n- <b>Unity Bundle Project</b> - Added a helper Unity project workflow for rebuilding Windows and Android audio bundles.",
         "\n\n\r<size=110%><b>UI & SETTINGS POLISH</b></size>",
         "\n- <b>Censored Branding</b> - Added optional censored branding for video/stream safety, defaulting to the safer display name.",
         "\n- <b>Role Colors</b> - Updated Vanisher to better match its role icon color.",
         "\n- <b>Bodyguard</b> - Added the Guard-style backflash icon for clearer shield feedback.",
         "\n- <b>Foreteller / Doomsayer</b> - Moved the role-list size behavior into Better Roles with a configurable 3-15 range.",
         "\n\n\r<size=110%><b>ROLE LIST & WIKI CLEANUP</b></size>",
-        "\n- <b>Guessing Categories</b> - Added missing city/category data for extension roles such as Infiltrator, Portalmaker, Speedy, and others.",
-        "\n- <b>Wiki Fixes</b> - Fixed Gun Game placement in Impostor Power and cleaned up several role descriptions.",
-        "\n- <b>Credits</b> - Updated documentation for recent assets, including Famine/Baker credits and compatibility notes.",
-        "\n\n\r<size=110%><b>COMPATIBILITY NOTES</b></size>",
-        "\n- <b>Mega Chujowe Perfect Comms</b> - README now points players to the fork instead of the original Perfect Comms build for TouMCE lobbies.",
-        "\n- <b>Patch Notes Links</b> - Release notes and in-game notes consistently link to Releases, GitHub, and Discord."
+        "\n- <b>Guessing Categories</b> - Added missing city/category data for extension roles such as Infiltrator, Portalmaker, Speedy, and others."
       ]
     }
   ]
