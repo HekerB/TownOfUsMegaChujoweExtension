@@ -1084,6 +1084,7 @@
   <string name="ExtensionOptionKamikazeCanVent">Moze uzywac wentylacji</string>
   <string name="ExtensionOptionKamikazeShowRadiusIndicator">Pokaz wskaznik promienia</string>
   <string name="ExtensionOptionKamikazeCanSuicideFirstRound">Zezwalaj na użycie w 1. rundzie</string>
+  <string name="ExtensionOptionKamikazeDisableExplosionSound">Wylacz dzwiek eksplozji</string>
 
   <!-- Publicity Modifier -->
   <string name="ExtensionModifierPublicity">Publicity</string>
@@ -1466,12 +1467,12 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
 
   <!-- Baker / Famine Role -->
   <string name="ExtensionRoleBaker">Baker</string>
-  <string name="ExtensionRoleBakerIntroBlurb">Daj chleb, aby zostac \%color=#B2672EFF\%Famine\%/color\%</string>
-  <string name="ExtensionRoleBakerTabDescription">Daj wystarczajaco chleba, aby zostac \%color=#B2672EFF\%Famine\%/color\%.</string>
-  <string name="ExtensionRoleBakerWikiDescription">Baker to rola Neutral Killing, ktora daje chleb zyjacym graczom. Gracze z chlebem sa dla ciebie oznaczeni i daja alert po smierci. Daj wystarczajaco chleba, aby zostac \%color=#B2672EFF\%Famine\%/color\%.</string>
+  <string name="ExtensionRoleBakerIntroBlurb">Daj chleb, aby zostac \%color=#023020FF\%Famine\%/color\%</string>
+  <string name="ExtensionRoleBakerTabDescription">Daj wystarczajaco chleba, aby zostac \%color=#023020FF\%Famine\%/color\%.</string>
+  <string name="ExtensionRoleBakerWikiDescription">Baker to rola Neutral Killing, ktora daje chleb zyjacym graczom. Gracze z chlebem sa dla ciebie oznaczeni i daja alert po smierci. Daj wystarczajaco chleba, aby zostac \%color=#023020FF\%Famine\%/color\%.</string>
   <string name="ExtensionRoleBakerGive">Daj chleb</string>
   <string name="ExtensionRoleBakerGiveWikiDescription">Daj chleb pobliskiemu zyjacemu graczowi.</string>
-  <string name="ExtensionRoleBakerFamineAnnouncement">&lt;b&gt;Jezdziec Apokalipsy powstal jako \%color=#B2672EFF\%Famine\%/color\%!&lt;/b&gt;</string>
+  <string name="ExtensionRoleBakerFamineAnnouncement">Smiercionosny glod pochlonal zaloge.\%nl\%\%color=#023020FF\%Famine\%/color\%, Jezdziec Apokalipsy, przybyl!</string>
   <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} umarl z Twoim chlebem!</string>
   <string name="ExtensionRoleFamineAllBreadTargetsDead">Wszyscy oznaczeni chlebem gracze umarli! Mozesz teraz glodzic kazdego!</string>
   <string name="ExtensionBakerFaminePlagueWins">Famine i Plague wygrywaja</string>
@@ -1543,6 +1544,13 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="TouOptionDoomsayerContinuesGame">Foreteller kontynuuje gre</string>
   <string name="TouRoleDoomsayerMessageTitle">Raport Foretellera</string>
 
+  <!-- Spellslinger Override -->
+  <string name="TouRoleSpellslinger">Hex Master</string>
+  <string name="TouRoleSpellslingerWikiDescription">Hex Master to rola Impostor Power, ktora moze rzucac hexy na graczy i przygotowywac ich do detonacji. Gdy wszyscy nie-Impostorzy sa oznaczeni, moze odpalic Hex Bomb po ustawionym czasie.</string>
+  <string name="TouRoleSpellslingerMessageTitle">Ostrzezenie Hex Mastera</string>
+  <string name="TouRoleSpellslingerGlobalWarning">\%role\% odpala Hex Bomb! Znajdz go przed koncem licznika! Po tym meetingu zostanie \%time\% sekund.</string>
+  <string name="TouRoleSpellslingerWarningNotif">\%role\% odpali Hex Bomb za \%time\% sekund!</string>
+
   <!-- Grim Reaper (Soul Collector Override) -->
   <string name="TouRoleSoulCollector">Grim Reaper</string>
   <string name="TouRoleSoulCollectorIntroBlurb">Zbieraj dusze i zostawiaj martwe cienie.</string>
@@ -1561,7 +1569,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleSoulCollectorReap">Reap</string>
   <string name="ExtensionRoleSoulCollectorReapWikiDescription">Oznacz pobliskiego zywego gracza. Jesli umrze przed wygasnieciem znaku, dostajesz jedna dusze.</string>
   <string name="ExtensionRoleSoulCollectorMarkedDiedNotif">Dusza gracza {0} zostala zebrana!</string>
-  <string name="ExtensionRoleSoulCollectorDeathAnnouncement">&lt;b&gt;Ostatni jezdziec powstal jako \%color=#91DDB2FF\%Death\%/color\%!&lt;/b&gt;</string>
+  <string name="ExtensionRoleSoulCollectorDeathAnnouncement">Ostatnia dusza zostala zebrana.\%nl\%\%color=#91DDB2FF\%Death\%/color\%, Jezdziec Apokalipsy, przybyl!</string>
   <string name="ExtensionRoleDeath">Death</string>
   <string name="ExtensionRoleDeathIntroBlurb">Przynies ostateczny koniec.</string>
   <string name="ExtensionRoleDeathTabDescription">Zabijaj Reapem.\%nl\%Death jest niesmiertelny i zostawia nieraportowalne ciala.</string>

@@ -1089,6 +1089,7 @@
   <string name="ExtensionOptionKamikazeCanVent">Can Vent</string>
   <string name="ExtensionOptionKamikazeShowRadiusIndicator">Show Radius Indicator</string>
   <string name="ExtensionOptionKamikazeCanSuicideFirstRound">Allow First Round Detonation</string>
+  <string name="ExtensionOptionKamikazeDisableExplosionSound">Disable Explosion Sound</string>
   
   <!-- Publicity Modifier -->
   <string name="ExtensionModifierPublicity">Publicity</string>
@@ -1479,12 +1480,12 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
 
   <!-- Baker / Famine Role -->
   <string name="ExtensionRoleBaker">Baker</string>
-  <string name="ExtensionRoleBakerIntroBlurb">Give bread to become \%color=#B2672EFF\%Famine\%/color\%</string>
-  <string name="ExtensionRoleBakerTabDescription">Give enough bread to become \%color=#B2672EFF\%Famine\%/color\%.</string>
-  <string name="ExtensionRoleBakerWikiDescription">The Baker is a Neutral Killing role that gives bread to living players. Breaded players are marked for you and trigger alerts when they die. Give enough bread to become \%color=#B2672EFF\%Famine\%/color\%.</string>
+  <string name="ExtensionRoleBakerIntroBlurb">Give bread to become \%color=#023020FF\%Famine\%/color\%</string>
+  <string name="ExtensionRoleBakerTabDescription">Give enough bread to become \%color=#023020FF\%Famine\%/color\%.</string>
+  <string name="ExtensionRoleBakerWikiDescription">The Baker is a Neutral Killing role that gives bread to living players. Breaded players are marked for you and trigger alerts when they die. Give enough bread to become \%color=#023020FF\%Famine\%/color\%.</string>
   <string name="ExtensionRoleBakerGive">Give Bread</string>
   <string name="ExtensionRoleBakerGiveWikiDescription">Give bread to a nearby living player.</string>
-  <string name="ExtensionRoleBakerFamineAnnouncement">&lt;b&gt;A Horseman of the Apocalypse has risen as \%color=#B2672EFF\%Famine\%/color\%!&lt;/b&gt;</string>
+  <string name="ExtensionRoleBakerFamineAnnouncement">A terrible famine has consumed the Crew.\%nl\%\%color=#023020FF\%Famine\%/color\%, Horseman of the Apocalypse, has emerged!</string>
   <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} died with your bread!</string>
   <string name="ExtensionRoleFamineAllBreadTargetsDead">All your breaded targets died! You can now starve anyone!</string>
   <string name="ExtensionBakerFaminePlagueWins">Famine &amp; Plague Win</string>
@@ -1556,6 +1557,13 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="TouOptionDoomsayerContinuesGame">Foreteller Continues The Game</string>
   <string name="TouRoleDoomsayerMessageTitle">Foreteller Report</string>
 
+  <!-- Spellslinger Override -->
+  <string name="TouRoleSpellslinger">Hex Master</string>
+  <string name="TouRoleSpellslingerWikiDescription">The Hex Master is an Impostor Power role that can hex a player, priming them for detonation. Once all non-Impostors are hexed, they may set off a Hex Bomb after a set amount of time to win.</string>
+  <string name="TouRoleSpellslingerMessageTitle">Hex Master Warning</string>
+  <string name="TouRoleSpellslingerGlobalWarning">The \%role\% is unleashing a Hex Bomb! Find them before the timer ends! \%time\% seconds remain after this meeting.</string>
+  <string name="TouRoleSpellslingerWarningNotif">The \%role\% is unleashing a Hex Bomb in \%time\% seconds!</string>
+
   <!-- Grim Reaper (Soul Collector Override) -->
   <string name="TouRoleSoulCollector">Grim Reaper</string>
   <string name="TouRoleSoulCollectorIntroBlurb">Reap souls and leave lifeless shadows behind.</string>
@@ -1574,7 +1582,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleSoulCollectorReap">Reap</string>
   <string name="ExtensionRoleSoulCollectorReapWikiDescription">Mark a nearby living player. If they die before the mark expires, gain one soul.</string>
   <string name="ExtensionRoleSoulCollectorMarkedDiedNotif">{0}'s soul has been collected!</string>
-  <string name="ExtensionRoleSoulCollectorDeathAnnouncement">&lt;b&gt;The final horseman has risen as \%color=#91DDB2FF\%Death\%/color\%!&lt;/b&gt;</string>
+  <string name="ExtensionRoleSoulCollectorDeathAnnouncement">The final soul has been claimed.\%nl\%\%color=#91DDB2FF\%Death\%/color\%, Horseman of the Apocalypse, has emerged!</string>
   <string name="ExtensionRoleDeath">Death</string>
   <string name="ExtensionRoleDeathIntroBlurb">Bring the final end.</string>
   <string name="ExtensionRoleDeathTabDescription">Kill players with Reap.\%nl\%Death is invincible and leaves unreportable bodies.</string>

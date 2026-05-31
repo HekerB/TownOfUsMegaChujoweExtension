@@ -202,10 +202,10 @@ public sealed class BakerRole(IntPtr cppPtr)
 
         PendingFamineAnnouncement = false;
         var notif = Helpers.CreateAndShowNotification(
-            TouLocale.GetParsed("ExtensionRoleBakerFamineAnnouncement", "<b>The bread giver has risen as <color=#B2672EFF>Famine</color>, Horseman of the Apocalypse!</b>"),
+            TouLocale.GetParsed("ExtensionRoleBakerFamineAnnouncement", "A terrible famine has consumed the Crew.\\%nl\\%\\%color=#023020FF\\%Famine\\%/color\\%, Horseman of the Apocalypse, has emerged!"),
             Color.white,
             new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.BakerRoleIcon.LoadAsset());
+            spr: TouExtensionIcons.FamineRoleIcon.LoadAsset());
         notif.AdjustNotification();
     }
 }

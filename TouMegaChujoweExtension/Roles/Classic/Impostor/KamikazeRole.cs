@@ -118,7 +118,7 @@ public sealed class KamikazeRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
             var isKamikaze = localPlayer.PlayerId == kamikaze.PlayerId;
             var inRadius = Vector2.Distance((Vector2)pos, (Vector2)localPlayer.transform.position) <= radius;
 
-            if (isKamikaze || inRadius)
+            if (!opts.DisableExplosionSound && (isKamikaze || inRadius))
             {
                 TouAudio.PlaySound(TouExtensionAudio.KamikazeExplodeSound);
             }
