@@ -364,7 +364,7 @@ You can toggle between **English** and **Polish** in the game settings via `Exte
 ## Honorable Mention 🙃
 - **Pozwo** for encouraging us to bring this project to Github!
 - **Arbuzia** for saying that im too young to program mods without putting in them viruses!
-- no offence lol
+no offence lol
 - **Majusia** died during development of mod, born in 15.01.26 died in 23.01.2026 Rest in Pieces (absolutely serious)
 
 -----------------------
