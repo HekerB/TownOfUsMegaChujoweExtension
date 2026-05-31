@@ -335,6 +335,7 @@
   <string name="ExtensionOptionPopeMaxCanonizations">Max Cream Cakes</string>
   <string name="ExtensionOptionPopeJudgementDuration">Sanctify Countdown Duration</string>
   <string name="ExtensionOptionPopeCanonizeInteractions">Use Interactions To Spread Cream Cakes</string>
+  <string name="ExtensionOptionPopeBlockEmergencyButtonDuringJudgement">Block Emergency Button During Sanctify</string>
   
   <!-- Pope Win -->
   <string name="ExtensionPopeWins">Wins</string>
@@ -1483,7 +1484,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleBakerWikiDescription">The Baker is a Neutral Killing role that gives bread to living players. Breaded players are marked for you and trigger alerts when they die. Give enough bread to become \%color=#B2672EFF\%Famine\%/color\%.</string>
   <string name="ExtensionRoleBakerGive">Give Bread</string>
   <string name="ExtensionRoleBakerGiveWikiDescription">Give bread to a nearby living player.</string>
-  <string name="ExtensionRoleBakerFamineAnnouncement">&lt;b&gt;The bread giver has risen as Famine, Horseman of the Apocalypse!&lt;/b&gt;</string>
+  <string name="ExtensionRoleBakerFamineAnnouncement">&lt;b&gt;A Horseman of the Apocalypse has risen as \%color=#B2672EFF\%Famine\%/color\%!&lt;/b&gt;</string>
   <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} died with your bread!</string>
   <string name="ExtensionRoleFamineAllBreadTargetsDead">All your breaded targets died! You can now starve anyone!</string>
   <string name="ExtensionBakerFaminePlagueWins">Famine &amp; Plague Win</string>
@@ -1554,4 +1555,39 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="TouOptionDoomsayerWin">Foreteller Win</string>
   <string name="TouOptionDoomsayerContinuesGame">Foreteller Continues The Game</string>
   <string name="TouRoleDoomsayerMessageTitle">Foreteller Report</string>
+
+  <!-- Grim Reaper (Soul Collector Override) -->
+  <string name="TouRoleSoulCollector">Grim Reaper</string>
+  <string name="TouRoleSoulCollectorIntroBlurb">Reap souls and leave lifeless shadows behind.</string>
+  <string name="TouRoleSoulCollectorTabDescription">Reap players without leaving reportable bodies.</string>
+  <string name="TouRoleSoulCollectorWikiDescription">The Grim Reaper is a Neutral Killing role that reaps players directly. Reaped players leave behind a soul-less decoy instead of a normal reportable body.</string>
+  <string name="TouRoleSoulCollectorReapNotif">You have reaped \%player\%, leaving their lifeless shadow standing.</string>
+  <string name="TouRoleSoulCollectorReapWikiDescription">Reap a nearby player and leave behind a lifeless shadow instead of a reportable body.</string>
+  <string name="TouOptionSoulCollectorReapCooldown">Grim Reaper Reap Cooldown</string>
+  <string name="TouOptionSoulCollectorCanVent">Grim Reaper Can Vent</string>
+
+  <!-- Soul Collector / Death -->
+  <string name="ExtensionRoleSoulCollector">Soul Collector</string>
+  <string name="ExtensionRoleSoulCollectorIntroBlurb">Collect Souls To Become \%color=#91DDB2FF\%Death\%/color\%.</string>
+  <string name="ExtensionRoleSoulCollectorTabDescription">Reap players to mark their souls and collect enough souls to become \%color=#91DDB2FF\%Death\%/color\%.</string>
+  <string name="ExtensionRoleSoulCollectorWikiDescription">The \%color=#AC111FFF\%Soul Collector\%/color\% is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Use Reap to mark targets; if a marked target dies before the deadline, you gain a soul. Collect enough souls to become \%color=#91DDB2FF\%Death\%/color\%. Doctor and Cleric cleanse can remove Reap marks.</string>
+  <string name="ExtensionRoleSoulCollectorReap">Reap</string>
+  <string name="ExtensionRoleSoulCollectorReapWikiDescription">Mark a nearby living player. If they die before the mark expires, gain one soul.</string>
+  <string name="ExtensionRoleSoulCollectorMarkedDiedNotif">{0}'s soul has been collected!</string>
+  <string name="ExtensionRoleSoulCollectorDeathAnnouncement">&lt;b&gt;The final horseman has risen as \%color=#91DDB2FF\%Death\%/color\%!&lt;/b&gt;</string>
+  <string name="ExtensionRoleDeath">Death</string>
+  <string name="ExtensionRoleDeathIntroBlurb">Bring the final end.</string>
+  <string name="ExtensionRoleDeathTabDescription">Kill players with Reap.\%nl\%Death is invincible and leaves unreportable bodies.</string>
+  <string name="ExtensionRoleDeathWikiDescription">Death is the transformed Soul Collector.\%nl\%Death is invincible, cannot be guessed, and can only die by being voted out.\%nl\%Death kills without a jump animation and leaves bodies that cannot be reported.</string>
+  <string name="DiedToExtensionDeathClaimed">Claimed by Death</string>
+  <string name="ExtensionOptionSoulCollectorInstantDeathChance">Instant Death Chance</string>
+  <string name="ExtensionOptionSoulCollectorReapCooldown">Reap Cooldown</string>
+  <string name="ExtensionOptionSoulCollectorSoulGoal">Souls Needed To Become Death</string>
+  <string name="ExtensionOptionSoulCollectorMaxMarks">Max Active Reap Marks</string>
+  <string name="ExtensionOptionSoulCollectorRoundsToDie">Reap Duration In Rounds</string>
+  <string name="ExtensionOptionSoulCollectorPassiveSoulsPerMeeting">Passive Souls Per Meeting</string>
+  <string name="ExtensionOptionSoulCollectorAnnounceDeath">Announce Death Transformation</string>
+  <string name="ExtensionOptionSoulCollectorDeathKillCooldown">Death Kill Cooldown</string>
+  <string name="ExtensionOptionSoulCollectorDeathCanVent">Death Can Vent</string>
+  <string name="ExtensionModifierSoulCollectorReaped">Reaped</string>
 </resources>

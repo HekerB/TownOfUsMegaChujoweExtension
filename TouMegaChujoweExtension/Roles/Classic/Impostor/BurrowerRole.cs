@@ -70,6 +70,8 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     public int NextVentIndex { get; set; }
     private const float DigCancelLockDuration = 2f;
     private const float UndergroundInitialSpeed = 0.3f;
+    private const float BurrowSoundRadius = 5f;
+    private const float BurrowSoundVolume = 0.8f;
 
     [HideFromIl2Cpp]
     public Vent? FirstVent { get; set; }
@@ -200,7 +202,7 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
 
         player.AddModifier<BurrowerInvisibleModifier>();
         player.AddModifier<BurrowerSpeedModifier>(OptionGroupSingleton<BurrowerOptions>.Instance.UndergroundSpeed);
-        TouAudio.PlaySound(TouAudio.MineSound, 0.8f);
+        PlayBurrowSound(ventPosition);
 
         if (player.AmOwner && player.MyPhysics != null)
         {
@@ -233,7 +235,7 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         var ventId = 5200 + player.PlayerId * 100 + role.NextVentIndex * 2 + 1;
         var vent = Modules.BurrowerSystem.SpawnVent(player, ventId, ventPosition);
         role.NextVentIndex++;
-        TouAudio.PlaySound(TouAudio.MineSound, 0.8f);
+        PlayBurrowSound(ventPosition);
 
         var firstVent = role.FirstVent;
         if (firstVent != null)
@@ -301,5 +303,23 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         }
 
         Modules.BurrowerSystem.RemoveVent(firstVent);
+    }
+
+    private static void PlayBurrowSound(Vector2 position)
+    {
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null || SoundManager.Instance == null)
+        {
+            return;
+        }
+
+        var distance = Vector2.Distance(localPlayer.GetTruePosition(), position);
+        if (distance > BurrowSoundRadius)
+        {
+            return;
+        }
+
+        var volume = Mathf.Clamp01(1f - distance / BurrowSoundRadius) * BurrowSoundVolume;
+        SoundManager.Instance.PlaySound(TouAudio.MineSound.LoadAsset(), false, volume);
     }
 }

@@ -109,5 +109,10 @@ public enum ExtensionRpc : uint
     FamineStarve = 124,
     FamineUnlock = 125,
     BurrowerCancel = 126,
-    FamineQueueStarveAnimation = 127
+    FamineQueueStarveAnimation = 127,
+    SoulCollectorReap = 128,
+    SoulCollectorSetSouls = 129,
+    SoulCollectorTransformToDeath = 130,
+    DeathKill = 131,
+    DeathMarkBody = 132
 }

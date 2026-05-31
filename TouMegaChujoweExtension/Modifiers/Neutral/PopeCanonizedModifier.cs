@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modifiers.Neutral;
 
-public sealed class PopeCanonizedModifier(PlayerControl pope) : BaseModifier
+public sealed class PopeCanonizedModifier(PlayerControl pope, bool canSpread = false) : BaseModifier
 {
     public PlayerControl Pope { get; } = pope;
+    public bool CanSpread { get; } = canSpread;
     public bool HasSpread { get; set; }
     private readonly Color _color = TouExtensionColors.Pope;
 

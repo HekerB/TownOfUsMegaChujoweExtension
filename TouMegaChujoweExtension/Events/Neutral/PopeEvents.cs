@@ -26,14 +26,14 @@ public static class PopeEvents
         var pope = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x.Data.Role is PopeRole);
         if (pope == null) return;
 
-        if ((sourcePope || (sourceCanMod != null && !sourceCanMod.HasSpread)) && targetCanMod == null && !targetPope)
+        if ((sourcePope || (sourceCanMod != null && sourceCanMod.CanSpread && !sourceCanMod.HasSpread)) && targetCanMod == null && !targetPope)
         {
-            target.RpcAddModifier<PopeCanonizedModifier>(pope);
+            target.RpcAddModifier<PopeCanonizedModifier>(pope, sourcePope);
             if (sourceCanMod != null) sourceCanMod.HasSpread = true;
         }
-        else if ((targetPope || (targetCanMod != null && !targetCanMod.HasSpread)) && sourceCanMod == null && !sourcePope)
+        else if ((targetPope || (targetCanMod != null && targetCanMod.CanSpread && !targetCanMod.HasSpread)) && sourceCanMod == null && !sourcePope)
         {
-            source.RpcAddModifier<PopeCanonizedModifier>(pope);
+            source.RpcAddModifier<PopeCanonizedModifier>(pope, targetPope);
             if (targetCanMod != null) targetCanMod.HasSpread = true;
         }
     }

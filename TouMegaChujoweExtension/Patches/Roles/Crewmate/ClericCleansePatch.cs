@@ -22,6 +22,7 @@ public static class ClericCleansePatch
             bool isWitchSpell = __instance.Player.HasModifier<WitchSpellboundModifier>();
             bool hasBread = __instance.Player.HasModifier<BakerBreadModifier>();
             bool isStarving = __instance.Player.HasModifier<FamineStarvedModifier>();
+            bool isReaped = __instance.Player.HasModifier<SoulReapedModifier>();
 
             var effects = new List<string>();
             if (isVine) effects.Add("Vine");
@@ -29,6 +30,7 @@ public static class ClericCleansePatch
             if (isWitchSpell) effects.Add("Witch Spell");
             if (hasBread) effects.Add("Bread");
             if (isStarving) effects.Add("Starving");
+            if (isReaped) effects.Add("Reap");
 
             if (effects.Count > 0)
             {
@@ -44,6 +46,10 @@ public static class ClericCleansePatch
                 if (isStarving)
                 {
                     __instance.Player.RemoveModifier<FamineStarvedModifier>();
+                }
+                if (isReaped)
+                {
+                    __instance.Player.RemoveModifier<SoulReapedModifier>();
                 }
                 if (hasBread || isStarving)
                 {
