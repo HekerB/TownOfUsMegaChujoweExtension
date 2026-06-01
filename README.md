@@ -285,7 +285,7 @@ Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-C
 > **Huge shoutout to Atony**, creator of Town of Us: Mira. A large part of this mod's art comes from his work, Town of Us: Mira builds, and resources shared around the TOU Mira community.
 
 - **[Asterisken [スター]](https://github.com/aasteriisken)** ([Discord](https://discord.com/users/1220041311323684955)) - Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful, Objection Button, Bodyguard Guard button, Berserker role icon, and War role icon
-- **Atony / Town of Us: Mira / Town of Us Discord** - Serial Killer, Kamikaze, Loner, Joker, Burrower, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, Detonator, and Death role icons; Shifter role icon and button; Sage role icon and ability buttons; Bodyguard shield animation; Poisoner role icon and buttons; Evoker Verify button; Drunk modifier icon; Venomous modifier icon
+- **Atony / Town of Us: Mira / Town of Us Discord** - Serial Killer, Kamikaze, Loner, Joker, Burrower, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, Detonator, Shifter role icon and button, Poisoner role icon and buttons, Drunk modifier icon, Jackal & Sidekick icons.
 - **Atony / TOU Mira Fusion** - Vampire Hunter stake button
 - **CraftR / Town of Us Discord** - Pirate role icon and Pirate Duel button; Baker role icon and bread assets; Pope role icon and Sanctify button
 - **CraftR / [Town-Of-Us-Mira-JK](https://github.com/JoaKing08/Town-Of-Us-Mira-JK)** - Famine role icon
