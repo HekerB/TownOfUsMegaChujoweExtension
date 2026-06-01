@@ -118,8 +118,6 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <img src="./Images/Groups/NeutKilling.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#baker--famine"><img width="10%" src="./Images/Icons/Baker_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#baker--famine"><img width="10%" src="./Images/Icons/Famine_Role_Icon.png" /></a>
-  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#soul-collector--death"><img width="10%" src="./Images/Icons/Soul_Role_Icon.png" /></a>
-  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#soul-collector--death"><img width="10%" src="./Images/Icons/SoulCollector.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#doppelganger"><img width="10%" src="./Images/Icons/Doppelganger_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#pelican"><img width="10%" src="./Images/Icons/Pelican_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#serial-killer"><img width="10%" src="./Images/Icons/SerialKiller_Role_Icon.png" /></a>
