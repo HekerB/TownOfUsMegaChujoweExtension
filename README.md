@@ -282,24 +282,19 @@ Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-C
 ## Original Extension
 - **[rewalo](https://github.com/rewalo)** - Original [TownOfUsMiraRolesExtension](https://github.com/rewalo/TownOfUsMiraRolesExtension) that this project is forked from
 
-## Art Credits
+## Artwork & Asset Credits
 
-> **Huge shoutout to Atony**, creator of Town of Us: Mira — roughly 80% of the art assets used in this mod originate from his work, various TOU Mira builds, and resources shared on the TOU Mira Discord. We are extremely grateful for his incredible contributions to the community.
+> **Huge shoutout to Atony**, creator of Town of Us: Mira. A large part of this mod's art comes from his work, Town of Us: Mira builds, and resources shared around the TOU Mira community.
 
-- **Asterisken** - Art for Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful, Objection Button, and Bodyguard Guard button
-- **CraftR / Town of Us Discord** - Pirate role icon & Pirate Duel button; Baker role icon and bread assets; Famine role icon from [Town-Of-Us-Mira-JK](https://github.com/JoaKing08/Town-Of-Us-Mira-JK); Pope role icon and Sanctify button
-- **Xinav's** - Tarot card asset
-- **Atony / Town of Us: Mira / Town Of Us Discord** - Art for Serial Killer, Kamikaze, Loner, Joker, Burrower, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, Detonator, and Soul Collector role icons; Shifter role icon & button; Sage role icon (Seer button from TOU Mira); Sage ability buttons (Salem option buttons from Seer); Bodyguard shield animation (repainted Warden shield from TOU Mira 1.5.9); Poisoner role icon & all Poisoner button icons; Evoker Verify button icon; Drunk modifier icon (from TOU Mira Discord); Venomous modifier icon (flipped & recolored Rotting modifier from TOU Mira)
+- **[Asterisken [スター]](https://github.com/aasteriisken)** ([Discord](https://discord.com/users/1220041311323684955)) - Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful, Objection Button, Bodyguard Guard button, Berserker role icon, and War role icon
+- **Atony / Town of Us: Mira / Town of Us Discord** - Serial Killer, Kamikaze, Loner, Joker, Burrower, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, Detonator, and Death role icons; Shifter role icon and button; Sage role icon and ability buttons; Bodyguard shield animation; Poisoner role icon and buttons; Evoker Verify button; Drunk modifier icon; Venomous modifier icon
 - **Atony / TOU Mira Fusion** - Vampire Hunter stake button
-- **[TownOfUsMiraDivaniModsAddOn](https://github.com/DivaniNL/TownOfUsMiraDivaniModsAddOn) / DivaniNL** - Art for Kamikaze role icon; Portal asset
-- **Syzyf (Syzyfowe TOU)** - Gardener ability button icon
-- **Stellar Roles** - Role ideas, some button art
-- **[All Of Us](https://github.com/All-Of-Us-Mods)** - Death Note modifier icons (from their Discord)
-- **Sidemen (YouTube) / Sidemens Mod** - Role concept inspiration.
-- **Town of Salem** - Source inspiration/assets for Shroud visuals.
-- **[TOHE (Town of Host Enhanced)](https://github.com/0xDrMoe/TownofHost-Enhanced)** - Shroud role icon
-- **Star Wars** - Bounty Hunter role icon (original concept)
-- **Our friend's girlfriend** - Publicity modifier icon
+- **CraftR / Town of Us Discord** - Pirate role icon and Pirate Duel button; Baker role icon and bread assets; Pope role icon and Sanctify button
+- **CraftR / [Town-Of-Us-Mira-JK](https://github.com/JoaKing08/Town-Of-Us-Mira-JK)** - Famine role icon
+- **[TownOfUsMiraDivaniModsAddOn](https://github.com/DivaniNL/TownOfUsMiraDivaniModsAddOn) / DivaniNL** - Portal asset and Kamikaze role icon source
+- **Syzyf / Syzyfowe TOU** - Gardener ability button icon
+- **Xinav's** - Tarot card asset
+- **Town of Salem** - Shroud visual assets/source inspiration
 
 ## Sound Credits
 - **Radzik360** - Joker laugh (intro & in-game), Kamikaze explosion sound, Pelican swallow sound
@@ -317,15 +312,14 @@ Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-C
 
 ## Role Inspirations & Concepts
 - **[TOHE (Town of Host Enhanced)](https://github.com/0xDrMoe/TownofHost-Enhanced)** - Doppelganger role concept; Shroud role concept
-- **[Syzyfowe TOU ](https://github.com/LimeShep/Town-Of-Us/)** - Evoker role concept; Pelican role concept; Gardener role concept
+- **[Syzyfowe TOU](https://github.com/LimeShep/Town-Of-Us/)** - Evoker, Pelican, and Gardener role concepts
 - **Town of Us: Mira** - Infiltrator (Jackal) role concept
 - **Tajemniczy Among Us (Tajemniczy Typiarz)** - Pirate role concept
-- **[Town of Us WYGON ](https://github.com/wygon/Town-Of-Us-WYGON)** - Falcon role concept; Kamikaze role concept
-- **Sidemen (YouTube)** - RC-XD, Detonator, Doctor, Astral, Speedy, Sniper, Poisoner & Loner roles concept (recreated from their videos)
+- **[Town of Us WYGON](https://github.com/wygon/Town-Of-Us-WYGON)** - Falcon and Kamikaze role concepts
+- **Sidemen (YouTube)** - RC-XD, Detonator, Doctor, Astral, Speedy, Sniper, Poisoner, and Loner role concepts
 - **[TownOfUsMiraDivaniModsAddOn](https://github.com/DivaniNL/TownOfUsMiraDivaniModsAddOn)** - Portalmaker role concept
-- **Death Note (anime)** - Death Note modifier concept
-- **Town of Us: Mira** - Soul Collector role concept, rebuilt as Soul Collector / Death
-- **Our friend Weakpass** - Added Publicity modifier
+- **Stellar Roles** - Role ideas and ability references
+- **[All Of Us](https://github.com/All-Of-Us-Mods)** - Death Note concept and recreated assets
 
 ## Wiki & Documentation
 - **dziabe** - Helped with shortening role descriptions for the wiki (minimal effort)
