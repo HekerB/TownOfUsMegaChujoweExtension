@@ -39,6 +39,7 @@ public static class BakerEvents
 
         PendingStarvationDeaths.Clear();
         ShownStarvationAnimations.Clear();
+        BakerRole.PendingFamineAnnouncement = false;
 
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
         {
@@ -168,6 +169,8 @@ public static class BakerEvents
             // 4. If Famine is active and all bread targets are gone, unlock unrestricted starving.
             TryUnlockFamine();
         }
+
+        BakerRole.ShowPendingFamineAnnouncement();
     }
 
     [RegisterEvent]

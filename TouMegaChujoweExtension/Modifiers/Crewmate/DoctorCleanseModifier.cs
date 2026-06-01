@@ -35,7 +35,8 @@ public sealed class DoctorCleanseModifier : TimedModifier
             m is PopeCanonizedModifier ||
             m is BakerBreadModifier ||
             m is BakerBreadRevealModifier ||
-            m is FamineStarvedModifier
+            m is FamineStarvedModifier ||
+            m is SoulReapedModifier
         ).ToList();
 
         foreach (var mod in modifiersToRemove)

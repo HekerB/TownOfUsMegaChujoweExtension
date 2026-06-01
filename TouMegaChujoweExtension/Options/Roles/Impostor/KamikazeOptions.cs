@@ -25,4 +25,7 @@ public class KamikazeOptions : AbstractOptionGroup<KamikazeRole>
     [ModdedToggleOption("ExtensionOptionKamikazeCanVent")]
     public bool CanVent { get; set; } = true;
 
+    [ModdedToggleOption("ExtensionOptionKamikazeDisableExplosionSound")]
+    public bool DisableExplosionSound { get; set; } = true;
+
 }

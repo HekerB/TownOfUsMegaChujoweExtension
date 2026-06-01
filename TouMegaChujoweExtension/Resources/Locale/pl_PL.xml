@@ -333,6 +333,7 @@
   <string name="ExtensionOptionPopeMaxCanonizations">Max Cream Cakes</string>
   <string name="ExtensionOptionPopeJudgementDuration">Czas odliczania Sanctify</string>
   <string name="ExtensionOptionPopeCanonizeInteractions">Uzyj interakcji do rozdawania Cream Cakes</string>
+  <string name="ExtensionOptionPopeBlockEmergencyButtonDuringJudgement">Blokuj Emergency Button podczas Sanctify</string>
   
   <!-- Pope Win -->
   <string name="ExtensionPopeWins">Wygrywa</string>
@@ -1083,6 +1084,7 @@
   <string name="ExtensionOptionKamikazeCanVent">Moze uzywac wentylacji</string>
   <string name="ExtensionOptionKamikazeShowRadiusIndicator">Pokaz wskaznik promienia</string>
   <string name="ExtensionOptionKamikazeCanSuicideFirstRound">Zezwalaj na użycie w 1. rundzie</string>
+  <string name="ExtensionOptionKamikazeDisableExplosionSound">Wylacz dzwiek eksplozji</string>
 
   <!-- Publicity Modifier -->
   <string name="ExtensionModifierPublicity">Publicity</string>
@@ -1465,12 +1467,12 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
 
   <!-- Baker / Famine Role -->
   <string name="ExtensionRoleBaker">Baker</string>
-  <string name="ExtensionRoleBakerIntroBlurb">Daj chleb, aby zostac \%color=#B2672EFF\%Famine\%/color\%</string>
-  <string name="ExtensionRoleBakerTabDescription">Daj wystarczajaco chleba, aby zostac \%color=#B2672EFF\%Famine\%/color\%.</string>
-  <string name="ExtensionRoleBakerWikiDescription">Baker to rola Neutral Killing, ktora daje chleb zyjacym graczom. Gracze z chlebem sa dla ciebie oznaczeni i daja alert po smierci. Daj wystarczajaco chleba, aby zostac \%color=#B2672EFF\%Famine\%/color\%.</string>
+  <string name="ExtensionRoleBakerIntroBlurb">Daj chleb, aby zostac \%color=#023020FF\%Famine\%/color\%</string>
+  <string name="ExtensionRoleBakerTabDescription">Daj wystarczajaco chleba, aby zostac \%color=#023020FF\%Famine\%/color\%.</string>
+  <string name="ExtensionRoleBakerWikiDescription">Baker to rola Neutral Killing, ktora daje chleb zyjacym graczom. Gracze z chlebem sa dla ciebie oznaczeni i daja alert po smierci. Daj wystarczajaco chleba, aby zostac \%color=#023020FF\%Famine\%/color\%.</string>
   <string name="ExtensionRoleBakerGive">Daj chleb</string>
   <string name="ExtensionRoleBakerGiveWikiDescription">Daj chleb pobliskiemu zyjacemu graczowi.</string>
-  <string name="ExtensionRoleBakerFamineAnnouncement">&lt;b&gt;Rozdawca chleba powstal jako Famine, Jezdziec Apokalipsy!&lt;/b&gt;</string>
+  <string name="ExtensionRoleBakerFamineAnnouncement">Smiercionosny glod pochlonal zaloge.\%nl\%\%color=#023020FF\%Famine\%/color\%, Jezdziec Apokalipsy, przybyl!</string>
   <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} umarl z Twoim chlebem!</string>
   <string name="ExtensionRoleFamineAllBreadTargetsDead">Wszyscy oznaczeni chlebem gracze umarli! Mozesz teraz glodzic kazdego!</string>
   <string name="ExtensionBakerFaminePlagueWins">Famine i Plague wygrywaja</string>
@@ -1541,6 +1543,48 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="TouOptionDoomsayerWin">Wygrana Foretellera</string>
   <string name="TouOptionDoomsayerContinuesGame">Foreteller kontynuuje gre</string>
   <string name="TouRoleDoomsayerMessageTitle">Raport Foretellera</string>
+
+  <!-- Spellslinger Override -->
+  <string name="TouRoleSpellslinger">Hex Master</string>
+  <string name="TouRoleSpellslingerWikiDescription">Hex Master to rola Impostor Power, ktora moze rzucac hexy na graczy i przygotowywac ich do detonacji. Gdy wszyscy nie-Impostorzy sa oznaczeni, moze odpalic Hex Bomb po ustawionym czasie.</string>
+  <string name="TouRoleSpellslingerMessageTitle">Ostrzezenie Hex Mastera</string>
+  <string name="TouRoleSpellslingerGlobalWarning">\%role\% odpala Hex Bomb! Znajdz go przed koncem licznika! Po tym meetingu zostanie \%time\% sekund.</string>
+  <string name="TouRoleSpellslingerWarningNotif">\%role\% odpali Hex Bomb za \%time\% sekund!</string>
+
+  <!-- Grim Reaper (Soul Collector Override) -->
+  <string name="TouRoleSoulCollector">Grim Reaper</string>
+  <string name="TouRoleSoulCollectorIntroBlurb">Zbieraj dusze i zostawiaj martwe cienie.</string>
+  <string name="TouRoleSoulCollectorTabDescription">Zabijaj bez zostawiania raportowalnych cial.</string>
+  <string name="TouRoleSoulCollectorWikiDescription">Grim Reaper to rola Neutral Killing, ktora bezposrednio zbiera dusze graczy. Ofiary zostawiaja bezduszna kopie zamiast normalnego raportowalnego ciala.</string>
+  <string name="TouRoleSoulCollectorReapNotif">Zebrales dusze gracza \%player\%, zostawiajac jego martwy cien.</string>
+  <string name="TouRoleSoulCollectorReapWikiDescription">Zbierz dusze pobliskiego gracza i zostaw martwy cien zamiast raportowalnego ciala.</string>
+  <string name="TouOptionSoulCollectorReapCooldown">Cooldown Reap Grim Reapera</string>
+  <string name="TouOptionSoulCollectorCanVent">Grim Reaper moze ventowac</string>
+
+  <!-- Soul Collector / Death Concept -->
+  <string name="ExtensionRoleSoulCollector">Soul Collector</string>
+  <string name="ExtensionRoleSoulCollectorIntroBlurb">Zbieraj Dusze, Aby Zostac \%color=#91DDB2FF\%Death\%/color\%.</string>
+  <string name="ExtensionRoleSoulCollectorTabDescription">Oznaczaj dusze Reapem i zbierz ich dosc, aby zostac \%color=#91DDB2FF\%Death\%/color\%.</string>
+  <string name="ExtensionRoleSoulCollectorWikiDescription">\%color=#AC111FFF\%Soul Collector\%/color\% to rola &lt;b&gt;Neutral Apocalypse&lt;/b&gt;. Uzyj Reap, aby oznaczac cele; jesli oznaczony cel umrze przed limitem rund, dostajesz dusze. Zbierz dosc dusz, aby stac sie \%color=#91DDB2FF\%Death\%/color\%. Cleanse Doctora i Clerica moze usunac Reap.</string>
+  <string name="ExtensionRoleSoulCollectorReap">Reap</string>
+  <string name="ExtensionRoleSoulCollectorReapWikiDescription">Oznacz pobliskiego zywego gracza. Jesli umrze przed wygasnieciem znaku, dostajesz jedna dusze.</string>
+  <string name="ExtensionRoleSoulCollectorMarkedDiedNotif">Dusza gracza {0} zostala zebrana!</string>
+  <string name="ExtensionRoleSoulCollectorDeathAnnouncement">Ostatnia dusza zostala zebrana.\%nl\%\%color=#91DDB2FF\%Death\%/color\%, Jezdziec Apokalipsy, przybyl!</string>
+  <string name="ExtensionRoleDeath">Death</string>
+  <string name="ExtensionRoleDeathIntroBlurb">Przynies ostateczny koniec.</string>
+  <string name="ExtensionRoleDeathTabDescription">Zabijaj Reapem.\%nl\%Death jest niesmiertelny i zostawia nieraportowalne ciala.</string>
+  <string name="ExtensionRoleDeathWikiDescription">Death to przemieniony Soul Collector.\%nl\%Death jest niesmiertelny, nie da sie go zguessowac i moze umrzec tylko przez wyrzucenie.\%nl\%Death zabija bez animacji przeskoku i zostawia ciala, ktorych nie da sie zglosic.</string>
+  <string name="DiedToExtensionDeathClaimed">Pochloniety przez Death</string>
+  <string name="ExtensionOptionSoulCollectorInstantDeathChance">Instant Death Chance</string>
+  <string name="ExtensionOptionSoulCollectorReapCooldown">Cooldown Reap</string>
+  <string name="ExtensionOptionSoulCollectorSoulGoal">Dusze potrzebne do Death</string>
+  <string name="ExtensionOptionSoulCollectorMaxMarks">Maks. aktywnych oznaczen Reap</string>
+  <string name="ExtensionOptionSoulCollectorRoundsToDie">Czas trwania Reap w rundach</string>
+  <string name="ExtensionOptionSoulCollectorPassiveSoulsPerMeeting">Pasywne dusze co meeting</string>
+  <string name="ExtensionOptionSoulCollectorAnnounceDeath">Oglos przemiane w Death</string>
+  <string name="ExtensionOptionSoulCollectorDeathKillCooldown">Cooldown zabijania Death</string>
+  <string name="ExtensionOptionSoulCollectorDeathCanVent">Death moze ventowac</string>
+  <string name="ExtensionModifierSoulCollectorReaped">Oznaczony Reapem</string>
 </resources>
 
 

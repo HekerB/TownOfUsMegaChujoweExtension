@@ -43,7 +43,7 @@ public sealed class PopeCanonizeButton : TownOfUsRoleButton<PopeRole, PlayerCont
     {
         if (Target == null) return;
 
-        Target.RpcAddModifier<PopeCanonizedModifier>(PlayerControl.LocalPlayer);
+        Target.RpcAddModifier<PopeCanonizedModifier>(PlayerControl.LocalPlayer, true);
     }
 }
 

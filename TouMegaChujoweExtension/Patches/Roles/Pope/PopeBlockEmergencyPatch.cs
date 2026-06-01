@@ -1,4 +1,6 @@
 using HarmonyLib;
+using MiraAPI.GameOptions;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Pope;
 
@@ -7,6 +9,7 @@ public static class PopeBlockEmergencyPatch
 {
     public static void Postfix(EmergencyMinigame __instance)
     {
+        if (!OptionGroupSingleton<PopeOptions>.Instance.BlockEmergencyButtonDuringJudgement) return;
         if (ShipStatus.Instance == null) return;
         var sabId = (SystemTypes)PopeJudgementSystem.SabotageId;
         if (!ShipStatus.Instance.Systems.ContainsKey(sabId)) return;

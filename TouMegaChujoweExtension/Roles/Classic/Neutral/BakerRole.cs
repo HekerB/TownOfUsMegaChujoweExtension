@@ -32,6 +32,8 @@ namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 public sealed class BakerRole(IntPtr cppPtr)
     : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
+    public static bool PendingFamineAnnouncement { get; set; }
+
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "Baker";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Baker");
@@ -183,13 +185,27 @@ public sealed class BakerRole(IntPtr cppPtr)
             baker.ChangeRole(RoleId.Get<FamineRole>());
         }
 
-        if (PlayerControl.LocalPlayer != null && OptionGroupSingleton<BakerOptions>.Instance.AnnounceFamine)
+        if (OptionGroupSingleton<BakerOptions>.Instance.AnnounceFamine)
         {
-            var famineColor = TouExtensionColors.Famine.ToTextColor();
-            var notif = Helpers.CreateAndShowNotification(
-                TouLocale.Get("ExtensionRoleBakerFamineAnnouncement", $"<b>The bread giver has risen as {famineColor}Famine</color>, Horseman of the Apocalypse!</b>"),
-                Color.white, new Vector3(0f, 1f, -20f), spr: TouExtensionIcons.BakerRoleIcon.LoadAsset());
-            notif.AdjustNotification();
+            PendingFamineAnnouncement = true;
         }
+    }
+
+    public static void ShowPendingFamineAnnouncement()
+    {
+        if (!PendingFamineAnnouncement ||
+            PlayerControl.LocalPlayer == null ||
+            !OptionGroupSingleton<BakerOptions>.Instance.AnnounceFamine)
+        {
+            return;
+        }
+
+        PendingFamineAnnouncement = false;
+        var notif = Helpers.CreateAndShowNotification(
+            TouLocale.GetParsed("ExtensionRoleBakerFamineAnnouncement", "A terrible famine has consumed the Crew.\\%nl\\%\\%color=#023020FF\\%Famine\\%/color\\%, Horseman of the Apocalypse, has emerged!"),
+            Color.white,
+            new Vector3(0f, 1f, -20f),
+            spr: TouExtensionIcons.FamineRoleIcon.LoadAsset());
+        notif.AdjustNotification();
     }
 }

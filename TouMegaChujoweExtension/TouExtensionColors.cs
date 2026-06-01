@@ -35,7 +35,9 @@ public static class TouExtensionColors
     public static Color BountyHunter => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(0, 18, 97, 255);
     public static Color Jackal => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(83, 80, 100, 255);
     public static Color Baker => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(244, 167, 82, 255);
-    public static Color Famine => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(178, 103, 46, 255);
+    public static Color Famine => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(2, 48, 32, 255);
+    public static Color SoulCollector => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(172, 17, 31, 255);
+    public static Color Death => TownOfUsColors.SoulCollector;
     //impostors
     public static Color Witch => Palette.ImpostorRed;
     public static Color Wraith => Palette.ImpostorRed;

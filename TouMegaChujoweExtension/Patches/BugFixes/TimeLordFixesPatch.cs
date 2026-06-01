@@ -45,8 +45,8 @@ public static class TimeLordFixesPatch
         }
     }
 
-    // Fix: Pelican swallow lock. Eject all swallowed players at the END of the rewind,
-    // so they are not permanently trapped if they were swallowed during/before the rewind.
+    // Fix: Pelican swallow lock. Eject only players swallowed inside the rewind history window.
+    // Older swallows are not undone by Time Lord and should remain in Pelican's belly.
     [HarmonyPatch(typeof(TimeLordRewindSystem), nameof(TimeLordRewindSystem.CancelRewindForMeeting))]
     [HarmonyPostfix]
     public static void CancelRewindForMeetingPostfix()
