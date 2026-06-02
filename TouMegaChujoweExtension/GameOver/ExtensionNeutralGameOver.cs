@@ -9,6 +9,7 @@ using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Extensions;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Modules;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.GameOver;
@@ -39,12 +40,11 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
             return true;
         }
 
-        var isBakerFaminePlagueWin = winners.Any(w => w?.Role is BakerRole or FamineRole) &&
-                                     winners.Any(w => w?.Role is PlaguebearerRole or PestilenceRole);
-        if (isBakerFaminePlagueWin)
+        var isApocalypseWin = winners.Count(w => w != null && ApocalypseUtils.IsApocalypseRole(w.Role)) >= 2;
+        if (isApocalypseWin)
         {
-            _roleColor = TouExtensionColors.Famine;
-            _winText = TouLocale.Get("ExtensionBakerFaminePlagueWins", "Famine & Plague Win");
+            _roleColor = TouExtensionColors.Death;
+            _winText = TouLocale.Get("ExtensionApocalypseWins", "Apocalypse Wins");
             return true;
         }
 
@@ -64,6 +64,8 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
             BountyHunterRole => $"{TouLocale.Get("ExtensionRoleBountyHunter", "Bounty Hunter")} {TouLocale.Get("ExtensionBountyHunterWins", "Wins")}",
             JokerRole => $"{TouLocale.Get("ExtensionRoleJoker", "Joker")} {TouLocale.Get("ExtensionJokerWins", "Wins")}",
             FamineRole => $"{TouLocale.Get("ExtensionRoleFamine", "Famine")} {TouLocale.Get("ExtensionFamineWins", "Wins")}",
+            DeathRole => $"{TouLocale.Get("ExtensionRoleDeath", "Death")} {TouLocale.Get("ExtensionDeathWins", "Wins")}",
+            BerserkerRole berserker => $"{(berserker.IsWar ? TouLocale.Get("ExtensionRoleWar", "War") : TouLocale.Get("ExtensionRoleBerserker", "Berserker"))} {TouLocale.Get("ExtensionBerserkerWins", "Wins")}",
             _ => TouLocale.GetParsed("ExtensionNeutralWinsFormat", "{0} Wins").Replace("{0}", role.GetRoleName())
         };
 

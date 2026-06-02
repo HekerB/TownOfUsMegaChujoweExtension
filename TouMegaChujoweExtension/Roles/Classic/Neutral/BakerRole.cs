@@ -141,7 +141,7 @@ public sealed class BakerRole(IntPtr cppPtr)
     public override bool DidWin(GameOverReason gameOverReason)
     {
         if (gameOverReason == MiraAPI.GameEnd.CustomGameOver.GameOverReason<GameOver.ExtensionNeutralGameOver>() &&
-            TouMegaChujoweExtension.Patches.WinConditions.NeutralExtensionWinCondition.IsBakerFaminePlagueAllianceWon)
+            TouMegaChujoweExtension.Patches.WinConditions.NeutralExtensionWinCondition.IsApocalypseAllianceWon)
         {
             return true;
         }

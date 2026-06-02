@@ -66,6 +66,18 @@ public static class ExtensionSymbolsPatch
             }
         }
 
+        // --- APOCALYPSE TEAM ---
+        if (CanSeeApocalypseRole(local, player, deadKnow))
+        {
+            var roleName = ApocalypseUtils.GetDisplayRoleName(player);
+            var roleColorHex = ColorUtility.ToHtmlStringRGB(ApocalypseUtils.GetRoleColor(player));
+            var prefix = player.PlayerId != local.PlayerId && !deadKnow && !__result.Contains(roleName)
+                ? $"<size=80%><color=#{roleColorHex}>{roleName}</color></size>\n"
+                : string.Empty;
+
+            __result = $"{prefix}{__result}";
+        }
+
         // --- BODYGUARD (Σ) ---
         if (!__result.Contains('Σ'))
         {
@@ -279,5 +291,20 @@ public static class ExtensionSymbolsPatch
 
         var genOpt = OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance;
         return local.HasDied() && genOpt.TheDeadKnow && !hidden;
+    }
+
+    private static bool CanSeeApocalypseRole(PlayerControl local, PlayerControl player, bool deadKnow)
+    {
+        if (local == null || player == null || !ApocalypseUtils.IsApocalypsePlayer(player))
+        {
+            return false;
+        }
+
+        if (deadKnow)
+        {
+            return true;
+        }
+
+        return ApocalypseUtils.RolesKnowEachOther && ApocalypseUtils.IsApocalypsePlayer(local);
     }
 }

@@ -81,20 +81,17 @@
   
   <!-- Vanisher Role -->
   <string name="ExtensionRoleVanisher">Vanisher</string>
-  <string name="ExtensionRoleVanisherIntroBlurb">Znikaj, by tropic i demaskowac zlych graczy.</string>
-  <string name="ExtensionRoleVanisherTabDescription">Znikaj, aby ukryc siebie.\%nl\%Zli gracze obok sa wykrywani.</string>
+  <string name="ExtensionRoleVanisherIntroBlurb">Znikaj, aby poruszac sie niezauwazenie.</string>
+  <string name="ExtensionRoleVanisherTabDescription">Znikaj, aby ukryc siebie.\%nl\%Mozesz pojawic sie wczesniej tym samym przyciskiem.</string>
   <string name="ExtensionRoleVanisherWikiDescription">Jestes crewmate Swooper. Mozesz zniknac i obserwowac neutralnych/impostorow.</string>
   <string name="ExtensionRoleVanisherVanish">Zniknij</string>
   <string name="ExtensionRoleVanisherUnvanish">Pojaw sie</string>
-  <string name="ExtensionRoleVanisherVanishWikiDescription">Zniknij na chwile. Zli gracze w poblizu dostana ostrzezenie. Mozesz pojawic sie wczesniej, klikajac ten sam przycisk.</string>
+  <string name="ExtensionRoleVanisherVanishWikiDescription">Zniknij na chwile. Mozesz pojawic sie wczesniej, klikajac ten sam przycisk.</string>
 
   <!-- Vanisher Options -->
   <string name="ExtensionOptionVanisherCooldown">Cooldown Znikania</string>
   <string name="ExtensionOptionVanisherDuration">Czas trwania znikniecia</string>
   <string name="ExtensionOptionVanisherMaxUses">Maksymalna liczba znikniec na runde</string>
-  <string name="ExtensionOptionVanisherDetectionEnabled">Wykrywanie wlaczone</string>
-  <string name="ExtensionOptionVanisherRadius">Promien wykrywania</string>
-  <string name="ExtensionOptionVanisherNotifCooldown">Czas odnowienia powiadomienia</string>
 
   <!-- Clueless Modifier -->
   <string name="ExtensionModifierClueless">Clueless</string>
@@ -1114,6 +1111,9 @@
 • Jesli nie wybierzesz roli w wyznaczonym czasie, zostanie ona przydzielona automatycznie.
 • Domyslnie wszyscy gracze wybieraja z pelnej puli dostepnych rol dla swojej strony (Zloga, Impostorzy, Neutralni). Nie ma juz restrykcyjnych kategorii.</string>
 
+  <string name="TOUMCETermsApocalypseTitle">Apokalipsa</string>
+  <string name="TOUMCETermsApocalypseInfo">&lt;b&gt;Apokalipsa&lt;/b&gt; to neutralne role jezdzcow: &lt;color=#C4F076&gt;Plaguebearer&lt;/color&gt;, &lt;color=#B4D7A8&gt;Pestilence&lt;/color&gt;, &lt;color=#E59A3B&gt;Baker&lt;/color&gt;, &lt;color=#023020&gt;Famine&lt;/color&gt;, &lt;color=#B9182E&gt;Soul Collector&lt;/color&gt;, &lt;color=#91DDB2&gt;Death&lt;/color&gt;, &lt;color=#B80F20&gt;Berserker&lt;/color&gt; i &lt;color=#FFFFFF&gt;War&lt;/color&gt;. Jesli opcja &lt;b&gt;Apokalipsa wygrywa razem&lt;/b&gt; jest wlaczona, dziela wygrana, nie moga siebie zgadywac, moga widziec swoje role i uzywac czatu Apokalipsy zaleznie od ustawien lobby.</string>
+
   <!-- TOUMCE Wiki Terms - Draft Factions -->
   <string name="TOUMCETermsDraftFactionsTitle">Frakcje Draftu</string>
   <string name="TOUMCETermsDraftFactionsInfo">Przed rozpoczeciem draftu gracze zostaja przypisani do frakcji:
@@ -1228,7 +1228,9 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionGeneralJackalChatDisplayName">Prywatny czat Rekrutow</string>
   <string name="ExtensionGameMechanicOptionsGroupName">Mechaniki gry</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Rekruci widza swoje role</string>
-  <string name="ExtensionOptionGameMechanicBakerFaminePlagueAlliance">Baker/Famine i Plaguebearer/Pestilence wygrywaja razem</string>
+  <string name="ExtensionOptionGameMechanicApocalypseMeetingChat">Czat Apokalipsy na spotkaniu</string>
+  <string name="ExtensionOptionGameMechanicApocalypseRolesKnowEachOther">Role Apokalipsy widza siebie</string>
+  <string name="ExtensionOptionGameMechanicApocalypseWinsTogether">Apokalipsa wygrywa razem</string>
 
   <string name="Sidekick">Rekrut</string>
   <string name="SidekickIntroBlurb">Zostałeś zwerbowany przez Infiltratora. Musisz zdradzić swoją drużynę.</string>
@@ -1475,7 +1477,16 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleBakerFamineAnnouncement">Smiercionosny glod pochlonal zaloge.\%nl\%\%color=#023020FF\%Famine\%/color\%, Jezdziec Apokalipsy, przybyl!</string>
   <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} umarl z Twoim chlebem!</string>
   <string name="ExtensionRoleFamineAllBreadTargetsDead">Wszyscy oznaczeni chlebem gracze umarli! Mozesz teraz glodzic kazdego!</string>
-  <string name="ExtensionBakerFaminePlagueWins">Famine i Plague wygrywaja</string>
+  <string name="ExtensionApocalypseChatDisplayName">Czat Apokalipsy</string>
+  <string name="ExtensionApocalypseChatTitle">Apokalipsa</string>
+  <string name="ExtensionApocalypseWins">Apokalipsa wygrywa</string>
+  <string name="ExtensionBakerFaminePlagueWins">Apokalipsa wygrywa</string>
+  <string name="ExtensionBerserkerWins">wygrywa</string>
+  <string name="ExtensionDeathWins">wygrywa</string>
+  <string name="ExtensionRoleBerserker">Berserker</string>
+  <string name="ExtensionRoleBerserkerIntroBlurb">Niech furia prowadzi twoj topor.</string>
+  <string name="ExtensionRoleBerserkerTabDescription">Zabij wszystkich i zostan sam.</string>
+  <string name="ExtensionRoleBerserkerWikiDescription">Berserker to rola Neutral Killing inspirowana konceptem Apocalypse. Na razie ma standardowy przycisk zabijania i wygrywa jako ostatni zabojca.</string>
   <string name="ExtensionRoleFamine">Famine</string>
   <string name="ExtensionRoleFamineIntroBlurb">Zaglodz nakarmionych</string>
   <string name="ExtensionRoleFamineTabDescription">Glodz graczy z chlebem. Glodujacy umieraja na meetingu.</string>
@@ -1565,11 +1576,12 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleSoulCollector">Soul Collector</string>
   <string name="ExtensionRoleSoulCollectorIntroBlurb">Zbieraj Dusze, Aby Zostac \%color=#91DDB2FF\%Death\%/color\%.</string>
   <string name="ExtensionRoleSoulCollectorTabDescription">Oznaczaj dusze Reapem i zbierz ich dosc, aby zostac \%color=#91DDB2FF\%Death\%/color\%.</string>
-  <string name="ExtensionRoleSoulCollectorWikiDescription">\%color=#AC111FFF\%Soul Collector\%/color\% to rola &lt;b&gt;Neutral Apocalypse&lt;/b&gt;. Uzyj Reap, aby oznaczac cele; jesli oznaczony cel umrze przed limitem rund, dostajesz dusze. Zbierz dosc dusz, aby stac sie \%color=#91DDB2FF\%Death\%/color\%. Cleanse Doctora i Clerica moze usunac Reap.</string>
+  <string name="ExtensionRoleSoulCollectorWikiDescription">\%color=#CA0F20FF\%Soul Collector\%/color\% to rola &lt;b&gt;Neutral Apocalypse&lt;/b&gt;. Uzyj Reap, aby oznaczac cele; jesli oznaczony cel umrze przed limitem rund, dostajesz dusze. Zbierz dosc dusz, aby stac sie \%color=#91DDB2FF\%Death\%/color\%. Cleanse Doctora i Clerica moze usunac Reap.</string>
   <string name="ExtensionRoleSoulCollectorReap">Reap</string>
   <string name="ExtensionRoleSoulCollectorReapWikiDescription">Oznacz pobliskiego zywego gracza. Jesli umrze przed wygasnieciem znaku, dostajesz jedna dusze.</string>
   <string name="ExtensionRoleSoulCollectorMarkedDiedNotif">Dusza gracza {0} zostala zebrana!</string>
   <string name="ExtensionRoleSoulCollectorDeathAnnouncement">Ostatnia dusza zostala zebrana.\%nl\%\%color=#91DDB2FF\%Death\%/color\%, Jezdziec Apokalipsy, przybyl!</string>
+  <string name="TouRolePestilenceAnnounceMessage">Smiercionosna plaga pochlonela zaloge.\%nl\%\%role\%, Jezdziec Apokalipsy, przybyl!</string>
   <string name="ExtensionRoleDeath">Death</string>
   <string name="ExtensionRoleDeathIntroBlurb">Przynies ostateczny koniec.</string>
   <string name="ExtensionRoleDeathTabDescription">Zabijaj Reapem.\%nl\%Death jest niesmiertelny i zostawia nieraportowalne ciala.</string>

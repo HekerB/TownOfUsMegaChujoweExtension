@@ -114,5 +114,8 @@ public enum ExtensionRpc : uint
     SoulCollectorSetSouls = 129,
     SoulCollectorTransformToDeath = 130,
     DeathKill = 131,
-    DeathMarkBody = 132
+    DeathMarkBody = 132,
+    SendApocalypseChat = 133,
+    BerserkerSetKills = 134,
+    BerserkerTransformToWar = 135
 }

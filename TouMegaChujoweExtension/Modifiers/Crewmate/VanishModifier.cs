@@ -23,8 +23,6 @@ public sealed class VanishModifier : ConcealedModifier, IVisualAppearance
     public override bool VisibleToOthers => false;
     public bool VisualPriority => true;
 
-    private float _notifTimer;
-
     public VisualAppearance GetVisualAppearance()
     {
         return new VisualAppearance(Player.GetDefaultModifiedAppearance(), TownOfUsAppearances.Swooper)
@@ -52,8 +50,6 @@ public sealed class VanishModifier : ConcealedModifier, IVisualAppearance
 
     public override void OnActivate()
     {
-        _notifTimer = 0f;
-
         if (Player.AmOwner)
         {
             TouAudio.PlaySound(TouAudio.SwooperActivateSound);
@@ -87,42 +83,6 @@ public sealed class VanishModifier : ConcealedModifier, IVisualAppearance
             Player.cosmetics.ToggleNameVisible(false);
         }
 
-        if (!Player.AmOwner)
-        {
-            CheckDetection();
-        }
-    }
-
-    private void CheckDetection()
-    {
-        if (!OptionGroupSingleton<VanisherOptions>.Instance.DetectionEnabled)
-            return;
-
-        var local = PlayerControl.LocalPlayer;
-        if (local == null || local.Data == null || local.Data.IsDead || local.Data.Disconnected)
-            return;
-
-        if (!local.IsImpostor() && !local.IsNeutral())
-            return;
-
-        _notifTimer -= Time.fixedDeltaTime;
-        if (_notifTimer > 0f)
-            return;
-
-        var radius = OptionGroupSingleton<VanisherOptions>.Instance.DetectionRadius.Value;
-        var dist = Vector2.Distance(local.GetTruePosition(), Player.GetTruePosition());
-
-        if (dist <= radius)
-        {
-            _notifTimer = OptionGroupSingleton<VanisherOptions>.Instance.NotificationCooldown.Value;
-
-            var notif = Helpers.CreateAndShowNotification(
-                "You are being watched.....",
-                Color.white,
-                new Vector3(0f, 1f, -20f),
-                spr: TouExtensionIcons.VanisherRoleIcon.LoadAsset());
-            notif.AdjustNotification();
-        }
     }
 
     public override void OnDeactivate()

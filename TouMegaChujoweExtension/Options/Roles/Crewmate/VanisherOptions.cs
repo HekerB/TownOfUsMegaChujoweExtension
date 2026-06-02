@@ -1,5 +1,4 @@
 using MiraAPI.GameOptions.Attributes;
-using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities;
 using TownOfUs.Modules.Localization;
@@ -18,19 +17,6 @@ public sealed class VanisherOptions : AbstractOptionGroup<VanisherRole>
 
     [ModdedNumberOption("ExtensionOptionVanisherMaxUses", 0f, 10f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float MaxVanishes { get; set; } = 0f;
-
-    [ModdedToggleOption("ExtensionOptionVanisherDetectionEnabled")]
-    public bool DetectionEnabled { get; set; } = false;
-
-    public ModdedNumberOption DetectionRadius { get; } = new("ExtensionOptionVanisherRadius", 5f, 1f, 15f, 0.5f, MiraNumberSuffixes.None)
-    {
-        Visible = () => OptionGroupSingleton<VanisherOptions>.Instance.DetectionEnabled
-    };
-
-    public ModdedNumberOption NotificationCooldown { get; } = new("ExtensionOptionVanisherNotifCooldown", 5f, 1f, 15f, 1f, MiraNumberSuffixes.Seconds)
-    {
-        Visible = () => OptionGroupSingleton<VanisherOptions>.Instance.DetectionEnabled
-    };
 }
 
 

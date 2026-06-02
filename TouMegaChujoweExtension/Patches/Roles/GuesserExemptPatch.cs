@@ -9,6 +9,7 @@ using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TownOfUs.Utilities;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
+using TouMegaChujoweExtension.Modules;
 
 namespace TouMegaChujoweExtension.Patches.Roles;
 
@@ -58,6 +59,12 @@ public static class GuesserExemptPatch
 
         var targetPlayer = MiscUtils.PlayerById(targetId);
         if (guesser != null && targetPlayer != null && AreOnSameJackalTeam(guesser, targetPlayer))
+        {
+            __result = true;
+            return;
+        }
+
+        if (guesser != null && targetPlayer != null && ApocalypseUtils.AreAllied(guesser, targetPlayer))
         {
             __result = true;
         }

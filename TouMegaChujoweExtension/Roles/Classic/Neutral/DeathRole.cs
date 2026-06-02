@@ -121,7 +121,16 @@ public sealed class DeathRole(IntPtr cppPtr)
         return aliveCount <= 2;
     }
 
-    public override bool DidWin(GameOverReason gameOverReason) => WinConditionMet();
+    public override bool DidWin(GameOverReason gameOverReason)
+    {
+        if (gameOverReason == MiraAPI.GameEnd.CustomGameOver.GameOverReason<GameOver.ExtensionNeutralGameOver>() &&
+            TouMegaChujoweExtension.Patches.WinConditions.NeutralExtensionWinCondition.IsApocalypseAllianceWon)
+        {
+            return true;
+        }
+
+        return WinConditionMet();
+    }
 
     public override bool CanUse(IUsable usable)
     {

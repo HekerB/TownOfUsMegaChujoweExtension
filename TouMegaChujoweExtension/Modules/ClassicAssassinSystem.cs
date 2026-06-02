@@ -709,6 +709,9 @@ public static class ClassicAssassinSystem
         if (AreOnSameJackalTeam(assassin.Player, player))
             return true;
 
+        if (ApocalypseUtils.AreAllied(assassin.Player, player))
+            return true;
+
         if (player.HasModifier<TownOfUs.Modifiers.Crewmate.JailedModifier>())
             return true;
 
@@ -732,6 +735,7 @@ public static class ClassicAssassinSystem
                (player != null && IsForestallerRevealed(player)) ||
                (vigilante.Player.IsLover() && player?.IsLover() == true) ||
                (player != null && AreOnSameJackalTeam(vigilante.Player, player)) ||
+               (player != null && ApocalypseUtils.AreAllied(vigilante.Player, player)) ||
                (player != null && player.TryGetModifier<ChildModifier>(out var child) && !child.IsAdult);
     }
 
@@ -749,6 +753,7 @@ public static class ClassicAssassinSystem
                (player != null && IsForestallerRevealed(player)) ||
                (doomsayer.Player.IsLover() && player?.IsLover() == true) ||
                (player != null && AreOnSameJackalTeam(doomsayer.Player, player)) ||
+               (player != null && ApocalypseUtils.AreAllied(doomsayer.Player, player)) ||
                (player != null && player.TryGetModifier<ChildModifier>(out var child) && !child.IsAdult);
     }
 

@@ -118,7 +118,11 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
 
     public bool WinConditionMet() => false;
 
-    public override bool DidWin(GameOverReason gameOverReason) => false;
+    public override bool DidWin(GameOverReason gameOverReason)
+    {
+        return gameOverReason == MiraAPI.GameEnd.CustomGameOver.GameOverReason<GameOver.ExtensionNeutralGameOver>() &&
+               TouMegaChujoweExtension.Patches.WinConditions.NeutralExtensionWinCondition.IsApocalypseAllianceWon;
+    }
 
     public override bool CanUse(IUsable usable)
     {

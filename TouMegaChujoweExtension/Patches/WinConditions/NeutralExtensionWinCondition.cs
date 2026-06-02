@@ -15,13 +15,14 @@ using TouMegaChujoweExtension.GameOver;
 using MiraAPI.Modifiers;
 using UnityEngine;
 using TownOfUs.Roles.Neutral;
+using TouMegaChujoweExtension.Modules;
 
 namespace TouMegaChujoweExtension.Patches.WinConditions;
 
 public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionWithBlocking
 {
     private bool _bhGameOverTriggered;
-    public static bool IsBakerFaminePlagueAllianceWon { get; private set; }
+    public static bool IsApocalypseAllianceWon { get; private set; }
 
     public int Priority => 4;
     public bool BlocksOthers => true;
@@ -30,7 +31,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
     {
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost) return false;
 
-        IsBakerFaminePlagueAllianceWon = false;
+        IsApocalypseAllianceWon = false;
 
         MarkJokerWinWithWinners();
 
@@ -52,13 +53,19 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         // 6. Lawyer (Original Priority 12)
         if (IsLawyerWinMet()) return true;
 
-        // 7. Baker/Famine + Plaguebearer/Pestilence alliance
-        if (IsBakerFaminePlagueAllianceWinMet()) return true;
+        // 7. Apocalypse alliance
+        if (IsApocalypseAllianceWinMet()) return true;
 
         // 8. Famine
         if (IsFamineWinMet()) return true;
 
-        // 9. Jackal (Original Priority 15)
+        // 9. Death
+        if (IsDeathWinMet()) return true;
+
+        // 10. Berserker
+        if (IsBerserkerWinMet()) return true;
+
+        // 11. Jackal (Original Priority 15)
         if (IsJackalWinMet()) return true;
 
         return false;
@@ -126,13 +133,13 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         // 6. Lawyer
         TriggerLawyerWin();
 
-        // 7. Baker/Famine + Plaguebearer/Pestilence alliance
-        if (IsBakerFaminePlagueAllianceWinMet())
+        // 7. Apocalypse alliance
+        if (IsApocalypseAllianceWinMet())
         {
-            var winners = GetBakerFaminePlagueAllianceWinners();
+            var winners = GetApocalypseAllianceWinners();
             if (winners.Length > 0)
             {
-                IsBakerFaminePlagueAllianceWon = true;
+                IsApocalypseAllianceWon = true;
                 CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners);
                 return;
             }
@@ -149,7 +156,33 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
         }
 
-        // 9. Jackal
+        // 9. Death
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.HasDied() || player.Data?.Role is not DeathRole deathRole) continue;
+            if (deathRole.WinConditionMet() && player.Data != null)
+            {
+                CustomGameOver.Trigger<ExtensionNeutralGameOver>([player.Data]);
+                return;
+            }
+        }
+
+        // 10. Berserker
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.HasDied() || player.Data?.Role is not BerserkerRole berserkerRole) continue;
+            if (berserkerRole.WinConditionMet() && player.Data != null)
+            {
+                var winners = PlayerControl.AllPlayerControls.ToArray()
+                    .Where(p => p != null && !p.HasDied() && p.Data?.Role is BerserkerRole && p.Data != null)
+                    .Select(p => p.Data)
+                    .ToArray();
+                CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners);
+                return;
+            }
+        }
+
+        // 11. Jackal
         var winningJackalId = GetWinningJackalId();
         if (winningJackalId.HasValue)
         {
@@ -265,9 +298,31 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         return false;
     }
 
-    private static bool IsBakerFaminePlagueAllianceWinMet()
+    private static bool IsBerserkerWinMet()
     {
-        if (!OptionGroupSingleton<ExtensionGameMechanicOptions>.Instance.BakerFaminePlagueAlliance)
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.HasDied() || player.Data?.Role is not BerserkerRole berserkerRole) continue;
+            if (berserkerRole.WinConditionMet()) return true;
+        }
+
+        return false;
+    }
+
+    private static bool IsDeathWinMet()
+    {
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.HasDied() || player.Data?.Role is not DeathRole deathRole) continue;
+            if (deathRole.WinConditionMet()) return true;
+        }
+
+        return false;
+    }
+
+    private static bool IsApocalypseAllianceWinMet()
+    {
+        if (!OptionGroupSingleton<ExtensionGameMechanicOptions>.Instance.ApocalypseWinsTogether)
         {
             return false;
         }
@@ -278,29 +333,15 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             return false;
         }
 
-        var hasBakerTeam = alivePlayers.Any(IsBakerFamineAllianceRole);
-        var hasPlagueTeam = alivePlayers.Any(IsPlagueAllianceRole);
-        return hasBakerTeam &&
-               hasPlagueTeam &&
-               alivePlayers.All(x => IsBakerFamineAllianceRole(x) || IsPlagueAllianceRole(x));
+        return alivePlayers.All(ApocalypseUtils.IsApocalypsePlayer);
     }
 
-    private static NetworkedPlayerInfo[] GetBakerFaminePlagueAllianceWinners()
+    private static NetworkedPlayerInfo[] GetApocalypseAllianceWinners()
     {
         return [.. Helpers.GetAlivePlayers()
-            .Where(x => x != null && (IsBakerFamineAllianceRole(x) || IsPlagueAllianceRole(x)))
+            .Where(ApocalypseUtils.IsApocalypsePlayer)
             .Select(x => x.Data)
             .Where(x => x != null)];
-    }
-
-    private static bool IsBakerFamineAllianceRole(PlayerControl player)
-    {
-        return player?.Data?.Role is BakerRole or FamineRole;
-    }
-
-    private static bool IsPlagueAllianceRole(PlayerControl player)
-    {
-        return player?.Data?.Role is PlaguebearerRole or PestilenceRole;
     }
 
     private static bool IsLawyerWinMet()
@@ -441,7 +482,7 @@ public static class PestilenceAllianceDidWinPatch
     public static bool Prefix(PestilenceRole __instance, GameOverReason gameOverReason, ref bool __result)
     {
         if (gameOverReason == CustomGameOver.GameOverReason<ExtensionNeutralGameOver>() &&
-            NeutralExtensionWinCondition.IsBakerFaminePlagueAllianceWon)
+            NeutralExtensionWinCondition.IsApocalypseAllianceWon)
         {
             __result = true;
             return false;
@@ -457,7 +498,7 @@ public static class PlaguebearerAllianceDidWinPatch
     public static bool Prefix(PlaguebearerRole __instance, GameOverReason gameOverReason, ref bool __result)
     {
         if (gameOverReason == CustomGameOver.GameOverReason<ExtensionNeutralGameOver>() &&
-            NeutralExtensionWinCondition.IsBakerFaminePlagueAllianceWon)
+            NeutralExtensionWinCondition.IsApocalypseAllianceWon)
         {
             __result = true;
             return false;

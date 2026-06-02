@@ -55,6 +55,11 @@ public sealed class FamineStarveButton : TownOfUsRoleButton<FamineRole, PlayerCo
             return false;
         }
 
+        if (ApocalypseUtils.AreAllied(PlayerControl.LocalPlayer, target))
+        {
+            return false;
+        }
+
         if (!Role.CanStarveAnyone && !target.HasModifier<BakerBreadModifier>())
         {
             return false;

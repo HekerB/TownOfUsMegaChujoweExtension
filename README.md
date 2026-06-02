@@ -284,7 +284,7 @@ Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-C
 
 > **Huge shoutout to Atony**, creator of Town of Us: Mira. A large part of this mod's art comes from his work, Town of Us: Mira builds, and resources shared around the TOU Mira community.
 
-- **[Asterisken [スター]](https://github.com/aasteriisken)** ([Discord](https://discord.com/users/1220041311323684955)) - Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful, Objection Button, Bodyguard Guard button, Berserker role icon, and War role icon
+- **[Asterisken [スター]](https://github.com/aasteriisken)** ([Discord](https://discord.com/users/1220041311323684955)) - Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful, Objection Button, Bodyguard Guard button, Soul Collector role icon, Berserker role icon, and War role icon
 - **Atony / Town of Us: Mira / Town of Us Discord** - Serial Killer, Kamikaze, Loner, Joker, Burrower, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, Detonator, and Death role icons; Shifter role icon and button; Poisoner role icon and buttons; Drunk modifier icon; Jackal and Sidekicks incons.
 - **Atony / [Town Of Us Fusion](https://github.com/AtonyGit/Town-Of-Us-Fusion)** - Vampire Hunter stake button
 - **CraftR / Town of Us Discord** - Pirate role icon and Pirate Duel button; Baker role icon and bread assets; Pope role icon and Sanctify button
@@ -316,6 +316,7 @@ Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-C
 - **[Town of Us WYGON](https://github.com/wygon/Town-Of-Us-WYGON)** - Falcon and Kamikaze role concepts
 - **Sidemen (YouTube)** - RC-XD, Detonator, Doctor, Astral, Speedy, Sniper, Poisoner, and Loner role concepts
 - **[TownOfUsMiraDivaniModsAddOn](https://github.com/DivaniNL/TownOfUsMiraDivaniModsAddOn)** - Portalmaker role concept
+- **[Town-Of-Us-Mira-JK](https://github.com/JoaKing08/Town-Of-Us-Mira-JK)** - Berserker and War Apocalypse role concept
 - **Stellar Roles** - Role ideas and ability references
 - **[All Of Us](https://github.com/All-Of-Us-Mods)** - Death Note concept and recreated assets
 

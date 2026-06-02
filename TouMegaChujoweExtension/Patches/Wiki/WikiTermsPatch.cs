@@ -64,26 +64,19 @@ public static class WikiTermsPatch
                 (object)TouRoleIcons.Traitor);
             addMethod.Invoke(termsList, [draftModeTerm]);
 
-            // Page 4: Draft Factions
+            // Page 4: Apocalypse
+            var apocalypseTerm = Activator.CreateInstance(termType,
+                "TOUMCETermsApocalypseTitle",
+                "TOUMCETermsApocalypseInfo",
+                (object)TouRoleIcons.Pestilence);
+            addMethod.Invoke(termsList, [apocalypseTerm]);
+
+            // Page 5: Draft Factions
             var draftFactionsTerm = Activator.CreateInstance(termType,
                 "TOUMCETermsDraftFactionsTitle",
                 "TOUMCETermsDraftFactionsInfo",
                 (object)TouRoleIcons.Jackal);
             addMethod.Invoke(termsList, [draftFactionsTerm]);
-
-            // Page 5: Infiltrator
-            var infiltratorTerm = Activator.CreateInstance(termType,
-                "TOUMCETermsInfiltratorTitle",
-                "TOUMCETermsInfiltratorInfo",
-                (object)TouRoleIcons.Jackal);
-            addMethod.Invoke(termsList, [infiltratorTerm]);
-
-            // Page 6: Vampire Sabotage
-            var vampireSabotageTerm = Activator.CreateInstance(termType,
-                "TOUMCETermsVampireSabotageTitle",
-                "TOUMCETermsVampireSabotageInfo",
-                (object)TouRoleIcons.Vampire);
-            addMethod.Invoke(termsList, [vampireSabotageTerm]);
 
             Info("TOUMCE wiki terms added successfully");
         }

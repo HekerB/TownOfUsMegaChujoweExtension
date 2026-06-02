@@ -6,6 +6,7 @@ using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Modifiers.Neutral;
+using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TownOfUs.Assets;
@@ -49,6 +50,11 @@ public sealed class SoulCollectorReapButton : TownOfUsRoleButton<SoulCollectorRo
         if (target.TryGetModifier<SoulReapedModifier>(out var existing) &&
             existing.SoulCollectorId == local.PlayerId &&
             !existing.IsExpired())
+        {
+            return false;
+        }
+
+        if (ApocalypseUtils.AreAllied(local, target))
         {
             return false;
         }

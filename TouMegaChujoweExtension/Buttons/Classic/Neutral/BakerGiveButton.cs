@@ -9,6 +9,7 @@ using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TouMegaChujoweExtension.Modifiers.Neutral;
+using TouMegaChujoweExtension.Modules;
 using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
@@ -59,6 +60,11 @@ public sealed class BakerGiveButton : TownOfUsRoleButton<BakerRole, PlayerContro
         }
 
         if (target.HasModifier<BakerBreadModifier>())
+        {
+            return false;
+        }
+
+        if (ApocalypseUtils.AreAllied(PlayerControl.LocalPlayer, target))
         {
             return false;
         }

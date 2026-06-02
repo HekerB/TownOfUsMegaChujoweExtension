@@ -42,6 +42,11 @@ public sealed class DeathKillButton : TownOfUsRoleButton<DeathRole, PlayerContro
             return false;
         }
 
+        if (ApocalypseUtils.AreAllied(local, target))
+        {
+            return false;
+        }
+
         var distance = Vector2.Distance(local.GetTruePosition(), target.GetTruePosition());
         return distance <= Distance;
     }
