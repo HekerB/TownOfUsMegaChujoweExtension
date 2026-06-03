@@ -94,7 +94,7 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
     {
         base.OnDeactivate();
 
-        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost || GameManager.Instance == null) return;
+        if (AmongUsClient.Instance == null || GameManager.Instance == null) return;
 
         var jackalPlayer = PlayerControl.AllPlayerControls.ToArray()
             .FirstOrDefault(p => p != null && p.Pointer != IntPtr.Zero && p.PlayerId == JackalId);

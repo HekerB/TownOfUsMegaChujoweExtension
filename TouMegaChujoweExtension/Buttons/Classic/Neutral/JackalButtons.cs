@@ -99,7 +99,7 @@ public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, Player
         if (local == null) return false;
 
         return PlayerControl.AllPlayerControls.ToArray()
-            .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead &&
+            .Any(p => p != null && p.Pointer != IntPtr.Zero && !p.HasDied() &&
                  p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == local.PlayerId);
     }
 }

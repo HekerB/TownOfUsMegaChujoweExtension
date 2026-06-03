@@ -1237,6 +1237,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="SidekickTabDescription">Zostales zrekrutowany przez Infiltratora.\%nl\%Chron go i wygraj razem z jego druzyna.</string>
   <string name="SidekickWikiDescription">Chroń Infiltratora i pomóż mu wyeliminować inne frakcje. Jesteś połączony życiem z drugim Rekrutem.</string>
   <string name="DiedToJackal">Zabity przez Infiltratora</string>
+  <string name="DiedToJackalDeath">Zabity przez Infiltratora</string>
   <string name="ExtensionSidekickJackalEliminatedDeathReason">Infiltrator wyeliminowany</string>
 
   <string name="ExtensionRoleSidekickRecruitTeam">Rekruci</string>

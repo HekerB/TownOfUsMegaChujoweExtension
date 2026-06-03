@@ -93,7 +93,7 @@ public static class JackalMechanicsPatch
             if (victim.GetRole<JackalRole>() != null)
             {
                 var sidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
-                    .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == victim.PlayerId);
+                    .Any(p => p != null && p.Pointer != IntPtr.Zero && !p.HasDied() && p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == victim.PlayerId);
 
                 if (sidekicksAlive && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
                 {
@@ -131,7 +131,7 @@ public static class JackalMechanicsPatch
             if (killer.GetRole<JackalRole>() != null)
             {
                 var killerSidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
-                    .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == killer.PlayerId);
+                    .Any(p => p != null && p.Pointer != IntPtr.Zero && !p.HasDied() && p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == killer.PlayerId);
 
                 if (killerSidekicksAlive) return true;
             }
@@ -164,18 +164,18 @@ public static class JackalMechanicsPatch
         if (victim.TryGetModifier<SidekickModifier>(out var mod) && mod != null)
         {
             var jackal = MiscUtils.PlayerById(mod.JackalId);
-            if (jackal != null && jackal.Data != null && !jackal.Data.IsDead)
+            if (jackal != null && !jackal.HasDied())
             {
                 var jackalRole = jackal.GetRole<JackalRole>();
                 jackalRole?.OnRecruitDie();
             }
         }
-        if (victim.GetRoleWhenAlive() is JackalRole && AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
+        if (victim.GetRoleWhenAlive() is JackalRole && AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
         {
             var jackalRoleName = (victim.GetRoleWhenAlive() as ITownOfUsRole)?.RoleName ?? "Jackal";
             foreach (var player in PlayerControl.AllPlayerControls.ToArray())
             {
-                if (player != null && player.Data != null && !player.Data.IsDead && player.TryGetModifier<SidekickModifier>(out var sMod) && sMod != null && sMod.JackalId == victim.PlayerId)
+                if (player != null && !player.HasDied() && player.TryGetModifier<SidekickModifier>(out var sMod) && sMod != null && sMod.JackalId == victim.PlayerId)
                 {
                     player.RpcCustomMurder(player, showKillAnim: false);
                     DeathHandlerModifier.UpdateDeathHandlerImmediate(
@@ -198,7 +198,7 @@ public static class JackalMechanicsPatch
         if (@event.Player.TryGetModifier<SidekickModifier>(out var mod) && mod != null)
         {
             var jackal = MiscUtils.PlayerById(mod.JackalId);
-            if (jackal != null && jackal.Data != null && !jackal.Data.IsDead)
+            if (jackal != null && !jackal.HasDied())
             {
                 jackal.GetRole<JackalRole>()?.OnRecruitDie();
             }
@@ -235,7 +235,7 @@ public static class JackalMechanicsPatch
         }
 
         var sidekicksAlive = teamJackalId != 255 && PlayerControl.AllPlayerControls.ToArray()
-            .Any(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.PlayerId != __instance.PlayerId &&
+            .Any(p => p != null && p.Pointer != IntPtr.Zero && !p.HasDied() && p.PlayerId != __instance.PlayerId &&
                       (p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == teamJackalId ||
                        (JackalStartPatch.PendingAssignments.TryGetValue(p.PlayerId, out var jId) && jId == teamJackalId)));
 
@@ -264,12 +264,22 @@ public static class JackalMechanicsPatch
         var victim = @event.ExileController.initData.networkedPlayer.Object;
         if (victim == null) return;
 
-        if (victim.GetRoleWhenAlive() is JackalRole && AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
+        if (victim.AmOwner && victim.GetRoleWhenAlive() is JackalRole)
+        {
+            var killButton = MiraAPI.Hud.CustomButtonSingleton<JackalKillButton>.Instance;
+            if (killButton != null && killButton.Button != null && killButton.Button.gameObject != null)
+            {
+                UnityEngine.Object.Destroy(killButton.Button.gameObject);
+                UnityEngine.Debug.Log("[TOUMCE] Ejection event: Destroyed JackalKillButton.Button.gameObject for local Jackal.");
+            }
+        }
+
+        if (victim.GetRoleWhenAlive() is JackalRole && AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
         {
             var jackalRoleName = (victim.GetRoleWhenAlive() as ITownOfUsRole)?.RoleName ?? "Jackal";
             foreach (var recruit in PlayerControl.AllPlayerControls.ToArray())
             {
-                if (recruit != null && recruit.Data != null && !recruit.Data.IsDead &&
+                if (recruit != null && !recruit.HasDied() &&
                     recruit.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == victim.PlayerId)
                 {
                     MiraAPI.Networking.CustomMurderRpc.RpcCustomMurder(recruit, recruit, MeetingCheck.OutsideMeeting, showKillAnim: false);
@@ -287,7 +297,7 @@ public static class JackalMechanicsPatch
         if (victim.TryGetModifier<SidekickModifier>(out var mod) && mod != null)
         {
             var jackal = MiscUtils.PlayerById(mod.JackalId);
-            if (jackal != null && jackal.Data != null && !jackal.Data.IsDead)
+            if (jackal != null && !jackal.HasDied())
             {
                 jackal.GetRole<JackalRole>()?.OnRecruitDie();
             }

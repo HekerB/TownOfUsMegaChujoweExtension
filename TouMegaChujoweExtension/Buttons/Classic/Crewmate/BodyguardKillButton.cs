@@ -1,3 +1,5 @@
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
@@ -5,13 +7,14 @@ using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Assets;
 using TownOfUs.Buttons;
+using TownOfUs.Events;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Crewmate;
 
-public sealed class BodyguardKillButton : TownOfUsRoleButton<BodyguardRole, PlayerControl>
+public sealed class BodyguardKillButton : TownOfUsRoleButton<BodyguardRole, PlayerControl>, IKillButton
 {
     public override string Name => TouLocale.GetParsed("ExtensionRoleBodyguardKill", "Kill");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
@@ -72,6 +75,18 @@ public sealed class BodyguardKillButton : TownOfUsRoleButton<BodyguardRole, Play
             var target = GetTarget();
             if (target != null)
             {
+                var player = PlayerControl.LocalPlayer;
+                if (player != null)
+                {
+                    var beforeMurderEvent = new BeforeMurderEvent(player, target, MeetingCheck.OutsideMeeting);
+                    MiraEventManager.InvokeEvent(beforeMurderEvent);
+
+                    if (beforeMurderEvent.IsCancelled)
+                    {
+                        return;
+                    }
+                }
+
                 Target = target;
                 OnClick();
                 return;

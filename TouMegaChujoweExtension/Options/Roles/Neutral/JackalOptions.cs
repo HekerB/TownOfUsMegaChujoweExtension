@@ -27,6 +27,4 @@ public sealed class JackalOptions : AbstractOptionGroup<JackalRole>
     [ModdedToggleOption("ExtensionOptionJackalNotifySidekickDeath")]
     public bool NotifySidekickDeath { get; set; } = true;
 
-    [ModdedToggleOption("ExtensionOptionJackalLifelinkDeath")]
-    public bool LifelinkDeath { get; set; } = true;
 }

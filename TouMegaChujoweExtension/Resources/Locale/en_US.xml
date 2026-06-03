@@ -1235,6 +1235,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="SidekickTabDescription">You were recruited by the Infiltrator.\%nl\%Protect them and win with their team.</string>
   <string name="SidekickWikiDescription">Protect the Infiltrator and help them eliminate other factions. You are lifelinked to another Recruit.</string>
   <string name="DiedToJackal">Assassinated by Infiltrator</string>
+  <string name="DiedToJackalDeath">Assassinated by Infiltrator</string>
   <string name="ExtensionSidekickJackalEliminatedDeathReason">Infiltrator eliminated</string>
 
   <string name="ExtensionRoleSidekickRecruitTeam">Recruits</string>

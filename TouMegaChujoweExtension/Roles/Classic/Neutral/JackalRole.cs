@@ -41,11 +41,11 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 {
     public DoomableType DoomHintType => DoomableType.Trickster;
 
-    public bool ContinuesGame => !Player.HasDied();
+    public bool ContinuesGame => Player != null && Player.Pointer != IntPtr.Zero && !Player.HasDied();
 
     public bool WinConditionMet()
     {
-        if (Player.HasDied()) return false;
+        if (Player == null || Player.Pointer == IntPtr.Zero || Player.HasDied()) return false;
 
         var alivePlayers = Helpers.GetAlivePlayers();
         var aliveCount = alivePlayers.Count;
@@ -63,6 +63,8 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
+        if (Player == null || Player.Pointer == IntPtr.Zero) return false;
+
         if (gameOverReason == CustomGameOver.GameOverReason<ExtensionNeutralGameOver>())
         {
             return NeutralExtensionWinCondition.GetWinningJackalId() == Player.PlayerId;
@@ -138,6 +140,15 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+        if (targetPlayer != null && targetPlayer.AmOwner)
+        {
+            var killButton = MiraAPI.Hud.CustomButtonSingleton<JackalKillButton>.Instance;
+            if (killButton != null && killButton.Button != null && killButton.Button.gameObject != null)
+            {
+                UnityEngine.Object.Destroy(killButton.Button.gameObject);
+                UnityEngine.Debug.Log("[TOUMCE] Deinitialize: Destroyed JackalKillButton.Button.gameObject for local Jackal.");
+            }
+        }
     }
 
     public bool KillAbilityAlertShown { get; set; }
@@ -157,10 +168,10 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         }
 
         var sidekicks = PlayerControl.AllPlayerControls.ToArray()
-            .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == Player.PlayerId)
+            .Where(p => p != null && p.Pointer != IntPtr.Zero && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == Player.PlayerId)
             .ToList();
 
-        var remainingSidekicks = sidekicks.Count(p => !p.Data.IsDead);
+        var remainingSidekicks = sidekicks.Count(p => !p.HasDied());
 
         UnityEngine.Debug.Log($"[TOUMCE] Jackal {Player.Data.PlayerName} sidekick died. Remaining: {remainingSidekicks}");
 
@@ -253,11 +264,11 @@ public static class JackalDeathLifelinkPatch
     {
         if (__instance == null || !AmongUsClient.Instance.AmHost) return;
 
-        if (__instance.GetRoleWhenAlive() is JackalRole && OptionGroupSingleton<JackalOptions>.Instance.LifelinkDeath)
+        if (__instance.GetRoleWhenAlive() is JackalRole)
         {
             var jackalRoleName = (__instance.GetRoleWhenAlive() as ITownOfUsRole)?.RoleName ?? "Jackal";
             var sidekicks = PlayerControl.AllPlayerControls.ToArray()
-                .Where(p => p != null && p.Pointer != IntPtr.Zero && p.Data != null && !p.Data.IsDead && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == __instance.PlayerId)
+                .Where(p => p != null && p.Pointer != IntPtr.Zero && !p.HasDied() && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == __instance.PlayerId)
                 .ToList();
 
             foreach (var sk in sidekicks)
@@ -265,7 +276,7 @@ public static class JackalDeathLifelinkPatch
                 sk.RpcCustomMurder(sk, showKillAnim: false);
                 DeathHandlerModifier.UpdateDeathHandlerImmediate(
                     sk,
-                    causeOfDeath: TouLocale.Get("DiedToJackalDeath"),
+                    causeOfDeath: TouLocale.Get("ExtensionSidekickJackalEliminatedDeathReason"),
                     roundOfDeath: TownOfUs.Events.DeathEventHandlers.CurrentRound,
                     diedThisRound: DeathHandlerOverride.SetTrue,
                     killedBy: jackalRoleName,

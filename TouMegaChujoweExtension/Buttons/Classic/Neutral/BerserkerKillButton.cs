@@ -20,6 +20,7 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 public sealed class BerserkerKillButton : TownOfUsRoleButton<BerserkerRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     private bool _lastKillSucceeded;
+    private bool _warStateRefreshed;
 
     public override string Name => TranslationController.Instance.GetStringWithDefault(StringNames.KillLabel, "Kill");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
@@ -118,7 +119,11 @@ public sealed class BerserkerKillButton : TownOfUsRoleButton<BerserkerRole, Play
             return;
         }
 
-        RefreshWarState();
+        if (!_warStateRefreshed)
+        {
+            _warStateRefreshed = true;
+            RefreshWarState();
+        }
 
         if (Role.WarSpreeUntil > 0f && Time.time <= Role.WarSpreeUntil && Timer <= 0f)
         {
