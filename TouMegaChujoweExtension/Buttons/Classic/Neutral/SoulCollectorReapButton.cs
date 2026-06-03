@@ -54,11 +54,6 @@ public sealed class SoulCollectorReapButton : TownOfUsRoleButton<SoulCollectorRo
             return false;
         }
 
-        if (ApocalypseUtils.AreAllied(local, target))
-        {
-            return false;
-        }
-
         if (SoulCollectorRole.GetActiveMarkCount(local.PlayerId) >= (int)OptionGroupSingleton<SoulCollectorOptions>.Instance.MaxMarks)
         {
             return false;

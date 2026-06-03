@@ -1117,7 +1117,7 @@
 • By default, all players draft from the complete pool of enabled roles for their side (Crewmate, Impostor, or Neutral). Restrictive categories have been removed for a more flexible experience.</string>
 
   <string name="TOUMCETermsApocalypseTitle">Apocalypse</string>
-  <string name="TOUMCETermsApocalypseInfo">&lt;b&gt;Apocalypse&lt;/b&gt; roles are horsemen-style neutral threats: &lt;color=#C4F076&gt;Plaguebearer&lt;/color&gt;, &lt;color=#B4D7A8&gt;Pestilence&lt;/color&gt;, &lt;color=#E59A3B&gt;Baker&lt;/color&gt;, &lt;color=#023020&gt;Famine&lt;/color&gt;, &lt;color=#B9182E&gt;Soul Collector&lt;/color&gt;, &lt;color=#91DDB2&gt;Death&lt;/color&gt;, &lt;color=#B80F20&gt;Berserker&lt;/color&gt;, and &lt;color=#FFFFFF&gt;War&lt;/color&gt;. If &lt;b&gt;Apocalypse Wins Together&lt;/b&gt; is enabled, they share victory, cannot guess each other, may reveal each other's roles, and can use Apocalypse meeting chat depending on lobby settings.</string>
+  <string name="TOUMCETermsApocalypseInfo">&lt;b&gt;Apocalypse&lt;/b&gt; roles are horsemen-style neutral threats: &lt;color=#C4F076&gt;Plaguebearer&lt;/color&gt;, &lt;color=#B4D7A8&gt;Pestilence&lt;/color&gt;, &lt;color=#E59A3B&gt;Baker&lt;/color&gt;, &lt;color=#023020&gt;Famine&lt;/color&gt;, &lt;color=#99FFCC&gt;Soul Collector&lt;/color&gt;, &lt;color=#202020&gt;Death&lt;/color&gt;, &lt;color=#BE1020&gt;Berserker&lt;/color&gt;, and &lt;color=#5E3929&gt;War&lt;/color&gt;. If &lt;b&gt;Apocalypse Wins Together&lt;/b&gt; is enabled, they share victory, cannot guess each other, and reveal each other's roles. Apocalypse meeting chat is controlled in General settings.</string>
 
   <!-- TOUMCE Wiki Terms - Draft Factions -->
   <string name="TOUMCETermsDraftFactionsTitle">Draft Factions</string>
@@ -1226,8 +1226,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionGeneralJackalChatDisplayName">Recruits Private Chat</string>
   <string name="ExtensionGameMechanicOptionsGroupName">Game Mechanics</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Recruits See Each Other's Role</string>
-  <string name="ExtensionOptionGameMechanicApocalypseMeetingChat">Apocalypse Meeting Chat</string>
-  <string name="ExtensionOptionGameMechanicApocalypseRolesKnowEachOther">Apocalypse Roles See Each Other</string>
+  <string name="ExtensionOptionGeneralApocalypseMeetingChat">Apocalypse Meeting Chat</string>
   <string name="ExtensionOptionGameMechanicApocalypseWinsTogether">Apocalypse Wins Together</string>
 
   <string name="Sidekick">Recruit</string>
@@ -1497,9 +1496,9 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionBerserkerWins">Wins</string>
   <string name="ExtensionDeathWins">Wins</string>
   <string name="ExtensionRoleBerserker">Berserker</string>
-  <string name="ExtensionRoleBerserkerIntroBlurb">Let rage guide your axe.</string>
-  <string name="ExtensionRoleBerserkerTabDescription">Kill everyone and stand alone.</string>
-  <string name="ExtensionRoleBerserkerWikiDescription">The Berserker is a Neutral Killing role inspired by the Apocalypse concept. For now, Berserker has a standard kill button and wins by being the last killer standing.</string>
+  <string name="ExtensionRoleBerserkerIntroBlurb">Kill to shorten your cooldown and become War.</string>
+  <string name="ExtensionRoleBerserkerTabDescription">Kill players to reduce your cooldown. Collect enough kills to become &lt;color=#5E3929&gt;War&lt;/color&gt;.</string>
+  <string name="ExtensionRoleBerserkerWikiDescription">The &lt;color=#BE1020&gt;Berserker&lt;/color&gt; is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Each kill lowers your kill cooldown, helping you snowball into &lt;color=#5E3929&gt;War&lt;/color&gt;. Once transformed, you lose cooldown reduction and become an invincible horseman who can chain kills during a short spree window.</string>
   <string name="ExtensionRoleFamine">Famine</string>
   <string name="ExtensionRoleFamineIntroBlurb">Starve the fed</string>
   <string name="ExtensionRoleFamineTabDescription">Starve breaded players. Starved players die next meeting.</string>
@@ -1587,13 +1586,13 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
 
   <!-- Soul Collector / Death -->
   <string name="ExtensionRoleSoulCollector">Soul Collector</string>
-  <string name="ExtensionRoleSoulCollectorIntroBlurb">Collect Souls To Become \%color=#91DDB2FF\%Death\%/color\%.</string>
-  <string name="ExtensionRoleSoulCollectorTabDescription">Reap players to mark their souls and collect enough souls to become \%color=#91DDB2FF\%Death\%/color\%.</string>
-  <string name="ExtensionRoleSoulCollectorWikiDescription">The \%color=#CA0F20FF\%Soul Collector\%/color\% is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Use Reap to mark targets; if a marked target dies before the deadline, you gain a soul. Collect enough souls to become \%color=#91DDB2FF\%Death\%/color\%. Doctor and Cleric cleanse can remove Reap marks.</string>
+  <string name="ExtensionRoleSoulCollectorIntroBlurb">Collect Souls To Become \%color=#202020FF\%Death\%/color\%.</string>
+  <string name="ExtensionRoleSoulCollectorTabDescription">Reap players to mark their souls and collect enough souls to become \%color=#202020FF\%Death\%/color\%.</string>
+  <string name="ExtensionRoleSoulCollectorWikiDescription">The \%color=#99FFCCFF\%Soul Collector\%/color\% is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Use Reap to mark targets; if a marked target dies before the deadline, you gain a soul. Collect enough souls to become \%color=#202020FF\%Death\%/color\%. Doctor and Cleric cleanse can remove Reap marks.</string>
   <string name="ExtensionRoleSoulCollectorReap">Reap</string>
   <string name="ExtensionRoleSoulCollectorReapWikiDescription">Mark a nearby living player. If they die before the mark expires, gain one soul.</string>
   <string name="ExtensionRoleSoulCollectorMarkedDiedNotif">{0}'s soul has been collected!</string>
-  <string name="ExtensionRoleSoulCollectorDeathAnnouncement">The final soul has been claimed.\%nl\%\%color=#91DDB2FF\%Death\%/color\%, Horseman of the Apocalypse, has emerged!</string>
+  <string name="ExtensionRoleSoulCollectorDeathAnnouncement">The final soul has been claimed.\%nl\%\%color=#202020FF\%Death\%/color\%, Horseman of the Apocalypse, has emerged!</string>
   <string name="TouRolePestilenceAnnounceMessage">A deadly plague has consumed the Crew.\%nl\%\%role\%, Horseman of the Apocalypse, has emerged!</string>
   <string name="ExtensionRoleDeath">Death</string>
   <string name="ExtensionRoleDeathIntroBlurb">Bring the final end.</string>

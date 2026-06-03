@@ -1112,7 +1112,7 @@
 • Domyslnie wszyscy gracze wybieraja z pelnej puli dostepnych rol dla swojej strony (Zloga, Impostorzy, Neutralni). Nie ma juz restrykcyjnych kategorii.</string>
 
   <string name="TOUMCETermsApocalypseTitle">Apokalipsa</string>
-  <string name="TOUMCETermsApocalypseInfo">&lt;b&gt;Apokalipsa&lt;/b&gt; to neutralne role jezdzcow: &lt;color=#C4F076&gt;Plaguebearer&lt;/color&gt;, &lt;color=#B4D7A8&gt;Pestilence&lt;/color&gt;, &lt;color=#E59A3B&gt;Baker&lt;/color&gt;, &lt;color=#023020&gt;Famine&lt;/color&gt;, &lt;color=#B9182E&gt;Soul Collector&lt;/color&gt;, &lt;color=#91DDB2&gt;Death&lt;/color&gt;, &lt;color=#B80F20&gt;Berserker&lt;/color&gt; i &lt;color=#FFFFFF&gt;War&lt;/color&gt;. Jesli opcja &lt;b&gt;Apokalipsa wygrywa razem&lt;/b&gt; jest wlaczona, dziela wygrana, nie moga siebie zgadywac, moga widziec swoje role i uzywac czatu Apokalipsy zaleznie od ustawien lobby.</string>
+  <string name="TOUMCETermsApocalypseInfo">&lt;b&gt;Apokalipsa&lt;/b&gt; to neutralne role jezdzcow: &lt;color=#C4F076&gt;Plaguebearer&lt;/color&gt;, &lt;color=#B4D7A8&gt;Pestilence&lt;/color&gt;, &lt;color=#E59A3B&gt;Baker&lt;/color&gt;, &lt;color=#023020&gt;Famine&lt;/color&gt;, &lt;color=#99FFCC&gt;Soul Collector&lt;/color&gt;, &lt;color=#202020&gt;Death&lt;/color&gt;, &lt;color=#BE1020&gt;Berserker&lt;/color&gt; i &lt;color=#5E3929&gt;War&lt;/color&gt;. Jesli opcja &lt;b&gt;Apokalipsa wygrywa razem&lt;/b&gt; jest wlaczona, dziela wygrana, nie moga siebie zgadywac i widza swoje role. Czat Apokalipsy jest ustawiany w General.</string>
 
   <!-- TOUMCE Wiki Terms - Draft Factions -->
   <string name="TOUMCETermsDraftFactionsTitle">Frakcje Draftu</string>
@@ -1228,8 +1228,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionGeneralJackalChatDisplayName">Prywatny czat Rekrutow</string>
   <string name="ExtensionGameMechanicOptionsGroupName">Mechaniki gry</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Rekruci widza swoje role</string>
-  <string name="ExtensionOptionGameMechanicApocalypseMeetingChat">Czat Apokalipsy na spotkaniu</string>
-  <string name="ExtensionOptionGameMechanicApocalypseRolesKnowEachOther">Role Apokalipsy widza siebie</string>
+  <string name="ExtensionOptionGeneralApocalypseMeetingChat">Czat Apokalipsy na spotkaniu</string>
   <string name="ExtensionOptionGameMechanicApocalypseWinsTogether">Apokalipsa wygrywa razem</string>
 
   <string name="Sidekick">Rekrut</string>
@@ -1484,9 +1483,9 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionBerserkerWins">wygrywa</string>
   <string name="ExtensionDeathWins">wygrywa</string>
   <string name="ExtensionRoleBerserker">Berserker</string>
-  <string name="ExtensionRoleBerserkerIntroBlurb">Niech furia prowadzi twoj topor.</string>
-  <string name="ExtensionRoleBerserkerTabDescription">Zabij wszystkich i zostan sam.</string>
-  <string name="ExtensionRoleBerserkerWikiDescription">Berserker to rola Neutral Killing inspirowana konceptem Apocalypse. Na razie ma standardowy przycisk zabijania i wygrywa jako ostatni zabojca.</string>
+  <string name="ExtensionRoleBerserkerIntroBlurb">Zabijaj, skracaj cooldown i zostan War.</string>
+  <string name="ExtensionRoleBerserkerTabDescription">Zabijaj graczy, aby skracac cooldown. Zbierz dosc zabojstw, aby zostac &lt;color=#5E3929&gt;War&lt;/color&gt;.</string>
+  <string name="ExtensionRoleBerserkerWikiDescription">&lt;color=#BE1020&gt;Berserker&lt;/color&gt; to rola &lt;b&gt;Neutral Apocalypse&lt;/b&gt;. Kazde zabojstwo skraca cooldown zabijania, pomagajac ci rozpedzic sie do &lt;color=#5E3929&gt;War&lt;/color&gt;. Po przemianie tracisz redukcje cooldownu i stajesz sie niesmiertelnym jezdzcem, ktory moze laczyc zabojstwa w krotkim oknie furii.</string>
   <string name="ExtensionRoleFamine">Famine</string>
   <string name="ExtensionRoleFamineIntroBlurb">Zaglodz nakarmionych</string>
   <string name="ExtensionRoleFamineTabDescription">Glodz graczy z chlebem. Glodujacy umieraja na meetingu.</string>
@@ -1574,13 +1573,13 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
 
   <!-- Soul Collector / Death Concept -->
   <string name="ExtensionRoleSoulCollector">Soul Collector</string>
-  <string name="ExtensionRoleSoulCollectorIntroBlurb">Zbieraj Dusze, Aby Zostac \%color=#91DDB2FF\%Death\%/color\%.</string>
-  <string name="ExtensionRoleSoulCollectorTabDescription">Oznaczaj dusze Reapem i zbierz ich dosc, aby zostac \%color=#91DDB2FF\%Death\%/color\%.</string>
-  <string name="ExtensionRoleSoulCollectorWikiDescription">\%color=#CA0F20FF\%Soul Collector\%/color\% to rola &lt;b&gt;Neutral Apocalypse&lt;/b&gt;. Uzyj Reap, aby oznaczac cele; jesli oznaczony cel umrze przed limitem rund, dostajesz dusze. Zbierz dosc dusz, aby stac sie \%color=#91DDB2FF\%Death\%/color\%. Cleanse Doctora i Clerica moze usunac Reap.</string>
+  <string name="ExtensionRoleSoulCollectorIntroBlurb">Zbieraj Dusze, Aby Zostac \%color=#202020FF\%Death\%/color\%.</string>
+  <string name="ExtensionRoleSoulCollectorTabDescription">Oznaczaj dusze Reapem i zbierz ich dosc, aby zostac \%color=#202020FF\%Death\%/color\%.</string>
+  <string name="ExtensionRoleSoulCollectorWikiDescription">\%color=#99FFCCFF\%Soul Collector\%/color\% to rola &lt;b&gt;Neutral Apocalypse&lt;/b&gt;. Uzyj Reap, aby oznaczac cele; jesli oznaczony cel umrze przed limitem rund, dostajesz dusze. Zbierz dosc dusz, aby stac sie \%color=#202020FF\%Death\%/color\%. Cleanse Doctora i Clerica moze usunac Reap.</string>
   <string name="ExtensionRoleSoulCollectorReap">Reap</string>
   <string name="ExtensionRoleSoulCollectorReapWikiDescription">Oznacz pobliskiego zywego gracza. Jesli umrze przed wygasnieciem znaku, dostajesz jedna dusze.</string>
   <string name="ExtensionRoleSoulCollectorMarkedDiedNotif">Dusza gracza {0} zostala zebrana!</string>
-  <string name="ExtensionRoleSoulCollectorDeathAnnouncement">Ostatnia dusza zostala zebrana.\%nl\%\%color=#91DDB2FF\%Death\%/color\%, Jezdziec Apokalipsy, przybyl!</string>
+  <string name="ExtensionRoleSoulCollectorDeathAnnouncement">Ostatnia dusza zostala zebrana.\%nl\%\%color=#202020FF\%Death\%/color\%, Jezdziec Apokalipsy, przybyl!</string>
   <string name="TouRolePestilenceAnnounceMessage">Smiercionosna plaga pochlonela zaloge.\%nl\%\%role\%, Jezdziec Apokalipsy, przybyl!</string>
   <string name="ExtensionRoleDeath">Death</string>
   <string name="ExtensionRoleDeathIntroBlurb">Przynies ostateczny koniec.</string>

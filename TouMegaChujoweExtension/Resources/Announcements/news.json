@@ -462,6 +462,39 @@
         "\n\n\r<size=110%><b>ROLE LIST & WIKI CLEANUP</b></size>",
         "\n- <b>Guessing Categories</b> - Added missing city/category data for extension roles such as Infiltrator, Portalmaker, Speedy, and others."
       ]
+    },
+    {
+      "Date": "2026-06-02T18:00:00Z",
+      "Number": "200015",
+      "ShortTitle": "TOUMCE v1.2.2",
+      "SubTitle": "Apocalypse Update",
+      "Title": "TOU Mega Chujowe Extension v1.2.2",
+      "Text": [
+        "\r<link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> | <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> | <link=https://discord.gg/qaQZAmAVh4>Discord</link>",
+        "\n\n\r<b>Version 1.2.2 - Apocalypse Update</b>",
+        "\n\n\r<size=110%><b>NEW APOCALYPSE ROLE: SOUL COLLECTOR / DEATH</b></size>",
+        "\n- <b>Soul Collector</b> - Reap living players to mark their souls. If a marked target dies before the deadline, Soul Collector gains a soul.",
+        "\n- <b>Death Transformation</b> - Collect enough souls to become Death, Horseman of the Apocalypse.",
+        "\n- <b>Death</b> - Becomes invincible, gains impostor vision, kills without teleporting, and leaves dark unreportable bodies.",
+        "\n- <b>Cleanse Support</b> - Doctor and Cleric cleanse can remove Reap marks before the target dies.",
+        "\n- <b>Polish</b> - Added role-colored target names, tab counters, death alerts, transformation meeting announcements, custom death reason, and new extension icons.",
+        "\n\n\r<size=110%><b>NEW APOCALYPSE ROLE: BERSERKER / WAR</b></size>",
+        "\n- <b>Berserker</b> - A Neutral Apocalypse killer whose kill cooldown decreases after each kill.",
+        "\n- <b>War Transformation</b> - After enough kills, Berserker becomes War with configurable Instant War chance and transformation announcement.",
+        "\n- <b>War</b> - Becomes invincible, gains impostor vision, and can chain kills during a short spree window.",
+        "\n- <b>War Can Vent</b> - Added a simple toggle controlling whether War can use vents after transforming.",
+        "\n- <b>Balance</b> - Berserker is guessable before transforming, while War is protected like the other Horsemen.",
+        "\n\n\r<size=110%><b>NEUTRAL APOCALYPSE MECHANICS</b></size>",
+        "\n- <b>Apocalypse Wins Together</b> - Added a shared win condition for Plaguebearer/Pestilence, Baker/Famine, Soul Collector/Death, and Berserker/War.",
+        "\n- <b>Ally Rules</b> - Apocalypse roles can be treated as allies: they share victory, cannot guess each other, and their roles are revealed to each other when the shared win option is enabled.",
+        "\n- <b>Apocalypse Chat</b> - Added a dedicated meeting chat for Apocalypse roles, now controlled from General settings.",
+        "\n- <b>Friendly Targeting</b> - Apocalypse roles respect alliance rules for hostile actions when Apocalypse Wins Together is enabled.",
+        "\n- <b>Draft Terminology</b> - Updated Draft terminology to explain Neutral Apocalypse roles and their shared mechanics.",
+        "\n\n\r<size=110%><b>APOCALYPSE POLISH & FIXES</b></size>",
+        "\n- <b>Vision Rules</b> - Baker, Soul Collector, and Berserker no longer start with impostor vision, while Famine, Death, and War gain it after transforming.",
+        "\n- <b>Shield Rules</b> - Famine, Death, Berserker, and War interactions were checked against shield behavior for better consistency.",
+        "\n- <b>UI Polish</b> - Updated colors, icons, role descriptions, tab text, meeting alerts, and Apocalypse chat visuals."
+      ]
     }
   ]
 }

@@ -25,7 +25,7 @@ public static class ApocalypseTeamChatRegistration
             Priority = ApocalypseChatPatches.ChatPriority,
             IsChatAvailable = () =>
             {
-                if (!OptionGroupSingleton<ExtensionGameMechanicOptions>.Instance.ApocalypseMeetingChat || !MeetingHud.Instance)
+                if (!OptionGroupSingleton<ExtensionGeneralOptions>.Instance.ApocalypseMeetingChat || !MeetingHud.Instance)
                 {
                     return false;
                 }
@@ -35,8 +35,8 @@ public static class ApocalypseTeamChatRegistration
             },
             SendMessage = (sender, message) => ApocalypseChatPatches.RpcSendApocalypseChat(sender, message),
             GetDisplayText = () => TouLocale.Get("ExtensionApocalypseChatDisplayName", "Apocalypse Chat"),
-            DisplayTextColor = TouExtensionColors.Death,
-            BackgroundColor = new Color(0.08f, 0.12f, 0.1f, 0.85f),
+            DisplayTextColor = TouExtensionColors.Famine,
+            BackgroundColor = new Color(0.12f, 0.18f, 0.1f, 0.9f),
             CanDeadPlayerSee = deadPlayer =>
             {
                 if (!OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance.TheDeadKnow)

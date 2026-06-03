@@ -9,12 +9,6 @@ public sealed class ExtensionGameMechanicOptions : AbstractOptionGroup
     public override string GroupName => TouLocale.Get("ExtensionGameMechanicOptionsGroupName", "Game Mechanics");
     public override uint GroupPriority => 98;
 
-    [ModdedToggleOption("ExtensionOptionGameMechanicApocalypseMeetingChat")]
-    public bool ApocalypseMeetingChat { get; set; } = true;
-
-    [ModdedToggleOption("ExtensionOptionGameMechanicApocalypseRolesKnowEachOther")]
-    public bool ApocalypseRolesKnowEachOther { get; set; } = true;
-
     [ModdedToggleOption("ExtensionOptionGameMechanicApocalypseWinsTogether")]
     public bool ApocalypseWinsTogether { get; set; } = true;
 

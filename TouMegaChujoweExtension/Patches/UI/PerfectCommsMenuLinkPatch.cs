@@ -46,7 +46,7 @@ public static class PerfectCommsMenuLinkPatch
 
     private static void ResizeIcon(Transform icon)
     {
-        icon.localScale = new Vector3(0.3f, 0.3f, 1f);
-        icon.localPosition = new Vector3(-0.04f, 0.02f, icon.localPosition.z);
+        icon.localScale = new Vector3(0.62f, 0.62f, 1f);
+        icon.localPosition = new Vector3(-0.02f, 0.01f, icon.localPosition.z);
     }
 }

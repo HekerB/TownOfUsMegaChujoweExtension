@@ -56,15 +56,15 @@ public sealed class BerserkerRole(IntPtr cppPtr)
     public Color RoleColor => IsWar ? TouExtensionColors.War : TouExtensionColors.Berserker;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralKilling;
-    public bool HasImpostorVision => true;
+    public bool HasImpostorVision => IsWar;
     public RoleBehaviour AppearAs => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<BerserkerRole>());
     public bool IsGuessable => !IsWar;
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = true,
+        CanUseVent = OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent,
         IntroSound = TouAudio.WarlockIntroSound,
-        Icon = TouExtensionIcons.BerserkerRoleIcon,
+        Icon = IsWar ? TouExtensionIcons.WarRoleIcon : TouExtensionIcons.BerserkerRoleIcon,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
         OptionsScreenshot = TouBanners.NeutralRoleBanner,
     };
@@ -146,8 +146,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
         if (player.AmOwner)
         {
             OffsetButtons();
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
-            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(RoleColor);
+            RefreshVentButton();
         }
     }
 
@@ -203,21 +202,26 @@ public sealed class BerserkerRole(IntPtr cppPtr)
     public bool CanVentByState()
     {
         var options = OptionGroupSingleton<BerserkerOptions>.Instance;
-        return options.VentAccess switch
-        {
-            BerserkerVentAccess.Both => true,
-            BerserkerVentAccess.Berserker => !IsWar,
-            BerserkerVentAccess.War => IsWar,
-            _ => false
-        };
+        return IsWar && options.WarCanVent;
+    }
+
+    public bool ShouldShowVentButton()
+    {
+        var options = OptionGroupSingleton<BerserkerOptions>.Instance;
+        return options.WarCanVent;
     }
 
     public float GetKillCooldown()
     {
+        return GetKillCooldownForKills(KillCount);
+    }
+
+    public static float GetKillCooldownForKills(int killCount)
+    {
         var options = OptionGroupSingleton<BerserkerOptions>.Instance;
         var needed = Math.Max(1, (int)options.KillsNeededToTransform);
         var maxReductionKills = Math.Max(0, needed - 1);
-        var cappedKills = Math.Min(KillCount, maxReductionKills);
+        var cappedKills = Math.Min(Math.Max(0, killCount), maxReductionKills);
         var cooldown = options.InitialKillCooldown - cappedKills * options.KillCooldownReduction;
         return Math.Clamp(cooldown, 5f, 120f);
     }
@@ -274,11 +278,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
         {
             Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(Color.white, 0.15f, 0.35f));
             role.OffsetButtons();
-
-            if (HudManager.Instance?.ImpostorVentButton != null)
-            {
-                HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TouExtensionColors.War);
-            }
+            role.RefreshVentButton();
         }
     }
 
@@ -308,5 +308,18 @@ public sealed class BerserkerRole(IntPtr cppPtr)
         }
 
         war.AddModifier<InvulnerabilityModifier>(false, false, true);
+    }
+
+    private void RefreshVentButton()
+    {
+        if (Player == null || !Player.AmOwner || HudManager.Instance?.ImpostorVentButton == null)
+        {
+            return;
+        }
+
+        var ventButton = HudManager.Instance.ImpostorVentButton;
+        ventButton.gameObject.SetActive(CanVentByState());
+        ventButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
+        ventButton.buttonLabelText.SetOutlineColor(RoleColor);
     }
 }

@@ -36,7 +36,7 @@ public static class ApocalypseChatPatches
             return;
         }
 
-        var title = $"<color=#{ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Death)}>{TouLocale.Get("ExtensionApocalypseChatTitle", "Apocalypse")}</color>";
+        var title = $"<color=#{ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Famine)}>{player.Data.PlayerName} ({TouLocale.Get("ExtensionApocalypseChatTitle", "Apocalypse")})</color>";
         MiscUtils.AddTeamChat(player.Data, title, text, bubbleType: BubbleType.Other, onLeft: !player.AmOwner);
 
         if (MeetingHud.Instance == null)

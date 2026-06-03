@@ -35,6 +35,10 @@ public static class NeutralVentButtonPatch
         {
             customSprite = TouExtensionNeuAssets.DoppelgangerVentSprite.LoadAsset();
         }
+        else if (player.Data.Role is BerserkerRole { IsWar: true })
+        {
+            customSprite = TownOfUs.Assets.TouAssets.VentSprite.LoadAsset();
+        }
         else if (player.IsRole<VultureRole>())
         {
             customSprite = TownOfUs.Assets.TouNeutAssets.WerewolfVentSprite.LoadAsset();
@@ -63,6 +67,22 @@ public static class NeutralVentButtonPatch
         else if (role is ShroudRole) roleColor = TouExtensionColors.Shroud;
         else if (role is DoppelgangerRole) roleColor = TouExtensionColors.Doppelganger;
         else if (role is FamineRole) roleColor = TouExtensionColors.Famine;
+        else if (role is BerserkerRole berserkerRole)
+        {
+            var shouldShowVent = berserkerRole.CanVentByState();
+            if (ventButton.gameObject.activeSelf != shouldShowVent)
+            {
+                ventButton.gameObject.SetActive(shouldShowVent);
+            }
+
+            if (!shouldShowVent)
+            {
+                return;
+            }
+
+            roleColor = berserkerRole.RoleColor;
+        }
+        else if (role is WarRole) roleColor = TouExtensionColors.War;
         else if (role is VultureRole) roleColor = TouExtensionColors.Vulture;
         else if (role is PelicanRole) roleColor = TouExtensionColors.Pelican;
         else if (role is JackalRole) roleColor = TouExtensionColors.Jackal;

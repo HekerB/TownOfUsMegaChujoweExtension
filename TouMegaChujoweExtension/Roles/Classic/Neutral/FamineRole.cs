@@ -56,7 +56,7 @@ public sealed class FamineRole(IntPtr cppPtr)
 
     public string GetAdvancedDescription()
     {
-        return TouLocale.GetParsed($"ExtensionRole{LocaleKey}WikiDescription") + MiscUtils.AppendOptionsText(GetType());
+        return TouLocale.GetParsed($"ExtensionRole{LocaleKey}WikiDescription");
     }
 
     [HideFromIl2Cpp]

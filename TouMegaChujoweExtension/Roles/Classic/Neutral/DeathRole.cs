@@ -70,7 +70,7 @@ public sealed class DeathRole(IntPtr cppPtr)
         DefaultRoleCount = 0,
         MaxRoleCount = 0,
         IntroSound = TouAudio.PhantomIntroSound,
-        Icon = TouRoleIcons.SoulCollector,
+        Icon = TouExtensionIcons.SoulCollectorRoleIcon,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
     };
 
@@ -156,7 +156,11 @@ public sealed class DeathRole(IntPtr cppPtr)
     [MethodRpc((uint)ExtensionRpc.DeathKill)]
     public static void RpcDeathKill(PlayerControl death, PlayerControl target)
     {
-        if (death == null || target == null || target.HasDied() || death.Data?.Role is not DeathRole)
+        if (death == null ||
+            target == null ||
+            target.HasDied() ||
+            death.Data?.Role is not DeathRole ||
+            ApocalypseUtils.AreAllied(death, target))
         {
             return;
         }
@@ -174,6 +178,12 @@ public sealed class DeathRole(IntPtr cppPtr)
     [MethodRpc((uint)ExtensionRpc.DeathMarkBody, LocalHandling = Reactor.Networking.Rpc.RpcLocalHandling.Before)]
     public static void RpcMarkDeathBody(PlayerControl death, byte targetId)
     {
+        var target = MiscUtils.PlayerById(targetId);
+        if (death == null || target == null || death.Data?.Role is not DeathRole || ApocalypseUtils.AreAllied(death, target))
+        {
+            return;
+        }
+
         SoulCollectorSystem.MarkDeathBody(targetId);
     }
 }

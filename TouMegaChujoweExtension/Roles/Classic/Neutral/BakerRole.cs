@@ -84,7 +84,10 @@ public sealed class BakerRole(IntPtr cppPtr)
         }
 
         var possibleRecipients = PlayerControl.AllPlayerControls.ToArray()
-            .Count(x => x != null && !x.HasDied() && x.PlayerId != baker.PlayerId);
+            .Count(x => x != null &&
+                        !x.HasDied() &&
+                        x.PlayerId != baker.PlayerId &&
+                        !ApocalypseUtils.AreAllied(baker, x));
 
         return Math.Min(configuredBreadNeeded, possibleRecipients);
     }
@@ -151,7 +154,7 @@ public sealed class BakerRole(IntPtr cppPtr)
     [MethodRpc((uint)ExtensionRpc.BakerGiveBread)]
     public static void RpcGiveBread(PlayerControl baker, PlayerControl target)
     {
-        if (baker == null || target == null || target.HasDied())
+        if (baker == null || target == null || target.HasDied() || ApocalypseUtils.AreAllied(baker, target))
         {
             return;
         }

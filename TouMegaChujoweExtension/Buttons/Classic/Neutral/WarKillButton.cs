@@ -1,8 +1,8 @@
+using AmongUs.GameOptions;
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameOptions;
 using MiraAPI.Keybinds;
-using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
@@ -10,22 +10,21 @@ using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Events;
-using TownOfUs.Modifiers;
-using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Options;
+using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
-public sealed class BerserkerKillButton : TownOfUsKillRoleButton<BerserkerRole, PlayerControl>, IDiseaseableButton, IKillButton
+public sealed class WarKillButton : TownOfUsKillRoleButton<WarRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     private bool _lastKillSucceeded;
 
     public override string Name => TranslationController.Instance.GetStringWithDefault(StringNames.KillLabel, "Kill");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
-    public override Color TextOutlineColor => Role?.RoleColor ?? TouExtensionColors.Berserker;
-    public override float Cooldown => Math.Clamp((Role?.GetKillCooldown() ?? OptionGroupSingleton<BerserkerOptions>.Instance.InitialKillCooldown) + MapCooldown, 5f, 120f);
+    public override Color TextOutlineColor => TouExtensionColors.War;
+    public override float Cooldown => BerserkerRole.GetKillCooldownForKills((int)OptionGroupSingleton<BerserkerOptions>.Instance.KillsNeededToTransform) + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
     public override bool ShouldPauseInVent => true;
 
@@ -55,11 +54,10 @@ public sealed class BerserkerKillButton : TownOfUsKillRoleButton<BerserkerRole, 
             return;
         }
 
-        var wasWar = Role != null && Role.IsWar;
         _lastKillSucceeded = false;
         OnClick();
 
-        if (_lastKillSucceeded && wasWar && Role != null && Role.IsWar)
+        if (_lastKillSucceeded)
         {
             var spreeDuration = OptionGroupSingleton<BerserkerOptions>.Instance.WarKillingSpreeDuration;
             if (spreeDuration > 0f)
@@ -100,11 +98,7 @@ public sealed class BerserkerKillButton : TownOfUsKillRoleButton<BerserkerRole, 
     {
         base.FixedUpdate(playerControl);
 
-        if (Role == null ||
-            !Role.IsWar ||
-            Role.WarSpreeUntil <= 0f ||
-            Time.time <= Role.WarSpreeUntil ||
-            Timer > 0f)
+        if (Role.WarSpreeUntil <= 0f || Time.time <= Role.WarSpreeUntil || Timer > 0f)
         {
             return;
         }
@@ -122,6 +116,5 @@ public sealed class BerserkerKillButton : TownOfUsKillRoleButton<BerserkerRole, 
 
         PlayerControl.LocalPlayer.RpcCustomMurder(Target);
         _lastKillSucceeded = true;
-        Role?.OnSuccessfulKill();
     }
 }

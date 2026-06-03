@@ -54,7 +54,7 @@ public sealed class DeathKillButton : TownOfUsRoleButton<DeathRole, PlayerContro
     protected override void OnClick()
     {
         var player = PlayerControl.LocalPlayer;
-        if (player == null || Target == null)
+        if (player == null || Target == null || !IsTargetValid(Target))
         {
             return;
         }

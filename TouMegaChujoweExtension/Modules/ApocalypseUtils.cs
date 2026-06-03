@@ -16,10 +16,10 @@ public static class ApocalypseUtils
         OptionGroupSingleton<ExtensionGameMechanicOptions>.Instance.ApocalypseWinsTogether;
 
     public static bool RolesKnowEachOther =>
-        OptionGroupSingleton<ExtensionGameMechanicOptions>.Instance.ApocalypseRolesKnowEachOther;
+        WinsTogetherEnabled;
 
     public static bool MeetingChatEnabled =>
-        OptionGroupSingleton<ExtensionGameMechanicOptions>.Instance.ApocalypseMeetingChat;
+        OptionGroupSingleton<ExtensionGeneralOptions>.Instance.ApocalypseMeetingChat;
 
     public static bool IsApocalypsePlayer(PlayerControl? player)
     {

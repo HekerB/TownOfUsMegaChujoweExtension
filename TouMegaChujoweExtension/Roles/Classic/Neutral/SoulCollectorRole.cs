@@ -221,7 +221,7 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
 
         PendingDeathAnnouncement = false;
         var notif = Helpers.CreateAndShowNotification(
-            TouLocale.GetParsed("ExtensionRoleSoulCollectorDeathAnnouncement", "The final soul has been claimed.\\%nl\\%\\%color=#91DDB2FF\\%Death\\%/color\\%, Horseman of the Apocalypse, has emerged!"),
+            TouLocale.GetParsed("ExtensionRoleSoulCollectorDeathAnnouncement", "The final soul has been claimed.\\%nl\\%\\%color=#202020FF\\%Death\\%/color\\%, Horseman of the Apocalypse, has emerged!"),
             Color.white,
             new Vector3(0f, 1f, -20f),
             spr: TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
