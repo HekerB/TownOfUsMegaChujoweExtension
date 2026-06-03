@@ -87,7 +87,7 @@ public static class TimeLordFixesPatch
             foreach (var player in PlayerControl.AllPlayerControls)
             {
                 if (player == null) continue;
-                
+
                 var swallowTime = PelicanSystem.GetSwallowTime(player.PlayerId);
                 if (swallowTime.HasValue && swallowTime.Value > cutoff)
                 {
@@ -129,16 +129,3 @@ public static class TimeLordFixesPatch
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
