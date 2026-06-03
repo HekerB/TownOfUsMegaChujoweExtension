@@ -1489,6 +1489,20 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleBerserkerIntroBlurb">Zabijaj, skracaj cooldown i zostan War.</string>
   <string name="ExtensionRoleBerserkerTabDescription">Zabijaj graczy, aby skracac cooldown.\%nl\%Zbierz dosc zabojstw, aby zostac &lt;color=#5E3929&gt;War&lt;/color&gt;.</string>
   <string name="ExtensionRoleBerserkerWikiDescription">&lt;color=#BE1020&gt;Berserker&lt;/color&gt; to rola &lt;b&gt;Neutral Apocalypse&lt;/b&gt;. Kazde zabojstwo skraca cooldown zabijania, pomagajac ci rozpedzic sie do &lt;color=#5E3929&gt;War&lt;/color&gt;.\%nl\%Po przemianie tracisz redukcje cooldownu i stajesz sie niesmiertelnym jezdzcem, ktory moze laczyc zabojstwa w krotkim oknie furii.\%nl\%Jesli Apokalipsa wygrywa razem, role Apokalipsy sa sojusznikami.</string>
+  <string name="ExtensionRoleBerserkerKillsTab">Zabojstwa do War</string>
+  <string name="ExtensionRoleBerserkerWarAnnouncement">Wojna pochlonela pole bitwy.\%nl\%\%color=#5E3929FF\%War\%/color\%, Jezdziec Apokalipsy, powstal!</string>
+  <string name="ExtensionOptionBerserkerInstantWarChance">Szansa na instant War</string>
+  <string name="ExtensionOptionBerserkerInitialKillCooldown">Poczatkowy cooldown zabojstwa</string>
+  <string name="ExtensionOptionBerserkerKillCooldownReduction">Redukcja cooldownu za zabojstwo</string>
+  <string name="ExtensionOptionBerserkerKillsNeededToTransform">Zabojstwa potrzebne do War</string>
+  <string name="ExtensionOptionBerserkerAnnounceWar">Oglos przemiane w War</string>
+  <string name="ExtensionOptionBerserkerWarCanVent">War moze uzywac ventow</string>
+  <string name="ExtensionOptionWarKillingSpreeDuration">Czas spree Wara</string>
+  <string name="ExtensionRoleWar">War</string>
+  <string name="ExtensionRoleWarIntroBlurb">Rozpetaj wojne na polu bitwy.</string>
+  <string name="ExtensionRoleWarTabDescription">Lacz zabojstwa w krotkim spree.\%nl\%War jest niesmiertelny i moze umrzec tylko przez wyrzucenie.</string>
+  <string name="ExtensionRoleWarWikiDescription">&lt;color=#5E3929&gt;War&lt;/color&gt; to przemieniony &lt;color=#BE1020&gt;Berserker&lt;/color&gt;.\%nl\%War jest niesmiertelny, nie da sie go zgadnac i moze umrzec tylko przez wyrzucenie.\%nl\%Po udanym zabojstwie War wchodzi w krotkie Killing Spree, gdzie nastepne zabojstwo nie ma cooldownu.</string>
+  <string name="ExtensionRoleWarSpreeKill">Spree Kill</string>
   <string name="ExtensionRoleFamine">Famine</string>
   <string name="ExtensionRoleFamineIntroBlurb">Zaglodz nakarmionych</string>
   <string name="ExtensionRoleFamineTabDescription">Glodz graczy z chlebem. Glodujacy umieraja na meetingu.</string>

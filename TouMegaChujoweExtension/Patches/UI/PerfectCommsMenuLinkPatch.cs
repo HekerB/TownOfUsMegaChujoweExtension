@@ -1,4 +1,5 @@
 using HarmonyLib;
+using TownOfUs.Assets;
 using TownOfUs.Patches.AprilFools;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,10 +19,9 @@ public static class PerfectCommsMenuLinkPatch
         var commsButton = __instance.newsButton.CloneMenuItem(
             "TouMcePerfectCommsButton",
             new Vector2(0.815f, 0.86f),
-            TouExtensionIcons.MicLogo.LoadAsset(),
+            TouAssets.SourceCode.LoadAsset(),
             "ExtensionMenuPerfectComms",
             "Perfect Comms");
-        ResizeIcon(commsButton);
 
         var passive = commsButton.GetComponent<PassiveButton>();
         passive.OnClick = new Button.ButtonClickedEvent();
@@ -36,17 +36,5 @@ public static class PerfectCommsMenuLinkPatch
         uiList.Add(passive);
         __instance.mainButtons = uiList;
         __instance.SetUpControllerNav();
-    }
-
-    private static void ResizeIcon(PassiveButton button)
-    {
-        ResizeIcon(button.transform.GetChild(1).GetChild(0));
-        ResizeIcon(button.transform.GetChild(2).GetChild(0));
-    }
-
-    private static void ResizeIcon(Transform icon)
-    {
-        icon.localScale = new Vector3(0.62f, 0.62f, 1f);
-        icon.localPosition = new Vector3(-0.02f, 0.01f, icon.localPosition.z);
     }
 }

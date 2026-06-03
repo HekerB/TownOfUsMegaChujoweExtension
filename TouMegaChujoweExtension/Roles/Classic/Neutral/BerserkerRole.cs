@@ -62,7 +62,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent,
+        CanUseVent = IsWar && OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent,
         IntroSound = TouAudio.WarlockIntroSound,
         Icon = IsWar ? TouExtensionIcons.WarRoleIcon : TouExtensionIcons.BerserkerRoleIcon,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
@@ -126,8 +126,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
 
     public void OffsetButtons()
     {
-        var canVent = CanVentByState() ||
-                      LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value;
+        var canVent = CanVentByState() || LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value;
         var kill = MiraAPI.Hud.CustomButtonSingleton<BerserkerKillButton>.Instance;
         if (kill != null)
         {
@@ -207,8 +206,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
 
     public bool ShouldShowVentButton()
     {
-        var options = OptionGroupSingleton<BerserkerOptions>.Instance;
-        return options.WarCanVent;
+        return CanVentByState();
     }
 
     public float GetKillCooldown()
@@ -279,6 +277,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
             Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(Color.white, 0.15f, 0.35f));
             role.OffsetButtons();
             role.RefreshVentButton();
+            MiraAPI.Hud.CustomButtonSingleton<BerserkerKillButton>.Instance?.RefreshWarState();
         }
     }
 
@@ -319,7 +318,9 @@ public sealed class BerserkerRole(IntPtr cppPtr)
 
         var ventButton = HudManager.Instance.ImpostorVentButton;
         ventButton.gameObject.SetActive(CanVentByState());
-        ventButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
+        ventButton.graphic.sprite = IsWar
+            ? TouNeutAssets.WerewolfVentSprite.LoadAsset()
+            : TouAssets.VentSprite.LoadAsset();
         ventButton.buttonLabelText.SetOutlineColor(RoleColor);
     }
 }

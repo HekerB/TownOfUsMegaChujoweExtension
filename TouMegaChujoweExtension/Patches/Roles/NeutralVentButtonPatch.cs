@@ -3,6 +3,7 @@ using HarmonyLib;
 using TouMegaChujoweExtension.Assets;
 using TownOfUs.Extensions;
 using UnityEngine;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
 
 namespace TouMegaChujoweExtension.Patches.Roles;
 
@@ -86,7 +87,26 @@ public static class NeutralVentButtonPatch
 
             roleColor = berserkerRole.RoleColor;
         }
-        else if (role is WarRole) roleColor = TouExtensionColors.War;
+        else if (role is WarRole)
+        {
+            var shouldShowVent = MiraAPI.GameOptions.OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent;
+            if (ventButton.gameObject.activeSelf != shouldShowVent)
+            {
+                ventButton.gameObject.SetActive(shouldShowVent);
+            }
+
+            if (ventButton.graphic != null && ventButton.graphic.enabled != shouldShowVent)
+            {
+                ventButton.graphic.enabled = shouldShowVent;
+            }
+
+            if (!shouldShowVent)
+            {
+                return;
+            }
+
+            roleColor = TouExtensionColors.War;
+        }
         else if (role is VultureRole) roleColor = TouExtensionColors.Vulture;
         else if (role is PelicanRole) roleColor = TouExtensionColors.Pelican;
         else if (role is JackalRole) roleColor = TouExtensionColors.Jackal;

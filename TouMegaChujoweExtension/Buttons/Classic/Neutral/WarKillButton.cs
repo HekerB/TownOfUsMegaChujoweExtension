@@ -1,6 +1,4 @@
 using AmongUs.GameOptions;
-using MiraAPI.Events;
-using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameOptions;
 using MiraAPI.Keybinds;
 using MiraAPI.Utilities.Assets;
@@ -10,7 +8,6 @@ using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TownOfUs.Assets;
 using TownOfUs.Buttons;
-using TownOfUs.Events;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Options;
 using TownOfUs.Options.Modifiers.Alliance;
@@ -19,7 +16,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
-public sealed class WarKillButton : TownOfUsKillRoleButton<WarRole, PlayerControl>, IDiseaseableButton, IKillButton
+public sealed class WarKillButton : TownOfUsRoleButton<WarRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     private bool _lastKillSucceeded;
 
@@ -28,6 +25,7 @@ public sealed class WarKillButton : TownOfUsKillRoleButton<WarRole, PlayerContro
     public override Color TextOutlineColor => TouExtensionColors.War;
     public override float Cooldown => BerserkerRole.GetKillCooldownForKills((int)OptionGroupSingleton<BerserkerOptions>.Instance.KillsNeededToTransform) + MapCooldown;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.WerewolfKillSprite;
+    public override float Distance => GameManager.Instance.LogicOptions.GetKillDistance();
     public override bool ShouldPauseInVent => true;
 
     public void SetDiseasedTimer(float multiplier)
@@ -44,14 +42,6 @@ public sealed class WarKillButton : TownOfUsKillRoleButton<WarRole, PlayerContro
 
         var player = PlayerControl.LocalPlayer;
         if (player == null)
-        {
-            return;
-        }
-
-        var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
-        MiraEventManager.InvokeEvent(beforeMurderEvent);
-
-        if (beforeMurderEvent.IsCancelled)
         {
             return;
         }
@@ -91,9 +81,19 @@ public sealed class WarKillButton : TownOfUsKillRoleButton<WarRole, PlayerContro
 
     public override bool IsTargetValid(PlayerControl? target)
     {
-        return target != null &&
-               base.IsTargetValid(target) &&
-               !ApocalypseUtils.AreAllied(PlayerControl.LocalPlayer, target);
+        var local = PlayerControl.LocalPlayer;
+        if (target == null || local == null || target == local || target.HasDied())
+        {
+            return false;
+        }
+
+        if (ApocalypseUtils.AreAllied(local, target))
+        {
+            return false;
+        }
+
+        var distance = Vector2.Distance(local.GetTruePosition(), target.GetTruePosition());
+        return distance <= Distance;
     }
 
     protected override void FixedUpdate(PlayerControl playerControl)
@@ -132,12 +132,19 @@ public sealed class WarKillButton : TownOfUsKillRoleButton<WarRole, PlayerContro
 
     protected override void OnClick()
     {
-        if (Target == null)
+        var player = PlayerControl.LocalPlayer;
+        if (player == null || Target == null || !IsTargetValid(Target))
         {
             return;
         }
 
-        PlayerControl.LocalPlayer.RpcCustomMurder(Target);
+        if (PoisonSystem.CheckAndTriggerShields(player, Target))
+        {
+            Timer = Cooldown;
+            return;
+        }
+
+        player.RpcCustomMurder(Target, MeetingCheck.OutsideMeeting);
         _lastKillSucceeded = true;
     }
 }

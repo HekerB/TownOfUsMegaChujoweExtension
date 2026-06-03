@@ -164,11 +164,9 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
                 Timer = Mathf.Min(Timer, 0f);
                 playerControl.SetKillTimer(0f);
 
-                var fill = Mathf.Clamp(_windowTimer / WindowDuration, 0f, 1f);
-                Button?.SetCooldownFill(fill);
-
                 if (Button != null)
                 {
+                    Button.SetFillUp(_windowTimer, WindowDuration);
                     Button.cooldownTimerText.text = Mathf.CeilToInt(_windowTimer).ToString(System.Globalization.CultureInfo.InvariantCulture);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }

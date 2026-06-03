@@ -53,6 +53,6 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> LonerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Loner_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> BurrowerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Burrower_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> SidekickModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Sidekick_Modifier_Icon.png", 200f);
-        public static LoadableAsset<Sprite> MicLogo { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.miclogo.png", 100f);
+        public static LoadableAsset<Sprite> MicLogo { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.miclogo.png", 200f);
     }
 }
