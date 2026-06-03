@@ -40,7 +40,9 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
             return true;
         }
 
-        var isApocalypseWin = winners.Count(w => w != null && ApocalypseUtils.IsApocalypseRole(w.Role)) >= 2;
+        var apocalypseWinnerCount = winners.Count(w => w != null && ApocalypseUtils.IsApocalypseRole(w.Role));
+        var isApocalypseWin = apocalypseWinnerCount > 1 &&
+                (NeutralExtensionWinCondition.IsApocalypseAllianceWon || ApocalypseUtils.WinsTogetherEnabled);
         if (isApocalypseWin)
         {
             _roleColor = TouExtensionColors.Death;
@@ -63,9 +65,10 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
             LawyerRole => TouLocale.Get("ExtensionLawyerWins", "Lawyer & Client Win"),
             BountyHunterRole => $"{TouLocale.Get("ExtensionRoleBountyHunter", "Bounty Hunter")} {TouLocale.Get("ExtensionBountyHunterWins", "Wins")}",
             JokerRole => $"{TouLocale.Get("ExtensionRoleJoker", "Joker")} {TouLocale.Get("ExtensionJokerWins", "Wins")}",
-            FamineRole => $"{TouLocale.Get("ExtensionRoleFamine", "Famine")} {TouLocale.Get("ExtensionFamineWins", "Wins")}",
-            DeathRole => $"{TouLocale.Get("ExtensionRoleDeath", "Death")} {TouLocale.Get("ExtensionDeathWins", "Wins")}",
-            BerserkerRole berserker => $"{(berserker.IsWar ? TouLocale.Get("ExtensionRoleWar", "War") : TouLocale.Get("ExtensionRoleBerserker", "Berserker"))} {TouLocale.Get("ExtensionBerserkerWins", "Wins")}",
+            BakerRole or FamineRole => TouLocale.Get("ExtensionBakerFamineWins", "Baker / Famine Wins"),
+            TouMegaChujoweExtension.Roles.Classic.Neutral.SoulCollectorRole or DeathRole => TouLocale.Get("ExtensionSoulCollectorDeathWins", "Soul Collector / Death Wins"),
+            BerserkerRole => TouLocale.Get("ExtensionBerserkerWarWins", "Berserker / War Wins"),
+            WarRole => TouLocale.Get("ExtensionBerserkerWarWins", "Berserker / War Wins"),
             _ => TouLocale.GetParsed("ExtensionNeutralWinsFormat", "{0} Wins").Replace("{0}", role.GetRoleName())
         };
 

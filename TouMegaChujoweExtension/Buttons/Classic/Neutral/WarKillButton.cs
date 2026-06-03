@@ -4,12 +4,14 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.GameOptions;
 using MiraAPI.Keybinds;
 using MiraAPI.Utilities.Assets;
+using System.Globalization;
 using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Events;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Options;
 using TownOfUs.Options.Modifiers.Alliance;
 using TownOfUs.Utilities;
@@ -25,7 +27,7 @@ public sealed class WarKillButton : TownOfUsKillRoleButton<WarRole, PlayerContro
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TouExtensionColors.War;
     public override float Cooldown => BerserkerRole.GetKillCooldownForKills((int)OptionGroupSingleton<BerserkerOptions>.Instance.KillsNeededToTransform) + MapCooldown;
-    public override LoadableAsset<Sprite> Sprite => TouAssets.KillSprite;
+    public override LoadableAsset<Sprite> Sprite => TouNeutAssets.WerewolfKillSprite;
     public override bool ShouldPauseInVent => true;
 
     public void SetDiseasedTimer(float multiplier)
@@ -97,6 +99,27 @@ public sealed class WarKillButton : TownOfUsKillRoleButton<WarRole, PlayerContro
     protected override void FixedUpdate(PlayerControl playerControl)
     {
         base.FixedUpdate(playerControl);
+
+        if (Role.WarSpreeUntil > 0f && Time.time <= Role.WarSpreeUntil && Timer <= 0f)
+        {
+            var spreeDuration = OptionGroupSingleton<BerserkerOptions>.Instance.WarKillingSpreeDuration;
+            var remaining = Mathf.Max(0f, Role.WarSpreeUntil - Time.time);
+
+            if (Button != null)
+            {
+                Button.SetFillUp(remaining, spreeDuration);
+                Button.cooldownTimerText.text = remaining.ToString(CooldownTimerFormatString, NumberFormatInfo.InvariantInfo);
+                Button.cooldownTimerText.gameObject.SetActive(true);
+                Button.buttonLabelText.text = TouLocale.GetParsed("ExtensionRoleWarSpreeKill", "Spree Kill");
+            }
+
+            return;
+        }
+
+        if (Button != null && Button.buttonLabelText.text != Name)
+        {
+            Button.buttonLabelText.text = Name;
+        }
 
         if (Role.WarSpreeUntil <= 0f || Time.time <= Role.WarSpreeUntil || Timer > 0f)
         {

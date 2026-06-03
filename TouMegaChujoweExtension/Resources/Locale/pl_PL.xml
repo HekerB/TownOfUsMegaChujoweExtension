@@ -1480,12 +1480,15 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionApocalypseChatTitle">Apokalipsa</string>
   <string name="ExtensionApocalypseWins">Apokalipsa wygrywa</string>
   <string name="ExtensionBakerFaminePlagueWins">Apokalipsa wygrywa</string>
+  <string name="ExtensionBakerFamineWins">Baker / Famine wygrywa</string>
+  <string name="ExtensionSoulCollectorDeathWins">Soul Collector / Death wygrywa</string>
+  <string name="ExtensionBerserkerWarWins">Berserker / War wygrywa</string>
   <string name="ExtensionBerserkerWins">wygrywa</string>
   <string name="ExtensionDeathWins">wygrywa</string>
   <string name="ExtensionRoleBerserker">Berserker</string>
   <string name="ExtensionRoleBerserkerIntroBlurb">Zabijaj, skracaj cooldown i zostan War.</string>
-  <string name="ExtensionRoleBerserkerTabDescription">Zabijaj graczy, aby skracac cooldown. Zbierz dosc zabojstw, aby zostac &lt;color=#5E3929&gt;War&lt;/color&gt;.</string>
-  <string name="ExtensionRoleBerserkerWikiDescription">&lt;color=#BE1020&gt;Berserker&lt;/color&gt; to rola &lt;b&gt;Neutral Apocalypse&lt;/b&gt;. Kazde zabojstwo skraca cooldown zabijania, pomagajac ci rozpedzic sie do &lt;color=#5E3929&gt;War&lt;/color&gt;. Po przemianie tracisz redukcje cooldownu i stajesz sie niesmiertelnym jezdzcem, ktory moze laczyc zabojstwa w krotkim oknie furii.</string>
+  <string name="ExtensionRoleBerserkerTabDescription">Zabijaj graczy, aby skracac cooldown.\%nl\%Zbierz dosc zabojstw, aby zostac &lt;color=#5E3929&gt;War&lt;/color&gt;.</string>
+  <string name="ExtensionRoleBerserkerWikiDescription">&lt;color=#BE1020&gt;Berserker&lt;/color&gt; to rola &lt;b&gt;Neutral Apocalypse&lt;/b&gt;. Kazde zabojstwo skraca cooldown zabijania, pomagajac ci rozpedzic sie do &lt;color=#5E3929&gt;War&lt;/color&gt;.\%nl\%Po przemianie tracisz redukcje cooldownu i stajesz sie niesmiertelnym jezdzcem, ktory moze laczyc zabojstwa w krotkim oknie furii.\%nl\%Jesli Apokalipsa wygrywa razem, role Apokalipsy sa sojusznikami.</string>
   <string name="ExtensionRoleFamine">Famine</string>
   <string name="ExtensionRoleFamineIntroBlurb">Zaglodz nakarmionych</string>
   <string name="ExtensionRoleFamineTabDescription">Glodz graczy z chlebem. Glodujacy umieraja na meetingu.</string>

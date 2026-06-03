@@ -29,10 +29,6 @@ public static class ExtensionLocale
         string resourceName = forcePolish
             ? "TouMegaChujoweExtension.Resources.Locale.pl_PL.xml"
             : "TouMegaChujoweExtension.Resources.Locale.en_US.xml";
-        string apocalypseResourceName = forcePolish
-            ? "TouMegaChujoweExtension.Resources.Locale.apocalypse_pl_PL.xml"
-            : "TouMegaChujoweExtension.Resources.Locale.apocalypse_en_US.xml";
-
         using var resourceStream = assembly.GetManifestResourceStream(resourceName);
 
         if (resourceStream == null && forcePolish)
@@ -43,32 +39,12 @@ public static class ExtensionLocale
                 ForceInjectTranslations(fallbackStream);
             }
 
-            using var apocalypseFallbackStream = assembly.GetManifestResourceStream("TouMegaChujoweExtension.Resources.Locale.apocalypse_en_US.xml");
-            if (apocalypseFallbackStream != null)
-            {
-                ForceInjectTranslations(apocalypseFallbackStream);
-            }
-
             return;
         }
 
         if (resourceStream != null)
         {
             ForceInjectTranslations(resourceStream);
-        }
-
-        using var apocalypseStream = assembly.GetManifestResourceStream(apocalypseResourceName);
-        if (apocalypseStream != null)
-        {
-            ForceInjectTranslations(apocalypseStream);
-        }
-        else if (forcePolish)
-        {
-            using var apocalypseFallbackStream = assembly.GetManifestResourceStream("TouMegaChujoweExtension.Resources.Locale.apocalypse_en_US.xml");
-            if (apocalypseFallbackStream != null)
-            {
-                ForceInjectTranslations(apocalypseFallbackStream);
-            }
         }
     }
 

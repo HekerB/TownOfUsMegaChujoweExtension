@@ -5,6 +5,7 @@ using MiraAPI.LocalSettings;
 using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
+using MiraAPI.Utilities;
 using System.Text;
 using TouMegaChujoweExtension.Buttons.Classic.Neutral;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
@@ -71,7 +72,31 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
 
     public bool WinConditionMet()
     {
-        return false;
+        if (Player == null || Player.HasDied())
+        {
+            return false;
+        }
+
+        var alivePlayers = Helpers.GetAlivePlayers();
+        var warsAlive = alivePlayers.Count(x => x != null && x.Data?.Role is WarRole);
+
+        if (MiscUtils.ImpAliveCount > 0)
+        {
+            return false;
+        }
+
+        if (MiscUtils.NKillersAliveCount > warsAlive)
+        {
+            return false;
+        }
+
+        var otherKillers = MiscUtils.KillersAliveCount - warsAlive;
+        if (otherKillers > 0)
+        {
+            return false;
+        }
+
+        return alivePlayers.Count <= warsAlive * 2;
     }
 
     public void OffsetButtons()
@@ -99,7 +124,7 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
             OffsetButtons();
             var ventButton = HudManager.Instance.ImpostorVentButton;
             ventButton.gameObject.SetActive(OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent);
-            ventButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
+            ventButton.graphic.sprite = TouNeutAssets.WerewolfVentSprite.LoadAsset();
             ventButton.buttonLabelText.SetOutlineColor(TouExtensionColors.War);
         }
     }
@@ -144,7 +169,13 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        return false;
+        if (gameOverReason == MiraAPI.GameEnd.CustomGameOver.GameOverReason<GameOver.ExtensionNeutralGameOver>() &&
+            TouMegaChujoweExtension.Patches.WinConditions.NeutralExtensionWinCondition.IsApocalypseAllianceWon)
+        {
+            return true;
+        }
+
+        return WinConditionMet();
     }
 
     public StringBuilder SetTabText()

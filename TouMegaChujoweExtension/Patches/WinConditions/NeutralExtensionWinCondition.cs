@@ -62,8 +62,9 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         // 9. Death
         if (IsDeathWinMet()) return true;
 
-        // 10. Berserker
+        // 10. Berserker / War
         if (IsBerserkerWinMet()) return true;
+        if (IsWarWinMet()) return true;
 
         // 11. Jackal (Original Priority 15)
         if (IsJackalWinMet()) return true;
@@ -167,7 +168,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
         }
 
-        // 10. Berserker
+        // 10. Berserker / War
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player == null || player.HasDied() || player.Data?.Role is not BerserkerRole berserkerRole) continue;
@@ -175,6 +176,19 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             {
                 var winners = PlayerControl.AllPlayerControls.ToArray()
                     .Where(p => p != null && !p.HasDied() && p.Data?.Role is BerserkerRole && p.Data != null)
+                    .Select(p => p.Data)
+                    .ToArray();
+                CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners);
+                return;
+            }
+        }
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.HasDied() || player.Data?.Role is not WarRole warRole) continue;
+            if (warRole.WinConditionMet() && player.Data != null)
+            {
+                var winners = PlayerControl.AllPlayerControls.ToArray()
+                    .Where(p => p != null && !p.HasDied() && p.Data?.Role is WarRole && p.Data != null)
                     .Select(p => p.Data)
                     .ToArray();
                 CustomGameOver.Trigger<ExtensionNeutralGameOver>(winners);
@@ -304,6 +318,17 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         {
             if (player == null || player.HasDied() || player.Data?.Role is not BerserkerRole berserkerRole) continue;
             if (berserkerRole.WinConditionMet()) return true;
+        }
+
+        return false;
+    }
+
+    private static bool IsWarWinMet()
+    {
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.HasDied() || player.Data?.Role is not WarRole warRole) continue;
+            if (warRole.WinConditionMet()) return true;
         }
 
         return false;

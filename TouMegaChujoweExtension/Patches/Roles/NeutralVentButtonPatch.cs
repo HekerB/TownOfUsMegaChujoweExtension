@@ -37,7 +37,11 @@ public static class NeutralVentButtonPatch
         }
         else if (player.Data.Role is BerserkerRole { IsWar: true })
         {
-            customSprite = TownOfUs.Assets.TouAssets.VentSprite.LoadAsset();
+            customSprite = TownOfUs.Assets.TouNeutAssets.WerewolfVentSprite.LoadAsset();
+        }
+        else if (player.IsRole<WarRole>())
+        {
+            customSprite = TownOfUs.Assets.TouNeutAssets.WerewolfVentSprite.LoadAsset();
         }
         else if (player.IsRole<VultureRole>())
         {

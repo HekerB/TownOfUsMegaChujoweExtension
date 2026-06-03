@@ -1493,12 +1493,15 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionApocalypseChatTitle">Apocalypse</string>
   <string name="ExtensionApocalypseWins">Apocalypse Wins</string>
   <string name="ExtensionBakerFaminePlagueWins">Apocalypse Wins</string>
+  <string name="ExtensionBakerFamineWins">Baker / Famine Wins</string>
+  <string name="ExtensionSoulCollectorDeathWins">Soul Collector / Death Wins</string>
+  <string name="ExtensionBerserkerWarWins">Berserker / War Wins</string>
   <string name="ExtensionBerserkerWins">Wins</string>
   <string name="ExtensionDeathWins">Wins</string>
   <string name="ExtensionRoleBerserker">Berserker</string>
   <string name="ExtensionRoleBerserkerIntroBlurb">Kill to shorten your cooldown and become War.</string>
-  <string name="ExtensionRoleBerserkerTabDescription">Kill players to reduce your cooldown. Collect enough kills to become &lt;color=#5E3929&gt;War&lt;/color&gt;.</string>
-  <string name="ExtensionRoleBerserkerWikiDescription">The &lt;color=#BE1020&gt;Berserker&lt;/color&gt; is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Each kill lowers your kill cooldown, helping you snowball into &lt;color=#5E3929&gt;War&lt;/color&gt;. Once transformed, you lose cooldown reduction and become an invincible horseman who can chain kills during a short spree window.</string>
+  <string name="ExtensionRoleBerserkerTabDescription">Kill players to reduce your cooldown.\%nl\%Collect enough kills to become &lt;color=#5E3929&gt;War&lt;/color&gt;.</string>
+  <string name="ExtensionRoleBerserkerWikiDescription">The &lt;color=#BE1020&gt;Berserker&lt;/color&gt; is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Each kill lowers your kill cooldown, helping you snowball into &lt;color=#5E3929&gt;War&lt;/color&gt;.\%nl\%Once transformed, you lose cooldown reduction and become an invincible horseman who can chain kills during a short spree window.\%nl\%If Apocalypse Wins Together is enabled, Apocalypse roles are treated as allies.</string>
   <string name="ExtensionRoleFamine">Famine</string>
   <string name="ExtensionRoleFamineIntroBlurb">Starve the fed</string>
   <string name="ExtensionRoleFamineTabDescription">Starve breaded players. Starved players die next meeting.</string>
