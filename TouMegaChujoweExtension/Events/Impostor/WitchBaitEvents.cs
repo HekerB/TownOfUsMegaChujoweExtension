@@ -5,6 +5,8 @@ using MiraAPI.Modifiers;
 using TownOfUs.Events.Modifiers;
 using TownOfUs.Modifiers.Game.Crewmate;
 using TownOfUs.Utilities;
+using TownOfUs.Modifiers;
+using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Events.Impostor;
 
@@ -22,10 +24,18 @@ public static class WitchBaitEvents
         var source = @event.Source;
 
         if (target != null && target.HasModifier<BaitModifier>() &&
-            source != null && source.IsRole<WitchRole>() &&
-            target.HasModifier<WitchSpellboundModifier>())
+            source != null && source.IsRole<WitchRole>())
         {
-            return false;
+            if (target.HasModifier<WitchSpellboundModifier>())
+            {
+                return false;
+            }
+
+            if (target.TryGetModifier<DeathHandlerModifier>(out var deathHandler) &&
+                deathHandler.CauseOfDeath == TouLocale.Get("DiedToWitch"))
+            {
+                return false;
+            }
         }
 
         return true;

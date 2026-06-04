@@ -240,8 +240,6 @@ public static class WitchEvents
                     {
                         player.RpcMurderPlayer(player, true);
                     }
-
-                    WitchRole.RpcWitchClearSpellboundPlayer(PlayerControl.LocalPlayer, player.PlayerId);
                 }
                 else
                 {
@@ -266,6 +264,13 @@ public static class WitchEvents
             return;
         }
 
+        if (victim.HasModifier<WitchSpellboundModifier>())
+        {
+            if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
+            {
+                WitchRole.RpcWitchClearSpellboundPlayer(PlayerControl.LocalPlayer, victim.PlayerId);
+            }
+        }
 
         if (victim.IsRole<WitchRole>())
         {
