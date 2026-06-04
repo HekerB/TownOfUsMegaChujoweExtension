@@ -22,6 +22,11 @@
         <EmbeddedResource Remove="Resources/Audio/**/*.wav" />
     </ItemGroup>
 
+    <ItemGroup Condition="Exists('Resources/Sprites/toumega-sprites-win.bundle') Or Exists('Resources/Sprites/toumega-sprites-android.bundle')">
+        <EmbeddedResource Remove="Resources/**/*.png" />
+        <EmbeddedResource Include="Resources/Anims/**/*.png" />
+    </ItemGroup>
+
     <Import Project="../AmongUs.props" />
 
     <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">

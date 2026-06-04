@@ -74,47 +74,36 @@ public sealed class EvokerBlindButton : TownOfUsRoleButton<EvokerRole>
         }
         catch { /* ignore */ }
 
-        if (EffectActive)
+        SetButtonState(EffectActive);
+    }
+
+    private void SetButtonState(bool effectActive)
+    {
+        if (Button == null) return;
+
+        // Always keep timer text white — prevents the engine/shader from coloring it black/red
+        if (Button.cooldownTimerText != null && Button.cooldownTimerText.gameObject.activeSelf)
         {
-            // Force bright color (no desaturation) when effect is active
+            Button.cooldownTimerText.color = Color.white;
+        }
+
+        if (effectActive)
+        {
+            // Keep graphic fully bright (no desaturation) during blind
             if (Button.graphic != null)
             {
                 Button.graphic.color = Color.white;
-                Button.graphic.material.SetFloat("_Desat", 0f);
+                if (Button.graphic.material != null)
+                    Button.graphic.material.SetFloat("_Desat", 0f);
             }
 
             if (_cooldownFillImage != null)
-            {
                 _cooldownFillImage.color = TouExtensionColors.Evoker;
-            }
-
-            // Smooth blink during the last 3 seconds (2Hz)
-            if (Timer <= 3f)
-            {
-                bool blink = Mathf.FloorToInt(Time.time * 2f) % 2 == 0;
-                if (Button.cooldownTimerText != null)
-                {
-                    Button.cooldownTimerText.color = blink ? Color.red : Color.white;
-                }
-            }
-            else
-            {
-                if (Button.cooldownTimerText != null)
-                {
-                    Button.cooldownTimerText.color = Color.white;
-                }
-            }
         }
         else
         {
             if (_cooldownFillImage != null)
-            {
                 _cooldownFillImage.color = Color.white;
-            }
-            if (Button.cooldownTimerText != null)
-            {
-                Button.cooldownTimerText.color = Color.white;
-            }
         }
     }
 }

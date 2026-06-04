@@ -38,13 +38,14 @@ public sealed class PirateDuelButton : TownOfUsRoleButton<PirateRole, PlayerCont
             return null;
         }
 
-        if (pirateRole.DuelTargetId != byte.MaxValue)
+        var closest = localPlayer.GetClosestLivingPlayer(true, Distance);
+        if (closest == null)
         {
             return null;
         }
 
-        var closest = localPlayer.GetClosestLivingPlayer(true, Distance);
-        if (closest == null)
+        // Don't highlight the player already challenged this round
+        if (pirateRole.DuelTargetId != byte.MaxValue && closest.PlayerId == pirateRole.DuelTargetId)
         {
             return null;
         }
@@ -57,12 +58,46 @@ public sealed class PirateDuelButton : TownOfUsRoleButton<PirateRole, PlayerCont
         return closest;
     }
 
+    protected override void FixedUpdate(PlayerControl playerControl)
+    {
+        base.FixedUpdate(playerControl);
+        SetButtonState(GetTarget() != null && !playerControl.HasDied());
+    }
+
+    private void SetButtonState(bool shouldBeBright)
+    {
+        if (Button == null) return;
+
+        if (Button.cooldownTimerText != null && Button.cooldownTimerText.gameObject.activeSelf)
+        {
+            Button.cooldownTimerText.color = Color.white;
+        }
+
+        if (Button.buttonLabelText != null)
+        {
+            Button.buttonLabelText.color = shouldBeBright ? Color.white : new Color(1f, 1f, 1f, 0.5f);
+        }
+
+        if (Button.graphic != null)
+        {
+            Button.graphic.color = new Color(1f, 1f, 1f, shouldBeBright ? 1f : 0.5f);
+            if (Button.graphic.material != null)
+                Button.graphic.material.SetFloat("_Desat", shouldBeBright ? 0f : 1f);
+        }
+    }
+
     protected override void OnClick()
     {
         var localPlayer = PlayerControl.LocalPlayer;
         var pirateRole = localPlayer?.Data?.Role as PirateRole;
 
         if (Target == null || localPlayer == null || pirateRole == null)
+        {
+            return;
+        }
+
+        // Only block RPC from firing again — button can still highlight before this
+        if (pirateRole.DuelTargetId != byte.MaxValue)
         {
             return;
         }
