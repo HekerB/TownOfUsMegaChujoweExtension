@@ -35,9 +35,7 @@ namespace TouMegaChujoweExtension.Patches.Roles.Jackal;
 [HarmonyPatch]
 public static class JackalMechanicsPatch
 {
-    private static bool _lastShieldState;
-
-    public static void ResetShieldState() => _lastShieldState = false;
+    public static void ResetShieldState() {}
 
     [RegisterEvent]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
@@ -155,52 +153,55 @@ public static class JackalMechanicsPatch
     }
 
     [RegisterEvent]
-    public static void AfterMurderEventHandler(AfterMurderEvent @event)
-    {
-        if (@event == null || @event.Target == null) return;
-
-        var victim = @event.Target;
-
-        if (victim.TryGetModifier<SidekickModifier>(out var mod) && mod != null)
-        {
-            var jackal = MiscUtils.PlayerById(mod.JackalId);
-            if (jackal != null && !jackal.HasDied())
-            {
-                var jackalRole = jackal.GetRole<JackalRole>();
-                jackalRole?.OnRecruitDie();
-            }
-        }
-        if (victim.GetRoleWhenAlive() is JackalRole && AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
-        {
-            var jackalRoleName = (victim.GetRoleWhenAlive() as ITownOfUsRole)?.RoleName ?? "Jackal";
-            foreach (var player in PlayerControl.AllPlayerControls.ToArray())
-            {
-                if (player != null && !player.HasDied() && player.TryGetModifier<SidekickModifier>(out var sMod) && sMod != null && sMod.JackalId == victim.PlayerId)
-                {
-                    player.RpcCustomMurder(player, showKillAnim: false);
-                    DeathHandlerModifier.UpdateDeathHandlerImmediate(
-                        player,
-                        causeOfDeath: TouLocale.Get("ExtensionSidekickJackalEliminatedDeathReason"),
-                        roundOfDeath: DeathEventHandlers.CurrentRound,
-                        diedThisRound: DeathHandlerOverride.SetTrue,
-                        killedBy: jackalRoleName,
-                        lockInfo: DeathHandlerOverride.SetTrue);
-                }
-            }
-        }
-    }
-
-    [RegisterEvent]
     public static void PlayerDeathEventHandler(PlayerDeathEvent @event)
     {
         if (@event == null || @event.Player == null) return;
 
-        if (@event.Player.TryGetModifier<SidekickModifier>(out var mod) && mod != null)
+        var deadPlayer = @event.Player;
+
+        // 1. If a Sidekick died, notify their Jackal to update/remove the shield
+        if (deadPlayer.TryGetModifier<SidekickModifier>(out var mod) && mod != null)
         {
             var jackal = MiscUtils.PlayerById(mod.JackalId);
             if (jackal != null && !jackal.HasDied())
             {
                 jackal.GetRole<JackalRole>()?.OnRecruitDie();
+            }
+        }
+
+        // 2. If a Jackal died, kill/exile all their Sidekicks (lifelink)
+        if (deadPlayer.GetRoleWhenAlive() is JackalRole && AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
+        {
+            var jackalRoleName = (deadPlayer.GetRoleWhenAlive() as ITownOfUsRole)?.RoleName ?? "Jackal";
+            var sidekicks = PlayerControl.AllPlayerControls.ToArray()
+                .Where(p => p != null && p.Pointer != IntPtr.Zero && !p.HasDied() && p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == deadPlayer.PlayerId)
+                .ToList();
+
+            foreach (var sk in sidekicks)
+            {
+                switch (@event.DeathReason)
+                {
+                    case DeathReason.Exile:
+                        DeathHandlerModifier.UpdateDeathHandlerImmediate(
+                            sk,
+                            causeOfDeath: TouLocale.Get("ExtensionSidekickJackalEliminatedDeathReason"),
+                            roundOfDeath: DeathEventHandlers.CurrentRound,
+                            diedThisRound: DeathHandlerOverride.SetFalse,
+                            killedBy: jackalRoleName,
+                            lockInfo: DeathHandlerOverride.SetTrue);
+                        sk.Exiled();
+                        break;
+                    default: // Kill or other
+                        sk.RpcCustomMurder(sk, showKillAnim: false);
+                        DeathHandlerModifier.UpdateDeathHandlerImmediate(
+                            sk,
+                            causeOfDeath: TouLocale.Get("ExtensionSidekickJackalEliminatedDeathReason"),
+                            roundOfDeath: DeathEventHandlers.CurrentRound,
+                            diedThisRound: DeathHandlerOverride.SetTrue,
+                            killedBy: jackalRoleName,
+                            lockInfo: DeathHandlerOverride.SetTrue);
+                        break;
+                }
             }
         }
     }
@@ -242,18 +243,13 @@ public static class JackalMechanicsPatch
         var hasShieldMod = __instance.TryGetModifier<JackalShieldModifier>(out _);
         var shouldHaveShield = jackal != null && sidekicksAlive && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive;
 
-        // Only send RPC when state changes to avoid network spam
-        if (shouldHaveShield != _lastShieldState)
+        if (shouldHaveShield && !hasShieldMod)
         {
-            _lastShieldState = shouldHaveShield;
-            if (shouldHaveShield && !hasShieldMod)
-            {
-                __instance.RpcAddModifier<JackalShieldModifier>();
-            }
-            else if (!shouldHaveShield && hasShieldMod)
-            {
-                __instance.RpcRemoveModifier<JackalShieldModifier>();
-            }
+            __instance.RpcAddModifier<JackalShieldModifier>();
+        }
+        else if (!shouldHaveShield && hasShieldMod)
+        {
+            __instance.RpcRemoveModifier<JackalShieldModifier>();
         }
     }
 
@@ -321,11 +317,6 @@ public static class JackalMechanicsPatch
                 new Vector3(0f, 1f, -20f),
                 spr: TouExtensionIcons.SidekickModifierIcon.LoadAsset()
             ).AdjustNotification();
-
-            if (HudManager.Instance != null && HudManager.Instance.Chat != null)
-            {
-                HudManager.Instance.Chat.AddChat(local, TouLocale.Get("ExtensionSidekickRecruitedChatMsg"));
-            }
         }
     }
 }

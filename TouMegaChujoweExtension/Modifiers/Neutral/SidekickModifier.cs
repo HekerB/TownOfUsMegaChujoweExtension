@@ -113,11 +113,6 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
 
         try
         {
-            if (HudManager.Instance != null && HudManager.Instance.Chat != null)
-            {
-                HudManager.Instance.Chat.AddChat(Player, TouLocale.Get("ExtensionSidekickRecruitedChatMsg"));
-            }
-
             var notification = MiraAPI.Utilities.Helpers.CreateAndShowNotification(
                 TouLocale.Get("ExtensionSidekickRecruitedAlert"), 
                 TouExtensionColors.Jackal, 
@@ -173,6 +168,7 @@ public static class SidekickFriendlyFirePatch
     public static bool Prefix(PlayerControl __instance, PlayerControl target)
     {
         if (__instance == null || target == null) return true;
+        if (__instance.PlayerId == target.PlayerId) return true;
 
         var killerSidekick = __instance.GetModifier<SidekickModifier>();
         if (killerSidekick != null)

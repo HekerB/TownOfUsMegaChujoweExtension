@@ -1227,6 +1227,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionGeneralJackalChatDisplayName">Recruits Private Chat</string>
   <string name="ExtensionGameMechanicOptionsGroupName">Game Mechanics</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Recruits See Each Other's Role</string>
+  <string name="ExtensionOptionGeneralLoversKnowEachOthersRoles">Lovers Know Each Other's Roles</string>
   <string name="ExtensionOptionGeneralApocalypseMeetingChat">Apocalypse Meeting Chat</string>
   <string name="ExtensionOptionGameMechanicApocalypseWinsTogether">Apocalypse Wins Together</string>
 

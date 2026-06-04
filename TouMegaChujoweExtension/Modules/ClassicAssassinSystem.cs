@@ -762,27 +762,25 @@ public static class ClassicAssassinSystem
         if (playerA == null || playerB == null) return false;
         if (playerA.PlayerId == playerB.PlayerId) return true;
 
-        var sidekickA = playerA.GetModifier<TouMegaChujoweExtension.Modifiers.Neutral.SidekickModifier>();
-        var sidekickB = playerB.GetModifier<TouMegaChujoweExtension.Modifiers.Neutral.SidekickModifier>();
+        byte jackalIdA = 255;
+        if (playerA.GetRole<JackalRole>() != null) jackalIdA = playerA.PlayerId;
+        else if (playerA.TryGetModifier<TouMegaChujoweExtension.Modifiers.Neutral.SidekickModifier>(out var modA) && modA != null) jackalIdA = modA.JackalId;
 
-        if (sidekickA != null && sidekickB != null)
+        if (jackalIdA == 255 && TouMegaChujoweExtension.Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(playerA.PlayerId, out var pendingA))
         {
-            return sidekickA.JackalId == sidekickB.JackalId && sidekickA.JackalId != 255;
+            jackalIdA = pendingA;
         }
 
-        var jackalA = playerA.GetRole<JackalRole>();
-        if (jackalA != null && sidekickB != null && sidekickB.JackalId == playerA.PlayerId)
+        byte jackalIdB = 255;
+        if (playerB.GetRole<JackalRole>() != null) jackalIdB = playerB.PlayerId;
+        else if (playerB.TryGetModifier<TouMegaChujoweExtension.Modifiers.Neutral.SidekickModifier>(out var modB) && modB != null) jackalIdB = modB.JackalId;
+
+        if (jackalIdB == 255 && TouMegaChujoweExtension.Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.TryGetValue(playerB.PlayerId, out var pendingB))
         {
-            return true;
+            jackalIdB = pendingB;
         }
 
-        var jackalB = playerB.GetRole<JackalRole>();
-        if (jackalB != null && sidekickA != null && sidekickA.JackalId == playerB.PlayerId)
-        {
-            return true;
-        }
-
-        return false;
+        return jackalIdA != 255 && jackalIdA == jackalIdB;
     }
 
     // =========================

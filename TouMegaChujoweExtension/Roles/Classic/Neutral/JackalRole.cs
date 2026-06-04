@@ -256,32 +256,3 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     }
 }
 
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]
-public static class JackalDeathLifelinkPatch
-{
-    [HarmonyPostfix]
-    public static void Postfix(PlayerControl __instance)
-    {
-        if (__instance == null || !AmongUsClient.Instance.AmHost) return;
-
-        if (__instance.GetRoleWhenAlive() is JackalRole)
-        {
-            var jackalRoleName = (__instance.GetRoleWhenAlive() as ITownOfUsRole)?.RoleName ?? "Jackal";
-            var sidekicks = PlayerControl.AllPlayerControls.ToArray()
-                .Where(p => p != null && p.Pointer != IntPtr.Zero && !p.HasDied() && p.TryGetModifier<SidekickModifier>(out var m) && m.JackalId == __instance.PlayerId)
-                .ToList();
-
-            foreach (var sk in sidekicks)
-            {
-                sk.RpcCustomMurder(sk, showKillAnim: false);
-                DeathHandlerModifier.UpdateDeathHandlerImmediate(
-                    sk,
-                    causeOfDeath: TouLocale.Get("ExtensionSidekickJackalEliminatedDeathReason"),
-                    roundOfDeath: TownOfUs.Events.DeathEventHandlers.CurrentRound,
-                    diedThisRound: DeathHandlerOverride.SetTrue,
-                    killedBy: jackalRoleName,
-                    lockInfo: DeathHandlerOverride.SetTrue);
-            }
-        }
-    }
-}

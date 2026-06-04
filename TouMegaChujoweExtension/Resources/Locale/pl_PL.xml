@@ -1229,6 +1229,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionGeneralJackalChatDisplayName">Prywatny czat Rekrutow</string>
   <string name="ExtensionGameMechanicOptionsGroupName">Mechaniki gry</string>
   <string name="ExtensionOptionGeneralRecruitsKnowEachOther">Rekruci widza swoje role</string>
+  <string name="ExtensionOptionGeneralLoversKnowEachOthersRoles">Lovers widzą swoje role</string>
   <string name="ExtensionOptionGeneralApocalypseMeetingChat">Czat Apokalipsy na spotkaniu</string>
   <string name="ExtensionOptionGameMechanicApocalypseWinsTogether">Apokalipsa wygrywa razem</string>
 

@@ -26,6 +26,9 @@ public static class GuesserExemptPatch
 
         var m3 = AccessTools.Method(typeof(VigilanteRole), "IsExempt");
         if (m3 != null) yield return m3;
+
+        var m4 = AccessTools.Method(typeof(DeputyRole), "IsExempt");
+        if (m4 != null) yield return m4;
     }
 
     [HarmonyPostfix]
@@ -56,6 +59,10 @@ public static class GuesserExemptPatch
         {
             guesser = vigilante.Player;
         }
+        else if (__instance is DeputyRole deputy)
+        {
+            guesser = deputy.Player;
+        }
 
         var targetPlayer = MiscUtils.PlayerById(targetId);
         if (guesser != null && targetPlayer != null && AreOnSameJackalTeam(guesser, targetPlayer))
@@ -72,29 +79,29 @@ public static class GuesserExemptPatch
 
     public static bool AreOnSameJackalTeam(PlayerControl? playerA, PlayerControl? playerB)
     {
-        if (playerA == null || playerB == null) return false;
-        if (playerA.PlayerId == playerB.PlayerId) return true;
-
-        var sidekickA = playerA.GetModifier<SidekickModifier>();
-        var sidekickB = playerB.GetModifier<SidekickModifier>();
-
-        if (sidekickA != null && sidekickB != null)
+        if (playerA == null || playerB == null || playerA.PlayerId == playerB.PlayerId)
         {
-            return sidekickA.JackalId == sidekickB.JackalId && sidekickA.JackalId != 255;
+            return false;
         }
 
-        var jackalA = playerA.GetRole<JackalRole>();
-        if (jackalA != null && sidekickB != null && sidekickB.JackalId == playerA.PlayerId)
+        byte jackalIdA = 255;
+        if (playerA.GetRole<JackalRole>() != null) jackalIdA = playerA.PlayerId;
+        else if (playerA.TryGetModifier<SidekickModifier>(out var modA) && modA != null) jackalIdA = modA.JackalId;
+
+        if (jackalIdA == 255 && Jackal.JackalStartPatch.PendingAssignments.TryGetValue(playerA.PlayerId, out var pendingA))
         {
-            return true;
+            jackalIdA = pendingA;
         }
 
-        var jackalB = playerB.GetRole<JackalRole>();
-        if (jackalB != null && sidekickA != null && sidekickA.JackalId == playerB.PlayerId)
+        byte jackalIdB = 255;
+        if (playerB.GetRole<JackalRole>() != null) jackalIdB = playerB.PlayerId;
+        else if (playerB.TryGetModifier<SidekickModifier>(out var modB) && modB != null) jackalIdB = modB.JackalId;
+
+        if (jackalIdB == 255 && Jackal.JackalStartPatch.PendingAssignments.TryGetValue(playerB.PlayerId, out var pendingB))
         {
-            return true;
+            jackalIdB = pendingB;
         }
 
-        return false;
+        return jackalIdA != 255 && jackalIdA == jackalIdB;
     }
 }
