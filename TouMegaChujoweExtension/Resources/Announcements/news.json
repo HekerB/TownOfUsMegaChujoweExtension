@@ -567,7 +567,7 @@
         "\n- <b>Arcanist &amp; Berserker Buttons</b> - Fixed UI null-access crashes during round transitions by securing role lookups with local player checks.",
         "\n- <b>Jackal</b> - Fixed Jackal self-killing bugs and ensured the IgnoreInvulnerabilityModifier is properly attached/removed to prevent unintended button/shield interactions.",
         "\n\n\r<size=110%><b>BAKER &amp; FAMINE</b></size>",
-        "\n- <b>Unlock Mechanics</b> - Baker is now strictly limited to 1 kill max until Famine is unlocked. Adjusted TryUnlockFamine checks to ignore the Baker's starved state so that Famine unlocks even if 1 starved target remains alive.",
+        "\n- <b>Starvation Mechanics</b> - Famine can now mark and starve multiple breaded players per round, and every single marked player will die at the start of the next meeting. Adjusted TryUnlockFamine checks to ignore the Baker's starved state so that Famine unlocks even if 1 starved target remains alive.",
         "\n- <b>Famine Visual Feedback</b> - Famine's starved targets now have colored nicknames and a custom symbol in the HUD, making it easier to track target status.",
         "\n- <b>Cleanse Support</b> - Cleric and Doctor cleanse now correctly remove the Famine Starve Reveal modifier from targets.",
         "\n- <b>Famine Starve Button</b> - Configured Famine's starve button to support infinite uses when configured.",
