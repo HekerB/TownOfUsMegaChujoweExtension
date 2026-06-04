@@ -27,10 +27,8 @@ public sealed class ArcanistDrawButton : TownOfUsRoleButton<ArcanistRole>
     public override LoadableAsset<Sprite> Sprite => TouExtensionIcons.ArcanistButtonIcon;
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Arcanist;
-
     public override float Cooldown =>
         Math.Clamp(OptionGroupSingleton<ArcanistOptions>.Instance.Cooldown * ((PlayerControl.LocalPlayer == null ? null : Role)?.CooldownMultiplier ?? 1f) + MapCooldown, 5f, 120f);
-
     public override int MaxUses => (int)OptionGroupSingleton<ArcanistOptions>.Instance.DeckSize;
     public override bool ZeroIsInfinite { get; set; } = true;
 
@@ -107,11 +105,11 @@ public sealed class ArcanistDrawButton : TownOfUsRoleButton<ArcanistRole>
             case TarotCard.Death:
                 if (UnityEngine.Random.Range(0, 100) < 50)
                 {
-                    subRole = 0; // Die
+                    subRole = 0;
                 }
                 else
                 {
-                    subRole = 1; // Lucky Day
+                    subRole = 1;
                 }
                 break;
         }
