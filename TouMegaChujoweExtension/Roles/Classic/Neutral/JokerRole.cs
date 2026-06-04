@@ -163,6 +163,13 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
     [MethodRpc((uint)Networking.ExtensionRpc.JokerPlaceClone)]
     public static void RpcJokerPlaceClone(PlayerControl joker, byte appearancePlayerId, float x, float y, float z)
     {
+        if (joker == null ||
+            JokerCloneSystem.GetActiveCloneCountForJoker(joker.PlayerId) >=
+            (int)OptionGroupSingleton<JokerOptions>.Instance.MaxClones)
+        {
+            return;
+        }
+
         var appearanceSource = MiscUtils.PlayerById(appearancePlayerId);
         if (appearanceSource == null)
         {

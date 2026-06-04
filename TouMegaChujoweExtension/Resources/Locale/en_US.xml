@@ -362,6 +362,7 @@
   <string name="ExtensionOptionWitchAdditionalCooldown">Witch Additional Cooldown</string>
   <string name="ExtensionOptionWitchSpellCastingDuration">Witch Spell Casting Duration</string>
   <string name="ExtensionOptionWitchMeetingsUntilDeath">Meetings Until Death</string>
+  <string name="ExtensionOptionWitchMeetingDeathAnimation">Meeting Death Animation</string>
   
   <!-- Witch Death Message -->
   <string name="DiedToWitch">Cursed</string>

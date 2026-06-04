@@ -42,7 +42,24 @@ public static class JokerCloneSystem
 
     public static int PlaceClone(byte jokerId, PlayerControl appearanceSource, Vector3 worldPos, bool isPreview = false)
     {
+        if (isPreview)
+        {
+            RemovePreviewClonesForJoker(jokerId);
+        }
+
         return PlaceCloneInternal(jokerId, appearanceSource, worldPos, _currentMeetingCount, isPreview);
+    }
+
+    public static void RemovePreviewClonesForJoker(byte jokerId)
+    {
+        for (var i = ActiveClones.Count - 1; i >= 0; i--)
+        {
+            if (ActiveClones[i].JokerId == jokerId && ActiveClones[i].IsPreview)
+            {
+                ActiveClones[i].Fake.Destroy();
+                ActiveClones.RemoveAt(i);
+            }
+        }
     }
 
     private static int PlaceCloneInternal(byte jokerId, PlayerControl appearanceSource, Vector3 worldPos, int placedAtMeeting, bool isPreview)

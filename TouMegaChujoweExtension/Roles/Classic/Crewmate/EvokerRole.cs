@@ -65,10 +65,10 @@ public sealed class EvokerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsR
         new(TouLocale.GetParsed($"ExtensionRole{LocaleKey}Blind", "Blind"),
             TouLocale.GetParsed($"ExtensionRole{LocaleKey}BlindWikiDescription"),
             TouExtensionCrewAssets.EvokerBlindButtonSprite),
-        new(TouLocale.GetParsed($"ExtensionRole{LocaleKey}Verify", "Verify"),
-            TouLocale.GetParsed($"ExtensionRole{LocaleKey}VerifyWikiDescription"),
-            TouExtensionCrewAssets.EvokerVerifyButtonSprite)
-    ];
+            new(TouLocale.GetParsed($"ExtensionRole{LocaleKey}Verify", "Verify"),
+                TouLocale.GetParsed($"ExtensionRole{LocaleKey}VerifyWikiDescription"),
+                TouNeutAssets.InquireSprite)
+        ];
 
 [MethodRpc((uint)ExtensionRpc.EvokerBlind)]
 public static void RpcEvokerBlind(PlayerControl evoker, float duration)
@@ -95,6 +95,10 @@ public static void RpcEvokerBlind(PlayerControl evoker, float duration)
     [MethodRpc((uint)ExtensionRpc.EvokerVerify)]
     public static void RpcEvokerVerify(PlayerControl evoker, byte targetId)
     {
+        if (PlayerControl.LocalPlayer != null && evoker.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+        {
+            return;
+        }
         if (evoker.Data.Role is EvokerRole role)
         {
             role.VerifiesUsed++;

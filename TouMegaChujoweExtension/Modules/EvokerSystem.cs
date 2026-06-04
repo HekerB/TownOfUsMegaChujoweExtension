@@ -8,6 +8,13 @@ using TownOfUs.Roles;
 using TownOfUs.Utilities.Appearances;
 using TownOfUs.Utilities;
 using UnityEngine;
+using ExtensionBodyguardRole = TouMegaChujoweExtension.Roles.Classic.Crewmate.BodyguardRole;
+using ExtensionBountyHunterRole = TouMegaChujoweExtension.Roles.Classic.Neutral.BountyHunterRole;
+using ExtensionJackalRole = TouMegaChujoweExtension.Roles.Classic.Neutral.JackalRole;
+using TouInquisitorRole = TownOfUs.Roles.Neutral.InquisitorRole;
+using TouJailorRole = TownOfUs.Roles.Crewmate.JailorRole;
+using TouMirrorcasterRole = TownOfUs.Roles.Crewmate.MirrorcasterRole;
+using TouProsecutorRole = TownOfUs.Roles.Crewmate.ProsecutorRole;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -142,6 +149,21 @@ public static class EvokerSystem
         var role = player.Data.Role;
         if (role == null) return false;
 
+        if (IsAlwaysKillerRole(player, role))
+        {
+            return true;
+        }
+
+        if (CrewmateKillersBlindedEnabled() && IsCrewKillerRole(player, role))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private static bool IsAlwaysKillerRole(PlayerControl player, RoleBehaviour role)
+    {
         if (role.IsImpostor)
         {
             return true;
@@ -152,15 +174,28 @@ public static class EvokerSystem
             return true;
         }
 
-        if (OptionGroupSingleton<EvokerOptions>.Instance != null && 
-            OptionGroupSingleton<EvokerOptions>.Instance.CrewmateKillersBlinded != null &&
-            OptionGroupSingleton<EvokerOptions>.Instance.CrewmateKillersBlinded.Value &&
-            player.Is(RoleAlignment.CrewmateKilling))
+        return role is ExtensionBountyHunterRole
+            or ExtensionJackalRole
+            or TouInquisitorRole;
+    }
+
+    private static bool IsCrewKillerRole(PlayerControl player, RoleBehaviour role)
+    {
+        if (player.Is(RoleAlignment.CrewmateKilling))
         {
             return true;
         }
 
-        return false;
+        return role is TouMirrorcasterRole
+            or TouJailorRole
+            or TouProsecutorRole
+            or ExtensionBodyguardRole;
+    }
+
+    private static bool CrewmateKillersBlindedEnabled()
+    {
+        var options = OptionGroupSingleton<EvokerOptions>.Instance;
+        return options?.CrewmateKillersBlinded?.Value == true;
     }
 
     public static void OnRoundStart()

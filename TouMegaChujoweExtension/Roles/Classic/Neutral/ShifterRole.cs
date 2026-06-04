@@ -77,7 +77,8 @@ public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
             var target = MiscUtils.PlayerById(PendingTargetId);
             if (target != null)
             {
-                stringB.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"Pending Target: {target.Data.PlayerName}");
+                var hexColor = ColorUtility.ToHtmlStringRGB(TouExtensionColors.Shifter);
+                stringB.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<b>Pending Target: <color=#{hexColor}>{target.Data.PlayerName}</color> (Will be stolen)</b>");
             }
         }
         else

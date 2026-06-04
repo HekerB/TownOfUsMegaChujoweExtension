@@ -81,19 +81,52 @@ public sealed class ShifterShiftButton : TownOfUsKillRoleButton<ShifterRole, Pla
         Timer = Cooldown;
     }
 
+    private PlayerControl? _shifterTargetOutlined;
+
     protected override void FixedUpdate(PlayerControl playerControl)
     {
         if (MeetingHud.Instance)
+        {
+            ClearShifterTargetOutline();
             return;
+        }
 
         var player = PlayerControl.LocalPlayer;
         if (player?.Data?.Role is ShifterRole shifterRole)
         {
             if (shifterRole.ShiftUsed)
             {
+                ClearShifterTargetOutline();
                 Button?.gameObject.SetActive(false);
                 return;
             }
+
+            var targetId = shifterRole.PendingTargetId;
+            if (targetId != byte.MaxValue)
+            {
+                var target = MiscUtils.PlayerById(targetId);
+                if (target != null && !target.HasDied())
+                {
+                    if (_shifterTargetOutlined != target)
+                    {
+                        ClearShifterTargetOutline();
+                        target.cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(TouExtensionColors.Shifter));
+                        _shifterTargetOutlined = target;
+                    }
+                }
+                else
+                {
+                    ClearShifterTargetOutline();
+                }
+            }
+            else
+            {
+                ClearShifterTargetOutline();
+            }
+        }
+        else
+        {
+            ClearShifterTargetOutline();
         }
 
         Button?.gameObject.SetActive(
@@ -101,5 +134,19 @@ public sealed class ShifterShiftButton : TownOfUsKillRoleButton<ShifterRole, Pla
             HudManager.Instance.PetButton.isActiveAndEnabled);
 
         base.FixedUpdate(playerControl);
+    }
+
+    private void ClearShifterTargetOutline()
+    {
+        if (_shifterTargetOutlined != null)
+        {
+            _shifterTargetOutlined.cosmetics.SetOutline(false, new Il2CppSystem.Nullable<Color>());
+            _shifterTargetOutlined = null;
+        }
+    }
+
+    public void OnDestroy()
+    {
+        ClearShifterTargetOutline();
     }
 }

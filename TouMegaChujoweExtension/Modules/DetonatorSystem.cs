@@ -100,6 +100,12 @@ public static class DetonatorSystem
         _bombTargets.Add(targetId);
     }
 
+    public static void RemoveBomb(byte targetId)
+    {
+        _bombTargets.Remove(targetId);
+        _activeBombs.RemoveAll(b => b.TargetId == targetId);
+    }
+
     public static bool HasBomb(byte targetId) => _bombTargets.Contains(targetId);
     public static bool IsBombTarget(byte targetId) => _bombTargets.Contains(targetId);
     public static bool HasAnyActiveBomb(byte detonatorId) => _activeBombs.Any(b => b.DetonatorId == detonatorId && !b.Detonated);

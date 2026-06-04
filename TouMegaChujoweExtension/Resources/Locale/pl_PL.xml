@@ -360,6 +360,7 @@
   <string name="ExtensionOptionWitchAdditionalCooldown">Dodatkowy cooldown Witch</string>
   <string name="ExtensionOptionWitchSpellCastingDuration">Czas rzucania zaklecia Witch</string>
   <string name="ExtensionOptionWitchMeetingsUntilDeath">Liczba spotkan do smierci</string>
+  <string name="ExtensionOptionWitchMeetingDeathAnimation">Animacja smierci na spotkaniu</string>
   
   <!-- Witch Death Message -->
   <string name="DiedToWitch">Przeklety</string>

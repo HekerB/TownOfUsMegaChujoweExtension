@@ -32,6 +32,7 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
     private Stage _stage = Stage.Select;
     private int _previewCloneIndex = -1;
     private bool _isProcessingClick;
+    private bool _isTabletOpen;
     private float _removeUnlockAt;
     private bool _isShaking;
 
@@ -59,7 +60,7 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
 
         return _stage switch
         {
-            Stage.Select => Timer <= 0f && HasCloneSpace(player.PlayerId),
+            Stage.Select => !_isTabletOpen && !Minigame.Instance && Timer <= 0f && HasCloneSpace(player.PlayerId),
             Stage.Preview => true,
             Stage.ActiveLocked => Time.time >= _removeUnlockAt,
             Stage.ActiveFull => true,
@@ -78,6 +79,11 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
         }
 
         LocalInstance = this;
+
+        if (_isTabletOpen && !Minigame.Instance)
+        {
+            _isTabletOpen = false;
+        }
 
         var activeIndex = FindMyActiveCloneIndex(local.PlayerId);
         var previewIndex = FindMyPreviewCloneIndex(local.PlayerId);
@@ -118,6 +124,12 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
 
     public override void ClickHandler()
     {
+        if (_isTabletOpen)
+        {
+            DoShake();
+            return;
+        }
+
         if (_stage == Stage.ActiveLocked && Time.time < _removeUnlockAt)
         {
             DoShake();
@@ -170,12 +182,27 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
                 return;
             }
 
+            if (Minigame.Instance)
+            {
+                DoShake();
+                return;
+            }
+
+            _isTabletOpen = true;
+
             var menu = CustomPlayerMenu.Create();
             menu.Begin(
                 IsLivingCloneAppearanceCandidate,
                 selectedPlayer =>
                 {
-                    if (selectedPlayer != null)
+                    _isTabletOpen = false;
+                    menu.ForceClose();
+
+                    if (selectedPlayer != null &&
+                        _stage == Stage.Select &&
+                        HasCloneSpace(player.PlayerId) &&
+                        !IsNearWall(player.transform.position) &&
+                        FindMyPreviewCloneIndex(player.PlayerId) < 0)
                     {
                         _previewCloneIndex = JokerCloneSystem.PlaceClone(player.PlayerId, selectedPlayer, player.transform.position, true);
                         if (_previewCloneIndex >= 0)
@@ -184,8 +211,6 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
                             OverrideName(TouLocale.Get("Confirm", "Confirm"));
                         }
                     }
-
-                    menu.Close();
                 });
             return;
         }
@@ -262,6 +287,7 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
         }
 
         _stage = Stage.Select;
+        _isTabletOpen = false;
         _removeUnlockAt = 0f;
         OverrideName(TouLocale.Get("ExtensionRoleJokerPlaceClone", "Place Clone"));
     }
