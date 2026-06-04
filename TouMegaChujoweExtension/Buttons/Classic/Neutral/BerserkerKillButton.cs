@@ -24,9 +24,9 @@ public sealed class BerserkerKillButton : TownOfUsRoleButton<BerserkerRole, Play
 
     public override string Name => TranslationController.Instance.GetStringWithDefault(StringNames.KillLabel, "Kill");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
-    public override Color TextOutlineColor => Role?.RoleColor ?? TouExtensionColors.Berserker;
-    public override float Cooldown => Math.Clamp((Role?.GetKillCooldown() ?? OptionGroupSingleton<BerserkerOptions>.Instance.InitialKillCooldown) + MapCooldown, 5f, 120f);
-    public override LoadableAsset<Sprite> Sprite => Role?.IsWar == true ? TouNeutAssets.WerewolfKillSprite : TouAssets.KillSprite;
+    public override Color TextOutlineColor => (PlayerControl.LocalPlayer == null ? null : Role)?.RoleColor ?? TouExtensionColors.Berserker;
+    public override float Cooldown => Math.Clamp(((PlayerControl.LocalPlayer == null ? null : Role)?.GetKillCooldown() ?? OptionGroupSingleton<BerserkerOptions>.Instance.InitialKillCooldown) + MapCooldown, 5f, 120f);
+    public override LoadableAsset<Sprite> Sprite => (PlayerControl.LocalPlayer == null ? null : Role)?.IsWar == true ? TouNeutAssets.WerewolfKillSprite : TouAssets.KillSprite;
     public override float Distance => GameManager.Instance.LogicOptions.GetKillDistance();
     public override bool ShouldPauseInVent => true;
 

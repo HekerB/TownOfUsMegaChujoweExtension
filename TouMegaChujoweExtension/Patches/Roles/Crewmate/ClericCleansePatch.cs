@@ -61,6 +61,7 @@ public static class ClericCleansePatch
                 if (hasBread || isStarving)
                 {
                     __instance.Player.RemoveModifier<BakerBreadRevealModifier>();
+                    __instance.Player.RemoveModifier<FamineStarveRevealModifier>();
                 }
 
                 if (__instance.Player.AmOwner)

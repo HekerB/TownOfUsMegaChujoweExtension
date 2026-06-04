@@ -1,54 +1,9 @@
-using HarmonyLib;
-using System;
-using TownOfUs.Modifiers;
-using TownOfUs.Patches;
-using MiraAPI.Modifiers;
+// DeathHandlerInitializationPatch REMOVED (2026-06-04)
+// Previously this pre-added DeathHandlerModifier to all players at game start.
+// In TOU-Mira 1.6.2-dev, CoWriteDeathHandler does a `yield break` when the
+// modifier already exists — without saving the new CauseOfDeath.
+// This caused everyone to show "Suicide" (the default CauseOfDeath value).
+// TOU-Mira now handles modifier creation via UpdateDeathHandlerImmediate before kill,
+// so pre-adding it here is no longer needed and actively harmful.
 
 namespace TouMegaChujoweExtension.Patches.BugFixes;
-
-[HarmonyPatch(typeof(TouRoleManagerPatches), "AssignRoles")]
-[HarmonyPatch(typeof(TouRoleManagerPatches), "AssignRolesFromRoleList")]
-public static class DeathHandlerInitializationPatch
-{
-    [HarmonyPostfix]
-    public static void Postfix()
-    {
-        UnityEngine.Debug.Log("[TOUMCE] AssignRoles Postfix triggered - ensuring all players have DeathHandlerModifier.");
-        EnsureModifierOnAllPlayers();
-    }
-
-    public static void EnsureModifierOnAllPlayers()
-    {
-        if (PlayerControl.AllPlayerControls == null) return;
-
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (player != null && player.Pointer != IntPtr.Zero)
-            {
-                if (!player.HasModifier<DeathHandlerModifier>())
-                {
-                    try
-                    {
-                        player.AddModifier<DeathHandlerModifier>();
-                        UnityEngine.Debug.Log($"[TOUMCE] Initialized DeathHandlerModifier for player {player.Data?.PlayerName} (ID: {player.PlayerId})");
-                    }
-                    catch (Exception ex)
-                    {
-                        UnityEngine.Debug.LogError($"[TOUMCE] Failed to add DeathHandlerModifier to player {player.PlayerId}: {ex}");
-                    }
-                }
-            }
-        }
-    }
-}
-
-[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Start))]
-public static class DeathHandlerShipStatusStartPatch
-{
-    [HarmonyPostfix]
-    public static void Postfix()
-    {
-        UnityEngine.Debug.Log("[TOUMCE] ShipStatus.Start Postfix triggered - ensuring all players have DeathHandlerModifier.");
-        DeathHandlerInitializationPatch.EnsureModifierOnAllPlayers();
-    }
-}

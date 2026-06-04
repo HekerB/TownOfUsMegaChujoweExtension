@@ -98,6 +98,11 @@ public static class BakerEvents
             victim.RemoveModifier<BakerBreadRevealModifier>();
         }
 
+        if (victim.HasModifier<FamineStarveRevealModifier>())
+        {
+            victim.RemoveModifier<FamineStarveRevealModifier>();
+        }
+
         TryUnlockFamine();
     }
 
@@ -201,7 +206,7 @@ public static class BakerEvents
         }
     }
 
-    private static void TryUnlockFamine()
+    public static void TryUnlockFamine()
     {
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
         {
@@ -222,7 +227,7 @@ public static class BakerEvents
             .Any(x => x != null &&
                       !x.HasDied() &&
                       x != activeFamine &&
-                      (x.HasModifier<BakerBreadModifier>() || x.HasModifier<FamineStarvedModifier>()));
+                      x.HasModifier<BakerBreadModifier>());
         if (!anyBreadsAlive)
         {
             FamineRole.RpcUnlockFamine(activeFamine);
@@ -288,6 +293,11 @@ public static class BakerEvents
         if (target.HasModifier<BakerBreadRevealModifier>())
         {
             target.RemoveModifier<BakerBreadRevealModifier>();
+        }
+
+        if (target.HasModifier<FamineStarveRevealModifier>())
+        {
+            target.RemoveModifier<FamineStarveRevealModifier>();
         }
     }
 }

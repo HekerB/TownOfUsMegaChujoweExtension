@@ -29,7 +29,7 @@ public sealed class ArcanistDrawButton : TownOfUsRoleButton<ArcanistRole>
     public override Color TextOutlineColor => TouExtensionColors.Arcanist;
 
     public override float Cooldown =>
-        Math.Clamp(OptionGroupSingleton<ArcanistOptions>.Instance.Cooldown * (Role?.CooldownMultiplier ?? 1f) + MapCooldown, 5f, 120f);
+        Math.Clamp(OptionGroupSingleton<ArcanistOptions>.Instance.Cooldown * ((PlayerControl.LocalPlayer == null ? null : Role)?.CooldownMultiplier ?? 1f) + MapCooldown, 5f, 120f);
 
     public override int MaxUses => (int)OptionGroupSingleton<ArcanistOptions>.Instance.DeckSize;
     public override bool ZeroIsInfinite { get; set; } = true;

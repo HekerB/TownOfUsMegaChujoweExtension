@@ -24,6 +24,7 @@ public sealed class FamineStarveButton : TownOfUsRoleButton<FamineRole, PlayerCo
     public override Color TextOutlineColor => TouExtensionColors.Famine;
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<BakerOptions>.Instance.StarveCooldown + MapCooldown, 0f, 120f);
     public override float EffectDuration => 0f;
+    public override bool ZeroIsInfinite => true;
     public override LoadableAsset<Sprite> Sprite => TownOfUs.Assets.TouNeutAssets.ReapSprite;
 
     public override void CreateButton(Transform parent)

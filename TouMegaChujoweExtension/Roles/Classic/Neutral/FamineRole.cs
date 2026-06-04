@@ -199,19 +199,29 @@ public sealed class FamineRole(IntPtr cppPtr)
             return;
         }
 
+        if (target.HasModifier<BakerBreadModifier>())
+        {
+            target.RemoveModifier<BakerBreadModifier>();
+        }
+
+        if (target.HasModifier<BakerBreadRevealModifier>())
+        {
+            target.RemoveModifier<BakerBreadRevealModifier>();
+        }
+
         if (!target.HasModifier<FamineStarvedModifier>())
         {
             target.AddModifier<FamineStarvedModifier>();
         }
 
-        if (!target.HasModifier<BakerBreadRevealModifier>())
+        if (!target.HasModifier<FamineStarveRevealModifier>())
         {
-            target.AddModifier<BakerBreadRevealModifier>();
+            target.AddModifier<FamineStarveRevealModifier>();
         }
 
-        if (target.HasModifier<BakerBreadModifier>())
+        if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
         {
-            target.RemoveModifier<BakerBreadModifier>();
+            TouMegaChujoweExtension.Events.Neutral.BakerEvents.TryUnlockFamine();
         }
     }
 

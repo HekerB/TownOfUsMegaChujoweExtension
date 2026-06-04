@@ -136,6 +136,10 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                 HudManager.Instance.ImpostorVentButton.graphic.sprite = TouNeutAssets.PestVentSprite.LoadAsset();
                 HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(RoleColor);
             }
+            if (!player.HasModifier<TownOfUs.Modifiers.IgnoreInvulnerabilityModifier>())
+            {
+                player.AddModifier<TownOfUs.Modifiers.IgnoreInvulnerabilityModifier>();
+            }
         }
     }
 
@@ -149,6 +153,10 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             {
                 UnityEngine.Object.Destroy(killButton.Button.gameObject);
                 UnityEngine.Debug.Log("[TOUMCE] Deinitialize: Destroyed JackalKillButton.Button.gameObject for local Jackal.");
+            }
+            if (targetPlayer.HasModifier<TownOfUs.Modifiers.IgnoreInvulnerabilityModifier>())
+            {
+                targetPlayer.RemoveModifier<TownOfUs.Modifiers.IgnoreInvulnerabilityModifier>();
             }
         }
     }

@@ -112,6 +112,7 @@ public static class JackalMechanicsPatch
         try
         {
             if (killer == null || killer.Pointer == IntPtr.Zero || victim == null || victim.Pointer == IntPtr.Zero || victim.Data == null) return false;
+            if (killer.PlayerId == victim.PlayerId) return false;
 
             byte killerJackalTeamId = 255;
             if (killer.GetRole<JackalRole>() != null) killerJackalTeamId = killer.PlayerId;

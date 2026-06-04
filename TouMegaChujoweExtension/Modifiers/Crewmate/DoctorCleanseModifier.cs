@@ -35,6 +35,7 @@ public sealed class DoctorCleanseModifier : TimedModifier
             m is PopeCanonizedModifier ||
             m is BakerBreadModifier ||
             m is BakerBreadRevealModifier ||
+            m is FamineStarveRevealModifier ||
             m is FamineStarvedModifier ||
             m is SoulReapedModifier
         ).ToList();
