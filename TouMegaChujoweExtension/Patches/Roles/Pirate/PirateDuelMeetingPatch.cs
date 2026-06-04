@@ -189,11 +189,6 @@ public static class PirateDuelMeetingPatch
 
             area.NameText.color = PirateTargetColor;
 
-            if (!area.NameText.text.StartsWith("☠ ", StringComparison.Ordinal))
-            {
-                area.NameText.text = "☠ " + area.NameText.text;
-            }
-
             break;
         }
     }

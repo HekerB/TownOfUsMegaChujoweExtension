@@ -420,7 +420,7 @@
   <string name="ExtensionRoleRcXd">RC-XD</string>
   <string name="ExtensionRoleRcXdIntroBlurb">Steruj samochodem-bombą, aby zniszczyć załogę.</string>
   <string name="ExtensionRoleRcXdTabDescription">Wypusc i prowadz RC.\%nl\%Detonuj go blisko wrogow.</string>
-  <string name="ExtensionRoleRcXdWikiDescription">RC-XD to rola Impostor Power, która może wypuszczać i detonować zdalnie sterowany samochodzik, aby zabijać graczy na mapie. Używaj strzałek, aby nim sterować i detonuj go blisko wrogów.</string>
+  <string name="ExtensionRoleRcXdWikiDescription">RC-XD to rola Impostor Power, która może wypuszczać i detonować zdalnie sterowany samochodzik, aby zabijać graczy na mapie. Używaj klawiszy ruchu lub kontrolera, aby nim sterować i detonuj go blisko wrogów.</string>
   <string name="ExtensionRoleRcXdDeploy">Wypuść</string>
   <string name="ExtensionRoleRcXdDeployWikiDescription">Wypuść samochodzik RC, aby skierować go na cel.</string>
   <string name="ExtensionRoleRcXdDetonate">Detonacja</string>

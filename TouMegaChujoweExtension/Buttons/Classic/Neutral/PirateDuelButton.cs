@@ -38,6 +38,11 @@ public sealed class PirateDuelButton : TownOfUsRoleButton<PirateRole, PlayerCont
             return null;
         }
 
+        if (pirateRole.DuelTargetId != byte.MaxValue)
+        {
+            return null;
+        }
+
         var closest = localPlayer.GetClosestLivingPlayer(true, Distance);
         if (closest == null)
         {

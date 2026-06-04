@@ -23,7 +23,7 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
 {
     public override string Name => TouLocale.Get("ExtensionRoleBountyHunterKill", "Hunt");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
-    public override float Distance => GameOptionsManager.Instance.currentNormalGameOptions.KillDistance;
+
 
     public override float Cooldown
     {
@@ -117,6 +117,7 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
 
         if (beforeMurderEvent.IsCancelled)
         {
+            Timer = Cooldown;
             return;
         }
 

@@ -330,29 +330,34 @@ public sealed class RcXdCar : IDisposable
 
             var dt = Time.fixedDeltaTime;
 
-            var inputDir = Vector2.zero;
-            if (Input.GetKey(KeyCode.UpArrow)) inputDir.y += 1f;
-            if (Input.GetKey(KeyCode.DownArrow)) inputDir.y -= 1f;
-            if (Input.GetKey(KeyCode.LeftArrow)) inputDir.x -= 1f;
-            if (Input.GetKey(KeyCode.RightArrow)) inputDir.x += 1f;
-            if (inputDir != Vector2.zero) inputDir = inputDir.normalized;
+            var inputDir = AdvancedMovementUtilities.GetRegularDirection();
 
             var gameSpeed = GameOptionsManager.Instance != null ? GameOptionsManager.Instance.currentNormalGameOptions.PlayerSpeedMod : 1f;
             var targetSpeed = _speed * gameSpeed;
 
             if (inputDir != Vector2.zero)
             {
-                var currentDir = _velocity.magnitude > 0.1f ? _velocity.normalized : inputDir;
-                var newDir = Vector2.Lerp(currentDir, inputDir, TurnSpeed * dt).normalized;
-                _velocity = newDir * targetSpeed;
+                var minSpeed = Mathf.Min(0.5f * gameSpeed, targetSpeed);
+                if (_velocity.magnitude < minSpeed)
+                {
+                    _velocity = inputDir * minSpeed;
+                }
+
+                var targetVelocity = inputDir * targetSpeed;
+                var accelRate = 3.0f * gameSpeed;
+                _velocity = Vector2.MoveTowards(_velocity, targetVelocity, accelRate * dt);
+
+                var currentSpeed = _velocity.magnitude;
+                if (currentSpeed > 0.05f)
+                {
+                    var newDir = Vector2.Lerp(_velocity.normalized, inputDir, TurnSpeed * dt).normalized;
+                    _velocity = newDir * currentSpeed;
+                }
             }
             else
             {
                 _velocity = Vector2.zero;
             }
-
-            if (_velocity.magnitude < 0.02f)
-                _velocity = Vector2.zero;
 
             var pos = (Vector2)_go.transform.position;
 

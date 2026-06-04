@@ -134,6 +134,11 @@ public sealed class PirateRole(IntPtr cppPtr)
         DuelTargetId = byte.MaxValue;
         ResetDuelState();
 
+        if (PlayerControl.LocalPlayer != null)
+        {
+            HudManagerPatches.UpdateRoleNameText();
+        }
+
         if (OptionGroupSingleton<PirateOptions>.Instance.WinMode == PirateWinMode.PirateWinsWithOthers)
         {
             RpcPirateCompletedDuels(pirate);
@@ -299,6 +304,11 @@ public sealed class PirateRole(IntPtr cppPtr)
         }
 
         pirateRole.DuelTargetId = targetId;
+
+        if (PlayerControl.LocalPlayer != null)
+        {
+            HudManagerPatches.UpdateRoleNameText();
+        }
     }
 
     [MethodRpc((uint)Networking.ExtensionRpc.PirateDuelChoice)]

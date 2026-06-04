@@ -424,7 +424,7 @@
   <string name="ExtensionRoleRcXd">RC-XD</string>
   <string name="ExtensionRoleRcXdIntroBlurb">Steer a bomb-car to destroy the crew.</string>
   <string name="ExtensionRoleRcXdTabDescription">Deploy and drive an RC car.\%nl\%Detonate it near enemies.</string>
-  <string name="ExtensionRoleRcXdWikiDescription">The RC-XD is an Impostor Power role that can deploy and detonate an RC-XD car to kill players around the map. Use arrow keys to steer it and detonate near enemies.</string>
+  <string name="ExtensionRoleRcXdWikiDescription">The RC-XD is an Impostor Power role that can deploy and detonate an RC-XD car to kill players around the map. Use movement keys or joystick to steer it and detonate near enemies.</string>
   <string name="ExtensionRoleRcXdDeploy">Deploy RC</string>
   <string name="ExtensionRoleRcXdDeployWikiDescription">Deploy an RC car to steer it towards targets.</string>
   <string name="ExtensionRoleRcXdDetonate">Detonate</string>

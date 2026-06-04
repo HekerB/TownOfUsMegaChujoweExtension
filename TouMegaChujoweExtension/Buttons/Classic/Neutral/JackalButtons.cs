@@ -4,17 +4,22 @@ using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
 using MiraAPI.Networking;
 using MiraAPI.Utilities.Assets;
+using MiraAPI.Events;
+using MiraAPI.Events.Vanilla.Gameplay;
 using Reactor.Utilities;
 using System;
 using System.Linq;
+using TouMegaChujoweExtension.Modules;
+using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TouMegaChujoweExtension.Modifiers.Neutral;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
-using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
+using TownOfUs.Modifiers;
+using TownOfUs.Roles.Other;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
@@ -29,7 +34,7 @@ public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, Player
     public override float Cooldown => Math.Clamp(
         OptionGroupSingleton<JackalOptions>.Instance.KillCooldown + MapCooldown, 5f, 120f);
 
-    public override float Distance => GameOptionsManager.Instance.currentNormalGameOptions.KillDistance;
+
 
     public override void CreateButton(Transform parent)
     {
@@ -47,15 +52,46 @@ public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, Player
         return base.CanUse() && !AreSidekicksAlive();
     }
 
-    protected override void OnClick()
+    public override void ClickHandler()
     {
-        if (Target == null)
+        if (!CanClick()) return;
+        if (Target == null) return;
+
+        var player = PlayerControl.LocalPlayer;
+        if (player == null) return;
+
+        var beforeMurderEvent = new BeforeMurderEvent(player, Target, MeetingCheck.OutsideMeeting);
+        MiraEventManager.InvokeEvent(beforeMurderEvent);
+        
+        if (beforeMurderEvent.IsCancelled)
         {
-            Error("Jackal Kill: Target is null");
+            Timer = Cooldown;
             return;
         }
 
-        PlayerControl.LocalPlayer.RpcCustomMurder(Target, MeetingCheck.OutsideMeeting);
+        OnClick();
+        
+        if (HasEffect)
+        {
+            EffectActive = true;
+            Timer = EffectDuration;
+        }
+        else
+        {
+            Timer = Cooldown;
+        }
+    }
+
+    protected override void OnClick()
+    {
+        var player = PlayerControl.LocalPlayer;
+        if (player == null || Target == null)
+        {
+            Error("Jackal Kill: Target or player is null");
+            return;
+        }
+
+        player.RpcCustomMurder(Target, MeetingCheck.OutsideMeeting);
     }
 
     public override PlayerControl? GetTarget()
@@ -67,15 +103,25 @@ public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, Player
 
     public override bool IsTargetValid(PlayerControl? target)
     {
-        if (!base.IsTargetValid(target) || target == null) return false;
+        if (AreSidekicksAlive()) return false;
 
         var local = PlayerControl.LocalPlayer;
-        if (local == null) return false;
+        if (target == null || local == null || target == local || target.HasDied()) return false;
+
+        if (target.inVent) return false;
+
+        if (target.GetModifiers<DisabledModifier>().Any(mod => !mod.CanBeInteractedWith)) return false;
+
+        if (SpectatorRole.TrackedSpectators.Contains(target.Data.PlayerName)) return false;
 
         if (target.TryGetModifier<SidekickModifier>(out var mod) && mod != null && mod.JackalId == local.PlayerId)
             return false;
 
-        return true;
+        if (!OptionGroupSingleton<TownOfUs.Options.Modifiers.Alliance.LoversOptions>.Instance.LoversKillEachOther && local.IsLover() && target.IsLover())
+            return false;
+
+        var distance = Vector2.Distance(local.GetTruePosition(), target.GetTruePosition());
+        return distance <= Distance;
     }
 
 

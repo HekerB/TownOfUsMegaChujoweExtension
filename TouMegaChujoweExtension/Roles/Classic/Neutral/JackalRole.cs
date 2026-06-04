@@ -37,8 +37,10 @@ using TownOfUs.Events;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, TownOfUs.Extensions.ISpawnChange, IContinuesGame
+public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, TownOfUs.Extensions.ISpawnChange, IContinuesGame, IUnlovable
 {
+    public bool IsUnlovable => true;
+
     public DoomableType DoomHintType => DoomableType.Trickster;
 
     public bool ContinuesGame => Player != null && Player.Pointer != IntPtr.Zero && !Player.HasDied();

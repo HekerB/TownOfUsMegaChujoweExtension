@@ -25,7 +25,7 @@ public sealed class EvokerVerifyButton : TownOfUsRoleButton<EvokerRole>
     public override string Name => TouLocale.Get("ExtensionRoleEvokerVerify", "Verify");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Evoker;
-    public override LoadableAsset<Sprite> Sprite => TouNeutAssets.InquireSprite;
+    public override LoadableAsset<Sprite> Sprite => TouCrewAssets.ExamineSprite;
 
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<EvokerOptions>.Instance.VerifyCooldown.Value + MapCooldown, 1f, 60f);
     public override float InitialCooldown => 0.001f;
