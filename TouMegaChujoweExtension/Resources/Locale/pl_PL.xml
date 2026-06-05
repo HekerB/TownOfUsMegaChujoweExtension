@@ -311,14 +311,14 @@
   <string name="ExtensionRolePope">Pope</string>
   <string name="ExtensionRolePopeIntroBlurb">Dawaj cream cakes i oczysc wszystkich przez Sanctify.</string>
   <string name="ExtensionRolePopeTabDescription">Daj cream cake kazdemu zyjacemu graczowi.\%nl\%Potem uzyj Sanctify, aby oczyscic wszystkich.</string>
-  <string name="ExtensionRolePopeWikiDescription">Daj cream cake kazdemu zyjacemu graczowi spoza roli Pope. Gdy wszyscy beda oznaczeni, uzyj Sanctify, aby oczyscic wszystkich. Pope wygrywa, jesli odliczanie Sanctify dojdzie do konca.</string>
+  <string name="ExtensionRolePopeWikiDescription">Daj cream cake kazdemu zyjacemu graczowi spoza roli Pope. Gdy wszyscy beda oznaczeni, uzyj Sanctify, aby oczyscic wszystkich. Pope wygrywa, jesli odliczanie Sanctification dojdzie do konca.</string>
   <string name="ExtensionRolePopeCanonize">Give Cream Cake</string>
   <string name="ExtensionRolePopeCanonizeWikiDescription">Daj cream cake pobliskiemu graczowi. Oznaczeni gracze swieca sie na zloto tylko dla Ciebie.</string>
   <string name="ExtensionRolePopeJudgement">Sanctify</string>
   <string name="ExtensionRolePopeJudgementWikiDescription">Rozpoczyna finalne odliczanie, aby oczyscic wszystkich. Jesli dojdzie do zera, wszyscy oprocz Ciebie gina i wygrywasz.</string>
-  <string name="ExtensionRolePopeGlobalWarning">&lt;role&gt; rozpoczal Sanctify! Pozostalo &lt;time&gt; sekund!</string>
-  <string name="ExtensionRolePopeMessageTitle">Ostrzezenie Sanctify</string>
-  <string name="ExtensionRolePopeWarningNotif">&lt;role&gt; rozpoczal Sanctify! Do konca pozostalo &lt;time&gt; sekund!</string>
+  <string name="ExtensionRolePopeGlobalWarning">&lt;role&gt; rozpoczal Sanctification! Pozostalo &lt;time&gt; sekund!</string>
+  <string name="ExtensionRolePopeMessageTitle">Ostrzezenie Sanctification</string>
+  <string name="ExtensionRolePopeWarningNotif">&lt;role&gt; rozpoczal Sanctification! Do konca pozostalo &lt;time&gt; sekund!</string>
   <string name="ExtensionRolePopeTabAllCanonized">Wszyscy maja cream cake! Uzyj Sanctify!</string>
   <string name="ExtensionRolePopeTabCanonizedInfo">Gracze z cream cake:</string>
   <string name="ExtensionRolePopeTabCounter">Pozostalo graczy: &lt;count&gt;</string>
@@ -328,7 +328,7 @@
   <!-- Pope Options -->
   <string name="ExtensionOptionPopeCanonizeCooldown">Cream Cake Cooldown</string>
   <string name="ExtensionOptionPopeMaxCanonizations">Max Cream Cakes</string>
-  <string name="ExtensionOptionPopeJudgementDuration">Czas odliczania Sanctify</string>
+  <string name="ExtensionOptionPopeJudgementDuration">Czas odliczania Sanctification</string>
   <string name="ExtensionOptionPopeCanonizeInteractions">Uzyj interakcji do rozdawania Cream Cakes</string>
   <string name="ExtensionOptionPopeBlockEmergencyButtonDuringJudgement">Blokuj Emergency Button podczas Sanctify</string>
   
@@ -1113,7 +1113,7 @@
 • Domyslnie wszyscy gracze wybieraja z pelnej puli dostepnych rol dla swojej strony (Zloga, Impostorzy, Neutralni). Nie ma juz restrykcyjnych kategorii.</string>
 
   <string name="TOUMCETermsApocalypseTitle">Apokalipsa</string>
-  <string name="TOUMCETermsApocalypseInfo">&lt;b&gt;Apokalipsa&lt;/b&gt; to neutralne role jezdzcow: &lt;color=#C4F076&gt;Plaguebearer&lt;/color&gt;, &lt;color=#B4D7A8&gt;Pestilence&lt;/color&gt;, &lt;color=#E59A3B&gt;Baker&lt;/color&gt;, &lt;color=#023020&gt;Famine&lt;/color&gt;, &lt;color=#99FFCC&gt;Soul Collector&lt;/color&gt;, &lt;color=#202020&gt;Death&lt;/color&gt;, &lt;color=#BE1020&gt;Berserker&lt;/color&gt; i &lt;color=#5E3929&gt;War&lt;/color&gt;. Jesli opcja &lt;b&gt;Apokalipsa wygrywa razem&lt;/b&gt; jest wlaczona, dziela wygrana, nie moga siebie zgadywac i widza swoje role. Czat Apokalipsy jest ustawiany w General.</string>
+  <string name="TOUMCETermsApocalypseInfo">&lt;b&gt;Apokalipsa&lt;/b&gt; to neutralne role jezdzcow: &lt;color=#C4F076&gt;Plaguebearer&lt;/color&gt;, &lt;color=#B4D7A8&gt;Pestilence&lt;/color&gt;, &lt;color=#E59A3B&gt;Baker&lt;/color&gt;, &lt;color=#023020&gt;Famine&lt;/color&gt;, &lt;color=#242A5E&gt;Soul Collector&lt;/color&gt;, &lt;color=#202020&gt;Death&lt;/color&gt;, &lt;color=#BE1020&gt;Berserker&lt;/color&gt; i &lt;color=#5E3929&gt;War&lt;/color&gt;. Jesli opcja &lt;b&gt;Apokalipsa wygrywa razem&lt;/b&gt; jest wlaczona, dziela wygrana, nie moga siebie zgadywac i widza swoje role. Czat Apokalipsy jest ustawiany w General.</string>
 
   <!-- TOUMCE Wiki Terms - Draft Factions -->
   <string name="TOUMCETermsDraftFactionsTitle">Frakcje Draftu</string>
@@ -1477,6 +1477,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleBakerGive">Daj chleb</string>
   <string name="ExtensionRoleBakerGiveWikiDescription">Daj chleb pobliskiemu zyjacemu graczowi.</string>
   <string name="ExtensionRoleBakerFamineAnnouncement">Smiercionosny glod pochlonal zaloge.\%nl\%\%color=#023020FF\%Famine\%/color\%, Jezdziec Apokalipsy, przybyl!</string>
+  <string name="ExtensionRoleBakerFamineAnnouncementTitle">Ostrzezenie o Famine</string>
   <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} umarl z Twoim chlebem!</string>
   <string name="ExtensionRoleFamineAllBreadTargetsDead">Wszyscy oznaczeni chlebem gracze umarli! Mozesz teraz glodzic kazdego!</string>
   <string name="ExtensionApocalypseChatDisplayName">Czat Apokalipsy</string>
@@ -1494,6 +1495,7 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleBerserkerWikiDescription">&lt;color=#BE1020&gt;Berserker&lt;/color&gt; to rola &lt;b&gt;Neutral Apocalypse&lt;/b&gt;. Kazde zabojstwo skraca cooldown zabijania, pomagajac ci rozpedzic sie do &lt;color=#5E3929&gt;War&lt;/color&gt;.\%nl\%Po przemianie tracisz redukcje cooldownu i stajesz sie niesmiertelnym jezdzcem, ktory moze laczyc zabojstwa w krotkim oknie furii.\%nl\%Jesli Apokalipsa wygrywa razem, role Apokalipsy sa sojusznikami.</string>
   <string name="ExtensionRoleBerserkerKillsTab">Zabojstwa do War</string>
   <string name="ExtensionRoleBerserkerWarAnnouncement">Wojna pochlonela pole bitwy.\%nl\%\%color=#5E3929FF\%War\%/color\%, Jezdziec Apokalipsy, powstal!</string>
+  <string name="ExtensionRoleBerserkerWarAnnouncementTitle">Ostrzezenie o War</string>
   <string name="ExtensionOptionBerserkerInstantWarChance">Szansa na instant War</string>
   <string name="ExtensionOptionBerserkerInitialKillCooldown">Poczatkowy cooldown zabojstwa</string>
   <string name="ExtensionOptionBerserkerKillCooldownReduction">Redukcja cooldownu za zabojstwo</string>
@@ -1502,14 +1504,14 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionBerserkerWarCanVent">War moze uzywac ventow</string>
   <string name="ExtensionOptionWarKillingSpreeDuration">Czas spree Wara</string>
   <string name="ExtensionRoleWar">War</string>
-  <string name="ExtensionRoleWarIntroBlurb">Rozpetaj wojne na polu bitwy.</string>
-  <string name="ExtensionRoleWarTabDescription">Lacz zabojstwa w krotkim spree.\%nl\%War jest niesmiertelny i moze umrzec tylko przez wyrzucenie.</string>
+  <string name="ExtensionRoleWarIntroBlurb">Jezdziec Apokalipsy!</string>
+  <string name="ExtensionRoleWarTabDescription">Przemieniony Berserker. Lacz zabojstwa w krotkim spree.\%nl\%War jest niesmiertelny.</string>
   <string name="ExtensionRoleWarWikiDescription">&lt;color=#5E3929&gt;War&lt;/color&gt; to przemieniony &lt;color=#BE1020&gt;Berserker&lt;/color&gt;.\%nl\%War jest niesmiertelny, nie da sie go zgadnac i moze umrzec tylko przez wyrzucenie.\%nl\%Po udanym zabojstwie War wchodzi w krotkie Killing Spree, gdzie nastepne zabojstwo nie ma cooldownu.</string>
   <string name="ExtensionRoleWarSpreeKill">Spree Kill</string>
   <string name="ExtensionRoleFamine">Famine</string>
-  <string name="ExtensionRoleFamineIntroBlurb">Zaglodz nakarmionych</string>
-  <string name="ExtensionRoleFamineTabDescription">Glodz graczy z chlebem. Glodujacy umieraja na meetingu.</string>
-  <string name="ExtensionRoleFamineWikiDescription">Famine to niesmiertelna rola Neutral Killing. Na poczatku moze glodzic tylko graczy z chlebem. Gdy wszyscy z chlebem umra, Famine moze glodzic kazdego.</string>
+  <string name="ExtensionRoleFamineIntroBlurb">Jezdziec Apokalipsy!</string>
+  <string name="ExtensionRoleFamineTabDescription">Przemieniony Baker. Glodz nakarmionych (umieraja na meetingu).\%nl\%Gdy wszyscy umra, mozesz glodzic kazdego.\%nl\%Famine jest niesmiertelny.</string>
+  <string name="ExtensionRoleFamineWikiDescription">Famine to przemieniony Baker. Famine jest niesmiertelny, nie da sie go zgadnac i moze umrzec tylko przez wyrzucenie.\%nl\%Poczatkowo Famine moze glodzic tylko graczy, ktorzy otrzymali chleb od Bakera. Gdy wszyscy gracze z chlebem umra, Famine moze glodzic dowolnego gracza. Glodujacy gracze umieraja na nastepnym meetingu.</string>
   <string name="ExtensionRoleFamineStarve">Glodz</string>
   <string name="ExtensionRoleFamineStarveWikiDescription">Oznacz gracza z chlebem na smierc przy meetingu.</string>
   <string name="ExtensionOptionBakerBreadNeeded">Potrzebny chleb</string>
@@ -1549,6 +1551,8 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleBurrowerDig">Kop</string>
   <string name="ExtensionRoleBurrowerEmerge">Wynurz</string>
   <string name="ExtensionRoleBurrowerDigWikiDescription">Zakop sie i wynurz przez polaczony vent.</string>
+  <string name="ExtensionRoleBurrowerCancel">Anuluj</string>
+  <string name="ExtensionRoleBurrowerEscape">Ucieczka</string>
 
   <!-- Burrower Options -->
   <string name="ExtensionOptionBurrowerUndergroundSpeed">Maks. predkosc pod ziemia</string>
@@ -1595,15 +1599,16 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleSoulCollector">Soul Collector</string>
   <string name="ExtensionRoleSoulCollectorIntroBlurb">Zbieraj Dusze, Aby Zostac \%color=#202020FF\%Death\%/color\%.</string>
   <string name="ExtensionRoleSoulCollectorTabDescription">Oznaczaj dusze Reapem i zbierz ich dosc, aby zostac \%color=#202020FF\%Death\%/color\%.</string>
-  <string name="ExtensionRoleSoulCollectorWikiDescription">\%color=#99FFCCFF\%Soul Collector\%/color\% to rola &lt;b&gt;Neutral Apocalypse&lt;/b&gt;. Uzyj Reap, aby oznaczac cele; jesli oznaczony cel umrze przed limitem rund, dostajesz dusze. Zbierz dosc dusz, aby stac sie \%color=#202020FF\%Death\%/color\%. Cleanse Doctora i Clerica moze usunac Reap.</string>
+  <string name="ExtensionRoleSoulCollectorWikiDescription">\%color=#242A5EFF\%Soul Collector\%/color\% to rola &lt;b&gt;Neutral Apocalypse&lt;/b&gt;. Uzyj Reap, aby oznaczac cele; jesli oznaczony cel umrze przed limitem rund, dostajesz dusze. Zbierz dosc dusz, aby stac sie \%color=#202020FF\%Death\%/color\%. Cleanse Doctora i Clerica moze usunac Reap.</string>
   <string name="ExtensionRoleSoulCollectorReap">Reap</string>
   <string name="ExtensionRoleSoulCollectorReapWikiDescription">Oznacz pobliskiego zywego gracza. Jesli umrze przed wygasnieciem znaku, dostajesz jedna dusze.</string>
   <string name="ExtensionRoleSoulCollectorMarkedDiedNotif">Dusza gracza {0} zostala zebrana!</string>
   <string name="ExtensionRoleSoulCollectorDeathAnnouncement">Ostatnia dusza zostala zebrana.\%nl\%\%color=#202020FF\%Death\%/color\%, Jezdziec Apokalipsy, przybyl!</string>
+  <string name="ExtensionRoleSoulCollectorDeathAnnouncementTitle">Ostrzezenie o Death</string>
   <string name="TouRolePestilenceAnnounceMessage">Smiercionosna plaga pochlonela zaloge.\%nl\%\%role\%, Jezdziec Apokalipsy, przybyl!</string>
   <string name="ExtensionRoleDeath">Death</string>
-  <string name="ExtensionRoleDeathIntroBlurb">Przynies ostateczny koniec.</string>
-  <string name="ExtensionRoleDeathTabDescription">Zabijaj Reapem.\%nl\%Death jest niesmiertelny i zostawia nieraportowalne ciala.</string>
+  <string name="ExtensionRoleDeathIntroBlurb">Jezdziec Apokalipsy!</string>
+  <string name="ExtensionRoleDeathTabDescription">Przemieniony Soul Collector. Zabijaj Reapem.\%nl\%Death jest niesmiertelny i zostawia nieraportowalne ciala.</string>
   <string name="ExtensionRoleDeathWikiDescription">Death to przemieniony Soul Collector.\%nl\%Death jest niesmiertelny, nie da sie go zguessowac i moze umrzec tylko przez wyrzucenie.\%nl\%Death zabija bez animacji przeskoku i zostawia ciala, ktorych nie da sie zglosic.</string>
   <string name="DiedToExtensionDeathClaimed">Pochloniety przez Death</string>
   <string name="ExtensionOptionSoulCollectorInstantDeathChance">Instant Death Chance</string>

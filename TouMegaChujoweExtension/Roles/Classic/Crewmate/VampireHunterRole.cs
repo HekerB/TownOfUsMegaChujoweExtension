@@ -101,7 +101,7 @@ public sealed class VampireHunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITo
             _ => (ushort)RoleTypes.Crewmate
         };
 
-        Player.RpcChangeRole(newRoleId, false);
+        Player.RpcChangeRole(newRoleId, true);
     }
 }
 

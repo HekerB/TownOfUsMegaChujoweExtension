@@ -574,6 +574,32 @@
         "\n\n\r<size=110%><b>DEPENDENCIES</b></size>",
         "\n- <b>TownOfUsMira API</b> - Updated dependency to the stable official release <b>v1.6.2</b>."
       ]
+    },
+    {
+      "Date": "2026-06-05T18:00:00Z",
+      "Number": "200019",
+      "ShortTitle": "TOUMCE v1.3.1",
+      "SubTitle": "Burrower & Apocalypse Fixes",
+      "Title": "TOU Mega Chujowe Extension v1.3.1",
+      "Text": [
+        "\r<link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> | <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> | <link=https://discord.gg/qaQZAmAVh4>Discord</link>",
+        "\n\n\r<b>Version 1.3.1 - Burrower &amp; Apocalypse Fixes</b>",
+        "\n\n\r<size=110%><b>BURROWER STABILITY &amp; UX</b></size>",
+        "\n- <b>Dig Flow</b> - Added clearer Cancel/Escape labels and improved dig cancellation rules, including a safer CanCancelPreparingDig check.",
+        "\n- <b>Vent Sync</b> - Improved remote vent enter/exit handling and added Harmony fixes to preserve inVent state correctly.",
+        "\n- <b>Button Fixes</b> - Fixed Burrower dig button click logic, availability checks, and several edge cases where the button could desync.",
+        "\n- <b>Audio</b> - Reduced Burrower dig sound radius so underground actions are no longer heard across the whole map.",
+        "\n\n\r<size=110%><b>APOCALYPSE INTERACTIONS</b></size>",
+        "\n- <b>War &amp; Berserker</b> - Added WarEvents to handle invulnerable War/Berserker interactions through BeforeMurder and Mira button checks.",
+        "\n- <b>Baker / Famine</b> - Updated event logic to respect invulnerability, cancel blocked attacks, show flash feedback, and reset kill timers properly.",
+        "\n- <b>Soul Collector / Death</b> - Updated event logic to follow Apocalypse invulnerability rules and keep hostile interactions consistent.",
+        "\n\n\r<size=110%><b>ROLE TRANSITIONS</b></size>",
+        "\n- <b>Role Sync</b> - Vampire Hunter, Arcanist, and fallback role transitions now use RpcChangeRole(..., true) for safer role swaps.",
+        "\n- <b>Arcanist</b> - Adjusted the benign draw list to avoid bad transformation targets.",
+        "\n\n\r<size=110%><b>LOCALIZATION &amp; UI</b></size>",
+        "\n- <b>English &amp; Polish</b> - Updated role wording, colors, labels, and warning titles in en_US and pl_PL.",
+        "\n- <b>Clarity</b> - Improved Burrower cancel/escape text and Apocalypse warning names for easier in-game reading."
+      ]
     }
   ]
 }

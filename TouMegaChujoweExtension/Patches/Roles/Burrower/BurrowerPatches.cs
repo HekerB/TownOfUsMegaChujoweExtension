@@ -74,9 +74,53 @@ public static class BurrowerPatches
         {
             var direction = AdvancedMovementUtilities.GetRegularDirection();
             AdvancedMovementUtilities.ApplyControlledMovement(__instance, direction, stopIfZero: true);
+            return false;
         }
 
-        return false;
+        // For remote players, temporarily clear inVent so that vanilla FixedUpdate doesn't zero velocity
+        player.inVent = false;
+        return true;
+    }
+
+    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
+    [HarmonyPostfix]
+    public static void PlayerPhysicsFixedUpdatePostfix(PlayerPhysics __instance)
+    {
+        var player = __instance?.myPlayer;
+        var role = player?.GetRole<BurrowerRole>();
+        if (player != null && role != null && role.IsUnderground && !player.AmOwner)
+        {
+            player.inVent = true;
+        }
+    }
+
+    [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
+    public static class CustomNetworkTransformFixedUpdatePatch
+    {
+        private static bool _wasInVent;
+
+        [HarmonyPrefix]
+        public static void Prefix(CustomNetworkTransform __instance)
+        {
+            var player = __instance.myPlayer;
+            var role = player?.GetRole<BurrowerRole>();
+            if (player != null && role != null && role.IsUnderground)
+            {
+                _wasInVent = player.inVent;
+                player.inVent = false;
+            }
+        }
+
+        [HarmonyPostfix]
+        public static void Postfix(CustomNetworkTransform __instance)
+        {
+            var player = __instance.myPlayer;
+            var role = player?.GetRole<BurrowerRole>();
+            if (player != null && role != null && role.IsUnderground)
+            {
+                player.inVent = _wasInVent;
+            }
+        }
     }
 
     [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]

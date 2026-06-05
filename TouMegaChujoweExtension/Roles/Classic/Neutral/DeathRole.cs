@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
@@ -32,10 +33,16 @@ public sealed class DeathRole(IntPtr cppPtr)
 {
     public const string DeathReason = "ExtensionDeathClaimed";
 
+    [HideFromIl2Cpp]
+    public bool Announced { get; set; }
+
     public string LocaleKey => "Death";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Death");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
+
+    public string YouAreText => TouLocale.Get("YouAre");
+    public string YouWereText => TouLocale.Get("YouWere");
     public bool IsGuessable => false;
     public RoleBehaviour AppearAs => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<SoulCollectorRole>());
 
@@ -74,6 +81,34 @@ public sealed class DeathRole(IntPtr cppPtr)
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
     };
 
+    [HideFromIl2Cpp]
+    public void TriggerDeathAnnouncement()
+    {
+        var msg = TouLocale.GetParsed("ExtensionRoleSoulCollectorDeathAnnouncement", "The final soul has been claimed.\\%nl\\%\\%color=#202020FF\\%Death\\%/color\\%, Horseman of the Apocalypse, has emerged!");
+        var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TownOfUsColors.SoulCollector)}>{TouLocale.Get("ExtensionRoleSoulCollectorDeathAnnouncementTitle", "Death Warning")}</color>";
+
+        var notif = Helpers.CreateAndShowNotification(
+            $"<b>{msg.Replace("\n", " ").Replace("\\%nl\\%", " ")}</b>",
+            Color.white,
+            new Vector3(0f, 1f, -20f),
+            spr: TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
+        notif?.AdjustNotification();
+
+        MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
+    }
+
+    public override void OnMeetingStart()
+    {
+        RoleBehaviourStubs.OnMeetingStart(this);
+
+        if (Announced || !OptionGroupSingleton<SoulCollectorOptions>.Instance.AnnounceDeath)
+        {
+            return;
+        }
+        Announced = true;
+        TriggerDeathAnnouncement();
+    }
+
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
@@ -84,6 +119,15 @@ public sealed class DeathRole(IntPtr cppPtr)
             HudManager.Instance.ImpostorVentButton.graphic.sprite = TouNeutAssets.ReaperVentSprite.LoadAsset();
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TouExtensionColors.Death);
         }
+
+        if (MeetingHud.Instance != null && !Announced && OptionGroupSingleton<SoulCollectorOptions>.Instance.AnnounceDeath)
+        {
+            Announced = true;
+            TriggerDeathAnnouncement();
+        }
+
+
+
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -150,7 +194,7 @@ public sealed class DeathRole(IntPtr cppPtr)
             death.RemoveModifier<InvulnerabilityModifier>();
         }
 
-        death.AddModifier<InvulnerabilityModifier>(false, false, true);
+        death.AddModifier<InvulnerabilityModifier>(false, false, false);
     }
 
     [MethodRpc((uint)ExtensionRpc.DeathKill)]
@@ -185,5 +229,19 @@ public sealed class DeathRole(IntPtr cppPtr)
         }
 
         SoulCollectorSystem.MarkDeathBody(targetId);
+    }
+
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        var stringB = new StringBuilder();
+        stringB.AppendLine(TownOfUsPlugin.Culture,
+            $"{RoleColor.ToTextColor()}{YouAreText}<b> {RoleName},\n<size=80%>{RoleDescription}</size></b></color>");
+        stringB.AppendLine(TownOfUsPlugin.Culture,
+            $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(RoleAlignment, true)}</b></size>");
+        stringB.Append("<size=70%>");
+        stringB.AppendLine(TownOfUsPlugin.Culture, $"{RoleLongDescription}");
+
+        return stringB;
     }
 }

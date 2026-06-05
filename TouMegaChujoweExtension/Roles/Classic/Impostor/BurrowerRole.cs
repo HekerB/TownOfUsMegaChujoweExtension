@@ -68,9 +68,9 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     public float DigEndTime { get; set; }
     public float EmergeTime { get; set; }
     public int NextVentIndex { get; set; }
-    private const float DigCancelLockDuration = 2f;
+    private const float DigCancelLockDuration = 1f;
     private const float UndergroundInitialSpeed = 0.3f;
-    private const float BurrowSoundRadius = 5f;
+    private const float BurrowSoundRadius = 15f;
     private const float BurrowSoundVolume = 0.8f;
 
     [HideFromIl2Cpp]
@@ -130,6 +130,18 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         }
 
         return Time.time - BurrowStartTime >= DigCancelLockDuration;
+    }
+
+    public bool CanCancelPreparingDig()
+    {
+        if (!IsPreparingDig)
+        {
+            return false;
+        }
+
+        var enterDelay = OptionGroupSingleton<BurrowerOptions>.Instance.EnterDelay;
+        var startTime = PrepareDigEndTime - enterDelay;
+        return Time.time - startTime >= 1f;
     }
 
     [MethodRpc((uint)ExtensionRpc.BurrowerUnderground)]
@@ -204,9 +216,23 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         player.AddModifier<BurrowerSpeedModifier>(OptionGroupSingleton<BurrowerOptions>.Instance.UndergroundSpeed);
         PlayBurrowSound(ventPosition);
 
-        if (player.AmOwner && player.MyPhysics != null)
+        if (player.MyPhysics != null)
         {
-            player.MyPhysics.RpcEnterVent(ventId);
+            if (player.AmOwner)
+            {
+                player.MyPhysics.RpcEnterVent(ventId);
+            }
+            else
+            {
+                try
+                {
+                    vent.EnterVent(player);
+                }
+                catch (System.Exception ex)
+                {
+                    UnityEngine.Debug.LogError($"[Burrower] Failed to EnterVent locally for remote client: {ex}");
+                }
+            }
         }
     }
 
@@ -249,15 +275,27 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         player.RemoveModifier<BurrowerInvisibleModifier>();
         player.RemoveModifier<BurrowerSpeedModifier>();
 
-        if (!player.AmOwner)
+        if (player.MyPhysics != null)
         {
-            return;
+            if (player.AmOwner)
+            {
+                role.EmergeTime = Time.time;
+                player.MyPhysics.RpcExitVent(ventId);
+            }
+            else
+            {
+                try
+                {
+                    vent.ExitVent(player);
+                }
+                catch (System.Exception ex)
+                {
+                    UnityEngine.Debug.LogError($"[Burrower] Failed to ExitVent locally for remote client: {ex}");
+                }
+            }
         }
 
-        role.EmergeTime = Time.time;
-        player.MyPhysics?.RpcExitVent(ventId);
-
-        if (BurrowerDigButton.Instance != null)
+        if (player.AmOwner && BurrowerDigButton.Instance != null)
         {
             BurrowerDigButton.Instance.Timer = BurrowerDigButton.Instance.Cooldown;
         }
@@ -287,19 +325,36 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         player.RemoveModifier<BurrowerInvisibleModifier>();
         player.RemoveModifier<BurrowerSpeedModifier>();
 
-        if (player.AmOwner)
+        if (player.MyPhysics != null)
         {
-            role.EmergeTime = Time.time;
-
-            if (firstVent != null)
+            if (player.AmOwner)
             {
-                player.MyPhysics?.RpcExitVent(firstVent.Id);
-            }
+                role.EmergeTime = Time.time;
 
-            if (BurrowerDigButton.Instance != null)
-            {
-                BurrowerDigButton.Instance.Timer = BurrowerDigButton.Instance.Cooldown;
+                if (firstVent != null)
+                {
+                    player.MyPhysics.RpcExitVent(firstVent.Id);
+                }
             }
+            else
+            {
+                if (firstVent != null)
+                {
+                    try
+                    {
+                        firstVent.ExitVent(player);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        UnityEngine.Debug.LogError($"[Burrower] Failed to ExitVent on cancel: {ex}");
+                    }
+                }
+            }
+        }
+
+        if (player.AmOwner && BurrowerDigButton.Instance != null)
+        {
+            BurrowerDigButton.Instance.Timer = BurrowerDigButton.Instance.Cooldown;
         }
 
         Modules.BurrowerSystem.RemoveVent(firstVent);

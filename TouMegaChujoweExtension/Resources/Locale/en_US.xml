@@ -313,14 +313,14 @@
   <string name="ExtensionRolePope">Pope</string>
   <string name="ExtensionRolePopeIntroBlurb">Give cream cakes and purify everyone with Sanctify.</string>
   <string name="ExtensionRolePopeTabDescription">Give cream cakes to every living player.\%nl\%Then use Sanctify to purify everyone.</string>
-  <string name="ExtensionRolePopeWikiDescription">Give a cream cake to every living non-Pope. When everyone is marked, use Sanctify to purify everyone. Pope wins if the Sanctify countdown finishes.</string>
+  <string name="ExtensionRolePopeWikiDescription">Give a cream cake to every living non-Pope. When everyone is marked, use Sanctify to purify everyone. Pope wins if the Sanctification countdown finishes.</string>
   <string name="ExtensionRolePopeCanonize">Cream Cake</string>
   <string name="ExtensionRolePopeCanonizeWikiDescription">Give a cream cake to a nearby player. Marked players glow gold only for you.</string>
   <string name="ExtensionRolePopeJudgement">Sanctify</string>
   <string name="ExtensionRolePopeJudgementWikiDescription">Start the final countdown to purify everyone. If it reaches zero, everyone except you dies and you win.</string>
-  <string name="ExtensionRolePopeGlobalWarning">The &lt;role&gt; has begun Sanctify! &lt;time&gt; seconds remain!</string>
-  <string name="ExtensionRolePopeMessageTitle">Sanctify Warning</string>
-  <string name="ExtensionRolePopeWarningNotif">The &lt;role&gt; has begun Sanctify! &lt;time&gt; seconds until the end!</string>
+  <string name="ExtensionRolePopeGlobalWarning">The &lt;role&gt; has begun Sanctification! &lt;time&gt; seconds remain!</string>
+  <string name="ExtensionRolePopeMessageTitle">Sanctification Warning</string>
+  <string name="ExtensionRolePopeWarningNotif">The &lt;role&gt; has begun Sanctification! &lt;time&gt; seconds until the end!</string>
   <string name="ExtensionRolePopeTabAllCanonized">Everyone has a cream cake! Use Sanctify!</string>
   <string name="ExtensionRolePopeTabCanonizedInfo">Cream Cake Players:</string>
   <string name="ExtensionRolePopeTabCounter">&lt;count&gt; player(s) remaining</string>
@@ -330,7 +330,7 @@
   <!-- Pope Options -->
   <string name="ExtensionOptionPopeCanonizeCooldown">Cream Cake Cooldown</string>
   <string name="ExtensionOptionPopeMaxCanonizations">Max Cream Cakes</string>
-  <string name="ExtensionOptionPopeJudgementDuration">Sanctify Countdown Duration</string>
+  <string name="ExtensionOptionPopeJudgementDuration">Sanctification Countdown Duration</string>
   <string name="ExtensionOptionPopeCanonizeInteractions">Use Interactions To Spread Cream Cakes</string>
   <string name="ExtensionOptionPopeBlockEmergencyButtonDuringJudgement">Block Emergency Button During Sanctify</string>
   
@@ -1118,7 +1118,7 @@
 • By default, all players draft from the complete pool of enabled roles for their side (Crewmate, Impostor, or Neutral). Restrictive categories have been removed for a more flexible experience.</string>
 
   <string name="TOUMCETermsApocalypseTitle">Apocalypse</string>
-  <string name="TOUMCETermsApocalypseInfo">&lt;b&gt;Apocalypse&lt;/b&gt; roles are horsemen-style neutral threats: &lt;color=#C4F076&gt;Plaguebearer&lt;/color&gt;, &lt;color=#B4D7A8&gt;Pestilence&lt;/color&gt;, &lt;color=#E59A3B&gt;Baker&lt;/color&gt;, &lt;color=#023020&gt;Famine&lt;/color&gt;, &lt;color=#99FFCC&gt;Soul Collector&lt;/color&gt;, &lt;color=#202020&gt;Death&lt;/color&gt;, &lt;color=#BE1020&gt;Berserker&lt;/color&gt;, and &lt;color=#5E3929&gt;War&lt;/color&gt;. If &lt;b&gt;Apocalypse Wins Together&lt;/b&gt; is enabled, they share victory, cannot guess each other, and reveal each other's roles. Apocalypse meeting chat is controlled in General settings.</string>
+  <string name="TOUMCETermsApocalypseInfo">&lt;b&gt;Apocalypse&lt;/b&gt; roles are horsemen-style neutral threats: &lt;color=#C4F076&gt;Plaguebearer&lt;/color&gt;, &lt;color=#B4D7A8&gt;Pestilence&lt;/color&gt;, &lt;color=#E59A3B&gt;Baker&lt;/color&gt;, &lt;color=#023020&gt;Famine&lt;/color&gt;, &lt;color=#242A5E&gt;Soul Collector&lt;/color&gt;, &lt;color=#202020&gt;Death&lt;/color&gt;, &lt;color=#BE1020&gt;Berserker&lt;/color&gt;, and &lt;color=#5E3929&gt;War&lt;/color&gt;. If &lt;b&gt;Apocalypse Wins Together&lt;/b&gt; is enabled, they share victory, cannot guess each other, and reveal each other's roles. Apocalypse meeting chat is controlled in General settings.</string>
 
   <!-- TOUMCE Wiki Terms - Draft Factions -->
   <string name="TOUMCETermsDraftFactionsTitle">Draft Factions</string>
@@ -1490,6 +1490,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleBakerGive">Give Bread</string>
   <string name="ExtensionRoleBakerGiveWikiDescription">Give bread to a nearby living player.</string>
   <string name="ExtensionRoleBakerFamineAnnouncement">A terrible famine has consumed the Crew.\%nl\%\%color=#023020FF\%Famine\%/color\%, Horseman of the Apocalypse, has emerged!</string>
+  <string name="ExtensionRoleBakerFamineAnnouncementTitle">Baker Warning</string>
   <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} died with your bread!</string>
   <string name="ExtensionRoleFamineAllBreadTargetsDead">All your breaded targets died! You can now starve anyone!</string>
   <string name="ExtensionApocalypseChatDisplayName">Apocalypse Chat</string>
@@ -1507,6 +1508,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleBerserkerWikiDescription">The &lt;color=#BE1020&gt;Berserker&lt;/color&gt; is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Each kill lowers your kill cooldown, helping you snowball into &lt;color=#5E3929&gt;War&lt;/color&gt;.\%nl\%Once transformed, you lose cooldown reduction and become an invincible horseman who can chain kills during a short spree window.\%nl\%If Apocalypse Wins Together is enabled, Apocalypse roles are treated as allies.</string>
   <string name="ExtensionRoleBerserkerKillsTab">Kills to become War</string>
   <string name="ExtensionRoleBerserkerWarAnnouncement">War has consumed the battlefield.\%nl\%\%color=#5E3929FF\%War\%/color\%, Horseman of the Apocalypse, has emerged!</string>
+  <string name="ExtensionRoleBerserkerWarAnnouncementTitle">Berserker Warning</string>
   <string name="ExtensionOptionBerserkerInstantWarChance">Instant War Chance</string>
   <string name="ExtensionOptionBerserkerInitialKillCooldown">Initial Kill Cooldown</string>
   <string name="ExtensionOptionBerserkerKillCooldownReduction">Kill Cooldown Reduction Per Kill</string>
@@ -1515,14 +1517,14 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionBerserkerWarCanVent">War Can Vent</string>
   <string name="ExtensionOptionWarKillingSpreeDuration">War Killing Spree Duration</string>
   <string name="ExtensionRoleWar">War</string>
-  <string name="ExtensionRoleWarIntroBlurb">Unleash havoc upon the battlefield.</string>
-  <string name="ExtensionRoleWarTabDescription">Chain kills during a short spree.\%nl\%War is invincible and can only die by being voted out.</string>
+  <string name="ExtensionRoleWarIntroBlurb">Horseman of the Apocalypse!</string>
+  <string name="ExtensionRoleWarTabDescription">Transformed Berserker. Chain kills during a short spree.\%nl\%War is invincible.</string>
   <string name="ExtensionRoleWarWikiDescription">The &lt;color=#5E3929&gt;War&lt;/color&gt; is the transformed &lt;color=#BE1020&gt;Berserker&lt;/color&gt;.\%nl\%War is invincible, cannot be guessed, and can only die by being voted out.\%nl\%After a successful kill, War enters a short Killing Spree where the next kill has no cooldown.</string>
   <string name="ExtensionRoleWarSpreeKill">Spree Kill</string>
   <string name="ExtensionRoleFamine">Famine</string>
-  <string name="ExtensionRoleFamineIntroBlurb">Starve the fed</string>
-  <string name="ExtensionRoleFamineTabDescription">Starve breaded players. Starved players die next meeting.</string>
-  <string name="ExtensionRoleFamineWikiDescription">The Famine is an invincible Neutral Killing role. At first, Famine can only starve breaded players. After all breaded players die, Famine can starve anyone.</string>
+  <string name="ExtensionRoleFamineIntroBlurb">Horseman of the Apocalypse!</string>
+  <string name="ExtensionRoleFamineTabDescription">Transformed Baker. Starve breaded players (die next meeting).\%nl\%Once they all die, you can starve anyone.\%nl\%Famine is invincible.</string>
+  <string name="ExtensionRoleFamineWikiDescription">The Famine is the transformed Baker. Famine is invincible, cannot be guessed, and can only die by being voted out.\%nl\%Initially, Famine can only starve players who received bread from Baker. After all breaded players are dead, Famine can starve any player. Starved players die at the next meeting.</string>
   <string name="ExtensionRoleFamineStarve">Starve</string>
   <string name="ExtensionRoleFamineStarveWikiDescription">Mark a breaded player to die next meeting.</string>
   <string name="ExtensionOptionBakerBreadNeeded">Bread Needed</string>
@@ -1562,6 +1564,8 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleBurrowerDig">Dig</string>
   <string name="ExtensionRoleBurrowerEmerge">Emerge</string>
   <string name="ExtensionRoleBurrowerDigWikiDescription">Dig underground and emerge through a linked vent.</string>
+  <string name="ExtensionRoleBurrowerCancel">Cancel</string>
+  <string name="ExtensionRoleBurrowerEscape">Escape</string>
 
   <!-- Burrower Options -->
   <string name="ExtensionOptionBurrowerUndergroundSpeed">Underground Max Speed</string>
@@ -1608,15 +1612,16 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleSoulCollector">Soul Collector</string>
   <string name="ExtensionRoleSoulCollectorIntroBlurb">Collect Souls To Become \%color=#202020FF\%Death\%/color\%.</string>
   <string name="ExtensionRoleSoulCollectorTabDescription">Reap players to mark their souls and collect enough souls to become \%color=#202020FF\%Death\%/color\%.</string>
-  <string name="ExtensionRoleSoulCollectorWikiDescription">The \%color=#99FFCCFF\%Soul Collector\%/color\% is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Use Reap to mark targets; if a marked target dies before the deadline, you gain a soul. Collect enough souls to become \%color=#202020FF\%Death\%/color\%. Doctor and Cleric cleanse can remove Reap marks.</string>
+  <string name="ExtensionRoleSoulCollectorWikiDescription">The \%color=#242A5EFF\%Soul Collector\%/color\% is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Use Reap to mark targets; if a marked target dies before the deadline, you gain a soul. Collect enough souls to become \%color=#202020FF\%Death\%/color\%. Doctor and Cleric cleanse can remove Reap marks.</string>
   <string name="ExtensionRoleSoulCollectorReap">Reap</string>
   <string name="ExtensionRoleSoulCollectorReapWikiDescription">Mark a nearby living player. If they die before the mark expires, gain one soul.</string>
   <string name="ExtensionRoleSoulCollectorMarkedDiedNotif">{0}'s soul has been collected!</string>
   <string name="ExtensionRoleSoulCollectorDeathAnnouncement">The final soul has been claimed.\%nl\%\%color=#202020FF\%Death\%/color\%, Horseman of the Apocalypse, has emerged!</string>
+  <string name="ExtensionRoleSoulCollectorDeathAnnouncementTitle">Soul Collector Warning</string>
   <string name="TouRolePestilenceAnnounceMessage">A deadly plague has consumed the Crew.\%nl\%\%role\%, Horseman of the Apocalypse, has emerged!</string>
   <string name="ExtensionRoleDeath">Death</string>
-  <string name="ExtensionRoleDeathIntroBlurb">Bring the final end.</string>
-  <string name="ExtensionRoleDeathTabDescription">Kill players with Reap.\%nl\%Death is invincible and leaves unreportable bodies.</string>
+  <string name="ExtensionRoleDeathIntroBlurb">Horseman of the Apocalypse!</string>
+  <string name="ExtensionRoleDeathTabDescription">Transformed Soul Collector. Kill players with Reap.\%nl\%Death is invincible and leaves unreportable bodies.</string>
   <string name="ExtensionRoleDeathWikiDescription">Death is the transformed Soul Collector.\%nl\%Death is invincible, cannot be guessed, and can only die by being voted out.\%nl\%Death kills without a jump animation and leaves bodies that cannot be reported.</string>
   <string name="DiedToExtensionDeathClaimed">Claimed by Death</string>
   <string name="ExtensionOptionSoulCollectorInstantDeathChance">Instant Death Chance</string>

@@ -1,9 +1,11 @@
 using System.Linq;
 using MiraAPI.Events;
+using MiraAPI.Events.Mira;
 using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.GameOptions;
+using MiraAPI.Hud;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
@@ -13,6 +15,7 @@ using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TownOfUs;
+using TownOfUs.Buttons;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
@@ -31,12 +34,8 @@ public static class SoulCollectorEvents
             SoulCollectorRole.PendingDeathAnnouncement = false;
         }
 
-        if (!@event.TriggeredByIntro ||
-            AmongUsClient.Instance == null ||
-            !AmongUsClient.Instance.AmHost)
-        {
-            return;
-        }
+        if (!@event.TriggeredByIntro) return;
+        if (AmongUsClient.Instance != null && !AmongUsClient.Instance.AmHost) return;
 
         var chance = OptionGroupSingleton<SoulCollectorOptions>.Instance.InstantDeathChance;
         if (chance <= 0f || UnityEngine.Random.Range(0f, 100f) >= chance)
@@ -54,7 +53,7 @@ public static class SoulCollectorEvents
     [RegisterEvent]
     public static void StartMeetingEventHandler(StartMeetingEvent _)
     {
-        if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
+        if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost)
         {
             RemoveExpiredMarks();
             GrantPassiveSouls();
@@ -85,7 +84,7 @@ public static class SoulCollectorEvents
             ShowSoulCollectedFeedback(victim);
         }
 
-        if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
+        if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost || soulCollector.AmOwner)
         {
             SoulCollectorRole.RpcSetSouls(soulCollector, soulCollectorRole.SoulsCollected + 1);
             victim.RemoveModifier<SoulReapedModifier>();
@@ -160,5 +159,62 @@ public static class SoulCollectorEvents
             new Vector3(0f, 1f, -20f),
             spr: TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
         notif?.AdjustNotification();
+    }
+
+    [RegisterEvent(100)]
+    public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
+    {
+        var target = @event.Target;
+        var source = @event.Source;
+        if (target == null || source == null)
+        {
+            return;
+        }
+
+        if (target.Data?.Role is DeathRole && !source.HasModifier<TownOfUs.Modifiers.IgnoreInvulnerabilityModifier>())
+        {
+            @event.Cancel();
+
+            if (PlayerControl.LocalPlayer != null && (PlayerControl.LocalPlayer == target || PlayerControl.LocalPlayer == source))
+            {
+                Coroutines.Start(MiscUtils.CoFlash(Color.white, 0.15f, 0.15f));
+            }
+
+            if (source.AmOwner)
+            {
+                source.SetKillTimer(source.GetKillCooldown());
+
+                foreach (var button in CustomButtonManager.Buttons)
+                {
+                    if (button != null && button.Button != null && button.Button.gameObject.activeSelf && button is IKillButton)
+                    {
+                        button.SetTimer(button.Cooldown);
+                    }
+                }
+            }
+        }
+    }
+
+    [RegisterEvent]
+    public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
+    {
+        var button = @event.Button as CustomActionButton<PlayerControl>;
+        var source = PlayerControl.LocalPlayer;
+        var target = button?.Target;
+
+        if (target == null || !button.CanClick()) return;
+        if (source == null) return;
+        if (target.PlayerId == source.PlayerId) return;
+        if (MeetingHud.Instance || ExileController.Instance) return;
+
+        if (target.Data?.Role is DeathRole && !source.HasModifier<TownOfUs.Modifiers.IgnoreInvulnerabilityModifier>())
+        {
+            @event.Cancel();
+
+            Coroutines.Start(MiscUtils.CoFlash(Color.white, 0.15f, 0.15f));
+
+            button.SetTimer(button.Cooldown);
+            source.SetKillTimer(source.GetKillCooldown());
+        }
     }
 }

@@ -30,6 +30,9 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
     public string RoleDescription => TouLocale.GetParsed("ExtensionRoleWarIntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed("ExtensionRoleWarTabDescription");
 
+    public string YouAreText => TouLocale.Get("YouAre");
+    public string YouWereText => TouLocale.Get("YouWere");
+
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed("ExtensionRoleWarWikiDescription");
@@ -40,6 +43,9 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
 
     [HideFromIl2Cpp]
     public float WarSpreeUntil { get; set; }
+
+    [HideFromIl2Cpp]
+    public bool Announced { get; set; }
 
     public Color RoleColor => TouExtensionColors.War;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
@@ -110,13 +116,41 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
         }
     }
 
+    [HideFromIl2Cpp]
+    public void TriggerWarAnnouncement()
+    {
+        var msg = TouLocale.GetParsed("ExtensionRoleBerserkerWarAnnouncement", "War has consumed the battlefield.\\%nl\\%\\%color=#EEEEEEFF\\%War\\%/color\\%, Horseman of the Apocalypse, has emerged!");
+        var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TouExtensionColors.War)}>{TouLocale.Get("ExtensionRoleBerserkerWarAnnouncementTitle", "War Warning")}</color>";
+
+        var notif = Helpers.CreateAndShowNotification(
+            $"<b>{msg.Replace("\n", " ").Replace("\\%nl\\%", " ")}</b>",
+            Color.white,
+            new Vector3(0f, 1f, -20f),
+            spr: TouExtensionIcons.WarRoleIcon.LoadAsset());
+        notif?.AdjustNotification();
+
+        MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
+    }
+
+    public override void OnMeetingStart()
+    {
+        RoleBehaviourStubs.OnMeetingStart(this);
+
+        if (Announced || !OptionGroupSingleton<BerserkerOptions>.Instance.AnnounceWarTransformation)
+        {
+            return;
+        }
+        Announced = true;
+        TriggerWarAnnouncement();
+    }
+
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
 
         if (!player.HasModifier<InvulnerabilityModifier>())
         {
-            player.AddModifier<InvulnerabilityModifier>(false, false, true);
+            player.AddModifier<InvulnerabilityModifier>(false, false, false);
         }
 
         if (player.AmOwner && HudManager.Instance?.ImpostorVentButton != null)
@@ -127,6 +161,15 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
             ventButton.graphic.sprite = TouNeutAssets.WerewolfVentSprite.LoadAsset();
             ventButton.buttonLabelText.SetOutlineColor(TouExtensionColors.War);
         }
+
+        if (MeetingHud.Instance != null && !Announced && OptionGroupSingleton<BerserkerOptions>.Instance.AnnounceWarTransformation)
+        {
+            Announced = true;
+            TriggerWarAnnouncement();
+        }
+
+
+
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
@@ -137,6 +180,11 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
         {
             targetPlayer.RemoveModifier<InvulnerabilityModifier>();
         }
+
+
+
+
+
 
         if (targetPlayer.AmOwner && HudManager.Instance?.ImpostorVentButton != null)
         {
@@ -178,8 +226,17 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
         return WinConditionMet();
     }
 
+    [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        return ITownOfUsRole.SetNewTabText(this);
+        var stringB = new StringBuilder();
+        stringB.AppendLine(TownOfUsPlugin.Culture,
+            $"{RoleColor.ToTextColor()}{YouAreText}<b> {RoleName},\n<size=80%>{RoleDescription}</size></b></color>");
+        stringB.AppendLine(TownOfUsPlugin.Culture,
+            $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(RoleAlignment, true)}</b></size>");
+        stringB.Append("<size=70%>");
+        stringB.AppendLine(TownOfUsPlugin.Culture, $"{RoleLongDescription}");
+
+        return stringB;
     }
 }
