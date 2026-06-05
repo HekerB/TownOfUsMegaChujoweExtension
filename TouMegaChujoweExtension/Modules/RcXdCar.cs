@@ -180,7 +180,7 @@ public sealed class RcXdCar : IDisposable
         }
 
         var localPlayer = PlayerControl.LocalPlayer;
-        car._renderer.enabled = localPlayer != null && (localPlayer.Data.Role.IsImpostor || localPlayer.Data.IsDead);
+        car._renderer.enabled = localPlayer != null;
 
         car._audio = car._go.AddComponent<AudioSource>();
         
@@ -238,7 +238,7 @@ public sealed class RcXdCar : IDisposable
             }
 
             var local = PlayerControl.LocalPlayer;
-            bool shouldRender = local != null && (local.Data.Role.IsImpostor || local.Data.IsDead);
+            bool shouldRender = local != null;
             if (_renderer != null) _renderer.enabled = shouldRender;
 
             var cur = (Vector2)_go.transform.position;
@@ -446,13 +446,7 @@ public sealed class RcXdCar : IDisposable
             return;
         }
 
-        // Silent to Crewmates
-        bool isImpostorOrDead = local.Data.Role.IsImpostor || local.Data.IsDead;
-        if (!isImpostorOrDead)
-        {
-            _audio.volume = 0f;
-            return;
-        }
+
 
         bool isMoving = _isOwner ? _velocity.magnitude > 0.05f : _netVel.magnitude > 0.05f && (Time.time - _netLastRecvTime) < 0.35f;
 
@@ -509,13 +503,9 @@ public sealed class RcXdCar : IDisposable
             PlayExplosionSound();
             if (_go != null)
             {
-                var local = PlayerControl.LocalPlayer;
-                if (local?.Data?.Role?.IsImpostor == true || local?.Data?.IsDead == true)
-                {
-                    var opts = OptionGroupSingleton<RcXdOptions>.Instance;
-                    var sphere = MiscUtils.CreateSpherePrimitive(_go.transform.position, opts.DetonateRadius);
-                    Coroutines.Start(DestroyObjAfter(sphere, 0.5f));
-                }
+                var opts = OptionGroupSingleton<RcXdOptions>.Instance;
+                var sphere = MiscUtils.CreateSpherePrimitive(_go.transform.position, opts.DetonateRadius);
+                Coroutines.Start(DestroyObjAfter(sphere, 0.5f));
             }
             DoDestroy();
         }

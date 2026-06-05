@@ -33,6 +33,7 @@ public sealed class BakerRole(IntPtr cppPtr)
     : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public static bool PendingFamineAnnouncement { get; set; }
+    public static bool FamineAnnounced { get; set; }
 
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "Baker";
@@ -197,6 +198,7 @@ public sealed class BakerRole(IntPtr cppPtr)
     public static void ShowPendingFamineAnnouncement()
     {
         if (!PendingFamineAnnouncement ||
+            FamineAnnounced ||
             PlayerControl.LocalPlayer == null ||
             !OptionGroupSingleton<BakerOptions>.Instance.AnnounceFamine)
         {
@@ -204,6 +206,7 @@ public sealed class BakerRole(IntPtr cppPtr)
         }
 
         PendingFamineAnnouncement = false;
+        FamineAnnounced = true;
         var notif = Helpers.CreateAndShowNotification(
             TouLocale.GetParsed("ExtensionRoleBakerFamineAnnouncement", "A terrible famine has consumed the Crew.\\%nl\\%\\%color=#023020FF\\%Famine\\%/color\\%, Horseman of the Apocalypse, has emerged!"),
             Color.white,

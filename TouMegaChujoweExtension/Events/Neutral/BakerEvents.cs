@@ -40,6 +40,7 @@ public static class BakerEvents
         PendingStarvationDeaths.Clear();
         ShownStarvationAnimations.Clear();
         BakerRole.PendingFamineAnnouncement = false;
+        BakerRole.FamineAnnounced = false;
 
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
         {
