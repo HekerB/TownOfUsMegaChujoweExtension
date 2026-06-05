@@ -45,44 +45,51 @@ public static class DuplicateChecker
 
             var files = Directory.GetFiles(pluginsDir, "*.dll", SearchOption.AllDirectories);
 
-            var duplicates = files
-                .Where(f =>
+            var matchingFiles = new System.Collections.Generic.List<string>();
+            foreach (var f in files)
+            {
+                try
                 {
-                    var fullF = string.Empty;
-                    try
+                    var fullF = Path.GetFullPath(f);
+                    if (!string.IsNullOrEmpty(currentPath) && string.Equals(fullF, currentPath, StringComparison.OrdinalIgnoreCase))
                     {
-                        fullF = Path.GetFullPath(f);
+                        continue;
                     }
-                    catch { return false; }
-
-                    if (!string.IsNullOrEmpty(currentPath) && string.Equals(fullF, currentPath, StringComparison.OrdinalIgnoreCase)) return false;
-                    Logger<TouMegaChujoweExtensionPlugin>.Info($"[DuplicateChecker] Scanning file: {Path.GetFileName(f)}");
 
                     var fileName = Path.GetFileNameWithoutExtension(f);
-                    if (fileName.StartsWith(assemblyName, StringComparison.OrdinalIgnoreCase))
+                    if (fileName.Contains(assemblyName, StringComparison.OrdinalIgnoreCase))
                     {
-                        Logger<TouMegaChujoweExtensionPlugin>.Warning($"[DuplicateChecker] Flagged by NAME: {fileName}");
-                        return true;
+                        Logger<TouMegaChujoweExtensionPlugin>.Info($"[DuplicateChecker] Match found: {fileName}");
+                        matchingFiles.Add(fullF);
                     }
-                    try
-                    {
-                        var internalName = AssemblyName.GetAssemblyName(f).Name;
-                        if (string.Equals(internalName, assemblyName, StringComparison.OrdinalIgnoreCase))
-                        {
-                            Logger<TouMegaChujoweExtensionPlugin>.Warning($"[DuplicateChecker] Flagged by INTERNAL NAME: {internalName} (File: {fileName})");
-                            return true;
-                        }
-                    }
-                    catch (Exception) { /* skip files that cannot be read as assemblies */ }
+                }
+                catch { }
+            }
 
-                    return false;
-                })
-                .ToList();
+            bool duplicateDetected = false;
+            string? detectedPath = null;
 
-            if (duplicates.Count > 0)
+            if (!string.IsNullOrEmpty(currentPath))
+            {
+                if (matchingFiles.Count > 0)
+                {
+                    duplicateDetected = true;
+                    detectedPath = matchingFiles[0];
+                }
+            }
+            else
+            {
+                if (matchingFiles.Count > 1)
+                {
+                    duplicateDetected = true;
+                    detectedPath = matchingFiles.FirstOrDefault(p => !p.Contains(assemblyName + ".dll")) ?? matchingFiles[0];
+                }
+            }
+
+            if (duplicateDetected && detectedPath != null)
             {
                 HasDuplicate = true;
-                DuplicatePath = duplicates[0];
+                DuplicatePath = detectedPath;
                 Logger<TouMegaChujoweExtensionPlugin>.Error($"[DuplicateChecker] DUPLICATE FOUND: {DuplicatePath}");
             }
             else
@@ -169,17 +176,13 @@ public static class DuplicateChecker
                 }
                 else
                 {
-                    var targetNetId = PlayerControl.LocalPlayer.NetId;
-                    foreach (var pc in PlayerControl.AllPlayerControls)
-                    {
-                        if (pc.PlayerId != PlayerControl.LocalPlayer.PlayerId)
-                        {
-                            targetNetId = pc.NetId;
-                            break;
-                        }
-                    }
-
-                    var writer = AmongUsClient.Instance.StartRpcImmediately(targetNetId, (byte)TouMegaChujoweExtension.Networking.ExtensionRpc.DuplicateModKick, Hazel.SendOption.Reliable, AmongUsClient.Instance.HostId);
+                    // Always use LocalPlayer.NetId to call RPCs since we own this player object.
+                    // This avoids network authority exceptions.
+                    var writer = AmongUsClient.Instance.StartRpcImmediately(
+                        PlayerControl.LocalPlayer.NetId, 
+                        (byte)TouMegaChujoweExtension.Networking.ExtensionRpc.DuplicateModKick, 
+                        Hazel.SendOption.Reliable, 
+                        AmongUsClient.Instance.HostId);
                     writer.Write(playerName);
                     writer.Write(fileName);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);

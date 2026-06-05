@@ -19,7 +19,13 @@ public static class RcXdKillTimerSyncPatch
             if (__instance.IsRole<RcXdRole>())
                 RcXdDeployButton.SetOwnCooldown();
             else if (__instance.IsRole<KamikazeRole>())
-                CustomButtonSingleton<KamikazeSuicideButton>.Instance.Timer = CustomButtonSingleton<KamikazeSuicideButton>.Instance.Cooldown;
+            {
+                var button = CustomButtonSingleton<KamikazeSuicideButton>.Instance;
+                if (button != null)
+                {
+                    button.Timer = button.Cooldown;
+                }
+            }
         }
 
         _lastKillTimer = time;
