@@ -18,7 +18,7 @@ public static class TouExtensionColors
     public static Color Falcon => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(255, 255, 255, 255);
     public static Color Doctor => Trapper;
     public static Color SpiritMaster => TownOfUsColors.SoulCollector;
-    public static Color Arcanist => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(206, 41, 96, 255); // Cherry Rose (#CE2960)
+    public static Color Arcanist => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(110, 15, 110, 255); // Purple Violet (#6E0F6E)
     public static Color Portalmaker => SerialKiller;
     public static Color Gardener => Trapper;
 
@@ -38,7 +38,7 @@ public static class TouExtensionColors
     public static Color Berserker => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(190, 16, 32, 255);
     public static Color War => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(94, 57, 41, 255);
     public static Color Famine => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(2, 48, 32, 255);
-    public static Color SoulCollector => TownOfUsColors.SoulCollector;
+    public static Color SoulCollector => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(36, 42, 94, 255);
     public static Color Death => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(32, 32, 32, 255);
     //impostors
     public static Color Witch => Palette.ImpostorRed;

@@ -270,6 +270,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
         if (OptionGroupSingleton<BerserkerOptions>.Instance.AnnounceWarTransformation)
         {
             PendingWarAnnouncement = true;
+            ShowPendingWarAnnouncement();
         }
 
         if (player.AmOwner)
@@ -284,19 +285,25 @@ public sealed class BerserkerRole(IntPtr cppPtr)
     public static void ShowPendingWarAnnouncement()
     {
         if (!PendingWarAnnouncement ||
+            PlayerControl.LocalPlayer == null ||
+            MeetingHud.Instance == null ||
             !OptionGroupSingleton<BerserkerOptions>.Instance.AnnounceWarTransformation)
         {
             return;
         }
 
         PendingWarAnnouncement = false;
+        var msg = TouLocale.GetParsed("ExtensionRoleBerserkerWarAnnouncement", "War has consumed the battlefield.\\%nl\\%\\%color=#EEEEEEFF\\%War\\%/color\\%, Horseman of the Apocalypse, has emerged!");
+        var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TouExtensionColors.War)}>{TouLocale.Get("ExtensionRoleBerserkerWarAnnouncementTitle", "War Warning")}</color>";
 
         var notif = Helpers.CreateAndShowNotification(
-            TouLocale.GetParsed("ExtensionRoleBerserkerWarAnnouncement", "War has consumed the battlefield.\\%nl\\%\\%color=#EEEEEEFF\\%War\\%/color\\%, Horseman of the Apocalypse, has emerged!"),
+            $"<b>{msg.Replace("\n", " ")}</b>",
             Color.white,
             new Vector3(0f, 1f, -20f),
             spr: TouExtensionIcons.WarRoleIcon.LoadAsset());
         notif?.AdjustNotification();
+
+        MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
     }
 
     private static void EnsureWarInvulnerability(PlayerControl war)
@@ -306,7 +313,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
             war.RemoveModifier<InvulnerabilityModifier>();
         }
 
-        war.AddModifier<InvulnerabilityModifier>(false, false, true);
+        war.AddModifier<InvulnerabilityModifier>(false, false, false);
     }
 
     private void RefreshVentButton()

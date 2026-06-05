@@ -45,7 +45,7 @@ public static class VampireHunterFallbackPatch
             _isReentry = true;
             try
             {
-                player.RpcChangeRole(newRoleId, false);
+                player.RpcChangeRole(newRoleId, true);
             }
             finally
             {

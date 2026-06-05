@@ -75,7 +75,7 @@ public sealed class ArcanistDrawButton : TownOfUsRoleButton<ArcanistRole>
                 var benigns = new List<ushort> {
                     RoleId.Get<AmnesiacRole>(),
                     RoleId.Get<ExecutionerRole>(),
-                    (ushort)RoleTypes.GuardianAngel,
+                    RoleId.Get<FairyRole>(),
                     RoleId.Get<JesterRole>(),
                     RoleId.Get<SurvivorRole>()
                 };

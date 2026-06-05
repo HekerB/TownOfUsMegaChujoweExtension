@@ -113,16 +113,21 @@ public static class BakerEvents
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var source = PlayerControl.LocalPlayer;
         var target = button?.Target;
-        if (button == null ||
-            source == null ||
-            target == null ||
-            source == target ||
-            target.Data?.Role is not FamineRole)
-        {
-            return;
-        }
 
-        Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(Color.white, 0.15f, 0.15f));
+        if (target == null || button == null || !button.CanClick()) return;
+        if (source == null) return;
+        if (target.PlayerId == source.PlayerId) return;
+        if (MeetingHud.Instance || ExileController.Instance) return;
+
+        if (target.Data?.Role is FamineRole && !source.HasModifier<TownOfUs.Modifiers.IgnoreInvulnerabilityModifier>())
+        {
+            @event.Cancel();
+
+            Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(Color.white, 0.15f, 0.15f));
+
+            button.SetTimer(button.Cooldown);
+            source.SetKillTimer(source.GetKillCooldown());
+        }
     }
 
     [RegisterEvent]
@@ -179,7 +184,7 @@ public static class BakerEvents
         BakerRole.ShowPendingFamineAnnouncement();
     }
 
-    [RegisterEvent]
+    [RegisterEvent(100)]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
     {
         var target = @event.Target;
@@ -189,9 +194,27 @@ public static class BakerEvents
             return;
         }
 
-        if (target.Data.Role is FamineRole && PlayerControl.LocalPlayer != null && (PlayerControl.LocalPlayer == target || PlayerControl.LocalPlayer == source))
+        if (target.Data.Role is FamineRole && !source.HasModifier<TownOfUs.Modifiers.IgnoreInvulnerabilityModifier>())
         {
-            Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(Color.white, 0.15f, 0.15f));
+            @event.Cancel();
+
+            if (PlayerControl.LocalPlayer != null && (PlayerControl.LocalPlayer == target || PlayerControl.LocalPlayer == source))
+            {
+                Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(Color.white, 0.15f, 0.15f));
+            }
+
+            if (source.AmOwner)
+            {
+                source.SetKillTimer(source.GetKillCooldown());
+
+                foreach (var button in CustomButtonManager.Buttons)
+                {
+                    if (button != null && button.Button != null && button.Button.gameObject.activeSelf && button is IKillButton)
+                    {
+                        button.SetTimer(button.Cooldown);
+                    }
+                }
+            }
         }
     }
 

@@ -34,11 +34,13 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
             var role = PlayerControl.LocalPlayer?.GetRole<BurrowerRole>();
             if (role != null && role.IsPreparingDig)
             {
-                return TouLocale.Get("ExtensionRoleBurrowerDig", "Dig");
+                return role.CanCancelPreparingDig()
+                    ? TouLocale.Get("ExtensionRoleBurrowerCancel", "Cancel")
+                    : TouLocale.Get("ExtensionRoleBurrowerDig", "Dig");
             }
 
             return role != null && role.IsUnderground
-                ? TouLocale.Get("ExtensionRoleBurrowerEmerge", "Emerge")
+                ? TouLocale.Get("ExtensionRoleBurrowerEscape", "Escape")
                 : TouLocale.Get("ExtensionRoleBurrowerDig", "Dig");
         }
     }
@@ -80,12 +82,16 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
     public override bool CanClick()
     {
         var player = PlayerControl.LocalPlayer;
+        var role = player?.GetRole<BurrowerRole>();
+
         if (player != null && (player.inVent || player.walkingToVent))
         {
-            return false;
+            if (role == null || !role.IsUnderground)
+            {
+                return false;
+            }
         }
 
-        var role = player?.GetRole<BurrowerRole>();
         if (role == null)
         {
             return false;
@@ -93,7 +99,7 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
 
         if (role.IsPreparingDig)
         {
-            return false;
+            return CanUse() && role.CanCancelPreparingDig();
         }
 
         if (role.IsUnderground || role.IsDigging)
@@ -169,12 +175,14 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
         {
             if (role != null && role.IsPreparingDig)
             {
-                OverrideName(TouLocale.Get("ExtensionRoleBurrowerDig", "Dig"));
+                OverrideName(role.CanCancelPreparingDig()
+                    ? TouLocale.Get("ExtensionRoleBurrowerCancel", "Cancel")
+                    : TouLocale.Get("ExtensionRoleBurrowerDig", "Dig"));
             }
             else
             {
                 OverrideName(role != null && role.IsUnderground
-                    ? TouLocale.Get("ExtensionRoleBurrowerEmerge", "Emerge")
+                    ? TouLocale.Get("ExtensionRoleBurrowerEscape", "Escape")
                     : TouLocale.Get("ExtensionRoleBurrowerDig", "Dig"));
             }
         }
@@ -226,23 +234,22 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
     {
         if (role.IsPreparingDig)
         {
+            if (role.CanCancelPreparingDig())
+            {
+                BurrowerRole.RpcCancel(player);
+                Timer = Cooldown;
+                return true;
+            }
             return false;
         }
 
-        if (role.IsDigging)
+        if (role.IsUnderground || role.IsDigging)
         {
-            if (!role.CanCancelUndergroundDig())
+            if (role.IsDigging && !role.CanCancelUndergroundDig())
             {
                 return false;
             }
 
-            BurrowerRole.RpcCancel(player);
-            Timer = Cooldown;
-            return true;
-        }
-
-        if (role.IsUnderground)
-        {
             if (!BurrowerSystem.TryFindVentPlacementPosition(player, player.GetTruePosition(), out var emergePosition))
             {
                 return false;

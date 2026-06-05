@@ -207,6 +207,7 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
         if (OptionGroupSingleton<SoulCollectorOptions>.Instance.AnnounceDeath)
         {
             PendingDeathAnnouncement = true;
+            ShowPendingDeathAnnouncement();
         }
     }
 
@@ -214,17 +215,23 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
     {
         if (!PendingDeathAnnouncement ||
             PlayerControl.LocalPlayer == null ||
+            MeetingHud.Instance == null ||
             !OptionGroupSingleton<SoulCollectorOptions>.Instance.AnnounceDeath)
         {
             return;
         }
 
         PendingDeathAnnouncement = false;
+        var msg = TouLocale.GetParsed("ExtensionRoleSoulCollectorDeathAnnouncement", "The final soul has been claimed.\\%nl\\%\\%color=#202020FF\\%Death\\%/color\\%, Horseman of the Apocalypse, has emerged!");
+        var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TownOfUsColors.SoulCollector)}>{TouLocale.Get("ExtensionRoleSoulCollectorDeathAnnouncementTitle", "Death Warning")}</color>";
+
         var notif = Helpers.CreateAndShowNotification(
-            TouLocale.GetParsed("ExtensionRoleSoulCollectorDeathAnnouncement", "The final soul has been claimed.\\%nl\\%\\%color=#202020FF\\%Death\\%/color\\%, Horseman of the Apocalypse, has emerged!"),
+            $"<b>{msg.Replace("\n", " ")}</b>",
             Color.white,
             new Vector3(0f, 1f, -20f),
             spr: TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
         notif?.AdjustNotification();
+
+        MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
     }
 }

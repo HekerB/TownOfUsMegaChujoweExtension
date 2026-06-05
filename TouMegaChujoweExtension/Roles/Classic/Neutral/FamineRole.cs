@@ -43,6 +43,9 @@ public sealed class FamineRole(IntPtr cppPtr)
     [HideFromIl2Cpp]
     public bool HadBreadTargets { get; set; }
 
+    [HideFromIl2Cpp]
+    public bool Announced { get; set; }
+
 
     public string YouAreText => TouLocale.Get("YouAre");
     public string YouWereText => TouLocale.Get("YouWere");
@@ -130,6 +133,34 @@ public sealed class FamineRole(IntPtr cppPtr)
         }
     }
 
+    [HideFromIl2Cpp]
+    public void TriggerFamineAnnouncement()
+    {
+        var msg = TouLocale.GetParsed("ExtensionRoleBakerFamineAnnouncement", "A terrible famine has consumed the Crew.\\%nl\\%\\%color=#023020FF\\%Famine\\%/color\\%, Horseman of the Apocalypse, has emerged!");
+        var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Baker)}>{TouLocale.Get("ExtensionRoleBakerFamineAnnouncementTitle", "Famine Warning")}</color>";
+
+        var notif = Helpers.CreateAndShowNotification(
+            $"<b>{msg.Replace("\n", " ").Replace("\\%nl\\%", " ")}</b>",
+            Color.white,
+            new Vector3(0f, 1f, -20f),
+            spr: TouExtensionIcons.FamineRoleIcon.LoadAsset());
+        notif?.AdjustNotification();
+
+        MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
+    }
+
+    public override void OnMeetingStart()
+    {
+        RoleBehaviourStubs.OnMeetingStart(this);
+
+        if (Announced || !OptionGroupSingleton<BakerOptions>.Instance.AnnounceFamine)
+        {
+            return;
+        }
+        Announced = true;
+        TriggerFamineAnnouncement();
+    }
+
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
@@ -147,6 +178,12 @@ public sealed class FamineRole(IntPtr cppPtr)
         {
             OffsetButtons();
             Reactor.Utilities.Coroutines.Start(CoStartStarveCooldown());
+        }
+
+        if (MeetingHud.Instance != null && !Announced && OptionGroupSingleton<BakerOptions>.Instance.AnnounceFamine)
+        {
+            Announced = true;
+            TriggerFamineAnnouncement();
         }
     }
 
@@ -219,7 +256,7 @@ public sealed class FamineRole(IntPtr cppPtr)
             target.AddModifier<FamineStarveRevealModifier>();
         }
 
-        if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
+        if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost || famine.AmOwner)
         {
             TouMegaChujoweExtension.Events.Neutral.BakerEvents.TryUnlockFamine();
         }
@@ -290,6 +327,6 @@ public sealed class FamineRole(IntPtr cppPtr)
             famine.RemoveModifier<InvulnerabilityModifier>();
         }
 
-        famine.AddModifier<InvulnerabilityModifier>(false, false, true);
+        famine.AddModifier<InvulnerabilityModifier>(false, false, false);
     }
 }

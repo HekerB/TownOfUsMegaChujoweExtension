@@ -192,6 +192,7 @@ public sealed class BakerRole(IntPtr cppPtr)
         if (OptionGroupSingleton<BakerOptions>.Instance.AnnounceFamine)
         {
             PendingFamineAnnouncement = true;
+            ShowPendingFamineAnnouncement();
         }
     }
 
@@ -200,6 +201,7 @@ public sealed class BakerRole(IntPtr cppPtr)
         if (!PendingFamineAnnouncement ||
             FamineAnnounced ||
             PlayerControl.LocalPlayer == null ||
+            MeetingHud.Instance == null ||
             !OptionGroupSingleton<BakerOptions>.Instance.AnnounceFamine)
         {
             return;
@@ -207,11 +209,15 @@ public sealed class BakerRole(IntPtr cppPtr)
 
         PendingFamineAnnouncement = false;
         FamineAnnounced = true;
+        var msg = TouLocale.GetParsed("ExtensionRoleBakerFamineAnnouncement", "A terrible famine has consumed the Crew.\\%nl\\%\\%color=#023020FF\\%Famine\\%/color\\%, Horseman of the Apocalypse, has emerged!");
+        var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Baker)}>{TouLocale.Get("ExtensionRoleBakerFamineAnnouncementTitle", "Famine Warning")}</color>";
         var notif = Helpers.CreateAndShowNotification(
-            TouLocale.GetParsed("ExtensionRoleBakerFamineAnnouncement", "A terrible famine has consumed the Crew.\\%nl\\%\\%color=#023020FF\\%Famine\\%/color\\%, Horseman of the Apocalypse, has emerged!"),
+            $"<b>{msg.Replace("\n", " ")}</b>",
             Color.white,
             new Vector3(0f, 1f, -20f),
             spr: TouExtensionIcons.FamineRoleIcon.LoadAsset());
-        notif.AdjustNotification();
+        notif?.AdjustNotification();
+
+        MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
     }
 }
