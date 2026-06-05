@@ -1,6 +1,8 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using UnityEngine;
+using TownOfUs.Extensions;
+using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Patches.Roles.RcXd;
 
@@ -12,8 +14,9 @@ public static class RcXdMovementPatch
     {
         var player = __instance.myPlayer;
         if (player == null || !player.AmOwner) return true;
-        if (player.Data?.Role is not RcXdRole role) return true;
-        if (role.ActiveCar == null || !role.ActiveCar.IsDriving) return true;
+        if (!player.IsRole<RcXdRole>()) return true;
+        var role = player.GetRole<RcXdRole>();
+        if (role?.ActiveCar == null || !role.ActiveCar.IsDriving) return true;
 
         if (__instance.body != null)
             __instance.body.velocity = Vector2.zero;
@@ -32,9 +35,10 @@ public static class RcXdPlayerControlPatch
     public static void Prefix(PlayerControl __instance)
     {
         if (!__instance.AmOwner) return;
-        if (__instance.Data?.Role is not RcXdRole role) return;
+        if (!__instance.IsRole<RcXdRole>()) return;
+        var role = __instance.GetRole<RcXdRole>();
 
-        if (role.ActiveCar != null && role.ActiveCar.IsDriving && __instance.moveable)
+        if (role?.ActiveCar != null && role.ActiveCar.IsDriving && __instance.moveable)
         {
             __instance.moveable = false;
             _weSetMoveable = true;
@@ -45,9 +49,10 @@ public static class RcXdPlayerControlPatch
     public static void Postfix(PlayerControl __instance)
     {
         if (!__instance.AmOwner) return;
-        if (__instance.Data?.Role is not RcXdRole role) return;
+        if (!__instance.IsRole<RcXdRole>()) return;
+        var role = __instance.GetRole<RcXdRole>();
 
-        if ((role.ActiveCar == null || !role.ActiveCar.IsDriving) && _weSetMoveable)
+        if ((role?.ActiveCar == null || !role.ActiveCar.IsDriving) && _weSetMoveable)
         {
             __instance.moveable = true;
             _weSetMoveable = false;
@@ -63,8 +68,9 @@ public static class RcXdNetTransformPatch
     {
         var player = __instance.myPlayer;
         if (player == null || !player.AmOwner) return true;
-        if (player.Data?.Role is not RcXdRole role) return true;
-        if (role.ActiveCar == null || !role.ActiveCar.IsDriving) return true;
+        if (!player.IsRole<RcXdRole>()) return true;
+        var role = player.GetRole<RcXdRole>();
+        if (role?.ActiveCar == null || !role.ActiveCar.IsDriving) return true;
 
         return false;
     }
@@ -77,8 +83,9 @@ public static class RcXdTruePositionPatch
     public static void Postfix(PlayerControl __instance, ref Vector2 __result)
     {
         if (!__instance.AmOwner) return;
-        if (__instance.Data?.Role is not RcXdRole role) return;
-        if (role.ActiveCar == null || !role.ActiveCar.IsDriving) return;
+        if (!__instance.IsRole<RcXdRole>()) return;
+        var role = __instance.GetRole<RcXdRole>();
+        if (role?.ActiveCar == null || !role.ActiveCar.IsDriving) return;
 
         __result = role.ActiveCar.Position;
     }
@@ -93,8 +100,9 @@ public static class RcXdVisionPatch
     {
         var player = PlayerControl.LocalPlayer;
         if (player == null) return;
-        if (player.Data?.Role is not RcXdRole role) return;
-        if (role.ActiveCar == null || !role.ActiveCar.IsDriving) return;
+        if (!player.IsRole<RcXdRole>()) return;
+        var role = player.GetRole<RcXdRole>();
+        if (role?.ActiveCar == null || !role.ActiveCar.IsDriving) return;
 
         __result = 999f;
     }
@@ -106,8 +114,9 @@ public static class RcXdDeathPatch
     [HarmonyPostfix]
     public static void Postfix(PlayerControl __instance)
     {
-        if (__instance.Data?.Role is not RcXdRole role) return;
-        if (role.ActiveCar == null) return;
+        if (!__instance.IsRole<RcXdRole>()) return;
+        var role = __instance.GetRole<RcXdRole>();
+        if (role?.ActiveCar == null) return;
 
         role.ActiveCar.DoDestroy();
         role.ActiveCar = null;
@@ -122,8 +131,9 @@ public static class RcXdVentBlockPatch
         [HarmonyArgument(0)] NetworkedPlayerInfo pc)
     {
         if (pc == null || pc.Object == null || !pc.Object.AmOwner) return;
-        if (pc.Role is not RcXdRole role) return;
-        if (role.ActiveCar == null || !role.ActiveCar.IsDriving) return;
+        if (!pc.Object.IsRole<RcXdRole>()) return;
+        var role = pc.Object.GetRole<RcXdRole>();
+        if (role?.ActiveCar == null || !role.ActiveCar.IsDriving) return;
 
         canUse = false;
         couldUse = false;

@@ -1,4 +1,6 @@
 using HarmonyLib;
+using TownOfUs.Extensions;
+using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Patches.Roles.RcXd;
 
@@ -10,10 +12,14 @@ public static class RcXdMeetingPatch
     {
         foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (player?.Data?.Role is RcXdRole role && role.ActiveCar != null)
+            if (player != null && player.IsRole<RcXdRole>())
             {
-                role.ActiveCar.DoDestroy();
-                role.ActiveCar = null;
+                var role = player.GetRole<RcXdRole>();
+                if (role != null && role.ActiveCar != null)
+                {
+                    role.ActiveCar.DoDestroy();
+                    role.ActiveCar = null;
+                }
             }
         }
     }

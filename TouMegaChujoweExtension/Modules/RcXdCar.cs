@@ -48,7 +48,7 @@ public sealed class RcXdCar : IDisposable
     private bool _renderConfigured;
 
     private const float TurnSpeed = 12f;
-    private const float AudioHearRadius = 4.5f;
+    private const float AudioHearRadius = 12.0f;
 
     private const float NetSendInterval = 0.066f; // ~15 Hz
 
@@ -183,6 +183,10 @@ public sealed class RcXdCar : IDisposable
         car._renderer.enabled = localPlayer != null;
 
         car._audio = car._go.AddComponent<AudioSource>();
+        if (SoundManager.Instance != null)
+        {
+            car._audio.outputAudioMixerGroup = SoundManager.Instance.SfxChannel;
+        }
         
         // Pre-load audio to avoid lag/bugs during gameplay
         car._audio.clip = TouExtensionAudio.RcSound.LoadAsset();
@@ -193,6 +197,26 @@ public sealed class RcXdCar : IDisposable
         car._audio.spatialBlend = 0f;
         car._audio.volume = 0f;
         car._audio.Play();
+
+        // Play deploy sound for everyone spatially relative to the spawn location
+        if (SoundManager.Instance != null)
+        {
+            var deployClip = TouAudio.TrackerActivateSound.LoadAsset();
+            if (deployClip != null)
+            {
+                var local = PlayerControl.LocalPlayer;
+                if (local != null)
+                {
+                    var dist = Vector2.Distance(position, local.transform.position);
+                    const float deployHearRadius = 12f;
+                    var vol = owner.AmOwner ? 1f : Mathf.Clamp01(1f - (dist / deployHearRadius));
+                    if (vol > 0.01f)
+                    {
+                        SoundManager.Instance.PlaySound(deployClip, false, vol);
+                    }
+                }
+            }
+        }
 
         if (owner.AmOwner)
         {
@@ -303,14 +327,6 @@ public sealed class RcXdCar : IDisposable
 
         if (!_renderConfigured)
             _renderConfigured = TryConfigureRendererOnce();
-
-        // deploy SFX
-        var deployClip = TouAudio.TrackerActivateSound.LoadAsset();
-        if (deployClip != null && _audio != null)
-        {
-            _audio.volume = 1f;
-            _audio.PlayOneShot(deployClip, 1.0f);
-        }
 
         var syncTimer = 0f;
 
@@ -643,8 +659,12 @@ public sealed class RcXdCar : IDisposable
         RestoreCamera();
         PlayDisconnectSound();
         StopAudio();
-        if (_owner?.Data?.Role is RcXdRole role && role.ActiveCar == this)
-            role.ActiveCar = null;
+        if (_owner != null && _owner.IsRole<RcXdRole>())
+        {
+            var role = _owner.GetRole<RcXdRole>();
+            if (role != null && role.ActiveCar == this)
+                role.ActiveCar = null;
+        }
         try { _go?.Destroy(); } catch { /* ignored */ }
         _go = null;
         _renderer = null;
@@ -656,8 +676,12 @@ public sealed class RcXdCar : IDisposable
         StopAudio();
         if (_renderer != null) _renderer.enabled = false;
         _renderer = null;
-        if (_owner?.Data?.Role is RcXdRole role && role.ActiveCar == this)
-            role.ActiveCar = null;
+        if (_owner != null && _owner.IsRole<RcXdRole>())
+        {
+            var role = _owner.GetRole<RcXdRole>();
+            if (role != null && role.ActiveCar == this)
+                role.ActiveCar = null;
+        }
         try { _go?.Destroy(); } catch { /* ignored */ }
         _go = null;
     }

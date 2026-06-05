@@ -32,6 +32,7 @@ public static class SoulCollectorEvents
         {
             SoulCollectorSystem.Clear();
             SoulCollectorRole.PendingDeathAnnouncement = false;
+            SoulCollectorRole.DeathAnnounced = false;
         }
 
         if (!@event.TriggeredByIntro) return;

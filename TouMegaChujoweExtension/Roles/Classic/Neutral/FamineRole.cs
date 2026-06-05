@@ -44,7 +44,11 @@ public sealed class FamineRole(IntPtr cppPtr)
     public bool HadBreadTargets { get; set; }
 
     [HideFromIl2Cpp]
-    public bool Announced { get; set; }
+    public bool Announced
+    {
+        get => BakerRole.FamineAnnounced;
+        set => BakerRole.FamineAnnounced = value;
+    }
 
 
     public string YouAreText => TouLocale.Get("YouAre");

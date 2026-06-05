@@ -29,6 +29,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
     : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IUnguessable
 {
     public static bool PendingWarAnnouncement { get; set; }
+    public static bool WarAnnounced { get; set; }
 
     [HideFromIl2Cpp]
     public bool IsWar { get; set; }
@@ -293,6 +294,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
         }
 
         PendingWarAnnouncement = false;
+        WarAnnounced = true;
         var msg = TouLocale.GetParsed("ExtensionRoleBerserkerWarAnnouncement", "War has consumed the battlefield.\\%nl\\%\\%color=#EEEEEEFF\\%War\\%/color\\%, Horseman of the Apocalypse, has emerged!");
         var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TouExtensionColors.War)}>{TouLocale.Get("ExtensionRoleBerserkerWarAnnouncementTitle", "War Warning")}</color>";
 

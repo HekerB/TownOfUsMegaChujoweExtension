@@ -34,7 +34,11 @@ public sealed class DeathRole(IntPtr cppPtr)
     public const string DeathReason = "ExtensionDeathClaimed";
 
     [HideFromIl2Cpp]
-    public bool Announced { get; set; }
+    public bool Announced
+    {
+        get => SoulCollectorRole.DeathAnnounced;
+        set => SoulCollectorRole.DeathAnnounced = value;
+    }
 
     public string LocaleKey => "Death";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Death");

@@ -1,6 +1,7 @@
 using HarmonyLib;
 using MiraAPI.Hud;
 using TownOfUs.Utilities;
+using TownOfUs.Extensions;
 
 namespace TouMegaChujoweExtension.Patches.Roles.RcXd;
 
@@ -34,8 +35,9 @@ public static class RcXdBlockKillClickPatch
     public static bool Prefix()
     {
         var local = PlayerControl.LocalPlayer;
-        if (local == null || local.Data?.Role is not RcXdRole role) return true;
-        if (role.ActiveCar != null && role.ActiveCar.IsDriving) return false;
+        if (local == null || !local.IsRole<RcXdRole>()) return true;
+        var role = local.GetRole<RcXdRole>();
+        if (role?.ActiveCar != null && role.ActiveCar.IsDriving) return false;
         return true;
     }
 }
@@ -48,8 +50,9 @@ public static class RcXdCheckMurderBlockPatch
     public static bool Prefix(PlayerControl __instance)
     {
         if (__instance != PlayerControl.LocalPlayer) return true;
-        if (__instance.Data?.Role is not RcXdRole role) return true;
-        if (role.ActiveCar != null && role.ActiveCar.IsDriving) return false;
+        if (!__instance.IsRole<RcXdRole>()) return true;
+        var role = __instance.GetRole<RcXdRole>();
+        if (role?.ActiveCar != null && role.ActiveCar.IsDriving) return false;
         return true;
     }
 }

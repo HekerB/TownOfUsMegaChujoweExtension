@@ -23,6 +23,7 @@ public static class ApocalypseEvents
         }
 
         BerserkerRole.PendingWarAnnouncement = false;
+        BerserkerRole.WarAnnounced = false;
 
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
         {

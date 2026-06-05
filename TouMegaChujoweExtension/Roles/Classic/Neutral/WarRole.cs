@@ -45,7 +45,11 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
     public float WarSpreeUntil { get; set; }
 
     [HideFromIl2Cpp]
-    public bool Announced { get; set; }
+    public bool Announced
+    {
+        get => BerserkerRole.WarAnnounced;
+        set => BerserkerRole.WarAnnounced = value;
+    }
 
     public Color RoleColor => TouExtensionColors.War;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;

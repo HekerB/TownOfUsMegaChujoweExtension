@@ -35,6 +35,7 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
     : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public static bool PendingDeathAnnouncement { get; set; }
+    public static bool DeathAnnounced { get; set; }
 
     public DoomableType DoomHintType => DoomableType.Death;
     public string LocaleKey => "SoulCollector";
@@ -222,6 +223,7 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
         }
 
         PendingDeathAnnouncement = false;
+        DeathAnnounced = true;
         var msg = TouLocale.GetParsed("ExtensionRoleSoulCollectorDeathAnnouncement", "The final soul has been claimed.\\%nl\\%\\%color=#202020FF\\%Death\\%/color\\%, Horseman of the Apocalypse, has emerged!");
         var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TownOfUsColors.SoulCollector)}>{TouLocale.Get("ExtensionRoleSoulCollectorDeathAnnouncementTitle", "Death Warning")}</color>";
 

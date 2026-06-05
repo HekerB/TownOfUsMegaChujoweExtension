@@ -76,11 +76,12 @@ public sealed class RcXdRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRol
     public static void RpcDeployCar(PlayerControl player, Vector2 position)
     {
         if (LobbyBehaviour.Instance) return;
-        if (player.Data?.Role is not RcXdRole role)
+        if (!player.IsRole<RcXdRole>())
         {
-            // ("RpcDeployCar - Not an RC-XD role");
             return;
         }
+        var role = player.GetRole<RcXdRole>();
+        if (role == null) return;
 
         var car = RcXdCar.Create(player, position);
         if (car != null)
@@ -93,7 +94,9 @@ public sealed class RcXdRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRol
     public static void RpcDetonateCar(PlayerControl player)
     {
         if (LobbyBehaviour.Instance) return;
-        if (player.Data?.Role is not RcXdRole role) return;
+        if (!player.IsRole<RcXdRole>()) return;
+        var role = player.GetRole<RcXdRole>();
+        if (role == null) return;
 
         role.ActiveCar?.Detonate();
     }
@@ -102,7 +105,9 @@ public sealed class RcXdRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRol
     public static void RpcUpdateCarPosition(PlayerControl player, float x, float y, float flip)
     {
         if (LobbyBehaviour.Instance) return;
-        if (player.Data?.Role is not RcXdRole role) return;
+        if (!player.IsRole<RcXdRole>()) return;
+        var role = player.GetRole<RcXdRole>();
+        if (role == null) return;
         if (player.AmOwner) return;
 
         role.ActiveCar?.UpdatePosition(new Vector2(x, y), flip > 0.5f);
