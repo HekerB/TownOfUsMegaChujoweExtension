@@ -146,7 +146,10 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
                 {
                     Button.SetEnabled();
                     Button.SetFillUp(_poisonTimer, _poisonDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_poisonTimer).ToString();
+                    var format = _poisonTimer <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+                        ? "0.0"
+                        : "0";
+                    Button.cooldownTimerText.text = _poisonTimer.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
             }

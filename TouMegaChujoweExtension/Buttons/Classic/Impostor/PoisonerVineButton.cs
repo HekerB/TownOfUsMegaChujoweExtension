@@ -142,7 +142,10 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
                 {
                     Button.SetEnabled();
                     Button.SetFillUp(_vineTimer, _vineDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_vineTimer).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    var format = _vineTimer <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+                        ? "0.0"
+                        : "0";
+                    Button.cooldownTimerText.text = _vineTimer.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
             }
@@ -179,7 +182,10 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
                         Button.SetDisabled();
                     }
                     Button.SetFillUp(_seekingTimer, _seekingDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_seekingTimer).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    var format = _seekingTimer <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+                        ? "0.0"
+                        : "0";
+                    Button.cooldownTimerText.text = _seekingTimer.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
 

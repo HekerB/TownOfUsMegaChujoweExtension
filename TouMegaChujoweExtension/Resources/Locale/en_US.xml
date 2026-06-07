@@ -425,7 +425,7 @@
   <string name="ExtensionRoleRcXdIntroBlurb">Steer a bomb-car to destroy the crew.</string>
   <string name="ExtensionRoleRcXdTabDescription">Deploy and drive an RC car.\%nl\%Detonate it near enemies.</string>
   <string name="ExtensionRoleRcXdWikiDescription">The RC-XD is an Impostor Power role that can deploy and detonate an RC-XD car to kill players around the map. Use movement keys or joystick to steer it and detonate near enemies.</string>
-  <string name="ExtensionRoleRcXdDeploy">Deploy RC</string>
+  <string name="ExtensionRoleRcXdDeploy">Deploy</string>
   <string name="ExtensionRoleRcXdDeployWikiDescription">Deploy an RC car to steer it towards targets.</string>
   <string name="ExtensionRoleRcXdDetonate">Detonate</string>
   <string name="ExtensionRoleRcXdDetonateWikiDescription">Detonate your RC car to kill nearby players.</string>
@@ -1103,7 +1103,7 @@
 
   <!-- TOUMCE Wiki Terms - Symbols -->
   <string name="TOUMCETermsSymbolsTitle">TOUMCE Symbols</string>
-  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player given cream cake by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client</string>
+  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player given cream cake by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client • &lt;color=#FF0000&gt;&lt;b&gt;?&lt;/b&gt;&lt;/color&gt; - Player disoriented by the Inverter</string>
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">General Shield Flashes</string>
@@ -1635,4 +1635,51 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionSoulCollectorDeathCanVent">Death Can Vent</string>
   <string name="ExtensionModifierSoulCollectorReaped">Reaped</string>
 
+  <!-- Innocent -->
+  <string name="ExtensionRoleInnocent">Innocent</string>
+  <string name="ExtensionRoleInnocentIntroBlurb">Make someone look guilty.</string>
+  <string name="ExtensionRoleInnocentTabDescription">Taunt a player and force them to kill the nearest Crewmate after a delay. Win if that killer is exiled at the next meeting. If limited taunts run out without a win, you can transform into the configured neutral role.</string>
+  <string name="ExtensionRoleInnocentWikiDescription">The Innocent is a Neutral Evil role. Use Taunt on a living player. After the configured delay, the taunted player kills the nearest Crewmate. If that killer is voted out at the next meeting, the Innocent wins. If the victim is Bait, the body is reported immediately. If limited taunts run out without a win, an option can turn the Innocent into Amnesiac, Survivor, Mercenary, Jester, or a random neutral role.</string>
+  <string name="ExtensionRoleInnocentTaunt">Taunt</string>
+  <string name="ExtensionRoleInnocentTauntWikiDescription">Mark a living player. After a delay, they will kill the nearest Crewmate, and you must get them exiled at the next meeting.</string>
+  <string name="ExtensionRoleInnocentTauntedNotif">{0} has been taunted!</string>
+  <string name="ExtensionRoleInnocentTauntedButton">Taunted</string>
+  <string name="ExtensionOptionInnocentTauntCooldown">Taunt Cooldown</string>
+  <string name="ExtensionOptionInnocentForcedKillDelay">Forced Kill Delay</string>
+  <string name="ExtensionOptionInnocentMaxTaunts">Max Taunts</string>
+  <string name="ExtensionOptionInnocentTransformAfterTauntsInto">Transform After Taunts Into</string>
+  <string name="ExtensionOptionInnocentTransformRoleNone">Nothing</string>
+  <string name="ExtensionOptionInnocentTransformRoleRandom">Random Neutral</string>
+  <string name="ExtensionOptionInnocentCanTauntFirstRound">Can Taunt First Round</string>
+  <string name="ExtensionInnocentWins">Wins</string>
+
+  <!-- Voodoo Master -->
+  <string name="ExtensionRoleVoodooMaster">Voodoo Master</string>
+  <string name="ExtensionRoleVoodooMasterIntroBlurb">Curse players with Voodoo.</string>
+  <string name="ExtensionRoleVoodooMasterTabDescription">Curse a player. Cycle between blindness, mute, and confuse.</string>
+  <string name="ExtensionRoleVoodooMasterWikiDescription">The Voodoo Master is an Impostor Support role. They can select a curse, then use it on any living player. Blindness and confuse happen during the round, while mute triggers during the next meeting. Muted players can still vote normally.</string>
+  <string name="ExtensionRoleVoodooMasterCast">Curse</string>
+  <string name="ExtensionRoleVoodooMasterCastWikiDescription">Choose a living player and apply the currently selected Voodoo curse.</string>
+  <string name="ExtensionRoleVoodooMasterCycle">Cycle Curse</string>
+  <string name="ExtensionRoleVoodooMasterCycleWikiDescription">Switch between blindness, mute, and confuse.</string>
+  <string name="ExtensionOptionVoodooMasterCooldown">Curse Cooldown</string>
+  <string name="ExtensionOptionVoodooMasterBlindDuration">Blind Duration</string>
+  <string name="ExtensionOptionVoodooMasterCanVent">Voodoo Master Can Vent</string>
+  <string name="ExtensionVoodooEffectBlindness">Blindness</string>
+  <string name="ExtensionVoodooEffectMute">Mute</string>
+  <string name="ExtensionVoodooEffectConfuse">Confuse</string>
+
+  <!-- Inverter Role -->
+  <string name="ExtensionRoleInverter">Inverter</string>
+  <string name="ExtensionRoleInverterIntroBlurb">Disorient your targets to flip their view and controls.</string>
+  <string name="ExtensionRoleInverterTabDescription">Choose a player and use Disorient to flip their screen and invert their movement controls.</string>
+  <string name="ExtensionRoleInverterWikiDescription">The Inverter is an Impostor Support role. They can choose a living target and apply Disoriented. The target's screen is flipped upside-down and their movement controls are inverted for the configured duration.</string>
+  <string name="ExtensionRoleInverterDisorient">Disorient</string>
+  <string name="ExtensionRoleInverterDisorientWikiDescription">Flip a player's screen and invert their movement controls.</string>
+  <string name="ExtensionOptionInverterDisorientCooldown">Disorient Cooldown</string>
+  <string name="ExtensionOptionInverterDisorientDuration">Disorient Duration</string>
+  <string name="ExtensionOptionInverterMaxDisorients">Max Number Of Disorients</string>
+  <string name="ExtensionOptionInverterMoveWhileMenu">Can Move While Menu</string>
+  <string name="ExtensionOptionInverterDisorientSamePersonTwice">Disorient Same Person Twice In A Row</string>
+  <string name="ExtensionModifierDisoriented">Disoriented</string>
 </resources>

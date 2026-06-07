@@ -44,29 +44,32 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         // 3. Joker
         if (IsJokerWinMet()) return true;
 
-        // 4. Pelican (Original Priority 11)
+        // 4. Innocent
+        if (IsInnocentWinMet()) return true;
+
+        // 5. Pelican (Original Priority 11)
         if (IsPelicanWinMet()) return true;
 
-        // 5. Pirate (Original Priority 12)
+        // 6. Pirate (Original Priority 12)
         if (IsPirateWinMet()) return true;
 
-        // 6. Lawyer (Original Priority 12)
+        // 7. Lawyer (Original Priority 12)
         if (IsLawyerWinMet()) return true;
 
-        // 7. Apocalypse alliance
+        // 8. Apocalypse alliance
         if (IsApocalypseAllianceWinMet()) return true;
 
-        // 8. Famine
+        // 9. Famine
         if (IsFamineWinMet()) return true;
 
-        // 9. Death
+        // 10. Death
         if (IsDeathWinMet()) return true;
 
-        // 10. Berserker / War
+        // 11. Berserker / War
         if (IsBerserkerWinMet()) return true;
         if (IsWarWinMet()) return true;
 
-        // 11. Jackal (Original Priority 15)
+        // 12. Jackal (Original Priority 15)
         if (IsJackalWinMet()) return true;
 
         return false;
@@ -107,7 +110,18 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
         }
 
-        // 4. Bounty Hunter
+        // 4. Innocent
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.HasDied() || player.Data?.Role is not InnocentRole innocentRole) continue;
+            if (innocentRole.WinConditionMet() && player.Data != null)
+            {
+                CustomGameOver.Trigger<ExtensionNeutralGameOver>([player.Data]);
+                return;
+            }
+        }
+
+        // 5. Bounty Hunter
         if (IsBountyHunterWinMet())
         {
             _bhGameOverTriggered = true;
@@ -121,7 +135,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
         }
 
-        // 5. Pirate
+        // 6. Pirate
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player?.Data?.Role is PirateRole pirate && pirate.WinConditionMet() && player.Data != null)
@@ -131,10 +145,10 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
         }
 
-        // 6. Lawyer
+        // 7. Lawyer
         TriggerLawyerWin();
 
-        // 7. Apocalypse alliance
+        // 8. Apocalypse alliance
         if (IsApocalypseAllianceWinMet())
         {
             var winners = GetApocalypseAllianceWinners();
@@ -146,7 +160,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
         }
 
-        // 8. Famine
+        // 9. Famine
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player == null || player.HasDied() || player.Data?.Role is not FamineRole famineRole) continue;
@@ -157,7 +171,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
         }
 
-        // 9. Death
+        // 10. Death
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player == null || player.HasDied() || player.Data?.Role is not DeathRole deathRole) continue;
@@ -168,7 +182,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
         }
 
-        // 10. Berserker / War
+        // 11. Berserker / War
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player == null || player.HasDied() || player.Data?.Role is not BerserkerRole berserkerRole) continue;
@@ -196,7 +210,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
         }
 
-        // 11. Jackal
+        // 12. Jackal
         var winningJackalId = GetWinningJackalId();
         if (winningJackalId.HasValue)
         {
@@ -245,6 +259,17 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             if (player == null || player.HasDied() || player.Data?.Role is not PelicanRole pelicanRole) continue;
             if (pelicanRole.WinConditionMet()) return true;
         }
+        return false;
+    }
+
+    private static bool IsInnocentWinMet()
+    {
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.HasDied() || player.Data?.Role is not InnocentRole innocentRole) continue;
+            if (innocentRole.WinConditionMet()) return true;
+        }
+
         return false;
     }
 

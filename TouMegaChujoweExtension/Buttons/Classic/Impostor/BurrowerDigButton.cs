@@ -194,7 +194,10 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
 
             if (Button?.cooldownTimerText != null)
             {
-                Button.cooldownTimerText.text = Mathf.Ceil(remaining).ToString();
+                var format = remaining <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+                    ? "0.0"
+                    : "0";
+                Button.cooldownTimerText.text = remaining.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
                 Button.cooldownTimerText.gameObject.SetActive(true);
             }
 
@@ -208,7 +211,10 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
 
             if (Button?.cooldownTimerText != null)
             {
-                Button.cooldownTimerText.text = Mathf.Ceil(remaining).ToString();
+                var format = remaining <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+                    ? "0.0"
+                    : "0";
+                Button.cooldownTimerText.text = remaining.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
                 Button.cooldownTimerText.gameObject.SetActive(true);
             }
 

@@ -18,10 +18,9 @@ public static class TouExtensionColors
     public static Color Falcon => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(255, 255, 255, 255);
     public static Color Doctor => Trapper;
     public static Color SpiritMaster => TownOfUsColors.SoulCollector;
-    public static Color Arcanist => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(110, 15, 110, 255); // Purple Violet (#6E0F6E)
+    public static Color Arcanist => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(110, 15, 110, 255);
     public static Color Portalmaker => SerialKiller;
     public static Color Gardener => Trapper;
-
     //neutrals
     public static Color SerialKiller => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(40, 80, 160, 255);
     public static Color Vulture => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(139, 69, 19, 255);
@@ -40,6 +39,7 @@ public static class TouExtensionColors
     public static Color Famine => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(2, 48, 32, 255);
     public static Color SoulCollector => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(36, 42, 94, 255);
     public static Color Death => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(32, 32, 32, 255);
+    public static Color Innocent => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(255, 141, 168, 255);
     //impostors
     public static Color Witch => Palette.ImpostorRed;
     public static Color Wraith => Palette.ImpostorRed;
@@ -53,7 +53,6 @@ public static class TouExtensionColors
     public static Color Speedy => Palette.ImpostorRed;
     public static Color Detonator => Palette.ImpostorRed;
     public static Color Burrower => Palette.ImpostorRed;
-
 
     // Shield Flash Colors
     public static class ShieldFlashes
@@ -69,7 +68,6 @@ public static class TouExtensionColors
     }
 
     // Modifiers
-
     public static Color Venomous => new Color32(0, 200, 90, 255);
     public static Color Publicity => new Color32(51, 179, 179, 255);
     public static Color DeathNote => new Color32(42, 10, 42, 255);

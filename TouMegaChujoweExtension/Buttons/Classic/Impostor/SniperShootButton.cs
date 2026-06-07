@@ -128,7 +128,10 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
                         Button.SetDisabled();
                     }
                     Button.SetFillUp(_aimTimer, _aimDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_aimTimer).ToString();
+                    var format = _aimTimer <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+                        ? "0.0"
+                        : "0";
+                    Button.cooldownTimerText.text = _aimTimer.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
 

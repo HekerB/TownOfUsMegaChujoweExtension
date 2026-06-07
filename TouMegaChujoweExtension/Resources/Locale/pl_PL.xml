@@ -1098,7 +1098,7 @@
 
   <!-- TOUMCE Wiki Terms - Symbols -->
   <string name="TOUMCETermsSymbolsTitle">Symbole TOUMCE</string>
-  <string name="TOUMCETermsSymbolsInfo">Glosariusz symboli TOUMCE • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Gracz z cream cake od Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Gracz ustawiony jako pulapka przez Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Gracz wpisany do Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Gracz chroniony przez Bodyguarda • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Gracz otruty przez Poisonera • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Klient Lawyera</string>
+  <string name="TOUMCETermsSymbolsInfo">Glosariusz symboli TOUMCE • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Gracz z cream cake od Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Gracz ustawiony jako pulapka przez Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Gracz wpisany do Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Gracz chroniony przez Bodyguarda • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Gracz otruty przez Poisonera • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Klient Lawyera • &lt;color=#FF0000&gt;&lt;b&gt;?&lt;/b&gt;&lt;/color&gt; - Gracz zdezorientowany przez Invertera</string>
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">Blyski tarczy</string>
@@ -1621,6 +1621,53 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionOptionSoulCollectorDeathKillCooldown">Cooldown zabijania Death</string>
   <string name="ExtensionOptionSoulCollectorDeathCanVent">Death moze ventowac</string>
   <string name="ExtensionModifierSoulCollectorReaped">Oznaczony Reapem</string>
+  <!-- Innocent -->
+  <string name="ExtensionRoleInnocent">Innocent</string>
+  <string name="ExtensionRoleInnocentIntroBlurb">Zrob z kogos winnego.</string>
+  <string name="ExtensionRoleInnocentTabDescription">Oznacz gracza i zmus go po chwili do zabicia najblizszego Crewmate'a. Wygrywasz, jesli ten zabojca zostanie wyrzucony na nastepnym meetingu. Gdy limitowane uzycia skoncza sie bez wygranej, mozesz zmienic sie w role z ustawien.</string>
+  <string name="ExtensionRoleInnocentWikiDescription">Innocent to rola Neutral Evil. Uzyj Taunt na zyjacym graczu. Po ustawionym opoznieniu oznaczony gracz zabije najblizszego Crewmate'a. Jesli ten zabojca zostanie wyrzucony na nastepnym meetingu, Innocent wygrywa. Jesli ofiara jest Baitem, cialo zostaje zgloszone od razu. Gdy limitowane uzycia skoncza sie bez wygranej, opcja moze zmienic Innocenta w Amnesiaca, Survivora, Mercenary, Jestera albo losowa neutralna role.</string>
+  <string name="ExtensionRoleInnocentTaunt">Taunt</string>
+  <string name="ExtensionRoleInnocentTauntWikiDescription">Oznacz zyjacego gracza. Po chwili zabije najblizszego Crewmate'a, a ty musisz doprowadzic do wyrzucenia go na nastepnym meetingu.</string>
+  <string name="ExtensionRoleInnocentTauntedNotif">{0} zostal oznaczony Tauntem!</string>
+  <string name="ExtensionRoleInnocentTauntedButton">Taunted</string>
+  <string name="ExtensionOptionInnocentTauntCooldown">Cooldown Taunt</string>
+  <string name="ExtensionOptionInnocentForcedKillDelay">Opoznienie wymuszonego killa</string>
+  <string name="ExtensionOptionInnocentMaxTaunts">Maks. uzycia Taunt</string>
+  <string name="ExtensionOptionInnocentTransformAfterTauntsInto">Zamien po zuzyciu Taunt w</string>
+  <string name="ExtensionOptionInnocentTransformRoleNone">Nic</string>
+  <string name="ExtensionOptionInnocentTransformRoleRandom">Losowy Neutral</string>
+  <string name="ExtensionOptionInnocentCanTauntFirstRound">Moze uzyc Taunt w pierwszej rundzie</string>
+  <string name="ExtensionInnocentWins">wygrywa</string>
+
+  <!-- Voodoo Master -->
+  <string name="ExtensionRoleVoodooMaster">Voodoo Master</string>
+  <string name="ExtensionRoleVoodooMasterIntroBlurb">Przeklinaj graczy Voodoo.</string>
+  <string name="ExtensionRoleVoodooMasterTabDescription">Przeklnij gracza. Przelaczaj miedzy oslepieniem, wyciszeniem i dezorientacja.</string>
+  <string name="ExtensionRoleVoodooMasterWikiDescription">Voodoo Master to rola Impostor Support. Moze wybrac klatwe, a potem uzyc jej na dowolnym zyjacym graczu. Oslepienie i dezorientacja dzialaja w rundzie, a wyciszenie odpala sie na nastepnym meetingu. Wyciszony gracz nadal moze normalnie glosowac.</string>
+  <string name="ExtensionRoleVoodooMasterCast">Klatwa</string>
+  <string name="ExtensionRoleVoodooMasterCastWikiDescription">Wybierz zyjacego gracza i naloz aktualnie wybrana klatwe Voodoo.</string>
+  <string name="ExtensionRoleVoodooMasterCycle">Zmien klatwe</string>
+  <string name="ExtensionRoleVoodooMasterCycleWikiDescription">Przelacza miedzy oslepieniem, wyciszeniem i dezorientacja.</string>
+  <string name="ExtensionOptionVoodooMasterCooldown">Cooldown klatwy</string>
+  <string name="ExtensionOptionVoodooMasterBlindDuration">Czas oslepienia</string>
+  <string name="ExtensionOptionVoodooMasterCanVent">Voodoo Master moze ventowac</string>
+  <string name="ExtensionVoodooEffectBlindness">Oslepienie</string>
+  <string name="ExtensionVoodooEffectMute">Wyciszenie</string>
+  <string name="ExtensionVoodooEffectConfuse">Dezorientacja</string>
+
+  <!-- Inverter Role -->
+  <string name="ExtensionRoleInverter">Inverter</string>
+  <string name="ExtensionRoleInverterIntroBlurb">Odwroc celowi ekran i sterowanie.</string>
+  <string name="ExtensionRoleInverterTabDescription">Wybierz gracza i uzyj Disorient, aby obrocic mu ekran oraz odwrocic sterowanie.</string>
+  <string name="ExtensionRoleInverterWikiDescription">Inverter to rola Impostor Support. Moze wybrac zyjacy cel i nalozyc Disoriented. Cel ma obrocony ekran oraz calkowicie odwrocone sterowanie przez ustawiony czas.</string>
+  <string name="ExtensionRoleInverterDisorient">Disorient</string>
+  <string name="ExtensionRoleInverterDisorientWikiDescription">Odwroc ekran i sterowanie wybranego gracza.</string>
+  <string name="ExtensionOptionInverterDisorientCooldown">Cooldown Disorient</string>
+  <string name="ExtensionOptionInverterDisorientDuration">Czas Disorient</string>
+  <string name="ExtensionOptionInverterMaxDisorients">Maksymalna liczba Disorient</string>
+  <string name="ExtensionOptionInverterMoveWhileMenu">Moze chodzic z menu</string>
+  <string name="ExtensionOptionInverterDisorientSamePersonTwice">Dezorientacja tej samej osoby dwa razy z rzędu</string>
+  <string name="ExtensionModifierDisoriented">Disoriented</string>
 </resources>
 
 

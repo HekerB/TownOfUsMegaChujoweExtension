@@ -63,6 +63,7 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
             PelicanRole => $"{TouLocale.Get("ExtensionRolePelican", "Pelican")} {TouLocale.Get("ExtensionPelicanWins", "Wins")}",
             PirateRole => $"{TouLocale.Get("ExtensionRolePirate", "Pirate")} {TouLocale.Get("ExtensionPirateWins", "Wins")}",
             LawyerRole => TouLocale.Get("ExtensionLawyerWins", "Lawyer & Client Win"),
+            TouMegaChujoweExtension.Roles.Classic.Neutral.InnocentRole => $"{TouLocale.Get("ExtensionRoleInnocent", "Innocent")} {TouLocale.Get("ExtensionInnocentWins", "Wins")}",
             BountyHunterRole => $"{TouLocale.Get("ExtensionRoleBountyHunter", "Bounty Hunter")} {TouLocale.Get("ExtensionBountyHunterWins", "Wins")}",
             JokerRole => $"{TouLocale.Get("ExtensionRoleJoker", "Joker")} {TouLocale.Get("ExtensionJokerWins", "Wins")}",
             BakerRole or FamineRole => TouLocale.Get("ExtensionBakerFamineWins", "Baker / Famine Wins"),

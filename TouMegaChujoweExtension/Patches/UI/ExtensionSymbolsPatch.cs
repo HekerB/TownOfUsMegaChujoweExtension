@@ -14,6 +14,7 @@ using UnityEngine;
 using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TouMegaChujoweExtension.Modifiers.Neutral;
+using TouMegaChujoweExtension.Modifiers.Impostor;
 
 namespace TouMegaChujoweExtension.Patches.UI;
 
@@ -36,6 +37,12 @@ public static class ExtensionSymbolsPatch
         if (player.HasModifier<PopeCanonizedModifier>() && !__result.Contains('Θ') && (local.Data.Role is PopeRole || deadKnow))
         {
             __result += " <color=#FFD700>Θ</color>";
+        }
+
+        // --- INVERTER (?) ---
+        if (player.TryGetModifier<InverterDisorientedModifier>(out _) && !__result.Contains('?') && (local.IsImpostorAligned() || deadKnow))
+        {
+            __result += " <color=#FF0000>?</color>";
         }
 
         // --- DEATH NOTE (♡) ---

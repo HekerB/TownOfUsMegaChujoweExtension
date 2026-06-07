@@ -9,7 +9,9 @@ using TownOfUs.Buttons;
 using TownOfUs.Modules;
 using TownOfUs.Utilities;
 using MiraAPI.Hud;
+using TouMegaChujoweExtension.Options.Roles.Impostor;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
+using TouMegaChujoweExtension.Roles.Classic.Impostor;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using UnityEngine;
 
@@ -79,6 +81,12 @@ public static class MirrorCasterMovePatch
     }
 
     private static bool CanMoveWithOpenMenu(PlayerControl player)
+    {
+        if (player.inVent) return false;
+        return CanMoveWithOpenMenuInternal(player);
+    }
+
+    private static bool CanMoveWithOpenMenuInternal(PlayerControl player)
     {
         var customPlayerMenuOpen = Minigame.Instance is CustomPlayerMenu;
         var mapOpen = MapBehaviour.Instance != null && MapBehaviour.Instance.gameObject.activeSelf;

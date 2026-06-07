@@ -12,6 +12,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> DraftRandomIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Draft_Random_Icon.png");
         //meeting 
         public static LoadableAsset<Sprite> HexedSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Hexed.png");
+        public static LoadableAsset<Sprite> DisorientedSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Disoriented.png");
         public static LoadableAsset<Sprite> CycleBack { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.MeetingButtons.CycleBack.png");
         public static LoadableAsset<Sprite> CycleForward { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.MeetingButtons.CycleForward.png");
         public static LoadableAsset<Sprite> GuessButton { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.MeetingButtons.GuessButton.png");

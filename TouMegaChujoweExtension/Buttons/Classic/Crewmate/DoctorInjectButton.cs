@@ -160,7 +160,10 @@ public sealed class DoctorInjectButton : TownOfUsRoleButton<DoctorRole, PlayerCo
                 {
                     Button.SetEnabled();
                     Button.SetFillUp(_injectTimer, _injectDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_injectTimer).ToString();
+                    var format = _injectTimer <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+                        ? "0.0"
+                        : "0";
+                    Button.cooldownTimerText.text = _injectTimer.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
             }
