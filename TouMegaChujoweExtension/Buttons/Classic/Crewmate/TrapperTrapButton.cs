@@ -49,7 +49,6 @@ public sealed class TrapperTrapButton : TownOfUsRoleButton<TrapperRole, Vent>
     {
         var vent = BurrowerSystem.GetClosestUsableMapVent(
             PlayerControl.LocalPlayer,
-            false,
             Distance,
             candidate => !VentTrapSystem.IsTrapped(candidate.Id));
 

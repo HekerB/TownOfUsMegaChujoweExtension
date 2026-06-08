@@ -17,7 +17,10 @@ public static class BurrowerVentTargetPatches
             return;
         }
 
-        __result = BurrowerSystem.GetClosestUsableMapVent(PlayerControl.LocalPlayer, false, __instance.Distance);
+        __result = BurrowerSystem.GetClosestUsableMapVent(
+            PlayerControl.LocalPlayer,
+            __instance.Distance,
+            candidate => !VentOccupancySystem.IsBlocked(candidate.Id));
     }
 
     [HarmonyPatch(typeof(PlumberBlockButton), nameof(PlumberBlockButton.IsTargetValid))]

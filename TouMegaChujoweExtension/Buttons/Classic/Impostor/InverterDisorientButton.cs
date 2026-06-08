@@ -27,7 +27,6 @@ public sealed class InverterDisorientButton : TownOfUsRoleButton<InverterRole>
 {
     private bool isProcessingClick;
     private bool isMenuOpen;
-    private bool _wasEffectActive;
     private Image? _cooldownFillImage;
     private Color? _originalCooldownColor;
     private ActionButton? _lastButton;
@@ -165,7 +164,7 @@ public sealed class InverterDisorientButton : TownOfUsRoleButton<InverterRole>
 
         if (shouldShow)
         {
-            if (isMenuOpen && playerControl != null && playerControl.inVent)
+            if (isMenuOpen && playerControl.inVent)
             {
                 CloseMenu();
             }
@@ -191,7 +190,7 @@ public sealed class InverterDisorientButton : TownOfUsRoleButton<InverterRole>
             }
             catch { /* ignore */ }
 
-            var activeMod = GetActiveDisorientedModifier(out var victim);
+            var activeMod = GetActiveDisorientedModifier(out _);
             if (activeMod != null)
             {
                 if (!EffectActive)
@@ -226,8 +225,7 @@ public sealed class InverterDisorientButton : TownOfUsRoleButton<InverterRole>
                     if (Button.graphic != null)
                     {
                         Button.graphic.color = Color.white;
-                        if (Button.graphic.material != null)
-                            Button.graphic.material.SetFloat("_Desat", 0f);
+                        Button.graphic.material?.SetFloat("_Desat", 0f);
                     }
                 }
 
@@ -270,16 +268,12 @@ public sealed class InverterDisorientButton : TownOfUsRoleButton<InverterRole>
                     if (Button.graphic != null)
                     {
                         Button.graphic.color = Color.white;
-                        if (Button.graphic.material != null)
-                            Button.graphic.material.SetFloat("_Desat", 0f);
+                        Button.graphic.material?.SetFloat("_Desat", 0f);
                     }
                 }
-                else if (Timer <= 0f && Button != null)
+                else if (Timer <= 0f && Button != null && _cooldownFillImage != null && _originalCooldownColor.HasValue)
                 {
-                    if (_cooldownFillImage != null && _originalCooldownColor.HasValue)
-                    {
-                        _cooldownFillImage.color = _originalCooldownColor.Value;
-                    }
+                    _cooldownFillImage.color = _originalCooldownColor.Value;
                 }
             }
 
@@ -317,15 +311,8 @@ public sealed class InverterDisorientButton : TownOfUsRoleButton<InverterRole>
         }
 
         var showUses = MaxUses > 0;
-        if (Button.usesRemainingSprite != null)
-        {
-            Button.usesRemainingSprite.gameObject.SetActive(showUses);
-        }
-
-        if (Button.usesRemainingText != null)
-        {
-            Button.usesRemainingText.gameObject.SetActive(showUses);
-        }
+        Button.usesRemainingSprite?.gameObject.SetActive(showUses);
+        Button.usesRemainingText?.gameObject.SetActive(showUses);
     }
 
     private IEnumerator ResetProcessingFlag()

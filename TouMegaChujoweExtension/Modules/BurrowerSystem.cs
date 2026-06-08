@@ -88,7 +88,7 @@ public static class BurrowerSystem
     {
         while (transform != null)
         {
-            if (transform.gameObject.name != null && transform.gameObject.name.StartsWith("BurrowerVent-"))
+            if (transform.gameObject.name != null && transform.gameObject.name.StartsWith("BurrowerVent-", System.StringComparison.Ordinal))
             {
                 return true;
             }
@@ -124,15 +124,16 @@ public static class BurrowerSystem
                       !IsBurrowerVent(c.transform));
     }
 
-    public static Vent? GetClosestUsableMapVent(PlayerControl player, bool forVenting, float distance, Func<Vent, bool>? predicate = null)
+    public static Vent? GetClosestUsableMapVent(PlayerControl player, float distance, Func<Vent, bool>? predicate = null)
     {
-        if (player?.Data == null || ShipStatus.Instance?.AllVents == null)
+        if (player == null || ShipStatus.Instance?.AllVents == null)
         {
             return null;
         }
 
         Vent? closest = null;
         var closestDistance = float.MaxValue;
+        var myPosition = player.GetTruePosition();
 
         foreach (var vent in ShipStatus.Instance.AllVents)
         {
@@ -141,8 +142,8 @@ public static class BurrowerSystem
                 continue;
             }
 
-            var ventDistance = vent.CanUse(player.Data, forVenting, distance, out var couldUse);
-            if (!couldUse || ventDistance >= closestDistance)
+            var ventDistance = Vector2.Distance(myPosition, vent.transform.position);
+            if (ventDistance > distance || ventDistance >= closestDistance)
             {
                 continue;
             }
@@ -213,16 +214,13 @@ public static class BurrowerSystem
         if (ShipStatus.Instance != null && ShipStatus.Instance.AllVents != null)
         {
             var list = ShipStatus.Instance.AllVents.ToList();
-            list.RemoveAll(v => v == null || v.name.StartsWith("BurrowerVent-"));
+            list.RemoveAll(v => v == null || v.name.StartsWith("BurrowerVent-", System.StringComparison.Ordinal));
             ShipStatus.Instance.AllVents = list.ToArray();
         }
 
-        foreach (var vent in SpawnedVents)
+        foreach (var vent in SpawnedVents.Where(vent => vent != null))
         {
-            if (vent != null)
-            {
-                UnityEngine.Object.Destroy(vent.gameObject);
-            }
+            UnityEngine.Object.Destroy(vent.gameObject);
         }
 
         SpawnedVents.Clear();

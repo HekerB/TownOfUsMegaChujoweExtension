@@ -62,7 +62,7 @@ public static class WarEvents
         var source = PlayerControl.LocalPlayer;
         var target = button?.Target;
 
-        if (target == null || !button.CanClick()) return;
+        if (button == null || target == null || !button.CanClick()) return;
         if (source == null) return;
         if (target.PlayerId == source.PlayerId) return;
         if (MeetingHud.Instance || ExileController.Instance) return;

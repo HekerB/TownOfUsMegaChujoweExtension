@@ -439,6 +439,33 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
             }
         }
     }
+
+    [HarmonyLib.HarmonyPatch(typeof(TownOfUs.Utilities.Extensions), nameof(TownOfUs.Utilities.Extensions.ChangeRole))]
+    public static class ChangeRoleCleanUpPatch
+    {
+        [HarmonyLib.HarmonyPostfix]
+        public static void Postfix(PlayerControl player)
+        {
+            if (player == null || player.Data == null || player.Data.Role == null) return;
+
+            var currentRole = player.Data.Role;
+            var roleComponents = player.GetComponentsInChildren<RoleBehaviour>();
+            foreach (var roleComp in roleComponents)
+            {
+                if (roleComp != null && roleComp != currentRole && roleComp.gameObject != player.gameObject)
+                {
+                    try
+                    {
+                        UnityEngine.Object.Destroy(roleComp.gameObject);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        UnityEngine.Debug.LogError($"[ChangeRoleCleanUpPatch] Error destroying old role GameObject: {ex.Message}");
+                    }
+                }
+            }
+        }
+    }
     private static bool IsRoleAlive(uint roleId)
     {
         foreach (var p in PlayerControl.AllPlayerControls)

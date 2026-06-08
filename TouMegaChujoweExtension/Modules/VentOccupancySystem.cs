@@ -69,7 +69,19 @@ public static class VentOccupancySystem
     /// </summary>
     public static bool IsBlocked(int ventId)
     {
-        return PlumberRole.VentBlockList.Contains(ventId) || PlumberRole.VentFlushList.Contains(ventId);
+        try
+        {
+            if (PlumberRole.VentBlockList == null || PlumberRole.VentFlushList == null)
+            {
+                return false;
+            }
+            return PlumberRole.VentBlockList.Contains(ventId) || PlumberRole.VentFlushList.Contains(ventId);
+        }
+        catch (System.Exception ex)
+        {
+            UnityEngine.Debug.LogError($"[TOUMCE] VentOccupancySystem.IsBlocked Error: {ex}");
+            return false;
+        }
     }
 }
 

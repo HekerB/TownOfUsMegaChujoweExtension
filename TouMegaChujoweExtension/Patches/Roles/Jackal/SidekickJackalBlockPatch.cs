@@ -34,7 +34,7 @@ public static class JackalTeamKillBlockPatch
 
             foreach (var type in killButtonTypes)
             {
-                var method = AccessTools.Method(type, "IsTargetValid", new[] { typeof(PlayerControl) });
+                var method = AccessTools.Method(type, "IsTargetValid", [typeof(PlayerControl)]);
                 if (method != null)
                 {
                     methods.Add(method);
@@ -96,7 +96,7 @@ public static class JackalTeamKillBlockPatch
 public static class KillButtonSetTargetPatch
 {
     [HarmonyPrefix]
-    public static void Prefix(KillButton __instance, ref PlayerControl target)
+    public static void Prefix(ref PlayerControl target)
     {
         if (target == null) return;
         var local = PlayerControl.LocalPlayer;
@@ -104,7 +104,7 @@ public static class KillButtonSetTargetPatch
 
         if (JackalTeamKillBlockPatch.IsJackalAlly(local, target))
         {
-            target = null;
+            target = null!;
         }
     }
 }
@@ -133,12 +133,9 @@ public static class JackalGuessBlockPatch
         var guesser = GetGuesser(__instance);
         var target = voteArea == null ? null : MiscUtils.PlayerById(voteArea.TargetPlayerId);
 
-        if (guesser != null && target != null)
+        if (guesser != null && target != null && JackalTeamKillBlockPatch.IsJackalAlly(guesser, target))
         {
-            if (JackalTeamKillBlockPatch.IsJackalAlly(guesser, target))
-            {
-                return false; // Skip / block guessing
-            }
+            return false; // Skip / block guessing
         }
 
         return true;

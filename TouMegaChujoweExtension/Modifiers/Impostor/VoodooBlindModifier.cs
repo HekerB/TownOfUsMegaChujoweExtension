@@ -27,7 +27,7 @@ public sealed class VoodooBlindModifier(PlayerControl voodooMaster, float durati
         VisionPerc = 1f;
 
         if (Player.AmOwner &&
-            !voodooMaster.AmOwner)
+            !VoodooMaster.AmOwner)
         {
             var notification = Helpers.CreateAndShowNotification(
                 $"<b>{Palette.ImpostorRed.ToTextColor()}{TouLocale.Get("ExtensionVoodooBlindAlert", "You have been cursed by the Voodoo Master!")}</color></b>",

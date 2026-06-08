@@ -11,7 +11,7 @@ namespace TouMegaChujoweExtension.Events.Impostor;
 public static class VoodooEvents
 {
     [RegisterEvent]
-    public static void StartMeetingEventHandler(StartMeetingEvent @event)
+    public static void StartMeetingEventHandler(StartMeetingEvent _)
     {
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
         {
@@ -36,7 +36,7 @@ public static class VoodooEvents
     }
 
     [RegisterEvent]
-    public static void EndMeetingEventHandler(EndMeetingEvent @event)
+    public static void EndMeetingEventHandler(EndMeetingEvent _)
     {
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
         {
