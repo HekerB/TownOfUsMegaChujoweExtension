@@ -14,8 +14,6 @@ namespace TouMegaChujoweExtension.Patches.Draft;
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
 public static class DraftRoleListHudPatch
 {
-    private const int MaxRoleListSlots = 20;
-
     [HarmonyPriority(Priority.Last)]
     [HarmonyPostfix]
     public static void HudManagerUpdatePostfix()
@@ -148,18 +146,16 @@ public static class DraftRoleListHudPatch
     private static void AppendRoleListPreview(StringBuilder builder, DraftModeOptions _)
     {
         var slots = GetRoleListSlots(OptionGroupSingleton<DraftRoleListSettingsOptions>.Instance);
-        var slotCount = Math.Clamp(GetLobbyPlayerCount(), 1, Math.Min(MaxRoleListSlots, slots.Length));
+        var slotCount = Math.Clamp(DraftSystem.GetVisibleRoleListSlotCount(), 1, Math.Min(DraftSystem.MaxRoleListSlots, slots.Length));
 
         for (var i = 0; i < slotCount; i++)
         {
-            builder.Append(HudManagerPatches.GetRoleForSlot(slots[i]));
+            var slot = DraftSystem.RoleListSlotOrder.Count > i
+                ? DraftSystem.GetRoleListBucketForPickIndex(i)
+                : slots[i];
+            builder.Append(HudManagerPatches.GetRoleForSlot(slot));
             builder.AppendLine();
         }
-    }
-
-    private static int GetLobbyPlayerCount()
-    {
-        return PlayerControl.AllPlayerControls?.Count ?? 0;
     }
 
     private static RoleListOption[] GetRoleListSlots(DraftRoleListSettingsOptions options)

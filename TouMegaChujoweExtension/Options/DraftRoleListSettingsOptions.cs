@@ -1,6 +1,7 @@
 using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
+using TouMegaChujoweExtension.Modules;
 using TownOfUs.Options;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -72,6 +73,9 @@ public sealed class DraftRoleListSettingsOptions : AbstractOptionGroup
 
     private static ModdedEnumOption<RoleListOption> CreateSlotOption(int slot, RoleListOption defaultValue)
     {
-        return new($"Slot {slot}", defaultValue, RoleListOptionNames);
+        return new($"Slot {slot}", defaultValue, RoleListOptionNames)
+        {
+            Visible = () => DraftSystem.GetVisibleRoleListSlotCount() >= slot
+        };
     }
 }

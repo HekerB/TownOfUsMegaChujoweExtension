@@ -16,7 +16,7 @@ public sealed class VoodooCycleButton : TownOfUsRoleButton<VoodooMasterRole>
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => Palette.ImpostorRed;
     public override float Cooldown => 0.5f;
-    public override LoadableAsset<Sprite> Sprite => TouExtensionAssets.CycleForward;
+    public override LoadableAsset<Sprite> Sprite => TouImpAssets.TraitorSelect;
 
     private bool _isProcessingClick;
 

@@ -24,6 +24,10 @@ public static class DraftNetworking
         foreach (var playerId in DraftSystem.PickOrder)
             writer.Write(playerId);
 
+        writer.Write((byte)DraftSystem.RoleListSlotOrder.Count);
+        foreach (var slotIndex in DraftSystem.RoleListSlotOrder)
+            writer.Write((byte)slotIndex);
+
         writer.Write((byte)DraftSystem.PlayerFactions.Count);
         foreach (var kvp in DraftSystem.PlayerFactions)
         {
@@ -67,6 +71,11 @@ public static class DraftNetworking
             DraftSystem.PickOrder.Clear();
             for (var i = 0; i < orderCount; i++)
                 DraftSystem.PickOrder.Add(reader.ReadByte());
+
+            var roleListSlotOrderCount = reader.ReadByte();
+            DraftSystem.RoleListSlotOrder.Clear();
+            for (var i = 0; i < roleListSlotOrderCount; i++)
+                DraftSystem.RoleListSlotOrder.Add(reader.ReadByte());
 
             var factionCount = reader.ReadByte();
             DraftSystem.PlayerFactions.Clear();

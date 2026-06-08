@@ -23,11 +23,14 @@ public enum DraftFaction
 
 public static class DraftSystem
 {
+    public const int MaxRoleListSlots = 20;
+
     // === STATE ===
     public static bool IsRunning { get; set; }
     public static bool DraftComplete { get; set; }
     public static List<byte> PickOrder { get; } = new();
     public static List<byte> OriginalPickOrder { get; } = new();
+    public static List<int> RoleListSlotOrder { get; } = new();
     public static HashSet<ushort> AlreadyPicked { get; } = new();
     public static bool LocalPlayerPicked { get; set; }
     public static float PickTimer { get; set; }
@@ -292,6 +295,34 @@ public static class DraftSystem
             futureFaction == DraftFaction.Impostor);
 
         return futureImpostorSlots >= 1;
+    }
+
+    public static int GetActiveLobbyPlayerCount()
+    {
+        var count = 0;
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player?.Data == null || player.Data.Disconnected ||
+                TownOfUs.Roles.Other.SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
+            {
+                continue;
+            }
+
+            count++;
+        }
+
+        return count;
+    }
+
+    public static int GetVisibleRoleListSlotCount()
+    {
+        var playerCount = GetActiveLobbyPlayerCount();
+        if (playerCount <= 0 && GameData.Instance)
+        {
+            playerCount = GameData.Instance.PlayerCount;
+        }
+
+        return Mathf.Clamp(playerCount, 1, MaxRoleListSlots);
     }
 
     private static List<RoleBehaviour> FilterLonerForCurrentPicker(IEnumerable<RoleBehaviour> roles)
@@ -680,7 +711,7 @@ public static class DraftSystem
             slotIndex = Mathf.Clamp(DraftPicks.Count, 0, 19);
         }
 
-        return GetRoleListBucketForSlot(slotIndex);
+        return GetRoleListBucketForPickIndex(slotIndex);
     }
 
     private static IEnumerable<RoleListOption> GetFutureRoleListBuckets()
@@ -694,8 +725,19 @@ public static class DraftSystem
 
         for (var i = currentIndex + 1; i < OriginalPickOrder.Count && i < 20; i++)
         {
-            yield return GetRoleListBucketForSlot(i);
+            yield return GetRoleListBucketForPickIndex(i);
         }
+    }
+
+    public static RoleListOption GetRoleListBucketForPickIndex(int zeroBasedPickIndex)
+    {
+        var slotIndex = zeroBasedPickIndex;
+        if (zeroBasedPickIndex >= 0 && zeroBasedPickIndex < RoleListSlotOrder.Count)
+        {
+            slotIndex = RoleListSlotOrder[zeroBasedPickIndex];
+        }
+
+        return GetRoleListBucketForSlot(slotIndex);
     }
 
     private static RoleListOption GetRoleListBucketForSlot(int zeroBasedSlot)
@@ -827,6 +869,7 @@ public static class DraftSystem
         DraftActiveThisRound = false;
         PickOrder.Clear();
         OriginalPickOrder.Clear();
+        RoleListSlotOrder.Clear();
         AlreadyPicked.Clear();
         DraftPicks.Clear();
         ImpostorPlayerIds.Clear();
@@ -914,6 +957,19 @@ public static class DraftSystem
         }
 
         OriginalPickOrder.AddRange(PickOrder);
+        GenerateRoleListSlotOrder();
+    }
+
+    private static void GenerateRoleListSlotOrder()
+    {
+        RoleListSlotOrder.Clear();
+        var slotCount = Mathf.Clamp(PickOrder.Count, 0, MaxRoleListSlots);
+        for (var i = 0; i < slotCount; i++)
+        {
+            RoleListSlotOrder.Add(i);
+        }
+
+        RoleListSlotOrder.Shuffle();
     }
 
     public static void RegisterPick(byte playerId, ushort roleId)
