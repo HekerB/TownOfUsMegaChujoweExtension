@@ -17,7 +17,9 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole>
     public override string Name => "Curse";
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => Palette.ImpostorRed;
-    public override float Cooldown => OptionGroupSingleton<VoodooMasterOptions>.Instance.Cooldown;
+    public override float Cooldown => GetEffectCooldown(Role?.SelectedEffect ?? VoodooEffect.Blindness);
+    public override int MaxUses => (int)OptionGroupSingleton<VoodooMasterOptions>.Instance.MaxCurses;
+    public override bool ZeroIsInfinite { get; set; } = true;
     public override LoadableAsset<Sprite> Sprite => GetEffectSprite(Role?.SelectedEffect ?? VoodooEffect.Blindness);
 
     private bool _isProcessingClick;
@@ -34,7 +36,7 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole>
             return false;
         }
 
-        return Timer <= 0f;
+        return Timer <= 0f && (!LimitedUses || UsesLeft > 0);
     }
 
     public override void ClickHandler()
@@ -81,9 +83,14 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole>
                 }
 
                 VoodooMasterRole.CastVoodooDoll(PlayerControl.LocalPlayer, player, Role.SelectedEffect);
-                Timer = Cooldown;
-            });
-    }
+                if (LimitedUses)
+                {
+                    UsesLeft--;
+                }
+
+                Timer = GetEffectCooldown(Role.SelectedEffect);
+              });
+      }
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
@@ -108,6 +115,17 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole>
             VoodooEffect.Mute => TouImpAssets.BlackmailSprite,
             VoodooEffect.Confuse => TouImpAssets.HerbConfuseSprite,
             _ => TouImpAssets.BlindSprite
+        };
+    }
+
+    private static float GetEffectCooldown(VoodooEffect effect)
+    {
+        var options = OptionGroupSingleton<VoodooMasterOptions>.Instance;
+        return effect switch
+        {
+            VoodooEffect.Mute => options.MuteCooldown,
+            VoodooEffect.Confuse => options.ConfuseCooldown,
+            _ => options.BlindCooldown
         };
     }
 }

@@ -13,6 +13,7 @@ using TownOfUs.Extensions;
 using UnityEngine;
 using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
+using TouMegaChujoweExtension.Roles.Classic.Impostor;
 using TouMegaChujoweExtension.Modifiers.Neutral;
 using TouMegaChujoweExtension.Modifiers.Impostor;
 
@@ -43,6 +44,29 @@ public static class ExtensionSymbolsPatch
         if (player.TryGetModifier<InverterDisorientedModifier>(out _) && !__result.Contains('?') && (local.IsImpostorAligned() || deadKnow))
         {
             __result += " <color=#FF0000>?</color>";
+        }
+
+        // --- VOODOO MASTER CURSES ---
+        bool localIsVoodoo = local.IsRole<VoodooMasterRole>();
+        bool canSeeVoodooCurse = localIsVoodoo || deadKnow;
+        if (canSeeVoodooCurse)
+        {
+            if (player.TryGetModifier<VoodooConfusedModifier>(out var confused) &&
+                confused.VoodooMaster != null &&
+                (deadKnow || confused.VoodooMaster.PlayerId == local.PlayerId) &&
+                !__result.Contains("$"))
+            {
+                __result += " <color=#FF0000>$</color>";
+            }
+
+            if (IsVoodooMutedOrMarked(player) && !__result.Contains("[M]"))
+            {
+                __result += " <color=#2A1119>[M]</color>";
+            }
+        }
+        else if (local.PlayerId == player.PlayerId && player.HasModifier<VoodooMutedModifier>() && !__result.Contains("[M]"))
+        {
+            __result += " <color=#2A1119>[M]</color>";
         }
 
         // --- DEATH NOTE (♡) ---
@@ -225,6 +249,12 @@ public static class ExtensionSymbolsPatch
             return;
         }
 
+        if (player.HasModifier<VoodooBlindModifier>() && (local.IsRole<VoodooMasterRole>() || deadKnow))
+        {
+            __result = Color.black;
+            return;
+        }
+
         var pendingAssignments = Patches.Roles.Jackal.JackalStartPatch.PendingAssignments;
         bool playerIsRecruit = player.TryGetModifier<SidekickModifier>(out var mod);
         byte playerJackalId = 255;
@@ -313,5 +343,16 @@ public static class ExtensionSymbolsPatch
         }
 
         return ApocalypseUtils.RolesKnowEachOther && ApocalypseUtils.IsApocalypsePlayer(local);
+    }
+
+    private static bool IsVoodooMutedOrMarked(PlayerControl player)
+    {
+        if (player.HasModifier<VoodooMutedModifier>())
+        {
+            return true;
+        }
+
+        return player.TryGetModifier<VoodooScheduledCurseModifier>(out var curse) &&
+               curse.CurseType == VoodooEffect.Mute;
     }
 }

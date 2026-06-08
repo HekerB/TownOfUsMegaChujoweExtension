@@ -240,11 +240,15 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         PendingMutations.Remove(loner.PlayerId);
         CurrentKillCount[loner.PlayerId] = 0;
         var options = OptionGroupSingleton<LonerOptions>.Instance;
-        var roleId = options.RecruitBecomesTraitor
-            ? RoleId.Get<TraitorRole>()
-            : (ushort)RoleTypes.Impostor;
 
-        target.ChangeRole(roleId, recordRole: false);
+        if (options.RecruitBecomesTraitor)
+        {
+            target.ChangeRole(RoleId.Get<TraitorRole>(), recordRole: true);
+        }
+        else
+        {
+            target.ChangeRole((ushort)RoleTypes.Impostor, recordRole: false);
+        }
 
         if (options.RecruitedImpostorBecomesAssassin && !target.HasModifier<ImpostorAssassinModifier>())
         {

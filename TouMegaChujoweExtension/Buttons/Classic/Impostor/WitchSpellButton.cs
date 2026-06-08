@@ -3,6 +3,7 @@ using MiraAPI.Hud;
 using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
+using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Roles.Crewmate;
@@ -31,7 +32,7 @@ public sealed class WitchSpellButton : TownOfUsKillRoleButton<WitchRole, PlayerC
             return Math.Clamp((OptionGroupSingleton<WitchOptions>.Instance.SpellCooldown + MapCooldown) * multiplier, 5f, 120f);
         }
     }
-    public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.SpellButtonSprite;
+    public override LoadableAsset<Sprite> Sprite => TouImpAssets.BlackmailSprite;
 
     public override bool ZeroIsInfinite { get; set; } = true;
 

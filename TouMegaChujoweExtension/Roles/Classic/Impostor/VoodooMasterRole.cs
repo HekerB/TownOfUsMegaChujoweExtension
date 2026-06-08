@@ -9,7 +9,6 @@ using TouMegaChujoweExtension.Modifiers.Impostor;
 using TouMegaChujoweExtension.Options.Roles.Impostor;
 using TownOfUs.Assets;
 using TownOfUs.Extensions;
-using TownOfUs.Modifiers.Impostor.Herbalist;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
@@ -93,10 +92,15 @@ public sealed class VoodooMasterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
                     target.RpcRemoveModifier<VoodooBlindModifier>();
                 }
 
-                target.RpcAddModifier<VoodooBlindModifier>(OptionGroupSingleton<VoodooMasterOptions>.Instance.BlindDuration);
+                target.RpcAddModifier<VoodooBlindModifier>(voodooMaster, OptionGroupSingleton<VoodooMasterOptions>.Instance.BlindDuration);
                 return;
             case VoodooEffect.Confuse:
-                target.RpcAddModifier<HerbalistConfusedModifier>(voodooMaster);
+                if (target.HasModifier<VoodooConfusedModifier>())
+                {
+                    target.RpcRemoveModifier<VoodooConfusedModifier>();
+                }
+
+                target.RpcAddModifier<VoodooConfusedModifier>(voodooMaster, OptionGroupSingleton<VoodooMasterOptions>.Instance.ConfuseDuration);
                 return;
         }
 

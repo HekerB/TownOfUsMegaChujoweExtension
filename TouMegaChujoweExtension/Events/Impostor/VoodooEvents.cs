@@ -1,7 +1,9 @@
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Meeting;
+using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using TouMegaChujoweExtension.Modifiers.Impostor;
+using TouMegaChujoweExtension.Options.Roles.Impostor;
 using TouMegaChujoweExtension.Roles.Classic.Impostor;
 
 namespace TouMegaChujoweExtension.Events.Impostor;
@@ -25,7 +27,8 @@ public static class VoodooEvents
 
             if (scheduledCurse.CurseType == VoodooEffect.Mute)
             {
-                player.RpcAddModifier<VoodooMutedModifier>();
+                var meetings = (int)OptionGroupSingleton<VoodooMasterOptions>.Instance.MuteDuration;
+                player.RpcAddModifier<VoodooMutedModifier>(meetings);
             }
 
             player.RpcRemoveModifier(scheduledCurse.UniqueId);
@@ -47,9 +50,13 @@ public static class VoodooEvents
                 continue;
             }
 
-            if (player.HasModifier<VoodooMutedModifier>())
+            if (player.TryGetModifier<VoodooMutedModifier>(out var muted))
             {
-                player.RpcRemoveModifier<VoodooMutedModifier>();
+                muted.MeetingsRemaining--;
+                if (muted.MeetingsRemaining <= 0)
+                {
+                    player.RpcRemoveModifier<VoodooMutedModifier>();
+                }
             }
 
         }

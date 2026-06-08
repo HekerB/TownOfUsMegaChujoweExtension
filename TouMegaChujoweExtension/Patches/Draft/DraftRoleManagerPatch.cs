@@ -1,9 +1,11 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
+using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs.Patches;
 using TownOfUs.Utilities;
 using TouMegaChujoweExtension.Patches.Roles.Jackal;
+using TouMegaChujoweExtension.Roles.Classic.Impostor;
 
 namespace TouMegaChujoweExtension.Patches.Draft;
 
@@ -36,7 +38,9 @@ public static class DraftRoleManagerPatch
 private static void ApplyDraftRoles()
 {
     DraftSystem.LastNeutralKillingIds.Clear();
-    foreach (var (playerId, roleId) in DraftSystem.DraftPicks)
+    var effectivePicks = BuildEffectiveDraftPicks();
+
+    foreach (var (playerId, roleId) in effectivePicks)
     {
         var player = MiscUtils.PlayerById(playerId);
         if (player == null || player.Data == null || player.Data.Disconnected)
@@ -62,7 +66,7 @@ private static void ApplyDraftRoles()
         if (player == null || player.Data == null || player.Data.Disconnected)
             continue;
 
-        if (!DraftSystem.DraftPicks.ContainsKey(player.PlayerId))
+        if (!effectivePicks.ContainsKey(player.PlayerId))
         {
             player.RpcSetRole(RoleTypes.Crewmate);
         }
@@ -74,4 +78,68 @@ private static void ApplyDraftRoles()
     DraftSystem.DraftComplete = false;
     DraftSystem.DraftActiveThisRound = false;
 }
-}
+
+private static Dictionary<byte, ushort> BuildEffectiveDraftPicks()
+{
+    var effectivePicks = DraftSystem.DraftPicks.ToDictionary(static pick => pick.Key, static pick => pick.Value);
+    var lonerRoleId = RoleId.Get<LonerRole>();
+
+    if (!effectivePicks.Values.Contains(lonerRoleId))
+    {
+        return effectivePicks;
+    }
+
+    var allowedImpostorSlots = GetAllowedLonerImpostorSlots();
+    var keptImpostorSlots = 1; // Loner takes one impostor slot.
+
+    foreach (var (playerId, roleId) in DraftSystem.DraftPicks)
+    {
+        if (roleId == lonerRoleId || !IsImpostorRole(roleId))
+        {
+            continue;
+        }
+
+        if (keptImpostorSlots < allowedImpostorSlots)
+        {
+            keptImpostorSlots++;
+            continue;
+        }
+
+        effectivePicks[playerId] = (ushort)RoleTypes.Crewmate;
+        DraftSystem.PlayerFactions[playerId] = DraftFaction.CrewOther;
+        DraftSystem.ImpostorPlayerIds.Remove(playerId);
+    }
+
+    DraftSystem.LonerReducedImpostorSlot = true;
+    return effectivePicks;
+}
+
+private static int GetAllowedLonerImpostorSlots()
+{
+    try
+    {
+        return Math.Max(1, GameOptionsManager.Instance.currentNormalGameOptions.NumImpostors - 1);
+    }
+    catch
+    {
+        return 1;
+    }
+}
+
+private static bool IsImpostorRole(ushort roleId)
+{
+    if ((RoleTypes)roleId == RoleTypes.Impostor)
+    {
+        return true;
+    }
+
+    try
+    {
+        return RoleManager.Instance.GetRole((RoleTypes)roleId)?.IsImpostor() == true;
+    }
+    catch
+    {
+        return false;
+    }
+}
+}
