@@ -859,7 +859,7 @@
   <string name="ExtensionOptionBHArrowRangeLong">Long</string>
   <string name="ExtensionOptionBHArrowRangeInfinite">Infinite</string>
   <string name="ExtensionOptionFairyKeepsProtectAfterDeath">Fairy keeps protect after death</string>
-  <string name="ExtensionOptionBHCanKillInRoundOne">Allow first round kill</string>
+  <string name="ExtensionOptionBHCanKillInRoundOne">Allow Hunt in First Round</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Arrow Update Interval</string>
   <string name="ExtensionOptionBHGameContinues">Game Continues Without Other Killers</string>
   <string name="ExtensionOptionBHWinMode">Win Mode</string>

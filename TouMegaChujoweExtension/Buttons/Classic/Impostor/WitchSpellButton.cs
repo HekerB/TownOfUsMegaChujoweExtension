@@ -32,7 +32,7 @@ public sealed class WitchSpellButton : TownOfUsKillRoleButton<WitchRole, PlayerC
             return Math.Clamp((OptionGroupSingleton<WitchOptions>.Instance.SpellCooldown + MapCooldown) * multiplier, 5f, 120f);
         }
     }
-    public override LoadableAsset<Sprite> Sprite => TouImpAssets.BlackmailSprite;
+    public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.SpellButtonSprite;
 
     public override bool ZeroIsInfinite { get; set; } = true;
 
