@@ -289,8 +289,8 @@
 
   <!-- Pirate Win Mode Options -->
   <string name="ExtensionOptionPirateWinMode">Win Mode</string>
-  <string name="ExtensionOptionPirateWinModePirateWins">Pirate Wins</string>
-  <string name="ExtensionOptionPirateWinModePirateWinsWithOthers">Pirate Wins With Others</string>
+  <string name="ExtensionOptionPirateWinModePirateWins">Ends Game</string>
+  <string name="ExtensionOptionPirateWinModePirateWinsWithOthers">Leaves in Victory</string>
 
   <!-- Pirate Victory -->
   <string name="ExtensionPirateWins">Wins</string>
@@ -863,8 +863,8 @@
   <string name="ExtensionOptionBHArrowUpdateInterval">Arrow Update Interval</string>
   <string name="ExtensionOptionBHGameContinues">Game Continues Without Other Killers</string>
   <string name="ExtensionOptionBHWinMode">Win Mode</string>
-  <string name="ExtensionOptionBHWinModeEnumSoloWin">Solo Win (Ends Game)</string>
-  <string name="ExtensionOptionBHWinModeEnumWinWithWinners">Win With Winners</string>
+  <string name="ExtensionOptionBHWinModeEnumSoloWin">Ends Game</string>
+  <string name="ExtensionOptionBHWinModeEnumWinWithWinners">Nothing</string>
   
   <string name="ExtensionBHTabTargetsKilled">Targets Killed: {0} / {1}</string>
   <string name="ExtensionBHTabCurrentTarget">Current Target: {0}</string>
@@ -1476,8 +1476,8 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionJokerResetClonesEachMeeting">Reset Clones Each Meeting</string>
   <string name="ExtensionOptionJokerMoveWithTablet">Can Move With Tablet</string>
   <string name="ExtensionOptionJokerWinMode">Win Condition</string>
-  <string name="JokerWinOptionsSoloWin">Ends Game (Solo)</string>
-  <string name="JokerWinOptionsWinWithWinners">Win With Winners</string>
+  <string name="JokerWinOptionsSoloWin">Ends Game</string>
+  <string name="JokerWinOptionsWinWithWinners">Leaves in Victory</string>
   <string name="ExtensionRoleJokerFooledNotif">You've been fooled!</string>
   <string name="ExtensionRoleJokerCloneKilledNotif">Your clone was killed in {0}! ({1}/{2})</string>
   <string name="ExtensionRoleJokerObjectiveCompleteNotif">Objective complete! You are now Victorious</string>
@@ -1640,7 +1640,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- Innocent -->
   <string name="ExtensionRoleInnocent">Innocent</string>
   <string name="ExtensionRoleInnocentIntroBlurb">Make someone look guilty.</string>
-  <string name="ExtensionRoleInnocentTabDescription">Taunt a player for a short time.\%nl\%If the closest player near them is a Crewmate, they kill and report that Crewmate.\%nl\%Win if that killer is voted out at the next meeting.</string>
+  <string name="ExtensionRoleInnocentTabDescription">Taunt a player for a short time.\%nl\%Win if that killer is voted out at the next meeting.</string>
   <string name="ExtensionRoleInnocentWikiDescription">The Innocent is a Neutral Evil role. Use Taunt on a living player. During the configured time window, if the closest player near the taunted player is a Crewmate, the taunted player kills and reports them as if they hit Bait. If that killer is voted out at the next meeting, the Innocent wins. If limited taunts run out without a win, the Innocent transforms into the configured role.</string>
   <string name="ExtensionRoleInnocentTaunt">Taunt</string>
   <string name="ExtensionRoleInnocentTauntWikiDescription">Mark a living player. After a delay, they will kill the nearest Crewmate, and you must get them exiled at the next meeting.</string>
@@ -1652,7 +1652,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionInnocentTransformAfterTauntsInto">Transform After Taunts Into</string>
   <string name="ExtensionOptionInnocentCanTauntFirstRound">Can Taunt First Round</string>
   <string name="ExtensionOptionInnocentAfterWin">After Win</string>
-  <string name="ExtensionOptionInnocentAfterWinEndGame">End Game</string>
+  <string name="ExtensionOptionInnocentAfterWinEndGame">Ends Game</string>
   <string name="ExtensionOptionInnocentAfterWinNothing">Nothing</string>
   <string name="ExtensionOptionInnocentAfterWinHaunt">Haunt</string>
   <string name="ExtensionRoleInnocentHaunt">Haunt</string>
