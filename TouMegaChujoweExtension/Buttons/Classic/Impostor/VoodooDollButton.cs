@@ -18,7 +18,7 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, PlayerControl>
 {
     public override string Name => GetButtonName(Role);
-    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
+    public override BaseKeybind Keybind => Keybinds.ModifierAction;
     public override Color TextOutlineColor => Palette.ImpostorRed;
     public override float Cooldown => OptionGroupSingleton<VoodooMasterOptions>.Instance.CurseCooldown;
     public override int MaxUses => Role?.GetMaxUses(Role.SelectedEffect) ?? (int)OptionGroupSingleton<VoodooMasterOptions>.Instance.MaxBlindCurses;

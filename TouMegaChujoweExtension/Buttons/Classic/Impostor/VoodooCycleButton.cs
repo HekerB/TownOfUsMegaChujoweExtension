@@ -13,7 +13,7 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 public sealed class VoodooCycleButton : TownOfUsRoleButton<VoodooMasterRole>
 {
     public override string Name => TouLocale.Get("ExtensionRoleVoodooMasterCycle", "Change");
-    public override BaseKeybind Keybind => Keybinds.ModifierAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => Palette.ImpostorRed;
     public override float Cooldown => 0.5f;
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.TraitorSelect;

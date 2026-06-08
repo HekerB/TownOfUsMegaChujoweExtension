@@ -1664,7 +1664,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- Voodoo Master -->
   <string name="ExtensionRoleVoodooMaster">Voodoo Master</string>
   <string name="ExtensionRoleVoodooMasterIntroBlurb">Curse players with Voodoo.</string>
-  <string name="ExtensionRoleVoodooMasterTabDescription">\%nl\%Cycle between blindness, mute, and confuse.</string>
+  <string name="ExtensionRoleVoodooMasterTabDescription">Cycle between blindness, mute, and confuse.</string>
   <string name="ExtensionRoleVoodooMasterWikiDescription">The Voodoo Master is an Impostor Support role. They can select a curse, then use it on any living player. Blindness fully covers the target's vision, confuse reverses movement, and mute triggers during the next meeting. Muted players cannot chat, but can still vote normally.</string>
   <string name="ExtensionRoleVoodooMasterCast">Curse</string>
   <string name="ExtensionRoleVoodooMasterCastWikiDescription">Choose a living player and apply the currently selected Voodoo curse.</string>
@@ -1679,7 +1679,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionVoodooMasterMuteDuration">Mute Duration In Meetings</string>
   <string name="ExtensionOptionVoodooMasterMoveWhileMenu">Can Move While Menu</string>
   <string name="ExtensionVoodooBlindAlert">You have been cursed by the Voodoo Master!</string>
-  <string name="ExtensionVoodooEffectBlindness">Blindness</string>
+  <string name="ExtensionVoodooEffectBlindness">Blind</string>
   <string name="ExtensionVoodooEffectMute">Mute</string>
   <string name="ExtensionVoodooEffectConfuse">Confuse</string>
 
