@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using TownOfUs.Modules;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
 
 public static class BurrowerSystem
 {
+    private const float MapVentClearance = 1.8f;
     private static readonly List<Vent> SpawnedVents = [];
 
     public static bool TryFindVentPlacementPosition(PlayerControl player, Vector2 desiredPosition, out Vector2 position)
@@ -48,6 +50,11 @@ public static class BurrowerSystem
             return false;
         }
 
+        if (IsNearMapVent(position))
+        {
+            return false;
+        }
+
         var ventPrefab = GetVentPrefab(position);
         var collider = ventPrefab.GetComponent<BoxCollider2D>();
         var ventSize = collider != null
@@ -72,6 +79,81 @@ public static class BurrowerSystem
         return hits.Length == 0 && noWallConflict && !ModCompatibility.GetPlayerElevator(player).Item1;
     }
 
+    public static bool IsBurrowerVent(Vent? vent)
+    {
+        return vent != null && IsBurrowerVent(vent.transform);
+    }
+
+    public static bool IsBurrowerVent(Transform? transform)
+    {
+        while (transform != null)
+        {
+            if (transform.gameObject.name != null && transform.gameObject.name.StartsWith("BurrowerVent-"))
+            {
+                return true;
+            }
+
+            transform = transform.parent;
+        }
+
+        return false;
+    }
+
+    public static bool IsNearMapVent(Vector2 position, float radius = MapVentClearance)
+    {
+        if (ShipStatus.Instance?.AllVents != null)
+        {
+            foreach (var vent in ShipStatus.Instance.AllVents)
+            {
+                if (vent == null || IsBurrowerVent(vent))
+                {
+                    continue;
+                }
+
+                if (Vector2.Distance(position, vent.transform.position) < radius)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return Physics2D.OverlapCircleAll(position, radius)
+            .Any(c => c != null &&
+                      c.name != null &&
+                      c.name.Contains("Vent", System.StringComparison.OrdinalIgnoreCase) &&
+                      !IsBurrowerVent(c.transform));
+    }
+
+    public static Vent? GetClosestUsableMapVent(PlayerControl player, bool forVenting, float distance, Func<Vent, bool>? predicate = null)
+    {
+        if (player?.Data == null || ShipStatus.Instance?.AllVents == null)
+        {
+            return null;
+        }
+
+        Vent? closest = null;
+        var closestDistance = float.MaxValue;
+
+        foreach (var vent in ShipStatus.Instance.AllVents)
+        {
+            if (vent == null || IsBurrowerVent(vent) || predicate?.Invoke(vent) == false)
+            {
+                continue;
+            }
+
+            var ventDistance = vent.CanUse(player.Data, forVenting, distance, out var couldUse);
+            if (!couldUse || ventDistance >= closestDistance)
+            {
+                continue;
+            }
+
+            closest = vent;
+            closestDistance = ventDistance;
+        }
+
+        return closest;
+    }
+
     public static Vent SpawnVent(PlayerControl player, int ventId, Vector2 position)
     {
         var ventPrefab = GetVentPrefab(position);
@@ -81,6 +163,7 @@ public static class BurrowerSystem
         vent.Id = ventId;
         vent.Left = null;
         vent.Right = null;
+        vent.Center = null;
         vent.transform.position = new Vector3(position.x, position.y, ventPrefab.transform.position.z);
 
         var allVents = ShipStatus.Instance.AllVents.ToList();

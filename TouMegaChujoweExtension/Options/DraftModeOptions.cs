@@ -5,6 +5,13 @@ using MiraAPI.Utilities;
 
 namespace TouMegaChujoweExtension.Options;
 
+public enum DraftPoolMode
+{
+    OldDraft,
+    MinMax,
+    RoleList
+}
+
 public sealed class DraftModeOptions : AbstractOptionGroup
 {
     public override string GroupName => "Draft Mode Settings";
@@ -15,6 +22,23 @@ public sealed class DraftModeOptions : AbstractOptionGroup
 
     [ModdedToggleOption("Enable Draft Mode")]
     public bool EnableDraftMode { get; set; } = false;
+
+    private static readonly string[] DraftPoolModeNames =
+    [
+        "Old Draft",
+        "Min/Max",
+        "Role List"
+    ];
+
+    public ModdedEnumOption<DraftPoolMode> PoolMode { get; } =
+        new("Draft Pool Mode", DraftPoolMode.OldDraft, DraftPoolModeNames)
+        {
+            Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
+        };
+
+    public bool IsOldDraft => EnableDraftMode && PoolMode.Value == DraftPoolMode.OldDraft;
+    public bool IsMinMaxDraft => EnableDraftMode && PoolMode.Value == DraftPoolMode.MinMax;
+    public bool IsRoleListDraft => EnableDraftMode && PoolMode.Value == DraftPoolMode.RoleList;
 
     public ModdedToggleOption LockLobbyDuringDraft { get; } = new("Lock Lobby During Draft", true)
     {
@@ -36,16 +60,6 @@ public sealed class DraftModeOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
-    public ModdedNumberOption MinOtherNeutralsPerChoice { get; } = new("Min Neutrals Per Choice", 1f, 0f, 3f, 1f, MiraNumberSuffixes.None)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    public ModdedNumberOption MaxOtherNeutralsPerChoice { get; } = new("Max Neutrals Per Choice", 2f, 0f, 3f, 1f, MiraNumberSuffixes.None)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
     public ModdedToggleOption ReduceKillingStreak { get; } = new("Reduce Killing Streak", true)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
@@ -56,23 +70,4 @@ public sealed class DraftModeOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.ReduceKillingStreak.Value && OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
-    public ModdedNumberOption MinOtherNeutrals { get; } = new("Min Other Neutrals", 0f, 0f, 10f, 1f, MiraNumberSuffixes.None)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    public ModdedNumberOption MaxOtherNeutrals { get; } = new("Max Other Neutrals", 0f, 0f, 10f, 1f, MiraNumberSuffixes.None)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    public ModdedNumberOption MinNeutralKilling { get; } = new("Min Neutral Killing", 0f, 0f, 5f, 1f, MiraNumberSuffixes.None)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
-    public ModdedNumberOption MaxNeutralKilling { get; } = new("Max Neutral Killing", 0f, 0f, 5f, 1f, MiraNumberSuffixes.None)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
 }

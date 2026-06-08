@@ -1,10 +1,8 @@
-using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using MiraAPI.Utilities;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Options.Roles.Impostor;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
@@ -14,6 +12,7 @@ namespace TouMegaChujoweExtension.Modifiers.Impostor;
 
 public sealed class VoodooBlindModifier(PlayerControl voodooMaster, float duration) : TimedModifier
 {
+    public PlayerControl VoodooMaster { get; } = voodooMaster;
     public float VisionPerc { get; private set; } = 1f;
     public override string ModifierName => "Voodoo Blindness";
     public override bool HideOnUi => true;
@@ -27,12 +26,11 @@ public sealed class VoodooBlindModifier(PlayerControl voodooMaster, float durati
 
         VisionPerc = 1f;
 
-        if (OptionGroupSingleton<VoodooMasterOptions>.Instance.BlindTargetAlert &&
-            Player.AmOwner &&
+        if (Player.AmOwner &&
             !voodooMaster.AmOwner)
         {
             var notification = Helpers.CreateAndShowNotification(
-                $"<b>{Palette.ImpostorRed.ToTextColor()}{TouLocale.Get("ExtensionVoodooBlindAlert", "You were blinded by a Voodoo curse!")}</color></b>",
+                $"<b>{Palette.ImpostorRed.ToTextColor()}{TouLocale.Get("ExtensionVoodooBlindAlert", "You have been cursed by the Voodoo Master!")}</color></b>",
                 Color.white,
                 new Vector3(0f, 1f, -20f),
                 spr: TouExtensionIcons.VoodooRoleIcon.LoadAsset());

@@ -11,6 +11,7 @@ using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TownOfUs;
 using TownOfUs.Extensions;
 using TownOfUs.Interfaces;
+using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
@@ -22,7 +23,7 @@ using UnityEngine;
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
 public sealed class InnocentRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant, IGuessable
+    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant, IGuessable, IContinuesGame
 {
     public static Dictionary<byte, InnocentRole> ActiveInnocents { get; } = [];
     public byte? TauntedKillerId { get; set; }
@@ -31,6 +32,9 @@ public sealed class InnocentRole(IntPtr cppPtr)
     public bool AwaitingNextMeetingExile { get; set; }
     public bool WinWindowExpired { get; set; }
     public bool TransformWhenTauntResolved { get; set; }
+    public string? PendingMeetingAlertKey { get; set; }
+    public string? PendingMeetingAlertFallback { get; set; }
+    public HashSet<byte> LastTauntVoters { get; } = [];
 
     public DoomableType DoomHintType => DoomableType.Trickster;
     public RoleBehaviour CrewVariant => RoleManager.Instance.GetRole((RoleTypes)RoleId.Get<EngineerTouRole>());
@@ -44,6 +48,7 @@ public sealed class InnocentRole(IntPtr cppPtr)
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
     public bool HasImpostorVision => false;
+    public bool ContinuesGame => TargetVoted && OptionGroupSingleton<InnocentOptions>.Instance.AfterWin.Value != (int)InnocentAfterWin.EndGame;
 
     public CustomRoleConfiguration Configuration => new(this)
     {
@@ -54,7 +59,7 @@ public sealed class InnocentRole(IntPtr cppPtr)
     };
 
     [HideFromIl2Cpp]
-    public List<Type> RoleButtons => [typeof(InnocentTauntButton)];
+    public List<Type> RoleButtons => [typeof(InnocentTauntButton), typeof(InnocentHauntButton)];
 
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities =>
@@ -96,7 +101,15 @@ public sealed class InnocentRole(IntPtr cppPtr)
         return console == null || console.AllowImpostor;
     }
 
-    public bool WinConditionMet() => (TargetVoted || AboutToWin) && !WouldImpostorsWin();
+    public bool WinConditionMet()
+    {
+        if (OptionGroupSingleton<InnocentOptions>.Instance.AfterWin.Value != (int)InnocentAfterWin.EndGame)
+        {
+            return false;
+        }
+
+        return (TargetVoted || AboutToWin) && !WouldImpostorsWin();
+    }
 
     public override bool DidWin(GameOverReason gameOverReason) => TargetVoted || AboutToWin;
 
@@ -117,6 +130,9 @@ public sealed class InnocentRole(IntPtr cppPtr)
         AwaitingNextMeetingExile = false;
         WinWindowExpired = false;
         TransformWhenTauntResolved = false;
+        PendingMeetingAlertKey = null;
+        PendingMeetingAlertFallback = null;
+        LastTauntVoters.Clear();
     }
 
     public static void TryTransformAfterSpentTaunts(byte innocentPlayerId)
@@ -141,15 +157,10 @@ public sealed class InnocentRole(IntPtr cppPtr)
         var roleType = GetTransformRoleType();
         role.ResetTauntState();
 
-        if (!roleType.HasValue)
-        {
-            return;
-        }
-
-        player.RpcChangeRole(roleType.Value, true);
+        player.RpcChangeRole(roleType, true);
     }
 
-    private static ushort? GetTransformRoleType()
+    private static ushort GetTransformRoleType()
     {
         var option = (InnocentTransformRole)OptionGroupSingleton<InnocentOptions>.Instance.TransformAfterTauntsInto.Value;
         return option switch
@@ -158,22 +169,8 @@ public sealed class InnocentRole(IntPtr cppPtr)
             InnocentTransformRole.Survivor => RoleId.Get<SurvivorRole>(),
             InnocentTransformRole.Mercenary => RoleId.Get<MercenaryRole>(),
             InnocentTransformRole.Jester => RoleId.Get<JesterRole>(),
-            InnocentTransformRole.Random => GetRandomTransformRole(),
-            _ => GetRandomTransformRole()
+            _ => RoleId.Get<AmnesiacRole>()
         };
-    }
-
-    private static ushort GetRandomTransformRole()
-    {
-        var fallbackRoles = new[]
-        {
-            RoleId.Get<AmnesiacRole>(),
-            RoleId.Get<SurvivorRole>(),
-            RoleId.Get<MercenaryRole>(),
-            RoleId.Get<JesterRole>()
-        };
-
-        return fallbackRoles[UnityEngine.Random.Range(0, fallbackRoles.Length)];
     }
 
     private static bool WouldImpostorsWin()

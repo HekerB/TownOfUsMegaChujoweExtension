@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using TownOfUs.Roles;
+using TownOfUs.Options;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -26,6 +27,7 @@ public static class DraftSystem
     public static bool IsRunning { get; set; }
     public static bool DraftComplete { get; set; }
     public static List<byte> PickOrder { get; } = new();
+    public static List<byte> OriginalPickOrder { get; } = new();
     public static HashSet<ushort> AlreadyPicked { get; } = new();
     public static bool LocalPlayerPicked { get; set; }
     public static float PickTimer { get; set; }
@@ -86,8 +88,9 @@ public static class DraftSystem
             return;
         }
 
-        int neutralKillingCount = GetSafeCount(options.MinNeutralKilling.Value, options.MaxNeutralKilling.Value);
-        TargetOtherNeutralCount = GetSafeCount(options.MinOtherNeutrals.Value, options.MaxOtherNeutrals.Value);
+        var oldOptions = OptionGroupSingleton<DraftOldSettingsOptions>.Instance;
+        int neutralKillingCount = GetSafeCount(oldOptions.MinNeutralKilling.Value, oldOptions.MaxNeutralKilling.Value);
+        TargetOtherNeutralCount = GetSafeCount(oldOptions.MinOtherNeutrals.Value, oldOptions.MaxOtherNeutrals.Value);
 
         if (neutralKillingCount + TargetOtherNeutralCount > remaining.Count)
         {
@@ -274,12 +277,21 @@ public static class DraftSystem
             return false;
         }
 
+        var previousImpostorPicked = DraftPicks.Keys.Any(id =>
+            id != myId.Value &&
+            PlayerFactions.TryGetValue(id, out var pickedFaction) &&
+            pickedFaction == DraftFaction.Impostor);
+        if (previousImpostorPicked)
+        {
+            return false;
+        }
+
         var futureImpostorSlots = PickOrder.Count(id =>
             id != myId.Value &&
             PlayerFactions.TryGetValue(id, out var futureFaction) &&
             futureFaction == DraftFaction.Impostor);
 
-        return futureImpostorSlots == 1;
+        return futureImpostorSlots >= 1;
     }
 
     private static List<RoleBehaviour> FilterLonerForCurrentPicker(IEnumerable<RoleBehaviour> roles)
@@ -394,6 +406,17 @@ public static class DraftSystem
 
     public static List<RoleBehaviour> SelectRolesToOffer(bool isImpostor)
     {
+        var options = OptionGroupSingleton<DraftModeOptions>.Instance;
+        return options.PoolMode.Value switch
+        {
+            DraftPoolMode.MinMax => SelectMinMaxRolesToOffer(),
+            DraftPoolMode.RoleList => SelectRoleListRolesToOffer(),
+            _ => SelectOldRolesToOffer(isImpostor)
+        };
+    }
+
+    private static List<RoleBehaviour> SelectOldRolesToOffer(bool isImpostor)
+    {
         var myId = PlayerControl.LocalPlayer?.PlayerId ?? 255;
         DraftFaction faction;
 
@@ -412,7 +435,7 @@ public static class DraftSystem
         // Unified Crewmate/Neutral Mix Logic
         if (faction == DraftFaction.CrewOther)
         {
-            var options = OptionGroupSingleton<DraftModeOptions>.Instance;
+            var oldOptions = OptionGroupSingleton<DraftOldSettingsOptions>.Instance;
             var crewPool = GetRolesForAlignments(enabledAlignments);
 
             int currentNeutrals = GetCurrentOtherNeutralCount();
@@ -437,7 +460,7 @@ public static class DraftSystem
                     if (UnityEngine.Random.Range(0f, 1f) < offerChance)
                     {
                         // If selected, use the per-choice options
-                        wantedNeutrals = (UnityEngine.Random.Range(0f, 100f) < 60f) ? (int)options.MinOtherNeutralsPerChoice.Value : (int)options.MaxOtherNeutralsPerChoice.Value;
+                        wantedNeutrals = (UnityEngine.Random.Range(0f, 100f) < 60f) ? (int)oldOptions.MinOtherNeutralsPerChoice.Value : (int)oldOptions.MaxOtherNeutralsPerChoice.Value;
                         // Cap by needed to avoid exceeding global target early
                         wantedNeutrals = Mathf.Min(wantedNeutrals, neutralsNeeded);
                     }
@@ -480,12 +503,302 @@ public static class DraftSystem
             .ToList();
     }
 
+    private static List<RoleBehaviour> SelectMinMaxRolesToOffer()
+    {
+        var roleCount = RolesToShow;
+        var availableAlignments = GetAllDraftAlignments()
+            .Where(alignment => GetRemainingSlotsForAlignment(alignment) > 0)
+            .ToList();
+
+        if (availableAlignments.Count == 0)
+        {
+            return new List<RoleBehaviour>();
+        }
+
+        var pool = new List<RoleBehaviour>();
+        foreach (var alignment in availableAlignments)
+        {
+            pool.AddRange(GetRolesForAlignment(alignment));
+        }
+
+        pool = FilterLonerForMinMax(pool)
+            .GroupBy(role => role.Role)
+            .Select(group => group.First())
+            .ToList();
+
+        if (pool.Count <= roleCount)
+        {
+            return pool.OrderBy(_ => Random.Range(0f, 1f)).ToList();
+        }
+
+        return OrderRoles(pool)
+            .Take(roleCount)
+            .OrderBy(_ => Random.Range(0f, 1f))
+            .ToList();
+    }
+
+    private static List<RoleBehaviour> SelectRoleListRolesToOffer()
+    {
+        var bucket = GetCurrentRoleListBucket();
+        var alignments = GetAlignmentsForRoleListBucket(bucket);
+        if (alignments.Count == 0)
+        {
+            return new List<RoleBehaviour>();
+        }
+
+        var pool = GetRolesForAlignments(alignments);
+        if (IsImpostorBucket(bucket))
+        {
+            pool = FilterLonerForRoleList(pool);
+        }
+
+        if (pool.Count <= RolesToShow)
+        {
+            return pool.OrderBy(_ => Random.Range(0f, 1f)).ToList();
+        }
+
+        return OrderRoles(pool)
+            .Take(RolesToShow)
+            .OrderBy(_ => Random.Range(0f, 1f))
+            .ToList();
+    }
+
+    private static IEnumerable<RoleAlignment> GetAllDraftAlignments()
+    {
+        yield return RoleAlignment.CrewmateInvestigative;
+        yield return RoleAlignment.CrewmateKilling;
+        yield return RoleAlignment.CrewmateProtective;
+        yield return RoleAlignment.CrewmatePower;
+        yield return RoleAlignment.CrewmateSupport;
+        yield return RoleAlignment.ImpostorConcealing;
+        yield return RoleAlignment.ImpostorKilling;
+        yield return RoleAlignment.ImpostorPower;
+        yield return RoleAlignment.ImpostorSupport;
+        yield return RoleAlignment.NeutralBenign;
+        yield return RoleAlignment.NeutralEvil;
+        yield return RoleAlignment.NeutralKilling;
+        yield return RoleAlignment.NeutralOutlier;
+    }
+
+    private static int GetRemainingSlotsForAlignment(RoleAlignment alignment)
+    {
+        var crewOptions = OptionGroupSingleton<DraftCrewmateSettingsOptions>.Instance;
+        var impOptions = OptionGroupSingleton<DraftImpostorSettingsOptions>.Instance;
+        var neutralOptions = OptionGroupSingleton<DraftNeutralSettingsOptions>.Instance;
+        var max = alignment switch
+        {
+            RoleAlignment.CrewmateInvestigative => (int)crewOptions.MaxCrewInvestigative.Value,
+            RoleAlignment.CrewmateKilling => (int)crewOptions.MaxCrewKilling.Value,
+            RoleAlignment.CrewmateProtective => (int)crewOptions.MaxCrewProtective.Value,
+            RoleAlignment.CrewmatePower => (int)crewOptions.MaxCrewPower.Value,
+            RoleAlignment.CrewmateSupport => (int)crewOptions.MaxCrewSupport.Value,
+            RoleAlignment.ImpostorConcealing => (int)impOptions.MaxImpConcealing.Value,
+            RoleAlignment.ImpostorKilling => (int)impOptions.MaxImpKilling.Value,
+            RoleAlignment.ImpostorPower => (int)impOptions.MaxImpPower.Value,
+            RoleAlignment.ImpostorSupport => (int)impOptions.MaxImpSupport.Value,
+            RoleAlignment.NeutralBenign => (int)neutralOptions.MaxNeutralBenign.Value,
+            RoleAlignment.NeutralEvil => (int)neutralOptions.MaxNeutralEvil.Value,
+            RoleAlignment.NeutralKilling => (int)neutralOptions.MaxNeutralKillingRoles.Value,
+            RoleAlignment.NeutralOutlier => (int)neutralOptions.MaxNeutralOutlier.Value,
+            _ => 0
+        };
+
+        if (IsImpostorAlignment(alignment) && CountPicked(IsImpostorAlignment) >= (int)impOptions.MaxImpostorsTotal.Value)
+        {
+            return 0;
+        }
+
+        if (IsNeutralAlignment(alignment) && CountPicked(IsNeutralAlignment) >= (int)neutralOptions.MaxNeutralTotal.Value)
+        {
+            return 0;
+        }
+
+        return Mathf.Max(0, max - CountPicked(pickedAlignment => pickedAlignment == alignment));
+    }
+
+    private static int CountPicked(Func<RoleAlignment, bool> predicate)
+    {
+        var count = 0;
+        foreach (var roleId in DraftPicks.Values)
+        {
+            var role = RoleManager.Instance.GetRole((RoleTypes)roleId);
+            if (role is ITownOfUsRole touRole && predicate(touRole.RoleAlignment))
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private static bool IsImpostorAlignment(RoleAlignment alignment)
+    {
+        return alignment is RoleAlignment.ImpostorConcealing or
+            RoleAlignment.ImpostorKilling or
+            RoleAlignment.ImpostorPower or
+            RoleAlignment.ImpostorSupport;
+    }
+
+    private static bool IsNeutralAlignment(RoleAlignment alignment)
+    {
+        return alignment is RoleAlignment.NeutralBenign or
+            RoleAlignment.NeutralEvil or
+            RoleAlignment.NeutralKilling or
+            RoleAlignment.NeutralOutlier;
+    }
+
+    private static List<RoleBehaviour> FilterLonerForMinMax(IEnumerable<RoleBehaviour> roles)
+    {
+        var options = OptionGroupSingleton<DraftImpostorSettingsOptions>.Instance;
+        var impostorsPicked = CountPicked(IsImpostorAlignment);
+        var impostorSlotsRemaining = (int)options.MaxImpostorsTotal.Value - impostorsPicked;
+        var lonerRole = (RoleTypes)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Impostor.LonerRole>();
+
+        return roles
+            .Where(role => role.Role != lonerRole || (impostorsPicked == 0 && impostorSlotsRemaining >= 2))
+            .ToList();
+    }
+
+    private static List<RoleBehaviour> FilterLonerForRoleList(IEnumerable<RoleBehaviour> roles)
+    {
+        var lonerRole = (RoleTypes)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Impostor.LonerRole>();
+        var previousImpostorPicked = DraftPicks.Values.Any(IsImpostorRole);
+        var futureImpostorSlots = GetFutureRoleListBuckets()
+            .Count(IsImpostorBucket);
+
+        return roles
+            .Where(role => role.Role != lonerRole || (!previousImpostorPicked && futureImpostorSlots >= 1))
+            .ToList();
+    }
+
+    private static RoleListOption GetCurrentRoleListBucket()
+    {
+        var picker = CurrentPicker ?? PlayerControl.LocalPlayer?.PlayerId ?? byte.MaxValue;
+        var slotIndex = OriginalPickOrder.IndexOf(picker);
+        if (slotIndex < 0)
+        {
+            slotIndex = Mathf.Clamp(DraftPicks.Count, 0, 19);
+        }
+
+        return GetRoleListBucketForSlot(slotIndex);
+    }
+
+    private static IEnumerable<RoleListOption> GetFutureRoleListBuckets()
+    {
+        var currentPicker = CurrentPicker;
+        var currentIndex = currentPicker.HasValue ? OriginalPickOrder.IndexOf(currentPicker.Value) : -1;
+        if (currentIndex < 0)
+        {
+            currentIndex = DraftPicks.Count;
+        }
+
+        for (var i = currentIndex + 1; i < OriginalPickOrder.Count && i < 20; i++)
+        {
+            yield return GetRoleListBucketForSlot(i);
+        }
+    }
+
+    private static RoleListOption GetRoleListBucketForSlot(int zeroBasedSlot)
+    {
+        var options = OptionGroupSingleton<DraftRoleListSettingsOptions>.Instance;
+        return zeroBasedSlot switch
+        {
+            0 => options.Slot1.Value,
+            1 => options.Slot2.Value,
+            2 => options.Slot3.Value,
+            3 => options.Slot4.Value,
+            4 => options.Slot5.Value,
+            5 => options.Slot6.Value,
+            6 => options.Slot7.Value,
+            7 => options.Slot8.Value,
+            8 => options.Slot9.Value,
+            9 => options.Slot10.Value,
+            10 => options.Slot11.Value,
+            11 => options.Slot12.Value,
+            12 => options.Slot13.Value,
+            13 => options.Slot14.Value,
+            14 => options.Slot15.Value,
+            15 => options.Slot16.Value,
+            16 => options.Slot17.Value,
+            17 => options.Slot18.Value,
+            18 => options.Slot19.Value,
+            19 => options.Slot20.Value,
+            _ => RoleListOption.NonImp
+        };
+    }
+
+    private static bool IsImpostorBucket(RoleListOption bucket)
+    {
+        return bucket is RoleListOption.ImpConceal or
+            RoleListOption.ImpKilling or
+            RoleListOption.ImpPower or
+            RoleListOption.ImpSupport or
+            RoleListOption.ImpCommon or
+            RoleListOption.ImpSpecial or
+            RoleListOption.ImpRandom;
+    }
+
+    private static bool IsImpostorRole(ushort roleId)
+    {
+        if ((RoleTypes)roleId == RoleTypes.Impostor)
+        {
+            return true;
+        }
+
+        try
+        {
+            return RoleManager.Instance.GetRole((RoleTypes)roleId)?.IsImpostor() == true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static List<RoleAlignment> GetAlignmentsForRoleListBucket(RoleListOption bucket)
+    {
+        return bucket switch
+        {
+            RoleListOption.CrewInvest => [RoleAlignment.CrewmateInvestigative],
+            RoleListOption.CrewKilling => [RoleAlignment.CrewmateKilling],
+            RoleListOption.CrewProtective => [RoleAlignment.CrewmateProtective],
+            RoleListOption.CrewPower => [RoleAlignment.CrewmatePower],
+            RoleListOption.CrewSupport => [RoleAlignment.CrewmateSupport],
+            RoleListOption.CrewCommon => [RoleAlignment.CrewmateInvestigative, RoleAlignment.CrewmateProtective, RoleAlignment.CrewmateSupport],
+            RoleListOption.CrewSpecial => [RoleAlignment.CrewmateKilling, RoleAlignment.CrewmatePower],
+            RoleListOption.CrewRandom => [RoleAlignment.CrewmateInvestigative, RoleAlignment.CrewmateKilling, RoleAlignment.CrewmateProtective, RoleAlignment.CrewmatePower, RoleAlignment.CrewmateSupport],
+            RoleListOption.NeutBenign => [RoleAlignment.NeutralBenign],
+            RoleListOption.NeutEvil => [RoleAlignment.NeutralEvil],
+            RoleListOption.NeutKilling => [RoleAlignment.NeutralKilling],
+            RoleListOption.NeutOutlier => [RoleAlignment.NeutralOutlier],
+            RoleListOption.NeutCommon => [RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil],
+            RoleListOption.NeutSpecial => [RoleAlignment.NeutralKilling, RoleAlignment.NeutralOutlier],
+            RoleListOption.NeutWildcard => [RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralOutlier],
+            RoleListOption.NeutRandom => [RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralKilling, RoleAlignment.NeutralOutlier],
+            RoleListOption.ImpConceal => [RoleAlignment.ImpostorConcealing],
+            RoleListOption.ImpKilling => [RoleAlignment.ImpostorKilling],
+            RoleListOption.ImpPower => [RoleAlignment.ImpostorPower],
+            RoleListOption.ImpSupport => [RoleAlignment.ImpostorSupport],
+            RoleListOption.ImpCommon => [RoleAlignment.ImpostorConcealing, RoleAlignment.ImpostorSupport],
+            RoleListOption.ImpSpecial => [RoleAlignment.ImpostorKilling, RoleAlignment.ImpostorPower],
+            RoleListOption.ImpRandom => [RoleAlignment.ImpostorConcealing, RoleAlignment.ImpostorKilling, RoleAlignment.ImpostorPower, RoleAlignment.ImpostorSupport],
+            RoleListOption.NonImp => [RoleAlignment.CrewmateInvestigative, RoleAlignment.CrewmateKilling, RoleAlignment.CrewmateProtective, RoleAlignment.CrewmatePower, RoleAlignment.CrewmateSupport, RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralKilling, RoleAlignment.NeutralOutlier],
+            RoleListOption.Any => [.. GetAllDraftAlignments()],
+            _ => []
+        };
+    }
+
     public static RoleBehaviour? PickRandomRole(bool isImpostor, List<RoleBehaviour>? offeredPool = null)
     {
         var freshOffer = SelectRolesToOffer(isImpostor);
         if (freshOffer != null && freshOffer.Count > 0)
         {
             return freshOffer[UnityEngine.Random.Range(0, freshOffer.Count)];
+        }
+
+        if (OptionGroupSingleton<DraftModeOptions>.Instance.PoolMode.Value != DraftPoolMode.OldDraft)
+        {
+            return null;
         }
 
         var myId = PlayerControl.LocalPlayer?.PlayerId ?? 255;
@@ -513,6 +826,7 @@ public static class DraftSystem
         DraftComplete = false;
         DraftActiveThisRound = false;
         PickOrder.Clear();
+        OriginalPickOrder.Clear();
         AlreadyPicked.Clear();
         DraftPicks.Clear();
         ImpostorPlayerIds.Clear();
@@ -598,6 +912,8 @@ public static class DraftSystem
             buckets[i].Shuffle();
             PickOrder.AddRange(buckets[i]);
         }
+
+        OriginalPickOrder.AddRange(PickOrder);
     }
 
     public static void RegisterPick(byte playerId, ushort roleId)

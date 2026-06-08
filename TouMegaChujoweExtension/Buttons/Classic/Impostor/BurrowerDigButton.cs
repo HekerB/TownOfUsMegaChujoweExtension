@@ -266,7 +266,7 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
             return true;
         }
 
-        if (!IsNearVent(player.transform.position) &&
+        if (!BurrowerSystem.IsNearMapVent(player.transform.position) &&
             BurrowerSystem.TryFindVentPlacementPosition(player, player.GetTruePosition(), out var digPosition))
         {
             BurrowerRole.RpcUnderground(player, digPosition);
@@ -276,26 +276,11 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
         return false;
     }
 
-    private static bool IsBurrowerVent(Transform transform)
-    {
-        while (transform != null)
-        {
-            if (transform.gameObject.name != null && transform.gameObject.name.StartsWith("BurrowerVent-"))
-            {
-                return true;
-            }
-
-            transform = transform.parent;
-        }
-
-        return false;
-    }
-
     private static bool CanBurrowAtCurrentPosition(PlayerControl player, BurrowerRole role)
     {
         var position = player.GetTruePosition();
 
-        if (!role.IsUnderground && !role.IsDigging && IsNearVent(player.transform.position))
+        if (!role.IsUnderground && !role.IsDigging && BurrowerSystem.IsNearMapVent(player.transform.position))
         {
             return false;
         }
@@ -313,28 +298,4 @@ public sealed class BurrowerDigButton : TownOfUsRoleButton<BurrowerRole>
                UsesLeft <= 0;
     }
 
-    private static bool IsNearVent(Vector2 position)
-    {
-        if (ShipStatus.Instance?.AllVents != null)
-        {
-            foreach (var vent in ShipStatus.Instance.AllVents)
-            {
-                if (vent == null || IsBurrowerVent(vent.transform))
-                {
-                    continue;
-                }
-
-                if (Vector2.Distance(position, vent.transform.position) < 1.8f)
-                {
-                    return true;
-                }
-            }
-        }
-
-        return Physics2D.OverlapCircleAll(position, 1.8f)
-            .Any(c => c != null &&
-                      c.name != null &&
-                      c.name.Contains("Vent", StringComparison.OrdinalIgnoreCase) &&
-                      !IsBurrowerVent(c.transform));
-    }
 }

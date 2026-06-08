@@ -117,6 +117,7 @@ public sealed class DeathRole(IntPtr cppPtr)
     {
         RoleBehaviourStubs.Initialize(this, player);
         EnsureInvulnerability(player);
+        EnsureInvisibility(player);
 
         if (player.AmOwner && HudManager.Instance?.ImpostorVentButton != null)
         {
@@ -141,6 +142,11 @@ public sealed class DeathRole(IntPtr cppPtr)
         if (targetPlayer.HasModifier<InvulnerabilityModifier>())
         {
             targetPlayer.RemoveModifier<InvulnerabilityModifier>();
+        }
+
+        if (targetPlayer.HasModifier<DeathInvisibleModifier>())
+        {
+            targetPlayer.RemoveModifier<DeathInvisibleModifier>();
         }
 
         if (targetPlayer.AmOwner && HudManager.Instance?.ImpostorVentButton != null)
@@ -199,6 +205,14 @@ public sealed class DeathRole(IntPtr cppPtr)
         }
 
         death.AddModifier<InvulnerabilityModifier>(false, false, false);
+    }
+
+    private static void EnsureInvisibility(PlayerControl death)
+    {
+        if (!death.HasModifier<DeathInvisibleModifier>())
+        {
+            death.AddModifier<DeathInvisibleModifier>();
+        }
     }
 
     [MethodRpc((uint)ExtensionRpc.DeathKill)]

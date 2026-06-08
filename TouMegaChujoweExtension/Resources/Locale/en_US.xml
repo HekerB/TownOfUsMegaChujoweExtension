@@ -820,6 +820,8 @@
   <string name="ExtensionOptionDraftModeRolesToShow">Roles To Show</string>
 	
   <string name="ExtensionDraftModeTitle">Role Draft</string>
+  <string name="ExtensionDraftRoleListTitle">Draft Mode</string>
+  <string name="ExtensionDraftRoleListEmpty">No roles enabled</string>
   <string name="ExtensionDraftModeCurrentlyPicking">Currently Picking:</string>
   <string name="ExtensionDraftModeYourTurn">Your Turn!</string>
   <string name="ExtensionDraftModeWaiting">Waiting...</string>
@@ -1638,19 +1640,25 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- Innocent -->
   <string name="ExtensionRoleInnocent">Innocent</string>
   <string name="ExtensionRoleInnocentIntroBlurb">Make someone look guilty.</string>
-  <string name="ExtensionRoleInnocentTabDescription">Taunt a player and force them to kill the nearest Crewmate after a delay. Win if that killer is exiled at the next meeting. If limited taunts run out without a win, you can transform into the configured neutral role.</string>
-  <string name="ExtensionRoleInnocentWikiDescription">The Innocent is a Neutral Evil role. Use Taunt on a living player. After the configured delay, the taunted player kills the nearest Crewmate. If that killer is voted out at the next meeting, the Innocent wins. If the victim is Bait, the body is reported immediately. If limited taunts run out without a win, an option can turn the Innocent into Amnesiac, Survivor, Mercenary, Jester, or a random neutral role.</string>
+  <string name="ExtensionRoleInnocentTabDescription">Taunt a player for a short time. If the closest player near them is a Crewmate, they kill and report that Crewmate. Win if that killer is exiled at the next meeting.</string>
+  <string name="ExtensionRoleInnocentWikiDescription">The Innocent is a Neutral Evil role. Use Taunt on a living player. During the configured time window, if the closest player near the taunted player is a Crewmate, the taunted player kills and reports them as if they hit Bait. If that killer is voted out at the next meeting, the Innocent wins. If limited taunts run out without a win, the Innocent transforms into the configured role.</string>
   <string name="ExtensionRoleInnocentTaunt">Taunt</string>
   <string name="ExtensionRoleInnocentTauntWikiDescription">Mark a living player. After a delay, they will kill the nearest Crewmate, and you must get them exiled at the next meeting.</string>
   <string name="ExtensionRoleInnocentTauntedNotif">{0} has been taunted!</string>
   <string name="ExtensionRoleInnocentTauntedButton">Taunted</string>
   <string name="ExtensionOptionInnocentTauntCooldown">Taunt Cooldown</string>
-  <string name="ExtensionOptionInnocentForcedKillDelay">Forced Kill Delay</string>
+  <string name="ExtensionOptionInnocentTauntDuration">Taunt Duration</string>
   <string name="ExtensionOptionInnocentMaxTaunts">Max Taunts</string>
   <string name="ExtensionOptionInnocentTransformAfterTauntsInto">Transform After Taunts Into</string>
-  <string name="ExtensionOptionInnocentTransformRoleNone">Nothing</string>
-  <string name="ExtensionOptionInnocentTransformRoleRandom">Random Neutral</string>
   <string name="ExtensionOptionInnocentCanTauntFirstRound">Can Taunt First Round</string>
+  <string name="ExtensionOptionInnocentAfterWin">After Win</string>
+  <string name="ExtensionOptionInnocentAfterWinEndGame">End Game</string>
+  <string name="ExtensionOptionInnocentAfterWinNothing">Nothing</string>
+  <string name="ExtensionOptionInnocentAfterWinHaunt">Haunt</string>
+  <string name="ExtensionRoleInnocentHaunt">Haunt</string>
+  <string name="ExtensionRoleInnocentWinNotif">Your target was exiled. You won!</string>
+  <string name="ExtensionRoleInnocentForcedKillNotif">Your taunted player killed a Crewmate. Get them exiled at the next meeting!</string>
+  <string name="ExtensionRoleInnocentNoKillNotif">Your taunted player did not kill a Crewmate in time.</string>
   <string name="ExtensionInnocentWins">Wins</string>
 
   <!-- Voodoo Master -->
@@ -1660,19 +1668,17 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleVoodooMasterWikiDescription">The Voodoo Master is an Impostor Support role. They can select a curse, then use it on any living player. Blindness fully covers the target's vision, confuse reverses movement, and mute triggers during the next meeting. Muted players cannot chat, but can still vote normally.</string>
   <string name="ExtensionRoleVoodooMasterCast">Curse</string>
   <string name="ExtensionRoleVoodooMasterCastWikiDescription">Choose a living player and apply the currently selected Voodoo curse.</string>
-  <string name="ExtensionRoleVoodooMasterCycle">Cycle Curse</string>
+  <string name="ExtensionRoleVoodooMasterCycle">Change</string>
   <string name="ExtensionRoleVoodooMasterCycleWikiDescription">Switch between blindness, mute, and confuse.</string>
-  <string name="ExtensionOptionVoodooMasterMaxCurses">Max Number Of Curses</string>
-  <string name="ExtensionOptionVoodooMasterBlindCooldown">Blind Cooldown</string>
+  <string name="ExtensionOptionVoodooMasterCurseCooldown">Curse Cooldown</string>
+  <string name="ExtensionOptionVoodooMasterMaxBlindUses">Max Blind Uses</string>
+  <string name="ExtensionOptionVoodooMasterMaxConfuseUses">Max Confuse Uses</string>
+  <string name="ExtensionOptionVoodooMasterMaxMuteUses">Max Mute Uses</string>
   <string name="ExtensionOptionVoodooMasterBlindDuration">Blind Duration</string>
-  <string name="ExtensionOptionVoodooMasterConfuseCooldown">Confuse Cooldown</string>
   <string name="ExtensionOptionVoodooMasterConfuseDuration">Confuse Duration</string>
-  <string name="ExtensionOptionVoodooMasterMuteCooldown">Mute Cooldown</string>
   <string name="ExtensionOptionVoodooMasterMuteDuration">Mute Duration In Meetings</string>
-  <string name="ExtensionOptionVoodooMasterBlindTargetAlert">Blind Target Alert</string>
-  <string name="ExtensionOptionVoodooMasterCanVent">Voodoo Master Can Vent</string>
-  <string name="ExtensionOptionVoodooMasterImpostorsSeeMuted">Impostors See Muted Target</string>
-  <string name="ExtensionVoodooBlindAlert">You were blinded by a Voodoo curse!</string>
+  <string name="ExtensionOptionVoodooMasterMoveWhileMenu">Can Move While Menu</string>
+  <string name="ExtensionVoodooBlindAlert">You have been cursed by the Voodoo Master!</string>
   <string name="ExtensionVoodooEffectBlindness">Blindness</string>
   <string name="ExtensionVoodooEffectMute">Mute</string>
   <string name="ExtensionVoodooEffectConfuse">Confuse</string>

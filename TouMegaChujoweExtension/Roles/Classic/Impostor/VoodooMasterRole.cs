@@ -41,13 +41,16 @@ public sealed class VoodooMasterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
     public ModdedRoleTeams Team => ModdedRoleTeams.Impostor;
     public RoleAlignment RoleAlignment => RoleAlignment.ImpostorSupport;
     public VoodooEffect SelectedEffect { get; set; } = VoodooEffect.Blindness;
+    public int BlindUsesLeft { get; set; }
+    public int ConfuseUsesLeft { get; set; }
+    public int MuteUsesLeft { get; set; }
 
     public CustomRoleConfiguration Configuration => new(this)
     {
         UseVanillaKillButton = true,
         Icon = TouExtensionIcons.VoodooRoleIcon,
         IntroSound = TouAudio.GlitchSound,
-        CanUseVent = OptionGroupSingleton<VoodooMasterOptions>.Instance.CanVent,
+        CanUseVent = true,
         OptionsScreenshot = TouBanners.ImpostorRoleBanner,
     };
 
@@ -70,11 +73,64 @@ public sealed class VoodooMasterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
     public override void Initialize(PlayerControl player)
     {
         RoleBehaviourStubs.Initialize(this, player);
+        ResetCurseUses();
     }
 
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+    }
+
+    public void ResetCurseUses()
+    {
+        var options = OptionGroupSingleton<VoodooMasterOptions>.Instance;
+        BlindUsesLeft = (int)options.MaxBlindCurses;
+        ConfuseUsesLeft = (int)options.MaxConfuseCurses;
+        MuteUsesLeft = (int)options.MaxMuteCurses;
+    }
+
+    public int GetMaxUses(VoodooEffect effect)
+    {
+        var options = OptionGroupSingleton<VoodooMasterOptions>.Instance;
+        return effect switch
+        {
+            VoodooEffect.Mute => (int)options.MaxMuteCurses,
+            VoodooEffect.Confuse => (int)options.MaxConfuseCurses,
+            _ => (int)options.MaxBlindCurses
+        };
+    }
+
+    public int GetUsesLeft(VoodooEffect effect)
+    {
+        return effect switch
+        {
+            VoodooEffect.Mute => MuteUsesLeft,
+            VoodooEffect.Confuse => ConfuseUsesLeft,
+            _ => BlindUsesLeft
+        };
+    }
+
+    public bool TrySpendUse(VoodooEffect effect)
+    {
+        if (GetMaxUses(effect) == 0)
+        {
+            return true;
+        }
+
+        switch (effect)
+        {
+            case VoodooEffect.Mute when MuteUsesLeft > 0:
+                MuteUsesLeft--;
+                return true;
+            case VoodooEffect.Confuse when ConfuseUsesLeft > 0:
+                ConfuseUsesLeft--;
+                return true;
+            case VoodooEffect.Blindness when BlindUsesLeft > 0:
+                BlindUsesLeft--;
+                return true;
+            default:
+                return false;
+        }
     }
 
     public static void CastVoodooDoll(PlayerControl voodooMaster, PlayerControl target, VoodooEffect effect)
@@ -87,9 +143,12 @@ public sealed class VoodooMasterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
         switch (effect)
         {
             case VoodooEffect.Blindness:
-                if (target.HasModifier<VoodooBlindModifier>())
+                foreach (var player in PlayerControl.AllPlayerControls.ToArray())
                 {
-                    target.RpcRemoveModifier<VoodooBlindModifier>();
+                    if (player.HasModifier<VoodooBlindModifier>())
+                    {
+                        player.RpcRemoveModifier<VoodooBlindModifier>();
+                    }
                 }
 
                 target.RpcAddModifier<VoodooBlindModifier>(voodooMaster, OptionGroupSingleton<VoodooMasterOptions>.Instance.BlindDuration);
@@ -104,9 +163,17 @@ public sealed class VoodooMasterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
                 return;
         }
 
-        if (target.HasModifier<VoodooScheduledCurseModifier>())
+        foreach (var player in PlayerControl.AllPlayerControls.ToArray())
         {
-            target.RpcRemoveModifier<VoodooScheduledCurseModifier>();
+            if (player.HasModifier<VoodooScheduledCurseModifier>())
+            {
+                player.RpcRemoveModifier<VoodooScheduledCurseModifier>();
+            }
+
+            if (player.HasModifier<VoodooMutedModifier>())
+            {
+                player.RpcRemoveModifier<VoodooMutedModifier>();
+            }
         }
 
         target.RpcAddModifier<VoodooScheduledCurseModifier>(effect);

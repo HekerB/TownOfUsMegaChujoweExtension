@@ -17,8 +17,10 @@ using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Events;
 using TownOfUs.Extensions;
+using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modifiers.Game.Crewmate;
+using TownOfUs.Networking;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -135,7 +137,7 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
                 ShowTauntedNotification(player);
 
                 _tauntedPlayerId = player.PlayerId;
-                _tauntCountdown = OptionGroupSingleton<InnocentOptions>.Instance.ForcedKillDelay;
+                _tauntCountdown = OptionGroupSingleton<InnocentOptions>.Instance.TauntDuration;
 
                 SpendTauntUse();
                 Timer = 0.01f;
@@ -193,7 +195,7 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
     [HideFromIl2Cpp]
     private static IEnumerator CoForceMarkedKill(byte innocentPlayerId, byte markedPlayerId)
     {
-        var delay = OptionGroupSingleton<InnocentOptions>.Instance.ForcedKillDelay;
+        var delay = OptionGroupSingleton<InnocentOptions>.Instance.TauntDuration;
         var endTime = Time.time + delay;
 
         while (Time.time < endTime)
@@ -203,7 +205,7 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
             var marked = GameData.Instance?.GetPlayerById(markedPlayerId)?.Object;
             if (marked == null || marked.HasDied() || !marked.HasModifier<InnocentTargetModifier>())
             {
-                InnocentRole.TryTransformAfterSpentTaunts(innocentPlayerId);
+                ResolveNoKill(innocentPlayerId);
                 yield break;
             }
 
@@ -215,21 +217,25 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
                 var dist = Vector2.Distance(marked.GetTruePosition(), victim.GetTruePosition());
                 if (dist <= killDist)
                 {
-                    if (InnocentRole.ActiveInnocents.TryGetValue(innocentPlayerId, out var innocent))
+                    if (InnocentRole.ActiveInnocents.TryGetValue(innocentPlayerId, out var role))
                     {
-                        innocent.BeginTauntWinWindow(marked.PlayerId);
+                        role.BeginTauntWinWindow(marked.PlayerId);
                     }
 
-                    marked.RpcCustomMurder(victim);
+                    marked.RpcSpecialMurder(
+                        victim,
+                        isIndirect: false,
+                        ignoreShield: false,
+                        didSucceed: true,
+                        resetKillTimer: true,
+                        createDeadBody: true,
+                        teleportMurderer: false,
+                        showKillAnim: true,
+                        playKillSound: true,
+                        causeOfDeath: "InnocentTaunt");
 
-                    if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == innocentPlayerId)
-                    {
-                        var button = PlayerControl.LocalPlayer.GetComponent<InnocentTauntButton>();
-                        if (button != null)
-                        {
-                            button.Timer = button.Cooldown;
-                        }
-                    }
+                    ResetLocalButtonCooldown(innocentPlayerId);
+                    QueueMeetingAlert(innocentPlayerId, "ExtensionRoleInnocentForcedKillNotif", "Your taunted player killed a Crewmate. Get them exiled at the next meeting!");
 
                     yield return CoReportBaitImmediately(marked.PlayerId, victim.PlayerId);
                     yield break;
@@ -239,37 +245,86 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
             yield return new WaitForSeconds(0.1f);
         }
 
-        ClearExistingMarkerForInnocent(innocentPlayerId);
+        ResolveNoKill(innocentPlayerId);
+    }
 
-        if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == innocentPlayerId)
+    private static void ResolveNoKill(byte innocentPlayerId)
+    {
+        ClearExistingMarkerForInnocent(innocentPlayerId);
+        ResetLocalButtonCooldown(innocentPlayerId);
+        ShowInnocentAlert(innocentPlayerId, "ExtensionRoleInnocentNoKillNotif", "Your taunted player did not kill a Crewmate in time.");
+
+        if (InnocentRole.ActiveInnocents.TryGetValue(innocentPlayerId, out var innocent))
         {
-            var button = PlayerControl.LocalPlayer.GetComponent<InnocentTauntButton>();
-            if (button != null)
+            innocent.AwaitingNextMeetingExile = false;
+            innocent.TauntedKillerId = null;
+
+            if (innocent.TransformWhenTauntResolved)
             {
-                button.Timer = button.Cooldown;
+                innocent.WinWindowExpired = true;
             }
         }
+    }
 
-        InnocentRole.TryTransformAfterSpentTaunts(innocentPlayerId);
+    private static void QueueMeetingAlert(byte innocentPlayerId, string key, string fallback)
+    {
+        if (!InnocentRole.ActiveInnocents.TryGetValue(innocentPlayerId, out var innocent))
+        {
+            return;
+        }
+
+        innocent.PendingMeetingAlertKey = key;
+        innocent.PendingMeetingAlertFallback = fallback;
     }
 
     private static PlayerControl? FindForcedVictim(PlayerControl marked, byte innocentPlayerId)
     {
-        return PlayerControl.AllPlayerControls.ToArray()
-            .Where(player => IsForcedVictimCandidate(player, marked.PlayerId, innocentPlayerId))
+        var nearestPlayer = PlayerControl.AllPlayerControls.ToArray()
+            .Where(player => IsClosestPlayerCandidate(player, marked.PlayerId, innocentPlayerId))
             .OrderBy(player => Vector2.Distance(marked.GetTruePosition(), player.GetTruePosition()))
             .FirstOrDefault();
+
+        return nearestPlayer != null && nearestPlayer.IsCrewmate() ? nearestPlayer : null;
     }
 
-    private static bool IsForcedVictimCandidate(PlayerControl? player, byte markedPlayerId, byte innocentPlayerId)
+    private static bool IsClosestPlayerCandidate(PlayerControl? player, byte markedPlayerId, byte innocentPlayerId)
     {
         return player != null &&
                player.PlayerId != markedPlayerId &&
                player.PlayerId != innocentPlayerId &&
                !player.HasDied() &&
                player.Data != null &&
-               !player.Data.Disconnected &&
-               player.IsCrewmate();
+               !player.Data.Disconnected;
+    }
+
+    private static void ResetLocalButtonCooldown(byte innocentPlayerId)
+    {
+        if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.PlayerId != innocentPlayerId)
+        {
+            return;
+        }
+
+        var button = CustomButtonSingleton<InnocentTauntButton>.Instance;
+        if (button != null)
+        {
+            button.Timer = button.Cooldown;
+        }
+    }
+
+    private static void ShowInnocentAlert(byte innocentPlayerId, string key, string fallback)
+    {
+        if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.PlayerId != innocentPlayerId)
+        {
+            return;
+        }
+
+        var notif = MiraAPI.Utilities.Helpers.CreateAndShowNotification(
+            $"<b>{TouExtensionColors.Innocent.ToTextColor()}{TouLocale.Get(key, fallback)}</color></b>",
+            Color.white,
+            new Vector3(0f, 1f, -20f),
+            spr: TouExtensionIcons.InnocentRoleIcon.LoadAsset());
+
+        notif?.AdjustNotification();
     }
 
     [HideFromIl2Cpp]

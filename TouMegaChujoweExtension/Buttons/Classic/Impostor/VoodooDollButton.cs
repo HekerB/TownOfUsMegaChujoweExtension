@@ -1,32 +1,42 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Hud;
 using MiraAPI.Keybinds;
+using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
+using TouMegaChujoweExtension.Modifiers.Impostor;
 using TouMegaChujoweExtension.Options.Roles.Impostor;
 using TouMegaChujoweExtension.Roles.Classic.Impostor;
 using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Modules;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
-public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole>
+public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, PlayerControl>
 {
-    public override string Name => "Curse";
-    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
+    public override string Name => GetButtonName(Role);
+    public override BaseKeybind Keybind => Keybinds.TertiaryAction;
     public override Color TextOutlineColor => Palette.ImpostorRed;
-    public override float Cooldown => GetEffectCooldown(Role?.SelectedEffect ?? VoodooEffect.Blindness);
-    public override int MaxUses => (int)OptionGroupSingleton<VoodooMasterOptions>.Instance.MaxCurses;
+    public override float Cooldown => OptionGroupSingleton<VoodooMasterOptions>.Instance.CurseCooldown;
+    public override int MaxUses => Role?.GetMaxUses(Role.SelectedEffect) ?? (int)OptionGroupSingleton<VoodooMasterOptions>.Instance.MaxBlindCurses;
     public override bool ZeroIsInfinite { get; set; } = true;
-    public override LoadableAsset<Sprite> Sprite => GetEffectSprite(Role?.SelectedEffect ?? VoodooEffect.Blindness);
+    public override LoadableAsset<Sprite> Sprite => TouImpAssets.BlackmailSprite;
 
     private bool _isProcessingClick;
 
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+        SetupUsesDisplay();
+        UpdateUsesDisplay();
+    }
+
     public override bool CanUse()
     {
-        if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data.IsDead)
+        if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data.IsDead || Role == null)
         {
             return false;
         }
@@ -36,7 +46,10 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole>
             return false;
         }
 
-        return Timer <= 0f && (!LimitedUses || UsesLeft > 0);
+        return base.CanUse() &&
+               Target != null &&
+               Timer <= 0f &&
+               (Role.GetMaxUses(Role.SelectedEffect) == 0 || Role.GetUsesLeft(Role.SelectedEffect) > 0);
     }
 
     public override void ClickHandler()
@@ -69,28 +82,23 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole>
 
     protected override void OnClick()
     {
-        var playerMenu = CustomPlayerMenu.Create();
-        playerMenu.Begin(
-            player => player != null && !player.HasDied() && player.PlayerId != PlayerControl.LocalPlayer.PlayerId,
-            player =>
-            {
-                playerMenu.ForceClose();
+        if (Role == null || Target == null)
+        {
+            return;
+        }
 
-                if (player == null || Role == null)
-                {
-                    Timer = 0.01f;
-                    return;
-                }
+        var effect = Role.SelectedEffect;
+        if (!Role.TrySpendUse(effect))
+        {
+            Timer = 0.01f;
+            UpdateUsesDisplay();
+            return;
+        }
 
-                VoodooMasterRole.CastVoodooDoll(PlayerControl.LocalPlayer, player, Role.SelectedEffect);
-                if (LimitedUses)
-                {
-                    UsesLeft--;
-                }
-
-                Timer = GetEffectCooldown(Role.SelectedEffect);
-              });
-      }
+        VoodooMasterRole.CastVoodooDoll(PlayerControl.LocalPlayer, Target, effect);
+        Timer = Cooldown;
+        UpdateUsesDisplay();
+    }
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
@@ -104,28 +112,141 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole>
         if (shouldShow)
         {
             base.FixedUpdate(playerControl);
-            OverrideSprite(GetEffectSprite(Role!.SelectedEffect).LoadAsset());
+            OverrideSprite(TouImpAssets.BlackmailSprite.LoadAsset());
+            OverrideName(GetButtonName(Role));
+            UpdateUsesDisplay();
+            UpdateActiveEffectTimer(playerControl);
         }
     }
 
-    private static LoadableAsset<Sprite> GetEffectSprite(VoodooEffect effect)
+    private void SetupUsesDisplay()
     {
-        return effect switch
+        if (Button?.usesRemainingSprite != null)
         {
-            VoodooEffect.Mute => TouImpAssets.BlackmailSprite,
-            VoodooEffect.Confuse => TouImpAssets.HerbConfuseSprite,
-            _ => TouImpAssets.BlindSprite
-        };
+            Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterBasicSprite.LoadAsset();
+            Button.usesRemainingSprite.color = TextOutlineColor;
+        }
+
+        if (Button?.usesRemainingText != null)
+        {
+            Button.usesRemainingText.color = Color.white;
+        }
     }
 
-    private static float GetEffectCooldown(VoodooEffect effect)
+    public void UpdateUsesDisplay()
+    {
+        if (Button == null || Role == null)
+        {
+            return;
+        }
+
+        var maxUses = Role.GetMaxUses(Role.SelectedEffect);
+        UsesLeft = Role.GetUsesLeft(Role.SelectedEffect);
+        Button.SetUsesRemaining(UsesLeft);
+
+        if (Button.usesRemainingSprite != null)
+        {
+            Button.usesRemainingSprite.gameObject.SetActive(maxUses > 0);
+            Button.usesRemainingSprite.color = TextOutlineColor;
+        }
+
+        if (Button.usesRemainingText != null)
+        {
+            Button.usesRemainingText.gameObject.SetActive(maxUses > 0);
+            Button.usesRemainingText.color = Color.white;
+        }
+    }
+
+    private static string GetButtonName(VoodooMasterRole? role)
+    {
+        if (role == null)
+        {
+            return TouLocale.Get("ExtensionRoleVoodooMasterCast", "Curse");
+        }
+
+        var effectName = TouLocale.Get($"ExtensionVoodooEffect{role.SelectedEffect}", role.SelectedEffect.ToString());
+        var maxUses = role.GetMaxUses(role.SelectedEffect);
+        return maxUses > 0 ? $"{effectName} - {role.GetUsesLeft(role.SelectedEffect)}" : effectName;
+    }
+
+    private void UpdateActiveEffectTimer(PlayerControl playerControl)
+    {
+        if (Button == null || Role == null)
+        {
+            return;
+        }
+
+        var timeRemaining = GetActiveEffectTimeRemaining(playerControl.PlayerId, Role.SelectedEffect);
+        if (timeRemaining <= 0f)
+        {
+            return;
+        }
+
+        Button.SetFillUp(timeRemaining, GetEffectDuration(Role.SelectedEffect));
+
+        if (Button.cooldownTimerText == null)
+        {
+            return;
+        }
+
+        var format = timeRemaining <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+            ? "0.0"
+            : "0";
+        Button.cooldownTimerText.text = timeRemaining.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
+        Button.cooldownTimerText.gameObject.SetActive(true);
+        Button.cooldownTimerText.color = Color.white;
+    }
+
+    private static float GetActiveEffectTimeRemaining(byte voodooMasterId, VoodooEffect effect)
+    {
+        foreach (var player in PlayerControl.AllPlayerControls.ToArray())
+        {
+            if (player == null)
+            {
+                continue;
+            }
+
+            if (effect == VoodooEffect.Blindness &&
+                player.TryGetModifier<VoodooBlindModifier>(out var blind) &&
+                blind.VoodooMaster != null &&
+                blind.VoodooMaster.PlayerId == voodooMasterId)
+            {
+                return blind.TimeRemaining;
+            }
+
+            if (effect == VoodooEffect.Confuse &&
+                player.TryGetModifier<VoodooConfusedModifier>(out var confuse) &&
+                confuse.VoodooMaster != null &&
+                confuse.VoodooMaster.PlayerId == voodooMasterId)
+            {
+                return confuse.TimeRemaining;
+            }
+        }
+
+        return 0f;
+    }
+
+    private static float GetEffectDuration(VoodooEffect effect)
     {
         var options = OptionGroupSingleton<VoodooMasterOptions>.Instance;
         return effect switch
         {
-            VoodooEffect.Mute => options.MuteCooldown,
-            VoodooEffect.Confuse => options.ConfuseCooldown,
-            _ => options.BlindCooldown
+            VoodooEffect.Confuse => options.ConfuseDuration,
+            VoodooEffect.Mute => options.MuteDuration,
+            _ => options.BlindDuration
         };
+    }
+
+    public override bool IsTargetValid(PlayerControl? target)
+    {
+        return base.IsTargetValid(target) &&
+               target != null &&
+               !target.HasDied() &&
+               target.PlayerId != PlayerControl.LocalPlayer.PlayerId;
+    }
+
+    public override PlayerControl? GetTarget()
+    {
+        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
     }
 }

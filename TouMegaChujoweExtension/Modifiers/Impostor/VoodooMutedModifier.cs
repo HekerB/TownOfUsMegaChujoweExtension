@@ -1,8 +1,7 @@
 using System;
 using System.Linq;
-using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using TouMegaChujoweExtension.Options.Roles.Impostor;
+using TouMegaChujoweExtension.Roles.Classic.Impostor;
 using TownOfUs.Assets;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -102,9 +101,8 @@ public sealed class VoodooMutedModifier : BaseModifier
     {
         var localPlayer = PlayerControl.LocalPlayer;
         var canSeeMuted = Player.AmOwner ||
-                          (OptionGroupSingleton<VoodooMasterOptions>.Instance.ImpostorsSeeMuted &&
-                           localPlayer != null &&
-                           localPlayer.IsImpostorAligned());
+                          localPlayer != null &&
+                          (localPlayer.IsRole<VoodooMasterRole>() || localPlayer.HasDied());
 
         if (!canSeeMuted || bmOverlay != null)
         {

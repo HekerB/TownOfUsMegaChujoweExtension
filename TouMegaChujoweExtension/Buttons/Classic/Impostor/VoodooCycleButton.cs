@@ -1,7 +1,8 @@
+using MiraAPI.Hud;
 using MiraAPI.Keybinds;
 using MiraAPI.Utilities.Assets;
+using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Roles.Classic.Impostor;
-using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
@@ -11,11 +12,11 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
 public sealed class VoodooCycleButton : TownOfUsRoleButton<VoodooMasterRole>
 {
-    public override string Name => "Cycle Curse";
-    public override BaseKeybind Keybind => Keybinds.TertiaryAction;
+    public override string Name => TouLocale.Get("ExtensionRoleVoodooMasterCycle", "Change");
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => Palette.ImpostorRed;
     public override float Cooldown => 0.5f;
-    public override LoadableAsset<Sprite> Sprite => TouImpAssets.BlindSprite;
+    public override LoadableAsset<Sprite> Sprite => TouExtensionAssets.CycleForward;
 
     private bool _isProcessingClick;
 
@@ -70,8 +71,9 @@ public sealed class VoodooCycleButton : TownOfUsRoleButton<VoodooMasterRole>
         }
 
         Role.SelectedEffect = (VoodooEffect)(((int)Role.SelectedEffect + 1) % 3);
-        OverrideName(GetEffectName(Role.SelectedEffect));
-        OverrideSprite(GetEffectSprite(Role.SelectedEffect).LoadAsset());
+        OverrideName(Name);
+        OverrideSprite(Sprite.LoadAsset());
+        CustomButtonSingleton<VoodooDollButton>.Instance?.UpdateUsesDisplay();
         Timer = Cooldown;
     }
 
@@ -87,23 +89,8 @@ public sealed class VoodooCycleButton : TownOfUsRoleButton<VoodooMasterRole>
         if (shouldShow)
         {
             base.FixedUpdate(playerControl);
-            OverrideName(GetEffectName(Role!.SelectedEffect));
-            OverrideSprite(GetEffectSprite(Role.SelectedEffect).LoadAsset());
+            OverrideName(Name);
+            OverrideSprite(Sprite.LoadAsset());
         }
-    }
-
-    private static string GetEffectName(VoodooEffect effect)
-    {
-        return TouLocale.Get($"ExtensionVoodooEffect{effect}", effect.ToString());
-    }
-
-    private static LoadableAsset<Sprite> GetEffectSprite(VoodooEffect effect)
-    {
-        return effect switch
-        {
-            VoodooEffect.Mute => TouImpAssets.BlackmailSprite,
-            VoodooEffect.Confuse => TouImpAssets.HerbConfuseSprite,
-            _ => TouImpAssets.BlindSprite
-        };
     }
 }

@@ -817,6 +817,8 @@
   <string name="ExtensionOptionDraftModeRolesToShow">Role do pokazania</string>
 	
   <string name="ExtensionDraftModeTitle">Draft rol</string>
+  <string name="ExtensionDraftRoleListTitle">Draft Mode</string>
+  <string name="ExtensionDraftRoleListEmpty">Brak wlaczonych rol</string>
   <string name="ExtensionDraftModeCurrentlyPicking">Obecnie wybiera:</string>
   <string name="ExtensionDraftModeYourTurn">Twoja kolej!</string>
   <string name="ExtensionDraftModeWaiting">Oczekiwanie...</string>
@@ -1624,19 +1626,25 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <!-- Innocent -->
   <string name="ExtensionRoleInnocent">Innocent</string>
   <string name="ExtensionRoleInnocentIntroBlurb">Zrob z kogos winnego.</string>
-  <string name="ExtensionRoleInnocentTabDescription">Oznacz gracza i zmus go po chwili do zabicia najblizszego Crewmate'a. Wygrywasz, jesli ten zabojca zostanie wyrzucony na nastepnym meetingu. Gdy limitowane uzycia skoncza sie bez wygranej, mozesz zmienic sie w role z ustawien.</string>
-  <string name="ExtensionRoleInnocentWikiDescription">Innocent to rola Neutral Evil. Uzyj Taunt na zyjacym graczu. Po ustawionym opoznieniu oznaczony gracz zabije najblizszego Crewmate'a. Jesli ten zabojca zostanie wyrzucony na nastepnym meetingu, Innocent wygrywa. Jesli ofiara jest Baitem, cialo zostaje zgloszone od razu. Gdy limitowane uzycia skoncza sie bez wygranej, opcja moze zmienic Innocenta w Amnesiaca, Survivora, Mercenary, Jestera albo losowa neutralna role.</string>
+  <string name="ExtensionRoleInnocentTabDescription">Oznacz gracza na krotki czas. Jesli najblizszy gracz obok niego jest Crewmatem, oznaczony zabije i zglosi tego Crewmate'a. Wygrywasz, jesli zabojca zostanie wyrzucony na nastepnym meetingu.</string>
+  <string name="ExtensionRoleInnocentWikiDescription">Innocent to rola Neutral Evil. Uzyj Taunt na zyjacym graczu. W ustawionym oknie czasowym, jesli najblizszy gracz obok oznaczonego jest Crewmatem, oznaczony zabije i zglosi go jak po trafieniu w Baita. Jesli ten zabojca zostanie wyrzucony na nastepnym meetingu, Innocent wygrywa. Gdy limitowane uzycia skoncza sie bez wygranej, Innocent zmienia sie w role z ustawien.</string>
   <string name="ExtensionRoleInnocentTaunt">Taunt</string>
   <string name="ExtensionRoleInnocentTauntWikiDescription">Oznacz zyjacego gracza. Po chwili zabije najblizszego Crewmate'a, a ty musisz doprowadzic do wyrzucenia go na nastepnym meetingu.</string>
   <string name="ExtensionRoleInnocentTauntedNotif">{0} zostal oznaczony Tauntem!</string>
   <string name="ExtensionRoleInnocentTauntedButton">Taunted</string>
   <string name="ExtensionOptionInnocentTauntCooldown">Cooldown Taunt</string>
-  <string name="ExtensionOptionInnocentForcedKillDelay">Opoznienie wymuszonego killa</string>
+  <string name="ExtensionOptionInnocentTauntDuration">Czas trwania Taunta</string>
   <string name="ExtensionOptionInnocentMaxTaunts">Maks. uzycia Taunt</string>
   <string name="ExtensionOptionInnocentTransformAfterTauntsInto">Zamien po zuzyciu Taunt w</string>
-  <string name="ExtensionOptionInnocentTransformRoleNone">Nic</string>
-  <string name="ExtensionOptionInnocentTransformRoleRandom">Losowy Neutral</string>
   <string name="ExtensionOptionInnocentCanTauntFirstRound">Moze uzyc Taunt w pierwszej rundzie</string>
+  <string name="ExtensionOptionInnocentAfterWin">Po wygranej</string>
+  <string name="ExtensionOptionInnocentAfterWinEndGame">End Game</string>
+  <string name="ExtensionOptionInnocentAfterWinNothing">Nothing</string>
+  <string name="ExtensionOptionInnocentAfterWinHaunt">Haunt</string>
+  <string name="ExtensionRoleInnocentHaunt">Haunt</string>
+  <string name="ExtensionRoleInnocentWinNotif">Twoj cel zostal wyrzucony. Wygrales!</string>
+  <string name="ExtensionRoleInnocentForcedKillNotif">Oznaczony gracz zabil Crewmate'a. Wyrzuccie go na nastepnym meetingu!</string>
+  <string name="ExtensionRoleInnocentNoKillNotif">Oznaczony gracz nie zabil Crewmate'a na czas.</string>
   <string name="ExtensionInnocentWins">wygrywa</string>
 
   <!-- Voodoo Master -->
@@ -1646,19 +1654,17 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="ExtensionRoleVoodooMasterWikiDescription">Voodoo Master to rola Impostor Support. Moze wybrac klatwe, a potem uzyc jej na dowolnym zyjacym graczu. Oslepienie calkowicie zaslania wizje celu, dezorientacja odwraca ruch, a wyciszenie odpala sie na nastepnym meetingu. Wyciszony gracz nie moze pisac, ale nadal moze normalnie glosowac.</string>
   <string name="ExtensionRoleVoodooMasterCast">Klatwa</string>
   <string name="ExtensionRoleVoodooMasterCastWikiDescription">Wybierz zyjacego gracza i naloz aktualnie wybrana klatwe Voodoo.</string>
-  <string name="ExtensionRoleVoodooMasterCycle">Zmien klatwe</string>
+  <string name="ExtensionRoleVoodooMasterCycle">Change</string>
   <string name="ExtensionRoleVoodooMasterCycleWikiDescription">Przelacza miedzy oslepieniem, wyciszeniem i dezorientacja.</string>
-  <string name="ExtensionOptionVoodooMasterMaxCurses">Maksymalna liczba klatw</string>
-  <string name="ExtensionOptionVoodooMasterBlindCooldown">Cooldown oslepienia</string>
+  <string name="ExtensionOptionVoodooMasterCurseCooldown">Cooldown klatwy</string>
+  <string name="ExtensionOptionVoodooMasterMaxBlindUses">Maks. uzycia oslepienia</string>
+  <string name="ExtensionOptionVoodooMasterMaxConfuseUses">Maks. uzycia dezorientacji</string>
+  <string name="ExtensionOptionVoodooMasterMaxMuteUses">Maks. uzycia wyciszenia</string>
   <string name="ExtensionOptionVoodooMasterBlindDuration">Czas oslepienia</string>
-  <string name="ExtensionOptionVoodooMasterConfuseCooldown">Cooldown dezorientacji</string>
   <string name="ExtensionOptionVoodooMasterConfuseDuration">Czas dezorientacji</string>
-  <string name="ExtensionOptionVoodooMasterMuteCooldown">Cooldown wyciszenia</string>
   <string name="ExtensionOptionVoodooMasterMuteDuration">Czas wyciszenia w meetingach</string>
-  <string name="ExtensionOptionVoodooMasterBlindTargetAlert">Alert dla oslepionego celu</string>
-  <string name="ExtensionOptionVoodooMasterCanVent">Voodoo Master moze ventowac</string>
-  <string name="ExtensionOptionVoodooMasterImpostorsSeeMuted">Impostorzy widza wyciszony cel</string>
-  <string name="ExtensionVoodooBlindAlert">Klatwa Voodoo cie oslepila!</string>
+  <string name="ExtensionOptionVoodooMasterMoveWhileMenu">Moze chodzic z otwartym menu</string>
+  <string name="ExtensionVoodooBlindAlert">Zostales przeklety przez Voodoo Mastera!</string>
   <string name="ExtensionVoodooEffectBlindness">Oslepienie</string>
   <string name="ExtensionVoodooEffectMute">Wyciszenie</string>
   <string name="ExtensionVoodooEffectConfuse">Dezorientacja</string>

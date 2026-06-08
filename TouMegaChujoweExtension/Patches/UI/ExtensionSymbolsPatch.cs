@@ -12,6 +12,7 @@ using TownOfUs;
 using TownOfUs.Extensions;
 using UnityEngine;
 using TouMegaChujoweExtension.Modules;
+using TouMegaChujoweExtension.Patches.Roles;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TouMegaChujoweExtension.Roles.Classic.Impostor;
 using TouMegaChujoweExtension.Modifiers.Neutral;
@@ -82,6 +83,8 @@ public static class ExtensionSymbolsPatch
         }
 
         // --- WITCH (Removed gray symbol) ---
+
+        InnocentTauntMeetingDisplay.TryAppendTauntSymbol(ref __result, player);
 
         // --- LAWYER (§) ---
         if (!__result.Contains('§'))
@@ -204,6 +207,18 @@ public static class ExtensionSymbolsPatch
         {
             __result = $"<color=#{jackalHex}>{__result}</color>";
         }
+    }
+
+    [HarmonyPatch(nameof(PlayerRoleTextExtensions.UpdateTargetSymbols), typeof(string), typeof(PlayerControl), typeof(DataVisibility))]
+    [HarmonyPostfix]
+    public static void UpdateTargetSymbolsVisibilityPostfix(ref string __result, PlayerControl player, DataVisibility visibility)
+    {
+        if (player == null)
+        {
+            return;
+        }
+
+        InnocentTauntMeetingDisplay.TryAppendTauntSymbol(ref __result, player);
     }
 
     [HarmonyPatch(nameof(PlayerRoleTextExtensions.UpdateProtectionSymbols), typeof(string), typeof(PlayerControl), typeof(bool))]

@@ -6,9 +6,15 @@ using MiraAPI.Events.Vanilla.Gameplay;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Modifiers;
+using MiraAPI.Hud;
 using TouMegaChujoweExtension.Modifiers.Neutral;
+using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
+using TouMegaChujoweExtension.Buttons.Classic.Neutral;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game.Crewmate;
+using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -46,6 +52,29 @@ public static class InnocentPatches
     }
 
     [RegisterEvent]
+    public static void OnMeetingStart(StartMeetingEvent evt)
+    {
+        foreach (var innocent in GetInnocents())
+        {
+            if (!innocent.Player.AmOwner ||
+                string.IsNullOrEmpty(innocent.PendingMeetingAlertKey) ||
+                string.IsNullOrEmpty(innocent.PendingMeetingAlertFallback))
+            {
+                continue;
+            }
+
+            MiraAPI.Utilities.Helpers.CreateAndShowNotification(
+                $"<b>{TouExtensionColors.Innocent.ToTextColor()}{TouLocale.Get(innocent.PendingMeetingAlertKey, innocent.PendingMeetingAlertFallback)}</color></b>",
+                Color.white,
+                new Vector3(0f, 1f, -20f),
+                spr: TouExtensionIcons.InnocentRoleIcon.LoadAsset())?.AdjustNotification();
+
+            innocent.PendingMeetingAlertKey = null;
+            innocent.PendingMeetingAlertFallback = null;
+        }
+    }
+
+    [RegisterEvent]
     public static void OnEjection(EjectionEvent evt)
     {
         var exiled = evt.ExileController?.initData?.networkedPlayer?.Object;
@@ -61,6 +90,14 @@ public static class InnocentPatches
             innocent.TargetVoted = true;
             innocent.TransformWhenTauntResolved = false;
             RemoveInnocentTauntMarker(exiled.PlayerId, innocent.Player.PlayerId);
+
+            if (OptionGroupSingleton<InnocentOptions>.Instance.AfterWin.Value == (int)InnocentAfterWin.Haunt)
+            {
+                PrepareHauntTargets(innocent, exiled);
+            }
+
+            ShowWinNotification(innocent);
+            innocent.LastTauntVoters.Clear();
         }
     }
 
@@ -108,9 +145,34 @@ public static class InnocentPatches
                     innocent.WinWindowExpired = true;
                 }
             }
-            else if (innocent.TransformWhenTauntResolved)
+            else if (innocent.TransformWhenTauntResolved && innocent.WinWindowExpired)
             {
                 InnocentRole.TryTransformAfterSpentTaunts(innocent.Player.PlayerId);
+            }
+        }
+
+        if (!evt.TriggeredByIntro)
+        {
+            InnocentHauntButton.ClearRoundHaunts();
+        }
+    }
+
+    [RegisterEvent]
+    public static void OnHandleVote(MiraAPI.Events.Vanilla.Meeting.Voting.HandleVoteEvent evt)
+    {
+        var suspect = evt.TargetPlayerInfo?.Object;
+        if (suspect == null)
+        {
+            return;
+        }
+
+        foreach (var marker in suspect.GetModifiers<InnocentTargetModifier>())
+        {
+            if (InnocentRole.ActiveInnocents.TryGetValue(marker.InnocentPlayerId, out var innocent) &&
+                innocent.AwaitingNextMeetingExile &&
+                innocent.TauntedKillerId == suspect.PlayerId)
+            {
+                innocent.LastTauntVoters.Add(evt.Player.PlayerId);
             }
         }
     }
@@ -150,11 +212,66 @@ public static class InnocentPatches
     {
         return killer.GetModifiers<InnocentTargetModifier>().Any(marker => marker.InnocentPlayerId == innocentPlayerId);
     }
+
+    private static void PrepareHauntTargets(InnocentRole innocent, PlayerControl exiled)
+    {
+        if (!innocent.Player.AmOwner)
+        {
+            return;
+        }
+
+        var voters = PlayerControl.AllPlayerControls.ToArray()
+            .Where(player => player != null &&
+                             !player.HasDied() &&
+                             player.PlayerId != innocent.Player.PlayerId &&
+                             player.PlayerId != exiled.PlayerId &&
+                             innocent.LastTauntVoters.Contains(player.PlayerId))
+            .ToList();
+
+        if (voters.Count == 0)
+        {
+            voters = PlayerControl.AllPlayerControls.ToArray()
+                .Where(player => player != null &&
+                                 !player.HasDied() &&
+                                 player.PlayerId != innocent.Player.PlayerId &&
+                                 player.PlayerId != exiled.PlayerId)
+                .ToList();
+        }
+
+        foreach (var voter in voters)
+        {
+            voter.AddModifier<MisfortuneTargetModifier>();
+        }
+
+        InnocentHauntButton.ShowThisRound = voters.Count > 0;
+        CustomButtonSingleton<InnocentHauntButton>.Instance?.SetActive(InnocentHauntButton.ShowThisRound, innocent);
+    }
+
+    private static void ShowWinNotification(InnocentRole innocent)
+    {
+        if (!innocent.Player.AmOwner)
+        {
+            return;
+        }
+
+        DeathHandlerModifier.RpcUpdateLocalDeathHandler(
+            PlayerControl.LocalPlayer,
+            "DiedToWinning",
+            TownOfUs.Events.DeathEventHandlers.CurrentRound,
+            DeathHandlerOverride.SetFalse,
+            lockInfo: DeathHandlerOverride.SetTrue);
+
+        MiraAPI.Utilities.Helpers.CreateAndShowNotification(
+            $"<b>{TouExtensionColors.Innocent.ToTextColor()}{TouLocale.Get("ExtensionRoleInnocentWinNotif", "Your target was exiled. You win with the winners!")}</color></b>",
+            Color.white,
+            new Vector3(0f, 1f, -20f),
+            spr: TouExtensionIcons.InnocentRoleIcon.LoadAsset())?.AdjustNotification();
+    }
 }
 
-internal static class InnocentTauntMeetingDisplay
+public static class InnocentTauntMeetingDisplay
 {
-    private const string TauntSymbol = "+";
+    private const string TauntSymbol = "[+]";
     private static string? _tauntSymbolRichChunk;
 
     private static string TauntSymbolRichChunk =>
@@ -183,28 +300,6 @@ internal static class InnocentTauntMeetingDisplay
         if (result.Contains(chunk)) return;
 
         result += chunk;
-    }
-}
-
-[HarmonyPatch(typeof(PlayerRoleTextExtensions), nameof(PlayerRoleTextExtensions.UpdateTargetSymbols),
-    new[] { typeof(string), typeof(PlayerControl), typeof(bool) })]
-public static class InnocentTargetSymbolPatch
-{
-    [HarmonyPostfix]
-    public static void Postfix(ref string __result, PlayerControl player, bool hidden = false)
-    {
-        InnocentTauntMeetingDisplay.TryAppendTauntSymbol(ref __result, player);
-    }
-}
-
-[HarmonyPatch(typeof(PlayerRoleTextExtensions), nameof(PlayerRoleTextExtensions.UpdateTargetSymbols),
-    new[] { typeof(string), typeof(PlayerControl), typeof(DataVisibility) })]
-public static class InnocentTargetSymbolDataVisibilityPatch
-{
-    [HarmonyPostfix]
-    public static void Postfix(ref string __result, PlayerControl player, DataVisibility visibility)
-    {
-        InnocentTauntMeetingDisplay.TryAppendTauntSymbol(ref __result, player);
     }
 }
 
