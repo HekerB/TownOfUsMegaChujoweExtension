@@ -18,12 +18,12 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, PlayerControl>
 {
     public override string Name => GetButtonName(Role);
-    public override BaseKeybind Keybind => Keybinds.TertiaryAction;
+    public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => Palette.ImpostorRed;
     public override float Cooldown => OptionGroupSingleton<VoodooMasterOptions>.Instance.CurseCooldown;
     public override int MaxUses => Role?.GetMaxUses(Role.SelectedEffect) ?? (int)OptionGroupSingleton<VoodooMasterOptions>.Instance.MaxBlindCurses;
     public override bool ZeroIsInfinite { get; set; } = true;
-    public override LoadableAsset<Sprite> Sprite => TouImpAssets.BlackmailSprite;
+    public override LoadableAsset<Sprite> Sprite => GetEffectSprite(Role?.SelectedEffect ?? VoodooEffect.Blindness);
 
     private bool _isProcessingClick;
 
@@ -112,7 +112,7 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
         if (shouldShow)
         {
             base.FixedUpdate(playerControl);
-            OverrideSprite(TouImpAssets.BlackmailSprite.LoadAsset());
+            OverrideSprite(GetEffectSprite(Role!.SelectedEffect).LoadAsset());
             OverrideName(GetButtonName(Role));
             UpdateUsesDisplay();
             UpdateActiveEffectTimer(playerControl);
@@ -234,6 +234,16 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
             VoodooEffect.Confuse => options.ConfuseDuration,
             VoodooEffect.Mute => options.MuteDuration,
             _ => options.BlindDuration
+        };
+    }
+
+    private static LoadableAsset<Sprite> GetEffectSprite(VoodooEffect effect)
+    {
+        return effect switch
+        {
+            VoodooEffect.Mute => TouImpAssets.BlackmailSprite,
+            VoodooEffect.Confuse => TouImpAssets.HerbConfuseSprite,
+            _ => TouImpAssets.BlindSprite
         };
     }
 
