@@ -1559,10 +1559,10 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionLonerRemoveExistingImpostorRoles">Avoid Impostor Roles Used This Game</string>
 
   <!-- Burrower Role -->
-  <string name="ExtensionRoleBurrower">Burrower</string>
+  <string name="ExtensionRoleBurrower">Tunneler</string>
   <string name="ExtensionRoleBurrowerIntroBlurb">Dig hidden tunnels</string>
   <string name="ExtensionRoleBurrowerTabDescription">Dig underground and emerge to link two vents.</string>
-  <string name="ExtensionRoleBurrowerWikiDescription">The Burrower is an Impostor Concealing role that creates hidden tunnels. Dig to enter a vent after a short delay and travel underground. Emerge to create a linked vent pair.</string>
+  <string name="ExtensionRoleBurrowerWikiDescription">The Tunneler is an Impostor Concealing role that creates hidden tunnels. Dig to enter a vent after a short delay and travel underground. Emerge to create a linked vent pair.</string>
   <string name="ExtensionRoleBurrowerDig">Dig</string>
   <string name="ExtensionRoleBurrowerEmerge">Emerge</string>
   <string name="ExtensionRoleBurrowerDigWikiDescription">Dig underground and emerge through a linked vent.</string>
@@ -1574,9 +1574,9 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionBurrowerEnterDelay">Enter Vent Delay</string>
   <string name="ExtensionOptionBurrowerDigDuration">Dig Duration</string>
   <string name="ExtensionOptionBurrowerDigCooldown">Dig Cooldown</string>
-  <string name="ExtensionOptionBurrowerMaxBurrows">Max Burrows</string>
+  <string name="ExtensionOptionBurrowerMaxBurrows">Max Tunnels</string>
   <string name="ExtensionOptionBurrowerEmergeVisionDuration">Emerge Low Vision Duration</string>
-  <string name="ExtensionOptionBurrowerVentsStayAfterMeeting">Vents Stay After Meeting</string>
+  <string name="ExtensionOptionBurrowerVentsStayAfterMeeting">Tunnels Stay After Meeting</string>
 
   <string name="ExtensionRoleGunGameMutationNotification">ROLE CHANGED! You are now &lt;role&gt;!</string>
   <string name="ExtensionRoleGunGameProgressRandom">Mode: Random role after enough kills</string>
@@ -1684,10 +1684,10 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionVoodooEffectConfuse">Confuse</string>
 
   <!-- Inverter Role -->
-  <string name="ExtensionRoleInverter">Inverter</string>
+  <string name="ExtensionRoleInverter">Flipper</string>
   <string name="ExtensionRoleInverterIntroBlurb">Disorient your targets to flip their view and controls.</string>
   <string name="ExtensionRoleInverterTabDescription">Choose a player and use Disorient to flip their screen and invert their movement controls.</string>
-  <string name="ExtensionRoleInverterWikiDescription">The Inverter is an Impostor Support role. They can choose a living target and apply Disoriented. The target's screen is flipped upside-down and their movement controls are inverted for the configured duration.</string>
+  <string name="ExtensionRoleInverterWikiDescription">The Flipper is an Impostor Support role. They can choose a living target and apply Disoriented. The target's screen is flipped upside-down and their movement controls are inverted for the configured duration.</string>
   <string name="ExtensionRoleInverterDisorient">Disorient</string>
   <string name="ExtensionRoleInverterDisorientWikiDescription">Flip a player's screen and invert their movement controls.</string>
   <string name="ExtensionOptionInverterDisorientCooldown">Disorient Cooldown</string>
