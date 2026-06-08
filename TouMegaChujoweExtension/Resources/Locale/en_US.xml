@@ -1664,7 +1664,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- Voodoo Master -->
   <string name="ExtensionRoleVoodooMaster">Voodoo Master</string>
   <string name="ExtensionRoleVoodooMasterIntroBlurb">Curse players with Voodoo.</string>
-  <string name="ExtensionRoleVoodooMasterTabDescription">Curse a player.\%nl\%Cycle between blindness, mute, and confuse.\%nl\%Cannot use a curse more times than the configured amount for each.</string>
+  <string name="ExtensionRoleVoodooMasterTabDescription">\%nl\%Cycle between blindness, mute, and confuse.</string>
   <string name="ExtensionRoleVoodooMasterWikiDescription">The Voodoo Master is an Impostor Support role. They can select a curse, then use it on any living player. Blindness fully covers the target's vision, confuse reverses movement, and mute triggers during the next meeting. Muted players cannot chat, but can still vote normally.</string>
   <string name="ExtensionRoleVoodooMasterCast">Curse</string>
   <string name="ExtensionRoleVoodooMasterCastWikiDescription">Choose a living player and apply the currently selected Voodoo curse.</string>
@@ -1685,7 +1685,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
 
   <!-- Inverter Role -->
   <string name="ExtensionRoleInverter">Flipper</string>
-  <string name="ExtensionRoleInverterIntroBlurb">Disorient your targets to flip their view and controls.</string>
+  <string name="ExtensionRoleInverterIntroBlurb">Disorient crewmate to flip their screen.</string>
   <string name="ExtensionRoleInverterTabDescription">Choose a player to flip their screen and invert their movement controls.</string>
   <string name="ExtensionRoleInverterWikiDescription">The Flipper is an Impostor Support role. They can choose a living target and apply Disoriented. The target's screen is flipped upside-down and their movement controls are inverted for the configured duration.</string>
   <string name="ExtensionRoleInverterDisorient">Disorient</string>
