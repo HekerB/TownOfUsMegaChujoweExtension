@@ -56,6 +56,9 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
         Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<Modules.DeathNoteUIController>();
         Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<Modifiers.IcenbergOverlayAnimator>();
         Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<Modules.DecoyBodyComponent>();
+        Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<Modules.InverterCameraBehaviour>();
+        Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<Modules.SoulAnimator>();
+        Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<Modules.JokerCloneControlComponent>();
 
 		ReactorCredits.Register("Tou Mega Chujowe Extension", Version, IsDevBuild, ReactorCredits.AlwaysShow);
 		IL2CPPChainloader.Instance.Finished += Modules.ExtensionLocale.SearchInternalLocale;

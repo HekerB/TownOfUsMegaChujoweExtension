@@ -4,9 +4,12 @@ using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using TouMegaChujoweExtension.Modifiers;
 using TouMegaChujoweExtension.Modifiers.Neutral;
+using TouMegaChujoweExtension.Modifiers.Impostor;
+using TouMegaChujoweExtension.Roles.Classic.Impostor;
 using TouMegaChujoweExtension.Roles.Crewmate;
 using TouMegaChujoweExtension.Roles.Impostor;
 using TouMegaChujoweExtension.Roles.Neutral;
+using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TouMegaChujoweExtension.Utilities;
 using TouMegaChujoweExtension.Modules;
 using TownOfUs.Options;
@@ -143,6 +146,83 @@ public static class ExtensionSymbolsPatch
             }
         }
 
+        // --- GRIM REAPER MARK (ζ) ---
+        if (player.TryGetModifier<GrimReaperMarkedModifier>(out _))
+        {
+            if (!__result.Contains("ζ"))
+            {
+                bool isReaper = local.IsRole<GrimReaperRole>();
+                if (isReaper || deadKnow)
+                {
+                    __result += $" {TouExtensionColors.GrimReaper.ToTextColor()}ζ</color>";
+                }
+            }
+        }
+
+        // --- BAKER BREAD MARK (β) ---
+        if (player.TryGetModifier<BakerBreadModifier>(out _))
+        {
+            if (!__result.Contains("β"))
+            {
+                bool isBaker = local.IsRole<BakerRole>();
+                if (isBaker || deadKnow)
+                {
+                    __result += $" {TouExtensionColors.Baker.ToTextColor()}β</color>";
+                }
+            }
+        }
+
+        // --- FAMINE STARVED MARK (φ) ---
+        if (player.TryGetModifier<FamineStarvedModifier>(out _))
+        {
+            if (!__result.Contains("φ"))
+            {
+                bool isFamine = local.IsRole<FamineRole>();
+                if (isFamine || deadKnow)
+                {
+                    __result += $" {TouExtensionColors.Famine.ToTextColor()}φ</color>";
+                }
+            }
+        }
+
+        // --- VOODOO MASTER BLIND MARK (ξ) ---
+        if (player.TryGetModifier<VoodooBlindModifier>(out _))
+        {
+            if (!__result.Contains("ξ"))
+            {
+                if (local.IsImpostorAligned() || deadKnow)
+                {
+                    __result += " <color=#BA55D3>ξ</color>";
+                }
+            }
+        }
+
+        // --- VOODOO MASTER MUTE MARK (μ) ---
+        if (player.TryGetModifier<VoodooMutedModifier>(out _) || 
+            (player.TryGetModifier<VoodooScheduledCurseModifier>(out var muteScheduled) && muteScheduled.CurseType == VoodooEffect.Mute))
+        {
+            if (!__result.Contains("μ"))
+            {
+                if (local.IsImpostorAligned() || deadKnow)
+                {
+                    __result += " <color=#40E0D0>μ</color>";
+                }
+            }
+        }
+
+        // --- VOODOO MASTER DEAF MARK (δ) ---
+        if (player.TryGetModifier<VoodooDeafenedModifier>(out _) || 
+            (player.TryGetModifier<VoodooScheduledCurseModifier>(out var deafScheduled) && deafScheduled.CurseType == VoodooEffect.Deafness))
+        {
+            if (!__result.Contains("δ"))
+            {
+                if (local.IsImpostorAligned() || deadKnow)
+                {
+                    __result += " <color=#DC143C>δ</color>";
+                }
+            }
+        }
+
         // Removed PZ name suffix as requested
         
     }
@@ -214,7 +294,60 @@ public static class ExtensionSymbolsPatch
             __result = Color.red;
         }
 
+        // Grim Reaper role itself is gray
+        if (player.IsRole<GrimReaperRole>())
+        {
+            __result = TouExtensionColors.GrimReaper;
+        }
 
+        // Marked target is gray for Grim Reaper
+        if (local.IsRole<GrimReaperRole>() && player.HasModifier<GrimReaperMarkedModifier>())
+        {
+            __result = TouExtensionColors.GrimReaper;
+        }
+
+        // Baker role itself is BurlyWood
+        if (player.IsRole<BakerRole>())
+        {
+            __result = TouExtensionColors.Baker;
+        }
+
+        // Player with bread is Baker color for Baker
+        if (local.IsRole<BakerRole>() && player.HasModifier<BakerBreadModifier>())
+        {
+            __result = TouExtensionColors.Baker;
+        }
+
+        // Famine role itself is SaddleBrown
+        if (player.IsRole<FamineRole>())
+        {
+            __result = TouExtensionColors.Famine;
+        }
+
+        // Starved target is SaddleBrown for Famine
+        if (local.IsRole<FamineRole>() && player.HasModifier<FamineStarvedModifier>())
+        {
+            __result = TouExtensionColors.Famine;
+        }
+
+        // Voodoo Master curses color code for Impostors
+        if (local.IsImpostorAligned())
+        {
+            if (player.HasModifier<VoodooBlindModifier>())
+            {
+                __result = new Color32(186, 85, 211, 255); // MediumOrchid for Blinded
+            }
+            else if (player.HasModifier<VoodooMutedModifier>() || 
+                     (player.TryGetModifier<VoodooScheduledCurseModifier>(out var muteMod) && muteMod.CurseType == VoodooEffect.Mute))
+            {
+                __result = new Color32(64, 224, 208, 255); // Turquoise for Muted
+            }
+            else if (player.HasModifier<VoodooDeafenedModifier>() || 
+                     (player.TryGetModifier<VoodooScheduledCurseModifier>(out var deafMod) && deafMod.CurseType == VoodooEffect.Deafness))
+            {
+                __result = new Color32(220, 20, 60, 255); // Crimson for Deafened
+            }
+        }
     }
 
     private static bool TryGetDeathNoteTarget(PlayerControl player)

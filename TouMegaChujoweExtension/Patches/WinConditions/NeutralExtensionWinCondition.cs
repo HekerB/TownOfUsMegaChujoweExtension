@@ -47,13 +47,20 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         // 4. Pirate (Original Priority 12)
         if (IsPirateWinMet()) return true;
 
-
+        // 5. Grim Reaper (Original Priority 13)
+        if (IsGrimReaperWinMet()) return true;
 
         // 6. Gaslighter (Original Priority 15)
         if (IsGaslighterWinMet()) return true;
 
         // 7. Lawyer (Original Priority 12)
         if (IsLawyerWinMet()) return true;
+
+        // 8. Joker
+        if (IsJokerWinMet()) return true;
+
+        // 9. Famine
+        if (IsFamineWinMet()) return true;
 
         return false;
     }
@@ -106,7 +113,15 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
         }
 
-
+        // 5. Grim Reaper
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player?.Data?.Role is GrimReaperRole reaper && reaper.WinConditionMet() && player.Data != null)
+            {
+                CustomGameOver.Trigger<ExtensionNeutralGameOver>(new[] { player.Data });
+                return;
+            }
+        }
 
         // 6. Gaslighter
         if (IsGaslighterWinMet())
@@ -125,9 +140,46 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
 
         // 7. Lawyer
         TriggerLawyerWin();
+
+        // 8. Joker
+        if (IsJokerWinMet())
+        {
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                if (player == null || player.Data?.Role is not JokerRole jokerRole) continue;
+
+                if (jokerRole.WinConditionMet())
+                {
+                    CustomGameOver.Trigger<JokerGameOver>(new[] { player.Data });
+                    return;
+                }
+            }
+        }
+
+        // 9. Famine
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player?.Data?.Role is FamineRole famine && famine.WinConditionMet() && player.Data != null)
+            {
+                CustomGameOver.Trigger<ExtensionNeutralGameOver>(new[] { player.Data });
+                return;
+            }
+        }
     }
 
     #region Role Specific Checks
+
+    private bool IsFamineWinMet()
+    {
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player?.Data?.Role is FamineRole famine && famine.WinConditionMet())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private bool IsPopeWinMet()
     {
@@ -176,6 +228,35 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             {
                 return true;
             }
+        }
+        return false;
+    }
+
+    private bool IsGrimReaperWinMet()
+    {
+        if (OptionGroupSingleton<GrimReaperOptions>.Instance.WinMode != GrimReaperWinMode.GrimReaperWins) return false;
+
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player?.Data?.Role is GrimReaperRole reaper && reaper.WinConditionMet())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool IsJokerWinMet()
+    {
+        var options = OptionGroupSingleton<JokerOptions>.Instance;
+        if (options == null || options.WinMode == JokerWinOptions.WinWithWinners) return false;
+
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.HasDied() || player.Data?.Role is not JokerRole jokerRole)
+                continue;
+
+            if (jokerRole.WinConditionMet()) return true;
         }
         return false;
     }

@@ -20,7 +20,16 @@ public static class InjectorVisionPatch
         var hasVisionModifier = false;
 
         // Check for vision reduction modifiers (most severe takes priority)
-        if (player.Object.HasModifier<InjectedVeryLowVisionModifier>())
+        if (player.Object.HasModifier<VoodooBlindModifier>())
+        {
+            var mod = player.Object.GetModifier<VoodooBlindModifier>();
+            if (mod != null)
+            {
+                visionFactor = mod.VisionPerc;
+                hasVisionModifier = true;
+            }
+        }
+        else if (player.Object.HasModifier<InjectedVeryLowVisionModifier>())
         {
             var mod = player.Object.GetModifier<InjectedVeryLowVisionModifier>();
             if (mod != null)

@@ -388,6 +388,22 @@
   <string name="ExtensionOptionOutlawDoubleKillWindow">Okno bonusowego zabojstwa</string>
   <string name="ExtensionOptionOutlawBonusKills">Bonusowe zabojstwa</string>
 
+  <!-- Voodoo Master Role -->
+  <string name="ExtensionRoleVoodooMaster">Szaman Voodoo</string>
+  <string name="ExtensionRoleVoodooMasterIntroBlurb">Uzyj laleczki Voodoo, aby przeklac graczy.</string>
+  <string name="ExtensionRoleVoodooMasterTabDescription">Tworz laleczki Voodoo graczy podczas rundy.\%nl\%Mozesz przelaczac sie miedzy klatwa Slepoty, Wyciszenia i Gluchoty.</string>
+  <string name="ExtensionRoleVoodooMasterWikiDescription">Szaman Voodoo to rola Impostor Support, ktora moze rzucac klatwy voodoo na graczy. Masz przycisk Laleczki Voodoo oraz przycisk Zmiany Klatwy. Wybierz klatwe, a nastepnie uzyj Laleczki na graczu, aby ja aktywowac. Slepota aktywuje sie od razu podczas rundy. Wyciszenie i Gluchota aktywuja sie na poczatku najblizszego spotkania i trwaja do jego konca.</string>
+  <string name="ExtensionRoleVoodooMasterCast">Laleczka Voodoo</string>
+  <string name="ExtensionRoleVoodooMasterCastWikiDescription">Przeklnij gracza wybranym efektem voodoo.</string>
+  <string name="ExtensionRoleVoodooMasterCycle">Zmien Klatwe</string>
+  <string name="ExtensionRoleVoodooMasterCycleWikiDescription">Przelaczaj miedzy klatwa Slepoty, Wyciszenia i Gluchoty.</string>
+  <string name="ExtensionOptionVoodooMasterCooldown">Czas odnowienia Laleczki</string>
+  <string name="ExtensionOptionVoodooMasterBlindDuration">Czas trwania Slepoty</string>
+  <string name="ExtensionOptionVoodooMasterCanVent">Moze korzystac z wentylacji</string>
+  <string name="ExtensionVoodooEffectBlindness">Slepota</string>
+  <string name="ExtensionVoodooEffectMute">Wyciszenie</string>
+  <string name="ExtensionVoodooEffectDeafness">Gluchota</string>
+
   <!-- Witch Role -->
   <string name="ExtensionRoleWitch">Witch</string>
   <string name="ExtensionRoleWitchIntroBlurb">Rzucaj klatwy, ktore zabijaja po spotkaniu.</string>
@@ -1232,5 +1248,71 @@ Jesli skonfigurowano <b>Neutralnych na wybor</b>, mozna scisle ograniczyc liczbe
   <string name="GaslighterWinMode_LastStanding">Ostatni ocalały</string>
   <string name="GaslighterWinMode_AliveAtEnd">Żywy na końcu</string>
   <string name="ExtensionOptionGaslighterCanVent">Może używać wentów</string>
+
+  <!-- Joker Role -->
+  <string name="ExtensionRoleJoker">Joker</string>
+  <string name="ExtensionRoleJokerIntroBlurb">Rozstawiaj klony graczy, aby sprowokować zabójców do ich zabicia!</string>
+  <string name="ExtensionRoleJokerTabDescription">Użyj przycisku Postaw Klona, aby stworzyć nieruchomego klona wybranego gracza. Jeśli zabójcy zaatakują twoje klony odpowiednią ilość razy, wygrywasz!</string>
+  <string name="ExtensionRoleJokerWikiDescription">Joker to rola Neutral Evil. Może postawić nieruchomego klona dowolnego gracza na mapie. Jeśli postacie zabijające spróbują zaatakować klona, zostaną oszukane (ich przycisk zabójstwa wejdzie w stan odnowienia bez ranienia nikogo), a Joker przybliży się do zwycięstwa. W zależności od ustawień, Joker wygrywa natychmiast (Wygrana Solo) lub staje się duchem i wygrywa z wygraną frakcją.</string>
+  <string name="ExtensionRoleJokerPlaceCloneWiki">Postaw Klona</string>
+  <string name="ExtensionRoleJokerPlaceCloneWikiDescription">Postaw klona wybranego gracza na mapie. Jeśli zabójcy zniszczą klona, przybliża Cię to do wygranej.</string>
+  <string name="ExtensionRoleJokerFooledNotif">Dałeś się nabrać!</string>
+  <string name="ExtensionRoleJokerCloneKilledNotif">Klon zniszczony!</string>
+  <string name="ExtensionOptionJokerKillsToWin">Klony do zabicia</string>
+  <string name="ExtensionOptionJokerCloneCooldown">Cooldown klonów</string>
+  <string name="ExtensionOptionJokerCloneSpeed">Prędkość klona</string>
+  <string name="ExtensionOptionJokerWinMode">Tryb wygranej</string>
+  <string name="JokerWinOptionsSoloWin">Wygrana Solo</string>
+  <string name="JokerWinOptionsWinWithWinners">Wygrana z wygranymi</string>
+  <string name="ExtensionJokerWins">Wygrywa</string>
+
+  <!-- Grim Reaper Role -->
+  <string name="ExtensionRoleGrimReaper">Grim Reaper</string>
+  <string name="ExtensionRoleGrimReaperIntroBlurb">Oznaczaj graczy i zbieraj ich dusze po śmierci, aby wygrać!</string>
+  <string name="ExtensionRoleGrimReaperTabDescription">Użyj przycisku Oznacz (Reap), aby oznaczyć żywych graczy. Gdy oznaczony gracz umrze, pojawi się jego dusza. Zbierz odpowiednią liczbę dusz przyciskiem Zbierz (Collect), aby wygrać.</string>
+  <string name="ExtensionRoleGrimReaperWikiDescription">Grim Reaper to rola Neutral Evil. Posiada dwie umiejętności: Oznacz (Reap) i Zbierz (Collect). Oznacz żywego gracza. Kiedy oznaczony gracz umrze, na jego ciele pojawi się dusza. Zbierz ją za pomocą przycisku Zbierz. Zbieranie odpowiedniej liczby dusz daje zwycięstwo.</string>
+  <string name="ExtensionRoleGrimReaperReap">Oznacz</string>
+  <string name="ExtensionRoleGrimReaperReapWikiDescription">Oznacz żyjącego gracza. Kiedy umrze, zostawi po sobie duszę do zebrania.</string>
+  <string name="ExtensionRoleGrimReaperCollect">Zbierz</string>
+  <string name="ExtensionRoleGrimReaperCollectWikiDescription">Zbierz duszę oznaczonego zmarłego gracza znajdującą się w pobliżu.</string>
+  
+  <string name="ExtensionOptionGrimReaperSoulsToWin">Dusze wymagane do wygranej</string>
+  <string name="ExtensionOptionGrimReaperSoulsDisappearOnMeeting">Dusze znikają podczas spotkania</string>
+  <string name="ExtensionOptionGrimReaperSoulDurationRounds">Czas trwania duszy (Rundy)</string>
+  <string name="ExtensionOptionGrimReaperWinMode">Tryb wygranej</string>
+  <string name="ExtensionOptionGrimReaperWinModeSolo">Grim Reaper Wygrywa (Solo)</string>
+  <string name="ExtensionOptionGrimReaperWinModeWithWinners">Wygraj z wygrywającą frakcją</string>
+  <string name="ExtensionOptionGrimReaperReapRange">Zasięg oznaczenia/zbierania</string>
+  <string name="ExtensionOptionGrimReaperReapCooldown">Cooldown oznaczenia/zbierania</string>
+  <string name="ExtensionOptionGrimReaperCanVent">Może korzystać z wentylacji</string>
+  
+  <string name="ExtensionGrimReaperCompletedObjective">zebrał wystarczająco dużo dusz!</string>
+  <string name="ExtensionGrimReaperWins">Wygrywa</string>
+
+  <!-- Baker / Famine Roles -->
+  <string name="ExtensionRoleBaker">Piekarz</string>
+  <string name="ExtensionRoleBakerIntroBlurb">Rozdawaj chleb innym graczom. Przemień się w Głód.</string>
+  <string name="ExtensionRoleBakerTabDescription">Rozdawaj chleb graczom. Gdy wystarczająco wielu graczy dostanie chleb, automatycznie przemienisz się w Głód.</string>
+  <string name="ExtensionRoleBakerWikiDescription">Rozdawaj chleb graczom. Gdy wystarczająco wielu graczy dostanie chleb, automatycznie przemienisz się w Głód.</string>
+  <string name="ExtensionRoleBakerGive">Daj</string>
+  <string name="ExtensionRoleBakerGiveWikiDescription">Daj chleb graczowi.</string>
+  <string name="ExtensionBakerWins">Wygrana Piekarza</string>
+
+  <string name="ExtensionRoleFamine">Głód</string>
+  <string name="ExtensionRoleFamineIntroBlurb">Oznaczaj graczy, by zagłodzić ich na śmierć na następnym spotkaniu. Nie możesz zostać zabity.</string>
+  <string name="ExtensionRoleFamineTabDescription">Oznaczaj graczy przyciskiem głodzenia. Umrą z głodu na początku następnego spotkania. Jesteś odporny na normalne zabójstwa.</string>
+  <string name="ExtensionRoleFamineWikiDescription">Oznaczaj graczy przyciskiem głodzenia. Umrą z głodu na początku następnego spotkania. Jesteś odporny na normalne zabójstwa.</string>
+  <string name="ExtensionRoleFamineStarve">Zagłodź</string>
+  <string name="ExtensionRoleFamineStarveWikiDescription">Oznacz gracza, by zagłodzić go przy następnym spotkaniu.</string>
+  <string name="ExtensionFamineWins">Wygrana Głodu</string>
+
+  <string name="DiedToStarved">Zagłodzony</string>
+  <string name="DiedToFamine">Zagłodzony</string>
+
+  <string name="ExtensionOptionBakerBreadNeeded">Chleb wymagany do transformacji</string>
+  <string name="ExtensionOptionBakerGiveCooldown">Cooldown przycisku Daj</string>
+  <string name="ExtensionOptionBakerStarveCooldown">Cooldown przycisku Zagłodź</string>
+  <string name="ExtensionOptionBakerCanVent">Może wchodzić do wentylacji</string>
+  <string name="ExtensionOptionBakerAnnounceFamine">Ogłoś transformację w Głód</string>
 </resources>
 

@@ -389,6 +389,22 @@
   <string name="ExtensionOptionOutlawDoubleKillWindow">Bonus Kill Window</string>
   <string name="ExtensionOptionOutlawBonusKills">Bonus Kills</string>
 
+  <!-- Voodoo Master Role -->
+  <string name="ExtensionRoleVoodooMaster">Voodoo Master</string>
+  <string name="ExtensionRoleVoodooMasterIntroBlurb">Use your Voodoo Doll to curse players.</string>
+  <string name="ExtensionRoleVoodooMasterTabDescription">Create Voodoo Dolls of players during rounds.\%nl\%You can cycle between Blindness, Mute, and Deafness curses.</string>
+  <string name="ExtensionRoleVoodooMasterWikiDescription">The Voodoo Master is an Impostor Support role who can cast voodoo curses on players. You have a Voodoo Doll button and a Cycle button. Select a curse, then click the Voodoo Doll on a player to apply it. Blindness applies immediately. Mute and Deafness apply at the next meeting and last for its duration.</string>
+  <string name="ExtensionRoleVoodooMasterCast">Voodoo Doll</string>
+  <string name="ExtensionRoleVoodooMasterCastWikiDescription">Curse a player with the selected voodoo effect.</string>
+  <string name="ExtensionRoleVoodooMasterCycle">Cycle Curse</string>
+  <string name="ExtensionRoleVoodooMasterCycleWikiDescription">Cycle between Blindness, Mute, and Deafness curses.</string>
+  <string name="ExtensionOptionVoodooMasterCooldown">Voodoo Doll Cooldown</string>
+  <string name="ExtensionOptionVoodooMasterBlindDuration">Blindness Duration</string>
+  <string name="ExtensionOptionVoodooMasterCanVent">Can Vent</string>
+  <string name="ExtensionVoodooEffectBlindness">Blindness</string>
+  <string name="ExtensionVoodooEffectMute">Mute</string>
+  <string name="ExtensionVoodooEffectDeafness">Deafness</string>
+
   <!-- Witch Role -->
   <string name="ExtensionRoleWitch">Witch</string>
   <string name="ExtensionRoleWitchIntroBlurb">Cast curses that kill players after meetings.</string>
@@ -1310,6 +1326,32 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
 
   <string name="DiedToGaslighted">Gaslighted</string>
 
+  <!-- Baker / Famine Roles -->
+  <string name="ExtensionRoleBaker">Baker</string>
+  <string name="ExtensionRoleBakerIntroBlurb">Give bread to others. Transform into Famine.</string>
+  <string name="ExtensionRoleBakerTabDescription">Give bread to players. Once enough players have bread, you will transform into Famine.</string>
+  <string name="ExtensionRoleBakerWikiDescription">Give bread to players. Once enough players have bread, you will transform into Famine.</string>
+  <string name="ExtensionRoleBakerGive">Give</string>
+  <string name="ExtensionRoleBakerGiveWikiDescription">Give bread to a player.</string>
+  <string name="ExtensionBakerWins">Baker Wins</string>
+
+  <string name="ExtensionRoleFamine">Famine</string>
+  <string name="ExtensionRoleFamineIntroBlurb">Mark players to starve them to death at the next meeting. You cannot be killed.</string>
+  <string name="ExtensionRoleFamineTabDescription">Mark players using the Starve button. They will starve at the start of the next meeting. You are immune to normal kills.</string>
+  <string name="ExtensionRoleFamineWikiDescription">Mark players using the Starve button. They will starve at the start of the next meeting. You are immune to normal kills.</string>
+  <string name="ExtensionRoleFamineStarve">Starve</string>
+  <string name="ExtensionRoleFamineStarveWikiDescription">Mark a player to starve at the next meeting.</string>
+  <string name="ExtensionFamineWins">Famine Wins</string>
+
+  <string name="DiedToStarved">Starved</string>
+  <string name="DiedToFamine">Starved</string>
+
+  <string name="ExtensionOptionBakerBreadNeeded">Bread Needed for Famine</string>
+  <string name="ExtensionOptionBakerGiveCooldown">Give Cooldown</string>
+  <string name="ExtensionOptionBakerStarveCooldown">Starve Cooldown</string>
+  <string name="ExtensionOptionBakerCanVent">Can Vent</string>
+  <string name="ExtensionOptionBakerAnnounceFamine">Announce Famine Transformation</string>
+
   <string name="ExtensionRoleDumperDrag">Drag/Dump</string>
   <string name="ExtensionRoleDumperDragWikiDescription">Drag a dead body and dump it elsewhere to hide the crime scene. Moving a body makes you slower.</string>
   <string name="ExtensionRoleDumperTake">Store</string>
@@ -1572,4 +1614,59 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionModifierInsaneWikiDescription">Insane is a universal passive modifier that can be assigned to any player. When active, it scrambles, reverses, or interferes with the information provided by the player's role.</string>
   <string name="ExtensionModifierInsaneAmount">Insane Count</string>
   <string name="ExtensionModifierInsaneChance">Insane Chance</string>
+
+  <!-- Inverter Role -->
+  <string name="ExtensionRoleInverter">Inverter</string>
+  <string name="ExtensionRoleInverterIntroBlurb">Disorient your targets to flip their view and controls!</string>
+  <string name="ExtensionRoleInverterTabDescription">Inverter is an Impostor Support role. You have a special Disorient button that you can use to choose a target and flip their screen upside-down and invert their controls!</string>
+  <string name="ExtensionRoleInverterWikiDescription">Inverter is an Impostor Support role that can choose a target to disorient. When disoriented, the target's screen is flipped upside-down, and their movement controls are completely inverted.</string>
+  <string name="ExtensionRoleInverterDisorient">Disorient</string>
+  <string name="ExtensionRoleInverterDisorientWikiDescription">Disorient a player, flipping their screen upside-down and inverting their movement controls.</string>
+  
+  <string name="ExtensionOptionInverterDisorientCooldown">Disorient Cooldown</string>
+  <string name="ExtensionOptionInverterDisorientDuration">Disorient Duration</string>
+  <string name="ExtensionOptionInverterCanVent">Can Vent</string>
+
+  <!-- Disoriented Modifier -->
+  <string name="ExtensionModifierDisoriented">Disoriented</string>
+
+  <!-- Grim Reaper Role -->
+  <string name="ExtensionRoleGrimReaper">Grim Reaper</string>
+  <string name="ExtensionRoleGrimReaperIntroBlurb">Mark players and collect their souls after death to win!</string>
+  <string name="ExtensionRoleGrimReaperTabDescription">Use the Reap button to mark living players. When a marked player dies, their soul will spawn. Collect the required number of souls using the Collect button to win.</string>
+  <string name="ExtensionRoleGrimReaperWikiDescription">Grim Reaper is a Neutral Evil role. They have two abilities: Reap and Collect. Use Reap to mark a living player. When a marked player dies, a soul is spawned at their body. Use Collect to harvest the soul. Collecting the target number of souls grants victory.</string>
+  <string name="ExtensionRoleGrimReaperReap">Reap</string>
+  <string name="ExtensionRoleGrimReaperReapWikiDescription">Mark a living player. When they die, they will leave a collectable soul behind.</string>
+  <string name="ExtensionRoleGrimReaperCollect">Collect</string>
+  <string name="ExtensionRoleGrimReaperCollectWikiDescription">Collect a nearby soul left by a deceased marked player.</string>
+  
+  <string name="ExtensionOptionGrimReaperSoulsToWin">Souls Needed to Win</string>
+  <string name="ExtensionOptionGrimReaperSoulsDisappearOnMeeting">Souls Disappear on Meeting</string>
+  <string name="ExtensionOptionGrimReaperSoulDurationRounds">Soul Duration (Rounds)</string>
+  <string name="ExtensionOptionGrimReaperWinMode">Win Mode</string>
+  <string name="ExtensionOptionGrimReaperWinModeSolo">Grim Reaper Wins (Solo)</string>
+  <string name="ExtensionOptionGrimReaperWinModeWithWinners">Win With Winning Faction</string>
+  <string name="ExtensionOptionGrimReaperReapRange">Reap Range</string>
+  <string name="ExtensionOptionGrimReaperReapCooldown">Reap Cooldown</string>
+  <string name="ExtensionOptionGrimReaperCanVent">Can Vent</string>
+  
+  <string name="ExtensionGrimReaperCompletedObjective">has collected enough souls!</string>
+  <string name="ExtensionGrimReaperWins">Wins</string>
+
+  <!-- Joker Role -->
+  <string name="ExtensionRoleJoker">Joker</string>
+  <string name="ExtensionRoleJokerIntroBlurb">Place clones of other players to fool killers into attacking them!</string>
+  <string name="ExtensionRoleJokerTabDescription">Use your Place Clone button to spawn a static decoy of another player. If killing roles attack your clones enough times, you win!</string>
+  <string name="ExtensionRoleJokerWikiDescription">Joker is a Neutral Evil role. They can place a static decoy clone of any player on the map. If killing roles attempt to attack the clone, they are fooled (putting their ability on cooldown without hurting anyone), and the Joker gets closer to victory. Depending on the settings, the Joker wins either immediately (Solo Win) or dies and wins alongside the winning team.</string>
+  <string name="ExtensionRoleJokerPlaceCloneWiki">Place Clone</string>
+  <string name="ExtensionRoleJokerPlaceCloneWikiDescription">Place a clone of a player on the map. If killing roles kill enough clones, you win!</string>
+  <string name="ExtensionRoleJokerFooledNotif">You've been fooled!</string>
+  <string name="ExtensionRoleJokerCloneKilledNotif">Clone killed!</string>
+  <string name="ExtensionOptionJokerKillsToWin">Clones to Kill</string>
+  <string name="ExtensionOptionJokerCloneCooldown">Clone Cooldown</string>
+  <string name="ExtensionOptionJokerCloneSpeed">Clone SpeedModifier</string>
+  <string name="ExtensionOptionJokerWinMode">Win Mode</string>
+  <string name="JokerWinOptionsSoloWin">Solo Win</string>
+  <string name="JokerWinOptionsWinWithWinners">Win with Winners</string>
+  <string name="ExtensionJokerWins">Wins</string>
 </resources>

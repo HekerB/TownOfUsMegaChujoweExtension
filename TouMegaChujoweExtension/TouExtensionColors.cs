@@ -35,6 +35,9 @@ public static class TouExtensionColors
     public static Color Icenberg => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(173, 216, 230, 255);
     public static Color Poltergeist => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(102, 41, 97, 255);
 	public static Color Gaslighter => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(238, 232, 170, 255);
+	public static Color GrimReaper => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(110, 110, 110, 255);
+	public static Color Baker => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(222, 184, 135, 255);
+	public static Color Famine => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(110, 80, 45, 255);
 	
     //impostors
     public static Color Witch => Palette.ImpostorRed;
@@ -54,6 +57,7 @@ public static class TouExtensionColors
     public static Color Tomahawk => Palette.ImpostorRed;
 	public static Color BodySwapper => Palette.ImpostorRed;
     public static Color Boot => Palette.ImpostorRed;
+    public static Color Inverter => Palette.ImpostorRed;
     public static Color Innocent => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(255, 141, 168, 255);
 
     // Modifiers

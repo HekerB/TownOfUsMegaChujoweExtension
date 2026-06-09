@@ -127,5 +127,12 @@ public enum ExtensionRpc : uint
     QuarrySwap = 144,
     QuarrySeekTimeout = 145,
     QuarryKilledByTarget = 146,
-    BootTeleportBody = 147
+    BootTeleportBody = 147,
+    InverterDisorient = 148,
+    GrimReaperReap = 149,
+    GrimReaperMark = 150,
+    BakerGiveBread = 151,
+    BakerTransformToFamine = 152,
+    FamineStarve = 153,
+    VoodooDollCast = 154
 }

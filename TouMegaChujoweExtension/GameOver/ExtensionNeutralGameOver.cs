@@ -43,6 +43,12 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
             _winText = $"{TouLocale.Get("ExtensionRoleBountyHunter", "Bounty Hunter")} {TouLocale.Get("ExtensionBountyHunterWins", "Wins")}";
         else if (role is GaslighterRole)
             _winText = TouLocale.Get("ExtensionGaslighterWin", "Gaslighter wins");
+        else if (role is GrimReaperRole)
+            _winText = $"{TouLocale.Get("ExtensionRoleGrimReaper", "Grim Reaper")} {TouLocale.Get("ExtensionGrimReaperWins", "Wins")}";
+        else if (role is BakerRole)
+            _winText = $"{TouLocale.Get("ExtensionRoleBaker", "Baker")} {TouLocale.Get("ExtensionBakerWins", "Wins")}";
+        else if (role is FamineRole)
+            _winText = $"{TouLocale.Get("ExtensionRoleFamine", "Famine")} {TouLocale.Get("ExtensionFamineWins", "Wins")}";
 
         else
             _winText = TouLocale.GetParsed("ExtensionNeutralWinsFormat", "{0} Wins").Replace("{0}", role.GetRoleName());

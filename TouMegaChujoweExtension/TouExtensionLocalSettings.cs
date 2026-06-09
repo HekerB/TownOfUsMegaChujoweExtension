@@ -16,6 +16,9 @@ public class TouExtensionLocalSettings : LocalSettingsTab
         UsePolishLanguage = config.Bind("Localization", "UsePolishLanguage", false);
 
         UsePolishLanguage.SettingChanged += (s, e) => Modules.ExtensionLocale.SearchInternalLocale();
+
+        JokerPiPLocation = config.Bind("Joker", "JokerPiPLocation", TouMegaChujoweExtension.JokerPiPLocation.BottomRight);
+        JokerPiPSize = config.Bind("Joker", "JokerPiPSize", TouMegaChujoweExtension.JokerPiPSize.Normal);
     }
 
     public override string TabName => "ToU: Chujowe";
@@ -58,6 +61,43 @@ public class TouExtensionLocalSettings : LocalSettingsTab
 
     [LocalizedLocalToggleSetting("ExtensionLocalSettingUsePolishLanguage")]
     public ConfigEntry<bool> UsePolishLanguage { get; private set; }
+
+    [LocalizedLocalEnumSetting(names: new[]
+    {
+        "PiPLocationTopLeft", "PiPLocationMiddleLeft", "PiPLocationBottomLeft",
+        "PiPLocationTopRight", "PiPLocationMiddleRight", "PiPLocationBottomRight",
+        "PiPLocationDynamic"
+    })]
+    public ConfigEntry<JokerPiPLocation> JokerPiPLocation { get; private set; }
+
+    [LocalizedLocalEnumSetting(names: new[]
+    {
+        "PiPSizeNormal", "PiPSizeSmall", "PiPSizeLarge"
+    })]
+    public ConfigEntry<JokerPiPSize> JokerPiPSize { get; private set; }
+
+    public override void OnOptionChanged(ConfigEntryBase configEntry)
+    {
+        base.OnOptionChanged(configEntry);
+    }
+}
+
+public enum JokerPiPLocation
+{
+    TopLeft,
+    MiddleLeft,
+    BottomLeft,
+    TopRight,
+    MiddleRight,
+    BottomRight,
+    Dynamic
+}
+
+public enum JokerPiPSize
+{
+    Small,
+    Normal,
+    Large
 }
 
 

@@ -27,5 +27,6 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> LanternSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Lantern.png");
         public static LoadableAsset<Sprite> BrokenLanternSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.BrokenLantern.png");
         public static LoadableAsset<Sprite> AxeSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Axe_Sprite.png");
+        public static LoadableAsset<Sprite> ReaperSoulSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.GrimReaper_Soul.png", 200f);
     }
 }
