@@ -1,7 +1,11 @@
+using System;
+using System.Linq;
 using System.Text;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using MiraAPI.GameOptions.OptionTypes;
 using TMPro;
+using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Options;
 using TownOfUs;
 using TownOfUs.Modules.Localization;
@@ -14,11 +18,20 @@ namespace TouMegaChujoweExtension.Patches.Draft;
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
 public static class DraftRoleListHudPatch
 {
+    private const string DraftModeTitleColor = "#FF9999";
+    private const string DraftEnabledColor = "#00FF00";
+    private const string DraftDisabledColor = "#FF2222";
+
+    private const string TitleColor = "#FFD700";
+    private const string CrewColor = "#8CFFFF";
+    private const string ImpColor = "#FF4444";
+    private const string NeutralColor = "#B8B8B8";
+
     [HarmonyPriority(Priority.Last)]
     [HarmonyPostfix]
     public static void HudManagerUpdatePostfix()
     {
-        if (!DraftSystem.IsEnabled || !LobbyBehaviour.Instance)
+        if (!LobbyBehaviour.Instance)
         {
             return;
         }
@@ -31,46 +44,113 @@ public static class DraftRoleListHudPatch
         var text = HudManagerPatches.RoleListTextComp;
         text.alignment = TextAlignmentOptions.TopLeft;
         text.verticalAlignment = VerticalAlignmentOptions.Top;
-        text.fontSize = text.fontSizeMin = text.fontSizeMax = 3f;
-        text.text = BuildDraftRoleListText();
+        text.fontSize = text.fontSizeMin = text.fontSizeMax = GetHudFontSize();
 
+        if (!DraftSystem.IsEnabled)
+        {
+            PrefixDraftStatusToMiraText(text);
+            HudManagerPatches.RoleList.SetActive(true);
+            return;
+        }
+
+        text.text = BuildDraftHudText();
         HudManagerPatches.RoleList.SetActive(true);
     }
 
-    private static string BuildDraftRoleListText()
+    private static float GetHudFontSize()
+    {
+        if (!DraftSystem.IsEnabled)
+        {
+            return 3f;
+        }
+
+        var poolMode = OptionGroupSingleton<DraftModeOptions>.Instance.PoolMode.Value;
+        return poolMode == DraftPoolMode.MinMax ? 2.75f : 3f;
+    }
+
+    private static void PrefixDraftStatusToMiraText(TMP_Text text)
+    {
+        var miraText = RemoveDraftStatusPrefix(text.text);
+        text.text = BuildDraftStatusLine(false) + miraText;
+    }
+
+    private static string RemoveDraftStatusPrefix(string? text)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            return string.Empty;
+        }
+
+        if (!text.Contains("<b>Draft Mode:</b>"))
+        {
+            return text;
+        }
+
+        var firstLineEnd = text.IndexOf('\n');
+        return firstLineEnd < 0 ? string.Empty : text[(firstLineEnd + 1)..];
+    }
+
+    private static string BuildDraftHudText()
     {
         var builder = new StringBuilder();
-        var options = OptionGroupSingleton<DraftModeOptions>.Instance;
 
-        builder.Append("<color=#FFD700>");
-        builder.Append(options.PoolMode.Value == DraftPoolMode.OldDraft
-            ? TouLocale.Get("ExtensionOldDraftRoleListTitle", "Old Draft Mode")
-            : TouLocale.Get("ExtensionDraftRoleListTitle", "Draft Mode"));
-        builder.Append(":</color>\n");
+        builder.Append(BuildDraftStatusLine(true));
+        AppendDraftContent(builder);
 
-        if (options.PoolMode.Value == DraftPoolMode.MinMax)
-        {
-            AppendMinMaxPreview(builder, options);
-            return builder.ToString();
-        }
-
-        if (options.PoolMode.Value == DraftPoolMode.RoleList)
-        {
-            AppendRoleListPreview(builder, options);
-            return builder.ToString();
-        }
-
-        AppendOldDraftSettingsPreview(builder);
         return builder.ToString();
+    }
+
+    private static string BuildDraftStatusLine(bool enabled)
+    {
+        return enabled
+            ? $"<color={DraftModeTitleColor}><b>Draft Mode:</b></color> <color={DraftEnabledColor}><b>Enabled</b></color>\n"
+            : $"<color={DraftModeTitleColor}><b>Draft Mode:</b></color> <color={DraftDisabledColor}><b>Disabled</b></color>\n";
+    }
+
+    private static void AppendDraftContent(StringBuilder builder)
+    {
+        var options = OptionGroupSingleton<DraftModeOptions>.Instance;
+        var poolMode = options.PoolMode.Value;
+
+        if (poolMode == DraftPoolMode.RoleList)
+        {
+            var slots = GetRoleListSlots(OptionGroupSingleton<DraftRoleListSettingsOptions>.Instance);
+            var slotCount = GetVisibleRoleListSlotCount(slots);
+
+            AppendTitle(builder, $"{TouLocale.Get("ExtensionRoleListTitle", "Set Role List")} ({slotCount}/{GetLobbyCapacity()})");
+            AppendRoleListPreview(builder, slots, slotCount);
+            return;
+        }
+
+        if (poolMode == DraftPoolMode.MinMax)
+        {
+            AppendTitle(builder, TouLocale.Get("ExtensionFactionListTitle", "Faction List"));
+            AppendMinMaxPreview(builder);
+            return;
+        }
+
+        AppendTitle(builder, TouLocale.Get("ExtensionOldDraftSettingsTitle", "Draft Mode Settings (Old)"));
+        AppendOldDraftSettingsPreview(builder);
+    }
+
+    private static void AppendTitle(StringBuilder builder, string title)
+    {
+        builder.Append("<color=");
+        builder.Append(TitleColor);
+        builder.Append("><b>");
+        builder.Append(title);
+        builder.AppendLine(":</b></color>");
     }
 
     private static void AppendOldDraftSettingsPreview(StringBuilder builder)
     {
         var options = OptionGroupSingleton<DraftOldSettingsOptions>.Instance;
         var neutralColor = ColorUtility.ToHtmlStringRGB(TownOfUsColors.Neutral);
+
         builder.Append("<color=#");
         builder.Append(neutralColor);
-        builder.Append(">Neutral</color> Other <color=#FFD700>Min</color> ");
+        builder.Append(">Neutral</color> Other ");
+        builder.Append("<color=#FFD700>Min</color> ");
         builder.Append(Mathf.RoundToInt(options.MinOtherNeutrals.Value));
         builder.Append(" <color=#FFD700>Max</color> ");
         builder.Append(Mathf.RoundToInt(options.MaxOtherNeutrals.Value));
@@ -78,44 +158,151 @@ public static class DraftRoleListHudPatch
 
         builder.Append("<color=#");
         builder.Append(neutralColor);
-        builder.Append(">Neutral</color> Killing <color=#FFD700>Min</color> ");
+        builder.Append(">Neutral</color> Killing ");
+        builder.Append("<color=#FFD700>Min</color> ");
         builder.Append(Mathf.RoundToInt(options.MinNeutralKilling.Value));
         builder.Append(" <color=#FFD700>Max</color> ");
         builder.Append(Mathf.RoundToInt(options.MaxNeutralKilling.Value));
         builder.AppendLine();
     }
 
-    private static void AppendMinMaxPreview(StringBuilder builder, DraftModeOptions _)
+    private static void AppendMinMaxPreview(StringBuilder builder)
     {
         var crewOptions = OptionGroupSingleton<DraftCrewmateSettingsOptions>.Instance;
         var impOptions = OptionGroupSingleton<DraftImpostorSettingsOptions>.Instance;
         var neutralOptions = OptionGroupSingleton<DraftNeutralSettingsOptions>.Instance;
 
-        AppendPreviewHeader(builder, "#8CFFFF", "CREWMATE SETTINGS");
-        AppendPreviewLine(builder, "#8CFFFF", "Total Crew", GetTotal(
-            crewOptions.MaxCrewInvestigative, crewOptions.MaxCrewKilling, crewOptions.MaxCrewPower,
-            crewOptions.MaxCrewProtective, crewOptions.MaxCrewSupport));
-        AppendPreviewLine(builder, "#8CFFFF", "Investigative", crewOptions.MaxCrewInvestigative.Value);
-        AppendPreviewLine(builder, "#8CFFFF", "Crew Killing", crewOptions.MaxCrewKilling.Value);
-        AppendPreviewLine(builder, "#8CFFFF", "Crew Power", crewOptions.MaxCrewPower.Value);
-        AppendPreviewLine(builder, "#8CFFFF", "Protective", crewOptions.MaxCrewProtective.Value);
-        AppendPreviewLine(builder, "#8CFFFF", "Crew Support", crewOptions.MaxCrewSupport.Value);
+        AppendSectionHeader(builder, CrewColor, "CREW");
+        AppendColoredLine(builder, CrewColor, $"Total: {Round(GetTotal(
+            crewOptions.MaxCrewInvestigative,
+            crewOptions.MaxCrewKilling,
+            crewOptions.MaxCrewPower,
+            crewOptions.MaxCrewProtective,
+            crewOptions.MaxCrewSupport))}");
+        AppendColoredLine(builder, CrewColor,
+            $"Inv {Round(crewOptions.MaxCrewInvestigative.Value)}  Kill {Round(crewOptions.MaxCrewKilling.Value)}");
+        AppendColoredLine(builder, CrewColor,
+            $"Power {Round(crewOptions.MaxCrewPower.Value)}  Prot {Round(crewOptions.MaxCrewProtective.Value)}  Sup {Round(crewOptions.MaxCrewSupport.Value)}");
 
         builder.AppendLine();
-        AppendPreviewHeader(builder, "#FF5555", "IMPOSTOR SETTINGS");
-        AppendPreviewLine(builder, "#FF5555", "Total Impostors", impOptions.MaxImpostorsTotal.Value);
-        AppendPreviewLine(builder, "#FF1919", "Imp Concealing", impOptions.MaxImpConcealing.Value);
-        AppendPreviewLine(builder, "#FF1919", "Imp Killing", impOptions.MaxImpKilling.Value);
-        AppendPreviewLine(builder, "#FF1919", "Imp Power", impOptions.MaxImpPower.Value);
-        AppendPreviewLine(builder, "#FF1919", "Imp Support", impOptions.MaxImpSupport.Value);
+
+        AppendSectionHeader(builder, ImpColor, "IMPS");
+        AppendColoredLine(builder, ImpColor, $"Total: {Round(impOptions.MaxImpostorsTotal.Value)}");
+        AppendColoredLine(builder, ImpColor,
+            $"Conceal {Round(impOptions.MaxImpConcealing.Value)}  Kill {Round(impOptions.MaxImpKilling.Value)}");
+        AppendColoredLine(builder, ImpColor,
+            $"Power {Round(impOptions.MaxImpPower.Value)}  Sup {Round(impOptions.MaxImpSupport.Value)}");
 
         builder.AppendLine();
-        AppendPreviewHeader(builder, "#A0A0A0", "NEUTRAL SETTINGS");
-        AppendPreviewLine(builder, "#A0A0A0", "Total Neutral", neutralOptions.MaxNeutralTotal.Value);
-        AppendPreviewLine(builder, "#A0A0A0", "Benign", neutralOptions.MaxNeutralBenign.Value);
-        AppendPreviewLine(builder, "#A0A0A0", "Evil", neutralOptions.MaxNeutralEvil.Value);
-        AppendPreviewLine(builder, "#A0A0A0", "Neutral Killing", neutralOptions.MaxNeutralKillingRoles.Value);
-        AppendPreviewLine(builder, "#A0A0A0", "Outlier", neutralOptions.MaxNeutralOutlier.Value);
+
+        AppendSectionHeader(builder, NeutralColor, "NEUTRALS");
+        AppendColoredLine(builder, NeutralColor, $"Total: {Round(neutralOptions.MaxNeutralTotal.Value)}");
+        AppendColoredLine(builder, NeutralColor,
+            $"Benign {Round(neutralOptions.MaxNeutralBenign.Value)}  Evil {Round(neutralOptions.MaxNeutralEvil.Value)}");
+        AppendColoredLine(builder, NeutralColor,
+            $"Killing {Round(neutralOptions.MaxNeutralKillingRoles.Value)}  Outlier {Round(neutralOptions.MaxNeutralOutlier.Value)}");
+    }
+
+    private static void AppendSectionHeader(StringBuilder builder, string color, string label)
+    {
+        builder.Append("<color=");
+        builder.Append(color);
+        builder.Append("><b>");
+        builder.Append(label);
+        builder.AppendLine("</b></color>");
+    }
+
+    private static void AppendColoredLine(StringBuilder builder, string color, string line)
+    {
+        builder.Append("<color=");
+        builder.Append(color);
+        builder.Append(">");
+        builder.Append(line);
+        builder.AppendLine("</color>");
+    }
+
+    private static void AppendRoleListPreview(StringBuilder builder, DraftRoleListOption[] slots, int slotCount)
+    {
+        for (var i = 0; i < slotCount; i++)
+        {
+            var slot = DraftSystem.RoleListSlotOrder.Count > i
+                ? DraftSystem.GetRoleListBucketForPickIndex(i)
+                : slots[i];
+
+            builder.Append(GetRoleForDraftSlot(slot));
+            builder.AppendLine();
+        }
+    }
+
+    private static string GetRoleForDraftSlot(DraftRoleListOption slot)
+    {
+        if (slot == DraftRoleListOption.CrewNeu)
+        {
+            return "<color=#8CFFFF>Crewmate</color> + <color=#B8B8B8>Neutral</color>";
+        }
+
+        return HudManagerPatches.GetRoleForSlot(ToTownOfUsRoleListOption(slot));
+    }
+
+    private static RoleListOption ToTownOfUsRoleListOption(DraftRoleListOption slot)
+    {
+        return slot switch
+        {
+            DraftRoleListOption.CrewInvest => RoleListOption.CrewInvest,
+            DraftRoleListOption.CrewKilling => RoleListOption.CrewKilling,
+            DraftRoleListOption.CrewProtective => RoleListOption.CrewProtective,
+            DraftRoleListOption.CrewPower => RoleListOption.CrewPower,
+            DraftRoleListOption.CrewSupport => RoleListOption.CrewSupport,
+            DraftRoleListOption.CrewCommon => RoleListOption.CrewCommon,
+            DraftRoleListOption.CrewSpecial => RoleListOption.CrewSpecial,
+            DraftRoleListOption.CrewRandom => RoleListOption.CrewRandom,
+
+            DraftRoleListOption.NeutBenign => RoleListOption.NeutBenign,
+            DraftRoleListOption.NeutEvil => RoleListOption.NeutEvil,
+            DraftRoleListOption.NeutKilling => RoleListOption.NeutKilling,
+            DraftRoleListOption.NeutOutlier => RoleListOption.NeutOutlier,
+            DraftRoleListOption.NeutCommon => RoleListOption.NeutCommon,
+            DraftRoleListOption.NeutSpecial => RoleListOption.NeutSpecial,
+            DraftRoleListOption.NeutWildcard => RoleListOption.NeutWildcard,
+            DraftRoleListOption.NeutRandom => RoleListOption.NeutRandom,
+
+            DraftRoleListOption.ImpConceal => RoleListOption.ImpConceal,
+            DraftRoleListOption.ImpKilling => RoleListOption.ImpKilling,
+            DraftRoleListOption.ImpPower => RoleListOption.ImpPower,
+            DraftRoleListOption.ImpSupport => RoleListOption.ImpSupport,
+            DraftRoleListOption.ImpCommon => RoleListOption.ImpCommon,
+            DraftRoleListOption.ImpSpecial => RoleListOption.ImpSpecial,
+            DraftRoleListOption.ImpRandom => RoleListOption.ImpRandom,
+
+            DraftRoleListOption.NonImp => RoleListOption.NonImp,
+            DraftRoleListOption.Any => RoleListOption.Any,
+            _ => RoleListOption.NonImp
+        };
+    }
+
+    private static int GetVisibleRoleListSlotCount(DraftRoleListOption[] slots)
+    {
+        return Math.Clamp(
+            DraftSystem.GetVisibleRoleListSlotCount(),
+            1,
+            slots.Length);
+    }
+
+    private static int GetLobbyCapacity()
+    {
+        try
+        {
+            return GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.MaxPlayers);
+        }
+        catch
+        {
+            return 15;
+        }
+    }
+
+    private static int Round(float value)
+    {
+        return Mathf.RoundToInt(value);
     }
 
     private static float GetTotal(params ModdedNumberOption[] options)
@@ -123,50 +310,17 @@ public static class DraftRoleListHudPatch
         return options.Sum(option => option.Value);
     }
 
-    private static void AppendPreviewHeader(StringBuilder builder, string color, string label)
-    {
-        builder.Append("<color=");
-        builder.Append(color);
-        builder.Append("><b>");
-        builder.Append(label);
-        builder.AppendLine(":</b></color>");
-    }
-
-    private static void AppendPreviewLine(StringBuilder builder, string color, string label, float value)
-    {
-        builder.Append("<color=");
-        builder.Append(color);
-        builder.Append('>');
-        builder.Append(label);
-        builder.Append(": ");
-        builder.Append(Mathf.RoundToInt(value));
-        builder.AppendLine("</color>");
-    }
-
-    private static void AppendRoleListPreview(StringBuilder builder, DraftModeOptions _)
-    {
-        var slots = GetRoleListSlots(OptionGroupSingleton<DraftRoleListSettingsOptions>.Instance);
-        var slotCount = Math.Clamp(DraftSystem.GetVisibleRoleListSlotCount(), 1, Math.Min(DraftSystem.MaxRoleListSlots, slots.Length));
-
-        for (var i = 0; i < slotCount; i++)
-        {
-            var slot = DraftSystem.RoleListSlotOrder.Count > i
-                ? DraftSystem.GetRoleListBucketForPickIndex(i)
-                : slots[i];
-            builder.Append(HudManagerPatches.GetRoleForSlot(slot));
-            builder.AppendLine();
-        }
-    }
-
-    private static RoleListOption[] GetRoleListSlots(DraftRoleListSettingsOptions options)
+    private static DraftRoleListOption[] GetRoleListSlots(DraftRoleListSettingsOptions options)
     {
         return
         [
-            options.Slot1.Value, options.Slot2.Value, options.Slot3.Value, options.Slot4.Value,
-            options.Slot5.Value, options.Slot6.Value, options.Slot7.Value, options.Slot8.Value,
-            options.Slot9.Value, options.Slot10.Value, options.Slot11.Value, options.Slot12.Value,
-            options.Slot13.Value, options.Slot14.Value, options.Slot15.Value, options.Slot16.Value,
-            options.Slot17.Value, options.Slot18.Value, options.Slot19.Value, options.Slot20.Value
+            options.Slot1.Value, options.Slot2.Value, options.Slot3.Value, options.Slot4.Value, options.Slot5.Value,
+            options.Slot6.Value, options.Slot7.Value, options.Slot8.Value, options.Slot9.Value, options.Slot10.Value,
+            options.Slot11.Value, options.Slot12.Value, options.Slot13.Value, options.Slot14.Value, options.Slot15.Value,
+            options.Slot16.Value, options.Slot17.Value, options.Slot18.Value, options.Slot19.Value, options.Slot20.Value,
+            options.Slot21.Value, options.Slot22.Value, options.Slot23.Value, options.Slot24.Value, options.Slot25.Value,
+            options.Slot26.Value, options.Slot27.Value, options.Slot28.Value, options.Slot29.Value, options.Slot30.Value,
+            options.Slot31.Value, options.Slot32.Value, options.Slot33.Value, options.Slot34.Value, options.Slot35.Value
         ];
     }
 }

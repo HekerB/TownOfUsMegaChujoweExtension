@@ -4,11 +4,11 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TouMegaChujoweExtension.Options;
 using Random = UnityEngine.Random;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using TownOfUs.Roles;
 using TownOfUs.Options;
+using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -23,9 +23,8 @@ public enum DraftFaction
 
 public static class DraftSystem
 {
-    public const int MaxRoleListSlots = 20;
+    public const int MaxRoleListSlots = 35;
 
-    // === STATE ===
     public static bool IsRunning { get; set; }
     public static bool DraftComplete { get; set; }
     public static List<byte> PickOrder { get; } = new();
@@ -40,18 +39,13 @@ public static class DraftSystem
     public static bool DraftActiveThisRound { get; set; }
     public static List<RoleBehaviour>? CurrentOfferedRoles { get; set; }
     public static RoleAlignment? SelectedAlignment { get; set; }
-    public static int TargetOtherNeutralCount { get; set; } // Global target for benign/evil/outliers
+    public static int TargetOtherNeutralCount { get; set; }
     public static bool LonerReducedImpostorSlot { get; set; }
-
-    // === FACTION ASSIGNMENTS ===
-    private static int GetSafeCount(float min, float max)
-    {
-        if (min > max || Mathf.Approximately(min, max)) return Mathf.RoundToInt(min);
-        return (Random.Range(0f, 100f) < 60f) ? Mathf.RoundToInt(min) : Mathf.RoundToInt(max);
-    }
     public static Dictionary<byte, DraftFaction> PlayerFactions { get; } = new();
 
-    // === DRAFT MODE CHECK ===
+    private static readonly Dictionary<RoleAlignment, List<RoleBehaviour>> _roleCache = new();
+    private static bool _roleCacheDirty = true;
+
     public static bool IsEnabled => Patches.Draft.DraftGameModePatch.IsDraftMode();
 
     public static float TimeToChoose
@@ -72,15 +66,38 @@ public static class DraftSystem
         }
     }
 
-    // === FACTION ASSIGNMENT ===
+    private static bool IsOldDraftMode()
+    {
+        try
+        {
+            return OptionGroupSingleton<DraftModeOptions>.Instance.PoolMode.Value == DraftPoolMode.OldDraft;
+        }
+        catch
+        {
+            return true;
+        }
+    }
+
+    private static int GetSafeCount(float min, float max)
+    {
+        if (min > max || Mathf.Approximately(min, max))
+        {
+            return Mathf.RoundToInt(min);
+        }
+
+        return Random.Range(0f, 100f) < 60f ? Mathf.RoundToInt(min) : Mathf.RoundToInt(max);
+    }
 
     public static void AssignFactions(List<byte> allPlayerIds, HashSet<byte> impostorIds)
     {
         PlayerFactions.Clear();
+
         var options = OptionGroupSingleton<DraftModeOptions>.Instance;
 
         foreach (var id in impostorIds)
+        {
             PlayerFactions[id] = DraftFaction.Impostor;
+        }
 
         var remaining = allPlayerIds.Where(id => !impostorIds.Contains(id)).ToList();
         remaining.Shuffle();
@@ -92,63 +109,54 @@ public static class DraftSystem
         }
 
         var oldOptions = OptionGroupSingleton<DraftOldSettingsOptions>.Instance;
-        int neutralKillingCount = GetSafeCount(oldOptions.MinNeutralKilling.Value, oldOptions.MaxNeutralKilling.Value);
+        var neutralKillingCount = GetSafeCount(oldOptions.MinNeutralKilling.Value, oldOptions.MaxNeutralKilling.Value);
         TargetOtherNeutralCount = GetSafeCount(oldOptions.MinOtherNeutrals.Value, oldOptions.MaxOtherNeutrals.Value);
 
         if (neutralKillingCount + TargetOtherNeutralCount > remaining.Count)
         {
-            // Adjust if we have more special roles than players
-            float ratio = (float)remaining.Count / (neutralKillingCount + TargetOtherNeutralCount);
+            var ratio = (float)remaining.Count / (neutralKillingCount + TargetOtherNeutralCount);
             neutralKillingCount = Mathf.FloorToInt(neutralKillingCount * ratio);
             TargetOtherNeutralCount = Mathf.FloorToInt(TargetOtherNeutralCount * ratio);
         }
 
-        if (neutralKillingCount > remaining.Count)
-            neutralKillingCount = remaining.Count;
+        neutralKillingCount = Mathf.Min(neutralKillingCount, remaining.Count);
 
-        int idx = 0;
-
-        // Apply Neutral Killing streak reduction
+        var idx = 0;
         var nkReductionEnabled = options.ReduceKillingStreak.Value;
         var nkBiasPercent = options.ReductionChance.Value / 100f;
         var random = new System.Random();
 
-        for (int i = 0; i < neutralKillingCount && remaining.Count > idx; i++)
+        for (var i = 0; i < neutralKillingCount && remaining.Count > idx; i++)
         {
-            int startIdx = idx;
-            int num = -1;
+            var num = -1;
 
             if (nkReductionEnabled && LastNeutralKillingIds.Count > 0)
             {
-                // Try to find someone who wasn't NK last time
                 var subPool = remaining.Skip(idx).ToList();
-                var nonRecentNK = subPool.Where(id => !LastNeutralKillingIds.Contains(id)).ToList();
+                var nonRecentNk = subPool.Where(id => !LastNeutralKillingIds.Contains(id)).ToList();
 
-                if (nonRecentNK.Count > 0 && random.NextDouble() < nkBiasPercent)
+                if (nonRecentNk.Count > 0 && random.NextDouble() < nkBiasPercent)
                 {
-                    // Pick from non-recent NKs
-                    byte chosenId = nonRecentNK[random.Next(nonRecentNK.Count)];
+                    var chosenId = nonRecentNk[random.Next(nonRecentNk.Count)];
                     num = remaining.IndexOf(chosenId);
                 }
             }
 
             if (num == -1)
             {
-                // Normal random pick from remaining pool starting at idx
                 num = random.Next(idx, remaining.Count);
             }
 
-            // Swap chosen player to the current 'idx' position so they are assigned NK
             (remaining[idx], remaining[num]) = (remaining[num], remaining[idx]);
             PlayerFactions[remaining[idx]] = DraftFaction.NeutralKilling;
             idx++;
         }
 
         for (; idx < remaining.Count; idx++)
+        {
             PlayerFactions[remaining[idx]] = DraftFaction.CrewOther;
+        }
     }
-
-    // === GET ALIGNMENTS FOR FACTION ===
 
     private static List<RoleAlignment> GetAlignmentsForFaction(DraftFaction faction)
     {
@@ -162,9 +170,11 @@ public static class DraftSystem
                 alignments.Add(RoleAlignment.ImpostorPower);
                 alignments.Add(RoleAlignment.ImpostorSupport);
                 break;
+
             case DraftFaction.NeutralKilling:
                 alignments.Add(RoleAlignment.NeutralKilling);
                 break;
+
             case DraftFaction.CrewOther:
                 alignments.Add(RoleAlignment.CrewmateInvestigative);
                 alignments.Add(RoleAlignment.CrewmateKilling);
@@ -177,10 +187,6 @@ public static class DraftSystem
         return alignments;
     }
 
-    // === ROLE POOL CACHE ===
-    private static readonly Dictionary<RoleAlignment, List<RoleBehaviour>> _roleCache = new();
-    private static bool _roleCacheDirty = true;
-
     public static void InvalidateRoleCache()
     {
         _roleCacheDirty = true;
@@ -189,21 +195,24 @@ public static class DraftSystem
 
     private static void EnsureRoleCacheBuilt()
     {
-        if (!_roleCacheDirty && _roleCache.Count > 0) return;
+        if (!_roleCacheDirty && _roleCache.Count > 0)
+        {
+            return;
+        }
+
         _roleCache.Clear();
 
         var generalOptions = OptionGroupSingleton<ExtensionGameMechanicOptions>.Instance;
-        
-        bool preventVampires = false;
-        bool preventJackal = false;
+        var preventVampires = false;
+        var preventJackal = false;
 
         if (generalOptions != null && generalOptions.PreventVampiresWithJackal)
         {
             var jackalId = (ushort)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Neutral.JackalRole>();
             var vampireId = (ushort)RoleId.Get<TownOfUs.Roles.Neutral.VampireRole>();
 
-            bool jackalPicked = AlreadyPicked.Contains(jackalId);
-            bool vampirePicked = AlreadyPicked.Contains(vampireId);
+            var jackalPicked = AlreadyPicked.Contains(jackalId);
+            var vampirePicked = AlreadyPicked.Contains(vampireId);
 
             if (jackalPicked)
             {
@@ -216,60 +225,96 @@ public static class DraftSystem
         }
 
         var allAlignments = (RoleAlignment[])Enum.GetValues(typeof(RoleAlignment));
+
         foreach (var alignment in allAlignments)
         {
             var roles = new List<RoleBehaviour>();
+
             foreach (var role in MiscUtils.GetRegisteredRoles(alignment))
             {
-                if (role.IsDead) continue;
-                if (!CustomRoleUtils.CanSpawnOnCurrentMode(role)) continue;
-                if (roles.Any(r => r.Role == role.Role)) continue;
+                if (role.IsDead)
+                {
+                    continue;
+                }
 
-                var isJackalRole = role.Role == (AmongUs.GameOptions.RoleTypes)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Neutral.JackalRole>();
-                var isVampireRole = role.Role == (AmongUs.GameOptions.RoleTypes)RoleId.Get<TownOfUs.Roles.Neutral.VampireRole>();
+                if (!CustomRoleUtils.CanSpawnOnCurrentMode(role))
+                {
+                    continue;
+                }
 
-                if (preventVampires && isVampireRole) continue;
-                if (preventJackal && isJackalRole) continue;
+                if (roles.Any(r => r.Role == role.Role))
+                {
+                    continue;
+                }
+
+                var isJackalRole = role.Role == (RoleTypes)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Neutral.JackalRole>();
+                var isVampireRole = role.Role == (RoleTypes)RoleId.Get<TownOfUs.Roles.Neutral.VampireRole>();
+
+                if (preventVampires && isVampireRole)
+                {
+                    continue;
+                }
+
+                if (preventJackal && isJackalRole)
+                {
+                    continue;
+                }
 
                 var assignData = MiscUtils.GetAssignData(role.Role);
-                if (assignData.Count <= 0 || assignData.Chance <= 0) continue;
+
+                if (assignData.Count <= 0 || assignData.Chance <= 0)
+                {
+                    continue;
+                }
 
                 roles.Add(role);
             }
+
             _roleCache[alignment] = roles;
         }
+
         _roleCacheDirty = false;
     }
 
     private static List<RoleBehaviour> GetRolesForAlignment(RoleAlignment alignment)
     {
         EnsureRoleCacheBuilt();
-        if (!_roleCache.TryGetValue(alignment, out var cached)) return new List<RoleBehaviour>();
+
+        if (!_roleCache.TryGetValue(alignment, out var cached))
+        {
+            return new List<RoleBehaviour>();
+        }
 
         return cached.Where(r =>
             !AlreadyPicked.Contains((ushort)r.Role) ||
             r.Role == RoleTypes.Crewmate ||
-            r.Role == RoleTypes.Impostor
-        ).ToList();
+            r.Role == RoleTypes.Impostor).ToList();
     }
 
     private static List<RoleBehaviour> GetRolesForAlignments(List<RoleAlignment> alignments)
     {
         var result = new List<RoleBehaviour>();
+
         foreach (var alignment in alignments)
         {
             foreach (var role in GetRolesForAlignment(alignment))
             {
-                if (result.Any(r => r.Role == role.Role)) continue;
+                if (result.Any(r => r.Role == role.Role))
+                {
+                    continue;
+                }
+
                 result.Add(role);
             }
         }
+
         return result;
     }
 
     private static bool CanCurrentPickerTakeLoner()
     {
         var myId = PlayerControl.LocalPlayer?.PlayerId;
+
         if (!myId.HasValue || LonerReducedImpostorSlot)
         {
             return false;
@@ -284,6 +329,7 @@ public static class DraftSystem
             id != myId.Value &&
             PlayerFactions.TryGetValue(id, out var pickedFaction) &&
             pickedFaction == DraftFaction.Impostor);
+
         if (previousImpostorPicked)
         {
             return false;
@@ -300,9 +346,11 @@ public static class DraftSystem
     public static int GetActiveLobbyPlayerCount()
     {
         var count = 0;
+
         foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (player?.Data == null || player.Data.Disconnected ||
+            if (player?.Data == null ||
+                player.Data.Disconnected ||
                 TownOfUs.Roles.Other.SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
             {
                 continue;
@@ -317,6 +365,7 @@ public static class DraftSystem
     public static int GetVisibleRoleListSlotCount()
     {
         var playerCount = GetActiveLobbyPlayerCount();
+
         if (playerCount <= 0 && GameData.Instance)
         {
             playerCount = GameData.Instance.PlayerCount;
@@ -335,32 +384,35 @@ public static class DraftSystem
             .ToList();
     }
 
-    private static IEnumerable<T> WeightedShuffle<T>(IEnumerable<T> items, System.Func<T, float> weightSelector)
+    private static IEnumerable<T> WeightedShuffle<T>(IEnumerable<T> items, Func<T, float> weightSelector)
     {
         var pool = items.ToList();
         var result = new List<T>();
 
         while (pool.Count > 0)
         {
-            float totalWeight = pool.Sum(weightSelector);
+            var totalWeight = pool.Sum(weightSelector);
+
             if (totalWeight <= 0)
             {
-                for (int i = pool.Count - 1; i > 0; i--)
+                for (var i = pool.Count - 1; i > 0; i--)
                 {
-                    int j = Random.Range(0, i + 1);
+                    var j = Random.Range(0, i + 1);
                     (pool[i], pool[j]) = (pool[j], pool[i]);
                 }
+
                 result.AddRange(pool);
                 break;
             }
 
-            float r = Random.Range(0f, totalWeight);
-            float current = 0f;
-            T selected = pool.First();
+            var r = Random.Range(0f, totalWeight);
+            var current = 0f;
+            var selected = pool.First();
 
             foreach (var item in pool)
             {
                 current += weightSelector(item);
+
                 if (r <= current)
                 {
                     selected = item;
@@ -378,11 +430,20 @@ public static class DraftSystem
     private static IEnumerable<RoleBehaviour> OrderRoles(IEnumerable<RoleBehaviour> roles)
     {
         bool respectChances;
-        try { respectChances = OptionGroupSingleton<DraftModeOptions>.Instance.RespectRoleChances.Value; }
-        catch { respectChances = false; }
+
+        try
+        {
+            respectChances = OptionGroupSingleton<DraftModeOptions>.Instance.RespectRoleChances.Value;
+        }
+        catch
+        {
+            respectChances = false;
+        }
 
         if (!respectChances)
+        {
             return roles.OrderBy(_ => Random.Range(0f, 1f));
+        }
 
         var roleList = roles.ToList();
         var guaranteed = new List<RoleBehaviour>();
@@ -391,10 +452,12 @@ public static class DraftSystem
 
         foreach (var r in roleList)
         {
-            int chance = (int)MiscUtils.GetAssignData(r.Role).Chance;
+            var chance = (int)MiscUtils.GetAssignData(r.Role).Chance;
 
-            // Traktujemy role bez suwaka (0%) jako 100%
-            if (chance <= 0) chance = 30;
+            if (chance <= 0)
+            {
+                chance = 30;
+            }
 
             if (chance >= 100)
             {
@@ -417,14 +480,18 @@ public static class DraftSystem
         return guaranteed.Concat(passed).Concat(failed);
     }
 
-    // === ROLE MIXING HELPERS ===
     private static int GetCurrentOtherNeutralCount()
     {
-        int count = 0;
+        var count = 0;
+
         foreach (var roleId in DraftPicks.Values)
         {
-            if (IsOtherNeutral((RoleTypes)roleId)) count++;
+            if (IsOtherNeutral((RoleTypes)roleId))
+            {
+                count++;
+            }
         }
+
         return count;
     }
 
@@ -438,6 +505,7 @@ public static class DraftSystem
     public static List<RoleBehaviour> SelectRolesToOffer(bool isImpostor)
     {
         var options = OptionGroupSingleton<DraftModeOptions>.Instance;
+
         return options.PoolMode.Value switch
         {
             DraftPoolMode.MinMax => SelectMinMaxRolesToOffer(),
@@ -452,47 +520,55 @@ public static class DraftSystem
         DraftFaction faction;
 
         if (PlayerFactions.TryGetValue(myId, out var assignedFaction))
+        {
             faction = assignedFaction;
+        }
         else if (isImpostor)
+        {
             faction = DraftFaction.Impostor;
+        }
         else
+        {
             faction = DraftFaction.CrewOther;
+        }
 
         var enabledAlignments = GetAlignmentsForFaction(faction);
-        if (enabledAlignments.Count == 0) return new List<RoleBehaviour>();
+
+        if (enabledAlignments.Count == 0)
+        {
+            return new List<RoleBehaviour>();
+        }
 
         var roleCount = RolesToShow;
 
-        // Unified Crewmate/Neutral Mix Logic
         if (faction == DraftFaction.CrewOther)
         {
             var oldOptions = OptionGroupSingleton<DraftOldSettingsOptions>.Instance;
             var crewPool = GetRolesForAlignments(enabledAlignments);
 
-            int currentNeutrals = GetCurrentOtherNeutralCount();
-            int remainingEligiblePlayers = PickOrder.Count(id => PlayerFactions.TryGetValue(id, out var f) && f == DraftFaction.CrewOther);
-            int neutralsNeeded = Mathf.Max(0, TargetOtherNeutralCount - currentNeutrals);
+            var currentNeutrals = GetCurrentOtherNeutralCount();
+            var remainingEligiblePlayers = PickOrder.Count(id => PlayerFactions.TryGetValue(id, out var f) && f == DraftFaction.CrewOther);
+            var neutralsNeeded = Mathf.Max(0, TargetOtherNeutralCount - currentNeutrals);
+            var forceNeutrals = neutralsNeeded >= remainingEligiblePlayers && remainingEligiblePlayers > 0;
+            var limitReached = currentNeutrals >= TargetOtherNeutralCount;
+            var wantedNeutrals = 0;
 
-            // Logic: Do we MUST have more neutrals to hit the target?
-            bool forceNeutrals = neutralsNeeded >= remainingEligiblePlayers && remainingEligiblePlayers > 0;
-            bool limitReached = currentNeutrals >= TargetOtherNeutralCount;
-
-            int wantedNeutrals = 0;
             if (!limitReached)
             {
                 if (forceNeutrals)
                 {
-                    wantedNeutrals = roleCount; // Force as many as possible
+                    wantedNeutrals = roleCount;
                 }
                 else
                 {
-                    // Randomly decide if this player should see neutrals to spread them out
-                    float offerChance = (float)neutralsNeeded / remainingEligiblePlayers;
-                    if (UnityEngine.Random.Range(0f, 1f) < offerChance)
+                    var offerChance = remainingEligiblePlayers <= 0 ? 0f : (float)neutralsNeeded / remainingEligiblePlayers;
+
+                    if (Random.Range(0f, 1f) < offerChance)
                     {
-                        // If selected, use the per-choice options
-                        wantedNeutrals = (UnityEngine.Random.Range(0f, 100f) < 60f) ? (int)oldOptions.MinOtherNeutralsPerChoice.Value : (int)oldOptions.MaxOtherNeutralsPerChoice.Value;
-                        // Cap by needed to avoid exceeding global target early
+                        wantedNeutrals = Random.Range(0f, 100f) < 60f
+                            ? (int)oldOptions.MinOtherNeutralsPerChoice.Value
+                            : (int)oldOptions.MaxOtherNeutralsPerChoice.Value;
+
                         wantedNeutrals = Mathf.Min(wantedNeutrals, neutralsNeeded);
                     }
                 }
@@ -501,14 +577,20 @@ public static class DraftSystem
             wantedNeutrals = Mathf.Min(wantedNeutrals, roleCount);
 
             var finalPool = new List<RoleBehaviour>();
+
             if (wantedNeutrals > 0)
             {
-                var neutralPool = new List<RoleAlignment> { RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralOutlier };
+                var neutralPool = new List<RoleAlignment>
+                {
+                    RoleAlignment.NeutralBenign,
+                    RoleAlignment.NeutralEvil,
+                    RoleAlignment.NeutralOutlier
+                };
+
                 var allNeutrals = OrderRoles(GetRolesForAlignments(neutralPool)).ToList();
                 finalPool.AddRange(allNeutrals.Take(wantedNeutrals));
             }
 
-            // Fill remaining with Crewmates (only if not forcing neutrals or if we didn't have enough neutrals)
             if (finalPool.Count < roleCount)
             {
                 finalPool.AddRange(OrderRoles(crewPool).Take(roleCount - finalPool.Count));
@@ -517,16 +599,21 @@ public static class DraftSystem
             return finalPool.OrderBy(_ => Random.Range(0f, 1f)).ToList();
         }
 
-        // Standard flow for others (Impostor, NeutralKilling)
         var allRoles = faction == DraftFaction.Impostor
             ? FilterLonerForCurrentPicker(GetRolesForAlignments(enabledAlignments))
             : GetRolesForAlignments(enabledAlignments);
-        if (allRoles.Count == 0) return new List<RoleBehaviour>();
+
+        if (allRoles.Count == 0)
+        {
+            return new List<RoleBehaviour>();
+        }
 
         SelectedAlignment = null;
 
         if (allRoles.Count <= roleCount)
+        {
             return allRoles.OrderBy(_ => Random.Range(0f, 1f)).ToList();
+        }
 
         return OrderRoles(allRoles)
             .Take(roleCount)
@@ -547,6 +634,7 @@ public static class DraftSystem
         }
 
         var pool = new List<RoleBehaviour>();
+
         foreach (var alignment in availableAlignments)
         {
             pool.AddRange(GetRolesForAlignment(alignment));
@@ -572,12 +660,14 @@ public static class DraftSystem
     {
         var bucket = GetCurrentRoleListBucket();
         var alignments = GetAlignmentsForRoleListBucket(bucket);
+
         if (alignments.Count == 0)
         {
             return new List<RoleBehaviour>();
         }
 
         var pool = GetRolesForAlignments(alignments);
+
         if (IsImpostorBucket(bucket))
         {
             pool = FilterLonerForRoleList(pool);
@@ -616,6 +706,7 @@ public static class DraftSystem
         var crewOptions = OptionGroupSingleton<DraftCrewmateSettingsOptions>.Instance;
         var impOptions = OptionGroupSingleton<DraftImpostorSettingsOptions>.Instance;
         var neutralOptions = OptionGroupSingleton<DraftNeutralSettingsOptions>.Instance;
+
         var max = alignment switch
         {
             RoleAlignment.CrewmateInvestigative => (int)crewOptions.MaxCrewInvestigative.Value,
@@ -650,9 +741,11 @@ public static class DraftSystem
     private static int CountPicked(Func<RoleAlignment, bool> predicate)
     {
         var count = 0;
+
         foreach (var roleId in DraftPicks.Values)
         {
             var role = RoleManager.Instance.GetRole((RoleTypes)roleId);
+
             if (role is ITownOfUsRole touRole && predicate(touRole.RoleAlignment))
             {
                 count++;
@@ -686,7 +779,7 @@ public static class DraftSystem
         var lonerRole = (RoleTypes)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Impostor.LonerRole>();
 
         return roles
-            .Where(role => role.Role != lonerRole || (impostorsPicked == 0 && impostorSlotsRemaining >= 2))
+            .Where(role => role.Role != lonerRole || impostorsPicked == 0 && impostorSlotsRemaining >= 2)
             .ToList();
     }
 
@@ -694,44 +787,91 @@ public static class DraftSystem
     {
         var lonerRole = (RoleTypes)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Impostor.LonerRole>();
         var previousImpostorPicked = DraftPicks.Values.Any(IsImpostorRole);
-        var futureImpostorSlots = GetFutureRoleListBuckets()
-            .Count(IsImpostorBucket);
+        var futureImpostorSlots = GetFutureRoleListBuckets().Count(IsImpostorBucket);
 
         return roles
-            .Where(role => role.Role != lonerRole || (!previousImpostorPicked && futureImpostorSlots >= 1))
+            .Where(role => role.Role != lonerRole || !previousImpostorPicked && futureImpostorSlots >= 1)
             .ToList();
     }
 
-    private static RoleListOption GetCurrentRoleListBucket()
+    private static DraftRoleListOption GetCurrentRoleListBucket()
     {
+        EnsureRoleListSlotOrder();
+
         var picker = CurrentPicker ?? PlayerControl.LocalPlayer?.PlayerId ?? byte.MaxValue;
         var slotIndex = OriginalPickOrder.IndexOf(picker);
+
         if (slotIndex < 0)
         {
-            slotIndex = Mathf.Clamp(DraftPicks.Count, 0, 19);
+            slotIndex = Mathf.Clamp(DraftPicks.Count, 0, MaxRoleListSlots - 1);
         }
 
         return GetRoleListBucketForPickIndex(slotIndex);
     }
 
-    private static IEnumerable<RoleListOption> GetFutureRoleListBuckets()
+    private static IEnumerable<DraftRoleListOption> GetFutureRoleListBuckets()
     {
+        EnsureRoleListSlotOrder();
+
         var currentPicker = CurrentPicker;
         var currentIndex = currentPicker.HasValue ? OriginalPickOrder.IndexOf(currentPicker.Value) : -1;
+
         if (currentIndex < 0)
         {
             currentIndex = DraftPicks.Count;
         }
 
-        for (var i = currentIndex + 1; i < OriginalPickOrder.Count && i < 20; i++)
+        for (var i = currentIndex + 1; i < OriginalPickOrder.Count && i < MaxRoleListSlots; i++)
         {
             yield return GetRoleListBucketForPickIndex(i);
         }
     }
 
-    public static RoleListOption GetRoleListBucketForPickIndex(int zeroBasedPickIndex)
+    private static void EnsureRoleListSlotOrder()
     {
+        var slotCount = GetRoleListSlotOrderCount();
+
+        if (slotCount <= 0)
+        {
+            return;
+        }
+
+        if (RoleListSlotOrder.Count == slotCount)
+        {
+            return;
+        }
+
+        RoleListSlotOrder.Clear();
+
+        for (var i = 0; i < slotCount; i++)
+        {
+            RoleListSlotOrder.Add(i);
+        }
+
+        RoleListSlotOrder.Shuffle();
+    }
+
+    private static int GetRoleListSlotOrderCount()
+    {
+        if (OriginalPickOrder.Count > 0)
+        {
+            return Mathf.Clamp(OriginalPickOrder.Count, 1, MaxRoleListSlots);
+        }
+
+        if (PickOrder.Count > 0)
+        {
+            return Mathf.Clamp(PickOrder.Count, 1, MaxRoleListSlots);
+        }
+
+        return GetVisibleRoleListSlotCount();
+    }
+
+    public static DraftRoleListOption GetRoleListBucketForPickIndex(int zeroBasedPickIndex)
+    {
+        EnsureRoleListSlotOrder();
+
         var slotIndex = zeroBasedPickIndex;
+
         if (zeroBasedPickIndex >= 0 && zeroBasedPickIndex < RoleListSlotOrder.Count)
         {
             slotIndex = RoleListSlotOrder[zeroBasedPickIndex];
@@ -740,9 +880,10 @@ public static class DraftSystem
         return GetRoleListBucketForSlot(slotIndex);
     }
 
-    private static RoleListOption GetRoleListBucketForSlot(int zeroBasedSlot)
+    private static DraftRoleListOption GetRoleListBucketForSlot(int zeroBasedSlot)
     {
         var options = OptionGroupSingleton<DraftRoleListSettingsOptions>.Instance;
+
         return zeroBasedSlot switch
         {
             0 => options.Slot1.Value,
@@ -765,19 +906,34 @@ public static class DraftSystem
             17 => options.Slot18.Value,
             18 => options.Slot19.Value,
             19 => options.Slot20.Value,
-            _ => RoleListOption.NonImp
+            20 => options.Slot21.Value,
+            21 => options.Slot22.Value,
+            22 => options.Slot23.Value,
+            23 => options.Slot24.Value,
+            24 => options.Slot25.Value,
+            25 => options.Slot26.Value,
+            26 => options.Slot27.Value,
+            27 => options.Slot28.Value,
+            28 => options.Slot29.Value,
+            29 => options.Slot30.Value,
+            30 => options.Slot31.Value,
+            31 => options.Slot32.Value,
+            32 => options.Slot33.Value,
+            33 => options.Slot34.Value,
+            34 => options.Slot35.Value,
+            _ => DraftRoleListOption.NonImp
         };
     }
 
-    private static bool IsImpostorBucket(RoleListOption bucket)
+    private static bool IsImpostorBucket(DraftRoleListOption bucket)
     {
-        return bucket is RoleListOption.ImpConceal or
-            RoleListOption.ImpKilling or
-            RoleListOption.ImpPower or
-            RoleListOption.ImpSupport or
-            RoleListOption.ImpCommon or
-            RoleListOption.ImpSpecial or
-            RoleListOption.ImpRandom;
+        return bucket is DraftRoleListOption.ImpConceal or
+            DraftRoleListOption.ImpKilling or
+            DraftRoleListOption.ImpPower or
+            DraftRoleListOption.ImpSupport or
+            DraftRoleListOption.ImpCommon or
+            DraftRoleListOption.ImpSpecial or
+            DraftRoleListOption.ImpRandom;
     }
 
     private static bool IsImpostorRole(ushort roleId)
@@ -797,35 +953,39 @@ public static class DraftSystem
         }
     }
 
-    private static List<RoleAlignment> GetAlignmentsForRoleListBucket(RoleListOption bucket)
+    private static List<RoleAlignment> GetAlignmentsForRoleListBucket(DraftRoleListOption bucket)
     {
         return bucket switch
         {
-            RoleListOption.CrewInvest => [RoleAlignment.CrewmateInvestigative],
-            RoleListOption.CrewKilling => [RoleAlignment.CrewmateKilling],
-            RoleListOption.CrewProtective => [RoleAlignment.CrewmateProtective],
-            RoleListOption.CrewPower => [RoleAlignment.CrewmatePower],
-            RoleListOption.CrewSupport => [RoleAlignment.CrewmateSupport],
-            RoleListOption.CrewCommon => [RoleAlignment.CrewmateInvestigative, RoleAlignment.CrewmateProtective, RoleAlignment.CrewmateSupport],
-            RoleListOption.CrewSpecial => [RoleAlignment.CrewmateKilling, RoleAlignment.CrewmatePower],
-            RoleListOption.CrewRandom => [RoleAlignment.CrewmateInvestigative, RoleAlignment.CrewmateKilling, RoleAlignment.CrewmateProtective, RoleAlignment.CrewmatePower, RoleAlignment.CrewmateSupport],
-            RoleListOption.NeutBenign => [RoleAlignment.NeutralBenign],
-            RoleListOption.NeutEvil => [RoleAlignment.NeutralEvil],
-            RoleListOption.NeutKilling => [RoleAlignment.NeutralKilling],
-            RoleListOption.NeutOutlier => [RoleAlignment.NeutralOutlier],
-            RoleListOption.NeutCommon => [RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil],
-            RoleListOption.NeutSpecial => [RoleAlignment.NeutralKilling, RoleAlignment.NeutralOutlier],
-            RoleListOption.NeutWildcard => [RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralOutlier],
-            RoleListOption.NeutRandom => [RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralKilling, RoleAlignment.NeutralOutlier],
-            RoleListOption.ImpConceal => [RoleAlignment.ImpostorConcealing],
-            RoleListOption.ImpKilling => [RoleAlignment.ImpostorKilling],
-            RoleListOption.ImpPower => [RoleAlignment.ImpostorPower],
-            RoleListOption.ImpSupport => [RoleAlignment.ImpostorSupport],
-            RoleListOption.ImpCommon => [RoleAlignment.ImpostorConcealing, RoleAlignment.ImpostorSupport],
-            RoleListOption.ImpSpecial => [RoleAlignment.ImpostorKilling, RoleAlignment.ImpostorPower],
-            RoleListOption.ImpRandom => [RoleAlignment.ImpostorConcealing, RoleAlignment.ImpostorKilling, RoleAlignment.ImpostorPower, RoleAlignment.ImpostorSupport],
-            RoleListOption.NonImp => [RoleAlignment.CrewmateInvestigative, RoleAlignment.CrewmateKilling, RoleAlignment.CrewmateProtective, RoleAlignment.CrewmatePower, RoleAlignment.CrewmateSupport, RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralKilling, RoleAlignment.NeutralOutlier],
-            RoleListOption.Any => [.. GetAllDraftAlignments()],
+            DraftRoleListOption.CrewInvest => [RoleAlignment.CrewmateInvestigative],
+            DraftRoleListOption.CrewKilling => [RoleAlignment.CrewmateKilling],
+            DraftRoleListOption.CrewProtective => [RoleAlignment.CrewmateProtective],
+            DraftRoleListOption.CrewPower => [RoleAlignment.CrewmatePower],
+            DraftRoleListOption.CrewSupport => [RoleAlignment.CrewmateSupport],
+            DraftRoleListOption.CrewCommon => [RoleAlignment.CrewmateInvestigative, RoleAlignment.CrewmateProtective, RoleAlignment.CrewmateSupport],
+            DraftRoleListOption.CrewSpecial => [RoleAlignment.CrewmateKilling, RoleAlignment.CrewmatePower],
+            DraftRoleListOption.CrewRandom => [RoleAlignment.CrewmateInvestigative, RoleAlignment.CrewmateKilling, RoleAlignment.CrewmateProtective, RoleAlignment.CrewmatePower, RoleAlignment.CrewmateSupport],
+            DraftRoleListOption.CrewNeu => [RoleAlignment.CrewmateInvestigative, RoleAlignment.CrewmateKilling, RoleAlignment.CrewmateProtective, RoleAlignment.CrewmatePower, RoleAlignment.CrewmateSupport, RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralOutlier],
+
+            DraftRoleListOption.NeutBenign => [RoleAlignment.NeutralBenign],
+            DraftRoleListOption.NeutEvil => [RoleAlignment.NeutralEvil],
+            DraftRoleListOption.NeutKilling => [RoleAlignment.NeutralKilling],
+            DraftRoleListOption.NeutOutlier => [RoleAlignment.NeutralOutlier],
+            DraftRoleListOption.NeutCommon => [RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil],
+            DraftRoleListOption.NeutSpecial => [RoleAlignment.NeutralKilling, RoleAlignment.NeutralOutlier],
+            DraftRoleListOption.NeutWildcard => [RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralOutlier],
+            DraftRoleListOption.NeutRandom => [RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralKilling, RoleAlignment.NeutralOutlier],
+
+            DraftRoleListOption.ImpConceal => [RoleAlignment.ImpostorConcealing],
+            DraftRoleListOption.ImpKilling => [RoleAlignment.ImpostorKilling],
+            DraftRoleListOption.ImpPower => [RoleAlignment.ImpostorPower],
+            DraftRoleListOption.ImpSupport => [RoleAlignment.ImpostorSupport],
+            DraftRoleListOption.ImpCommon => [RoleAlignment.ImpostorConcealing, RoleAlignment.ImpostorSupport],
+            DraftRoleListOption.ImpSpecial => [RoleAlignment.ImpostorKilling, RoleAlignment.ImpostorPower],
+            DraftRoleListOption.ImpRandom => [RoleAlignment.ImpostorConcealing, RoleAlignment.ImpostorKilling, RoleAlignment.ImpostorPower, RoleAlignment.ImpostorSupport],
+
+            DraftRoleListOption.NonImp => [RoleAlignment.CrewmateInvestigative, RoleAlignment.CrewmateKilling, RoleAlignment.CrewmateProtective, RoleAlignment.CrewmatePower, RoleAlignment.CrewmateSupport, RoleAlignment.NeutralBenign, RoleAlignment.NeutralEvil, RoleAlignment.NeutralKilling, RoleAlignment.NeutralOutlier],
+            DraftRoleListOption.Any => [.. GetAllDraftAlignments()],
             _ => []
         };
     }
@@ -833,9 +993,10 @@ public static class DraftSystem
     public static RoleBehaviour? PickRandomRole(bool isImpostor, List<RoleBehaviour>? offeredPool = null)
     {
         var freshOffer = SelectRolesToOffer(isImpostor);
+
         if (freshOffer != null && freshOffer.Count > 0)
         {
-            return freshOffer[UnityEngine.Random.Range(0, freshOffer.Count)];
+            return freshOffer[Random.Range(0, freshOffer.Count)];
         }
 
         if (OptionGroupSingleton<DraftModeOptions>.Instance.PoolMode.Value != DraftPoolMode.OldDraft)
@@ -844,23 +1005,26 @@ public static class DraftSystem
         }
 
         var myId = PlayerControl.LocalPlayer?.PlayerId ?? 255;
-
         DraftFaction faction;
+
         if (!PlayerFactions.TryGetValue(myId, out faction))
+        {
             faction = isImpostor ? DraftFaction.Impostor : DraftFaction.CrewOther;
+        }
 
         var enabledAlignments = GetAlignmentsForFaction(faction);
 
-        // Fallback w razie braku puli ofert (np. błąd UI)
         var allRoles = faction == DraftFaction.Impostor
             ? FilterLonerForCurrentPicker(GetRolesForAlignments(enabledAlignments))
             : GetRolesForAlignments(enabledAlignments);
-        if (allRoles.Count == 0) return null;
+
+        if (allRoles.Count == 0)
+        {
+            return null;
+        }
 
         return OrderRoles(allRoles).FirstOrDefault();
     }
-
-    // === LIFECYCLE ===
 
     public static void Reset()
     {
@@ -885,8 +1049,11 @@ public static class DraftSystem
     public static void GeneratePickOrder(List<byte>? validPlayerIds = null)
     {
         PickOrder.Clear();
+        OriginalPickOrder.Clear();
+        RoleListSlotOrder.Clear();
 
         List<byte> players;
+
         if (validPlayerIds != null && validPlayerIds.Count > 0)
         {
             players = new List<byte>(validPlayerIds);
@@ -894,19 +1061,33 @@ public static class DraftSystem
         else
         {
             players = new List<byte>();
+
             foreach (var player in PlayerControl.AllPlayerControls)
             {
-                if (player != null && player.Data != null && !player.Data.Disconnected &&
+                if (player != null &&
+                    player.Data != null &&
+                    !player.Data.Disconnected &&
                     !TownOfUs.Roles.Other.SpectatorRole.TrackedSpectators.Contains(player.Data.PlayerName))
+                {
                     players.Add(player.PlayerId);
+                }
             }
         }
 
-        if (players.Count == 0) return;
+        if (players.Count == 0)
+        {
+            return;
+        }
 
-        // --- SYSTEM OF THIRDS LOGIC ---
+        if (!IsOldDraftMode())
+        {
+            players.Shuffle();
+            PickOrder.AddRange(players);
+            OriginalPickOrder.AddRange(PickOrder);
+            GenerateRoleListSlotOrder();
+            return;
+        }
 
-        // 1. Categorize players
         var specialPlayers = players.Where(id =>
             PlayerFactions.ContainsKey(id) &&
             PlayerFactions[id] != DraftFaction.CrewOther).ToList();
@@ -918,30 +1099,29 @@ public static class DraftSystem
         specialPlayers.Shuffle();
         crewPlayers.Shuffle();
 
-        // 2. Divide into 3 buckets
-        int count = players.Count;
-        int bucketSize = count / 3;
-        int remainder = count % 3;
+        var count = players.Count;
+        var bucketSize = count / 3;
+        var remainder = count % 3;
 
-        int[] bucketSizes = new int[3];
+        var bucketSizes = new int[3];
         bucketSizes[0] = bucketSize + (remainder > 0 ? 1 : 0);
         bucketSizes[1] = bucketSize + (remainder > 1 ? 1 : 0);
         bucketSizes[2] = bucketSize;
 
-        List<byte>[] buckets = new List<byte>[3] { new(), new(), new() };
+        var buckets = new List<byte>[3] { new(), new(), new() };
 
-        // 3. Distribute Special Players evenly
-        int specialIdx = 0;
-        int bIdx = 0;
+        var specialIdx = 0;
+        var bIdx = 0;
+
         while (specialIdx < specialPlayers.Count)
         {
             buckets[bIdx].Add(specialPlayers[specialIdx++]);
             bIdx = (bIdx + 1) % 3;
         }
 
-        // 4. Fill with Crewmates
-        int crewIdx = 0;
-        for (int i = 0; i < 3; i++)
+        var crewIdx = 0;
+
+        for (var i = 0; i < 3; i++)
         {
             while (buckets[i].Count < bucketSizes[i] && crewIdx < crewPlayers.Count)
             {
@@ -949,8 +1129,7 @@ public static class DraftSystem
             }
         }
 
-        // 5. Shuffle each bucket and combine
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
         {
             buckets[i].Shuffle();
             PickOrder.AddRange(buckets[i]);
@@ -963,7 +1142,9 @@ public static class DraftSystem
     private static void GenerateRoleListSlotOrder()
     {
         RoleListSlotOrder.Clear();
+
         var slotCount = Mathf.Clamp(PickOrder.Count, 0, MaxRoleListSlots);
+
         for (var i = 0; i < slotCount; i++)
         {
             RoleListSlotOrder.Add(i);
@@ -1028,30 +1209,21 @@ public static class DraftSystem
     {
         get
         {
-            if (PlayerControl.LocalPlayer == null) return -1;
+            if (PlayerControl.LocalPlayer == null)
+            {
+                return -1;
+            }
+
             return PickOrder.IndexOf(PlayerControl.LocalPlayer.PlayerId);
         }
     }
 
     public static void Shuffle<T>(this List<T> list)
     {
-        for (int i = list.Count - 1; i > 0; i--)
+        for (var i = list.Count - 1; i > 0; i--)
         {
-            int j = Random.Range(0, i + 1);
+            var j = Random.Range(0, i + 1);
             (list[i], list[j]) = (list[j], list[i]);
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

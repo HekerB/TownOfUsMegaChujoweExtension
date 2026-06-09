@@ -31,7 +31,7 @@ public sealed class DraftModeOptions : AbstractOptionGroup
     ];
 
     public ModdedEnumOption<DraftPoolMode> PoolMode { get; } =
-        new("Draft Pool Mode", DraftPoolMode.OldDraft, DraftPoolModeNames)
+        new("Draft Pool Mode", DraftPoolMode.RoleList, DraftPoolModeNames)
         {
             Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
         };

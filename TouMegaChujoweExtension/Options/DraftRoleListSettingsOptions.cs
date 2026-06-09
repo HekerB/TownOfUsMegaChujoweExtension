@@ -1,7 +1,8 @@
+using System;
+using AmongUs.GameOptions;
 using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
-using TownOfUs.Options;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public sealed class DraftRoleListSettingsOptions : AbstractOptionGroup
     public override uint GroupPriority => 104;
     public override Color GroupColor => new Color32(255, 182, 200, 255);
     public override Func<bool> GroupVisible => () => OptionGroupSingleton<DraftModeOptions>.Instance.IsRoleListDraft;
+
+    private const string CrewNeuName = "<color=#8CFFFF>Crewmate</color> + <color=#B8B8B8>Neutral</color>";
 
     private static readonly string[] RoleListOptionNames =
     [
@@ -46,32 +49,75 @@ public sealed class DraftRoleListSettingsOptions : AbstractOptionGroup
         MiscUtils.GetParsedRoleBucket("RandomImp"),
 
         MiscUtils.GetParsedRoleBucket("NonImp"),
-        MiscUtils.GetParsedRoleBucket("Any")
+        MiscUtils.GetParsedRoleBucket("Any"),
+        CrewNeuName
     ];
 
-    public ModdedEnumOption<RoleListOption> Slot1 { get; } = CreateSlotOption(1, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot2 { get; } = CreateSlotOption(2, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot3 { get; } = CreateSlotOption(3, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot4 { get; } = CreateSlotOption(4, RoleListOption.ImpCommon);
-    public ModdedEnumOption<RoleListOption> Slot5 { get; } = CreateSlotOption(5, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot6 { get; } = CreateSlotOption(6, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot7 { get; } = CreateSlotOption(7, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot8 { get; } = CreateSlotOption(8, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot9 { get; } = CreateSlotOption(9, RoleListOption.ImpCommon);
-    public ModdedEnumOption<RoleListOption> Slot10 { get; } = CreateSlotOption(10, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot11 { get; } = CreateSlotOption(11, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot12 { get; } = CreateSlotOption(12, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot13 { get; } = CreateSlotOption(13, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot14 { get; } = CreateSlotOption(14, RoleListOption.ImpCommon);
-    public ModdedEnumOption<RoleListOption> Slot15 { get; } = CreateSlotOption(15, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot16 { get; } = CreateSlotOption(16, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot17 { get; } = CreateSlotOption(17, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot18 { get; } = CreateSlotOption(18, RoleListOption.CrewCommon);
-    public ModdedEnumOption<RoleListOption> Slot19 { get; } = CreateSlotOption(19, RoleListOption.ImpCommon);
-    public ModdedEnumOption<RoleListOption> Slot20 { get; } = CreateSlotOption(20, RoleListOption.CrewCommon);
+    public ModdedEnumOption<DraftRoleListOption> Slot1 { get; } = CreateSlotOption(1, DraftRoleListOption.ImpRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot2 { get; } = CreateSlotOption(2, DraftRoleListOption.ImpRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot3 { get; } = CreateSlotOption(3, DraftRoleListOption.CrewNeu);
+    public ModdedEnumOption<DraftRoleListOption> Slot4 { get; } = CreateSlotOption(4, DraftRoleListOption.NeutBenign);
+    public ModdedEnumOption<DraftRoleListOption> Slot5 { get; } = CreateSlotOption(5, DraftRoleListOption.NeutEvil);
 
-    private static ModdedEnumOption<RoleListOption> CreateSlotOption(int slot, RoleListOption defaultValue)
+    public ModdedEnumOption<DraftRoleListOption> Slot6 { get; } = CreateSlotOption(6, DraftRoleListOption.NeutKilling);
+    public ModdedEnumOption<DraftRoleListOption> Slot7 { get; } = CreateSlotOption(7, DraftRoleListOption.CrewKilling);
+    public ModdedEnumOption<DraftRoleListOption> Slot8 { get; } = CreateSlotOption(8, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot9 { get; } = CreateSlotOption(9, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot10 { get; } = CreateSlotOption(10, DraftRoleListOption.CrewRandom);
+
+    public ModdedEnumOption<DraftRoleListOption> Slot11 { get; } = CreateSlotOption(11, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot12 { get; } = CreateSlotOption(12, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot13 { get; } = CreateSlotOption(13, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot14 { get; } = CreateSlotOption(14, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot15 { get; } = CreateSlotOption(15, DraftRoleListOption.CrewRandom);
+
+    public ModdedEnumOption<DraftRoleListOption> Slot16 { get; } = CreateSlotOption(16, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot17 { get; } = CreateSlotOption(17, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot18 { get; } = CreateSlotOption(18, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot19 { get; } = CreateSlotOption(19, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot20 { get; } = CreateSlotOption(20, DraftRoleListOption.CrewRandom);
+
+    public ModdedEnumOption<DraftRoleListOption> Slot21 { get; } = CreateSlotOption(21, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot22 { get; } = CreateSlotOption(22, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot23 { get; } = CreateSlotOption(23, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot24 { get; } = CreateSlotOption(24, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot25 { get; } = CreateSlotOption(25, DraftRoleListOption.CrewRandom);
+
+    public ModdedEnumOption<DraftRoleListOption> Slot26 { get; } = CreateSlotOption(26, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot27 { get; } = CreateSlotOption(27, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot28 { get; } = CreateSlotOption(28, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot29 { get; } = CreateSlotOption(29, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot30 { get; } = CreateSlotOption(30, DraftRoleListOption.CrewRandom);
+
+    public ModdedEnumOption<DraftRoleListOption> Slot31 { get; } = CreateSlotOption(31, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot32 { get; } = CreateSlotOption(32, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot33 { get; } = CreateSlotOption(33, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot34 { get; } = CreateSlotOption(34, DraftRoleListOption.CrewRandom);
+    public ModdedEnumOption<DraftRoleListOption> Slot35 { get; } = CreateSlotOption(35, DraftRoleListOption.CrewRandom);
+
+    private static ModdedEnumOption<DraftRoleListOption> CreateSlotOption(int slot, DraftRoleListOption defaultValue)
     {
-        return new($"Slot {slot}", defaultValue, RoleListOptionNames);
+        return new($"Slot {slot}", defaultValue, RoleListOptionNames)
+        {
+            Visible = () => SlotVisible(slot)
+        };
+    }
+
+    private static bool SlotVisible(int slot)
+    {
+        return OptionGroupSingleton<DraftModeOptions>.Instance.IsRoleListDraft
+            && slot <= GetLobbyMaxPlayers();
+    }
+
+    private static int GetLobbyMaxPlayers()
+    {
+        try
+        {
+            return GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.MaxPlayers);
+        }
+        catch
+        {
+            return 15;
+        }
     }
 }
