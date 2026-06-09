@@ -10,7 +10,7 @@
 
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
-        <VersionPrefix>1.2.9</VersionPrefix>
+        <VersionPrefix>1.4.0</VersionPrefix>
         <VersionSuffix></VersionSuffix>
 
         <Authors>Heker, marzecoo, kajojajo</Authors>
