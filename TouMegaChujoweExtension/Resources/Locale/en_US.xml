@@ -1120,7 +1120,7 @@
 • By default, all players draft from the complete pool of enabled roles for their side (Crewmate, Impostor, or Neutral). Restrictive categories have been removed for a more flexible experience.</string>
 
   <string name="TOUMCETermsApocalypseTitle">Apocalypse</string>
-  <string name="TOUMCETermsApocalypseInfo">&lt;b&gt;Apocalypse&lt;/b&gt; roles are horsemen-style neutral threats: &lt;color=#C4F076&gt;Plaguebearer&lt;/color&gt;, &lt;color=#B4D7A8&gt;Pestilence&lt;/color&gt;, &lt;color=#E59A3B&gt;Baker&lt;/color&gt;, &lt;color=#023020&gt;Famine&lt;/color&gt;, &lt;color=#242A5E&gt;Soul Collector&lt;/color&gt;, &lt;color=#202020&gt;Death&lt;/color&gt;, &lt;color=#BE1020&gt;Berserker&lt;/color&gt;, and &lt;color=#5E3929&gt;War&lt;/color&gt;. If &lt;b&gt;Apocalypse Wins Together&lt;/b&gt; is enabled, they share victory, cannot guess each other, and reveal each other's roles. Apocalypse meeting chat is controlled in General settings.</string>
+  <string name="TOUMCETermsApocalypseInfo">&lt;b&gt;Apocalypse&lt;/b&gt; roles are horsemen-style neutral threats: &lt;color=#C4F076&gt;Plaguebearer&lt;/color&gt;, &lt;color=#B4D7A8&gt;Pestilence&lt;/color&gt;, &lt;color=#E59A3B&gt;Baker&lt;/color&gt;, &lt;color=#023020&gt;Famine&lt;/color&gt;, &lt;color=#242A5E&gt;Soul Collector&lt;/color&gt;, &lt;color=#202020&gt;Death&lt;/color&gt;, &lt;color=#880814&gt;Berserker&lt;/color&gt;, and &lt;color=#5E3929&gt;War&lt;/color&gt;. If &lt;b&gt;Apocalypse Wins Together&lt;/b&gt; is enabled, they share victory, cannot guess each other, and reveal each other's roles. Apocalypse meeting chat is controlled in General settings.</string>
 
   <!-- TOUMCE Wiki Terms - Draft Factions -->
   <string name="TOUMCETermsDraftFactionsTitle">Draft Factions</string>
@@ -1507,7 +1507,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleBerserker">Berserker</string>
   <string name="ExtensionRoleBerserkerIntroBlurb">Kill to shorten your cooldown and become War.</string>
   <string name="ExtensionRoleBerserkerTabDescription">Kill players to reduce your cooldown.\%nl\%Collect enough kills to become &lt;color=#5E3929&gt;War&lt;/color&gt;.</string>
-  <string name="ExtensionRoleBerserkerWikiDescription">The &lt;color=#BE1020&gt;Berserker&lt;/color&gt; is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Each kill lowers your kill cooldown, helping you snowball into &lt;color=#5E3929&gt;War&lt;/color&gt;.\%nl\%Once transformed, you lose cooldown reduction and become an invincible horseman who can chain kills during a short spree window.\%nl\%If Apocalypse Wins Together is enabled, Apocalypse roles are treated as allies.</string>
+  <string name="ExtensionRoleBerserkerWikiDescription">The &lt;color=#880814&gt;Berserker&lt;/color&gt; is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Each kill lowers your kill cooldown, helping you snowball into &lt;color=#5E3929&gt;War&lt;/color&gt;.\%nl\%Once transformed, you lose cooldown reduction and become an invincible horseman who can chain kills during a short spree window.\%nl\%If Apocalypse Wins Together is enabled, Apocalypse roles are treated as allies.</string>
   <string name="ExtensionRoleBerserkerKillsTab">Kills to become War</string>
   <string name="ExtensionRoleBerserkerWarAnnouncement">War has consumed the battlefield.\%nl\%\%color=#5E3929FF\%War\%/color\%, Horseman of the Apocalypse, has emerged!</string>
   <string name="ExtensionRoleBerserkerWarAnnouncementTitle">Berserker Warning</string>
@@ -1521,7 +1521,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleWar">War</string>
   <string name="ExtensionRoleWarIntroBlurb">Horseman of the Apocalypse!</string>
   <string name="ExtensionRoleWarTabDescription">Transformed Berserker. Chain kills during a short spree.\%nl\%War is invincible.</string>
-  <string name="ExtensionRoleWarWikiDescription">The &lt;color=#5E3929&gt;War&lt;/color&gt; is the transformed &lt;color=#BE1020&gt;Berserker&lt;/color&gt;.\%nl\%War is invincible, cannot be guessed, and can only die by being voted out.\%nl\%After a successful kill, War enters a short Killing Spree where the next kill has no cooldown.</string>
+  <string name="ExtensionRoleWarWikiDescription">The &lt;color=#5E3929&gt;War&lt;/color&gt; is the transformed &lt;color=#880814&gt;Berserker&lt;/color&gt;.\%nl\%War is invincible, cannot be guessed, and can only die by being voted out.\%nl\%After a successful kill, War enters a short Killing Spree where the next kill has no cooldown.</string>
   <string name="ExtensionRoleWarSpreeKill">Spree Kill</string>
   <string name="ExtensionRoleFamine">Famine</string>
   <string name="ExtensionRoleFamineIntroBlurb">Horseman of the Apocalypse!</string>
