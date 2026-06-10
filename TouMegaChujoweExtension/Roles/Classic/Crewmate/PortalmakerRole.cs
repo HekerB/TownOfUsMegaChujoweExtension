@@ -18,6 +18,7 @@ using Reactor.Networking.Attributes;
 using TouMegaChujoweExtension.Networking;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Buttons.Classic.Crewmate;
+using MiraAPI.Hud;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 

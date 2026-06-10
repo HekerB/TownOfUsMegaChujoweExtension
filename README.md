@@ -106,6 +106,8 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#charlatan"><img width="10%" src="./Images/Icons/Charlatan_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#hacker"><img width="10%" src="./Images/Icons/Hacker_Role.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#injector"><img width="10%" src="./Images/Icons/Injector_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#flipper"><img width="10%" src="./Images/Icons/Inverter_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#voodoo-master"><img width="10%" src="./Images/Icons/VoodooMaster_Role_Icon.png" /></a>
   <img src="./Images/Groups/NeutBenign.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#lawyer"><img width="10%" src="./Images/Icons/Lawyer_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#shifter"><img width="10%" src="./Images/Icons/Shifter_Role_Icon.png" /></a>
@@ -115,6 +117,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#pirate"><img width="10%" src="./Images/Icons/Pirate_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#pope"><img width="10%" src="./Images/Icons/Pope_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#vulture"><img width="10%" src="./Images/Icons/Vulture_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#innocent"><img width="10%" src="./Images/Icons/Innocent_Role_Icon.png" /></a>
   <img src="./Images/Groups/NeutKilling.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#baker--famine"><img width="10%" src="./Images/Icons/Baker_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#baker--famine"><img width="10%" src="./Images/Icons/Famine_Role_Icon.png" /></a>

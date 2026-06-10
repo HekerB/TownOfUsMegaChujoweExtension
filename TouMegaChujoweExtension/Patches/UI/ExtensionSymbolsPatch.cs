@@ -60,12 +60,13 @@ public static class ExtensionSymbolsPatch
                 __result += " <color=#FF0000>$</color>";
             }
 
-            if (IsVoodooMutedOrMarked(player) && !__result.Contains("[M]"))
+            if (IsVoodooScheduledMute(player) && !__result.Contains("[M]"))
             {
                 __result += " <color=#2A1119>[M]</color>";
             }
         }
-        else if (local.PlayerId == player.PlayerId && player.HasModifier<VoodooMutedModifier>() && !__result.Contains("[M]"))
+
+        if ((local.PlayerId == player.PlayerId || deadKnow) && player.HasModifier<VoodooMutedModifier>() && !__result.Contains("[M]"))
         {
             __result += " <color=#2A1119>[M]</color>";
         }
@@ -360,13 +361,8 @@ public static class ExtensionSymbolsPatch
         return ApocalypseUtils.RolesKnowEachOther && ApocalypseUtils.IsApocalypsePlayer(local);
     }
 
-    private static bool IsVoodooMutedOrMarked(PlayerControl player)
+    private static bool IsVoodooScheduledMute(PlayerControl player)
     {
-        if (player.HasModifier<VoodooMutedModifier>())
-        {
-            return true;
-        }
-
         return player.TryGetModifier<VoodooScheduledCurseModifier>(out var curse) &&
                curse.CurseType == VoodooEffect.Mute;
     }

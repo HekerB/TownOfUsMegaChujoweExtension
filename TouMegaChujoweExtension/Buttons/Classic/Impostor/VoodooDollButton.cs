@@ -164,9 +164,7 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
             return TouLocale.Get("ExtensionRoleVoodooMasterCast", "Curse");
         }
 
-        var effectName = TouLocale.Get($"ExtensionVoodooEffect{role.SelectedEffect}", role.SelectedEffect.ToString());
-        var maxUses = role.GetMaxUses(role.SelectedEffect);
-        return maxUses > 0 ? $"{effectName} - {role.GetUsesLeft(role.SelectedEffect)}" : effectName;
+        return TouLocale.Get($"ExtensionVoodooEffect{role.SelectedEffect}", role.SelectedEffect.ToString());
     }
 
     private void UpdateActiveEffectTimer(PlayerControl playerControl)

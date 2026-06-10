@@ -6,6 +6,10 @@ using TouMegaChujoweExtension.Assets;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
+using TownOfUs.Utilities.Appearances;
+using TownOfUs.Assets;
+using TownOfUs.Modules.Anims;
+using Reactor.Utilities.Extensions;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modifiers.Impostor;
@@ -19,12 +23,16 @@ public sealed class VoodooBlindModifier(PlayerControl voodooMaster, float durati
     public override LoadableAsset<Sprite>? ModifierIcon => null;
     public override float Duration => duration;
     public override bool AutoStart => true;
+    public GameObject EclipseBack { get; set; }
 
     public override void OnActivate()
     {
         base.OnActivate();
 
         VisionPerc = 1f;
+
+        EclipseBack = AnimStore.SpawnAnimBody(Player, TouAssets.EclipsedPrefab.LoadAsset(), false, -1.1f)!;
+        EclipseBack.SetActive(false);
 
         if (Player.AmOwner &&
             !VoodooMaster.AmOwner)
@@ -55,6 +63,20 @@ public sealed class VoodooBlindModifier(PlayerControl voodooMaster, float durati
         {
             VisionPerc = 0f;
         }
+
+        if (!EclipseBack)
+        {
+            return;
+        }
+        EclipseBack.SetActive(false);
+        
+        var local = PlayerControl.LocalPlayer;
+        if (local != null && (local.IsImpostorAligned() || (local.HasDied() &&
+                                                         OptionGroupSingleton<TownOfUs.Options.PostmortemOptions>.Instance.TheDeadKnow)))
+        {
+            Player.cosmetics.currentBodySprite.BodySprite.material.SetColor(ShaderID.VisorColor, Color.black);
+            EclipseBack.SetActive(!Player.IsVisibleToOthers());
+        }
     }
 
     public override void OnMeetingStart()
@@ -67,5 +89,10 @@ public sealed class VoodooBlindModifier(PlayerControl voodooMaster, float durati
         base.OnDeactivate();
 
         VisionPerc = 1f;
+
+        if (EclipseBack)
+        {
+            EclipseBack.Destroy();
+        }
     }
 }

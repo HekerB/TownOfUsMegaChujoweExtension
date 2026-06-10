@@ -101,8 +101,7 @@ public sealed class VoodooMutedModifier : BaseModifier
     {
         var localPlayer = PlayerControl.LocalPlayer;
         var canSeeMuted = Player.AmOwner ||
-                          localPlayer != null &&
-                          (localPlayer.IsRole<VoodooMasterRole>() || localPlayer.HasDied());
+                          (localPlayer != null && localPlayer.HasDied());
 
         if (!canSeeMuted || bmOverlay != null)
         {

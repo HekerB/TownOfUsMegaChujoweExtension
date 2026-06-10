@@ -35,10 +35,10 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
     public override Color TextOutlineColor => TouExtensionColors.Innocent;
     public override int MaxUses => (int)OptionGroupSingleton<InnocentOptions>.Instance.MaxTaunts;
     public override bool ZeroIsInfinite { get; set; } = true;
+    public override float EffectDuration => OptionGroupSingleton<InnocentOptions>.Instance.TauntDuration;
 
     private bool _isProcessingClick;
     private bool _isMenuOpen;
-    private float _tauntCountdown;
     private byte? _tauntedPlayerId;
 
     public override void CreateButton(Transform parent)
@@ -70,7 +70,7 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
             return false;
         }
 
-        if (_isMenuOpen || _tauntCountdown > 0f || Minigame.Instance || MeetingHud.Instance || HudManager.Instance.Chat.IsOpenOrOpening)
+        if (_isMenuOpen || EffectActive || Minigame.Instance || MeetingHud.Instance || HudManager.Instance.Chat.IsOpenOrOpening)
         {
             return false;
         }
@@ -127,7 +127,7 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
 
                 if (player == null || Role == null)
                 {
-                    Timer = 0.01f;
+                    Timer = 0f;
                     return;
                 }
 
@@ -137,10 +137,13 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
                 ShowTauntedNotification(player);
 
                 _tauntedPlayerId = player.PlayerId;
-                _tauntCountdown = OptionGroupSingleton<InnocentOptions>.Instance.TauntDuration;
 
                 SpendTauntUse();
-                Timer = 0.01f;
+                
+                TownOfUs.Assets.TouAudio.PlaySound(TownOfUs.Assets.TouAudio.TrackerActivateSound);
+
+                EffectActive = true;
+                Timer = EffectDuration;
             });
     }
 
@@ -237,6 +240,11 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
                     ResetLocalButtonCooldown(innocentPlayerId);
                     QueueMeetingAlert(innocentPlayerId, "ExtensionRoleInnocentForcedKillNotif", "Your taunted player killed a Crewmate. Get them exiled at the next meeting!");
 
+                    if (victim.HasModifier<BaitModifier>())
+                    {
+                        yield break;
+                    }
+
                     yield return CoReportBaitImmediately(marked.PlayerId, victim.PlayerId);
                     yield break;
                 }
@@ -253,6 +261,11 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
         ClearExistingMarkerForInnocent(innocentPlayerId);
         ResetLocalButtonCooldown(innocentPlayerId);
         ShowInnocentAlert(innocentPlayerId, "ExtensionRoleInnocentNoKillNotif", "Your taunted player did not kill a Crewmate in time.");
+
+        if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == innocentPlayerId)
+        {
+            TownOfUs.Assets.TouAudio.PlaySound(TownOfUs.Assets.TouAudio.TrackerDeactivateSound);
+        }
 
         if (InnocentRole.ActiveInnocents.TryGetValue(innocentPlayerId, out var innocent))
         {
@@ -307,6 +320,7 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
         var button = CustomButtonSingleton<InnocentTauntButton>.Instance;
         if (button != null)
         {
+            button.EffectActive = false;
             button.Timer = button.Cooldown;
         }
     }
@@ -364,9 +378,20 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
         if (shouldShow)
         {
             base.FixedUpdate(playerControl);
-        }
 
-        UpdateTauntedCountdown();
+            if (EffectActive)
+            {
+                Button?.OverrideText(TouLocale.Get("ExtensionRoleInnocentTauntedButton", "Taunted"));
+            }
+            else
+            {
+                if (_tauntedPlayerId.HasValue)
+                {
+                    _tauntedPlayerId = null;
+                }
+                Button?.OverrideText(Name);
+            }
+        }
 
         if (Button?.usesRemainingSprite != null)
         {
@@ -377,31 +402,5 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
         {
             Button.usesRemainingText.gameObject.SetActive(MaxUses > 0);
         }
-    }
-
-    private void UpdateTauntedCountdown()
-    {
-        if (_tauntCountdown <= 0f)
-        {
-            if (_tauntedPlayerId.HasValue)
-            {
-                _tauntedPlayerId = null;
-                Button?.OverrideText(Name);
-            }
-
-            return;
-        }
-
-        _tauntCountdown = Mathf.Max(0f, _tauntCountdown - Time.fixedDeltaTime);
-        Button?.OverrideText(TouLocale.Get("ExtensionRoleInnocentTauntedButton", "Taunted"));
-
-        if (Button?.cooldownTimerText == null) return;
-
-        var format = _tauntCountdown <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
-            ? "0.0"
-            : "0";
-        Button.cooldownTimerText.text = _tauntCountdown.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
-        Button.cooldownTimerText.gameObject.SetActive(true);
-        Button.cooldownTimerText.color = Color.white;
     }
 }
