@@ -29,7 +29,6 @@ using UnityEngine;
 using System.Linq;
 using HarmonyLib;
 using TownOfUs.Patches;
-using MiraAPI.GameEnd;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 

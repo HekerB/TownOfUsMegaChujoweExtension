@@ -19,7 +19,7 @@ using TownOfUs;
 
 namespace TouMegaChujoweExtension;
 
-[BepInAutoPlugin("toumegachujowe.tou.extension", "Tou Mega Ch**owe Extension")]
+[BepInPlugin(Id, Name, Version)]
 [BepInProcess("Among Us.exe")]
 [BepInDependency(ReactorPlugin.Id)]
 [BepInDependency(MiraApiPlugin.Id)]
@@ -27,6 +27,9 @@ namespace TouMegaChujoweExtension;
 [ReactorModFlags(ModFlags.RequireOnAllClients)]
 public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 {
+    public const string Id = "toumegachujowe.tou.extension";
+    public const string Name = "Tou Mega Ch**owe Extension";
+    public const string Version = "1.4.0";
     public const string UncensoredDisplayName = "Tou Mega Chujowe Extension";
     public const string CensoredDisplayName = "Tou Mega Ch**owe Extension";
 
@@ -209,19 +212,7 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 
     private static bool ShouldSkipPatchType(Type type)
     {
-        var fullName = type.FullName ?? string.Empty;
-
-        // Na razie nic nie skipujemy.
-        // Jak gra zcrashuje, sprawdź TouMegaPatchDebug.log.
-        // Ostatnia linia "PATCHING: ..." bez "OK: ..." to patch do wpisania tutaj.
-        //
-        // Przykład:
-        //
-        // if (fullName == "TouMegaChujoweExtension.Patches.SomePatch")
-        // {
-        //     return true;
-        // }
-
+        _ = type;
         return false;
     }
 
@@ -269,7 +260,7 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
             }
 
             return assemblies.Any(assembly =>
-                assembly.FullName.Contains(guid, StringComparison.OrdinalIgnoreCase));
+                assembly.FullName?.Contains(guid, StringComparison.OrdinalIgnoreCase) == true);
         }
         catch
         {

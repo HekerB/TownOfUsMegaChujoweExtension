@@ -50,14 +50,17 @@ public static class JackalTeamKillBlockPatch
     }
 
     [HarmonyPostfix]
-    public static void Postfix(ref bool __result, PlayerControl? target)
+    public static void Postfix(ref bool __result, object __instance, object? target)
     {
-        if (!__result || target == null) return;
+        if (!__result || target == null || __instance == null) return;
+
+        if (__instance is not IKillButton) return;
+        if (target is not PlayerControl playerTarget) return;
 
         var local = PlayerControl.LocalPlayer;
         if (local == null) return;
 
-        if (IsJackalAlly(local, target))
+        if (IsJackalAlly(local, playerTarget))
         {
             __result = false;
         }

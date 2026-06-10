@@ -25,9 +25,7 @@ using TouMegaChujoweExtension.Buttons.Classic.Neutral;
 using UnityEngine;
 using HarmonyLib;
 using TownOfUs.Patches;
-using TownOfUs.Utilities;
 using MiraAPI.GameEnd;
-using TownOfUs.Modifiers;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
