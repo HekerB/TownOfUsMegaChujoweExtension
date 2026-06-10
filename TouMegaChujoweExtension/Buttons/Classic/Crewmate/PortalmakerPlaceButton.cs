@@ -74,10 +74,18 @@ public sealed class PortalmakerPlaceButton : TownOfUsRoleButton<PortalmakerRole>
     {
         base.OnEffectEnd();
 
-        if (Role != null && SavedPos != null && MeetingHud.Instance == null && !PlayerControl.LocalPlayer.HasDied())
+        if (Role != null && SavedPos != null)
         {
-            Role.PlacePortal(SavedPos.Value);
-            Timer = Cooldown;
+            if (MeetingHud.Instance == null && !PlayerControl.LocalPlayer.HasDied())
+            {
+                Role.PlacePortal(SavedPos.Value);
+                Timer = Cooldown;
+            }
+            else
+            {
+                UsesLeft++;
+                SetUses(UsesLeft);
+            }
         }
 
         SavedPos = null;
