@@ -172,44 +172,34 @@ public static class DraftRoleListHudPatch
         var impOptions = OptionGroupSingleton<DraftImpostorSettingsOptions>.Instance;
         var neutralOptions = OptionGroupSingleton<DraftNeutralSettingsOptions>.Instance;
 
-        AppendSectionHeader(builder, CrewColor, "CREW");
-        AppendColoredLine(builder, CrewColor, $"Total: {Round(GetTotal(
+        var crewTotal = Round(GetTotal(
             crewOptions.MaxCrewInvestigative,
             crewOptions.MaxCrewKilling,
             crewOptions.MaxCrewPower,
             crewOptions.MaxCrewProtective,
-            crewOptions.MaxCrewSupport))}");
-        AppendColoredLine(builder, CrewColor,
-            $"Inv {Round(crewOptions.MaxCrewInvestigative.Value)}  Kill {Round(crewOptions.MaxCrewKilling.Value)}");
-        AppendColoredLine(builder, CrewColor,
-            $"Power {Round(crewOptions.MaxCrewPower.Value)}  Prot {Round(crewOptions.MaxCrewProtective.Value)}  Sup {Round(crewOptions.MaxCrewSupport.Value)}");
+            crewOptions.MaxCrewSupport));
 
-        builder.AppendLine();
+        var impTotal = Round(impOptions.MaxImpostorsTotal.Value);
+        var neutralTotal = Round(neutralOptions.MaxNeutralTotal.Value);
 
-        AppendSectionHeader(builder, ImpColor, "IMPS");
-        AppendColoredLine(builder, ImpColor, $"Total: {Round(impOptions.MaxImpostorsTotal.Value)}");
-        AppendColoredLine(builder, ImpColor,
-            $"Conceal {Round(impOptions.MaxImpConcealing.Value)}  Kill {Round(impOptions.MaxImpKilling.Value)}");
-        AppendColoredLine(builder, ImpColor,
-            $"Power {Round(impOptions.MaxImpPower.Value)}  Sup {Round(impOptions.MaxImpSupport.Value)}");
+        AppendColoredLine(builder, CrewColor, $"Crewmates: {crewTotal}");
+        AppendColoredLine(builder, CrewColor, $"Crewmate Investigative: {Round(crewOptions.MaxCrewInvestigative.Value)}");
+        AppendColoredLine(builder, CrewColor, $"Crewmate Killing: {Round(crewOptions.MaxCrewKilling.Value)}");
+        AppendColoredLine(builder, CrewColor, $"Crewmate Power: {Round(crewOptions.MaxCrewPower.Value)}");
+        AppendColoredLine(builder, CrewColor, $"Crewmate Protective: {Round(crewOptions.MaxCrewProtective.Value)}");
+        AppendColoredLine(builder, CrewColor, $"Crewmate Support: {Round(crewOptions.MaxCrewSupport.Value)}");
 
-        builder.AppendLine();
+        AppendColoredLine(builder, ImpColor, $"Impostors: {impTotal}");
+        AppendColoredLine(builder, ImpColor, $"Impostor Concealing: {Round(impOptions.MaxImpConcealing.Value)}");
+        AppendColoredLine(builder, ImpColor, $"Impostor Killing: {Round(impOptions.MaxImpKilling.Value)}");
+        AppendColoredLine(builder, ImpColor, $"Impostor Power: {Round(impOptions.MaxImpPower.Value)}");
+        AppendColoredLine(builder, ImpColor, $"Impostor Support: {Round(impOptions.MaxImpSupport.Value)}");
 
-        AppendSectionHeader(builder, NeutralColor, "NEUTRALS");
-        AppendColoredLine(builder, NeutralColor, $"Total: {Round(neutralOptions.MaxNeutralTotal.Value)}");
-        AppendColoredLine(builder, NeutralColor,
-            $"Benign {Round(neutralOptions.MaxNeutralBenign.Value)}  Evil {Round(neutralOptions.MaxNeutralEvil.Value)}");
-        AppendColoredLine(builder, NeutralColor,
-            $"Killing {Round(neutralOptions.MaxNeutralKillingRoles.Value)}  Outlier {Round(neutralOptions.MaxNeutralOutlier.Value)}");
-    }
-
-    private static void AppendSectionHeader(StringBuilder builder, string color, string label)
-    {
-        builder.Append("<color=");
-        builder.Append(color);
-        builder.Append("><b>");
-        builder.Append(label);
-        builder.AppendLine("</b></color>");
+        AppendColoredLine(builder, NeutralColor, $"Neutrals: {neutralTotal}");
+        AppendColoredLine(builder, NeutralColor, $"Neutral Benign: {Round(neutralOptions.MaxNeutralBenign.Value)}");
+        AppendColoredLine(builder, NeutralColor, $"Neutral Evil: {Round(neutralOptions.MaxNeutralEvil.Value)}");
+        AppendColoredLine(builder, NeutralColor, $"Neutral Killing: {Round(neutralOptions.MaxNeutralKillingRoles.Value)}");
+        AppendColoredLine(builder, NeutralColor, $"Neutral Outlier: {Round(neutralOptions.MaxNeutralOutlier.Value)}");
     }
 
     private static void AppendColoredLine(StringBuilder builder, string color, string line)
