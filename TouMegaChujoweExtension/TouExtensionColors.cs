@@ -37,7 +37,7 @@ public static class TouExtensionColors
     public static Color Berserker => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(136, 8, 20, 255);
     public static Color War => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(94, 57, 41, 255);
     public static Color Famine => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(2, 48, 32, 255);
-    public static Color SoulCollector => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(36, 42, 94, 255);
+    public static Color SoulCollector => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(25, 25, 47, 255);
     public static Color Death => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(32, 32, 32, 255);
     public static Color Innocent => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(255, 141, 168, 255);
     //impostors
@@ -53,20 +53,6 @@ public static class TouExtensionColors
     public static Color Speedy => Palette.ImpostorRed;
     public static Color Detonator => Palette.ImpostorRed;
     public static Color Burrower => Palette.ImpostorRed;
-
-    // Shield Flash Colors
-    public static class ShieldFlashes
-    {
-        public static Color Medic => new Color32(0, 102, 0, 255);       // Dark Green
-        public static Color Warden => new Color32(153, 0, 255, 255);    // Purple
-        public static Color Cleric => new Color32(0, 255, 179, 255);    // Cyan/Teal
-        public static Color Mirrorcaster => new Color32(144, 162, 195, 255); // Silver Blue
-        public static Color Fairy => new Color32(102, 170, 243, 255);   // Light Blue
-        public static Color Mercenary => new Color32(140, 102, 153, 255); // Mauve
-        public static Color BodyguardFlash => new Color32(0, 35, 255, 255); // Vibrant Royal Blue (Distinct from Mirror)
-        public static Color Oracle => new Color32(191, 0, 191, 255);    // Magenta
-    }
-
     // Modifiers
     public static Color Venomous => new Color32(0, 200, 90, 255);
     public static Color Publicity => new Color32(51, 179, 179, 255);
