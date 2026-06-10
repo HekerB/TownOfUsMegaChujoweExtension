@@ -1,19 +1,11 @@
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.GameEnd;
-using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
-using MiraAPI.Utilities.Assets;
 using Reactor.Networking.Attributes;
-using System.Collections.Generic;
 using System.Text;
-using System;
-using TownOfUs.Assets;
-using TownOfUs.Extensions;
-using TownOfUs.GameOver;
 using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
@@ -22,17 +14,13 @@ using TownOfUs.Roles.Neutral;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using TownOfUs;
-using TownOfUs.Buttons;
-using MiraAPI.Hud;
-using TouMegaChujoweExtension.Buttons.Classic.Neutral;
 using UnityEngine;
-using System.Linq;
-using HarmonyLib;
-using TownOfUs.Patches;
+
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IContinuesGame
+public sealed class BountyHunterRole(IntPtr cppPtr)
+    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IContinuesGame
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "BountyHunter";
@@ -46,14 +34,18 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities => new()
+    public List<CustomButtonWikiDescription> Abilities
     {
-        new CustomButtonWikiDescription(
-            TouLocale.Get("ExtensionRoleBountyHunterKill"),
-            TouLocale.Get("ExtensionRoleBountyHunterKillWikiDescription"),
-            new LoadableBundleAsset<Sprite>("OfficerShootButton", TouAssets.MainBundle)
-        )
-    };
+        get
+        {
+            return
+            [
+                new(TouLocale.GetParsed($"ExtensionRole{LocaleKey}Hunt", "Hunt"),
+                    TouLocale.GetParsed($"ExtensionRole{LocaleKey}KillWikiDescription"),
+                    TouCrewAssets.OfficerShootSprite)
+            ];
+        }
+    }
     public Color RoleColor => TouExtensionColors.BountyHunter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
@@ -73,7 +65,6 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         && Helpers.GetAlivePlayers().Count > 1;
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = false,
         Icon = TouExtensionIcons.BountyHunterRoleIcon,
         IntroSound = TouExtensionAudio.BountyHunterIntroSound,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
@@ -87,12 +78,22 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         var needed = (int)OptionGroupSingleton<BountyHunterOptions>.Instance.TargetsToKill.Value;
         var done = KillsDone;
 
-        _ = stringB.Append(TownOfUsPlugin.Culture,
-                $"\n{TouLocale.GetParsed("ExtensionBHTabTargetsKilled", "Targets Killed: {0} / {1}").Replace("{0}", done.ToString()).Replace("{1}", needed.ToString())}");
+        _ = stringB.AppendFormat(
+            TownOfUsPlugin.Culture,
+            "\n" + TouLocale.GetParsed("ExtensionBHTabTargetsKilled", "Targets Killed: {0} / {1}"),
+            done,
+            needed
+        );
 
         if (CurrentTarget != null && Hunting)
-            _ = stringB.Append(TownOfUsPlugin.Culture,
-                $"\n{TouLocale.GetParsed("ExtensionBHTabCurrentTarget", "Current Target: {0}").Replace("{0}", CurrentTarget.Data.PlayerName)}");
+        {
+            _ = stringB.AppendFormat(
+                TownOfUsPlugin.Culture,
+                "\n" + TouLocale.GetParsed("ExtensionBHTabCurrentTarget", "Current Target: {0}"),
+                CurrentTarget.Data.PlayerName
+            );
+        }
+
         return stringB;
     }
 
