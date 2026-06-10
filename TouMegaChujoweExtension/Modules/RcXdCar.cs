@@ -22,38 +22,27 @@ public sealed class RcXdCar : IDisposable
     private GameObject? _go;
     private SpriteRenderer? _renderer;
     private AudioSource? _audio;
-
     private bool _detonated;
     private bool _isOwner;
-
     private float _speed;
     private Vector2 _velocity;
-
     private Transform? _lightTransformParent;
     private Vector3 _lightOriginalLocalPos;
     private GameObject? _petObject;
-
     private Sprite[]? _frames;
     private int _frameIndex;
     private float _frameTimer;
-
-    // --- NET / REMOTE SMOOTHING ---
     private Vector2 _netPos;
     private bool _netFlip;
     private Vector2 _netVel;
     private Vector2 _netPrevPos;
     private float _netPrevTime;
     private float _netLastRecvTime;
-
     private bool _renderConfigured;
-
     private const float TurnSpeed = 12f;
     private const float AudioHearRadius = 12.0f;
-
-    private const float NetSendInterval = 0.066f; // ~15 Hz
-
+    private const float NetSendInterval = 0.066f;
     private const float SnapDistance = 1.25f;
-
     public bool IsDetonated => _detonated;
     public bool IsDriving => !_detonated && _go != null;
     public Vector2 Position => _go != null ? (Vector2)_go.transform.position : Vector2.zero;
@@ -160,10 +149,9 @@ public sealed class RcXdCar : IDisposable
             _netPrevPos = position,
             _netVel = Vector2.zero,
             _netPrevTime = 0f,
-            _netLastRecvTime = 0f
+            _netLastRecvTime = 0f,
+            _go = new GameObject("RC-XD_Car")
         };
-
-        car._go = new GameObject("RC-XD_Car");
         car._go.transform.position = new Vector3(position.x, position.y, position.y / 1000f);
 
         car._renderer = car._go.AddComponent<SpriteRenderer>();
@@ -187,18 +175,13 @@ public sealed class RcXdCar : IDisposable
         {
             car._audio.outputAudioMixerGroup = SoundManager.Instance.SfxChannel;
         }
-        
-        // Pre-load audio to avoid lag/bugs during gameplay
         car._audio.clip = TouExtensionAudio.RcSound.LoadAsset();
         TouExtensionAudio.RcExplosionSound.LoadAsset();
         TouExtensionAudio.RcSound.LoadAsset();
-
         car._audio.loop = true;
         car._audio.spatialBlend = 0f;
         car._audio.volume = 0f;
         car._audio.Play();
-
-        // Play deploy sound for everyone spatially relative to the spawn location
         if (SoundManager.Instance != null)
         {
             var deployClip = TouAudio.TrackerActivateSound.LoadAsset();
@@ -276,7 +259,6 @@ public sealed class RcXdCar : IDisposable
 
             _go.transform.position = new Vector3(next.x, next.y, next.y / 1000f);
 
-            // flip
             if (_renderer != null) _renderer.flipX = _netFlip;
 
             var speedMag = _netVel.magnitude;
@@ -409,7 +391,7 @@ public sealed class RcXdCar : IDisposable
                 _go.transform.position = new Vector3(pos.x, pos.y, pos.y / 1000f);
             }
 
-            // anim (owner)
+
             UpdateFrameAnimation(dt, _velocity.magnitude > 0.10f, _velocity.magnitude);
 
             if (_renderer != null)
@@ -438,7 +420,7 @@ public sealed class RcXdCar : IDisposable
 
             UpdateAudio();
 
-            // net sync
+
             syncTimer += dt;
             if (syncTimer >= NetSendInterval && _owner != null)
             {
@@ -542,19 +524,17 @@ public sealed class RcXdCar : IDisposable
         {
             var radius = opts.DetonateRadius * ShipStatus.Instance.MaxLightRadius;
             var allNear = Helpers.GetClosestPlayers(bombPos, radius);
-            
-            // Filter for valid targets FIRST (including teammates!)
-            var validTargets = allNear.Where(x => 
-                x != null && 
-                !x.HasDied() && 
-                // x.PlayerId != _owner.PlayerId && // Removed to allow RC-XD to kill themselves
-                !(x.HasModifier<BaseShieldModifier>() && x.AmOwner) && 
+
+
+            var validTargets = allNear.Where(x =>
+                x != null &&
+                !x.HasDied() &&
+                !(x.HasModifier<BaseShieldModifier>() && x.AmOwner) &&
                 !(x.HasModifier<FirstDeadShield>() && x.AmOwner)
             ).ToList();
 
             validTargets.Shuffle();
 
-            // Take up to MaxKills from the VALID targets
             var targetsToKill = validTargets.Take((int)opts.MaxKillsInDetonation).ToList();
 
             foreach (var target in targetsToKill)
@@ -594,7 +574,6 @@ public sealed class RcXdCar : IDisposable
             var clip = TouExtensionAudio.RcExplosionSound.LoadAsset();
             if (clip == null) return;
 
-            // Using SoundManager for 2D \"Stereo\" feel, basing volume on camera position
             var volume = _isOwner ? 1.0f : Mathf.Clamp01(1f - (dist / maxDist)) * 0.9f;
             SoundManager.Instance.PlaySound(clip, false, volume);
         }

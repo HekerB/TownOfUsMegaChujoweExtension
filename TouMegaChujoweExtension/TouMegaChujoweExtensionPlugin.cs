@@ -229,7 +229,7 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
         }
         catch
         {
-            // fallback niżej
+            // fallback
         }
 
         return Path.Combine(Environment.CurrentDirectory, "TouMegaPatchDebug.log");

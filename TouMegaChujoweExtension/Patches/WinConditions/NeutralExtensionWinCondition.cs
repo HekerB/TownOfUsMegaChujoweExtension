@@ -47,13 +47,13 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         // 4. Innocent
         if (IsInnocentWinMet()) return true;
 
-        // 5. Pelican (Original Priority 11)
+        // 5. Pelican
         if (IsPelicanWinMet()) return true;
 
-        // 6. Pirate (Original Priority 12)
+        // 6. Pirate
         if (IsPirateWinMet()) return true;
 
-        // 7. Lawyer (Original Priority 12)
+        // 7. Lawyer
         if (IsLawyerWinMet()) return true;
 
         // 8. Apocalypse alliance
@@ -69,7 +69,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
         if (IsBerserkerWinMet()) return true;
         if (IsWarWinMet()) return true;
 
-        // 12. Jackal (Original Priority 15)
+        // 12. 
         if (IsJackalWinMet()) return true;
 
         return false;
@@ -79,12 +79,9 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
     {
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost) return;
 
-        // Check and trigger in priority order (Pope first as it's a definite game ender)
-
         // 1. Pope
         if (IsPopeWinMet())
         {
-            // Handled in PopeJudgementSystem for precise timing after the animation
             return;
         }
 

@@ -27,10 +27,9 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
     {
         if (winners == null || winners.Length == 0) return false;
 
-        // Check if this is a Jackal / Infiltrator win
-        bool isJackalWin = winners.Any(w => w != null && 
-            (w.Role is JackalRole || 
-             PlayerControl.AllPlayerControls.ToArray().Any(p => p != null && p.PlayerId == w.PlayerId && 
+        bool isJackalWin = winners.Any(w => w != null &&
+            (w.Role is JackalRole ||
+             PlayerControl.AllPlayerControls.ToArray().Any(p => p != null && p.PlayerId == w.PlayerId &&
                  (p.IsRole<JackalRole>() || p.TryGetModifier<SidekickModifier>(out _)))));
 
         if (isJackalWin)
@@ -50,7 +49,6 @@ public sealed class ExtensionNeutralGameOver : CustomGameOver
             return true;
         }
 
-        // Everyone sees the screen if it was triggered
         var firstWinner = winners[0];
         if (firstWinner?.Role == null) return true;
 

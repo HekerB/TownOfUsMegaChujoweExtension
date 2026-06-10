@@ -137,14 +137,11 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
         try
         {
             var notification = MiraAPI.Utilities.Helpers.CreateAndShowNotification(
-                TouLocale.Get("ExtensionSidekickRecruitedAlert"), 
-                TouExtensionColors.Jackal, 
+                TouLocale.Get("ExtensionSidekickRecruitedAlert"),
+                TouExtensionColors.Jackal,
                 spr: TouRoleIcons.Jackal.LoadAsset()
             );
-            if (notification != null)
-            {
-                notification.AdjustNotification();
-            }
+            notification.AdjustNotification();
             Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
         }
         catch (System.Exception ex)

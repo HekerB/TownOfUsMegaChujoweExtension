@@ -39,7 +39,6 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
-
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"ExtensionRole{LocaleKey}WikiDescription") +
@@ -55,7 +54,6 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
             new LoadableBundleAsset<Sprite>("OfficerShootButton", TouAssets.MainBundle)
         )
     };
-
     public Color RoleColor => TouExtensionColors.BountyHunter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
@@ -68,13 +66,11 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
     public bool Hunting { get; set; }
     public bool IntroFinished { get; set; }
     public float IntroFinishTime { get; set; }
-
     public bool MetWinCon => HasWon;
 
     public bool ContinuesGame => !Player.HasDied()
         && OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode == BountyHunterWinMode.WinWithWinners
         && Helpers.GetAlivePlayers().Count > 1;
-
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = false,
@@ -91,11 +87,11 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         var needed = (int)OptionGroupSingleton<BountyHunterOptions>.Instance.TargetsToKill.Value;
         var done = KillsDone;
 
-        stringB.Append(TownOfUsPlugin.Culture,
-            $"\n{TouLocale.GetParsed("ExtensionBHTabTargetsKilled", "Targets Killed: {0} / {1}").Replace("{0}", done.ToString()).Replace("{1}", needed.ToString())}");
+        _ = stringB.Append(TownOfUsPlugin.Culture,
+                $"\n{TouLocale.GetParsed("ExtensionBHTabTargetsKilled", "Targets Killed: {0} / {1}").Replace("{0}", done.ToString()).Replace("{1}", needed.ToString())}");
 
         if (CurrentTarget != null && Hunting)
-            stringB.Append(TownOfUsPlugin.Culture,
+            _ = stringB.Append(TownOfUsPlugin.Culture,
                 $"\n{TouLocale.GetParsed("ExtensionBHTabCurrentTarget", "Current Target: {0}").Replace("{0}", CurrentTarget.Data.PlayerName)}");
         return stringB;
     }
@@ -193,8 +189,6 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
             LastTargetPlayerId = null;
             return;
         }
-
-        // Implement weighted selection: Neutrals and Impostors have 10% more chance
         var weightedCandidates = new List<PlayerControl>();
         foreach (var p in candidates)
         {
@@ -204,7 +198,7 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
                                                            role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralEvil ||
                                                            role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralBenign)))
             {
-                weight = 110; // 10% more
+                weight = 110;
             }
 
             for (int i = 0; i < weight; i++)

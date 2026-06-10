@@ -21,125 +21,120 @@ public static class DraftRoleManagerPatch
         if (!DraftSystem.DraftComplete) return true;
 
         ApplyDraftRoles();
-        return false; 
-    }   
+        return false;
+    }
     [HarmonyPatch(typeof(TouRoleManagerPatches), "AssignRolesFromRoleList")]
     [HarmonyPrefix]
     [HarmonyPriority(Priority.First)]
     public static bool BlockRoleListRandomRoles()
     {
+        System.Console.WriteLine(DraftSystem.DraftComplete);
         if (!AmongUsClient.Instance.AmHost) return true;
         if (!DraftSystem.DraftComplete) return true;
-
+        System.Console.WriteLine("HERE");
         ApplyDraftRoles();
         return false;
     }
 
-private static void ApplyDraftRoles()
-{
-    DraftSystem.LastNeutralKillingIds.Clear();
-    var effectivePicks = BuildEffectiveDraftPicks();
-
-    foreach (var (playerId, roleId) in effectivePicks)
+    private static void ApplyDraftRoles()
     {
-        var player = MiscUtils.PlayerById(playerId);
-        if (player == null || player.Data == null || player.Data.Disconnected)
+        DraftSystem.LastNeutralKillingIds.Clear();
+        var effectivePicks = BuildEffectiveDraftPicks();
+
+        foreach (var (playerId, roleId) in effectivePicks)
         {
-            // Info($"[Draft] Skipping role assignment for player {playerId} (disconnected/null).");
-            continue;
+            var player = MiscUtils.PlayerById(playerId);
+            if (player == null || player.Data == null || player.Data.Disconnected)
+            {
+
+                continue;
+            }
+
+
+            if (DraftSystem.PlayerFactions.TryGetValue(playerId, out var faction) && faction == DraftFaction.NeutralKilling)
+            {
+                DraftSystem.LastNeutralKillingIds.Add(playerId);
+            }
+
+            player.RpcSetRole((RoleTypes)roleId);
         }
 
-        // Record for NK streak reduction
-        if (DraftSystem.PlayerFactions.TryGetValue(playerId, out var faction) && faction == DraftFaction.NeutralKilling)
+        foreach (var player in PlayerControl.AllPlayerControls)
         {
-            DraftSystem.LastNeutralKillingIds.Add(playerId);
+            if (player == null || player.Data == null || player.Data.Disconnected)
+                continue;
+
+            if (!effectivePicks.ContainsKey(player.PlayerId))
+            {
+                player.RpcSetRole(RoleTypes.Crewmate);
+            }
         }
-        
-        player.RpcSetRole((RoleTypes)roleId);
+        JackalStartPatch.ExecuteAssignment();
+        DraftSystem.DraftComplete = false;
+        DraftSystem.DraftActiveThisRound = false;
     }
 
-
-    // Assign Crewmate to any player not in draft picks (e.g. spectators)
-    // This ensures they get a valid base role so TownOfUs can convert them to SpectatorRole
-    foreach (var player in PlayerControl.AllPlayerControls)
+    private static Dictionary<byte, ushort> BuildEffectiveDraftPicks()
     {
-        if (player == null || player.Data == null || player.Data.Disconnected)
-            continue;
+        var effectivePicks = DraftSystem.DraftPicks.ToDictionary(static pick => pick.Key, static pick => pick.Value);
+        var lonerRoleId = RoleId.Get<LonerRole>();
 
-        if (!effectivePicks.ContainsKey(player.PlayerId))
+        if (!effectivePicks.ContainsValue(lonerRoleId))
         {
-            player.RpcSetRole(RoleTypes.Crewmate);
+            return effectivePicks;
         }
-    }
 
-    // Assign Jackal sidekicks after roles are set
-    JackalStartPatch.ExecuteAssignment();
+        var allowedImpostorSlots = GetAllowedLonerImpostorSlots();
+        var keptImpostorSlots = 1;
 
-    DraftSystem.DraftComplete = false;
-    DraftSystem.DraftActiveThisRound = false;
-}
+        foreach (var (playerId, roleId) in DraftSystem.DraftPicks)
+        {
+            if (roleId == lonerRoleId || !IsImpostorRole(roleId))
+            {
+                continue;
+            }
 
-private static Dictionary<byte, ushort> BuildEffectiveDraftPicks()
-{
-    var effectivePicks = DraftSystem.DraftPicks.ToDictionary(static pick => pick.Key, static pick => pick.Value);
-    var lonerRoleId = RoleId.Get<LonerRole>();
+            if (keptImpostorSlots < allowedImpostorSlots)
+            {
+                keptImpostorSlots++;
+                continue;
+            }
 
-    if (!effectivePicks.Values.Contains(lonerRoleId))
-    {
+            effectivePicks[playerId] = (ushort)RoleTypes.Crewmate;
+            DraftSystem.PlayerFactions[playerId] = DraftFaction.CrewOther;
+            DraftSystem.ImpostorPlayerIds.Remove(playerId);
+        }
+
+        DraftSystem.LonerReducedImpostorSlot = true;
         return effectivePicks;
     }
 
-    var allowedImpostorSlots = GetAllowedLonerImpostorSlots();
-    var keptImpostorSlots = 1; // Loner takes one impostor slot.
-
-    foreach (var (playerId, roleId) in DraftSystem.DraftPicks)
+    private static int GetAllowedLonerImpostorSlots()
     {
-        if (roleId == lonerRoleId || !IsImpostorRole(roleId))
+        try
         {
-            continue;
+            return Math.Max(1, GameOptionsManager.Instance.currentNormalGameOptions.NumImpostors - 1);
+        }
+        catch
+        {
+            return 1;
+        }
+    }
+
+    private static bool IsImpostorRole(ushort roleId)
+    {
+        if ((RoleTypes)roleId == RoleTypes.Impostor)
+        {
+            return true;
         }
 
-        if (keptImpostorSlots < allowedImpostorSlots)
+        try
         {
-            keptImpostorSlots++;
-            continue;
+            return RoleManager.Instance.GetRole((RoleTypes)roleId)?.IsImpostor() == true;
         }
-
-        effectivePicks[playerId] = (ushort)RoleTypes.Crewmate;
-        DraftSystem.PlayerFactions[playerId] = DraftFaction.CrewOther;
-        DraftSystem.ImpostorPlayerIds.Remove(playerId);
+        catch
+        {
+            return false;
+        }
     }
-
-    DraftSystem.LonerReducedImpostorSlot = true;
-    return effectivePicks;
-}
-
-private static int GetAllowedLonerImpostorSlots()
-{
-    try
-    {
-        return Math.Max(1, GameOptionsManager.Instance.currentNormalGameOptions.NumImpostors - 1);
-    }
-    catch
-    {
-        return 1;
-    }
-}
-
-private static bool IsImpostorRole(ushort roleId)
-{
-    if ((RoleTypes)roleId == RoleTypes.Impostor)
-    {
-        return true;
-    }
-
-    try
-    {
-        return RoleManager.Instance.GetRole((RoleTypes)roleId)?.IsImpostor() == true;
-    }
-    catch
-    {
-        return false;
-    }
-}
 }
