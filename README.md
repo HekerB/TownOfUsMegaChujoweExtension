@@ -315,7 +315,7 @@ Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-C
 - **[TOHE (Town of Host Enhanced)](https://github.com/0xDrMoe/TownofHost-Enhanced)** - Doppelganger role concept; Shroud role concept
 - **[Syzyfowe TOU](https://github.com/LimeShep/Town-Of-Us/)** - Evoker, Pelican, and Gardener role concepts
 - **Town of Us: Mira** - Infiltrator (Jackal) role concept
-- **Town of Salem 1 & 2** - Pirate role, Berserker, War, Baker, Famine, Soul Collectorm, Death role concepts
+- **Town of Salem 1 & 2** - Pirate role, Berserker, War, Baker, Famine, Soul Collectorm, Death and Shroud role concepts
 - **[Town of Us WYGON](https://github.com/wygon/Town-Of-Us-WYGON)** - Falcon and Kamikaze role concepts
 - **Sidemen (YouTube)** - RC-XD, Detonator, Doctor, Astral, Speedy, Sniper, Poisoner, and Loner role concepts
 - **[TownOfUsMiraDivaniModsAddOn](https://github.com/DivaniNL/TownOfUsMiraDivaniModsAddOn)** - Portalmaker role concept
