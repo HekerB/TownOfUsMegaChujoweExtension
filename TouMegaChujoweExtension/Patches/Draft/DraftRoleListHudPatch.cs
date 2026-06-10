@@ -155,7 +155,6 @@ public static class DraftRoleListHudPatch
         builder.Append(" <color=#FFD700>Max</color> ");
         builder.Append(Mathf.RoundToInt(options.MaxOtherNeutrals.Value));
         builder.AppendLine();
-
         builder.Append("<color=#");
         builder.Append(neutralColor);
         builder.Append(">Neutral</color> Killing ");
@@ -206,7 +205,7 @@ public static class DraftRoleListHudPatch
     {
         builder.Append("<color=");
         builder.Append(color);
-        builder.Append(">");
+        builder.Append('>');
         builder.Append(line);
         builder.AppendLine("</color>");
     }
