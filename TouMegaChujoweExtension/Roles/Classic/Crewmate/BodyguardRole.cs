@@ -207,7 +207,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
         if (Player.AmOwner)
         {
             TriggerBodyguardFlash(Player);
-            
+
             var notif = Helpers.CreateAndShowNotification(
                 TouLocale.Get("ExtensionRoleBodyguardShieldAttacked"),
                 TouExtensionColors.Bodyguard,
@@ -358,7 +358,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
     public static void TriggerBodyguardFlash(PlayerControl player)
     {
         if (player == null || !player.AmOwner) return;
-        var color = TouExtensionColors.ShieldFlashes.BodyguardFlash;
+        var color = new Color(0.412f, 0.647f, 1f);
         Info($"[Bodyguard] Triggering shield flash for {player.Data.PlayerName}");
         Coroutines.Start(CoFlash(color));
     }
