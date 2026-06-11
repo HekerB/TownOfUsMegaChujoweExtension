@@ -20,9 +20,6 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-/// <summary>
-/// Trapper role: Places traps on vents that immobilize players who use them.
-/// </summary>
 public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public override bool IsAffectedByComms => false;
@@ -229,23 +226,5 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         return stringB;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

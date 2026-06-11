@@ -15,6 +15,9 @@
   <!-- Use Polish Language -->
   <string name="ExtensionLocalSettingUsePolishLanguage">Use Polish Language</string>
   
+  <!-- Use Role Color for Map -->
+  <string name="ExtensionLocalSettingUseRoleColorForMap">Map Color: Faction (mira) / Role Color </string>
+  
   <!-- Draft Alert Local Settings -->
   <string name="ExtensionLocalSettingDraftAlert">Draft Alert Notification</string>
   <string name="DraftAlertOff">Off</string>

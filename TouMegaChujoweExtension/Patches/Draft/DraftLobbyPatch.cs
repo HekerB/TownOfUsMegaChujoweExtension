@@ -443,6 +443,23 @@ public static class DraftLobbyPatch
             }
         }
 
+        if (options.IsRoleListDraft)
+        {
+            var slotCount = Mathf.Min(allPlayers.Count, DraftSystem.MaxRoleListSlots);
+            impostorCount = 0;
+            for (var i = 0; i < slotCount; i++)
+            {
+                if (DraftSystem.IsRoleListSlotImpostor(i))
+                {
+                    impostorCount++;
+                }
+            }
+        }
+        else if (options.IsMinMaxDraft)
+        {
+            impostorCount = (int)OptionGroupSingleton<TouMegaChujoweExtension.Options.DraftImpostorSettingsOptions>.Instance.MaxImpostorsTotal.Value;
+        }
+
         if (allPlayers.Count == 0)
         {
             impostorCount = 0;

@@ -56,7 +56,7 @@ public sealed class SpeedyRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
     public CustomRoleConfiguration Configuration => new(this)
     {
         Icon = TouExtensionIcons.SpeedyRoleIcon,
-        IntroSound = TouAudio.PhantomIntroSound, // Placeholder sound
+        IntroSound = TouAudio.PhantomIntroSound,
         CanUseVent = OptionGroupSingleton<SpeedyOptions>.Instance.CanVent,
         OptionsScreenshot = TouExtensionBanners.SpeedyBanner
     };

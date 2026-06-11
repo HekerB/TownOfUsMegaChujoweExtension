@@ -88,6 +88,11 @@ public static class DraftSystem
         return Random.Range(0f, 100f) < 60f ? Mathf.RoundToInt(min) : Mathf.RoundToInt(max);
     }
 
+    public static bool IsRoleListSlotImpostor(int slotIndex)
+    {
+        return IsImpostorBucket(GetRoleListBucketForSlot(slotIndex));
+    }
+
     public static void AssignFactions(List<byte> allPlayerIds, HashSet<byte> impostorIds)
     {
         PlayerFactions.Clear();
@@ -108,9 +113,32 @@ public static class DraftSystem
             return;
         }
 
-        var oldOptions = OptionGroupSingleton<DraftOldSettingsOptions>.Instance;
-        var neutralKillingCount = GetSafeCount(oldOptions.MinNeutralKilling.Value, oldOptions.MaxNeutralKilling.Value);
-        TargetOtherNeutralCount = GetSafeCount(oldOptions.MinOtherNeutrals.Value, oldOptions.MaxOtherNeutrals.Value);
+        int neutralKillingCount;
+        if (options.IsRoleListDraft)
+        {
+            var slotCount = Mathf.Min(allPlayerIds.Count, MaxRoleListSlots);
+            neutralKillingCount = 0;
+            for (var i = 0; i < slotCount; i++)
+            {
+                if (GetRoleListBucketForSlot(i) == DraftRoleListOption.NeutKilling)
+                {
+                    neutralKillingCount++;
+                }
+            }
+            TargetOtherNeutralCount = slotCount - impostorIds.Count - neutralKillingCount;
+        }
+        else if (options.IsMinMaxDraft)
+        {
+            var neutralOptions = OptionGroupSingleton<DraftNeutralSettingsOptions>.Instance;
+            neutralKillingCount = (int)neutralOptions.MaxNeutralKillingRoles.Value;
+            TargetOtherNeutralCount = (int)neutralOptions.MaxNeutralTotal.Value - neutralKillingCount;
+        }
+        else
+        {
+            var oldOptions = OptionGroupSingleton<DraftOldSettingsOptions>.Instance;
+            neutralKillingCount = GetSafeCount(oldOptions.MinNeutralKilling.Value, oldOptions.MaxNeutralKilling.Value);
+            TargetOtherNeutralCount = GetSafeCount(oldOptions.MinOtherNeutrals.Value, oldOptions.MaxOtherNeutrals.Value);
+        }
 
         if (neutralKillingCount + TargetOtherNeutralCount > remaining.Count)
         {
@@ -624,7 +652,15 @@ public static class DraftSystem
     private static List<RoleBehaviour> SelectMinMaxRolesToOffer()
     {
         var roleCount = RolesToShow;
-        var availableAlignments = GetAllDraftAlignments()
+        var myId = PlayerControl.LocalPlayer?.PlayerId ?? 255;
+        var pickerId = CurrentPicker ?? myId;
+
+        var faction = DraftFaction.CrewOther;
+        PlayerFactions.TryGetValue(pickerId, out faction);
+
+        var enabledAlignments = GetAlignmentsForFaction(faction);
+
+        var availableAlignments = enabledAlignments
             .Where(alignment => GetRemainingSlotsForAlignment(alignment) > 0)
             .ToList();
 
@@ -1079,15 +1115,6 @@ public static class DraftSystem
             return;
         }
 
-        if (!IsOldDraftMode())
-        {
-            players.Shuffle();
-            PickOrder.AddRange(players);
-            OriginalPickOrder.AddRange(PickOrder);
-            GenerateRoleListSlotOrder();
-            return;
-        }
-
         var specialPlayers = players.Where(id =>
             PlayerFactions.ContainsKey(id) &&
             PlayerFactions[id] != DraftFaction.CrewOther).ToList();
@@ -1143,14 +1170,114 @@ public static class DraftSystem
     {
         RoleListSlotOrder.Clear();
 
-        var slotCount = Mathf.Clamp(PickOrder.Count, 0, MaxRoleListSlots);
+        var count = OriginalPickOrder.Count;
+        if (count == 0)
+        {
+            count = PickOrder.Count;
+        }
+        if (count == 0)
+        {
+            count = GetVisibleRoleListSlotCount();
+        }
+
+        var slotCount = Mathf.Clamp(count, 0, MaxRoleListSlots);
+
+        // Categorize all slot indices
+        var impSlots = new List<int>();
+        var nkSlots = new List<int>();
+        var crewSlots = new List<int>();
 
         for (var i = 0; i < slotCount; i++)
         {
-            RoleListSlotOrder.Add(i);
+            var bucket = GetRoleListBucketForSlot(i);
+            if (IsImpostorBucket(bucket))
+            {
+                impSlots.Add(i);
+            }
+            else if (bucket == DraftRoleListOption.NeutKilling)
+            {
+                nkSlots.Add(i);
+            }
+            else
+            {
+                crewSlots.Add(i);
+            }
         }
 
-        RoleListSlotOrder.Shuffle();
+        impSlots.Shuffle();
+        nkSlots.Shuffle();
+        crewSlots.Shuffle();
+
+        // Initialize RoleListSlotOrder with dummy values first
+        for (var i = 0; i < slotCount; i++)
+        {
+            RoleListSlotOrder.Add(-1);
+        }
+
+        // Assign slots to players in OriginalPickOrder based on their faction
+        var listToUse = OriginalPickOrder.Count > 0 ? OriginalPickOrder : PickOrder;
+
+        for (var i = 0; i < slotCount; i++)
+        {
+            if (i >= listToUse.Count)
+            {
+                break;
+            }
+
+            var playerId = listToUse[i];
+            var faction = DraftFaction.CrewOther;
+            PlayerFactions.TryGetValue(playerId, out faction);
+
+            int assignedSlot = -1;
+
+            if (faction == DraftFaction.Impostor && impSlots.Count > 0)
+            {
+                assignedSlot = impSlots[0];
+                impSlots.RemoveAt(0);
+            }
+            else if (faction == DraftFaction.NeutralKilling && nkSlots.Count > 0)
+            {
+                assignedSlot = nkSlots[0];
+                nkSlots.RemoveAt(0);
+            }
+            else if (crewSlots.Count > 0)
+            {
+                assignedSlot = crewSlots[0];
+                crewSlots.RemoveAt(0);
+            }
+            else
+            {
+                // Fallback to any remaining slot
+                if (impSlots.Count > 0)
+                {
+                    assignedSlot = impSlots[0];
+                    impSlots.RemoveAt(0);
+                }
+                else if (nkSlots.Count > 0)
+                {
+                    assignedSlot = nkSlots[0];
+                    nkSlots.RemoveAt(0);
+                }
+            }
+
+            RoleListSlotOrder[i] = assignedSlot;
+        }
+
+        // Fill any remaining unassigned slots
+        var allRemaining = new List<int>();
+        allRemaining.AddRange(impSlots);
+        allRemaining.AddRange(nkSlots);
+        allRemaining.AddRange(crewSlots);
+        allRemaining.Shuffle();
+
+        for (var i = 0; i < slotCount; i++)
+        {
+            if (RoleListSlotOrder[i] == -1 && allRemaining.Count > 0)
+            {
+                RoleListSlotOrder[i] = allRemaining[0];
+                allRemaining.RemoveAt(0);
+            }
+        }
     }
 
     public static void RegisterPick(byte playerId, ushort roleId)

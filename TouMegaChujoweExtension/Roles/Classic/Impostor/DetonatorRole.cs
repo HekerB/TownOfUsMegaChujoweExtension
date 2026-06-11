@@ -113,10 +113,8 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         var local = PlayerControl.LocalPlayer;
         if (local == null) return;
 
-        // Show only to Impostors and dead players
         if (local.Data.Role.IsImpostor || local.Data.IsDead)
         {
-            // Match Bomber's explosion visual.
             var sphere = CreateRadiusSphere(position, radius, 0.35f);
 
             Coroutines.Start(CoDestroyObjAfter(sphere, 0.6f));
@@ -154,17 +152,14 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         bool isDetonator = local.PlayerId == detonatorId;
         bool isVictim = local.PlayerId == victim.PlayerId;
 
-        // Detonator does not hear the beep
         if (isDetonator) return;
 
-        // Victim always hears it "normally"
         if (isVictim)
         {
             SoundManager.Instance.PlaySound(clip, false, volume);
             return;
         }
 
-        // For others, only audible if VERY close (e.g. 2.0 units)
         float dist = Vector2.Distance(local.transform.position, victim.transform.position);
         if (dist < 3.0f)
         {
@@ -178,7 +173,6 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     {
         if (PlayerControl.LocalPlayer == null || detonator == null) return;
 
-        // Play only for the detonator (as requested)
         if (PlayerControl.LocalPlayer.PlayerId == detonator.PlayerId)
         {
             _cachedTrackerDeactivate ??= TouAudio.TrackerDeactivateSound.LoadAsset();

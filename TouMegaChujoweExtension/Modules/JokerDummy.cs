@@ -16,7 +16,7 @@ public sealed class JokerDummy
             return;
         }
 
-        var appearance = target.GetAppearance();
+        var appearance = target.GetDefaultModifiedAppearance();
         var prefab = AmongUsClient.Instance.PlayerPrefab.gameObject;
         Body = UnityEngine.Object.Instantiate(prefab, target.transform.position, Quaternion.identity);
         Body.name = "JokerDummy_" + appearance.PlayerName;
@@ -37,11 +37,10 @@ public sealed class JokerDummy
             player.cosmetics.SetSkin(appearance.SkinId, appearance.ColorId);
             player.SetColor(appearance.ColorId);
 
-            if (target.cosmetics?.currentBodySprite?.BodySprite != null &&
-                player.cosmetics?.currentBodySprite?.BodySprite != null)
+            if (player.cosmetics?.currentBodySprite?.BodySprite != null)
             {
                 PlayerMaterial.SetColors(appearance.ColorId, player.cosmetics.currentBodySprite.BodySprite);
-                player.cosmetics.currentBodySprite.BodySprite.color = target.cosmetics.currentBodySprite.BodySprite.color;
+                player.cosmetics.currentBodySprite.BodySprite.color = Color.white;
             }
         }
 
@@ -80,7 +79,23 @@ public sealed class JokerDummy
         if (cloneNameText != null && targetNameText != null)
         {
             cloneNameText.text = appearance.PlayerName;
-            cloneNameText.color = targetNameText.color;
+            
+            UnityEngine.Color nameColor = UnityEngine.Color.white;
+            if (appearance.NameColor.HasValue)
+            {
+                nameColor = appearance.NameColor.Value;
+            }
+            else
+            {
+                nameColor = targetNameText.color;
+            }
+
+            if (nameColor.a <= 0f)
+            {
+                nameColor = UnityEngine.Color.white;
+            }
+            cloneNameText.color = nameColor;
+            
             cloneNameText.font = targetNameText.font;
             cloneNameText.fontSize = targetNameText.fontSize;
             cloneNameText.transform.localPosition = targetNameText.transform.localPosition;
@@ -93,9 +108,38 @@ public sealed class JokerDummy
             cloneColorblind.text = targetColorblind.text;
             cloneColorblind.font = targetColorblind.font;
             cloneColorblind.fontSize = targetColorblind.fontSize;
-            cloneColorblind.color = targetColorblind.color;
+            
+            UnityEngine.Color cbColor = appearance.ColorBlindTextColor;
+            if (cbColor.a <= 0f)
+            {
+                cbColor = targetColorblind.color;
+            }
+
+            if (cbColor.a <= 0f)
+            {
+                cbColor = UnityEngine.Color.white;
+            }
+            cloneColorblind.color = cbColor;
+            
             cloneColorblind.transform.localPosition = targetColorblind.transform.localPosition;
-            cloneColorblind.gameObject.SetActive(targetColorblind.gameObject.activeSelf);
+            
+            var showColorblind = targetColorblind.gameObject.activeSelf;
+            if (!showColorblind)
+            {
+                foreach (var p in PlayerControl.AllPlayerControls)
+                {
+                    if (p != null)
+                    {
+                        var cb = p.transform.Find("Names")?.Find("ColorblindName_TMP")?.gameObject;
+                        if (cb != null && cb.activeSelf)
+                        {
+                            showColorblind = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            cloneColorblind.gameObject.SetActive(showColorblind);
         }
 
         var info = cloneNames.Find("Info");

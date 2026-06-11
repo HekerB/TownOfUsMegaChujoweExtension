@@ -260,7 +260,6 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
             player.RemoveModifier<WitchSpellboundModifier>();
         }
 
-        // Odświeżenie Meetingu (ikonki i kolory)
         WitchSpellboundIndicatorPatch.UpdateRoleNameTextPostfix();
         if (MeetingHud.Instance != null)
         {
@@ -293,10 +292,6 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         }
     }
 
-    /// <summary>
-    /// Clears spellbound modifiers only from players hexed by a specific Witch.
-    /// This is used when a Witch is exiled or dies, so only their hexed players are freed.
-    /// </summary>
     [MethodRpc((uint)ExtensionRpc.WitchClearSpellboundByWitch)]
     public static void RpcWitchClearSpellboundByWitch(PlayerControl sender, byte witchId)
     {
@@ -318,7 +313,6 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
 
         if (clearedCount > 0)
         {
-            // Odświeżenie Meetingu
             WitchSpellboundIndicatorPatch.UpdateRoleNameTextPostfix();
             if (MeetingHud.Instance != null)
             {
@@ -334,23 +328,4 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

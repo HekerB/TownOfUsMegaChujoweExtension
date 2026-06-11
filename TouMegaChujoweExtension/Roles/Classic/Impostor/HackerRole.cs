@@ -38,7 +38,6 @@ public sealed class HackerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
         }
         catch
         {
-            /* Error during role type verification - safe to return false */
             return false;
         }
     }
@@ -192,19 +191,3 @@ public sealed class HackerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
         HackerSystem.ResetRoundState();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

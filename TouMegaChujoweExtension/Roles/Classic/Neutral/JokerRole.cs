@@ -246,7 +246,6 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
         }
         catch
         {
-            // notification fallback
         }
     }
 
@@ -270,7 +269,6 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
         }
         catch
         {
-            // notification fallback
         }
     }
 

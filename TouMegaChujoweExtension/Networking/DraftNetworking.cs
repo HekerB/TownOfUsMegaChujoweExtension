@@ -69,8 +69,13 @@ public static class DraftNetworking
 
             var orderCount = reader.ReadByte();
             DraftSystem.PickOrder.Clear();
+            DraftSystem.OriginalPickOrder.Clear();
             for (var i = 0; i < orderCount; i++)
-                DraftSystem.PickOrder.Add(reader.ReadByte());
+            {
+                var val = reader.ReadByte();
+                DraftSystem.PickOrder.Add(val);
+                DraftSystem.OriginalPickOrder.Add(val);
+            }
 
             var roleListSlotOrderCount = reader.ReadByte();
             DraftSystem.RoleListSlotOrder.Clear();

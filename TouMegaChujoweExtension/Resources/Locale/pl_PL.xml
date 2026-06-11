@@ -15,6 +15,9 @@
    <!-- Use Polish Language -->
   <string name="ExtensionLocalSettingUsePolishLanguage">Uzyj jezyka polskiego</string>
   
+  <!-- Use Role Color for Map -->
+  <string name="ExtensionLocalSettingUseRoleColorForMap">Kolor mapy: Frakcja (mira) / Kolor roli (nasze)</string>
+  
   <!-- Draft Alert Local Settings -->
   <string name="ExtensionLocalSettingDraftAlert">Powiadomienie o Drafcie</string>
   <string name="DraftAlertOff">Wylaczone</string>

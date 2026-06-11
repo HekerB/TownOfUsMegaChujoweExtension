@@ -6,6 +6,7 @@ using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
+using Reactor.Networking.Rpc;
 using TownOfUs.Assets;
 using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
@@ -176,20 +177,13 @@ public sealed class PelicanRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         return WinConditionMet();
     }
 
+    [MethodRpc((uint)ExtensionRpc.PelicanSwallow, LocalHandling = RpcLocalHandling.Before)]
     public static void RpcPelicanSwallow(PlayerControl pelican, byte victimId)
     {
         if (pelican == null) return;
 
         var victim = MiscUtils.PlayerById(victimId);
         if (victim == null || victim.HasDied()) return;
-
-
-        if (AmongUsClient.Instance.AmClient && pelican.AmOwner)
-        {
-            var writer = AmongUsClient.Instance.StartRpcImmediately(pelican.NetId, (byte)ExtensionRpc.PelicanSwallow, Hazel.SendOption.Reliable, -1);
-            writer.Write(victimId);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-        }
 
         PelicanSystem.SwallowPlayer(pelican.PlayerId, victimId);
         if (victim.AmOwner)
@@ -198,44 +192,20 @@ public sealed class PelicanRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         }
     }
 
+    [MethodRpc((uint)ExtensionRpc.PelicanDigest, LocalHandling = RpcLocalHandling.Before)]
     public static void RpcPelicanDigest(PlayerControl pelican)
     {
         if (pelican == null) return;
 
-        if (AmongUsClient.Instance.AmClient && pelican.AmOwner)
-        {
-            var writer = AmongUsClient.Instance.StartRpcImmediately(pelican.NetId, (byte)ExtensionRpc.PelicanDigest, Hazel.SendOption.Reliable, -1);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-        }
-
         PelicanSystem.DigestAll(pelican.PlayerId);
     }
 
+    [MethodRpc((uint)ExtensionRpc.PelicanRelease, LocalHandling = RpcLocalHandling.Before)]
     public static void RpcPelicanRelease(PlayerControl pelican)
     {
         if (pelican == null) return;
 
-        if (AmongUsClient.Instance.AmClient && pelican.AmOwner)
-        {
-            var writer = AmongUsClient.Instance.StartRpcImmediately(pelican.NetId, (byte)ExtensionRpc.PelicanRelease, Hazel.SendOption.Reliable, -1);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-        }
-
         PelicanSystem.ReleaseAll(pelican.PlayerId);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

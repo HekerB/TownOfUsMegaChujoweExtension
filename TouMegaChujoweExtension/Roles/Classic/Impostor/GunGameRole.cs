@@ -184,9 +184,6 @@ public sealed class GunGameRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
             RegisterExistingImpostorRoles();
         }
 
-        // Lethal chain option removed; always use random role selection.
-        // The original chain logic is omitted.
-
         nextChainIndex = 0;
         var rolePool = removeExistingImpostorRoles
             ? RandomImpostorRoles.Where(role => !UsedImpostorRoleIds.Contains(RoleId.Get(role)) && !rememberedRoles.Contains(RoleId.Get(role)) && !IsPowerRole(role)).ToList()

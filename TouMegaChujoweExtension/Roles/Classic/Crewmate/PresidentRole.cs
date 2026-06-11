@@ -22,32 +22,16 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 {
     public DoomableType DoomHintType => DoomableType.Insight;
 
-    /// <summary>
-    /// Target ID for the Abstain button. Must not collide with:
-    /// - 252 (BlackmailedModifier)
-    /// - 251 (Prosecutor)
-    /// - 253 (Skip vote in VotingUtils)
-    /// </summary>
     public const byte AbstainTargetId = 250;
 
     [HideFromIl2Cpp] public PlayerVoteArea? AbstainButton { get; private set; }
 
     public int VoteBank { get; set; } = -1;
 
-    /// <summary>
-    /// True when the player clicked Abstain and confirm checkboxes are showing.
-    /// </summary>
     public bool SelectingAbstain { get; set; }
 
-    /// <summary>
-    /// Set to true when DoAbstain has been called this meeting, to prevent double-processing.
-    /// </summary>
     public bool HasAbstained { get; set; }
 
-    /// <summary>
-    /// True when the president has cast at least one vote on a player this meeting.
-    /// Once true, Abstain button should be hidden.
-    /// </summary>
     public bool HasVotedOnPlayer { get; set; }
 
     public string LocaleKey => "President";
@@ -169,9 +153,6 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         AbstainButton.voteComplete = meeting.SkipVoteButton.voteComplete;
     }
 
-    /// <summary>
-    /// True when the president has cast their knighted bonus vote this meeting.
-    /// </summary>
     public bool HasCastKnightedVote { get; set; }
 
     public override void OnMeetingStart()
@@ -219,7 +200,6 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
         skip.transform.localPosition += new Vector3(0f, 0.20f, 0f);
 
-        // When any player vote area is clicked, clear abstain checkboxes
         foreach (var playerVoteArea in meeting.playerStates)
         {
             playerVoteArea.gameObject.GetComponentInChildren<PassiveButton>().OnClick
@@ -233,7 +213,6 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
                 }));
         }
 
-        // When Skip is clicked, clear abstain checkboxes
         skip.gameObject.GetComponentInChildren<PassiveButton>().OnClick
             .AddListener((UnityAction)(() =>
             {
@@ -244,7 +223,6 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
                 }
             }));
 
-        // When Abstain is clicked, clear Skip checkboxes
         AbstainButton.gameObject.GetComponentInChildren<PassiveButton>().OnClick
             .AddListener((UnityAction)(() =>
             {
@@ -252,10 +230,6 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             }));
     }
 
-    /// <summary>
-    /// Called when the abstain vote reaches HandleVote (via CmdCastVote flow).
-    /// This is the actual abstain execution.
-    /// </summary>
     public void DoAbstain()
     {
         var meeting = MeetingHud.Instance;
@@ -270,7 +244,6 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         var maxBank = (int)OptionGroupSingleton<PresidentOptions>.Instance.MaxVoteBank;
         VoteBank = System.Math.Min(VoteBank + bonus, maxBank);
 
-        // Local UI cleanup (only for the owning client)
         if (Player.AmOwner)
         {
             SoundManager.Instance.PlaySound(meeting.VoteLockinSound, false);
@@ -308,18 +281,3 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         HasVotedOnPlayer = false;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

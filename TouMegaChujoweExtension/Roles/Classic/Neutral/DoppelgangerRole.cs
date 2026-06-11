@@ -59,7 +59,6 @@ public sealed class DoppelgangerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         var aliveCount = Helpers.GetAlivePlayers().Count;
         var killersAlive = MiscUtils.KillersAliveCount;
 
-        // Win only when we're the SOLE killer and <= 2 players remain
         return aliveCount <= 2 && killersAlive == 1;
     }
 
@@ -111,22 +110,4 @@ public sealed class DoppelgangerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
 
     public override bool DidWin(GameOverReason gameOverReason) => WinConditionMet();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
