@@ -247,14 +247,39 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
 
     public override bool IsTargetValid(PlayerControl? target)
     {
-        return base.IsTargetValid(target) &&
-               target != null &&
-               !target.HasDied() &&
-               target.PlayerId != PlayerControl.LocalPlayer.PlayerId;
+        if (!base.IsTargetValid(target) || target == null || target.HasDied() || target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+        {
+            return false;
+        }
+
+        if (PlayerControl.LocalPlayer.TryGetModifier<VoodooTargetLockModifier>(out var targetLock))
+        {
+            return target.PlayerId == targetLock.TargetId;
+        }
+
+        return true;
     }
 
     public override PlayerControl? GetTarget()
     {
-        return PlayerControl.LocalPlayer.GetClosestLivingPlayer(true, Distance);
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null)
+        {
+            return null;
+        }
+
+        if (localPlayer.TryGetModifier<VoodooTargetLockModifier>(out var targetLock))
+        {
+            var target = PlayerControl.AllPlayerControls.ToArray()
+                .FirstOrDefault(x => x != null && x.PlayerId == targetLock.TargetId);
+            if (target != null && IsTargetValid(target) && Vector2.Distance(target.GetTruePosition(), localPlayer.GetTruePosition()) <= Distance)
+            {
+                return target;
+            }
+
+            return null;
+        }
+
+        return localPlayer.GetClosestLivingPlayer(true, Distance);
     }
 }

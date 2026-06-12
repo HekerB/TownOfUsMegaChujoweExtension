@@ -140,6 +140,13 @@ public sealed class VoodooMasterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
             return;
         }
 
+        var options = OptionGroupSingleton<VoodooMasterOptions>.Instance;
+        var lockRounds = (int)options.TargetLockDurationRounds;
+        if (lockRounds > 0 && !voodooMaster.HasModifier<VoodooTargetLockModifier>())
+        {
+            voodooMaster.RpcAddModifier<VoodooTargetLockModifier>(target.PlayerId, lockRounds);
+        }
+
         switch (effect)
         {
             case VoodooEffect.Blindness:

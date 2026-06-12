@@ -1683,6 +1683,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionVoodooMasterBlindDuration">Blind Duration</string>
   <string name="ExtensionOptionVoodooMasterConfuseDuration">Confuse Duration</string>
   <string name="ExtensionOptionVoodooMasterMuteDuration">Mute Duration In Meetings</string>
+  <string name="ExtensionOptionVoodooMasterTargetLockDuration">Target Lock Duration (Meetings)</string>
   <string name="ExtensionOptionVoodooMasterMoveWhileMenu">Can Move While Menu</string>
   <string name="ExtensionVoodooBlindAlert">You have been cursed by the Voodoo Master!</string>
   <string name="ExtensionVoodooEffectBlindness">Blind</string>

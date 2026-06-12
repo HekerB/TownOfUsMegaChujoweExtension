@@ -71,6 +71,22 @@ public static class ExtensionSymbolsPatch
             __result += " <color=#2A1119>[M]</color>";
         }
 
+        // --- VOODOO MASTER TARGET LOCK [L] ---
+        foreach (var pc in PlayerControl.AllPlayerControls)
+        {
+            if (pc != null && pc.TryGetModifier<VoodooTargetLockModifier>(out var targetLock))
+            {
+                if (targetLock.TargetId == player.PlayerId)
+                {
+                    bool isLocalVoodooMaster = local.PlayerId == pc.PlayerId;
+                    if ((isLocalVoodooMaster || deadKnow) && !__result.Contains("[L]"))
+                    {
+                        __result += " <color=#FF0000>[L]</color>";
+                    }
+                }
+            }
+        }
+
         // --- DEATH NOTE (♡) ---
         if (TryGetDeathNoteTarget(out var dnTarget) && dnTarget != null && dnTarget.PlayerId == player.PlayerId && !__result.Contains('♡') && (local.HasModifier<DeathNoteModifier>() || deadKnow))
         {

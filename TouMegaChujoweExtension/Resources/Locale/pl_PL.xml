@@ -1626,6 +1626,7 @@
   <string name="ExtensionOptionVoodooMasterBlindDuration">Czas oslepienia</string>
   <string name="ExtensionOptionVoodooMasterConfuseDuration">Czas chaosu</string>
   <string name="ExtensionOptionVoodooMasterMuteDuration">Czas wyciszenia (narady)</string>
+  <string name="ExtensionOptionVoodooMasterTargetLockDuration">Czas blokady celu (narady)</string>
   <string name="ExtensionOptionVoodooMasterMoveWhileMenu">Ruch w menu</string>
   <string name="ExtensionVoodooBlindAlert">Mistrz Voodoo Cie przeklal!</string>
   <string name="ExtensionVoodooEffectBlindness">Oslepienie</string>
