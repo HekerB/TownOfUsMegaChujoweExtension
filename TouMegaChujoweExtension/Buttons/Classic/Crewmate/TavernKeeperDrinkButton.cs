@@ -17,13 +17,12 @@ public sealed class TavernKeeperDrinkButton : TownOfUsRoleButton<TavernKeeperRol
     private ActionButton? _lastButton;
     private bool _lastMeetingState;
     private bool _waitingForModifier;
-    private bool _modifierWasActive;
 
     public override string Name => TouLocale.Get("ExtensionRoleTavernKeeperDrink", "Drink");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TouExtensionColors.TavernKeeper;
-    public override int MaxUses => (int)OptionGroupSingleton<TavernKeeperOptions>.Instance.MaxUses.Value;
-    public override float Cooldown => Math.Clamp(OptionGroupSingleton<TavernKeeperOptions>.Instance.DrinkCooldown.Value + MapCooldown, 5f, 120f);
+    public override int MaxUses => (int)OptionGroupSingleton<TavernKeeperOptions>.Instance.MaxUses;
+    public override float Cooldown => Math.Clamp(OptionGroupSingleton<TavernKeeperOptions>.Instance.DrinkCooldown + MapCooldown, 5f, 120f);
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.CleanseSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
 
@@ -88,7 +87,6 @@ public sealed class TavernKeeperDrinkButton : TownOfUsRoleButton<TavernKeeperRol
         if (activeMod != null)
         {
             _waitingForModifier = false;
-            _modifierWasActive = true;
         }
 
         if (EffectActive && (_waitingForModifier || activeMod != null))
@@ -98,7 +96,7 @@ public sealed class TavernKeeperDrinkButton : TownOfUsRoleButton<TavernKeeperRol
             if (Button != null)
             {
                 Button.SetEnabled();
-                var duration = OptionGroupSingleton<TavernKeeperOptions>.Instance.RoleblockDuration.Value;
+                var duration = OptionGroupSingleton<TavernKeeperOptions>.Instance.RoleblockDuration;
                 var timeRemaining = activeMod != null ? activeMod.TimeRemaining : duration;
                 Button.SetFillUp(timeRemaining, duration);
 
@@ -127,7 +125,6 @@ public sealed class TavernKeeperDrinkButton : TownOfUsRoleButton<TavernKeeperRol
             {
                 EffectActive = false;
                 _waitingForModifier = false;
-                _modifierWasActive = false;
                 OverrideName(Name);
                 Timer = Cooldown;
                 if (Button != null)
@@ -199,14 +196,12 @@ public sealed class TavernKeeperDrinkButton : TownOfUsRoleButton<TavernKeeperRol
         {
             Timer = Cooldown;
             _waitingForModifier = false;
-            _modifierWasActive = false;
             EffectActive = false;
         }
         else
         {
             Timer = -1f;
             _waitingForModifier = true;
-            _modifierWasActive = false;
             EffectActive = true;
             OverrideName("Roleblocked");
         }
@@ -227,14 +222,13 @@ public sealed class TavernKeeperDrinkButton : TownOfUsRoleButton<TavernKeeperRol
         }
         catch (Exception)
         {
-
+            // ignored
         }
     }
 
     public override void ResetCooldownAndOrEffect()
     {
         _waitingForModifier = false;
-        _modifierWasActive = false;
         EffectActive = false;
         OverrideName(Name);
         base.ResetCooldownAndOrEffect();
