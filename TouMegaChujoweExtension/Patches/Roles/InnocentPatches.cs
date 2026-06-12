@@ -230,12 +230,11 @@ public static class InnocentPatches
 
         if (voters.Count == 0)
         {
-            voters = PlayerControl.AllPlayerControls.ToArray()
+            voters = [.. PlayerControl.AllPlayerControls.ToArray()
                 .Where(player => player != null &&
                                  !player.HasDied() &&
                                  player.PlayerId != innocent.Player.PlayerId &&
-                                 player.PlayerId != exiled.PlayerId)
-                .ToList();
+                                 player.PlayerId != exiled.PlayerId)];
         }
 
         foreach (var voter in voters)
@@ -284,7 +283,7 @@ public static class InnocentTauntMeetingDisplay
 
         foreach (var marker in row.GetModifiers<InnocentTargetModifier>())
         {
-            if (!InnocentRole.ActiveInnocents.TryGetValue(marker.InnocentPlayerId, out var innocent)) continue;
+            if (!InnocentRole.ActiveInnocents.TryGetValue(marker.InnocentPlayerId, out _)) continue;
             if (local.Data.IsDead) return true;
             if (local.PlayerId == marker.InnocentPlayerId) return true;
         }
@@ -304,7 +303,7 @@ public static class InnocentTauntMeetingDisplay
 }
 
 [HarmonyPatch(typeof(PlayerRoleTextExtensions), nameof(PlayerRoleTextExtensions.UpdateTargetColor),
-    new[] { typeof(Color), typeof(PlayerControl), typeof(DataVisibility) })]
+    [typeof(Color), typeof(PlayerControl), typeof(DataVisibility)])]
 public static class InnocentTargetColorPatch
 {
     [HarmonyPostfix]
