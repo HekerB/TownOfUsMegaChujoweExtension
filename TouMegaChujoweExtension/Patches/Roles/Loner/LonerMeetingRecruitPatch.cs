@@ -1,9 +1,13 @@
+using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
+using MiraAPI.GameOptions;
 using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TMPro;
 using TouMegaChujoweExtension.Assets;
+using TouMegaChujoweExtension.Options.Roles.Impostor;
 using TouMegaChujoweExtension.Roles.Classic.Impostor;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -50,6 +54,51 @@ public static class LonerMeetingRecruitPatch
         if (RecruitButtons.Count == 0)
         {
             CreateRecruitButtons(__instance);
+            return;
+        }
+
+        var local = PlayerControl.LocalPlayer;
+        if (local == null || local.Data?.Role is not LonerRole || local.HasDied())
+        {
+            ClearButtons();
+            SelectedTargetId = null;
+            return;
+        }
+
+        List<byte> targetsToRemove = null;
+        foreach (var targetId in RecruitRenderers.Keys)
+        {
+            var target = MiscUtils.PlayerById(targetId);
+            if (target == null || target.HasDied() || target.Data?.Disconnected == true || target.IsImpostor())
+            {
+                targetsToRemove ??= [];
+                targetsToRemove.Add(targetId);
+            }
+        }
+
+        if (targetsToRemove != null)
+        {
+            foreach (var targetId in targetsToRemove)
+            {
+                if (SelectedTargetId == targetId)
+                {
+                    SelectedTargetId = null;
+                }
+
+                if (RecruitRenderers.TryGetValue(targetId, out var renderer) && renderer != null)
+                {
+                    var buttonObj = renderer.gameObject;
+                    RecruitButtons.Remove(buttonObj);
+                    buttonObj.Destroy();
+                }
+                RecruitRenderers.Remove(targetId);
+
+                if (RecruitLabels.TryGetValue(targetId, out var label) && label != null)
+                {
+                    label.gameObject.Destroy();
+                }
+                RecruitLabels.Remove(targetId);
+            }
         }
     }
 
@@ -278,7 +327,14 @@ public static class LonerMeetingRecruitPatch
             return;
         }
 
-        LonerRole.RpcRecruit(local, target);
+        var options = OptionGroupSingleton<LonerOptions>.Instance;
+        ushort nextRoleId = (ushort)RoleTypes.Impostor;
+        if (options.RecruitBecomesRandomImpostor)
+        {
+            nextRoleId = LonerRole.GetNextRoleId(options.RemoveExistingImpostorRoles);
+        }
+
+        LonerRole.RpcRecruit(local, target, nextRoleId);
     }
 
     private static void ClearButtons()

@@ -1561,7 +1561,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionLonerChangeRoleAfterKills">Loner Becomes Random Impostor Role</string>
   <string name="ExtensionOptionLonerKillsNeededToChangeRole">Kills After Recruit Needed To Gain New Role</string>
   <string name="ExtensionOptionLonerRecruitedImpostorBecomesAssassin">Recruited Impostor Becomes Assassin</string>
-  <string name="ExtensionOptionLonerRecruitBecomesTraitor">Recruit Becomes Traitor</string>
+  <string name="ExtensionOptionLonerRecruitBecomesRandomImpostor">Recruit Becomes Random Impostor</string>
   <string name="ExtensionOptionLonerRemoveExistingImpostorRoles">Avoid Impostor Roles Used This Game</string>
 
   <!-- Burrower Role -->

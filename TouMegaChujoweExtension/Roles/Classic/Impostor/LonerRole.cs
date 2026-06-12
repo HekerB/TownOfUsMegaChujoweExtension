@@ -224,7 +224,7 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
     }
 
     [MethodRpc((uint)ExtensionRpc.LonerRecruit)]
-    public static void RpcRecruit(PlayerControl loner, PlayerControl target)
+    public static void RpcRecruit(PlayerControl loner, PlayerControl target, ushort nextRoleId)
     {
         if (loner == null || target == null || loner.Data?.Role is not LonerRole || HasRecruited(loner))
         {
@@ -241,9 +241,9 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         CurrentKillCount[loner.PlayerId] = 0;
         var options = OptionGroupSingleton<LonerOptions>.Instance;
 
-        if (options.RecruitBecomesTraitor)
+        if (options.RecruitBecomesRandomImpostor)
         {
-            target.ChangeRole(RoleId.Get<TraitorRole>(), recordRole: true);
+            target.ChangeRole(nextRoleId, recordRole: true);
         }
         else
         {
@@ -259,12 +259,16 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         {
             ButtonResetPatches.ResetCooldowns();
             target.SetKillTimer(target.GetKillCooldown());
+            if (options.RecruitBecomesRandomImpostor)
+            {
+                ApplyMutationCooldowns(target);
+            }
         }
 
         ShowRecruitNotification(loner, target);
     }
 
-    private static ushort GetNextRoleId(bool removeExistingImpostorRoles)
+    public static ushort GetNextRoleId(bool removeExistingImpostorRoles)
     {
         if (removeExistingImpostorRoles)
         {
@@ -275,12 +279,42 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
             ? RandomImpostorRoles.Where(role => !UsedImpostorRoleIds.Contains(RoleId.Get(role)) && !IsDisallowedMutationRole(role)).ToList()
             : RandomImpostorRoles.Where(role => !IsDisallowedMutationRole(role)).ToList();
 
-        if (rolePool.Count == 0)
+        var filteredPool = rolePool.Where(role =>
         {
-            rolePool = RandomImpostorRoles.Where(role => !IsDisallowedMutationRole(role)).ToList();
+            var assignData = TownOfUs.Utilities.MiscUtils.GetAssignData((RoleTypes)RoleId.Get(role));
+            return assignData != null && assignData.Count > 0 && assignData.Chance > 0;
+        }).ToList();
+
+        if (filteredPool.Count == 0)
+        {
+            filteredPool = RandomImpostorRoles.Where(role => !IsDisallowedMutationRole(role)).ToList();
         }
 
-        return RoleId.Get(rolePool[UnityEngine.Random.Range(0, rolePool.Count)]);
+        var totalWeight = filteredPool.Sum(role =>
+        {
+            var assignData = TownOfUs.Utilities.MiscUtils.GetAssignData((RoleTypes)RoleId.Get(role));
+            return assignData != null ? assignData.Chance : 0f;
+        });
+
+        if (totalWeight <= 0)
+        {
+            return RoleId.Get(filteredPool[UnityEngine.Random.Range(0, filteredPool.Count)]);
+        }
+
+        var r = UnityEngine.Random.Range(0f, (float)totalWeight);
+        var currentSum = 0f;
+        foreach (var role in filteredPool)
+        {
+            var assignData = TownOfUs.Utilities.MiscUtils.GetAssignData((RoleTypes)RoleId.Get(role));
+            var chance = assignData != null ? assignData.Chance : 0f;
+            currentSum += chance;
+            if (r <= currentSum)
+            {
+                return RoleId.Get(role);
+            }
+        }
+
+        return RoleId.Get(filteredPool.Last());
     }
 
     private static bool IsTrackedImpostorRole(RoleBehaviour? role)

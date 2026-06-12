@@ -1505,7 +1505,7 @@
   <string name="ExtensionOptionLonerChangeRoleAfterKills">Mutacja po killach</string>
   <string name="ExtensionOptionLonerKillsNeededToChangeRole">Liczba killi do mutacji</string>
   <string name="ExtensionOptionLonerRecruitedImpostorBecomesAssassin">Zwerbowany staje sie Zabojca</string>
-  <string name="ExtensionOptionLonerRecruitBecomesTraitor">Rekrut staje sie Zdrajca</string>
+  <string name="ExtensionOptionLonerRecruitBecomesRandomImpostor">Rekrut staje sie losowym Impostorem</string>
   <string name="ExtensionOptionLonerRemoveExistingImpostorRoles">Omijaj role z lobby</string>
 
   <!-- Burrower Role -->
