@@ -58,6 +58,7 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.HasDied()) return false;
         if (player.inVent) return false;
+        if (TouMegaChujoweExtension.Modules.PelicanSystem.IsSwallowed(player.PlayerId)) return false;
 
         if (_isPoisoning) return true;
 
@@ -179,6 +180,7 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
         {
             if (pc == null || pc.Data.IsDead || pc.PlayerId == playerControl.PlayerId) continue;
             if (pc.IsImpostorAligned()) continue;
+            if (TouMegaChujoweExtension.Modules.PelicanSystem.IsSwallowed(pc.PlayerId)) continue;
 
             var dist = Vector2.Distance(playerControl.transform.position, pc.transform.position);
             if (dist <= killDist && dist < minDist)

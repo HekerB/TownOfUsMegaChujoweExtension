@@ -80,4 +80,13 @@ public static class PelicanEvents
             }
         }
     }
+
+    [RegisterEvent]
+    public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
+    {
+        if (@event.Target != null && TouMegaChujoweExtension.Modules.PelicanSystem.IsSwallowed(@event.Target.PlayerId))
+        {
+            @event.Cancel();
+        }
+    }
 }

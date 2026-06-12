@@ -1,16 +1,5 @@
-using MiraAPI.GameOptions;
-using TownOfUs.Networking;
 using TownOfUs.Utilities;
 using UnityEngine;
-using System.Linq;
-using System.Collections.Generic;
-using TouMegaChujoweExtension.Options.Roles.Impostor;
-using TouMegaChujoweExtension.Roles.Classic.Impostor;
-using TownOfUs.Modules.Localization;
-using System.Collections;
-using BepInEx.Logging;
-using TownOfUs;
-using TouMegaChujoweExtension.Buttons.Classic.Impostor;
 using MiraAPI.Hud;
 
 namespace TouMegaChujoweExtension.Modules;
@@ -49,10 +38,9 @@ public static class SniperSystem
             }
         }
 
-        // If local player is aiming, handle mouse clicks to shoot
         if (IsAiming && localPlayer != null && !localPlayer.Data.IsDead)
         {
-            if (UnityEngine.Time.frameCount > StartAimingFrame && Input.GetMouseButtonDown(0))
+            if (Time.frameCount > StartAimingFrame && Input.GetMouseButtonDown(0))
             {
                 if (Camera.main != null)
                 {
@@ -64,6 +52,7 @@ public static class SniperSystem
                     {
                         if (pc == null || pc.Data.IsDead || pc.PlayerId == localPlayer.PlayerId) continue;
                         if (pc.IsImpostorAligned()) continue;
+                        if (PelicanSystem.IsSwallowed(pc.PlayerId)) continue;
 
                         var distToClick = Vector2.Distance(mouseWorldPos, pc.transform.position);
                         if (distToClick < minClickDist)
@@ -76,24 +65,17 @@ public static class SniperSystem
                     if (clickedTarget != null)
                     {
                         var btn = CustomButtonSingleton<SniperShootButton>.Instance;
-                        // Check shields!
+
                         if (PoisonSystem.CheckAndTriggerShields(localPlayer, clickedTarget))
                         {
-                            // Shield blocked! End aiming, put button on cooldown
-                            if (btn != null)
-                            {
-                                btn.EndAiming(true);
-                            }
+
+                            btn?.EndAiming(true);
                         }
                         else
                         {
-                            // Success! Send Sniper Rpc
                             SniperRole.RpcSniperShoot(localPlayer, clickedTarget.PlayerId);
                             SniperRole.RpcSniperPlaySound(localPlayer, clickedTarget.PlayerId);
-                            if (btn != null)
-                            {
-                                btn.EndAiming(true);
-                            }
+                            btn?.EndAiming(true);
                         }
                     }
                 }

@@ -205,6 +205,19 @@ public static class PelicanSystem
 
             if (isMeVictim)
             {
+                try
+                {
+                    var btn = MiraAPI.Hud.CustomButtonSingleton<AstralPhaseButton>.Instance;
+                    if (btn != null && btn.EffectActive)
+                    {
+                        btn.CancelPhaseWithoutTeleport();
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Failed to cancel Astral phase: {ex.Message}");
+                }
+
                 ShowSwallowedNotification();
                 StartSpectatingPelican(pelicanId);
 

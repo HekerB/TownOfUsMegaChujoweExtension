@@ -158,6 +158,7 @@ public static class PoisonSystem
                     {
                         if (pc == null || pc.Data.IsDead || pc.PlayerId == localPlayer.PlayerId) continue;
                         if (pc.IsImpostorAligned()) continue;
+                        if (PelicanSystem.IsSwallowed(pc.PlayerId)) continue;
 
                         var distToClick = Vector2.Distance(mouseWorldPos, pc.transform.position);
                         if (distToClick < minClickDist)

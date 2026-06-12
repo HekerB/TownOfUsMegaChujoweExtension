@@ -118,5 +118,6 @@ public enum ExtensionRpc : uint
     SendApocalypseChat = 133,
     BerserkerSetKills = 134,
     BerserkerTransformToWar = 135,
-    InverterDisorient = 136
+    InverterDisorient = 136,
+    TavernKeeperRoleblock = 137
 }

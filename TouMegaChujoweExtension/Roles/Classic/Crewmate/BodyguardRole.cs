@@ -1,23 +1,17 @@
 using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using MiraAPI.Networking;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
-using Reactor.Utilities.Extensions;
 using Reactor.Utilities;
 using System.Collections;
 using System.Text;
-using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
-using TownOfUs.Networking;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using TownOfUs;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;

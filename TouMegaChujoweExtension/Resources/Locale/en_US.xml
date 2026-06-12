@@ -16,7 +16,10 @@
   <string name="ExtensionLocalSettingUsePolishLanguage">Use Polish Language</string>
   
   <!-- Use Role Color for Map -->
-  <string name="ExtensionLocalSettingUseRoleColorForMap">Map Color: Faction (mira) / Role Color </string>
+  <string name="ExtensionLocalSettingMapColor">Map Outline Color</string>
+  <string name="MapColorOff">Off (mira style)</string>
+  <string name="MapColorRole">Role</string>
+  <string name="MapColorPlayer">Player Color</string>
   
   <!-- Draft Alert Local Settings -->
   <string name="ExtensionLocalSettingDraftAlert">Draft Alert Notification</string>
@@ -1699,4 +1702,29 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionInverterMoveWhileMenu">Can Move While Menu</string>
   <string name="ExtensionOptionInverterDisorientSamePersonTwice">Disorient Same Person Twice In A Row</string>
   <string name="ExtensionModifierDisoriented">Disoriented</string>
+
+  <!-- Tavern Keeper -->
+  <string name="ExtensionRoleTavernKeeper">Tavern Keeper</string>
+  <string name="ExtensionRoleTavernKeeperIntroBlurb">Drink with players to roleblock them.</string>
+  <string name="ExtensionRoleTavernKeeperTabDescription">Drink with players to roleblock them and disable their abilities.</string>
+  <string name="ExtensionRoleTavernKeeperWikiDescription">The Tavern Keeper is a Crewmate Protective role that can drink with other players to roleblock them, disabling their active abilities. Drinking can cause Immunity, which makes the target temporarily immune to subsequent roleblocks. In addition, the target is roleblocked and has their controls inverted immediately upon drinking, but the alert notification is only displayed after a configured delay (similar to the Confuse Delay of the Herbalist).</string>
+  <string name="ExtensionRoleTavernKeeperDrink">Drink</string>
+  <string name="ExtensionRoleTavernKeeperDrinkWikiDescription">Drink with a player to roleblock them for {0} second(s).</string>
+  <string name="ExtensionRoleTavernKeeperTabRoleblockedDuration">Roleblocked players are roleblocked for {0} second(s).</string>
+  <string name="ExtensionRoleTavernKeeperTabTargetImmunity">Your target will have immunity when their roleblock expires.</string>
+  <string name="ExtensionRoleTavernKeeperTabCurrentlyRoleblocked">Currently roleblocked: {0}</string>
+  <string name="ExtensionRoleTavernKeeperNotificationRoleblocked">{0} was roleblocked!</string>
+  <string name="ExtensionRoleTavernKeeperAlertImmune">Someone gave you a drink, but you are immune!</string>
+  <string name="ExtensionRoleTavernKeeperAlertRoleblocked">Someone gave you a drink, you were roleblocked!</string>
+  <string name="ExtensionOptionTavernKeeperCooldown">Drink Cooldown</string>
+  <string name="ExtensionOptionTavernKeeperDuration">Roleblock Duration</string>
+  <string name="ExtensionOptionTavernKeeperInvertControls">Invert controls of roleblocked player</string>
+  <string name="ExtensionOptionTavernKeeperImmunity">Immunity</string>
+  <string name="ExtensionOptionTavernKeeperImmunityDuration">Immunity Duration</string>
+  <string name="ExtensionOptionTavernKeeperMaxUses">Max Uses</string>
+  <string name="ExtensionOptionTavernKeeperResetAfterMeeting">Reset uses after meeting</string>
+  <string name="ExtensionOptionTavernKeeperShowAlert">Alert target of roleblock</string>
+  <string name="ExtensionOptionTavernKeeperAlertDelay">Alert delay</string>
 </resources>
+
+

@@ -103,7 +103,7 @@ public sealed class MirageDecoyButton : TownOfUsRoleButton<MirageRole>
         }
 
         LocalInstance = this;
-        
+
         if (ShipStatus.Instance == null)
         {
             Button?.gameObject.SetActive(false);
@@ -273,7 +273,7 @@ public sealed class MirageDecoyButton : TownOfUsRoleButton<MirageRole>
                     _primedWorldPos.z);
             }
         );
-        
+
         foreach (var panel in menu.potentialVictims)
         {
             panel.PlayerIcon.cosmetics.SetPhantomRoleAlpha(1f);

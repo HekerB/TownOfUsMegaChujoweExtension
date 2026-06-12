@@ -23,7 +23,7 @@ public sealed class VoodooBlindModifier(PlayerControl voodooMaster, float durati
     public override LoadableAsset<Sprite>? ModifierIcon => null;
     public override float Duration => duration;
     public override bool AutoStart => true;
-    public GameObject EclipseBack { get; set; }
+    public GameObject? EclipseBack { get; set; }
 
     public override void OnActivate()
     {
@@ -69,7 +69,7 @@ public sealed class VoodooBlindModifier(PlayerControl voodooMaster, float durati
             return;
         }
         EclipseBack.SetActive(false);
-        
+
         var local = PlayerControl.LocalPlayer;
         if (local != null && (local.IsImpostorAligned() || (local.HasDied() &&
                                                          OptionGroupSingleton<TownOfUs.Options.PostmortemOptions>.Instance.TheDeadKnow)))

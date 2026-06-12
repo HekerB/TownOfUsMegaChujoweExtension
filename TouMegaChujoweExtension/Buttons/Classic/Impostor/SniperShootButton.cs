@@ -61,6 +61,7 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.HasDied()) return false;
         if (player.inVent) return false;
+        if (PelicanSystem.IsSwallowed(player.PlayerId)) return false;
 
         if (SniperSystem.IsAiming)
         {
@@ -94,7 +95,7 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
             return;
         }
 
-        if (playerControl == null || !playerControl.IsRole<SniperRole>())
+        if (playerControl == null || !playerControl.IsRole<SniperRole>() || PelicanSystem.IsSwallowed(playerControl.PlayerId))
         {
             ClearOutline();
             if (_isAimingLocal) EndAiming(false);
@@ -145,6 +146,7 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
                     {
                         if (pc == null || pc.Data.IsDead || pc.PlayerId == playerControl.PlayerId) continue;
                         if (pc.IsImpostorAligned()) continue;
+                        if (PelicanSystem.IsSwallowed(pc.PlayerId)) continue;
                         if (Vector2.Distance(mouseWorldPos, pc.transform.position) < minClickDist)
                         {
                             mouseTarget = pc;

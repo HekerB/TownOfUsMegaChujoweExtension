@@ -11,7 +11,7 @@ public static class DraftOriginalRoleListPatch
     public static void UpdateRoleListPostfix()
     {
         var draftEnabled = DraftSystem.IsEnabled && LobbyBehaviour.Instance;
-        SetOriginalRoleListHoverEnabled(!draftEnabled);
+        SetOriginalRoleListHoverEnabled(true);
 
         if (!draftEnabled)
         {

@@ -1,0 +1,211 @@
+using System.Text;
+using Il2CppInterop.Runtime.Attributes;
+using MiraAPI.GameOptions;
+using MiraAPI.Modifiers;
+using MiraAPI.Roles;
+using MiraAPI.Utilities;
+using Reactor.Networking.Attributes;
+using TouMegaChujoweExtension.Options.Roles.Crewmate;
+using TouMegaChujoweExtension.Modifiers.Crewmate;
+using TouMegaChujoweExtension.Modifiers.Game;
+using UnityEngine;
+using System.Globalization;
+using TownOfUs.Modifiers.Game.Universal;
+using TownOfUs;
+using TownOfUs.Options.Roles.Impostor;
+using TownOfUs.Roles.Impostor;
+using TownOfUs.Roles;
+using TownOfUs.Assets;
+using TownOfUs.Modules.Localization;
+using TownOfUs.Modules.Wiki;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using TouMegaChujoweExtension;
+using MiraAPI.Patches.Stubs;
+using MiraAPI.Hud;
+using Cpp2IL.Core.Utils;
+using TownOfUs.Utilities;
+
+namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
+
+public sealed class TavernKeeperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+{
+    public override bool IsAffectedByComms => false;
+    public DoomableType DoomHintType => DoomableType.Fearmonger;
+    public string LocaleKey => "TavernKeeper";
+    public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Tavern Keeper");
+    public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb", "Drink with players to roleblock them");
+    public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription", "Drink with players to roleblock them and disable their abilities.");
+    public Color RoleColor => TouExtensionColors.TavernKeeper;
+    public ModdedRoleTeams Team => ModdedRoleTeams.Crewmate;
+    public RoleAlignment RoleAlignment => RoleAlignment.CrewmateProtective;
+
+    public byte LastRoleblockedPlayerId { get; set; } = byte.MaxValue;
+
+    public CustomRoleConfiguration Configuration => new(this)
+    {
+        Icon = TouRoleIcons.Barkeeper,
+        OptionsScreenshot = TouBanners.CrewmateRoleBanner,
+        IntroSound = TouAudio.ToppatIntroSound,
+    };
+
+    public RoleBehaviour AppearAs => this;
+
+    public override void Initialize(PlayerControl player)
+    {
+        RoleBehaviourStubs.Initialize(this, player);
+    }
+
+    public override void Deinitialize(PlayerControl targetPlayer)
+    {
+        RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+
+        if (!targetPlayer.AmOwner) return;
+
+        CustomButtonSingleton<TavernKeeperDrinkButton>.Instance?.ResetCooldownAndOrEffect();
+    }
+
+    public override void OnDeath(DeathReason reason)
+    {
+        Deinitialize(Player);
+    }
+
+    public override void OnMeetingStart()
+    {
+        RoleBehaviourStubs.OnMeetingStart(this);
+
+        if (Player.AmOwner)
+        {
+            var drinkButton = CustomButtonSingleton<TavernKeeperDrinkButton>.Instance;
+            if (drinkButton != null)
+            {
+                drinkButton.ResetCooldownAndOrEffect();
+                if (OptionGroupSingleton<TavernKeeperOptions>.Instance.ResetUsesAfterMeeting.Value)
+                {
+                    drinkButton.SetUses((int)OptionGroupSingleton<TavernKeeperOptions>.Instance.MaxUses.Value);
+                }
+            }
+        }
+    }
+
+    [HideFromIl2Cpp]
+    public StringBuilder SetTabText()
+    {
+        var sb = ITownOfUsRole.SetNewTabText(this);
+        var formatProvider = CultureInfo.InvariantCulture;
+        var rbdur = OptionGroupSingleton<TavernKeeperOptions>.Instance.RoleblockDuration.Value;
+
+        sb.AppendLine();
+        sb.AppendLine(TouLocale.Get("ExtensionRoleTavernKeeperTabRoleblockedDuration", "Roleblocked players are roleblocked for {0} second(s).").Replace("{0}", rbdur.ToString(formatProvider)));
+
+        if (OptionGroupSingleton<TavernKeeperOptions>.Instance.Immunity.Value)
+            sb.AppendLine(TouLocale.Get("ExtensionRoleTavernKeeperTabTargetImmunity", "Your target will have immunity when their roleblock expires."));
+
+        if (LastRoleblockedPlayerId != byte.MaxValue)
+        {
+            var target = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == LastRoleblockedPlayerId);
+            if (target != null && target.HasModifier<RoleblockedModifier>())
+            {
+                var coloredName = $"{target.Data.Color.ToTextColor()}{target.CachedPlayerData.PlayerName}</color>";
+                sb.AppendLine();
+                sb.AppendLine(TouLocale.Get("ExtensionRoleTavernKeeperTabCurrentlyRoleblocked", "Currently roleblocked: {0}").Replace("{0}", coloredName));
+            }
+        }
+
+        return sb;
+    }
+
+    public string GetAdvancedDescription()
+    {
+        return TouLocale.GetParsed($"ExtensionRole{LocaleKey}WikiDescription") + TownOfUs.Utilities.MiscUtils.AppendOptionsText(GetType());
+    }
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities =>
+    [
+        new(
+            TouLocale.Get($"ExtensionRole{LocaleKey}Drink", "Drink"),
+            TouLocale.Get($"ExtensionRole{LocaleKey}DrinkWikiDescription", "Drink with a player to roleblock them for {0} second(s).").Replace("{0}", OptionGroupSingleton<TavernKeeperOptions>.Instance.RoleblockDuration.Value.ToString(CultureInfo.InvariantCulture)),
+            TouCrewAssets.CleanseSprite)
+    ];
+
+    [MethodRpc((uint)TouMegaChujoweExtension.Networking.ExtensionRpc.TavernKeeperRoleblock)]
+    public static void RpcRoleblock(PlayerControl player, PlayerControl target)
+    {
+        var options = OptionGroupSingleton<TavernKeeperOptions>.Instance;
+        if (options == null) return;
+
+        var roleblockDuration = options.RoleblockDuration.Value;
+        var immunityDuration = options.ImmunityDuration.Value;
+        var applyImmunity = options.Immunity.Value;
+        var invertControls = options.InvertControlsOfRoleblocked.Value;
+
+        var showAlert = options.ShowAlertToTarget.Value;
+        var alertDelay = options.AlertDelay.Value;
+
+        var iconSelf = TouCrewAssets.CleanseSprite.LoadAsset();
+        var iconTarget = TouCrewAssets.CleanseSprite.LoadAsset();
+        var targetName = target.CachedPlayerData.PlayerName;
+
+        var immune = true;
+        if (!target.HasModifier<DrinkImmunityModifier>() && !target.HasModifier<DrunkModifier>() &&
+            !target.HasModifier<RoleblockedModifier>() && !target.IsRole<TavernKeeperRole>())
+        {
+            immune = false;
+            target.AddModifier<RoleblockedModifier>(invertControls, applyImmunity, roleblockDuration, immunityDuration);
+            if (player.GetRole<TavernKeeperRole>() is TavernKeeperRole tkRole)
+            {
+                tkRole.LastRoleblockedPlayerId = target.PlayerId;
+            }
+        }
+
+        if (player.AmOwner)
+        {
+            var msg = TouLocale.Get("ExtensionRoleTavernKeeperNotificationRoleblocked", "{0} was roleblocked!").Replace("{0}", targetName);
+            ShowNotification(msg, iconSelf);
+        }
+
+        if (target.AmOwner && showAlert)
+        {
+            if (immune)
+            {
+                var msg = TouLocale.Get("ExtensionRoleTavernKeeperAlertImmune", "Someone gave you a drink, but you are immune!");
+                if (alertDelay > 0f)
+                {
+                    Reactor.Utilities.Coroutines.Start(ShowDelayedAlert(msg, iconTarget, alertDelay));
+                }
+                else
+                {
+                    ShowNotification(msg, iconTarget);
+                }
+            }
+            else
+            {
+                var msg = TouLocale.Get("ExtensionRoleTavernKeeperAlertRoleblocked", "Someone gave you a drink, you were roleblocked!");
+                if (alertDelay > 0f)
+                {
+                    Reactor.Utilities.Coroutines.Start(ShowDelayedAlert(msg, iconTarget, alertDelay));
+                }
+                else
+                {
+                    ShowNotification(msg, iconTarget);
+                }
+            }
+        }
+
+        static void ShowNotification(string message, Sprite icon)
+        {
+            var notif = Helpers.CreateAndShowNotification($"<b>{message}</b>", Color.white, new Vector3(0f, 1f, -20f), spr: icon);
+            notif.AdjustNotification();
+        }
+    }
+
+    [HideFromIl2Cpp]
+    private static System.Collections.IEnumerator ShowDelayedAlert(string message, Sprite icon, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        var notif = Helpers.CreateAndShowNotification($"<b>{message}</b>", Color.white, new Vector3(0f, 1f, -20f), spr: icon);
+        notif.AdjustNotification();
+    }
+}

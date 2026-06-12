@@ -12,7 +12,7 @@ public class TouExtensionLocalSettings : LocalSettingsTab
         EnableNauseaCameraShake = config.Bind("Accessibility", "EnableNauseaCameraShake", true);
         UseLegacyGuessDeathAnimation = config.Bind("Visuals", "UseLegacyGuessDeathAnimation", false);
         UseClassicAssassinGuessing = config.Bind("Visuals", "UseClassicAssassinGuessing", false);
-        UseRoleColorForMap = config.Bind("Visuals", "UseRoleColorForMap", true);
+        MapColor = config.Bind("Visuals", "MapColor", MapColorType.Off);
         CensorModName = config.Bind("Visuals", "CensorModName", true);
         UsePolishLanguage = config.Bind("Localization", "UsePolishLanguage", false);
 
@@ -54,14 +54,21 @@ public class TouExtensionLocalSettings : LocalSettingsTab
     [LocalizedLocalToggleSetting("ExtensionLocalSettingUseClassicAssassinGuessing")]
     public ConfigEntry<bool> UseClassicAssassinGuessing { get; private set; }
 
-    [LocalizedLocalToggleSetting("ExtensionLocalSettingUseRoleColorForMap")]
-    public ConfigEntry<bool> UseRoleColorForMap { get; private set; }
+    [LocalizedLocalEnumSetting("ExtensionLocalSettingMapColor", names: ["MapColorOff", "MapColorRole", "MapColorPlayer"])]
+    public ConfigEntry<MapColorType> MapColor { get; private set; }
 
     [LocalizedLocalToggleSetting("ExtensionLocalSettingCensorModName")]
     public ConfigEntry<bool> CensorModName { get; private set; }
 
     [LocalizedLocalToggleSetting("ExtensionLocalSettingUsePolishLanguage")]
     public ConfigEntry<bool> UsePolishLanguage { get; private set; }
+}
+
+public enum MapColorType
+{
+    Off,
+    Role,
+    PlayerColor
 }
 
 

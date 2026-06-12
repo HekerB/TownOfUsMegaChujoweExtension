@@ -16,7 +16,10 @@
   <string name="ExtensionLocalSettingUsePolishLanguage">Uzyj jezyka polskiego</string>
   
   <!-- Use Role Color for Map -->
-  <string name="ExtensionLocalSettingUseRoleColorForMap">Kolor mapy: Frakcja (mira) / Kolor roli (nasze)</string>
+  <string name="ExtensionLocalSettingMapColor">Kolor obrysu mapy</string>
+  <string name="MapColorOff">Wyłączony (styl Mira)</string>
+  <string name="MapColorRole">Rola</string>
+  <string name="MapColorPlayer">Kolor gracza</string>
   
   <!-- Draft Alert Local Settings -->
   <string name="ExtensionLocalSettingDraftAlert">Powiadomienie o Drafcie</string>
@@ -1642,4 +1645,28 @@
   <string name="ExtensionOptionInverterMoveWhileMenu">Ruch w menu</string>
   <string name="ExtensionOptionInverterDisorientSamePersonTwice">Podwojny atak na ten sam cel</string>
   <string name="ExtensionModifierDisoriented">Chaos</string>
+
+  <!-- Tavern Keeper -->
+  <string name="ExtensionRoleTavernKeeper">Karczmarz</string>
+  <string name="ExtensionRoleTavernKeeperIntroBlurb">Pij z graczami, aby zablokowac ich umiejetnosci.</string>
+  <string name="ExtensionRoleTavernKeeperTabDescription">Pij z graczami, aby zablokowac ich umiejetnosci i uniemozliwic im dzialanie.</string>
+  <string name="ExtensionRoleTavernKeeperWikiDescription">Karczmarz to rola ochronna Zalogi, ktora moze pic z innymi graczami, aby zablokowac ich aktywne umiejetnosci. Picie moze jednak wywolac Odpornosc, ktora sprawia, ze cel jest tymczasowo odporny na kolejne zablokowania. Zablokowanie oraz odwrocenie sterowania nastepuje natychmiast po napiciu sie, lecz powiadomienie o zablokowaniu wyswietla sie dopiero po czasie okreslonym w opoznieniu alertu (podobnie jak w przypadku opoznienia chaosu u Zielarza).</string>
+  <string name="ExtensionRoleTavernKeeperDrink">Napoj</string>
+  <string name="ExtensionRoleTavernKeeperDrinkWikiDescription">Napij sie z graczem, aby zablokowac jego umiejetnosci na {0} sekund(y).</string>
+  <string name="ExtensionRoleTavernKeeperTabRoleblockedDuration">Zablokowani gracze sa zablokowani przez {0} sekund(y).</string>
+  <string name="ExtensionRoleTavernKeeperTabTargetImmunity">Twoj cel bedzie mial odpornosc, gdy blokada dobiegnie konca.</string>
+  <string name="ExtensionRoleTavernKeeperTabCurrentlyRoleblocked">Obecnie upity gracz: {0}</string>
+  <string name="ExtensionRoleTavernKeeperNotificationRoleblocked">Gracz {0} zostal zablokowany!</string>
+  <string name="ExtensionRoleTavernKeeperAlertImmune">Ktos dal Ci napoj, ale jestes odporny!</string>
+  <string name="ExtensionRoleTavernKeeperAlertRoleblocked">Ktos dal Ci napoj, twoje umiejetnosci zostaly zablokowane!</string>
+  <string name="ExtensionOptionTavernKeeperCooldown">Odnowienie napoju</string>
+  <string name="ExtensionOptionTavernKeeperDuration">Czas trwania blokady</string>
+  <string name="ExtensionOptionTavernKeeperInvertControls">Odwrocenie sterowania zablokowanego gracza</string>
+  <string name="ExtensionOptionTavernKeeperImmunity">Odpornosc</string>
+  <string name="ExtensionOptionTavernKeeperImmunityDuration">Czas trwania odpornosci</string>
+  <string name="ExtensionOptionTavernKeeperMaxUses">Maksymalna ilosc uzyc</string>
+  <string name="ExtensionOptionTavernKeeperResetAfterMeeting">Zresetuj uzycia po naradzie</string>
+  <string name="ExtensionOptionTavernKeeperShowAlert">Pokaz alert zablokowanemu graczowi</string>
+  <string name="ExtensionOptionTavernKeeperAlertDelay">Opoznienie alertu</string>
 </resources>
+
