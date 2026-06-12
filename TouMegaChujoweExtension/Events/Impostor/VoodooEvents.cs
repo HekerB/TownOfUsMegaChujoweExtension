@@ -101,4 +101,35 @@ public static class VoodooEvents
             }
         }
     }
+
+    [RegisterEvent]
+    public static void OnEjection(EjectionEvent @event)
+    {
+        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
+        {
+            return;
+        }
+
+        var exiled = @event.ExileController?.initData?.networkedPlayer?.Object;
+        if (exiled == null)
+        {
+            return;
+        }
+
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.HasDied())
+            {
+                continue;
+            }
+
+            if (player.TryGetModifier<VoodooTargetLockModifier>(out var targetLock))
+            {
+                if (targetLock.TargetId == exiled.PlayerId)
+                {
+                    player.RpcRemoveModifier(targetLock.UniqueId);
+                }
+            }
+        }
+    }
 }

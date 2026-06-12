@@ -1,3 +1,4 @@
+#if FALSE
 using AmongUs.GameOptions;
 using HarmonyLib;
 using MiraAPI.Roles;
@@ -206,7 +207,11 @@ namespace TouMegaChujoweExtension.Patches.Roles.Agent
                 target.Object.PlayerId != local.PlayerId &&
                 target.Object.IsRole<AgentRole>())
             {
-                __result = false;
+                var options = OptionGroupSingleton<AgentOptions>.Instance;
+                if (options == null || !options.ImpostorsCanKillEachOther)
+                {
+                    __result = false;
+                }
             }
         }
     }
@@ -279,3 +284,4 @@ namespace TouMegaChujoweExtension.Patches.Roles.Agent
         }
     }
 }
+#endif

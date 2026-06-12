@@ -1,3 +1,4 @@
+#if FALSE
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Patches.Stubs;
@@ -73,7 +74,7 @@ namespace TouMegaChujoweExtension.Roles.Classic.Crewmate
 
         private void RefreshVentButton()
         {
-            if (Player == null || !Player.AmOwner || HudManager.Instance?.ImpostorVentButton == null)
+            if (Player == null || !Player.AmOwner || HudManager.Instance?.ImpostorVentButton != null)
                 return;
 
             var ventButton = HudManager.Instance.ImpostorVentButton;
@@ -82,3 +83,4 @@ namespace TouMegaChujoweExtension.Roles.Classic.Crewmate
         }
     }
 }
+#endif

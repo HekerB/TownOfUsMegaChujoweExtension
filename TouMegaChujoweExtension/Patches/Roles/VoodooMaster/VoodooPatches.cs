@@ -1,8 +1,12 @@
+using System.Collections;
 using HarmonyLib;
 using MiraAPI.Modifiers;
+using Reactor.Utilities;
 using TouMegaChujoweExtension.Modifiers.Impostor;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Patches.Roles;
 using TMPro;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Roles.VoodooMaster;
 
@@ -67,5 +71,37 @@ public static class VoodooVisionPatch
         {
             __result *= blindModifier.VisionPerc;
         }
+    }
+}
+
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
+public static class VoodooMuteMeetingIntroPatch
+{
+    public static void Postfix(MeetingHud __instance)
+    {
+        if (PlayerControl.LocalPlayer != null &&
+            !PlayerControl.LocalPlayer.Data.IsDead &&
+            PlayerControl.LocalPlayer.HasModifier<VoodooMutedModifier>())
+        {
+            Coroutines.Start(CoVoodooMutedIntro());
+        }
+    }
+
+    private static IEnumerator CoVoodooMutedIntro()
+    {
+        yield return HudManager.Instance.CoFadeFullScreen(Color.clear, new Color(0f, 0f, 0f, 0.98f));
+        var tempPosition = HudManager.Instance.shhhEmblem.transform.localPosition;
+        var tempDuration = HudManager.Instance.shhhEmblem.HoldDuration;
+        HudManager.Instance.shhhEmblem.transform.localPosition = new Vector3(
+            HudManager.Instance.shhhEmblem.transform.localPosition.x,
+            HudManager.Instance.shhhEmblem.transform.localPosition.y,
+            HudManager.Instance.FullScreen.transform.position.z + 1f);
+        HudManager.Instance.shhhEmblem.TextImage.text = TouLocale.Get("ExtensionVoodooMutedIntro", "YOU ARE MUTED!");
+        HudManager.Instance.shhhEmblem.HoldDuration = 2.5f;
+        yield return HudManager.Instance.ShowEmblem(true);
+        HudManager.Instance.shhhEmblem.transform.localPosition = tempPosition;
+        HudManager.Instance.shhhEmblem.HoldDuration = tempDuration;
+        yield return HudManager.Instance.CoFadeFullScreen(new Color(0f, 0f, 0f, 0.98f), Color.clear);
+        yield return null;
     }
 }

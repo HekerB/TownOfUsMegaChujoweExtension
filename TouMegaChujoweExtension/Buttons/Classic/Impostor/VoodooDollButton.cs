@@ -48,7 +48,6 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
 
         return base.CanUse() &&
                Target != null &&
-               Timer <= 0f &&
                (Role.GetMaxUses(Role.SelectedEffect) == 0 || Role.GetUsesLeft(Role.SelectedEffect) > 0);
     }
 
@@ -63,7 +62,7 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
 
         try
         {
-            if (CanUse())
+            if (CanUse() && Timer <= 0f)
             {
                 OnClick();
             }
@@ -95,7 +94,11 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
             return;
         }
 
-        VoodooMasterRole.CastVoodooDoll(PlayerControl.LocalPlayer, Target, effect);
+        if (!TouMegaChujoweExtension.Modules.PoisonSystem.CheckAndTriggerShields(PlayerControl.LocalPlayer, Target))
+        {
+            VoodooMasterRole.CastVoodooDoll(PlayerControl.LocalPlayer, Target, effect);
+        }
+        
         Timer = Cooldown;
         UpdateUsesDisplay();
     }
@@ -116,6 +119,15 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
             OverrideName(GetButtonName(Role));
             UpdateUsesDisplay();
             UpdateActiveEffectTimer(playerControl);
+
+            if (playerControl.TryGetModifier<VoodooTargetLockModifier>(out var targetLock))
+            {
+                var lockTarget = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x != null && x.PlayerId == targetLock.TargetId);
+                if (lockTarget == null || lockTarget.HasDied() || lockTarget.Data == null || lockTarget.Data.Disconnected)
+                {
+                    playerControl.RpcRemoveModifier(targetLock.UniqueId);
+                }
+            }
         }
     }
 

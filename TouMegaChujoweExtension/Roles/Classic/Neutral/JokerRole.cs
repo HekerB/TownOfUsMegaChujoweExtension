@@ -210,6 +210,7 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
                     "DiedToWinning",
                     DeathEventHandlers.CurrentRound,
                     DeathHandlerOverride.SetFalse,
+                    killedBy: PlayerControl.LocalPlayer,
                     lockInfo: DeathHandlerOverride.SetTrue);
             }
         }

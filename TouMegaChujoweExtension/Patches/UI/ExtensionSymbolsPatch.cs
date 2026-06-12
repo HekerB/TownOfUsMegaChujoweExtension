@@ -42,20 +42,16 @@ public static class ExtensionSymbolsPatch
         }
 
         // --- INVERTER (?) ---
-        if (player.TryGetModifier<InverterDisorientedModifier>(out _) && !__result.Contains('?') && (local.IsImpostorAligned() || deadKnow))
+        if (player.TryGetModifier<InverterDisorientedModifier>(out _) && !__result.Contains('?') && (local.IsRole<InverterRole>() || deadKnow))
         {
             __result += " <color=#FF0000>?</color>";
         }
 
         // --- VOODOO MASTER CURSES ---
-        bool localIsVoodoo = local.IsRole<VoodooMasterRole>();
-        bool canSeeVoodooCurse = localIsVoodoo || deadKnow;
+        bool canSeeVoodooCurse = local.IsImpostorAligned() || deadKnow;
         if (canSeeVoodooCurse)
         {
-            if (player.TryGetModifier<VoodooConfusedModifier>(out var confused) &&
-                confused.VoodooMaster != null &&
-                (deadKnow || confused.VoodooMaster.PlayerId == local.PlayerId) &&
-                !__result.Contains("$"))
+            if (player.HasModifier<VoodooConfusedModifier>() && !__result.Contains("$"))
             {
                 __result += " <color=#FF0000>$</color>";
             }
@@ -66,7 +62,7 @@ public static class ExtensionSymbolsPatch
             }
         }
 
-        if ((local.PlayerId == player.PlayerId || deadKnow) && player.HasModifier<VoodooMutedModifier>() && !__result.Contains("[M]"))
+        if ((local.PlayerId == player.PlayerId || local.IsImpostorAligned() || deadKnow) && player.HasModifier<VoodooMutedModifier>() && !__result.Contains("[M]"))
         {
             __result += " <color=#2A1119>[M]</color>";
         }
@@ -78,8 +74,7 @@ public static class ExtensionSymbolsPatch
             {
                 if (targetLock.TargetId == player.PlayerId)
                 {
-                    bool isLocalVoodooMaster = local.PlayerId == pc.PlayerId;
-                    if ((isLocalVoodooMaster || deadKnow) && !__result.Contains("[L]"))
+                    if ((local.IsImpostorAligned() || deadKnow) && !__result.Contains("[L]"))
                     {
                         __result += " <color=#FF0000>[L]</color>";
                     }

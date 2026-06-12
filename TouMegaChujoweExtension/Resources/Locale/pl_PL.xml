@@ -1602,10 +1602,12 @@
   <string name="ExtensionOptionInnocentCanTauntFirstRound">Uzycie w 1. rundzie</string>
   <string name="ExtensionOptionInnocentAfterWin">Po wygranej</string>
   <string name="ExtensionOptionInnocentAfterWinEndGame">Koniec gry</string>
-  <string name="ExtensionOptionInnocentAfterWinNothing">Brak zmian</string>
+  <string name="ExtensionOptionInnocentAfterWinNothing">Zwycięstwo i opuszczenie</string>
   <string name="ExtensionOptionInnocentAfterWinHaunt">Nawiedzenie</string>
   <string name="ExtensionRoleInnocentHaunt">Nawiedzenie</string>
   <string name="ExtensionRoleInnocentWinNotif">Twoj cel wyrzucony! Wygrywasz!</string>
+  <string name="ExtensionRoleInnocentWonSelf">Twój cel został wygnany! Wygrałeś i opuszczasz statek zwycięski!</string>
+  <string name="ExtensionRoleInnocentWonOther">Prowokator, &lt;player&gt;, sprowokował swój cel i opuszcza statek zwycięski!</string>
   <string name="ExtensionRoleInnocentForcedKillNotif">Cel zabil! Wyrzuccie go!</string>
   <string name="ExtensionRoleInnocentNoKillNotif">Brak ataku na czas.</string>
   <string name="ExtensionInnocentWins">Wygrywa</string>
@@ -1620,18 +1622,20 @@
   <string name="ExtensionRoleVoodooMasterCycle">Zmien klątwe</string>
   <string name="ExtensionRoleVoodooMasterCycleWikiDescription">Przelacz typ przeklenstwa.</string>
   <string name="ExtensionOptionVoodooMasterCurseCooldown">Cooldown klatwy</string>
-  <string name="ExtensionOptionVoodooMasterMaxBlindUses">Limit oslepien</string>
-  <string name="ExtensionOptionVoodooMasterMaxConfuseUses">Limit chaosu</string>
-  <string name="ExtensionOptionVoodooMasterMaxMuteUses">Limit wyciszen</string>
+  <string name="ExtensionOptionVoodooMasterMaxBlindUses">Użycia oślepienia</string>
+  <string name="ExtensionOptionVoodooMasterMaxConfuseUses">Użycia chaosu</string>
+  <string name="ExtensionOptionVoodooMasterMaxMuteUses">Użycia wyciszenia</string>
   <string name="ExtensionOptionVoodooMasterBlindDuration">Czas oslepienia</string>
   <string name="ExtensionOptionVoodooMasterConfuseDuration">Czas chaosu</string>
   <string name="ExtensionOptionVoodooMasterMuteDuration">Czas wyciszenia (narady)</string>
   <string name="ExtensionOptionVoodooMasterTargetLockDuration">Czas blokady celu (narady)</string>
-  <string name="ExtensionOptionVoodooMasterMoveWhileMenu">Ruch w menu</string>
+  <string name="ExtensionOptionVoodooMasterEclipseDelay">Opóźnienie oślepienia</string>
+  <string name="ExtensionOptionVoodooMasterConfuseDelay">Opóźnienie chaosu</string>
   <string name="ExtensionVoodooBlindAlert">Mistrz Voodoo Cie przeklal!</string>
   <string name="ExtensionVoodooEffectBlindness">Oslepienie</string>
   <string name="ExtensionVoodooEffectMute">Uciszenie</string>
   <string name="ExtensionVoodooEffectConfuse">Chaos</string>
+  <string name="ExtensionVoodooMutedIntro">ZOSTAŁEŚ UCISZONY!</string>
 
   <!-- Inverter Role -->
   <string name="ExtensionRoleInverter">Odwracacz</string>

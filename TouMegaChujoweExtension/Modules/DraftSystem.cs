@@ -280,10 +280,12 @@ public static class DraftSystem
                 var isJackalRole = role.Role == (RoleTypes)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Neutral.JackalRole>();
                 var isVampireRole = role.Role == (RoleTypes)RoleId.Get<TownOfUs.Roles.Neutral.VampireRole>();
 
+                /*
                 if (AgentUtils.AgentCanSpawn() && IsAgentConflictRole(role.Role))
                 {
                     continue;
                 }
+                */
 
                 if (preventVampires && isVampireRole)
                 {
@@ -333,12 +335,15 @@ public static class DraftSystem
 
     private static bool ConflictsWithPickedAgent(RoleTypes roleType)
     {
+        /*
         if (!AlreadyPicked.Contains((ushort)RoleId.Get<AgentRole>()))
         {
             return false;
         }
 
         return IsAgentConflictRole(roleType);
+        */
+        return false;
     }
 
     private static List<RoleBehaviour> GetRolesForAlignments(List<RoleAlignment> alignments)

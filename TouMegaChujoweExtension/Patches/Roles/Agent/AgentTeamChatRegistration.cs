@@ -1,3 +1,4 @@
+#if FALSE
 using System;
 using MiraAPI.GameOptions;
 using TownOfUs.Patches.Options;
@@ -58,3 +59,4 @@ namespace TouMegaChujoweExtension.Patches.Roles.Agent
         }
     }
 }
+#endif

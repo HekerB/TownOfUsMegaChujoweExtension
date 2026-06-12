@@ -619,6 +619,43 @@
         "\n- <b>Duplicate Warning Fix</b> - FIXED double announcement notifications in the meeting chat and screen flash alerts when Famine, Death, and War emerge.",
         "\n- <b>Unified Flags</b> - Connected DeathRole.Announced and WarRole.Announced to their respective base role's static state trackers (SoulCollectorRole.DeathAnnounced and BerserkerRole.WarAnnounced), mirroring the Famine/Baker single-source-of-truth solution."
       ]
+    },
+    {
+      "Date": "2026-06-12T18:00:00Z",
+      "Number": "200021",
+      "ShortTitle": "TOUMCE v1.4.1",
+      "SubTitle": "New Roles & Draft Overhaul",
+      "Title": "TOU Mega Chujowe Extension v1.4.1",
+      "Text": [
+        "\r<link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> | <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> | <link=https://discord.gg/qaQZAmAVh4>Discord</link>",
+        "\n\n\r<b>Version 1.4.1 - New Roles, Draft & Polish Update</b>",
+        "\n\n\r<size=110%><b>NEW ROLE: VOODOO MASTER (Impostor Support)</b></size>",
+        "\n- <b>Curse System</b> - Cycle between three curses: Blindness (Eclipse), Mute, and Confuse.",
+        "\n- <b>Blindness</b> - Fully covers the target's vision for a configurable duration. Supports optional Eclipse Delay.",
+        "\n- <b>Mute</b> - Target is muted in the next meeting with blackmail-style 'YOU ARE MUTED' intro animation and mouth tape overlay.",
+        "\n- <b>Confuse</b> - Reverses target movement controls for a configurable duration. Supports optional Confuse Delay.",
+        "\n- <b>Target Lock</b> - Optionally locks the Voodoo Master onto a single target for multiple meetings.",
+        "\n- <b>Team Visibility</b> - All Impostors can see Voodoo curse symbols ($, [M], [L]) and the mute tape visual during meetings.",
+        "\n\n\r<size=110%><b>NEW ROLE: FLIPPER (Impostor Support)</b></size>",
+        "\n- <b>Disorient</b> - Flip a target's screen upside-down and invert their movement controls.",
+        "\n- <b>Symbol Visibility</b> - The (?) disoriented symbol is now visible only to the Flipper and dead players.",
+        "\n\n\r<size=110%><b>NEW ROLE: INNOCENT (Neutral Evil)</b></size>",
+        "\n- <b>Taunt Mechanic</b> - Taunt a player to provoke them into killing, then get them voted out to win.",
+        "\n- <b>Global Win Notification</b> - When the Innocent wins, all players see a global announcement (different text for the Innocent vs. others).",
+        "\n- <b>Death Sync</b> - Synchronized death handler across all clients for proper 'Leaves in Victory' display.",
+        "\n- <b>After Win Options</b> - Configure Ends Game, Leaves in Victory, or Haunt after winning.",
+        "\n\n\r<size=110%><b>NEW ROLE: TAVERN KEEPER (Crewmate Protective)</b></size>",
+        "\n- <b>Roleblock</b> - Drink with a player to disable their active abilities for a short time.",
+        "\n- <b>Immunity</b> - Optionally leave the target immune to future roleblocks after the effect ends.",
+        "\n- <b>Configurable</b> - Customize cooldown, duration, max uses, immunity toggle, and control inversion.",
+        "\n\n\r<size=110%><b>DRAFT MODE IMPROVEMENTS</b></size>",
+        "\n- <b>New Role Lists</b> - All new roles added to Draft mode role pools.",
+        "\n- <b>Draft Status Notification</b> - Players now see a notification in the lobby showing whether Draft Mode is enabled or disabled.",
+        "\n\n\r<size=110%><b>EVOKER ABILITY BLOCKING</b></size>",
+        "\n- <b>Comprehensive Button Blocking</b> - Evoker blind now blocks ALL custom kill/ability buttons including: Bounty Hunter Kill, RC-XD Deploy, Witch Spell, Sniper Snipe, Outlaw Double Kill, Kamikaze Suicide/Detonate, Baker Give Bread/Starve, Berserker Kill/Spree Kill, Doppelganger Kill, Pelican Swallow, Serial Killer Kill, Shroud Shrouded/Kill, Soul Reap/Death Reap, and all vanilla kill buttons.",
+        "\n\n\r<size=110%><b>LOCALIZATION</b></size>",
+        "\n- <b>Full Polish & English</b> - Added complete translations for all new roles, notifications, and options."
+      ]
     }
   ]
 }

@@ -12,6 +12,7 @@ using TownOfUs;
 using TownOfUs.Extensions;
 using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
+using MiraAPI.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
@@ -99,6 +100,13 @@ public sealed class InnocentRole(IntPtr cppPtr)
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
         TouRoleUtils.ClearTaskHeader(Player);
         ActiveInnocents.Remove(targetPlayer.PlayerId);
+
+        if (!Player.HasModifier<BasicGhostModifier>() &&
+            TargetVoted &&
+            OptionGroupSingleton<InnocentOptions>.Instance.AfterWin.Value == (int)InnocentAfterWin.Nothing)
+        {
+            Player.AddModifier<BasicGhostModifier>();
+        }
     }
 
     public override bool CanUse(IUsable usable)

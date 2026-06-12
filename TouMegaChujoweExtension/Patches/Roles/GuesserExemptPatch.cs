@@ -67,6 +67,7 @@ public static class GuesserExemptPatch
         }
 
         var targetPlayer = MiscUtils.PlayerById(targetId);
+        /*
         if (guesser != null &&
             targetPlayer != null &&
             guesser.IsImpostorAligned() &&
@@ -75,6 +76,7 @@ public static class GuesserExemptPatch
             __result = true;
             return;
         }
+        */
 
         if (guesser != null && targetPlayer != null && AreOnSameJackalTeam(guesser, targetPlayer))
         {

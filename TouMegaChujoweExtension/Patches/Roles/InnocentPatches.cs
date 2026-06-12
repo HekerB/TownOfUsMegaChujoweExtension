@@ -64,12 +64,10 @@ public static class InnocentPatches
             if (innocent.Player.AmOwner && !innocent.AwaitingNextMeetingExile && innocent.TauntedKillerId == null)
             {
                 InnocentTauntButton.ClearExistingMarkerForInnocent(innocent.Player.PlayerId);
-                innocent.ResetTauntState();
 
                 if (innocent.TransformWhenTauntResolved)
                 {
                     innocent.WinWindowExpired = true;
-                    InnocentRole.TryTransformAfterSpentTaunts(innocent.Player.PlayerId);
                 }
             }
 
@@ -107,6 +105,22 @@ public static class InnocentPatches
             innocent.TargetVoted = true;
             innocent.TransformWhenTauntResolved = false;
             RemoveInnocentTauntMarker(exiled.PlayerId, innocent.Player.PlayerId);
+
+            if (OptionGroupSingleton<InnocentOptions>.Instance.AfterWin.Value == (int)InnocentAfterWin.Nothing)
+            {
+                DeathHandlerModifier.UpdateDeathHandlerImmediate(
+                    innocent.Player,
+                    TouLocale.Get("DiedToWinning"),
+                    TownOfUs.Events.DeathEventHandlers.CurrentRound,
+                    DeathHandlerOverride.SetFalse,
+                    killedBy: innocent.Player.Data.PlayerName,
+                    lockInfo: DeathHandlerOverride.SetTrue);
+
+                if (innocent.Player.AmOwner)
+                {
+                    PlayerControl.LocalPlayer.RpcPlayerExile();
+                }
+            }
 
             if (OptionGroupSingleton<InnocentOptions>.Instance.AfterWin.Value == (int)InnocentAfterWin.Haunt)
             {
@@ -270,23 +284,28 @@ public static class InnocentPatches
 
     private static void ShowWinNotification(InnocentRole innocent)
     {
-        if (!innocent.Player.AmOwner)
+        var local = PlayerControl.LocalPlayer;
+        if (local == null) return;
+
+        if (local.PlayerId == innocent.Player.PlayerId)
         {
-            return;
+            var msg = TouLocale.Get("ExtensionRoleInnocentWonSelf", "Your target has been exiled! You won and leave in victory!");
+            MiraAPI.Utilities.Helpers.CreateAndShowNotification(
+                $"<b>{TouExtensionColors.Innocent.ToTextColor()}{msg}</color></b>",
+                Color.white,
+                new Vector3(0f, 1f, -20f),
+                spr: TouExtensionIcons.InnocentRoleIcon.LoadAsset())?.AdjustNotification();
         }
-
-        DeathHandlerModifier.RpcUpdateLocalDeathHandler(
-            PlayerControl.LocalPlayer,
-            "DiedToWinning",
-            TownOfUs.Events.DeathEventHandlers.CurrentRound,
-            DeathHandlerOverride.SetFalse,
-            lockInfo: DeathHandlerOverride.SetTrue);
-
-        MiraAPI.Utilities.Helpers.CreateAndShowNotification(
-            $"<b>{TouExtensionColors.Innocent.ToTextColor()}{TouLocale.Get("ExtensionRoleInnocentWinNotif", "Your target was exiled. You win with the winners!")}</color></b>",
-            Color.white,
-            new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.InnocentRoleIcon.LoadAsset())?.AdjustNotification();
+        else
+        {
+            var msg = TouLocale.Get("ExtensionRoleInnocentWonOther", "<player> (Innocent) taunted their target and leaves in victory!")
+                .Replace("<player>", innocent.Player.Data.PlayerName);
+            MiraAPI.Utilities.Helpers.CreateAndShowNotification(
+                $"<b>{TouExtensionColors.Innocent.ToTextColor()}{msg}</color></b>",
+                Color.white,
+                new Vector3(0f, 1f, -20f),
+                spr: TouExtensionIcons.InnocentRoleIcon.LoadAsset())?.AdjustNotification();
+        }
     }
 }
 

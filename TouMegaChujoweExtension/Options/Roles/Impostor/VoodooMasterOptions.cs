@@ -17,24 +17,27 @@ public sealed class VoodooMasterOptions : AbstractOptionGroup<VoodooMasterRole>
     [ModdedNumberOption("ExtensionOptionVoodooMasterMaxBlindUses", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float MaxBlindCurses { get; set; } = 2f;
 
-    [ModdedNumberOption("ExtensionOptionVoodooMasterMaxConfuseUses", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
-    public float MaxConfuseCurses { get; set; } = 2f;
-
-    [ModdedNumberOption("ExtensionOptionVoodooMasterMaxMuteUses", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
-    public float MaxMuteCurses { get; set; } = 2f;
+    [ModdedNumberOption("ExtensionOptionVoodooMasterEclipseDelay", 0f, 10f, 0.5f, MiraNumberSuffixes.Seconds, "0", false)]
+    public float EclipseDelay { get; set; } = 0f;
 
     [ModdedNumberOption("ExtensionOptionVoodooMasterBlindDuration", 5f, 30f, 1f, MiraNumberSuffixes.Seconds)]
     public float BlindDuration { get; set; } = 15f;
 
+    [ModdedNumberOption("ExtensionOptionVoodooMasterMaxConfuseUses", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
+    public float MaxConfuseCurses { get; set; } = 2f;
+
+    [ModdedNumberOption("ExtensionOptionVoodooMasterConfuseDelay", 0f, 10f, 0.5f, MiraNumberSuffixes.Seconds, "0", false)]
+    public float ConfuseDelay { get; set; } = 0f;
+
     [ModdedNumberOption("ExtensionOptionVoodooMasterConfuseDuration", 3f, 30f, 1f, MiraNumberSuffixes.Seconds)]
     public float ConfuseDuration { get; set; } = 10f;
+
+    [ModdedNumberOption("ExtensionOptionVoodooMasterMaxMuteUses", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
+    public float MaxMuteCurses { get; set; } = 2f;
 
     [ModdedNumberOption("ExtensionOptionVoodooMasterMuteDuration", 1f, 3f, 1f, MiraNumberSuffixes.None)]
     public float MuteDuration { get; set; } = 1f;
 
     [ModdedNumberOption("ExtensionOptionVoodooMasterTargetLockDuration", 0f, 5f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float TargetLockDurationRounds { get; set; } = 2f;
-
-    [ModdedToggleOption("ExtensionOptionVoodooMasterMoveWhileMenu")]
-    public bool MoveWhileMenu { get; set; } = true;
 }

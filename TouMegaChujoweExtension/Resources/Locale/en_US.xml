@@ -1659,10 +1659,12 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionInnocentCanTauntFirstRound">Can Taunt First Round</string>
   <string name="ExtensionOptionInnocentAfterWin">After Win</string>
   <string name="ExtensionOptionInnocentAfterWinEndGame">Ends Game</string>
-  <string name="ExtensionOptionInnocentAfterWinNothing">Nothing</string>
+  <string name="ExtensionOptionInnocentAfterWinNothing">Leaves in Victory</string>
   <string name="ExtensionOptionInnocentAfterWinHaunt">Haunt</string>
   <string name="ExtensionRoleInnocentHaunt">Haunt</string>
   <string name="ExtensionRoleInnocentWinNotif">Your target was exiled. You won!</string>
+  <string name="ExtensionRoleInnocentWonSelf">Your target has been exiled! You won and leave in victory!</string>
+  <string name="ExtensionRoleInnocentWonOther">The Innocent, &lt;player&gt;, has successfully taunted their target and leaves in victory!</string>
   <string name="ExtensionRoleInnocentForcedKillNotif">Your taunted player killed a Crewmate. Get them exiled at the next meeting!</string>
   <string name="ExtensionRoleInnocentNoKillNotif">Your taunted player did not kill a Crewmate in time.</string>
   <string name="ExtensionInnocentWins">Wins</string>
@@ -1677,18 +1679,20 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleVoodooMasterCycle">Cycle Curse</string>
   <string name="ExtensionRoleVoodooMasterCycleWikiDescription">Switch between blindness, mute, and confuse.</string>
   <string name="ExtensionOptionVoodooMasterCurseCooldown">Curse Cooldown</string>
-  <string name="ExtensionOptionVoodooMasterMaxBlindUses">Max Blind Uses</string>
-  <string name="ExtensionOptionVoodooMasterMaxConfuseUses">Max Confuse Uses</string>
-  <string name="ExtensionOptionVoodooMasterMaxMuteUses">Max Mute Uses</string>
+  <string name="ExtensionOptionVoodooMasterMaxBlindUses">Blind Uses</string>
+  <string name="ExtensionOptionVoodooMasterMaxConfuseUses">Confuse Uses</string>
+  <string name="ExtensionOptionVoodooMasterMaxMuteUses">Mute Uses</string>
   <string name="ExtensionOptionVoodooMasterBlindDuration">Blind Duration</string>
   <string name="ExtensionOptionVoodooMasterConfuseDuration">Confuse Duration</string>
   <string name="ExtensionOptionVoodooMasterMuteDuration">Mute Duration In Meetings</string>
   <string name="ExtensionOptionVoodooMasterTargetLockDuration">Target Lock Duration (Meetings)</string>
-  <string name="ExtensionOptionVoodooMasterMoveWhileMenu">Can Move While Menu</string>
+  <string name="ExtensionOptionVoodooMasterEclipseDelay">Eclipse Delay</string>
+  <string name="ExtensionOptionVoodooMasterConfuseDelay">Confuse Delay</string>
   <string name="ExtensionVoodooBlindAlert">You have been cursed by the Voodoo Master!</string>
   <string name="ExtensionVoodooEffectBlindness">Blind</string>
   <string name="ExtensionVoodooEffectMute">Mute</string>
   <string name="ExtensionVoodooEffectConfuse">Confuse</string>
+  <string name="ExtensionVoodooMutedIntro">YOU ARE MUTED!</string>
 
   <!-- Inverter Role -->
   <string name="ExtensionRoleInverter">Flipper</string>

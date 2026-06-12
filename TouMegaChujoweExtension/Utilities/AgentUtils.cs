@@ -1,3 +1,4 @@
+#if FALSE
 using AmongUs.GameOptions;
 using MiraAPI.GameOptions;
 using MiraAPI.Roles;
@@ -199,3 +200,4 @@ public static class AgentUtils
         }
     }
 }
+#endif

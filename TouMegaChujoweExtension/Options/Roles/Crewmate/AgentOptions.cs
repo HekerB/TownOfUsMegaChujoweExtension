@@ -1,3 +1,4 @@
+#if FALSE
 using MiraAPI.GameOptions.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
@@ -36,3 +37,4 @@ namespace TouMegaChujoweExtension.Options.Roles.Crewmate
         public bool ImpostorsCanKillEachOther { get; set; } = false;
     }
 }
+#endif

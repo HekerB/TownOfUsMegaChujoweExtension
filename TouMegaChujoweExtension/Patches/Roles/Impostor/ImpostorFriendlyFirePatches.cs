@@ -13,6 +13,7 @@ using TouMegaChujoweExtension.Options.Roles.Crewmate;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Impostor
 {
+#if FALSE
     [HarmonyPatch]
     public static class ImpostorFriendlyFirePatches
     {
@@ -74,4 +75,5 @@ namespace TouMegaChujoweExtension.Patches.Roles.Impostor
             }
         }
     }
+#endif
 }

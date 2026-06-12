@@ -235,6 +235,43 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
                         role.BeginTauntWinWindow(marked.PlayerId);
                     }
 
+                    if (TouMegaChujoweExtension.Modules.PoisonSystem.CheckAndTriggerShields(marked, victim))
+                    {
+                        Color flashColor = Color.white;
+                        if (victim.TryGetModifier<TownOfUs.Modifiers.Crewmate.MedicShieldModifier>(out _))
+                        {
+                            flashColor = new Color(0f, 0.4f, 0f);
+                        }
+                        else if (victim.TryGetModifier<BodyguardShieldModifier>(out _))
+                        {
+                            flashColor = new Color(0f, 0.2f, 0.5f);
+                        }
+                        else if (victim.TryGetModifier<DoctorShieldModifier>(out _))
+                        {
+                            flashColor = new Color(0.46f, 0.72f, 0.38f);
+                        }
+                        else if (victim.HasModifier<TownOfUs.Modifiers.Crewmate.WardenFortifiedModifier>())
+                        {
+                            flashColor = new Color(0.6f, 0f, 1f);
+                        }
+                        else if (victim.HasModifier<TownOfUs.Modifiers.Crewmate.ClericBarrierModifier>())
+                        {
+                            flashColor = new Color(0f, 1f, 0.7f);
+                        }
+                        else if (victim.HasModifier<TownOfUs.Modifiers.Crewmate.MagicMirrorModifier>())
+                        {
+                            flashColor = new Color(0.56f, 0.63f, 0.76f);
+                        }
+
+                        if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == innocentPlayerId)
+                        {
+                            Coroutines.Start(MiscUtils.CoFlash(flashColor));
+                        }
+
+                        ResolveNoKill(innocentPlayerId);
+                        yield break;
+                    }
+
                     marked.RpcSpecialMurder(
                         victim,
                         isIndirect: false,
@@ -274,7 +311,6 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
             if (innocent.TransformWhenTauntResolved)
             {
                 innocent.WinWindowExpired = true;
-                InnocentRole.TryTransformAfterSpentTaunts(innocentPlayerId);
             }
         }
     }

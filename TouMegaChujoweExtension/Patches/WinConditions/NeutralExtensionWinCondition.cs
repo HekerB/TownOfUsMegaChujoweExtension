@@ -305,6 +305,7 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
                 "DiedToWinning",
                 TownOfUs.Events.DeathEventHandlers.CurrentRound,
                 TownOfUs.Modifiers.DeathHandlerOverride.SetFalse,
+                killedBy: player,
                 lockInfo: TownOfUs.Modifiers.DeathHandlerOverride.SetTrue);
         }
     }

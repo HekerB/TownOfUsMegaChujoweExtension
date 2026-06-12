@@ -13,6 +13,7 @@ using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
+using Reactor.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
@@ -133,6 +134,35 @@ public sealed class VoodooMasterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
         }
     }
 
+    private static System.Collections.IEnumerator CoApplyBlindAfterDelay(PlayerControl voodooMaster, PlayerControl target, float duration, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (MeetingHud.Instance == null && target != null && !target.HasDied() && voodooMaster != null && !voodooMaster.HasDied())
+        {
+            foreach (var player in PlayerControl.AllPlayerControls.ToArray())
+            {
+                if (player.HasModifier<VoodooBlindModifier>())
+                {
+                    player.RpcRemoveModifier<VoodooBlindModifier>();
+                }
+            }
+            target.RpcAddModifier<VoodooBlindModifier>(voodooMaster, duration);
+        }
+    }
+
+    private static System.Collections.IEnumerator CoApplyConfuseAfterDelay(PlayerControl voodooMaster, PlayerControl target, float duration, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (MeetingHud.Instance == null && target != null && !target.HasDied() && voodooMaster != null && !voodooMaster.HasDied())
+        {
+            if (target.HasModifier<VoodooConfusedModifier>())
+            {
+                target.RpcRemoveModifier<VoodooConfusedModifier>();
+            }
+            target.RpcAddModifier<VoodooConfusedModifier>(voodooMaster, duration);
+        }
+    }
+
     public static void CastVoodooDoll(PlayerControl voodooMaster, PlayerControl target, VoodooEffect effect)
     {
         if (voodooMaster == null || target == null || target.HasDied())
@@ -150,23 +180,36 @@ public sealed class VoodooMasterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
         switch (effect)
         {
             case VoodooEffect.Blindness:
-                foreach (var player in PlayerControl.AllPlayerControls.ToArray())
+                if (options.EclipseDelay > 0f)
                 {
-                    if (player.HasModifier<VoodooBlindModifier>())
-                    {
-                        player.RpcRemoveModifier<VoodooBlindModifier>();
-                    }
+                    Coroutines.Start(CoApplyBlindAfterDelay(voodooMaster, target, options.BlindDuration, options.EclipseDelay));
                 }
-
-                target.RpcAddModifier<VoodooBlindModifier>(voodooMaster, OptionGroupSingleton<VoodooMasterOptions>.Instance.BlindDuration);
+                else
+                {
+                    foreach (var player in PlayerControl.AllPlayerControls.ToArray())
+                    {
+                        if (player.HasModifier<VoodooBlindModifier>())
+                        {
+                            player.RpcRemoveModifier<VoodooBlindModifier>();
+                        }
+                    }
+                    target.RpcAddModifier<VoodooBlindModifier>(voodooMaster, options.BlindDuration);
+                }
                 return;
             case VoodooEffect.Confuse:
-                if (target.HasModifier<VoodooConfusedModifier>())
+                if (options.ConfuseDelay > 0f)
                 {
-                    target.RpcRemoveModifier<VoodooConfusedModifier>();
+                    Coroutines.Start(CoApplyConfuseAfterDelay(voodooMaster, target, options.ConfuseDuration, options.ConfuseDelay));
                 }
 
-                target.RpcAddModifier<VoodooConfusedModifier>(voodooMaster, OptionGroupSingleton<VoodooMasterOptions>.Instance.ConfuseDuration);
+                else
+                {
+                    if (target.HasModifier<VoodooConfusedModifier>())
+                    {
+                        target.RpcRemoveModifier<VoodooConfusedModifier>();
+                    }
+                    target.RpcAddModifier<VoodooConfusedModifier>(voodooMaster, options.ConfuseDuration);
+                }
                 return;
         }
 
