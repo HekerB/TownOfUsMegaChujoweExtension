@@ -11,10 +11,10 @@ public sealed class TavernKeeperOptions : AbstractOptionGroup<TavernKeeperRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleTavernKeeper", "Tavern Keeper");
 
-    [ModdedNumberOption("ExtensionOptionTavernKeeperCooldown", 5f, 120f, 1f, MiraNumberSuffixes.Seconds)]
+    [ModdedNumberOption("ExtensionOptionTavernKeeperCooldown", 5f, 50f, 2.5f, MiraNumberSuffixes.Seconds)]
     public float DrinkCooldown { get; set; } = 30f;
 
-    [ModdedNumberOption("ExtensionOptionTavernKeeperDuration", 1f, 30f, 1f, MiraNumberSuffixes.Seconds)]
+    [ModdedNumberOption("ExtensionOptionTavernKeeperDuration", 1f, 60f, 1f, MiraNumberSuffixes.Seconds)]
     public float RoleblockDuration { get; set; } = 10f;
 
     [ModdedToggleOption("ExtensionOptionTavernKeeperInvertControls")]
@@ -36,7 +36,7 @@ public sealed class TavernKeeperOptions : AbstractOptionGroup<TavernKeeperRole>
         Visible = () => OptionGroupSingleton<TavernKeeperOptions>.Instance.ShowAlertToTarget
     };
 
-    [ModdedNumberOption("ExtensionOptionTavernKeeperMaxUses", 0f, 15f, 1f, MiraNumberSuffixes.None, "∞", true)]
+    [ModdedNumberOption("ExtensionOptionTavernKeeperMaxUses", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", zeroInfinity: true)]
     public float MaxUses { get; set; } = 3f;
 
     [ModdedToggleOption("ExtensionOptionTavernKeeperResetAfterMeeting")]

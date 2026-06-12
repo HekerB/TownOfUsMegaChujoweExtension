@@ -46,6 +46,12 @@ public static class DraftRoleListHudPatch
         text.verticalAlignment = VerticalAlignmentOptions.Top;
         text.fontSize = text.fontSizeMin = text.fontSizeMax = GetHudFontSize();
 
+        if (DraftLobbyPatch.DraftInProgress || DraftLobbyPatch.DraftCompletedWaitingForStart)
+        {
+            HudManagerPatches.RoleList.SetActive(false);
+            return;
+        }
+
         if (!DraftSystem.IsEnabled)
         {
             PrefixDraftStatusToMiraText(text);

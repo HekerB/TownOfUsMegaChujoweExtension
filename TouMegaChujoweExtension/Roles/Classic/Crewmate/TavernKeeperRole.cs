@@ -94,12 +94,20 @@ public sealed class TavernKeeperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
     {
         var sb = ITownOfUsRole.SetNewTabText(this);
         var formatProvider = CultureInfo.InvariantCulture;
-        var rbdur = OptionGroupSingleton<TavernKeeperOptions>.Instance.RoleblockDuration;
+        var options = OptionGroupSingleton<TavernKeeperOptions>.Instance;
+        var rbdur = options.RoleblockDuration;
+        var maxUsesText = options.MaxUses == 0f ? "\u221e" : options.MaxUses.ToString(formatProvider);
 
         sb.AppendLine();
-        sb.AppendLine(TouLocale.Get("ExtensionRoleTavernKeeperTabRoleblockedDuration", "Roleblocked players are roleblocked for {0} second(s).").Replace("{0}", rbdur.ToString(formatProvider)));
+        sb.AppendLine(TouLocale.Get("ExtensionRoleTavernKeeperTabRoleblockedDuration", "Roleblock Duration: \\%duration\\%s")
+            .Replace("\\%duration\\%", rbdur.ToString(formatProvider)));
+        if (options.MaxUses > 0f)
+        {
+            sb.AppendLine(TouLocale.Get("ExtensionRoleTavernKeeperTabMaxUses", "Drinks Left: \\%uses\\%")
+                .Replace("\\%uses\\%", maxUsesText));
+        }
 
-        if (OptionGroupSingleton<TavernKeeperOptions>.Instance.Immunity)
+        if (options.Immunity)
             sb.AppendLine(TouLocale.Get("ExtensionRoleTavernKeeperTabTargetImmunity", "Your target will have immunity when their roleblock expires."));
 
         if (LastRoleblockedPlayerId != byte.MaxValue)
@@ -109,7 +117,8 @@ public sealed class TavernKeeperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
             {
                 var coloredName = $"{target.Data.Color.ToTextColor()}{target.CachedPlayerData.PlayerName}</color>";
                 sb.AppendLine();
-                sb.AppendLine(TouLocale.Get("ExtensionRoleTavernKeeperTabCurrentlyRoleblocked", "Currently roleblocked: {0}").Replace("{0}", coloredName));
+                sb.AppendLine(TouLocale.Get("ExtensionRoleTavernKeeperTabCurrentlyRoleblocked", "Drinking With: \\%player\\%")
+                    .Replace("\\%player\\%", coloredName));
             }
         }
 
@@ -126,7 +135,8 @@ public sealed class TavernKeeperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
     [
         new(
             TouLocale.Get($"ExtensionRole{LocaleKey}Drink", "Drink"),
-            TouLocale.Get($"ExtensionRole{LocaleKey}DrinkWikiDescription", "Drink with a player to roleblock them for {0} second(s).").Replace("{0}", OptionGroupSingleton<TavernKeeperOptions>.Instance.RoleblockDuration.ToString(CultureInfo.InvariantCulture)),
+            TouLocale.Get($"ExtensionRole{LocaleKey}DrinkWikiDescription", "Drink with a player to roleblock them for \\%duration\\%s.")
+                .Replace("\\%duration\\%", OptionGroupSingleton<TavernKeeperOptions>.Instance.RoleblockDuration.ToString(CultureInfo.InvariantCulture)),
             TouCrewAssets.CleanseSprite)
     ];
 
@@ -162,7 +172,13 @@ public sealed class TavernKeeperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
 
         if (player.AmOwner)
         {
-            var msg = TouLocale.Get("ExtensionRoleTavernKeeperNotificationRoleblocked", "{0} was roleblocked!").Replace("{0}", targetName);
+            var msgKey = immune
+                ? "ExtensionRoleTavernKeeperNotificationImmune"
+                : "ExtensionRoleTavernKeeperNotificationRoleblocked";
+            var fallback = immune
+                ? "\\%player\\% resisted your drink!"
+                : "\\%player\\% was roleblocked!";
+            var msg = TouLocale.Get(msgKey, fallback).Replace("\\%player\\%", targetName);
             ShowNotification(msg, iconSelf);
         }
 

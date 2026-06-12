@@ -22,6 +22,7 @@ public static class TouExtensionColors
     public static Color Portalmaker => SerialKiller;
     public static Color Gardener => Trapper;
     public static Color TavernKeeper => TownOfUsColors.Barkeeper;
+    public static Color Agent => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(86, 166, 255, 255);
     //neutrals
     public static Color SerialKiller => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(40, 80, 160, 255);
     public static Color Vulture => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(139, 69, 19, 255);

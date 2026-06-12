@@ -257,12 +257,7 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
 
         if (target.AmOwner)
         {
-            ButtonResetPatches.ResetCooldowns();
-            target.SetKillTimer(target.GetKillCooldown());
-            if (options.RecruitBecomesRandomImpostor)
-            {
-                ApplyMutationCooldowns(target);
-            }
+            RefreshRoleChangeHud(target, resetCooldowns: options.RecruitBecomesRandomImpostor);
         }
 
         ShowRecruitNotification(loner, target);
@@ -354,18 +349,23 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         if (player.AmOwner)
         {
             player.RpcChangeRole(nextRoleId, false);
-            ApplyMutationCooldowns(player);
+            RefreshRoleChangeHud(player, resetCooldowns: true);
             ShowMutationNotification(nextRoleId);
         }
     }
 
     [HideFromIl2Cpp]
-    private static void ApplyMutationCooldowns(PlayerControl player)
+    private static void RefreshRoleChangeHud(PlayerControl player, bool resetCooldowns)
     {
         var role = player?.Data?.Role;
         if (role == null)
         {
             return;
+        }
+
+        if (resetCooldowns)
+        {
+            ButtonResetPatches.ResetCooldowns();
         }
 
         if (role.CanUseKillButton)
@@ -378,20 +378,31 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
             return;
         }
 
+        HudManager.Instance.SetHudActive(player, role, true);
+
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            HudManager.Instance.SetHudActive(player, role, false);
+        }
+
         foreach (var button in CustomButtonManager.Buttons)
         {
-            if (button == null || !button.Enabled(role))
+            if (button == null)
             {
                 continue;
             }
 
-            if (button.Button == null)
+            var enabled = button.Enabled(role);
+            if (enabled && button.Button == null)
             {
                 button.CreateButton(HudManager.Instance.transform);
             }
 
-            button.SetActive(true, role);
-            button.SetTimer(button.Cooldown);
+            button.SetActive(enabled, role);
+            if (enabled)
+            {
+                button.SetTimer(button.Cooldown);
+            }
         }
     }
 

@@ -10,6 +10,8 @@ using TownOfUs.Utilities;
 using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using TouMegaChujoweExtension.Modules;
+using TouMegaChujoweExtension.Roles.Classic.Crewmate;
+using TownOfUs.Extensions;
 
 namespace TouMegaChujoweExtension.Patches.Roles;
 
@@ -65,6 +67,15 @@ public static class GuesserExemptPatch
         }
 
         var targetPlayer = MiscUtils.PlayerById(targetId);
+        if (guesser != null &&
+            targetPlayer != null &&
+            guesser.IsImpostorAligned() &&
+            targetPlayer.IsRole<AgentRole>())
+        {
+            __result = true;
+            return;
+        }
+
         if (guesser != null && targetPlayer != null && AreOnSameJackalTeam(guesser, targetPlayer))
         {
             __result = true;

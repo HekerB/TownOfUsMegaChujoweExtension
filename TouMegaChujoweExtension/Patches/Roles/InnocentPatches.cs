@@ -43,6 +43,11 @@ public static class InnocentPatches
             if (!IsValidForcedVictim(evt.Target)) continue;
 
             innocent.BeginTauntWinWindow(evt.Source.PlayerId);
+
+            if (evt.Source.AmOwner && !MeetingHud.Instance)
+            {
+                evt.Source.CmdReportDeadBody(evt.Target.Data);
+            }
         }
 
         if (evt.Target.HasModifier<BaitModifier>() && evt.Source.AmOwner && !MeetingHud.Instance)
@@ -56,6 +61,18 @@ public static class InnocentPatches
     {
         foreach (var innocent in GetInnocents())
         {
+            if (innocent.Player.AmOwner && !innocent.AwaitingNextMeetingExile && innocent.TauntedKillerId == null)
+            {
+                InnocentTauntButton.ClearExistingMarkerForInnocent(innocent.Player.PlayerId);
+                innocent.ResetTauntState();
+
+                if (innocent.TransformWhenTauntResolved)
+                {
+                    innocent.WinWindowExpired = true;
+                    InnocentRole.TryTransformAfterSpentTaunts(innocent.Player.PlayerId);
+                }
+            }
+
             if (!innocent.Player.AmOwner ||
                 string.IsNullOrEmpty(innocent.PendingMeetingAlertKey) ||
                 string.IsNullOrEmpty(innocent.PendingMeetingAlertFallback))
@@ -118,6 +135,11 @@ public static class InnocentPatches
     [RegisterEvent]
     public static void OnRoundStart(RoundStartEvent evt)
     {
+        foreach (var innocent in GetInnocents())
+        {
+            innocent.HasTauntedThisRound = false;
+        }
+
         if (evt.TriggeredByIntro) return;
 
         foreach (var innocent in GetInnocents())

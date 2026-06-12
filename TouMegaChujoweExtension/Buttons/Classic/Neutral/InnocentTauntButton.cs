@@ -19,7 +19,6 @@ using TownOfUs.Events;
 using TownOfUs.Extensions;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
-using TownOfUs.Modifiers.Game.Crewmate;
 using TownOfUs.Networking;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -66,6 +65,11 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
     public override bool CanUse()
     {
         if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data.IsDead)
+        {
+            return false;
+        }
+
+        if (Role != null && Role.HasTauntedThisRound)
         {
             return false;
         }
@@ -138,9 +142,13 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
 
                 _tauntedPlayerId = player.PlayerId;
 
+                Role.HasTauntedThisRound = true;
                 SpendTauntUse();
                 
-                TownOfUs.Assets.TouAudio.PlaySound(TownOfUs.Assets.TouAudio.TrackerActivateSound);
+                if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == innocent.PlayerId)
+                {
+                    TownOfUs.Assets.TouAudio.PlaySound(TownOfUs.Assets.TouAudio.NoisemakerIntroSound);
+                }
 
                 EffectActive = true;
                 Timer = EffectDuration;
@@ -179,7 +187,7 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
         notif?.AdjustNotification();
     }
 
-    private static void ClearExistingMarkerForInnocent(byte innocentPlayerId)
+    public static void ClearExistingMarkerForInnocent(byte innocentPlayerId)
     {
         foreach (var player in PlayerControl.AllPlayerControls.ToArray())
         {
@@ -201,12 +209,14 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
         var delay = OptionGroupSingleton<InnocentOptions>.Instance.TauntDuration;
         var endTime = Time.time + delay;
 
+        yield return new WaitForSeconds(0.1f);
+
         while (Time.time < endTime)
         {
             if (MeetingHud.Instance || ExileController.Instance) yield break;
 
             var marked = GameData.Instance?.GetPlayerById(markedPlayerId)?.Object;
-            if (marked == null || marked.HasDied() || !marked.HasModifier<InnocentTargetModifier>())
+            if (marked == null || marked.HasDied() || !HasTauntMarkerForInnocent(marked, innocentPlayerId))
             {
                 ResolveNoKill(innocentPlayerId);
                 yield break;
@@ -240,12 +250,6 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
                     ResetLocalButtonCooldown(innocentPlayerId);
                     QueueMeetingAlert(innocentPlayerId, "ExtensionRoleInnocentForcedKillNotif", "Your taunted player killed a Crewmate. Get them exiled at the next meeting!");
 
-                    if (victim.HasModifier<BaitModifier>())
-                    {
-                        yield break;
-                    }
-
-                    yield return CoReportBaitImmediately(marked.PlayerId, victim.PlayerId);
                     yield break;
                 }
             }
@@ -262,11 +266,6 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
         ResetLocalButtonCooldown(innocentPlayerId);
         ShowInnocentAlert(innocentPlayerId, "ExtensionRoleInnocentNoKillNotif", "Your taunted player did not kill a Crewmate in time.");
 
-        if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.PlayerId == innocentPlayerId)
-        {
-            TownOfUs.Assets.TouAudio.PlaySound(TownOfUs.Assets.TouAudio.TrackerDeactivateSound);
-        }
-
         if (InnocentRole.ActiveInnocents.TryGetValue(innocentPlayerId, out var innocent))
         {
             innocent.AwaitingNextMeetingExile = false;
@@ -275,6 +274,7 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
             if (innocent.TransformWhenTauntResolved)
             {
                 innocent.WinWindowExpired = true;
+                InnocentRole.TryTransformAfterSpentTaunts(innocentPlayerId);
             }
         }
     }
@@ -292,12 +292,11 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
 
     private static PlayerControl? FindForcedVictim(PlayerControl marked, byte innocentPlayerId)
     {
-        var nearestPlayer = PlayerControl.AllPlayerControls.ToArray()
+        return PlayerControl.AllPlayerControls.ToArray()
             .Where(player => IsClosestPlayerCandidate(player, marked.PlayerId, innocentPlayerId))
+            .Where(player => player!.IsCrewmate())
             .OrderBy(player => Vector2.Distance(marked.GetTruePosition(), player.GetTruePosition()))
             .FirstOrDefault();
-
-        return nearestPlayer != null && nearestPlayer.IsCrewmate() ? nearestPlayer : null;
     }
 
     private static bool IsClosestPlayerCandidate(PlayerControl? player, byte markedPlayerId, byte innocentPlayerId)
@@ -308,6 +307,12 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
                !player.HasDied() &&
                player.Data != null &&
                !player.Data.Disconnected;
+    }
+
+    private static bool HasTauntMarkerForInnocent(PlayerControl player, byte innocentPlayerId)
+    {
+        return player.GetModifiers<InnocentTargetModifier>()
+            .Any(marker => marker.InnocentPlayerId == innocentPlayerId);
     }
 
     private static void ResetLocalButtonCooldown(byte innocentPlayerId)

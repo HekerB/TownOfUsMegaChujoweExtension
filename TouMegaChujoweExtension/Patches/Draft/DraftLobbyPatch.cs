@@ -406,7 +406,7 @@ public static class DraftLobbyPatch
     {
         if (DraftSystem.IsEnabled && _draftCompletedWaitingForStart)
         {
-            // Inspired by DraftModeTOUM: Zero out the timer for an instant start
+            
             __instance.countDownTimer = 0f;
             CleanupUI();
         }
@@ -477,14 +477,14 @@ public static class DraftLobbyPatch
             var biasPercent = options.ReductionChance.Value / 100f;
             var random = new System.Random();
 
-            // Try to get LastImps from TownOfUs
+            
             List<int> lastImps = [];
             try
             {
                 var type = AccessTools.TypeByName("TownOfUs.Patches.TouRoleManagerPatches");
                 if (type != null)
                 {
-#pragma warning disable S3011 // Accessing private property in third party assembly is intentional
+#pragma warning disable S3011
                     var prop = type.GetProperty("LastImps", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 #pragma warning restore S3011
                     if (prop != null)
@@ -500,7 +500,7 @@ public static class DraftLobbyPatch
 
             while (impostors.Count < impostorCount && (remainingPlayers.Count > 0 || skippedPlayers.Count > 0))
             {
-                // If we ran out of clean players, we must pick from the skipped ones
+                
                 if (remainingPlayers.Count == 0)
                 {
                     remainingPlayers.AddRange(skippedPlayers);
@@ -516,7 +516,7 @@ public static class DraftLobbyPatch
 
                 if (shouldSkip)
                 {
-                    // Move to skipped list for this selection round
+                    
                     skippedPlayers.Add(playerId);
                     remainingPlayers.RemoveAt(num);
                     continue;
@@ -841,7 +841,7 @@ public static class DraftLobbyPatch
         float syncTime = 0f;
         if (current != null && current.clip != null && current.isPlaying && current.clip.length > 0.01f)
         {
-            float progress = current.time / current.clip.length; // 0..1
+            float progress = current.time / current.clip.length;
             syncTime = progress * newClip.length;
             syncTime = Mathf.Clamp(syncTime, 0f, Mathf.Max(0f, newClip.length - 0.01f));
         }
@@ -1056,7 +1056,7 @@ public static class DraftLobbyPatch
         var titleText = CreateTMP("DraftTitle", _draftContainer.transform,
             new Vector3(2.23f, 2.15f, -510f), 1.8f, TextAlignmentOptions.Center, true);
 
-        // Randomize the starting author (33% each)
+        
         _titleRandomOffset = UnityEngine.Random.Range(0f, 60f);
         int cycle = (int)((Time.time + _titleRandomOffset) / 20f) % 3;
         string startAuthor = cycle switch
@@ -1216,7 +1216,7 @@ public static class DraftLobbyPatch
             var tmps = new List<(TextMeshPro, Color)>();
             foreach (var tmp in obj.GetComponentsInChildren<TextMeshPro>(true)) tmps.Add((tmp, tmp.color));
 
-            // Random velocity away from the right side center
+            
             Vector2 dir = (new Vector2(obj.transform.localPosition.x, obj.transform.localPosition.y) - new Vector2(2.2f, 0f)).normalized;
             if (dir.magnitude < 0.1f) dir = Vector2.right;
             Vector3 vel = (Vector3)dir * UnityEngine.Random.Range(2f, 4f);
@@ -1274,7 +1274,7 @@ public static class DraftLobbyPatch
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
 
-            // Smooth overshoot curve
+            
             float eased;
             if (t < 0.5f)
             {
@@ -1287,7 +1287,7 @@ public static class DraftLobbyPatch
                 eased = Mathf.Lerp(1.15f, 1f, 1f - Mathf.Pow(1f - t2, 3f));
             }
 
-            float scale = Mathf.Lerp(0.5f, 1f, eased); // Start from small
+            float scale = Mathf.Lerp(0.5f, 1f, eased);
             float alpha = Mathf.Clamp01(t * 2f);
 
             if (_draftCompleteText == null) yield break;
@@ -1319,7 +1319,7 @@ public static class DraftLobbyPatch
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
 
-            // Overshoot bounce
+            
             float eased = t < 0.6f
                 ? Mathf.Lerp(0f, 1.15f, 1f - Mathf.Pow(1f - (t / 0.6f), 3f))
                 : Mathf.Lerp(1.15f, 1f, (t - 0.6f) / 0.4f);
@@ -1462,7 +1462,7 @@ public static class DraftLobbyPatch
         bgRenderer.sprite = CreateRoundedSprite();
         bgRenderer.color = new Color(0.48f, 0.12f, 0.12f, 0.95f);
         bgRenderer.sortingOrder = 15;
-        bgObj.transform.localScale = new Vector3(0.24f, 0.19f, 1f); // krĂłtszy
+        bgObj.transform.localScale = new Vector3(0.24f, 0.19f, 1f);
 
         var textObj = new GameObject("CancelText");
         textObj.transform.SetParent(_cancelButtonObj.transform);
@@ -1478,7 +1478,7 @@ public static class DraftLobbyPatch
         ApplyFont(text);
 
         var collider = _cancelButtonObj.AddComponent<BoxCollider2D>();
-        collider.size = new Vector2(0.74f, 0.36f); // krĂłtszy hitbox
+        collider.size = new Vector2(0.74f, 0.36f);
 
         var btn = _cancelButtonObj.AddComponent<PassiveButton>();
         btn.Colliders = new[] { (Collider2D)collider };
@@ -1613,7 +1613,7 @@ public static class DraftLobbyPatch
             if (HudManager.Instance == null || HudManager.Instance.Chat == null) return;
             var chat = HudManager.Instance.Chat;
 
-            // Use a local player as base for cosmetics but we will override the name
+            
             var player = PlayerControl.LocalPlayer;
             if (player == null) return;
 
@@ -1703,7 +1703,7 @@ public static class DraftLobbyPatch
 
         if (HudManager.Instance != null)
         {
-            // Use transform.Find to avoid compilation errors with missing fields
+            
             var namesToHide = new[] { "GameSettings", "RoleListRegion", "SetRoleList", "PlayerCounter", "LobbyButtons" };
             foreach (var name in namesToHide)
             {
@@ -1785,7 +1785,7 @@ public static class DraftLobbyPatch
     {
         _pickLocked = true;
 
-        // Immediate visual feedback: gray out all non-selected buttons instantly
+        
         foreach (var obj in _roleButtonObjects)
         {
             if (obj != selected && obj != null && _buttonRefs.TryGetValue(obj, out var refs))
@@ -1816,7 +1816,7 @@ public static class DraftLobbyPatch
 
         var others = _roleButtonObjects.Where(obj => obj != selected && obj != null).ToList();
 
-        // Store original data for the selected button
+        
         ButtonRefs? selectedRefs = null;
         Color selectedOrigBG = Color.white;
         if (selected != null && _buttonRefs.TryGetValue(selected, out selectedRefs))
@@ -1828,19 +1828,19 @@ public static class DraftLobbyPatch
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
-            float eased = t * t * (3f - 2f * t); // Smoothstep
+            float eased = t * t * (3f - 2f * t);
 
-            // 1. Animate Selected Button (Punch + Glow)
+            
             if (selected != null && selectedRefs != null)
             {
-                // Punch scale: 1.0 -> 1.2 -> 1.05
+                
                 float punch;
                 if (t < 0.3f) punch = Mathf.Lerp(1.0f, 1.22f, t / 0.3f);
                 else punch = Mathf.Lerp(1.22f, 1.06f, (t - 0.3f) / 0.7f);
 
                 selected.transform.localScale = new(punch, punch, 1f);
 
-                // Flash white at start
+                
                 if (t < 0.2f)
                 {
                     float flash = 1f - (t / 0.2f);
@@ -1851,17 +1851,17 @@ public static class DraftLobbyPatch
                     selectedRefs.BG.color = selectedOrigBG;
                 }
 
-                // Border pulse transition
+                
                 if (selectedRefs.Border != null)
                 {
-                    // Transition from white glow to solid gold
+                    
                     selectedRefs.Border.color = Color.Lerp(Color.white, new(1f, 0.9f, 0.2f, 1f), eased);
                 }
             }
 
-            // 2. Animate Others (Fade + Retreat + Gray)
-            float otherAlpha = Mathf.Lerp(1f, 0.45f, t * 2f); // Fade to 45% alpha (was 20%)
-            float otherScale = Mathf.Lerp(1f, 0.92f, t);    // Shrink slightly less
+            
+            float otherAlpha = Mathf.Lerp(1f, 0.45f, t * 2f);
+            float otherScale = Mathf.Lerp(1f, 0.92f, t);
 
             foreach (var obj in others)
             {
@@ -1870,7 +1870,7 @@ public static class DraftLobbyPatch
 
                 obj.transform.localScale = new(otherScale, otherScale, 1f);
 
-                // Gray out (but keep it more readable)
+                
                 Color grayBase = new(0.25f, 0.25f, 0.25f, 1f);
                 if (refs.BG != null)
                 {
@@ -1887,7 +1887,7 @@ public static class DraftLobbyPatch
             yield return null;
         }
 
-        // Final state reinforcement
+        
         if (selected != null && selectedRefs != null)
         {
             selected.transform.localScale = new Vector3(1.06f, 1.06f, 1f);
@@ -1913,12 +1913,70 @@ public static class DraftLobbyPatch
 
         if (roles == null || roles.Count == 0) return;
 
-        float xPos = 2.2f, startY = 1.0f, spacing = 0.8f;
+        float xPos = 2.2f, startY = 1.0f, spacingY = 0.8f;
+        var useTwoColumns = roles.Count > 3;
+        var leftX = useTwoColumns ? 0.68f : xPos;
+        var rightX = 3.72f;
+        var displayedRows = roles.Count;
+
+        if (useTwoColumns)
+        {
+            if (roles.Count == 4)
+            {
+                displayedRows = 2;
+            }
+            else if (roles.Count == 5)
+            {
+                displayedRows = 3;
+            }
+            else
+            {
+                displayedRows = Mathf.CeilToInt(roles.Count / 2f);
+            }
+        }
 
         for (int i = 0; i < roles.Count; i++)
-            CreateRoleButton(xPos, startY - i * spacing, roles[i], false, isImp);
+        {
+            float buttonX = xPos;
+            int row = i;
 
-        CreateRoleButton(xPos, startY - roles.Count * spacing - 0.4f, null, true, isImp);
+            if (useTwoColumns)
+            {
+                if (roles.Count == 4)
+                {
+                    if (i == 0) { buttonX = leftX; row = 0; }
+                    else if (i == 1) { buttonX = rightX; row = 0; }
+                    else if (i == 2) { buttonX = leftX; row = 1; }
+                    else if (i == 3) { buttonX = rightX; row = 1; }
+                }
+                else if (roles.Count == 5)
+                {
+                    if (i < 4)
+                    {
+                        buttonX = (i % 2 == 0) ? leftX : rightX;
+                        row = i / 2;
+                    }
+                    else
+                    {
+                        buttonX = xPos;
+                        row = 2;
+                    }
+                }
+                else
+                {
+                    int rowsPerColumn = Mathf.CeilToInt(roles.Count / 2f);
+                    buttonX = (i / rowsPerColumn == 0) ? leftX : rightX;
+                    row = i % rowsPerColumn;
+                }
+            }
+
+            CreateRoleButton(buttonX, startY - row * spacingY, roles[i], false, isImp);
+        }
+
+        var randomY = useTwoColumns
+            ? startY - displayedRows * spacingY - 0.15f
+            : startY - roles.Count * spacingY - 0.4f;
+        CreateRoleButton(xPos, randomY, null, true, isImp);
 
         Coroutines.Start(AnimateButtonsIn());
 
@@ -1952,7 +2010,7 @@ public static class DraftLobbyPatch
         float duration = 0.5f;
         float elapsed = 0f;
 
-        // Find initial colors for fading
+        
         var renderers = obj.GetComponentsInChildren<SpriteRenderer>(true);
         var tmps = obj.GetComponentsInChildren<TextMeshPro>(true);
 
@@ -1967,7 +2025,7 @@ public static class DraftLobbyPatch
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
 
-            // Elastic out / Overshoot curve
+            
             float eased;
             if (t < 0.6f)
             {
@@ -2006,7 +2064,7 @@ public static class DraftLobbyPatch
     {
         if (obj == null) return;
 
-        // Prevent restarting the same animation every frame if OnMouseOver is called continuously
+        
         if (_targetScales.TryGetValue(obj, out var currentTarget) && Mathf.Approximately(currentTarget, targetScale))
             return;
 
@@ -2027,7 +2085,7 @@ public static class DraftLobbyPatch
         Vector3 endScale = new(targetScale, targetScale, 1f);
         float elapsed = 0f;
 
-        // Find border for glow pulse
+        
         SpriteRenderer? border = null;
         if (_buttonRefs.TryGetValue(obj, out var refs)) border = refs.Border;
 
@@ -2036,12 +2094,12 @@ public static class DraftLobbyPatch
             if (obj == null) yield break;
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
-            float eased = t * t * (3f - 2f * t); // Smoothstep
+            float eased = t * t * (3f - 2f * t);
 
             if (elapsed <= duration)
                 obj.transform.localScale = Vector3.Lerp(startScale, endScale, eased);
 
-            // Pulsating glow if hovered
+            
             if (targetScale > 1.01f && border != null && !_pickLocked)
             {
                 float pulse = 0.7f + Mathf.Abs(Mathf.Sin(Time.time * 6f)) * 0.3f;
@@ -2144,7 +2202,7 @@ public static class DraftLobbyPatch
         var borderRenderer = borderObj.AddComponent<SpriteRenderer>();
         borderRenderer.sprite = CreateRoundedSprite();
         if (role != null && role.TeamType == RoleTeamTypes.Impostor)
-            borderRenderer.color = new(0.3f, 0.02f, 0.02f, 1f); // Even darker blood red
+            borderRenderer.color = new(0.3f, 0.02f, 0.02f, 1f);
         else
             borderRenderer.color = new(
                 Mathf.Max(btnColor.r - 0.15f, 0f),
@@ -2392,7 +2450,7 @@ public static class DraftLobbyPatch
     {
         if (icon == null) yield break;
 
-        // Find normalized scale from button refs
+        
         float normScale = 0.45f;
         foreach (var refs in _buttonRefs.Values)
         {
@@ -2470,7 +2528,7 @@ public static class DraftLobbyPatch
             var clip = obj.Cast<AudioClip>();
             string n = clip.name.ToLower(System.Globalization.CultureInfo.InvariantCulture);
 
-            // "rollover" is the standard name for hover sounds in AU
+            
             if (n.Contains("rollover") || n.Contains("buttonhover") || n.Contains("ui_hover"))
             {
                 _hoverSoundClip = clip;
@@ -2569,7 +2627,7 @@ public static class DraftLobbyPatch
         {
             if (_draftTitleText == null) yield break;
 
-            // Check what name SHOULD be displayed now
+            
             int cycle = (int)((Time.time + _titleRandomOffset) / interval) % 3;
             string currentText = _draftTitleText.text;
             string targetAuthor = cycle switch
@@ -2580,14 +2638,14 @@ public static class DraftLobbyPatch
                 _ => "HEKER"
             };
 
-            // If the current name doesn't match the desired one, trigger transition
+            
             if (!currentText.Contains(targetAuthor))
             {
                 float duration = 0.8f;
                 float elapsed = 0f;
                 var origColor = _draftTitleText.color;
 
-                // Fade Out
+                
                 while (elapsed < duration)
                 {
                     if (_draftTitleText == null) yield break;
@@ -2601,7 +2659,7 @@ public static class DraftLobbyPatch
                 _draftTitleText.text = $"<size=130%><b>DRAFT MODE</b></size>\nBY {targetAuthor}";
                 elapsed = 0f;
 
-                // Fade In + Punch
+                
                 while (elapsed < duration)
                 {
                     if (_draftTitleText == null) yield break;
@@ -2621,14 +2679,14 @@ public static class DraftLobbyPatch
                 }
             }
 
-            yield return new WaitForSeconds(1f); // Check every second for transition
+            yield return new WaitForSeconds(1f);
         }
         _isTitleAnimRunning = false;
     }
 
     private static System.Collections.IEnumerator CoStartAfterDelay()
     {
-        // Shorter delay for a snappier feel
+        
         yield return new WaitForSeconds(1.8f);
 
         var gsm = Object.FindObjectOfType<GameStartManager>();
@@ -2765,7 +2823,7 @@ public static class DraftLobbyPatch
     {
         ClearRoleButtons();
         StopDraftMusic();
-        HideLobby(false); // Restore lobby UI
+        HideLobby(false);
         if (_muteButtonObj != null) { Object.Destroy(_muteButtonObj); _muteButtonObj = null; }
         if (_cancelButtonObj != null) { Object.Destroy(_cancelButtonObj); _cancelButtonObj = null; }
         if (_forceStartButtonObj != null) { Object.Destroy(_forceStartButtonObj); _forceStartButtonObj = null; }

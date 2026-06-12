@@ -25,6 +25,7 @@ public sealed class TavernKeeperDrinkButton : TownOfUsRoleButton<TavernKeeperRol
     public override float Cooldown => Math.Clamp(OptionGroupSingleton<TavernKeeperOptions>.Instance.DrinkCooldown + MapCooldown, 5f, 120f);
     public override LoadableAsset<Sprite> Sprite => TouCrewAssets.CleanseSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
+    private bool HasInfiniteUses => ZeroIsInfinite && MaxUses == 0;
 
     public override void CreateButton(Transform parent)
     {
@@ -32,33 +33,31 @@ public sealed class TavernKeeperDrinkButton : TownOfUsRoleButton<TavernKeeperRol
         if (Button != null)
         {
             Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterBasicSprite.LoadAsset();
-            Button.usesRemainingSprite.gameObject.SetActive(MaxUses > 0);
+            UpdateUsesDisplay();
         }
     }
 
     public override bool CanUse()
     {
         if (EffectActive || GetActiveRoleblockedModifier(out _) != null) return false;
-        return base.CanUse() && Role != null;
+        return base.CanUse() && Role != null && (HasInfiniteUses || !LimitedUses || UsesLeft > 0);
+    }
+
+    public override bool CanClick()
+    {
+        return base.CanClick() && (HasInfiniteUses || !LimitedUses || UsesLeft > 0);
     }
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
         base.FixedUpdate(playerControl);
 
-        if (Button != null)
+        if (HasInfiniteUses && UsesLeft <= 0)
         {
-            if (ZeroIsInfinite && MaxUses == 0)
-            {
-                Button.usesRemainingText.gameObject.SetActive(false);
-                Button.usesRemainingSprite.gameObject.SetActive(false);
-            }
-            else
-            {
-                Button.usesRemainingText.gameObject.SetActive(true);
-                Button.usesRemainingSprite.gameObject.SetActive(true);
-            }
+            SetUses(1);
         }
+
+        UpdateUsesDisplay();
 
         bool inMeeting = MeetingHud.Instance != null;
         if (_lastMeetingState && !inMeeting)
@@ -206,7 +205,7 @@ public sealed class TavernKeeperDrinkButton : TownOfUsRoleButton<TavernKeeperRol
             OverrideName("Roleblocked");
         }
 
-        if (MaxUses > 0)
+        if (LimitedUses && !HasInfiniteUses)
         {
             UsesLeft--;
             SetUses(UsesLeft);
@@ -226,11 +225,30 @@ public sealed class TavernKeeperDrinkButton : TownOfUsRoleButton<TavernKeeperRol
         }
     }
 
+    public override void SetUses(int amount)
+    {
+        base.SetUses(HasInfiniteUses ? 1 : amount);
+        UpdateUsesDisplay();
+    }
+
+    private void UpdateUsesDisplay()
+    {
+        if (Button == null) return;
+
+        var showUses = !HasInfiniteUses && MaxUses > 0;
+        Button.usesRemainingSprite.gameObject.SetActive(showUses);
+        if (Button.usesRemainingText != null)
+        {
+            Button.usesRemainingText.gameObject.SetActive(showUses);
+        }
+    }
+
     public override void ResetCooldownAndOrEffect()
     {
         _waitingForModifier = false;
         EffectActive = false;
         OverrideName(Name);
         base.ResetCooldownAndOrEffect();
+        UpdateUsesDisplay();
     }
 }

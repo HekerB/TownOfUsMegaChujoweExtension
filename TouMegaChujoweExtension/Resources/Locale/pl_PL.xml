@@ -1649,17 +1649,19 @@
 
   <!-- Tavern Keeper -->
   <string name="ExtensionRoleTavernKeeper">Karczmarz</string>
-  <string name="ExtensionRoleTavernKeeperIntroBlurb">Pij z graczami, aby zablokowac ich umiejetnosci.</string>
-  <string name="ExtensionRoleTavernKeeperTabDescription">Pij z graczami, aby zablokowac ich umiejetnosci i uniemozliwic im dzialanie.</string>
-  <string name="ExtensionRoleTavernKeeperWikiDescription">Karczmarz to rola ochronna Zalogi, ktora moze pic z innymi graczami, aby zablokowac ich aktywne umiejetnosci. Picie moze jednak wywolac Odpornosc, ktora sprawia, ze cel jest tymczasowo odporny na kolejne zablokowania. Zablokowanie oraz odwrocenie sterowania nastepuje natychmiast po napiciu sie, lecz powiadomienie o zablokowaniu wyswietla sie dopiero po czasie okreslonym w opoznieniu alertu (podobnie jak w przypadku opoznienia chaosu u Zielarza).</string>
+  <string name="ExtensionRoleTavernKeeperIntroBlurb">Postaw kolejke i zablokuj umiejetnosci</string>
+  <string name="ExtensionRoleTavernKeeperTabDescription">Pij z graczami, aby zablokowac ich umiejetnosci.\%nl\%Odporni gracze nie moga zostac zablokowani ponownie.</string>
+  <string name="ExtensionRoleTavernKeeperWikiDescription">Karczmarz to rola ochronna Zalogi, ktora moze blokowac graczy poprzez wspolne picie. Zablokowany gracz nie moze przez krotki czas uzywac aktywnych umiejetnosci. Jesli opcja jest wlaczona, napoj moze tez dac celowi krotka odpornosc na kolejne blokady.</string>
   <string name="ExtensionRoleTavernKeeperDrink">Napoj</string>
-  <string name="ExtensionRoleTavernKeeperDrinkWikiDescription">Napij sie z graczem, aby zablokowac jego umiejetnosci na {0} sekund(y).</string>
-  <string name="ExtensionRoleTavernKeeperTabRoleblockedDuration">Zablokowani gracze sa zablokowani przez {0} sekund(y).</string>
-  <string name="ExtensionRoleTavernKeeperTabTargetImmunity">Twoj cel bedzie mial odpornosc, gdy blokada dobiegnie konca.</string>
-  <string name="ExtensionRoleTavernKeeperTabCurrentlyRoleblocked">Obecnie upity gracz: {0}</string>
-  <string name="ExtensionRoleTavernKeeperNotificationRoleblocked">Gracz {0} zostal zablokowany!</string>
-  <string name="ExtensionRoleTavernKeeperAlertImmune">Ktos dal Ci napoj, ale jestes odporny!</string>
-  <string name="ExtensionRoleTavernKeeperAlertRoleblocked">Ktos dal Ci napoj, twoje umiejetnosci zostaly zablokowane!</string>
+  <string name="ExtensionRoleTavernKeeperDrinkWikiDescription">Napij sie z graczem, aby zablokowac jego umiejetnosci na \%duration\%s.</string>
+  <string name="ExtensionRoleTavernKeeperTabRoleblockedDuration">Czas blokady: \%duration\%s</string>
+  <string name="ExtensionRoleTavernKeeperTabMaxUses">Pozostalo napojow: \%uses\%</string>
+  <string name="ExtensionRoleTavernKeeperTabTargetImmunity">Cele dostaja odpornosc po zakonczeniu blokady.</string>
+  <string name="ExtensionRoleTavernKeeperTabCurrentlyRoleblocked">Pijesz z: \%player\%</string>
+  <string name="ExtensionRoleTavernKeeperNotificationRoleblocked">\%player\% zostal zablokowany!</string>
+  <string name="ExtensionRoleTavernKeeperNotificationImmune">\%player\% oparl sie napojowi!</string>
+  <string name="ExtensionRoleTavernKeeperAlertImmune">Opierasz sie napojowi Karczmarza!</string>
+  <string name="ExtensionRoleTavernKeeperAlertRoleblocked">Karczmarz zablokowal Twoje umiejetnosci!</string>
   <string name="ExtensionOptionTavernKeeperCooldown">Odnowienie napoju</string>
   <string name="ExtensionOptionTavernKeeperDuration">Czas trwania blokady</string>
   <string name="ExtensionOptionTavernKeeperInvertControls">Odwrocenie sterowania zablokowanego gracza</string>
@@ -1669,5 +1671,15 @@
   <string name="ExtensionOptionTavernKeeperResetAfterMeeting">Zresetuj uzycia po naradzie</string>
   <string name="ExtensionOptionTavernKeeperShowAlert">Pokaz alert zablokowanemu graczowi</string>
   <string name="ExtensionOptionTavernKeeperAlertDelay">Opoznienie alertu</string>
+
+  <!-- Agent -->
+  <string name="ExtensionRoleAgent">Agent</string>
+  <string name="ExtensionRoleAgentIntroBlurb">Wtop sie w Impostorow</string>
+  <string name="ExtensionRoleAgentTabDescription">Wygraj z Zaloga od srodka czatu Impostorow.\%nl\%Mozesz tam pisac, ale ich nicki zostaja ukryte.</string>
+  <string name="ExtensionRoleAgentWikiDescription">Agent to rola sledcza Zalogi, ktora dla Impostorow wyglada jak sojusznik. Moze czytac i wysylac wiadomosci na czacie Impostorow, ale nicki Impostorow sa przed nim ukryte. Impostorzy nie moga strzelic ani zgadnac Agenta, a Agent wygrywa z Zaloga.</string>
+  <string name="ExtensionOptionAgentAppearsAs">Pojawia sie jako</string>
+  <string name="ExtensionOptionAgentCanVent">Moze korzystac z wentylacji</string>
+  <string name="ExtensionOptionAgentCanUseImpostorChat">Moze korzystac z czatu Impostorow</string>
+  <string name="ExtensionOptionAgentImpostorsCanKillEachOther">Impostorzy moga sie zabijac</string>
 </resources>
-
+

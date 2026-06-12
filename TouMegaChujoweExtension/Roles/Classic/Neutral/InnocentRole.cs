@@ -20,6 +20,13 @@ using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 
+using TownOfUs.Modules.Wiki;
+using TownOfUs.Roles;
+using TownOfUs.Roles.Crewmate;
+using TownOfUs.Roles.Neutral;
+using TownOfUs.Utilities;
+using UnityEngine;
+
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
 public sealed class InnocentRole(IntPtr cppPtr)
@@ -27,6 +34,7 @@ public sealed class InnocentRole(IntPtr cppPtr)
 {
     public static Dictionary<byte, InnocentRole> ActiveInnocents { get; } = [];
     public byte? TauntedKillerId { get; set; }
+    public bool HasTauntedThisRound { get; set; }
     public bool TargetVoted { get; set; }
     public bool AboutToWin { get; set; }
     public bool AwaitingNextMeetingExile { get; set; }
@@ -125,6 +133,7 @@ public sealed class InnocentRole(IntPtr cppPtr)
     public void ResetTauntState()
     {
         TauntedKillerId = null;
+        HasTauntedThisRound = false;
         TargetVoted = false;
         AboutToWin = false;
         AwaitingNextMeetingExile = false;

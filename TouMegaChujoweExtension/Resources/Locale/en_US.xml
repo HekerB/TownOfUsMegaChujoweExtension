@@ -1706,17 +1706,19 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
 
   <!-- Tavern Keeper -->
   <string name="ExtensionRoleTavernKeeper">Tavern Keeper</string>
-  <string name="ExtensionRoleTavernKeeperIntroBlurb">Drink with players to roleblock them.</string>
-  <string name="ExtensionRoleTavernKeeperTabDescription">Drink with players to roleblock them and disable their abilities.</string>
-  <string name="ExtensionRoleTavernKeeperWikiDescription">The Tavern Keeper is a Crewmate Protective role that can drink with other players to roleblock them, disabling their active abilities. Drinking can cause Immunity, which makes the target temporarily immune to subsequent roleblocks. In addition, the target is roleblocked and has their controls inverted immediately upon drinking, but the alert notification is only displayed after a configured delay (similar to the Confuse Delay of the Herbalist).</string>
+  <string name="ExtensionRoleTavernKeeperIntroBlurb">Share a drink and shut down abilities</string>
+  <string name="ExtensionRoleTavernKeeperTabDescription">Drink with players to roleblock their abilities.\%nl\%Immune players cannot be roleblocked again.</string>
+  <string name="ExtensionRoleTavernKeeperWikiDescription">The Tavern Keeper is a Crewmate Protective role that can roleblock players by drinking with them. Roleblocked players cannot use active abilities for a short time. If enabled, a drink can also leave the target briefly immune to future roleblocks.</string>
   <string name="ExtensionRoleTavernKeeperDrink">Drink</string>
-  <string name="ExtensionRoleTavernKeeperDrinkWikiDescription">Drink with a player to roleblock them for {0} second(s).</string>
-  <string name="ExtensionRoleTavernKeeperTabRoleblockedDuration">Roleblocked players are roleblocked for {0} second(s).</string>
-  <string name="ExtensionRoleTavernKeeperTabTargetImmunity">Your target will have immunity when their roleblock expires.</string>
-  <string name="ExtensionRoleTavernKeeperTabCurrentlyRoleblocked">Currently roleblocked: {0}</string>
-  <string name="ExtensionRoleTavernKeeperNotificationRoleblocked">{0} was roleblocked!</string>
-  <string name="ExtensionRoleTavernKeeperAlertImmune">Someone gave you a drink, but you are immune!</string>
-  <string name="ExtensionRoleTavernKeeperAlertRoleblocked">Someone gave you a drink, you were roleblocked!</string>
+  <string name="ExtensionRoleTavernKeeperDrinkWikiDescription">Drink with a player to roleblock them for \%duration\%s.</string>
+  <string name="ExtensionRoleTavernKeeperTabRoleblockedDuration">Roleblock Duration: \%duration\%s</string>
+  <string name="ExtensionRoleTavernKeeperTabMaxUses">Drinks Left: \%uses\%</string>
+  <string name="ExtensionRoleTavernKeeperTabTargetImmunity">Targets become immune after the roleblock ends.</string>
+  <string name="ExtensionRoleTavernKeeperTabCurrentlyRoleblocked">Drinking With: \%player\%</string>
+  <string name="ExtensionRoleTavernKeeperNotificationRoleblocked">\%player\% was roleblocked!</string>
+  <string name="ExtensionRoleTavernKeeperNotificationImmune">\%player\% resisted your drink!</string>
+  <string name="ExtensionRoleTavernKeeperAlertImmune">You resisted the Tavern Keeper's drink!</string>
+  <string name="ExtensionRoleTavernKeeperAlertRoleblocked">You were roleblocked by the Tavern Keeper!</string>
   <string name="ExtensionOptionTavernKeeperCooldown">Drink Cooldown</string>
   <string name="ExtensionOptionTavernKeeperDuration">Roleblock Duration</string>
   <string name="ExtensionOptionTavernKeeperInvertControls">Invert controls of roleblocked player</string>
@@ -1726,6 +1728,16 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionTavernKeeperResetAfterMeeting">Reset uses after meeting</string>
   <string name="ExtensionOptionTavernKeeperShowAlert">Alert target of roleblock</string>
   <string name="ExtensionOptionTavernKeeperAlertDelay">Alert delay</string>
+
+  <!-- Agent -->
+  <string name="ExtensionRoleAgent">Agent</string>
+  <string name="ExtensionRoleAgentIntroBlurb">Blend in with the Impostors</string>
+  <string name="ExtensionRoleAgentTabDescription">Win with the Crewmates from inside the Impostor chat.\%nl\%You can speak there, but their names stay hidden.</string>
+  <string name="ExtensionRoleAgentWikiDescription">The Agent is a Crewmate Investigative role that appears friendly to the Impostors. They can read and send Impostor chat messages, but all Impostor names are hidden from them. Impostors cannot shoot or guess the Agent, and the Agent wins with the Crewmates.</string>
+  <string name="ExtensionOptionAgentAppearsAs">Appears As</string>
+  <string name="ExtensionOptionAgentCanVent">Can Vent</string>
+  <string name="ExtensionOptionAgentCanUseImpostorChat">Can Use Impostor Chat</string>
+  <string name="ExtensionOptionAgentImpostorsCanKillEachOther">Impostors Can Kill Each Other</string>
 </resources>
 
 

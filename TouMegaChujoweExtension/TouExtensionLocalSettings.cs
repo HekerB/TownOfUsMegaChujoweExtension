@@ -12,7 +12,7 @@ public class TouExtensionLocalSettings : LocalSettingsTab
         EnableNauseaCameraShake = config.Bind("Accessibility", "EnableNauseaCameraShake", true);
         UseLegacyGuessDeathAnimation = config.Bind("Visuals", "UseLegacyGuessDeathAnimation", false);
         UseClassicAssassinGuessing = config.Bind("Visuals", "UseClassicAssassinGuessing", false);
-        MapColor = config.Bind("Visuals", "MapColor", MapColorType.Off);
+        MapColor = config.Bind("Visuals", "MapColor", MapColorType.Role);
         CensorModName = config.Bind("Visuals", "CensorModName", true);
         UsePolishLanguage = config.Bind("Localization", "UsePolishLanguage", false);
 
@@ -70,13 +70,3 @@ public enum MapColorType
     Role,
     PlayerColor
 }
-
-
-
-
-
-
-
-
-
-

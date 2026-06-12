@@ -25,5 +25,4 @@ public sealed class ExtensionGeneralOptions : AbstractOptionGroup
 
     [ModdedToggleOption("ExtensionOptionGeneralLoversKnowEachOthersRoles")]
     public bool LoversKnowEachOthersRoles { get; set; } = true;
-
 }

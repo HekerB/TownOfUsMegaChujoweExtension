@@ -54,8 +54,6 @@ public static class DraftNetworking
         DraftSystem.ImpostorPlayerIds = impostorIds;
         DraftSystem.DraftActiveThisRound = true;
         DraftSystem.IsRunning = true;
-
-        DraftLobbyPatch.ShowSystemMessage("<color=#FF0000>Draft Mode</color> has Started. Be Ready to Pick Your Role!");
     }
 
     public static void ReceiveDraftStartFromReader(MessageReader reader)
@@ -152,8 +150,6 @@ public static class DraftNetworking
     {
         DraftSystem.IsRunning = false;
         DraftSystem.DraftComplete = true;
-
-        DraftLobbyPatch.ShowSystemMessage("<color=#00FF00>Draft Complete!</color> The game is starting soon.");
     }
 
     public static void SendDraftCancel()

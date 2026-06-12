@@ -3,6 +3,8 @@ using MiraAPI.GameOptions;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TouMegaChujoweExtension.Options;
+using TouMegaChujoweExtension.Roles.Classic.Crewmate;
+using TouMegaChujoweExtension.Utilities;
 using Random = UnityEngine.Random;
 using System;
 using System.Collections.Generic;
@@ -278,6 +280,11 @@ public static class DraftSystem
                 var isJackalRole = role.Role == (RoleTypes)RoleId.Get<TouMegaChujoweExtension.Roles.Classic.Neutral.JackalRole>();
                 var isVampireRole = role.Role == (RoleTypes)RoleId.Get<TownOfUs.Roles.Neutral.VampireRole>();
 
+                if (AgentUtils.AgentCanSpawn() && IsAgentConflictRole(role.Role))
+                {
+                    continue;
+                }
+
                 if (preventVampires && isVampireRole)
                 {
                     continue;
@@ -314,9 +321,24 @@ public static class DraftSystem
         }
 
         return cached.Where(r =>
-            !AlreadyPicked.Contains((ushort)r.Role) ||
+            (!AlreadyPicked.Contains((ushort)r.Role) && !ConflictsWithPickedAgent(r.Role)) ||
             r.Role == RoleTypes.Crewmate ||
             r.Role == RoleTypes.Impostor).ToList();
+    }
+
+    private static bool IsAgentConflictRole(RoleTypes roleType)
+    {
+        return roleType == (RoleTypes)RoleId.Get<TownOfUs.Roles.Impostor.TraitorRole>();
+    }
+
+    private static bool ConflictsWithPickedAgent(RoleTypes roleType)
+    {
+        if (!AlreadyPicked.Contains((ushort)RoleId.Get<AgentRole>()))
+        {
+            return false;
+        }
+
+        return IsAgentConflictRole(roleType);
     }
 
     private static List<RoleBehaviour> GetRolesForAlignments(List<RoleAlignment> alignments)
