@@ -284,14 +284,14 @@ Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-C
 # Credits
 
 ## Original Extension
-- **[rewalo](https://github.com/rewalo)** - Original [TownOfUsMiraRolesExtension](https://github.com/rewalo/TownOfUsMiraRolesExtension) that this project is forked from. The Voodoo Master role concept and initial implementation originated from rewalo's extension.
+- **[rewalo](https://github.com/rewalo)** - Original [TownOfUsMiraRolesExtension](https://github.com/rewalo/TownOfUsMiraRolesExtension) that this project is forked from
 
 ## Artwork & Asset Credits
 
 > **Huge shoutout to Atony**, creator of Town of Us: Mira. A large part of this mod's art comes from his work, Town of Us: Mira builds, and resources shared around the TOU Mira community.
 
 - **[Asterisken [スター]](https://github.com/aasteriisken)** ([Discord](https://discord.com/users/1220041311323684955)) - Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful, Objection Button, Bodyguard Guard button, Soul Collector role icon, Berserker role icon, and War role icon
-- **Atony / Town of Us: Mira / Town of Us Discord** - Serial Killer, Kamikaze, Loner, Joker, Burrower, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, Detonator, and Death role icons; Shifter role icon and button; Poisoner role icon and buttons; Drunk modifier icon; Jackal and Sidekicks icons; Innocent role icon; Flipper (changed) role icon; Tavern Keeper role icon.
+- **Atony / Town of Us: Mira / Town of Us Discord** - Serial Killer, Kamikaze, Loner, Joker, Burrower, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, Detonator,; Shifter role icon and button; Poisoner role icon and buttons; Drunk modifier icon; Jackal and Sidekicks icons; Innocent role icon; Flipper (changed) role icon; Tavern Keeper role icon.
 - **Atony / [Town Of Us Fusion](https://github.com/AtonyGit/Town-Of-Us-Fusion)** - Vampire Hunter stake button
 - **CraftR / Town of Us Discord** - Pirate role icon and Pirate Duel button; Baker role icon and bread assets; Pope role icon and Sanctify button
 - **CraftR / [Town-Of-Us-Mira-JK](https://github.com/JoaKing08/Town-Of-Us-Mira-JK)** - Famine role icon
@@ -299,6 +299,7 @@ Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-C
 - **Syzyf / Syzyfowe TOU** - Gardener ability button icon
 - **Xinav's** - Tarot card asset
 - **Town of Salem** - Shroud visual assets/source inspiration
+- **Unknown** - The Voodoo Master icon was taken from original rewalo's extension.
 
 ## Sound Credits
 - **Radzik360** - Joker laugh (intro & in-game), Kamikaze explosion sound, Pelican swallow sound
