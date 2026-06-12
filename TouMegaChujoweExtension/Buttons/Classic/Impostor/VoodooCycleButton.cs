@@ -79,7 +79,7 @@ public sealed class VoodooCycleButton : TownOfUsRoleButton<VoodooMasterRole>
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
-        var shouldShow = Role != null && !playerControl.HasDied();
+        var shouldShow = Role != null && !playerControl.HasDied() && !MeetingHud.Instance;
 
         if (Button != null && Button.gameObject.activeSelf != shouldShow)
         {

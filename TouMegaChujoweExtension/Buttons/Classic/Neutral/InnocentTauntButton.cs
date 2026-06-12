@@ -368,7 +368,7 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
             _isMenuOpen = false;
         }
 
-        var shouldShow = Role != null && !playerControl.HasDied();
+        var shouldShow = Role != null && !playerControl.HasDied() && !MeetingHud.Instance;
 
         if (Button != null && Button.gameObject.activeSelf != shouldShow)
         {

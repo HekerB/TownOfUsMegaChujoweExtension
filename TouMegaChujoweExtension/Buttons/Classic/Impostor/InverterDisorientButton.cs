@@ -156,7 +156,7 @@ public sealed class InverterDisorientButton : TownOfUsRoleButton<InverterRole>
 
     protected override void FixedUpdate(PlayerControl playerControl)
     {
-        var shouldShow = Role != null && !playerControl.HasDied();
+        var shouldShow = Role != null && !playerControl.HasDied() && !MeetingHud.Instance;
         if (Button != null && Button.gameObject.activeSelf != shouldShow)
         {
             Button.gameObject.SetActive(shouldShow);
