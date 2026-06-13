@@ -10,7 +10,6 @@ Task("Build")
     var settings = new DotNetBuildSettings
     {
         Configuration = "Release",
-        NoRestore = buildId != 0,
         MSBuildSettings = new DotNetMSBuildSettings()
     };
 

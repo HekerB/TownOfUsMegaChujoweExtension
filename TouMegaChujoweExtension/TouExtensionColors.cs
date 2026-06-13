@@ -15,7 +15,7 @@ public static class TouExtensionColors
     public static Color Bodyguard => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(0, 51, 128, 255);
     public static Color Sage => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(200, 162, 255, 255);
     public static Color VampireHunter => TownOfUsColors.UseBasic ? Palette.CrewmateBlue : new Color32(150, 100, 200, 255);
-    public static Color Falcon => TownOfUsColors.Haunter;
+    public static Color Falcon => Color.white;
     public static Color Doctor => Trapper;
     public static Color SpiritMaster => TownOfUsColors.SoulCollector;
     public static Color Arcanist => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(110, 15, 110, 255);

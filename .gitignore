@@ -5,7 +5,6 @@ obj/
 # NuGet
 /packages/
 *.lock.json
-!TouMegaChujoweExtension/packages.lock.json
 
 # IDE - Visual Studio
 .vs/
