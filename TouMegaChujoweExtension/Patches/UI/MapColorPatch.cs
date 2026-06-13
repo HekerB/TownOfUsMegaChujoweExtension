@@ -56,8 +56,6 @@ public static class MapColorPatch
     private static void ApplyRoleColor(MapBehaviour map, Color color)
     {
         map.ColorControl?.SetColor(color);
-        ApplySolidColor(map.HerePoint, color);
-        ApplySolidColor(map.TrackedHerePoint, color);
     }
 
     private static void ApplyPlayerColor(MapBehaviour map, PlayerControl player)
