@@ -21,13 +21,6 @@ using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
 
-using TownOfUs.Modules.Wiki;
-using TownOfUs.Roles;
-using TownOfUs.Roles.Crewmate;
-using TownOfUs.Roles.Neutral;
-using TownOfUs.Utilities;
-using UnityEngine;
-
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
 public sealed class InnocentRole(IntPtr cppPtr)
