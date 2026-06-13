@@ -442,12 +442,14 @@ public static class DraftSystem
 
     private static IEnumerable<T> WeightedShuffle<T>(IEnumerable<T> items, Func<T, float> weightSelector)
     {
-        var pool = items.ToList();
+        var pool = items
+            .Select(item => (Item: item, Weight: weightSelector(item)))
+            .ToList();
         var result = new List<T>();
 
         while (pool.Count > 0)
         {
-            var totalWeight = pool.Sum(weightSelector);
+            var totalWeight = pool.Sum(entry => entry.Weight);
 
             if (totalWeight <= 0)
             {
@@ -457,17 +459,17 @@ public static class DraftSystem
                     (pool[i], pool[j]) = (pool[j], pool[i]);
                 }
 
-                result.AddRange(pool);
+                result.AddRange(pool.Select(entry => entry.Item));
                 break;
             }
 
             var r = Random.Range(0f, totalWeight);
             var current = 0f;
-            var selected = pool.First();
+            var selected = pool[0];
 
             foreach (var item in pool)
             {
-                current += weightSelector(item);
+                current += item.Weight;
 
                 if (r <= current)
                 {
@@ -476,7 +478,7 @@ public static class DraftSystem
                 }
             }
 
-            result.Add(selected);
+            result.Add(selected.Item);
             pool.Remove(selected);
         }
 
