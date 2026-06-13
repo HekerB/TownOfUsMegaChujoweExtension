@@ -364,7 +364,7 @@ You can toggle between **English** and **Polish** in the game settings via `Exte
 - **[BepInEx](https://github.com/BepInEx)** - Game function hooking
 
 
-## Honorable Mention 🙃
+## Honorable Mention 
 - **Pozwo** for encouraging us to bring this project to Github!
 - **Arbuzia** for saying that im too young to program mods without putting in them viruses!
 - no offence lol
