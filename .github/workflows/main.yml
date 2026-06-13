@@ -14,8 +14,9 @@ jobs:
             ~/.nuget/packages
             ~/.cache/bepinex
           key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-v2-
+
+      - name: Clear cached local dev packages
+        run: rm -rf ~/.nuget/packages/townofusmira
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -23,7 +24,7 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore --locked-mode
 
       - name: Run the Cake script
         uses: cake-build/cake-action@v3

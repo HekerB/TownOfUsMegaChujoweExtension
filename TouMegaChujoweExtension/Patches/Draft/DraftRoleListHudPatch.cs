@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AmongUs.GameOptions;
@@ -27,6 +28,10 @@ public static class DraftRoleListHudPatch
     private const string ImpColor = "#FF4444";
     private const string NeutralColor = "#B8B8B8";
 
+    private static readonly Dictionary<DraftRoleListOption, string> RoleListSlotTextCache = [];
+    private static string? _lastHudText;
+    private static float _nextHudTextRefresh;
+
     [HarmonyPriority(Priority.Last)]
     [HarmonyPostfix]
     public static void HudManagerUpdatePostfix()
@@ -38,6 +43,12 @@ public static class DraftRoleListHudPatch
 
         if (!HudManagerPatches.RoleList || !HudManagerPatches.RoleListTextComp)
         {
+            return;
+        }
+
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Joined)
+        {
+            HudManagerPatches.RoleList.SetActive(false);
             return;
         }
 
@@ -59,7 +70,18 @@ public static class DraftRoleListHudPatch
             return;
         }
 
-        text.text = BuildDraftHudText();
+        var now = Time.time;
+        if (_lastHudText == null || now >= _nextHudTextRefresh)
+        {
+            _lastHudText = BuildDraftHudText();
+            _nextHudTextRefresh = now + 0.25f;
+        }
+
+        if (text.text != _lastHudText)
+        {
+            text.text = _lastHudText;
+        }
+
         HudManagerPatches.RoleList.SetActive(true);
     }
 
@@ -236,7 +258,14 @@ public static class DraftRoleListHudPatch
             return "<color=#8CFFFF>Crewmate</color> + <color=#B8B8B8>Neutral</color>";
         }
 
-        return HudManagerPatches.GetRoleForSlot(ToTownOfUsRoleListOption(slot));
+        if (RoleListSlotTextCache.TryGetValue(slot, out var cached))
+        {
+            return cached;
+        }
+
+        var text = HudManagerPatches.GetRoleForSlot(ToTownOfUsRoleListOption(slot));
+        RoleListSlotTextCache[slot] = text;
+        return text;
     }
 
     private static RoleListOption ToTownOfUsRoleListOption(DraftRoleListOption slot)

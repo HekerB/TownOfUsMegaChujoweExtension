@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 using TMPro;
@@ -87,12 +88,6 @@ public static class DraftRoleListHoverPatch
         }
 
         EnsureTooltip(__instance);
-
-        var tooltipGo = TooltipGoRef(__instance);
-        if (tooltipGo != null && tooltipGo.activeSelf)
-        {
-            UpdateTooltipLinks(__instance);
-        }
 
         var line = GetLineUnderMouse(__instance);
 
@@ -285,6 +280,7 @@ public static class DraftRoleListHoverPatch
         var tooltipTmp = TooltipTmpRef(instance);
         tooltipTmp.text = tooltipBaseText;
         tooltipTmp.ForceMeshUpdate();
+        UpdateTooltipLinks(instance);
 
         var tooltipGo = TooltipGoRef(instance);
         tooltipGo.SetActive(true);
@@ -333,6 +329,8 @@ public static class DraftRoleListHoverPatch
 [HarmonyPatch(typeof(BucketTooltipData), nameof(BucketTooltipData.BuildTooltipText))]
 public static class BuildTooltipTextPatch
 {
+    private static readonly Dictionary<string, string> RoleDisplayNameCache = [];
+
     private static readonly FieldInfo TooltipInfoRolesField =
         typeof(BucketTooltipData.TooltipInfo).GetField("Roles", BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -360,9 +358,12 @@ public static class BuildTooltipTextPatch
             var displayName = r.DisplayName;
             if (!string.IsNullOrEmpty(r.ClassFullName))
             {
-                var role = MiscUtils.AllRoles.FirstOrDefault(x => x.GetType().FullName == r.ClassFullName);
-                if (role != null)
-                    displayName = role.GetRoleName();
+                if (!RoleDisplayNameCache.TryGetValue(r.ClassFullName, out displayName))
+                {
+                    var role = MiscUtils.AllRoles.FirstOrDefault(x => x.GetType().FullName == r.ClassFullName);
+                    displayName = role != null ? role.GetRoleName() : r.DisplayName;
+                    RoleDisplayNameCache[r.ClassFullName] = displayName;
+                }
             }
 
             if (!string.IsNullOrEmpty(r.ClassFullName))
