@@ -10,6 +10,8 @@ using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TownOfUs.Buttons;
+using TownOfUs.Extensions;
+using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
@@ -34,7 +36,6 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
     private bool _isProcessingClick;
     private bool _isTabletOpen;
     private float _removeUnlockAt;
-    private bool _isShaking;
 
     public static JokerPlaceCloneButton? LocalInstance { get; private set; }
 
@@ -60,7 +61,11 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
 
         return _stage switch
         {
-            Stage.Select => !_isTabletOpen && !Minigame.Instance && Timer <= 0f && HasCloneSpace(player.PlayerId),
+            Stage.Select => !_isTabletOpen &&
+                            !Minigame.Instance &&
+                            Timer <= 0f &&
+                            HasCloneSpace(player.PlayerId) &&
+                            CanPlaceCloneAt(player, player.GetTruePosition()),
             Stage.Preview => true,
             Stage.ActiveLocked => Time.time >= _removeUnlockAt,
             Stage.ActiveFull => true,
@@ -126,13 +131,11 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
     {
         if (_isTabletOpen)
         {
-            DoShake();
             return;
         }
 
         if (_stage == Stage.ActiveLocked && Time.time < _removeUnlockAt)
         {
-            DoShake();
             return;
         }
 
@@ -148,10 +151,6 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
             if (CanUse())
             {
                 OnClick();
-            }
-            else if (_stage == Stage.Select)
-            {
-                DoShake();
             }
         }
         finally
@@ -176,15 +175,13 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
 
         if (_stage == Stage.Select)
         {
-            if (!HasCloneSpace(player.PlayerId) || IsNearWall(player.transform.position))
+            if (!HasCloneSpace(player.PlayerId) || !CanPlaceCloneAt(player, player.GetTruePosition()))
             {
-                DoShake();
                 return;
             }
 
             if (Minigame.Instance)
             {
-                DoShake();
                 return;
             }
 
@@ -201,10 +198,11 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
                     if (selectedPlayer != null &&
                         _stage == Stage.Select &&
                         HasCloneSpace(player.PlayerId) &&
-                        !IsNearWall(player.transform.position) &&
+                        CanPlaceCloneAt(player, player.GetTruePosition()) &&
                         FindMyPreviewCloneIndex(player.PlayerId) < 0)
                     {
-                        _previewCloneIndex = JokerCloneSystem.PlaceClone(player.PlayerId, selectedPlayer, player.transform.position, true);
+                        var position = player.GetTruePosition();
+                        _previewCloneIndex = JokerCloneSystem.PlaceClone(player.PlayerId, selectedPlayer, position, true);
                         if (_previewCloneIndex >= 0)
                         {
                             _stage = Stage.Preview;
@@ -357,39 +355,34 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
         return -1;
     }
 
-    private void DoShake()
+    private static bool CanPlaceCloneAt(PlayerControl player, Vector2 position)
     {
-        if (!_isShaking && Button != null)
+        if (player.Collider == null)
         {
-            Coroutines.Start(CoShake());
-        }
-    }
-
-    private IEnumerator CoShake()
-    {
-        if (Button == null) yield break;
-        _isShaking = true;
-        var transform = Button.transform;
-        var basePosition = transform.localPosition;
-        const float duration = 0.14f;
-        const float amplitude = 1.6f;
-        var time = 0f;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            var offset = Mathf.Sin(time * 70f) * amplitude;
-            transform.localPosition = basePosition + new Vector3(offset, 0f, 0f);
-            yield return null;
+            return false;
         }
 
-        transform.localPosition = basePosition;
-        _isShaking = false;
-    }
+        var blocked = Physics2D
+            .OverlapBoxAll(position, Vector2.one * 0.55f, 0f, Constants.ShipAndAllObjectsMask)
+            .Any(collider =>
+                collider != null &&
+                collider.gameObject.layer != 8 &&
+                collider.gameObject.layer != 5 &&
+                collider != player.Collider &&
+                !collider.transform.IsChildOf(player.transform) &&
+                (collider.name.Contains("Vent") || collider.name.Contains("Door") || !collider.isTrigger));
 
-    private static bool IsNearWall(Vector2 position)
-    {
-        var colliders = Physics2D.OverlapCircleAll(position, 0.25f, Constants.ShipAndAllObjectsMask);
-        return colliders.Any(collider => collider != null && !collider.isTrigger);
+        if (blocked)
+        {
+            return false;
+        }
+
+        return !PhysicsHelpers.AnythingBetween(
+                   player.Collider,
+                   player.Collider.bounds.center,
+                   position,
+                   Constants.ShipAndAllObjectsMask,
+                   false) &&
+               !ModCompatibility.GetPlayerElevator(player).Item1;
     }
 }

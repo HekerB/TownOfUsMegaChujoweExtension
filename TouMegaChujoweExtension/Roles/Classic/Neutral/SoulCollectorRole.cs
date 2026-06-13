@@ -215,6 +215,7 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
     public static void ShowPendingDeathAnnouncement()
     {
         if (!PendingDeathAnnouncement ||
+            DeathAnnounced ||
             PlayerControl.LocalPlayer == null ||
             MeetingHud.Instance == null ||
             !OptionGroupSingleton<SoulCollectorOptions>.Instance.AnnounceDeath)

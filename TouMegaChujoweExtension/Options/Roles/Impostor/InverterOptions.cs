@@ -22,6 +22,12 @@ public sealed class InverterOptions : AbstractOptionGroup<InverterRole>
     [ModdedToggleOption("ExtensionOptionInverterDisorientSamePersonTwice")]
     public bool DisorientSamePersonTwice { get; set; } = false;
 
+    [ModdedToggleOption("ExtensionOptionInverterApplyDrunk")]
+    public bool ApplyDrunk { get; set; } = false;
+
+    [ModdedToggleOption("ExtensionOptionInverterApplyHerbalistConfuse")]
+    public bool ApplyHerbalistConfuse { get; set; } = false;
+
     [ModdedToggleOption("ExtensionOptionInverterMoveWhileMenu")]
     public bool MoveWhileMenu { get; set; } = true;
 }

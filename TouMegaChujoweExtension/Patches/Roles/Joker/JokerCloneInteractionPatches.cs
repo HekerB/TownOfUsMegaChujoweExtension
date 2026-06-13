@@ -23,6 +23,40 @@ namespace TouMegaChujoweExtension.Patches.Roles.Joker;
 [HarmonyPatch]
 public static class JokerCloneInteractionPatches
 {
+    private static readonly HashSet<string> CloneInteractableRoleNames =
+    [
+        "ArcanistRole",
+        "ArsonistRole",
+        "BakerRole",
+        "BerserkerRole",
+        "BountyHunterRole",
+        "ChefRole",
+        "DeathRole",
+        "DeputyRole",
+        "DoppelgangerRole",
+        "FamineRole",
+        "GlitchRole",
+        "HunterRole",
+        "InquisitorRole",
+        "JackalRole",
+        "JailorRole",
+        "JuggernautRole",
+        "OfficerRole",
+        "PelicanRole",
+        "PestilenceRole",
+        "PlaguebearerRole",
+        "SerialKillerRole",
+        "SheriffRole",
+        "ShroudRole",
+        "SoulCollectorRole",
+        "VampireHunterRole",
+        "VampireRole",
+        "VeteranRole",
+        "VigilanteRole",
+        "WarRole",
+        "WerewolfRole"
+    ];
+
     private static bool TryTriggerFromLocalPlayer(float maxDistance)
     {
         var local = PlayerControl.LocalPlayer;
@@ -417,7 +451,9 @@ public static class JokerCloneInteractionPatches
 
     private static bool IsKillButtonType(Type type)
     {
-        if (typeof(IKillButton).IsAssignableFrom(type) || IsPlayerTargetKillRoleButton(type))
+        if (typeof(IKillButton).IsAssignableFrom(type) ||
+            IsPlayerTargetKillRoleButton(type) ||
+            IsCloneInteractableRoleButtonType(type))
         {
             return true;
         }
@@ -434,9 +470,38 @@ public static class JokerCloneInteractionPatches
                typeName.Contains("Overtake", StringComparison.OrdinalIgnoreCase) ||
                typeName.Contains("Poison", StringComparison.OrdinalIgnoreCase) ||
                typeName.Contains("Starve", StringComparison.OrdinalIgnoreCase) ||
+               typeName.Contains("Hunt", StringComparison.OrdinalIgnoreCase) ||
                typeName.Contains("Vanquish", StringComparison.OrdinalIgnoreCase) ||
                typeName.Contains("Reap", StringComparison.OrdinalIgnoreCase) ||
                typeName.Contains("Spell", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsCloneInteractableRoleButtonType(Type type)
+    {
+        var roleType = GetRoleButtonRoleType(type);
+        return roleType != null && CloneInteractableRoleNames.Contains(roleType.Name);
+    }
+
+    private static Type? GetRoleButtonRoleType(Type type)
+    {
+        for (var current = type; current != null; current = current.BaseType)
+        {
+            if (!current.IsGenericType)
+            {
+                continue;
+            }
+
+            var genericDefinition = current.GetGenericTypeDefinition();
+            if (genericDefinition == typeof(TownOfUsRoleButton<>) ||
+                genericDefinition == typeof(TownOfUsRoleButton<,>) ||
+                genericDefinition == typeof(TownOfUsKillRoleButton<>) ||
+                genericDefinition == typeof(TownOfUsKillRoleButton<,>))
+            {
+                return current.GetGenericArguments()[0];
+            }
+        }
+
+        return null;
     }
 
     private static bool CanButtonClick(object instance)

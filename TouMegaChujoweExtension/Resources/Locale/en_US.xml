@@ -1706,6 +1706,8 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionInverterMaxDisorients">Max Number Of Disorients</string>
   <string name="ExtensionOptionInverterMoveWhileMenu">Can Move While Menu</string>
   <string name="ExtensionOptionInverterDisorientSamePersonTwice">Disorient Same Person Twice In A Row</string>
+  <string name="ExtensionOptionInverterApplyDrunk">Apply Drunk Effect</string>
+  <string name="ExtensionOptionInverterApplyHerbalistConfuse">Apply Herbalist Confuse</string>
   <string name="ExtensionModifierDisoriented">Disoriented</string>
 
   <!-- Tavern Keeper -->

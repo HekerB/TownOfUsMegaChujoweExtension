@@ -8,9 +8,11 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.UI;
 
-[HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
 public static class MapColorPatch
 {
+    [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
+    [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowSabotageMap))]
+    [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowCountOverlay))]
     [HarmonyPostfix]
     public static void Postfix(MapBehaviour __instance)
     {

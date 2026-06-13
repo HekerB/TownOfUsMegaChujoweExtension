@@ -18,6 +18,7 @@ using TouMegaChujoweExtension.Roles.Impostor;
 using TownOfUs.Assets;
 using TownOfUs.Extensions;
 using TownOfUs.Interfaces;
+using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Localization;
@@ -240,6 +241,11 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         PendingMutations.Remove(loner.PlayerId);
         CurrentKillCount[loner.PlayerId] = 0;
         var options = OptionGroupSingleton<LonerOptions>.Instance;
+
+        if (target.TryGetModifier<EgotistModifier>(out var egotistModifier))
+        {
+            target.RemoveModifier(egotistModifier);
+        }
 
         if (options.RecruitBecomesRandomImpostor)
         {

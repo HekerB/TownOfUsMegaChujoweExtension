@@ -6,11 +6,13 @@ using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Buttons.Classic.Impostor;
+using TouMegaChujoweExtension.Modifiers.Game;
 using TouMegaChujoweExtension.Modifiers.Impostor;
 using TouMegaChujoweExtension.Networking;
 using TouMegaChujoweExtension.Options.Roles.Impostor;
 using TownOfUs.Assets;
 using TownOfUs.Extensions;
+using TownOfUs.Modifiers.Impostor.Herbalist;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles;
@@ -101,6 +103,21 @@ public sealed class InverterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
 
         var options = OptionGroupSingleton<InverterOptions>.Instance;
         victim.AddModifier<InverterDisorientedModifier>(options.DisorientDuration);
+
+        if (options.ApplyDrunk && !victim.HasModifier<DrunkModifier>())
+        {
+            victim.AddModifier<DrunkModifier>();
+        }
+
+        if (options.ApplyHerbalistConfuse)
+        {
+            foreach (var existing in victim.GetModifiers<HerbalistConfusedModifier>().ToList())
+            {
+                victim.RemoveModifier(existing);
+            }
+
+            victim.AddModifier<HerbalistConfusedModifier>(inverter);
+        }
 
         inverterRole.LastDisorientedPlayerId = victim.PlayerId;
     }

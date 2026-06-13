@@ -71,11 +71,11 @@ public static class VentOccupancySystem
     {
         try
         {
-            if (PlumberRole.VentBlockList == null || PlumberRole.VentFlushList == null)
+            if (PlumberRole.VentsBlocked == null || PlumberRole.VentFlushSet == null)
             {
                 return false;
             }
-            return PlumberRole.VentBlockList.Contains(ventId) || PlumberRole.VentFlushList.Contains(ventId);
+            return PlumberRole.VentsBlocked.ContainsKey(ventId) || PlumberRole.VentFlushSet.Contains(ventId);
         }
         catch (System.Exception ex)
         {

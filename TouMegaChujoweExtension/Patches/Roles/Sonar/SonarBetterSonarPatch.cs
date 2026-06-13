@@ -17,7 +17,7 @@ public static class SonarBetterSonarPatch
 {
     public static readonly Dictionary<byte, GameObject> TrackerIcons = new();
     private static readonly Dictionary<byte, Queue<(float time, Vector3 pos)>> PositionHistory = new();
-    private static readonly List<TrackerArrowTargetModifier> LocalTrackers = [];
+    private static readonly List<SonarArrowTargetModifier> LocalTrackers = [];
     private static readonly HashSet<byte> TrackedIds = [];
     private static readonly List<byte> IdsToRemove = [];
 
@@ -111,9 +111,9 @@ public static class SonarBetterSonarPatch
         return 0f;
     }
 
-    [HarmonyPatch(typeof(TrackerArrowTargetModifier), nameof(TrackerArrowTargetModifier.OnActivate))]
+    [HarmonyPatch(typeof(SonarArrowTargetModifier), nameof(SonarArrowTargetModifier.OnActivate))]
     [HarmonyPostfix]
-    public static void TrackerArrowOnActivatePostfix(TrackerArrowTargetModifier __instance)
+    public static void TrackerArrowOnActivatePostfix(SonarArrowTargetModifier __instance)
     {
         var opts = OptionGroupSingleton<SonarExtendedOptions>.Instance;
         if (opts.BetterSonar && opts.Mode == SonarDisplayMode.MapOnly && __instance.Arrow != null)
@@ -151,7 +151,7 @@ public static class SonarBetterSonarPatch
         }
 
         LocalTrackers.Clear();
-        foreach (var mod in ModifierUtils.GetActiveModifiers<TrackerArrowTargetModifier>())
+        foreach (var mod in ModifierUtils.GetActiveModifiers<SonarArrowTargetModifier>())
         {
             if (mod.Owner == PlayerControl.LocalPlayer)
             {
@@ -248,7 +248,7 @@ public static class SonarBetterSonarPatch
             return;
 
         LocalTrackers.Clear();
-        foreach (var mod in ModifierUtils.GetActiveModifiers<TrackerArrowTargetModifier>())
+        foreach (var mod in ModifierUtils.GetActiveModifiers<SonarArrowTargetModifier>())
         {
             if (mod.Owner == PlayerControl.LocalPlayer)
             {

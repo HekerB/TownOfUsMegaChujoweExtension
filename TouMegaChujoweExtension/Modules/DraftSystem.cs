@@ -37,6 +37,7 @@ public static class DraftSystem
     public static float PickTimer { get; set; }
     public static Dictionary<byte, ushort> DraftPicks { get; } = new();
     public static HashSet<byte> ImpostorPlayerIds { get; set; } = new();
+    public static HashSet<byte> LastImpostorIds { get; } = new();
     public static HashSet<byte> LastNeutralKillingIds { get; } = new();
     public static bool DraftActiveThisRound { get; set; }
     public static List<RoleBehaviour>? CurrentOfferedRoles { get; set; }
@@ -500,39 +501,11 @@ public static class DraftSystem
             return roles.OrderBy(_ => Random.Range(0f, 1f));
         }
 
-        var roleList = roles.ToList();
-        var guaranteed = new List<RoleBehaviour>();
-        var passed = new List<RoleBehaviour>();
-        var failed = new List<RoleBehaviour>();
-
-        foreach (var r in roleList)
+        return WeightedShuffle(roles, role =>
         {
-            var chance = (int)MiscUtils.GetAssignData(r.Role).Chance;
-
-            if (chance <= 0)
-            {
-                chance = 30;
-            }
-
-            if (chance >= 100)
-            {
-                guaranteed.Add(r);
-            }
-            else if (Random.Range(0, 101) < chance)
-            {
-                passed.Add(r);
-            }
-            else
-            {
-                failed.Add(r);
-            }
-        }
-
-        guaranteed.Shuffle();
-        passed.Shuffle();
-        failed.Shuffle();
-
-        return guaranteed.Concat(passed).Concat(failed);
+            var chance = (int)MiscUtils.GetAssignData(role.Role).Chance;
+            return Mathf.Clamp(chance, 1, 100);
+        });
     }
 
     private static int GetCurrentOtherNeutralCount()
@@ -869,7 +842,16 @@ public static class DraftSystem
             slotIndex = Mathf.Clamp(DraftPicks.Count, 0, MaxRoleListSlots - 1);
         }
 
-        return GetRoleListBucketForPickIndex(slotIndex);
+        var bucket = GetRoleListBucketForPickIndex(slotIndex);
+
+        if (PlayerFactions.TryGetValue(picker, out var faction) &&
+            faction == DraftFaction.CrewOther &&
+            IsImpostorBucket(bucket))
+        {
+            return DraftRoleListOption.CrewRandom;
+        }
+
+        return bucket;
     }
 
     private static IEnumerable<DraftRoleListOption> GetFutureRoleListBuckets()

@@ -3,6 +3,7 @@ using UnityEngine;
 using TouMegaChujoweExtension.Modifiers.Impostor;
 using MiraAPI.Modifiers;
 using System.Linq;
+using TouMegaChujoweExtension.Modifiers.Game;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Impostor;
 
@@ -19,6 +20,7 @@ public static class InverterControlsInvertPatch
 
         var roleblocked = __instance.myPlayer.GetModifiers<TouMegaChujoweExtension.Modifiers.Crewmate.RoleblockedModifier>().FirstOrDefault();
         if (__instance.myPlayer.HasModifier<InverterDisorientedModifier>() ||
+            __instance.myPlayer.HasModifier<DrunkModifier>() ||
             __instance.myPlayer.HasModifier<InjectedInvertedControlsModifier>() ||
             (roleblocked != null && roleblocked.InvertControls))
         {

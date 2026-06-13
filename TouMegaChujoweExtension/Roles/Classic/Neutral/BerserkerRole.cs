@@ -286,6 +286,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
     public static void ShowPendingWarAnnouncement()
     {
         if (!PendingWarAnnouncement ||
+            WarAnnounced ||
             PlayerControl.LocalPlayer == null ||
             MeetingHud.Instance == null ||
             !OptionGroupSingleton<BerserkerOptions>.Instance.AnnounceWarTransformation)

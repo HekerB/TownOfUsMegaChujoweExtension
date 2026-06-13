@@ -39,6 +39,7 @@ public static class DraftRoleManagerPatch
     private static void ApplyDraftRoles()
     {
         DraftSystem.LastNeutralKillingIds.Clear();
+        DraftSystem.LastImpostorIds.Clear();
         var effectivePicks = BuildEffectiveDraftPicks();
 
         foreach (var (playerId, roleId) in effectivePicks)
@@ -54,6 +55,10 @@ public static class DraftRoleManagerPatch
             if (DraftSystem.PlayerFactions.TryGetValue(playerId, out var faction) && faction == DraftFaction.NeutralKilling)
             {
                 DraftSystem.LastNeutralKillingIds.Add(playerId);
+            }
+            else if (IsImpostorRole(roleId))
+            {
+                DraftSystem.LastImpostorIds.Add(playerId);
             }
 
             player.RpcSetRole((RoleTypes)roleId);

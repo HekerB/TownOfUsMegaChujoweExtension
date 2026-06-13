@@ -1649,6 +1649,8 @@
   <string name="ExtensionOptionInverterMaxDisorients">Limit uzyc</string>
   <string name="ExtensionOptionInverterMoveWhileMenu">Ruch w menu</string>
   <string name="ExtensionOptionInverterDisorientSamePersonTwice">Podwojny atak na ten sam cel</string>
+  <string name="ExtensionOptionInverterApplyDrunk">Naklada efekt Pijaka</string>
+  <string name="ExtensionOptionInverterApplyHerbalistConfuse">Naklada chaos Herbalisty</string>
   <string name="ExtensionModifierDisoriented">Chaos</string>
 
   <!-- Tavern Keeper -->

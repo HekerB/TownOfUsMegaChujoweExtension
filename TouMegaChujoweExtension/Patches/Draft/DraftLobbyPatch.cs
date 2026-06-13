@@ -478,7 +478,7 @@ public static class DraftLobbyPatch
             var random = new System.Random();
 
             
-            List<int> lastImps = [];
+            HashSet<byte> lastImps = new(DraftSystem.LastImpostorIds);
             try
             {
                 var type = AccessTools.TypeByName("TownOfUs.Patches.TouRoleManagerPatches");
@@ -489,7 +489,14 @@ public static class DraftLobbyPatch
 #pragma warning restore S3011
                     if (prop != null)
                     {
-                        lastImps = (List<int>?)prop.GetValue(null) ?? [];
+                        var lastImpClientIds = (List<int>?)prop.GetValue(null) ?? [];
+                        foreach (var player in PlayerControl.AllPlayerControls)
+                        {
+                            if (player?.Data != null && lastImpClientIds.Contains(player.Data.ClientId))
+                            {
+                                lastImps.Add(player.PlayerId);
+                            }
+                        }
                     }
                 }
             }
@@ -512,7 +519,7 @@ public static class DraftLobbyPatch
                 byte playerId = remainingPlayers[num];
                 var pc = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == playerId);
 
-                bool shouldSkip = pc != null && lastImps != null && lastImps.Contains(pc.Data.ClientId) && random.NextDouble() < biasPercent;
+                bool shouldSkip = pc != null && lastImps.Contains(playerId) && random.NextDouble() < biasPercent;
 
                 if (shouldSkip)
                 {
