@@ -85,11 +85,15 @@ public static class SoulCollectorEvents
             ShowSoulCollectedFeedback(victim);
         }
 
-        if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost || soulCollector.AmOwner)
+        if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost)
         {
             SoulCollectorRole.RpcSetSouls(soulCollector, soulCollectorRole.SoulsCollected + 1);
-            victim.RemoveModifier<SoulReapedModifier>();
             TryTransformIfReady(soulCollector);
+        }
+
+        if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost || soulCollector.AmOwner)
+        {
+            victim.RemoveModifier<SoulReapedModifier>();
         }
     }
 
@@ -140,7 +144,7 @@ public static class SoulCollectorEvents
             return;
         }
 
-        var soulsNeeded = (int)OptionGroupSingleton<SoulCollectorOptions>.Instance.SoulGoal;
+        var soulsNeeded = SoulCollectorRole.GetEffectiveSoulGoal(soulCollector);
         if (soulsNeeded > 0 && soulCollectorRole.SoulsCollected >= soulsNeeded)
         {
             SoulCollectorRole.RpcTransformToDeath(soulCollector);

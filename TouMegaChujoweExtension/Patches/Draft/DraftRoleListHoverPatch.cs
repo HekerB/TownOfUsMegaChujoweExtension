@@ -4,11 +4,13 @@ using HarmonyLib;
 using TMPro;
 using UnityEngine;
 using MiraAPI.GameOptions;
+using MiraAPI.Utilities;
 using TownOfUs.Options;
 using TownOfUs.Patches;
 using TownOfUs.Utilities;
 using TouMegaChujoweExtension.Modules;
 using TouMegaChujoweExtension.Options;
+
 
 namespace TouMegaChujoweExtension.Patches.Draft;
 
@@ -327,3 +329,58 @@ public static class DraftRoleListHoverPatch
         };
     }
 }
+
+[HarmonyPatch(typeof(BucketTooltipData), nameof(BucketTooltipData.BuildTooltipText))]
+public static class BuildTooltipTextPatch
+{
+    private static readonly FieldInfo TooltipInfoRolesField =
+        typeof(BucketTooltipData.TooltipInfo).GetField("Roles", BindingFlags.NonPublic | BindingFlags.Instance);
+
+    private static BucketTooltipData.RoleEntry[] GetRoles(BucketTooltipData.TooltipInfo info)
+    {
+        if (TooltipInfoRolesField == null) return [];
+        return (BucketTooltipData.RoleEntry[])TooltipInfoRolesField.GetValue(info);
+    }
+
+    [HarmonyPrefix]
+    public static bool Prefix(ref string __result, in BucketTooltipData.TooltipInfo info)
+    {
+        var roles = GetRoles(info);
+        if (roles == null || roles.Length == 0)
+        {
+            __result = string.Empty;
+            return false;
+        }
+
+        var sb = new System.Text.StringBuilder();
+        for (var i = 0; i < roles.Length; i++)
+        {
+            var r = roles[i];
+
+            var displayName = r.DisplayName;
+            if (!string.IsNullOrEmpty(r.ClassFullName))
+            {
+                var role = MiscUtils.AllRoles.FirstOrDefault(x => x.GetType().FullName == r.ClassFullName);
+                if (role != null)
+                    displayName = role.GetRoleName();
+            }
+
+            if (!string.IsNullOrEmpty(r.ClassFullName))
+            {
+                sb.Append($"<link=\"{r.ClassFullName}:{i}\"><color={BucketTooltipData.ColorHex(r.Col)}>{displayName}</color></link>");
+            }
+            else
+            {
+                sb.Append($"<color={BucketTooltipData.ColorHex(r.Col)}>{displayName}</color>");
+            }
+
+            if (i < roles.Length - 1)
+            {
+                sb.Append(i % 3 == 2 ? "\n" : "   ");
+            }
+        }
+        __result = sb.ToString();
+        return false;
+    }
+}
+

@@ -64,3 +64,18 @@ public static class MapColorPatch
         }
     }
 }
+
+[HarmonyPatch(typeof(TownOfUs.Patches.MapBehaviourPatch), nameof(TownOfUs.Patches.MapBehaviourPatch.Postfix))]
+public static class MapBehaviourPatchDisablePatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix()
+    {
+        var localSettings = LocalSettingsTabSingleton<TouExtensionLocalSettings>.Instance;
+        if (localSettings != null && localSettings.MapColor.Value != MapColorType.Off)
+        {
+            return false;
+        }
+        return true;
+    }
+}

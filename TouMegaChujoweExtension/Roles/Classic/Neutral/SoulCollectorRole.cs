@@ -76,6 +76,23 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
     };
 
+    public static int GetEffectiveSoulGoal(PlayerControl? soulCollector)
+    {
+        var configuredSoulGoal = (int)OptionGroupSingleton<SoulCollectorOptions>.Instance.SoulGoal;
+        if (soulCollector == null)
+        {
+            return configuredSoulGoal;
+        }
+
+        var possibleTargets = PlayerControl.AllPlayerControls.ToArray()
+            .Count(x => x != null && !x.HasDied() && x.PlayerId != soulCollector.PlayerId);
+
+        var soulCollectorRole = soulCollector.GetRole<SoulCollectorRole>();
+        var soulsCollected = soulCollectorRole?.SoulsCollected ?? 0;
+
+        return Math.Min(configuredSoulGoal, soulsCollected + possibleTargets);
+    }
+
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
@@ -87,7 +104,7 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
             "{0}<b>Souls:</b></color> {1} / {2}",
             roleColor,
             SoulsCollected,
-            (int)options.SoulGoal));
+            GetEffectiveSoulGoal(Player)));
 
         var activeTargets = GetActiveMarkedPlayers(Player.PlayerId);
         stringBuilder.AppendLine(string.Format(
@@ -189,7 +206,7 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
             return;
         }
 
-        role.SoulsCollected = Math.Max(0, souls);
+        role.SoulsCollected = Math.Max(role.SoulsCollected, souls);
     }
 
     [MethodRpc((uint)ExtensionRpc.SoulCollectorTransformToDeath, LocalHandling = Reactor.Networking.Rpc.RpcLocalHandling.Before)]
