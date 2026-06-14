@@ -83,13 +83,13 @@ public static class VoodooMuteMeetingIntroPatch
     public static void Postfix(MeetingHud __instance)
     {
         shownThisMeeting = false;
-        TryShowMutedIntro();
+        TryShowMutedIntro(ignoreShownFlag: false);
         Coroutines.Start(CoRetryMutedIntro());
     }
 
-    public static void TryShowMutedIntro()
+    public static void TryShowMutedIntro(bool ignoreShownFlag = false)
     {
-        if (shownThisMeeting ||
+        if ((!ignoreShownFlag && shownThisMeeting) ||
             MeetingHud.Instance == null ||
             HudManager.Instance == null ||
             PlayerControl.LocalPlayer == null ||
@@ -100,7 +100,7 @@ public static class VoodooMuteMeetingIntroPatch
         }
 
         shownThisMeeting = true;
-        Coroutines.Start(CoVoodooMutedIntro());
+        Coroutines.Start(MeetingShhh());
     }
 
     private static bool HasPendingOrActiveLocalMute()
@@ -119,12 +119,12 @@ public static class VoodooMuteMeetingIntroPatch
     {
         for (var i = 0; i < 90 && MeetingHud.Instance != null && !shownThisMeeting; i++)
         {
-            TryShowMutedIntro();
+            TryShowMutedIntro(ignoreShownFlag: false);
             yield return null;
         }
     }
 
-    private static IEnumerator CoVoodooMutedIntro()
+    private static IEnumerator MeetingShhh()
     {
         yield return HudManager.Instance.CoFadeFullScreen(Color.clear, new Color(0f, 0f, 0f, 0.98f));
         var tempPosition = HudManager.Instance.shhhEmblem.transform.localPosition;

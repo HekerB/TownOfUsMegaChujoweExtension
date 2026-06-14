@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Reactor.Utilities.Extensions;
 using TMPro;
+using TownOfUs.Patches;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
@@ -78,6 +79,8 @@ public static class JokerCloneSystem
 
         fake.Body.transform.position = worldPos;
         SetAlpha(fake.Body, isPreview ? 0.35f : 1f);
+        fake.SetCamouflaged(HudManagerPatches.CamouflageCommsEnabled);
+        SetAlpha(fake.Body, isPreview ? 0.35f : 1f);
 
         var control = fake.Body.AddComponent<JokerCloneControlComponent>();
         control.OwnerId = jokerId;
@@ -89,6 +92,25 @@ public static class JokerCloneSystem
         });
 
         return ActiveClones.Count - 1;
+    }
+
+    public static void SyncCamouflageComms()
+    {
+        SetCloneCamouflage(HudManagerPatches.CamouflageCommsEnabled);
+    }
+
+    private static void SetCloneCamouflage(bool camouflaged)
+    {
+        foreach (var clone in ActiveClones)
+        {
+            if (clone.Fake.Body == null)
+            {
+                continue;
+            }
+
+            clone.Fake.SetCamouflaged(camouflaged);
+            SetAlpha(clone.Fake.Body, clone.IsPreview ? 0.35f : 1f);
+        }
     }
 
     public static bool TryGetClosestClone(Vector2 from, float maxDistance, out int cloneIndex, out Vector2 clonePos)

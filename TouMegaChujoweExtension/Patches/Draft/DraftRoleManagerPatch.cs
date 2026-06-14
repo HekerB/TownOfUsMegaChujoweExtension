@@ -41,6 +41,7 @@ public static class DraftRoleManagerPatch
         DraftSystem.LastNeutralKillingIds.Clear();
         DraftSystem.LastImpostorIds.Clear();
         var effectivePicks = BuildEffectiveDraftPicks();
+        DraftSystem.SetPreviousGameRoles(effectivePicks.Values);
 
         foreach (var (playerId, roleId) in effectivePicks)
         {

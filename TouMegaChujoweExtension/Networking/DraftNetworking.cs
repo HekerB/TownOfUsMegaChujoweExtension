@@ -37,6 +37,10 @@ public static class DraftNetworking
 
         writer.Write((byte)DraftSystem.TargetOtherNeutralCount);
 
+        writer.Write((byte)DraftSystem.PreviousGameRoleIds.Count);
+        foreach (var roleId in DraftSystem.PreviousGameRoleIds)
+            writer.Write(roleId);
+
         AmongUsClient.Instance.FinishRpcImmediately(writer);
 
         ReceiveDraftStart(impostorIds);
@@ -90,6 +94,12 @@ public static class DraftNetworking
             }
 
             DraftSystem.TargetOtherNeutralCount = reader.ReadByte();
+
+            var previousRoleCount = reader.ReadByte();
+            var previousRoles = new List<ushort>();
+            for (var i = 0; i < previousRoleCount; i++)
+                previousRoles.Add(reader.ReadUInt16());
+            DraftSystem.SetPreviousGameRoles(previousRoles);
 
             ReceiveDraftStart(impostorIds);
             DraftSystem.DraftActiveThisRound = true;

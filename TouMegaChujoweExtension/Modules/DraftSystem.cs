@@ -36,6 +36,7 @@ public static class DraftSystem
     public static bool LocalPlayerPicked { get; set; }
     public static float PickTimer { get; set; }
     public static Dictionary<byte, ushort> DraftPicks { get; } = new();
+    public static HashSet<ushort> PreviousGameRoleIds { get; } = new();
     public static HashSet<byte> ImpostorPlayerIds { get; set; } = new();
     public static HashSet<byte> LastImpostorIds { get; } = new();
     public static HashSet<byte> LastNeutralKillingIds { get; } = new();
@@ -323,10 +324,53 @@ public static class DraftSystem
             return new List<RoleBehaviour>();
         }
 
-        return cached.Where(r =>
+        var roles = cached.Where(r =>
             (!AlreadyPicked.Contains((ushort)r.Role) && !ConflictsWithPickedAgent(r.Role)) ||
             r.Role == RoleTypes.Crewmate ||
             r.Role == RoleTypes.Impostor).ToList();
+
+        return ExcludePreviousGameRolesIfPossible(roles);
+    }
+
+    private static List<RoleBehaviour> ExcludePreviousGameRolesIfPossible(List<RoleBehaviour> roles)
+    {
+        if (!ShouldExcludePreviousGameRoles() || PreviousGameRoleIds.Count == 0)
+        {
+            return roles;
+        }
+
+        var filtered = roles
+            .Where(role => !PreviousGameRoleIds.Contains((ushort)role.Role))
+            .ToList();
+
+        return filtered.Count > 0 ? filtered : roles;
+    }
+
+    private static bool ShouldExcludePreviousGameRoles()
+    {
+        try
+        {
+            return OptionGroupSingleton<DraftModeOptions>.Instance.ExcludePreviousGameRoles.Value;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public static void SetPreviousGameRoles(IEnumerable<ushort> roleIds)
+    {
+        PreviousGameRoleIds.Clear();
+
+        foreach (var roleId in roleIds)
+        {
+            if ((RoleTypes)roleId is RoleTypes.Crewmate or RoleTypes.Impostor)
+            {
+                continue;
+            }
+
+            PreviousGameRoleIds.Add(roleId);
+        }
     }
 
     private static bool IsAgentConflictRole(RoleTypes roleType)
@@ -487,27 +531,69 @@ public static class DraftSystem
 
     private static IEnumerable<RoleBehaviour> OrderRoles(IEnumerable<RoleBehaviour> roles)
     {
-        bool respectChances;
-
-        try
-        {
-            respectChances = OptionGroupSingleton<DraftModeOptions>.Instance.RespectRoleChances.Value;
-        }
-        catch
-        {
-            respectChances = false;
-        }
-
-        if (!respectChances)
+        if (!ShouldRespectRoleChances())
         {
             return roles.OrderBy(_ => Random.Range(0f, 1f));
         }
 
         return WeightedShuffle(roles, role =>
         {
-            var chance = (int)MiscUtils.GetAssignData(role.Role).Chance;
+            var chance = (int)GetRoleChance(role);
             return Mathf.Clamp(chance, 1, 100);
         });
+    }
+
+    private static bool ShouldRespectRoleChances()
+    {
+        try
+        {
+            return OptionGroupSingleton<DraftModeOptions>.Instance.RespectRoleChances.Value;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static float GetRoleChance(RoleBehaviour role)
+    {
+        try
+        {
+            return MiscUtils.GetAssignData(role.Role).Chance;
+        }
+        catch
+        {
+            return 0f;
+        }
+    }
+
+    private static List<RoleBehaviour> SelectRolesWithGuaranteedFirst(List<RoleBehaviour> pool, int roleCount)
+    {
+        if (pool.Count <= roleCount)
+        {
+            return pool.OrderBy(_ => Random.Range(0f, 1f)).ToList();
+        }
+
+        if (!ShouldRespectRoleChances())
+        {
+            return OrderRoles(pool)
+                .Take(roleCount)
+                .OrderBy(_ => Random.Range(0f, 1f))
+                .ToList();
+        }
+
+        var selected = OrderRoles(pool.Where(role => GetRoleChance(role) >= 100f))
+            .Take(roleCount)
+            .ToList();
+
+        if (selected.Count < roleCount)
+        {
+            var selectedRoleIds = selected.Select(role => role.Role).ToHashSet();
+            selected.AddRange(OrderRoles(pool.Where(role => !selectedRoleIds.Contains(role.Role)))
+                .Take(roleCount - selected.Count));
+        }
+
+        return selected.OrderBy(_ => Random.Range(0f, 1f)).ToList();
     }
 
     private static int GetCurrentOtherNeutralCount()
@@ -711,15 +797,7 @@ public static class DraftSystem
             pool = FilterLonerForRoleList(pool);
         }
 
-        if (pool.Count <= RolesToShow)
-        {
-            return pool.OrderBy(_ => Random.Range(0f, 1f)).ToList();
-        }
-
-        return OrderRoles(pool)
-            .Take(RolesToShow)
-            .OrderBy(_ => Random.Range(0f, 1f))
-            .ToList();
+        return SelectRolesWithGuaranteedFirst(pool, RolesToShow);
     }
 
     private static IEnumerable<RoleAlignment> GetAllDraftAlignments()
