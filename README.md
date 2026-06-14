@@ -73,7 +73,6 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#sage"><img width="10%" src="./Images/Icons/Sage_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#spirit-master"><img width="10%" src="./Images/Icons/SpiritMaster_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#vanisher"><img width="10%" src="./Images/Icons/Vanisher_Role_Icon.png" /></a>
-  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#agent"><img width="10%" src="./Images/Icons/Agent_Role_Icon.png" /></a>
   <img src="./Images/Groups/CrewKilling.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#vampire-hunter"><img width="10%" src="./Images/Icons/VampireHunter_Role_Icon.png" /></a>
   <img src="./Images/Groups/CrewPower.png" align="center" />
