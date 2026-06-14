@@ -656,6 +656,40 @@
         "\n\n\r<size=110%><b>LOCALIZATION</b></size>",
         "\n- <b>Full Polish & English</b> - Added complete translations for all new roles, notifications, and options."
       ]
+    },
+    {
+      "Date": "2026-06-14T20:00:00Z",
+      "Number": "200022",
+      "ShortTitle": "TOUMCE v1.4.2",
+      "SubTitle": "Draft Balance & Role Polish",
+      "Title": "TOU Mega Chujowe Extension v1.4.2",
+      "Text": [
+        "\r<link=https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases>Download Latest Release</link> | <link=https://github.com/HekerB/TownOfUsMegaChujoweExtension>GitHub Repository</link> | <link=https://discord.gg/qaQZAmAVh4>Discord</link>",
+        "\n\n\r<b>Version 1.4.2 - Draft Balance &amp; Role Polish</b>",
+        "\n\n\r<size=110%><b>DRAFT MODE BALANCE</b></size>",
+        "\n- <b>Previous Role Exclusion</b> - Added an optional setting to exclude roles picked in the previous draft from the next draft only, reducing repeated meta picks.",
+        "\n- <b>Role List Guaranteed Chances</b> - Role List now prioritizes roles with 100% chance in matching buckets before filling remaining offers.",
+        "\n- <b>Randomized Role List Slots</b> - Role List slot order is shuffled so the same player/slot is no longer stuck with the same faction every game.",
+        "\n- <b>Old Draft Pick Order</b> - Old Draft mode now shuffles the full player order directly instead of front-loading special factions.",
+        "\n- <b>Streak Reduction</b> - Draft streak reduction now supports both previous Impostors and previous Neutral Killing players.",
+        "\n- <b>Local Draft Settings</b> - Added a Draft local settings tab for start/end alerts and starting draft music muted.",
+        "\n- <b>Lobby Lock</b> - Draft lobbies now lock by default while draft is active.",
+        "\n\n\r<size=110%><b>VOODOO MASTER</b></size>",
+        "\n- <b>Mute Intro</b> - Voodoo mute now plays a Blackmailer-style meeting intro when the muted player reaches meeting, including self-report timing fixes.",
+        "\n- <b>Mute Privacy</b> - Only the muted player knows they are muted; other players no longer get a Blackmailer-style overlay.",
+        "\n- <b>Confuse Rework</b> - Confuse now uses Herbalist-style grey scrambled appearances instead of reversed movement.",
+        "\n- <b>Symbol Visibility</b> - Voodoo symbols are visible only to Impostors and ghosts.",
+        "\n- <b>Options &amp; Wiki</b> - Cleaned up Voodoo option names, infinite uses display, role tab text, and wiki ability descriptions.",
+        "\n\n\r<size=110%><b>TAVERN KEEPER</b></size>",
+        "\n- <b>Roleblock Fixes</b> - Tavern Keeper hangover now blocks killer actions and custom ability buttons more reliably.",
+        "\n- <b>UI Polish</b> - Cleaned up the role tab, highlighted the current drinking target, and switched alerts to yellow role-icon notifications.",
+        "\n- <b>Text Updates</b> - Rewrote Tavern Keeper XML descriptions and target alerts for clearer protection/ability-block wording.",
+        "\n\n\r<size=110%><b>ROLE FIXES &amp; VISUALS</b></size>",
+        "\n- <b>Joker</b> - Joker clones now camouflage during Camouflage Comms and restore correctly after comms are fixed.",
+        "\n- <b>Innocent</b> - Innocent win alerts now appear only when Innocent actually wins and only for Leaves in Victory / Haunt outcomes.",
+        "\n- <b>Inverter</b> - Disorient now applies inverted movement only for the disorient duration.",
+        "\n- <b>Map Local Setting</b> - Fixed the map outline local setting not applying correctly for ghosts."
+      ]
     }
   ]
 }
