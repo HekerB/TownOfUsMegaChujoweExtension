@@ -48,7 +48,7 @@ public static class ExtensionSymbolsPatch
         }
 
         // --- VOODOO MASTER CURSES ---
-        bool canSeeVoodooCurse = local.IsImpostorAligned() || deadKnow;
+        bool canSeeVoodooCurse = CanSeeVoodooSymbols(local, hidden);
         if (canSeeVoodooCurse)
         {
             if (player.HasModifier<VoodooConfusedModifier>() && !__result.Contains("$"))
@@ -62,7 +62,7 @@ public static class ExtensionSymbolsPatch
             }
         }
 
-        if ((local.PlayerId == player.PlayerId || local.IsImpostorAligned() || deadKnow) && player.HasModifier<VoodooMutedModifier>() && !__result.Contains("[M]"))
+        if (canSeeVoodooCurse && player.HasModifier<VoodooMutedModifier>() && !__result.Contains("[M]"))
         {
             __result += " <color=#2A1119>[M]</color>";
         }
@@ -74,7 +74,7 @@ public static class ExtensionSymbolsPatch
             {
                 if (targetLock.TargetId == player.PlayerId)
                 {
-                    if ((local.IsImpostorAligned() || deadKnow) && !__result.Contains("[L]"))
+                    if (canSeeVoodooCurse && !__result.Contains("[L]"))
                     {
                         __result += " <color=#FF0000>[L]</color>";
                     }
@@ -355,6 +355,11 @@ public static class ExtensionSymbolsPatch
 
         var genOpt = OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance;
         return local.HasDied() && genOpt.TheDeadKnow && !hidden;
+    }
+
+    private static bool CanSeeVoodooSymbols(PlayerControl local, bool hidden)
+    {
+        return local.IsImpostorAligned() || local.HasDied() && !hidden;
     }
 
     private static bool CanSeeApocalypseRole(PlayerControl local, PlayerControl player, bool deadKnow)

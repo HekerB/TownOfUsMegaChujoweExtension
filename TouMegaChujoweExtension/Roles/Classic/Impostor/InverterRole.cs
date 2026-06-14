@@ -6,7 +6,6 @@ using MiraAPI.Roles;
 using Reactor.Networking.Attributes;
 using TouMegaChujoweExtension.Assets;
 using TouMegaChujoweExtension.Buttons.Classic.Impostor;
-using TouMegaChujoweExtension.Modifiers.Game;
 using TouMegaChujoweExtension.Modifiers.Impostor;
 using TouMegaChujoweExtension.Networking;
 using TouMegaChujoweExtension.Options.Roles.Impostor;
@@ -104,9 +103,16 @@ public sealed class InverterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         var options = OptionGroupSingleton<InverterOptions>.Instance;
         victim.AddModifier<InverterDisorientedModifier>(options.DisorientDuration);
 
-        if (options.ApplyDrunk && !victim.HasModifier<DrunkModifier>())
+        if (options.ApplyDrunk)
         {
-            victim.AddModifier<DrunkModifier>();
+            foreach (var existing in victim.GetModifiers<InjectedInvertedControlsModifier>().ToList())
+            {
+                victim.RemoveModifier(existing);
+            }
+
+            victim.AddModifier<InjectedInvertedControlsModifier>(
+                options.DisorientDuration,
+                InjectorEffectDurationType.SetTime);
         }
 
         if (options.ApplyHerbalistConfuse)

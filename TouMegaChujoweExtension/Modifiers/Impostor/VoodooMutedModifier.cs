@@ -1,8 +1,13 @@
 using System;
 using System.Linq;
 using MiraAPI.Modifiers;
+using MiraAPI.Utilities;
+using TouMegaChujoweExtension.Assets;
+using TouMegaChujoweExtension.Patches.Roles.VoodooMaster;
 using TouMegaChujoweExtension.Roles.Classic.Impostor;
 using TownOfUs.Assets;
+using TownOfUs.Extensions;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -15,6 +20,7 @@ public sealed class VoodooMutedModifier : BaseModifier
     private PlayerVoteArea? voteArea;
     private SpriteRenderer? bmIcon;
     private SpriteRenderer? bmOverlay;
+    private bool shownMuteNotificationThisMeeting;
 
     public override string ModifierName => "Voodoo Muted";
     public override bool HideOnUi => true;
@@ -33,13 +39,18 @@ public sealed class VoodooMutedModifier : BaseModifier
     {
         base.OnActivate();
         CreateLocalBlackmailVisuals();
+        ShowLocalMuteNotification();
+        VoodooMuteMeetingIntroPatch.TryShowMutedIntro();
     }
 
     public override void OnMeetingStart()
     {
         base.OnMeetingStart();
+        shownMuteNotificationThisMeeting = false;
         DestroyLocalBlackmailVisuals();
         CreateLocalBlackmailVisuals();
+        ShowLocalMuteNotification();
+        VoodooMuteMeetingIntroPatch.TryShowMutedIntro();
     }
 
     public override void FixedUpdate()
@@ -95,6 +106,24 @@ public sealed class VoodooMutedModifier : BaseModifier
         }
 
         voteArea = null;
+    }
+
+    private void ShowLocalMuteNotification()
+    {
+        if (shownMuteNotificationThisMeeting ||
+            MeetingHud.Instance == null ||
+            Player == null ||
+            !Player.AmOwner)
+        {
+            return;
+        }
+
+        shownMuteNotificationThisMeeting = true;
+        Helpers.CreateAndShowNotification(
+            $"<b>{Palette.ImpostorRed.ToTextColor()}{TouLocale.Get("ExtensionVoodooMuteAlert", "You have been cursed by the Voodoo Master. Only you can see this, and you are muted this meeting!")}</color></b>",
+            Color.white,
+            new Vector3(0f, 1f, -20f),
+            spr: TouExtensionIcons.VoodooRoleIcon.LoadAsset());
     }
 
     private void CreateLocalBlackmailVisuals()

@@ -23,10 +23,11 @@
   
   <!-- Draft Alert Local Settings -->
   <string name="ExtensionLocalSettingDraftAlert">Draft Alert Notification</string>
-  <string name="DraftAlertOff">Off</string>
   <string name="DraftAlertStartOnly">Start Only</string>
-  <string name="DraftAlertEndOnly">End Only</string>
   <string name="DraftAlertStartAndEnd">Start and End</string>
+  <string name="DraftAlertEndOnly">End Only</string>
+  <string name="DraftAlertNever">Never</string>
+  <string name="ExtensionLocalSettingStartDraftMusicMuted">Start With Draft Music Muted</string>
 
   <!-- Renamed Trapper to Revealer -->
   <string name="TouRoleRevealer">Revealer</string>
@@ -821,7 +822,6 @@
   <!-- Draft Mode -->
   <string name="ExtensionDraftModeGroupName">Draft Mode</string>
   <string name="ExtensionOptionDraftModeEnabled">Enable Draft Mode</string>
-  <string name="ExtensionOptionDraftModeLockLobby">Lock Lobby During Draft</string>
   <string name="ExtensionOptionDraftModeTimeToChoose">Time To Choose</string>
   <string name="ExtensionOptionDraftModeRolesToShow">Roles To Show</string>
 	
@@ -1154,7 +1154,6 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- TOUMCE Wiki Terms - Game Settings -->
   <string name="TOUMCETermsGameSettingsTitle">Game Settings</string>
   <string name="TOUMCETermsGameSettingsInfo">TOUMCE introduces several global settings that change the game flow:
-• <b>Lock Lobby During Draft</b> - Prevents new players from joining while a draft is in progress to ensure stability.
 • <b>System of Thirds</b> - A balanced pick order that distributes Impostors and Neutrals evenly across the beginning, middle, and end of the draft phase.
 • <b>Use Role Chances</b> - If enabled, the probability of roles appearing in the Draft will be based on their individual 'Chance' settings in the lobby.
 • <b>Neutrals Per Choice</b> - Controls how many Neutral roles are mixed into each Crewmate's selection pool.
@@ -1208,7 +1207,6 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="Max Neutral Killing">Max Neutral Killing</string>
   <string name="Neutral Killing">Neutral Killing</string>
   <string name="Enable Draft Mode">Enable Draft Mode</string>
-  <string name="Lock Lobby During Draft">Lock Lobby During Draft</string>
   <string name="Use Role Chances">Use Role Chances</string>
 
   <!-- Infiltrator & Recruits -->
@@ -1663,8 +1661,8 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionInnocentAfterWinHaunt">Haunt</string>
   <string name="ExtensionRoleInnocentHaunt">Haunt</string>
   <string name="ExtensionRoleInnocentWinNotif">Your target was exiled. You won!</string>
-  <string name="ExtensionRoleInnocentWonSelf">Your target has been exiled! You won and leave in victory!</string>
-  <string name="ExtensionRoleInnocentWonOther">The Innocent, &lt;player&gt;, has successfully taunted their target and leaves in victory!</string>
+  <string name="ExtensionRoleInnocentWonSelf">You have successfully won as the %role%, as your taunted target was exiled!</string>
+  <string name="ExtensionRoleInnocentWonOther">The %role%, %player%, has successfully won, as their taunted target was exiled!</string>
   <string name="ExtensionRoleInnocentForcedKillNotif">Your taunted player killed a Crewmate. Get them exiled at the next meeting!</string>
   <string name="ExtensionRoleInnocentNoKillNotif">Your taunted player did not kill a Crewmate in time.</string>
   <string name="ExtensionInnocentWins">Wins</string>
@@ -1673,9 +1671,15 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleVoodooMaster">Voodoo Master</string>
   <string name="ExtensionRoleVoodooMasterIntroBlurb">Curse players with Voodoo.</string>
   <string name="ExtensionRoleVoodooMasterTabDescription">Cycle between blindness, mute, and confuse.</string>
-  <string name="ExtensionRoleVoodooMasterWikiDescription">The Voodoo Master is an Impostor Support role. They can select a curse, then use it on any living player. Blindness fully covers the target's vision, confuse reverses movement, and mute triggers during the next meeting. Muted players cannot chat, but can still vote normally.</string>
+  <string name="ExtensionRoleVoodooMasterWikiDescription">The Voodoo Master is an Impostor Support role that cycles between three curses and casts the selected curse on a living player. Blindness covers the target's vision, mute silences them during meetings, and confuse makes living players appear scrambled to them.</string>
   <string name="ExtensionRoleVoodooMasterCast">Curse</string>
   <string name="ExtensionRoleVoodooMasterCastWikiDescription">Choose a living player and apply the currently selected Voodoo curse.</string>
+  <string name="ExtensionRoleVoodooMasterBlindness">Blindness</string>
+  <string name="ExtensionRoleVoodooMasterBlindnessWikiDescription">Curse a player with blindness. After the configured delay, their vision is fully covered for the configured duration.</string>
+  <string name="ExtensionRoleVoodooMasterMute">Mute</string>
+  <string name="ExtensionRoleVoodooMasterMuteWikiDescription">Curse a player with mute. The curse triggers at the next meeting and prevents only that player from chatting for the configured number of meetings. Only the muted player knows they are muted; other players are not told and do not see a meeting overlay like Blackmailer.</string>
+  <string name="ExtensionRoleVoodooMasterConfuse">Confuse</string>
+  <string name="ExtensionRoleVoodooMasterConfuseWikiDescription">Curse a player with confuse. After the configured delay, living players appear scrambled to the target like Herbalist Confuse, making players harder to identify.</string>
   <string name="ExtensionRoleVoodooMasterCycle">Cycle Curse</string>
   <string name="ExtensionRoleVoodooMasterCycleWikiDescription">Switch between blindness, mute, and confuse.</string>
   <string name="ExtensionOptionVoodooMasterCurseCooldown">Curse Cooldown</string>
@@ -1686,12 +1690,13 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionVoodooMasterConfuseDuration">Confuse Duration</string>
   <string name="ExtensionOptionVoodooMasterMuteDuration">Mute Duration In Meetings</string>
   <string name="ExtensionOptionVoodooMasterTargetLockDuration">Target Lock Duration (Meetings)</string>
-  <string name="ExtensionOptionVoodooMasterEclipseDelay">Eclipse Delay</string>
+  <string name="ExtensionOptionVoodooMasterBlindDelay">Blind Delay</string>
   <string name="ExtensionOptionVoodooMasterConfuseDelay">Confuse Delay</string>
   <string name="ExtensionVoodooBlindAlert">You have been cursed by the Voodoo Master!</string>
   <string name="ExtensionVoodooEffectBlindness">Blind</string>
   <string name="ExtensionVoodooEffectMute">Mute</string>
   <string name="ExtensionVoodooEffectConfuse">Confuse</string>
+  <string name="ExtensionVoodooMuteAlert">You have been cursed by the Voodoo Master. Only you will see this, and you will be muted next meeting!</string>
   <string name="ExtensionVoodooMutedIntro">YOU ARE MUTED!</string>
 
   <!-- Inverter Role -->
@@ -1712,28 +1717,28 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
 
   <!-- Tavern Keeper -->
   <string name="ExtensionRoleTavernKeeper">Tavern Keeper</string>
-  <string name="ExtensionRoleTavernKeeperIntroBlurb">Share a drink and shut down abilities</string>
-  <string name="ExtensionRoleTavernKeeperTabDescription">Drink with players to roleblock their abilities.\%nl\%Immune players cannot be roleblocked again.</string>
-  <string name="ExtensionRoleTavernKeeperWikiDescription">The Tavern Keeper is a Crewmate Protective role that can roleblock players by drinking with them. Roleblocked players cannot use active abilities for a short time. If enabled, a drink can also leave the target briefly immune to future roleblocks.</string>
+  <string name="ExtensionRoleTavernKeeperIntroBlurb">Drink with others to protect them and disable their abilities.</string>
+  <string name="ExtensionRoleTavernKeeperTabDescription">Drink with another player to protect them from death.\%nl\%The hangover disables their abilities while it lasts.</string>
+  <string name="ExtensionRoleTavernKeeperWikiDescription">The Tavern Keeper is a Crewmate Protective role that can drink with another player. The target is protected from death while the hangover lasts, but their abilities are disabled. If enabled, the target becomes immune to future drinks after the hangover ends.</string>
   <string name="ExtensionRoleTavernKeeperDrink">Drink</string>
-  <string name="ExtensionRoleTavernKeeperDrinkWikiDescription">Drink with a player to roleblock them for \%duration\%s.</string>
-  <string name="ExtensionRoleTavernKeeperTabRoleblockedDuration">Roleblock Duration: \%duration\%s</string>
-  <string name="ExtensionRoleTavernKeeperTabMaxUses">Drinks Left: \%uses\%</string>
-  <string name="ExtensionRoleTavernKeeperTabTargetImmunity">Targets become immune after the roleblock ends.</string>
+  <string name="ExtensionRoleTavernKeeperDrinkWikiDescription">Drink with a player to protect them from death and disable their abilities for \%duration\%s.</string>
+  <string name="ExtensionRoleTavernKeeperTabRoleblockedDuration">Hangover Duration: \%duration\%s</string>
+  <string name="ExtensionRoleTavernKeeperTabMaxUses">Drinks Remaining: \%uses\%</string>
+  <string name="ExtensionRoleTavernKeeperTabTargetImmunity">Targets become immune to future drinks when the hangover ends.</string>
   <string name="ExtensionRoleTavernKeeperTabCurrentlyRoleblocked">Drinking With: \%player\%</string>
-  <string name="ExtensionRoleTavernKeeperNotificationRoleblocked">\%player\% was roleblocked!</string>
+  <string name="ExtensionRoleTavernKeeperNotificationRoleblocked">\%player\% is protected by your drink and cannot use abilities!</string>
   <string name="ExtensionRoleTavernKeeperNotificationImmune">\%player\% resisted your drink!</string>
-  <string name="ExtensionRoleTavernKeeperAlertImmune">You resisted the Tavern Keeper's drink!</string>
-  <string name="ExtensionRoleTavernKeeperAlertRoleblocked">You were roleblocked by the Tavern Keeper!</string>
+  <string name="ExtensionRoleTavernKeeperAlertImmune">The Tavern Keeper drank with you, but you resisted it!</string>
+  <string name="ExtensionRoleTavernKeeperAlertRoleblocked">The Tavern Keeper drank with you and protects you from deaths with a hangover, but you cannot use abilities.</string>
   <string name="ExtensionOptionTavernKeeperCooldown">Drink Cooldown</string>
-  <string name="ExtensionOptionTavernKeeperDuration">Roleblock Duration</string>
-  <string name="ExtensionOptionTavernKeeperInvertControls">Invert controls of roleblocked player</string>
-  <string name="ExtensionOptionTavernKeeperImmunity">Immunity</string>
+  <string name="ExtensionOptionTavernKeeperDuration">Hangover Duration</string>
+  <string name="ExtensionOptionTavernKeeperInvertControls">Invert controls during hangover</string>
+  <string name="ExtensionOptionTavernKeeperImmunity">Drink Immunity</string>
   <string name="ExtensionOptionTavernKeeperImmunityDuration">Immunity Duration</string>
   <string name="ExtensionOptionTavernKeeperMaxUses">Max Uses</string>
   <string name="ExtensionOptionTavernKeeperResetAfterMeeting">Reset uses after meeting</string>
-  <string name="ExtensionOptionTavernKeeperShowAlert">Alert target of roleblock</string>
-  <string name="ExtensionOptionTavernKeeperAlertDelay">Alert delay</string>
+  <string name="ExtensionOptionTavernKeeperShowAlert">Alert drinking partner</string>
+  <string name="ExtensionOptionTavernKeeperAlertDelay">Drinking partner alert delay</string>
 
   <!-- Agent -->
   <string name="ExtensionRoleAgent">Agent</string>

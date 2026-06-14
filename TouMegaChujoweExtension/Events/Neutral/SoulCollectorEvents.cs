@@ -87,14 +87,36 @@ public static class SoulCollectorEvents
 
         if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost)
         {
-            SoulCollectorRole.RpcSetSouls(soulCollector, soulCollectorRole.SoulsCollected + 1);
-            TryTransformIfReady(soulCollector);
+            CollectDeadReapedTargets(soulCollector, soulCollectorRole);
         }
-
-        if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost || soulCollector.AmOwner)
+        else if (soulCollector.AmOwner)
         {
             victim.RemoveModifier<SoulReapedModifier>();
         }
+    }
+
+    private static void CollectDeadReapedTargets(PlayerControl soulCollector, SoulCollectorRole soulCollectorRole)
+    {
+        var deadReapedTargets = PlayerControl.AllPlayerControls.ToArray()
+            .Where(player => player != null &&
+                             player.HasDied() &&
+                             player.TryGetModifier<SoulReapedModifier>(out var modifier) &&
+                             modifier.SoulCollectorId == soulCollector.PlayerId)
+            .ToArray();
+
+        if (deadReapedTargets.Length == 0)
+        {
+            return;
+        }
+
+        SoulCollectorRole.RpcSetSouls(soulCollector, soulCollectorRole.SoulsCollected + deadReapedTargets.Length);
+
+        foreach (var target in deadReapedTargets)
+        {
+            target.RemoveModifier<SoulReapedModifier>();
+        }
+
+        TryTransformIfReady(soulCollector);
     }
 
     private static void GrantPassiveSouls()

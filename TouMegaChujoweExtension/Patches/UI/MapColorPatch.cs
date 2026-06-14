@@ -1,6 +1,7 @@
 using HarmonyLib;
 using MiraAPI.LocalSettings;
 using MiraAPI.Roles;
+using Reactor.Utilities;
 using TownOfUs.Extensions;
 using TownOfUs.Modules;
 using TownOfUs.Roles;
@@ -17,6 +18,26 @@ public static class MapColorPatch
     [HarmonyPriority(Priority.Last)]
     [HarmonyPostfix]
     public static void Postfix(MapBehaviour __instance)
+    {
+        ApplyConfiguredMapColor(__instance);
+        Coroutines.Start(CoKeepConfiguredMapColor(__instance));
+    }
+
+    private static System.Collections.IEnumerator CoKeepConfiguredMapColor(MapBehaviour map)
+    {
+        for (var i = 0; i < 30; i++)
+        {
+            if (map == null || !map.isActiveAndEnabled)
+            {
+                yield break;
+            }
+
+            ApplyConfiguredMapColor(map);
+            yield return null;
+        }
+    }
+
+    private static void ApplyConfiguredMapColor(MapBehaviour map)
     {
         var localSettings = LocalSettingsTabSingleton<TouExtensionLocalSettings>.Instance;
         if (localSettings == null)
@@ -43,12 +64,12 @@ public static class MapColorPatch
                 if (role != null)
                 {
                     var roleColor = role is ICustomRole custom ? custom.RoleColor : role.TeamColor;
-                    ApplyRoleColor(__instance, roleColor);
+                    ApplyRoleColor(map, roleColor);
                 }
                 break;
 
             case MapColorType.PlayerColor:
-                ApplyPlayerColor(__instance, player);
+                ApplyPlayerColor(map, player);
                 break;
         }
     }

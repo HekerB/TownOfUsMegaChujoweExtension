@@ -285,7 +285,6 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
                         causeOfDeath: "InnocentTaunt");
 
                     ResetLocalButtonCooldown(innocentPlayerId);
-                    QueueMeetingAlert(innocentPlayerId, "ExtensionRoleInnocentForcedKillNotif", "Your taunted player killed a Crewmate. Get them exiled at the next meeting!");
 
                     yield break;
                 }
@@ -301,7 +300,6 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
     {
         ClearExistingMarkerForInnocent(innocentPlayerId);
         ResetLocalButtonCooldown(innocentPlayerId);
-        ShowInnocentAlert(innocentPlayerId, "ExtensionRoleInnocentNoKillNotif", "Your taunted player did not kill a Crewmate in time.");
 
         if (InnocentRole.ActiveInnocents.TryGetValue(innocentPlayerId, out var innocent))
         {
@@ -313,17 +311,6 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
                 innocent.WinWindowExpired = true;
             }
         }
-    }
-
-    private static void QueueMeetingAlert(byte innocentPlayerId, string key, string fallback)
-    {
-        if (!InnocentRole.ActiveInnocents.TryGetValue(innocentPlayerId, out var innocent))
-        {
-            return;
-        }
-
-        innocent.PendingMeetingAlertKey = key;
-        innocent.PendingMeetingAlertFallback = fallback;
     }
 
     private static PlayerControl? FindForcedVictim(PlayerControl marked, byte innocentPlayerId)
@@ -364,22 +351,6 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
             button.EffectActive = false;
             button.Timer = button.Cooldown;
         }
-    }
-
-    private static void ShowInnocentAlert(byte innocentPlayerId, string key, string fallback)
-    {
-        if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.PlayerId != innocentPlayerId)
-        {
-            return;
-        }
-
-        var notif = MiraAPI.Utilities.Helpers.CreateAndShowNotification(
-            $"<b>{TouExtensionColors.Innocent.ToTextColor()}{TouLocale.Get(key, fallback)}</color></b>",
-            Color.white,
-            new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.InnocentRoleIcon.LoadAsset());
-
-        notif?.AdjustNotification();
     }
 
     [HideFromIl2Cpp]

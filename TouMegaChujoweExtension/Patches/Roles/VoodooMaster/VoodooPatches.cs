@@ -77,13 +77,50 @@ public static class VoodooVisionPatch
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
 public static class VoodooMuteMeetingIntroPatch
 {
+    private static bool shownThisMeeting;
+    private static bool forceVoodooIntroText;
+
     public static void Postfix(MeetingHud __instance)
     {
-        if (PlayerControl.LocalPlayer != null &&
-            !PlayerControl.LocalPlayer.Data.IsDead &&
-            PlayerControl.LocalPlayer.HasModifier<VoodooMutedModifier>())
+        shownThisMeeting = false;
+        TryShowMutedIntro();
+        Coroutines.Start(CoRetryMutedIntro());
+    }
+
+    public static void TryShowMutedIntro()
+    {
+        if (shownThisMeeting ||
+            MeetingHud.Instance == null ||
+            HudManager.Instance == null ||
+            PlayerControl.LocalPlayer == null ||
+            PlayerControl.LocalPlayer.Data.IsDead ||
+            !HasPendingOrActiveLocalMute())
         {
-            Coroutines.Start(CoVoodooMutedIntro());
+            return;
+        }
+
+        shownThisMeeting = true;
+        Coroutines.Start(CoVoodooMutedIntro());
+    }
+
+    private static bool HasPendingOrActiveLocalMute()
+    {
+        var local = PlayerControl.LocalPlayer;
+        if (local == null)
+        {
+            return false;
+        }
+
+        return local.HasModifier<VoodooMutedModifier>() ||
+               local.GetModifiers<VoodooScheduledCurseModifier>().Any(x => x.CurseType == VoodooEffect.Mute);
+    }
+
+    private static IEnumerator CoRetryMutedIntro()
+    {
+        for (var i = 0; i < 90 && MeetingHud.Instance != null && !shownThisMeeting; i++)
+        {
+            TryShowMutedIntro();
+            yield return null;
         }
     }
 
@@ -92,16 +129,35 @@ public static class VoodooMuteMeetingIntroPatch
         yield return HudManager.Instance.CoFadeFullScreen(Color.clear, new Color(0f, 0f, 0f, 0.98f));
         var tempPosition = HudManager.Instance.shhhEmblem.transform.localPosition;
         var tempDuration = HudManager.Instance.shhhEmblem.HoldDuration;
+        var tempText = HudManager.Instance.shhhEmblem.TextImage.text;
+        var introText = TouLocale.Get("ExtensionVoodooMutedIntro", "YOU ARE MUTED!");
         HudManager.Instance.shhhEmblem.transform.localPosition = new Vector3(
             HudManager.Instance.shhhEmblem.transform.localPosition.x,
             HudManager.Instance.shhhEmblem.transform.localPosition.y,
             HudManager.Instance.FullScreen.transform.position.z + 1f);
-        HudManager.Instance.shhhEmblem.TextImage.text = TouLocale.Get("ExtensionVoodooMutedIntro", "YOU ARE MUTED!");
+        HudManager.Instance.shhhEmblem.TextImage.text = introText;
         HudManager.Instance.shhhEmblem.HoldDuration = 2.5f;
+        forceVoodooIntroText = true;
+        Coroutines.Start(CoKeepVoodooIntroText(introText));
         yield return HudManager.Instance.ShowEmblem(true);
+        forceVoodooIntroText = false;
+        HudManager.Instance.shhhEmblem.TextImage.text = tempText;
         HudManager.Instance.shhhEmblem.transform.localPosition = tempPosition;
         HudManager.Instance.shhhEmblem.HoldDuration = tempDuration;
         yield return HudManager.Instance.CoFadeFullScreen(new Color(0f, 0f, 0f, 0.98f), Color.clear);
         yield return null;
+    }
+
+    private static IEnumerator CoKeepVoodooIntroText(string introText)
+    {
+        while (forceVoodooIntroText)
+        {
+            if (HudManager.Instance?.shhhEmblem?.TextImage != null)
+            {
+                HudManager.Instance.shhhEmblem.TextImage.text = introText;
+            }
+
+            yield return null;
+        }
     }
 }

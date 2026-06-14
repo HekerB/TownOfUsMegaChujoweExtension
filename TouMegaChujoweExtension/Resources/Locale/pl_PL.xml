@@ -23,10 +23,11 @@
   
   <!-- Draft Alert Local Settings -->
   <string name="ExtensionLocalSettingDraftAlert">Powiadomienie o Drafcie</string>
-  <string name="DraftAlertOff">Wylaczone</string>
   <string name="DraftAlertStartOnly">Tylko na poczatku</string>
-  <string name="DraftAlertEndOnly">Tylko na koncu</string>
   <string name="DraftAlertStartAndEnd">Na poczatku i na koncu</string>
+  <string name="DraftAlertEndOnly">Tylko na koncu</string>
+  <string name="DraftAlertNever">Nigdy</string>
+  <string name="ExtensionLocalSettingStartDraftMusicMuted">Startuj z wyciszona muzyka Draftu</string>
 
   <!-- Renamed Trapper to Revealer -->
   <string name="TouRoleRevealer">Wykrywacz</string>
@@ -821,7 +822,6 @@
   <!-- Draft Mode -->
   <string name="ExtensionDraftModeGroupName">Tryb Draft</string>
   <string name="ExtensionOptionDraftModeEnabled">Wlacz Draft</string>
-  <string name="ExtensionOptionDraftModeLockLobby">Zablokuj lobby w drafcie</string>
   <string name="ExtensionOptionDraftModeTimeToChoose">Czas wyboru</string>
   <string name="ExtensionOptionDraftModeRolesToShow">Role do wyboru</string>
 	
@@ -1138,7 +1138,6 @@
   <string name="TOUMCETermsGameSettingsInfo">Globalne modyfikatory zmieniajace balans i przebieg rozgrywki.</string>
 
   <string name="Enable Draft Mode">Wlacz Tryb Draftu</string>
-  <string name="Lock Lobby During Draft">Blokada lobby w wyborze</string>
   <string name="Use Role Chances">Uzywaj wag ról</string>
   <string name="Reduce Killing Streak">Ogranicz serie ról zabijajacych</string>
   <string name="Impostor">Impostor</string>
@@ -1606,8 +1605,8 @@
   <string name="ExtensionOptionInnocentAfterWinHaunt">Nawiedzenie</string>
   <string name="ExtensionRoleInnocentHaunt">Nawiedzenie</string>
   <string name="ExtensionRoleInnocentWinNotif">Twoj cel wyrzucony! Wygrywasz!</string>
-  <string name="ExtensionRoleInnocentWonSelf">Twój cel został wygnany! Wygrałeś i opuszczasz statek zwycięski!</string>
-  <string name="ExtensionRoleInnocentWonOther">Prowokator, &lt;player&gt;, sprowokował swój cel i opuszcza statek zwycięski!</string>
+  <string name="ExtensionRoleInnocentWonSelf">Wygrales jako %role%, bo Twoj sprowokowany cel zostal wyrzucony!</string>
+  <string name="ExtensionRoleInnocentWonOther">%role%, %player%, wygral, bo jego sprowokowany cel zostal wyrzucony!</string>
   <string name="ExtensionRoleInnocentForcedKillNotif">Cel zabil! Wyrzuccie go!</string>
   <string name="ExtensionRoleInnocentNoKillNotif">Brak ataku na czas.</string>
   <string name="ExtensionInnocentWins">Wygrywa</string>
@@ -1616,11 +1615,17 @@
   <string name="ExtensionRoleVoodooMaster">Mistrz Voodoo</string>
   <string name="ExtensionRoleVoodooMasterIntroBlurb">Przeklinaj graczy, odbierajac im zmysly.</string>
   <string name="ExtensionRoleVoodooMasterTabDescription">Rzucaj klatwy. Wybieraj: oslepienie, wyciszenie lub chaos.</string>
-  <string name="ExtensionRoleVoodooMasterWikiDescription">Impostor wspierajacy z klatwami paraliżujacymi Zaloge.</string>
+  <string name="ExtensionRoleVoodooMasterWikiDescription">Mistrz Voodoo to Impostor Support, ktory przelacza sie miedzy trzema klatwami i rzuca wybrana klatwe na zywego gracza. Oslepienie zaslania wizje celu, uciszenie blokuje pisanie na naradzie, a chaos miesza wyglad zywych graczy tylko dla ofiary.</string>
   <string name="ExtensionRoleVoodooMasterCast">Klatwa</string>
-  <string name="ExtensionRoleVoodooMasterCastWikiDescription">Naloz klatwe na gracza.</string>
-  <string name="ExtensionRoleVoodooMasterCycle">Zmien klątwe</string>
-  <string name="ExtensionRoleVoodooMasterCycleWikiDescription">Przelacz typ przeklenstwa.</string>
+  <string name="ExtensionRoleVoodooMasterCastWikiDescription">Naloz aktualnie wybrana klatwe na zywego gracza.</string>
+  <string name="ExtensionRoleVoodooMasterBlindness">Oslepienie</string>
+  <string name="ExtensionRoleVoodooMasterBlindnessWikiDescription">Przeklnij gracza oslepieniem. Po ustawionym opoznieniu jego wizja zostaje calkowicie zaslonieta na ustawiony czas.</string>
+  <string name="ExtensionRoleVoodooMasterMute">Uciszenie</string>
+  <string name="ExtensionRoleVoodooMasterMuteWikiDescription">Przeklnij gracza uciszeniem. Klatwa odpala sie na nastepnej naradzie i blokuje pisanie tylko temu graczowi przez ustawiona liczbe narad. Tylko zmutowany gracz wie, ze jest zmutowany; inni gracze nie dostaja informacji i nie widza overlayu na naradzie jak przy Blackmailerze.</string>
+  <string name="ExtensionRoleVoodooMasterConfuse">Chaos</string>
+  <string name="ExtensionRoleVoodooMasterConfuseWikiDescription">Przeklnij gracza chaosem. Po ustawionym opoznieniu zywi gracze wygladaja dla celu jak pomieszani, tak jak przy Herbalist Confuse, przez co trudniej ich rozpoznac.</string>
+  <string name="ExtensionRoleVoodooMasterCycle">Zmien klatwe</string>
+  <string name="ExtensionRoleVoodooMasterCycleWikiDescription">Przelaczaj miedzy oslepieniem, uciszeniem i chaosem.</string>
   <string name="ExtensionOptionVoodooMasterCurseCooldown">Cooldown klatwy</string>
   <string name="ExtensionOptionVoodooMasterMaxBlindUses">Użycia oślepienia</string>
   <string name="ExtensionOptionVoodooMasterMaxConfuseUses">Użycia chaosu</string>
@@ -1629,12 +1634,13 @@
   <string name="ExtensionOptionVoodooMasterConfuseDuration">Czas chaosu</string>
   <string name="ExtensionOptionVoodooMasterMuteDuration">Czas wyciszenia (narady)</string>
   <string name="ExtensionOptionVoodooMasterTargetLockDuration">Czas blokady celu (narady)</string>
-  <string name="ExtensionOptionVoodooMasterEclipseDelay">Opóźnienie oślepienia</string>
+  <string name="ExtensionOptionVoodooMasterBlindDelay">Opóźnienie oslepienia</string>
   <string name="ExtensionOptionVoodooMasterConfuseDelay">Opóźnienie chaosu</string>
   <string name="ExtensionVoodooBlindAlert">Mistrz Voodoo Cie przeklal!</string>
   <string name="ExtensionVoodooEffectBlindness">Oslepienie</string>
   <string name="ExtensionVoodooEffectMute">Uciszenie</string>
   <string name="ExtensionVoodooEffectConfuse">Chaos</string>
+  <string name="ExtensionVoodooMuteAlert">Mistrz Voodoo Cie przeklal. Tylko Ty to widzisz i zostaniesz uciszony na nastepnej naradzie!</string>
   <string name="ExtensionVoodooMutedIntro">ZOSTAŁEŚ UCISZONY!</string>
 
   <!-- Inverter Role -->
@@ -1655,28 +1661,28 @@
 
   <!-- Tavern Keeper -->
   <string name="ExtensionRoleTavernKeeper">Karczmarz</string>
-  <string name="ExtensionRoleTavernKeeperIntroBlurb">Postaw kolejke i zablokuj umiejetnosci</string>
-  <string name="ExtensionRoleTavernKeeperTabDescription">Pij z graczami, aby zablokowac ich umiejetnosci.\%nl\%Odporni gracze nie moga zostac zablokowani ponownie.</string>
-  <string name="ExtensionRoleTavernKeeperWikiDescription">Karczmarz to rola ochronna Zalogi, ktora moze blokowac graczy poprzez wspolne picie. Zablokowany gracz nie moze przez krotki czas uzywac aktywnych umiejetnosci. Jesli opcja jest wlaczona, napoj moze tez dac celowi krotka odpornosc na kolejne blokady.</string>
+  <string name="ExtensionRoleTavernKeeperIntroBlurb">Pij z innymi, aby ich chronic i wylaczac im umiejetnosci.</string>
+  <string name="ExtensionRoleTavernKeeperTabDescription">Napij sie z graczem, aby ochronic go przed smiercia.\%nl\%Kac wylacza jego umiejetnosci, dopoki trwa.</string>
+  <string name="ExtensionRoleTavernKeeperWikiDescription">Karczmarz to rola ochronna Zalogi, ktora moze napic sie z innym graczem. Cel jest chroniony przed smiercia, dopoki trwa kac, ale jego umiejetnosci sa wylaczone. Jesli opcja jest wlaczona, po zakonczeniu kaca cel zyskuje odpornosc na kolejne napoje.</string>
   <string name="ExtensionRoleTavernKeeperDrink">Napoj</string>
-  <string name="ExtensionRoleTavernKeeperDrinkWikiDescription">Napij sie z graczem, aby zablokowac jego umiejetnosci na \%duration\%s.</string>
-  <string name="ExtensionRoleTavernKeeperTabRoleblockedDuration">Czas blokady: \%duration\%s</string>
+  <string name="ExtensionRoleTavernKeeperDrinkWikiDescription">Napij sie z graczem, aby ochronic go przed smiercia i wylaczyc jego umiejetnosci na \%duration\%s.</string>
+  <string name="ExtensionRoleTavernKeeperTabRoleblockedDuration">Czas kaca: \%duration\%s</string>
   <string name="ExtensionRoleTavernKeeperTabMaxUses">Pozostalo napojow: \%uses\%</string>
-  <string name="ExtensionRoleTavernKeeperTabTargetImmunity">Cele dostaja odpornosc po zakonczeniu blokady.</string>
+  <string name="ExtensionRoleTavernKeeperTabTargetImmunity">Cele dostaja odpornosc na kolejne napoje po zakonczeniu kaca.</string>
   <string name="ExtensionRoleTavernKeeperTabCurrentlyRoleblocked">Pijesz z: \%player\%</string>
-  <string name="ExtensionRoleTavernKeeperNotificationRoleblocked">\%player\% zostal zablokowany!</string>
+  <string name="ExtensionRoleTavernKeeperNotificationRoleblocked">\%player\% jest chroniony Twoim napojem i nie moze uzywac umiejetnosci!</string>
   <string name="ExtensionRoleTavernKeeperNotificationImmune">\%player\% oparl sie napojowi!</string>
-  <string name="ExtensionRoleTavernKeeperAlertImmune">Opierasz sie napojowi Karczmarza!</string>
-  <string name="ExtensionRoleTavernKeeperAlertRoleblocked">Karczmarz zablokowal Twoje umiejetnosci!</string>
+  <string name="ExtensionRoleTavernKeeperAlertImmune">Karczmarz napil sie z Toba, ale opierasz sie napojowi!</string>
+  <string name="ExtensionRoleTavernKeeperAlertRoleblocked">Karczmarz napil sie z Toba i chroni Cie kacem przed smierciami, ale nie mozesz uzywac umiejetnosci.</string>
   <string name="ExtensionOptionTavernKeeperCooldown">Odnowienie napoju</string>
-  <string name="ExtensionOptionTavernKeeperDuration">Czas trwania blokady</string>
-  <string name="ExtensionOptionTavernKeeperInvertControls">Odwrocenie sterowania zablokowanego gracza</string>
-  <string name="ExtensionOptionTavernKeeperImmunity">Odpornosc</string>
+  <string name="ExtensionOptionTavernKeeperDuration">Czas kaca</string>
+  <string name="ExtensionOptionTavernKeeperInvertControls">Odwrocenie sterowania podczas kaca</string>
+  <string name="ExtensionOptionTavernKeeperImmunity">Odpornosc na napoje</string>
   <string name="ExtensionOptionTavernKeeperImmunityDuration">Czas trwania odpornosci</string>
   <string name="ExtensionOptionTavernKeeperMaxUses">Maksymalna ilosc uzyc</string>
   <string name="ExtensionOptionTavernKeeperResetAfterMeeting">Zresetuj uzycia po naradzie</string>
-  <string name="ExtensionOptionTavernKeeperShowAlert">Pokaz alert zablokowanemu graczowi</string>
-  <string name="ExtensionOptionTavernKeeperAlertDelay">Opoznienie alertu</string>
+  <string name="ExtensionOptionTavernKeeperShowAlert">Pokaz alert osobie pijacej</string>
+  <string name="ExtensionOptionTavernKeeperAlertDelay">Opoznienie alertu osoby pijacej</string>
 
   <!-- Agent -->
   <string name="ExtensionRoleAgent">Agent</string>

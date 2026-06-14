@@ -1126,6 +1126,14 @@ public static class DraftSystem
             return;
         }
 
+        if (IsOldDraftMode())
+        {
+            players.Shuffle();
+            PickOrder.AddRange(players);
+            OriginalPickOrder.AddRange(PickOrder);
+            return;
+        }
+
         var specialPlayers = players.Where(id =>
             PlayerFactions.ContainsKey(id) &&
             PlayerFactions[id] != DraftFaction.CrewOther).ToList();

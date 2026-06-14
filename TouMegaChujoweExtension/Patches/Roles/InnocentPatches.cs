@@ -71,21 +71,6 @@ public static class InnocentPatches
                 }
             }
 
-            if (!innocent.Player.AmOwner ||
-                string.IsNullOrEmpty(innocent.PendingMeetingAlertKey) ||
-                string.IsNullOrEmpty(innocent.PendingMeetingAlertFallback))
-            {
-                continue;
-            }
-
-            MiraAPI.Utilities.Helpers.CreateAndShowNotification(
-                $"<b>{TouExtensionColors.Innocent.ToTextColor()}{TouLocale.Get(innocent.PendingMeetingAlertKey, innocent.PendingMeetingAlertFallback)}</color></b>",
-                Color.white,
-                new Vector3(0f, 1f, -20f),
-                spr: TouExtensionIcons.InnocentRoleIcon.LoadAsset())?.AdjustNotification();
-
-            innocent.PendingMeetingAlertKey = null;
-            innocent.PendingMeetingAlertFallback = null;
         }
     }
 
@@ -127,7 +112,11 @@ public static class InnocentPatches
                 PrepareHauntTargets(innocent, exiled);
             }
 
-            ShowWinNotification(innocent);
+            if (OptionGroupSingleton<InnocentOptions>.Instance.AfterWin.Value != (int)InnocentAfterWin.EndGame)
+            {
+                ShowWinNotification(innocent);
+            }
+
             innocent.LastTauntVoters.Clear();
         }
     }
@@ -289,19 +278,23 @@ public static class InnocentPatches
 
         if (local.PlayerId == innocent.Player.PlayerId)
         {
-            var msg = TouLocale.Get("ExtensionRoleInnocentWonSelf", "Your target has been exiled! You won and leave in victory!");
+            var role = $"{TouExtensionColors.Innocent.ToTextColor()}{innocent.RoleName}</color>";
+            var msg = TouLocale.Get("ExtensionRoleInnocentWonSelf", "You have successfully won as the %role%, as your taunted target was exiled!")
+                .Replace("%role%", role);
             MiraAPI.Utilities.Helpers.CreateAndShowNotification(
-                $"<b>{TouExtensionColors.Innocent.ToTextColor()}{msg}</color></b>",
+                $"<b>{msg}</b>",
                 Color.white,
                 new Vector3(0f, 1f, -20f),
                 spr: TouExtensionIcons.InnocentRoleIcon.LoadAsset())?.AdjustNotification();
         }
         else
         {
-            var msg = TouLocale.Get("ExtensionRoleInnocentWonOther", "<player> (Innocent) taunted their target and leaves in victory!")
-                .Replace("<player>", innocent.Player.Data.PlayerName);
+            var role = $"{TouExtensionColors.Innocent.ToTextColor()}{innocent.RoleName}</color>";
+            var msg = TouLocale.Get("ExtensionRoleInnocentWonOther", "The %role%, %player%, has successfully won, as their taunted target was exiled!")
+                .Replace("%role%", role)
+                .Replace("%player%", innocent.Player.Data.PlayerName);
             MiraAPI.Utilities.Helpers.CreateAndShowNotification(
-                $"<b>{TouExtensionColors.Innocent.ToTextColor()}{msg}</color></b>",
+                $"<b>{msg}</b>",
                 Color.white,
                 new Vector3(0f, 1f, -20f),
                 spr: TouExtensionIcons.InnocentRoleIcon.LoadAsset())?.AdjustNotification();

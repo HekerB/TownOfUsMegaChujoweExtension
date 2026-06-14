@@ -46,9 +46,10 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
             return false;
         }
 
+        var maxUses = Role.GetMaxUses(Role.SelectedEffect);
         return base.CanUse() &&
                Target != null &&
-               (Role.GetMaxUses(Role.SelectedEffect) == 0 || Role.GetUsesLeft(Role.SelectedEffect) > 0);
+               (maxUses < 0 || Role.GetUsesLeft(Role.SelectedEffect) > 0);
     }
 
     public override void ClickHandler()

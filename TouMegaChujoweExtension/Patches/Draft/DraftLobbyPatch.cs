@@ -205,13 +205,6 @@ public static class DraftLobbyPatch
         if (_lobbyLocked) return;
         if (!AmongUsClient.Instance.AmHost) return;
 
-        try
-        {
-            var lockEnabled = OptionGroupSingleton<DraftModeOptions>.Instance.LockLobbyDuringDraft.Value;
-            if (!lockEnabled) return;
-        }
-        catch { /* Options might not be fully initialized yet, ignore and return */ return; }
-
         _lobbyWasPublic = AmongUsClient.Instance.IsGamePublic;
         if (_lobbyWasPublic)
             AmongUsClient.Instance.ChangeGamePublic(false);
@@ -952,13 +945,33 @@ public static class DraftLobbyPatch
 
     private static void PlayStartAlert()
     {
+        if (!ShouldPlayDraftStartAlert())
+        {
+            return;
+        }
+
+        PlayDraftAlertClip();
+    }
+
+    private static void PlayDraftCompleteSound()
+    {
+        if (!ShouldPlayDraftEndAlert())
+        {
+            return;
+        }
+
+        PlayDraftAlertClip();
+    }
+
+    private static bool PlayDraftAlertClip()
+    {
         var clip = FindTimeToHideClip();
         if (clip != null)
         {
             try
             {
                 SoundManager.Instance.PlaySoundImmediate(clip, false, 0.8f, 1f, SoundManager.Instance.SfxChannel);
-                return;
+                return true;
             }
             catch { /* Ignore play failures */ }
         }
@@ -967,25 +980,14 @@ public static class DraftLobbyPatch
         {
             var fallback = TouExtensionAudio.DraftStartAlert.LoadAsset();
             if (fallback != null)
+            {
                 SoundManager.Instance.PlaySoundImmediate(fallback, false, 0.5f, 1f, SoundManager.Instance.SfxChannel);
+                return true;
+            }
         }
         catch { /* Ignore fallback play failures */ }
-    }
 
-    private static void PlayDraftCompleteSound()
-    {
-        var clip = FindTimeToHideClip();
-        if (clip != null)
-        {
-            try
-            {
-                SoundManager.Instance.PlaySoundImmediate(clip, false, 0.8f, 1f, SoundManager.Instance.SfxChannel);
-                return;
-            }
-            catch { /* Ignore play complete sound failures */ }
-        }
-
-        PlayStartAlert();
+        return false;
     }
 
     private static void TryPlayPickerAlert()
@@ -1048,6 +1050,8 @@ public static class DraftLobbyPatch
         }
 
         try { SoundManager.Instance.StopAllSound(); } catch { /* Ignore SoundManager errors */ }
+
+        _isMusicMuted = ShouldStartDraftMusicMuted();
 
         if (!AmIFirstPicker())
             PlayStartAlert();
@@ -1448,6 +1452,43 @@ public static class DraftLobbyPatch
 
         btn.OnMouseOut = new UnityEngine.Events.UnityEvent();
         btn.OnMouseOut.AddListener((System.Action)(() => { bgRenderer.color = new Color(0.2f, 0.2f, 0.2f, 0.8f); }));
+    }
+
+    private static DraftAlertTiming GetDraftAlertTiming()
+    {
+        try
+        {
+            return LocalSettingsTabSingleton<TouExtensionDraftLocalSettings>.Instance?.DraftAlertTiming.Value ??
+                   DraftAlertTiming.StartAndEnd;
+        }
+        catch
+        {
+            return DraftAlertTiming.StartAndEnd;
+        }
+    }
+
+    private static bool ShouldPlayDraftStartAlert()
+    {
+        var timing = GetDraftAlertTiming();
+        return timing is DraftAlertTiming.StartOnly or DraftAlertTiming.StartAndEnd;
+    }
+
+    private static bool ShouldPlayDraftEndAlert()
+    {
+        var timing = GetDraftAlertTiming();
+        return timing is DraftAlertTiming.EndOnly or DraftAlertTiming.StartAndEnd;
+    }
+
+    private static bool ShouldStartDraftMusicMuted()
+    {
+        try
+        {
+            return LocalSettingsTabSingleton<TouExtensionDraftLocalSettings>.Instance?.StartDraftMusicMuted.Value ?? false;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private static void CreateCancelButton()

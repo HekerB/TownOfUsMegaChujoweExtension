@@ -34,8 +34,6 @@ public sealed class InnocentRole(IntPtr cppPtr)
     public bool AwaitingNextMeetingExile { get; set; }
     public bool WinWindowExpired { get; set; }
     public bool TransformWhenTauntResolved { get; set; }
-    public string? PendingMeetingAlertKey { get; set; }
-    public string? PendingMeetingAlertFallback { get; set; }
     public HashSet<byte> LastTauntVoters { get; } = [];
 
     public DoomableType DoomHintType => DoomableType.Trickster;
@@ -140,8 +138,6 @@ public sealed class InnocentRole(IntPtr cppPtr)
         AwaitingNextMeetingExile = false;
         WinWindowExpired = false;
         TransformWhenTauntResolved = false;
-        PendingMeetingAlertKey = null;
-        PendingMeetingAlertFallback = null;
         LastTauntVoters.Clear();
     }
 

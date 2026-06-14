@@ -62,13 +62,17 @@ public sealed class VoodooMasterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
     public List<CustomButtonWikiDescription> Abilities =>
     [
         new(
-            TouLocale.GetParsed($"ExtensionRole{LocaleKey}Cast", "Curse"),
-            TouLocale.GetParsed($"ExtensionRole{LocaleKey}CastWikiDescription"),
+            TouLocale.GetParsed($"ExtensionRole{LocaleKey}Blindness", "Blindness"),
+            TouLocale.GetParsed($"ExtensionRole{LocaleKey}BlindnessWikiDescription"),
+            TouImpAssets.BlindSprite),
+        new(
+            TouLocale.GetParsed($"ExtensionRole{LocaleKey}Mute", "Mute"),
+            TouLocale.GetParsed($"ExtensionRole{LocaleKey}MuteWikiDescription"),
             TouImpAssets.BlackmailSprite),
         new(
-            TouLocale.GetParsed($"ExtensionRole{LocaleKey}Cycle", "Cycle Curse"),
-            TouLocale.GetParsed($"ExtensionRole{LocaleKey}CycleWikiDescription"),
-            TouImpAssets.BlindSprite)
+            TouLocale.GetParsed($"ExtensionRole{LocaleKey}Confuse", "Confuse"),
+            TouLocale.GetParsed($"ExtensionRole{LocaleKey}ConfuseWikiDescription"),
+            TouImpAssets.HerbConfuseSprite)
     ];
 
     public override void Initialize(PlayerControl player)
@@ -113,7 +117,7 @@ public sealed class VoodooMasterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
 
     public bool TrySpendUse(VoodooEffect effect)
     {
-        if (GetMaxUses(effect) == 0)
+        if (GetMaxUses(effect) < 0)
         {
             return true;
         }
@@ -180,9 +184,9 @@ public sealed class VoodooMasterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
         switch (effect)
         {
             case VoodooEffect.Blindness:
-                if (options.EclipseDelay > 0f)
+                if (options.BlindDelay > 0f)
                 {
-                    Coroutines.Start(CoApplyBlindAfterDelay(voodooMaster, target, options.BlindDuration, options.EclipseDelay));
+                    Coroutines.Start(CoApplyBlindAfterDelay(voodooMaster, target, options.BlindDuration, options.BlindDelay));
                 }
                 else
                 {

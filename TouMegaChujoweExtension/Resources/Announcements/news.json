@@ -633,7 +633,7 @@
         "\n- <b>Curse System</b> - Cycle between three curses: Blindness (Eclipse), Mute, and Confuse.",
         "\n- <b>Blindness</b> - Fully covers the target's vision for a configurable duration. Supports optional Eclipse Delay.",
         "\n- <b>Mute</b> - Target is muted in the next meeting with blackmail-style 'YOU ARE MUTED' intro animation and mouth tape overlay.",
-        "\n- <b>Confuse</b> - Reverses target movement controls for a configurable duration. Supports optional Confuse Delay.",
+        "\n- <b>Confuse</b> - Scrambles living players' appearances for the target for a configurable duration. Supports optional Confuse Delay.",
         "\n- <b>Target Lock</b> - Optionally locks the Voodoo Master onto a single target for multiple meetings.",
         "\n- <b>Team Visibility</b> - All Impostors can see Voodoo curse symbols ($, [M], [L]) and the mute tape visual during meetings.",
         "\n\n\r<size=110%><b>NEW ROLE: FLIPPER (Impostor Support)</b></size>",

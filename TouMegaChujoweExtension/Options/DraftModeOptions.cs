@@ -40,11 +40,6 @@ public sealed class DraftModeOptions : AbstractOptionGroup
     public bool IsMinMaxDraft => EnableDraftMode && PoolMode.Value == DraftPoolMode.MinMax;
     public bool IsRoleListDraft => EnableDraftMode && PoolMode.Value == DraftPoolMode.RoleList;
 
-    public ModdedToggleOption LockLobbyDuringDraft { get; } = new("Lock Lobby During Draft", true)
-    {
-        Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
-    };
-
     public ModdedToggleOption RespectRoleChances { get; } = new("Use Role Chances", true)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
