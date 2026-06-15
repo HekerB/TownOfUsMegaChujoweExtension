@@ -17,7 +17,7 @@ using TownOfUs.Extensions;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
-public sealed class FamineStarveButton : TownOfUsRoleButton<FamineRole, PlayerControl>
+public sealed class FamineStarveButton : TownOfUsRoleButton<FamineRole, PlayerControl>, IDiseaseableButton
 {
     public override string Name => TouLocale.Get("ExtensionRoleFamineStarve", "Starve");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
@@ -26,6 +26,11 @@ public sealed class FamineStarveButton : TownOfUsRoleButton<FamineRole, PlayerCo
     public override float EffectDuration => 0f;
     public override bool ZeroIsInfinite => true;
     public override LoadableAsset<Sprite> Sprite => TownOfUs.Assets.TouNeutAssets.ReapSprite;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override void CreateButton(Transform parent)
     {

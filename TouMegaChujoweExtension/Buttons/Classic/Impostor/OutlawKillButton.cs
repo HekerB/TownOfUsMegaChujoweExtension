@@ -44,11 +44,16 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
     private int _bonusKillsRemaining;
     private bool _inDoubleKillWindow;
     private float _windowTimer;
+    private float _diseasedTimerOverride;
 
     private static int MaxBonusKills => (int)OptionGroupSingleton<OutlawOptions>.Instance.BonusKills;
     private static float WindowDuration => OptionGroupSingleton<OutlawOptions>.Instance.DoubleKillWindow;
 
-    public void SetDiseasedTimer(float multiplier) => SetTimer(Cooldown * multiplier);
+    public void SetDiseasedTimer(float multiplier)
+    {
+        _diseasedTimerOverride = Cooldown * multiplier;
+        ApplyDiseasedTimerOverride();
+    }
 
     public override void CreateButton(Transform parent)
     {
@@ -111,26 +116,33 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
         
         if (!_inDoubleKillWindow) 
         {
-            Timer = Cooldown;
-            player.SetKillTimer(Cooldown);
+            ApplyPostKillCooldown(player, Cooldown);
         }
         else
         {
-            // Set a tiny cooldown to prevent double clicking the same target or instant spam
-            Timer = 0.1f; 
-            player.SetKillTimer(0.1f);
+            if (!ApplyDiseasedTimerOverride())
+            {
+                // Set a tiny cooldown to prevent double clicking the same target or instant spam
+                Timer = 0.1f; 
+                player.SetKillTimer(0.1f);
+            }
         }
     }
 
     public void HandleSuccessfulKill()
     {
+        if (ApplyDiseasedTimerOverride())
+        {
+            return;
+        }
+
         if (_inDoubleKillWindow)
         {
             _bonusKillsRemaining--;
             if (_bonusKillsRemaining <= 0)
             {
                 ResetState();
-                Timer = Cooldown;
+                ApplyPostKillCooldown(PlayerControl.LocalPlayer, Cooldown);
             }
         }
         else if (MaxBonusKills > 0)
@@ -146,6 +158,11 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
     protected override void FixedUpdate(PlayerControl playerControl)
     {
         if (MeetingHud.Instance) return;
+
+        if (_diseasedTimerOverride > 0f && Timer <= 0f)
+        {
+            _diseasedTimerOverride = 0f;
+        }
 
         Button?.gameObject.SetActive(HudManager.Instance.UseButton.isActiveAndEnabled || HudManager.Instance.PetButton.isActiveAndEnabled);
 
@@ -203,8 +220,34 @@ public sealed class OutlawKillButton : TownOfUsKillRoleButton<OutlawRole, Player
         OverrideName(_killName);
     }
 
+    private void ApplyPostKillCooldown(PlayerControl? player, float cooldown)
+    {
+        if (ApplyDiseasedTimerOverride())
+        {
+            return;
+        }
+
+        Timer = cooldown;
+        player?.SetKillTimer(cooldown);
+    }
+
+    private bool ApplyDiseasedTimerOverride()
+    {
+        if (_diseasedTimerOverride <= 0f)
+        {
+            return false;
+        }
+
+        var timer = _diseasedTimerOverride;
+        ResetState();
+        SetTimer(timer);
+        PlayerControl.LocalPlayer?.SetKillTimer(timer);
+        return true;
+    }
+
     public override void ResetCooldownAndOrEffect()
     {
+        _diseasedTimerOverride = 0f;
         ResetState();
         base.ResetCooldownAndOrEffect();
     }

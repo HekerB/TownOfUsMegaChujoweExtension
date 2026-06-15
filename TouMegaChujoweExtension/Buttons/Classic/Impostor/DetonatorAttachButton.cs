@@ -18,7 +18,7 @@ using UnityEngine.UI;
 
 namespace TouMegaChujoweExtension.Buttons.Impostor;
 
-public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole, PlayerControl>
+public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole, PlayerControl>, IDiseaseableButton
 {
     private PlayerControl? _attachTarget;
     private float _attachTimer;
@@ -43,6 +43,11 @@ public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole
     }
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.PursueSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override PlayerControl? GetTarget()
     {

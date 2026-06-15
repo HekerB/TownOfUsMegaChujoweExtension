@@ -47,6 +47,13 @@ public static class SniperSystem
                     var mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     PlayerControl? clickedTarget = null;
                     var minClickDist = 0.8f;
+                    var btn = CustomButtonSingleton<SniperShootButton>.Instance;
+
+                    if (JokerCloneSystem.TryTriggerClosestClone(localPlayer, mouseWorldPos, minClickDist))
+                    {
+                        btn?.EndAiming(true);
+                        return;
+                    }
 
                     foreach (var pc in PlayerControl.AllPlayerControls)
                     {
@@ -64,8 +71,6 @@ public static class SniperSystem
 
                     if (clickedTarget != null)
                     {
-                        var btn = CustomButtonSingleton<SniperShootButton>.Instance;
-
                         if (PoisonSystem.CheckAndTriggerShields(localPlayer, clickedTarget))
                         {
 

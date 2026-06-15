@@ -861,7 +861,7 @@
   <string name="ExtensionOptionBHGameContinues">Gra trwa po zlecenich</string>
   <string name="ExtensionOptionBHWinMode">Tryb zwyciestwa</string>
   <string name="ExtensionOptionBHWinModeEnumSoloWin">Samotna wygrana</string>
-  <string name="ExtensionOptionBHWinModeEnumWinWithWinners">Wygrana ze zwyciezcami</string>
+  <string name="ExtensionOptionBHWinModeEnumLeavesInVictory">Wychodzi po wygranej</string>
   <string name="ExtensionOptionBHArrowRange">Zasieg strzalki</string>
   <string name="ExtensionOptionBHArrowRangeShort">Krotki</string>
   <string name="ExtensionOptionBHArrowRangeMedium">Sredni</string>
@@ -880,6 +880,8 @@
   <string name="ExtensionBHNoTargets">Brak celow!</string>
   <string name="ExtensionBHWinWithWinnersSelf">Kontrakty wykonane! Wygrywasz ze zwyciezcami.</string>
   <string name="ExtensionBHWinWithWinnersOthers">Lowca &lt;player&gt; wykonal wszystkie kontrakty!</string>
+  <string name="ExtensionBHLeavesInVictorySelf">Wykonales wszystkie kontrakty i wychodzisz jako zwyciezca!</string>
+  <string name="ExtensionBHLeavesInVictoryOthers">Lowca &lt;player&gt; wykonal wszystkie kontrakty i wyszedl jako zwyciezca!</string>
   <string name="DiedToWinning">Zwyciezca</string>
   <string name="ExtensionBountyHunterWins">Wygrywa</string>
   
@@ -901,6 +903,8 @@
   
   <!-- Poisoner Options -->
   <string name="ExtensionOptionPoisonerPoisonDuration">Czas do zgonu</string>
+  <string name="ExtensionOptionPoisonerVictimAlertEnabled">Alert ofiary</string>
+  <string name="ExtensionOptionPoisonerVictimAlertDelay">Opoznienie alertu ofiary</string>
   <string name="ExtensionOptionPoisonerVineDuration">Czas miazdzenia</string>
   <string name="ExtensionOptionPoisonerCanVent">Truciciel uzywa rur</string>
   <string name="ExtensionOptionPoisonerVineSeekingDuration">Czas szukania pnączami</string>
@@ -909,6 +913,7 @@
 
   <!-- Poisoner Notifications -->
   <string name="ExtensionPoisonerNotificationPoisoned">Zatrules gracza {0}!</string>
+  <string name="ExtensionPoisonerNotificationVictimPoisoned">Zostales otruty! Umrzesz za {0} sekund.</string>
   <string name="ExtensionPoisonerNotificationTargetDied">Ofiara {0} zmarla od trucizny!</string>
   <string name="PoisonerVineSeekingCancelledPenalty">Anulowano! Kara do cooldownu.</string>
   <string name="PoisonerVineSeekingExpiredPenalty">Czas minal! Kara do cooldownu.</string>

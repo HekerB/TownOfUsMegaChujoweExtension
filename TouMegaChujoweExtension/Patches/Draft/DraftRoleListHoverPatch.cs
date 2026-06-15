@@ -89,6 +89,12 @@ public static class DraftRoleListHoverPatch
 
         EnsureTooltip(__instance);
 
+        var tooltipGo = TooltipGoRef(__instance);
+        if (tooltipGo != null && tooltipGo.activeSelf)
+        {
+            UpdateTooltipLinks(__instance);
+        }
+
         var line = GetLineUnderMouse(__instance);
 
         if (line == LastLineRef(__instance))

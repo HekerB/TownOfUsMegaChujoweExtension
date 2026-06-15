@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Crewmate;
 
-public sealed class BodyguardKillButton : TownOfUsRoleButton<BodyguardRole, PlayerControl>, IKillButton
+public sealed class BodyguardKillButton : TownOfUsRoleButton<BodyguardRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     public override string Name => TouLocale.GetParsed("ExtensionRoleBodyguardKill", "Kill");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
@@ -26,6 +26,11 @@ public sealed class BodyguardKillButton : TownOfUsRoleButton<BodyguardRole, Play
     public override float InitialCooldown => 0.001f;
 
     public override LoadableAsset<Sprite> Sprite => new LoadableBundleAsset<Sprite>("OfficerShootButton", TouAssets.MainBundle);
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override bool Enabled(RoleBehaviour? role)
     {

@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
-public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
+public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>, IDiseaseableButton
 {
     public override string Name => TouLocale.GetParsed("ExtensionRolePoisonerPoison", "Poison");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
@@ -30,6 +30,11 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
     public override int MaxUses => 0;
     public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.PoisonButtonSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override void CreateButton(Transform parent)
     {

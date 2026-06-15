@@ -9,6 +9,7 @@ using System.Collections;
 using System.Text;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
+using TownOfUs.Options;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using TownOfUs;
@@ -200,7 +201,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (Player.AmOwner)
         {
-            TriggerBodyguardFlash(Player);
+            TriggerBodyguardFlash(Player, revealRoleColor: true);
 
             var notif = Helpers.CreateAndShowNotification(
                 TouLocale.Get("ExtensionRoleBodyguardShieldAttacked"),
@@ -287,7 +288,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (attacker != null && attacker.AmOwner)
         {
-            TriggerBodyguardFlash(attacker);
+            TriggerBodyguardFlash(attacker, revealRoleColor: false);
         }
     }
 
@@ -349,10 +350,12 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
     private static SpriteRenderer? _flashRenderer;
 
-    public static void TriggerBodyguardFlash(PlayerControl player)
+    public static void TriggerBodyguardFlash(PlayerControl player, bool revealRoleColor)
     {
         if (player == null || !player.AmOwner) return;
-        var color = new Color(0.412f, 0.647f, 1f);
+        var color = OptionGroupSingleton<GameMechanicOptions>.Instance.AnonymousShields && !revealRoleColor
+            ? TownOfUsColors.NeutralWiki
+            : new Color(0.412f, 0.647f, 1f);
         Info($"[Bodyguard] Triggering shield flash for {player.Data.PlayerName}");
         Coroutines.Start(CoFlash(color));
     }

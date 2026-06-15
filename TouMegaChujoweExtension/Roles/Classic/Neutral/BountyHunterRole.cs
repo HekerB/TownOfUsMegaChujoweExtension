@@ -61,7 +61,7 @@ public sealed class BountyHunterRole(IntPtr cppPtr)
     public bool MetWinCon => HasWon;
 
     public bool ContinuesGame => !Player.HasDied()
-        && OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode == BountyHunterWinMode.WinWithWinners
+        && OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode == BountyHunterWinMode.LeavesInVictory
         && Helpers.GetAlivePlayers().Count > 1;
     public CustomRoleConfiguration Configuration => new(this)
     {
@@ -269,7 +269,7 @@ public sealed class BountyHunterRole(IntPtr cppPtr)
             return false;
 
         var winMode = OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode;
-        if (winMode == BountyHunterWinMode.WinWithWinners)
+        if (winMode == BountyHunterWinMode.LeavesInVictory)
             return true;
 
         return BountyHunterSystem.GameEndedByBH;
@@ -285,18 +285,48 @@ public sealed class BountyHunterRole(IntPtr cppPtr)
         if (player?.Data?.Role is BountyHunterRole bh)
         {
             bh.HasWon = true;
+            bh.ClearArrowModifiers();
 
-            if (player.AmOwner)
+            if (OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode == BountyHunterWinMode.LeavesInVictory)
             {
-                DeathHandlerModifier.RpcUpdateLocalDeathHandler(
-                    player,
-                    "DiedToWinning",
-                    TownOfUs.Events.DeathEventHandlers.CurrentRound,
-                    DeathHandlerOverride.SetFalse,
-                    killedBy: player,
-                    lockInfo: DeathHandlerOverride.SetTrue);
-                player.RpcPlayerExile();
+                ShowLeavesInVictoryNotification(player);
+
+                if (player.AmOwner)
+                {
+                    DeathHandlerModifier.RpcUpdateLocalDeathHandler(
+                        player,
+                        "DiedToWinning",
+                        TownOfUs.Events.DeathEventHandlers.CurrentRound,
+                        DeathHandlerOverride.SetFalse,
+                        killedBy: player,
+                        lockInfo: DeathHandlerOverride.SetTrue);
+                    player.RpcPlayerExile();
+                }
             }
+        }
+    }
+
+    private static void ShowLeavesInVictoryNotification(PlayerControl player)
+    {
+        var text = player.AmOwner
+            ? TouLocale.Get("ExtensionBHLeavesInVictorySelf",
+                "You completed every bounty and left victorious!")
+            : TouLocale.Get("ExtensionBHLeavesInVictoryOthers",
+                "The Bounty Hunter, <player>, completed every bounty and left victorious!")
+                .Replace("<player>", player.Data.PlayerName);
+
+        try
+        {
+            var notif = Helpers.CreateAndShowNotification(
+                $"<b>{text}</b>",
+                Color.white,
+                new Vector3(0f, 1f, -20f),
+                spr: TouExtensionIcons.BountyHunterRoleIcon.LoadAsset());
+            notif?.AdjustNotification();
+        }
+        catch
+        {
+            HudManager.Instance?.Notifier.AddDisconnectMessage(text);
         }
     }
 

@@ -14,7 +14,17 @@ public sealed class PoisonerOptions : AbstractOptionGroup<PoisonerRole>
     public bool CanVent { get; set; } = true;
 
     [ModdedNumberOption("ExtensionOptionPoisonerPoisonDuration", 1f, 15f, 0.5f, MiraNumberSuffixes.Seconds)]
-    public float PoisonDuration { get; set; } = 5f;
+    public float PoisonDuration { get; set; } = 10f;
+
+    [ModdedToggleOption("ExtensionOptionPoisonerVictimAlertEnabled")]
+    public bool VictimAlertEnabled { get; set; } = true;
+
+    public ModdedNumberOption VictimAlertDelayOption { get; } = new("ExtensionOptionPoisonerVictimAlertDelay", 3f, 0f, 15f, 0.5f, MiraNumberSuffixes.Seconds)
+    {
+        Visible = () => OptionGroupSingleton<PoisonerOptions>.Instance.VictimAlertEnabled
+    };
+
+    public float VictimAlertDelay => VictimAlertDelayOption.Value;
 
     [ModdedToggleOption("ExtensionOptionPoisonerVineEnabled")]
     public bool VineEnabled { get; set; } = true;

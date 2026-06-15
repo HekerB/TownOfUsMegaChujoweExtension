@@ -870,7 +870,7 @@
   <string name="ExtensionOptionBHGameContinues">Game Continues Without Other Killers</string>
   <string name="ExtensionOptionBHWinMode">Win Mode</string>
   <string name="ExtensionOptionBHWinModeEnumSoloWin">Ends Game</string>
-  <string name="ExtensionOptionBHWinModeEnumWinWithWinners">Nothing</string>
+  <string name="ExtensionOptionBHWinModeEnumLeavesInVictory">Leaves in Victory</string>
   
   <string name="ExtensionBHTabTargetsKilled">Targets Killed: {0} / {1}</string>
   <string name="ExtensionBHTabCurrentTarget">Current Target: {0}</string>
@@ -883,6 +883,8 @@
   <string name="ExtensionBHNoTargets">No valid targets available!</string>
   <string name="ExtensionBHWinWithWinnersSelf">You have successfully completed your bounties as the &lt;color=#B0BEC5&gt;Bounty Hunter&lt;/color&gt;! You will now spectate and win with the winning team.</string>
   <string name="ExtensionBHWinWithWinnersOthers">The &lt;color=#B0BEC5&gt;Bounty Hunter&lt;/color&gt;, &lt;player&gt;, has completed all their bounties!</string>
+  <string name="ExtensionBHLeavesInVictorySelf">You completed every bounty and left victorious!</string>
+  <string name="ExtensionBHLeavesInVictoryOthers">The Bounty Hunter, &lt;player&gt;, completed every bounty and left victorious!</string>
   <string name="DiedToWinning">Victorious</string>
   <string name="ExtensionBountyHunterWins">Wins</string>
   
@@ -904,6 +906,8 @@
   
   <!-- Poisoner Options -->
   <string name="ExtensionOptionPoisonerPoisonDuration">Poison Duration</string>
+  <string name="ExtensionOptionPoisonerVictimAlertEnabled">Victim Alert</string>
+  <string name="ExtensionOptionPoisonerVictimAlertDelay">Victim Alert Delay</string>
   <string name="ExtensionOptionPoisonerVineDuration">Vine Stasis Duration</string>
   <string name="ExtensionOptionPoisonerCanVent">Can Vent</string>
   <string name="ExtensionOptionPoisonerVineSeekingDuration">Vine Seeking Duration</string>
@@ -912,6 +916,7 @@
 
   <!-- Poisoner Notifications -->
   <string name="ExtensionPoisonerNotificationPoisoned">You have poisoned {0}!</string>
+  <string name="ExtensionPoisonerNotificationVictimPoisoned">You have been poisoned! You will die in {0} seconds.</string>
   <string name="ExtensionPoisonerNotificationTargetDied">Your poisoned target {0} has died!</string>
   <string name="PoisonerVineSeekingCancelledPenalty">Seeking cancelled! Cooldown applied.</string>
   <string name="PoisonerVineSeekingExpiredPenalty">Seeking expired! Cooldown applied.</string>

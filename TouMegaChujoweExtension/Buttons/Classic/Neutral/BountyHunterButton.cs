@@ -19,7 +19,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
-public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole, PlayerControl>
+public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     public override string Name => TouLocale.Get("ExtensionRoleBountyHunterKill", "Hunt");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
@@ -38,6 +38,11 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
     public override float EffectDuration => 0f;
     public override LoadableAsset<Sprite> Sprite => new LoadableBundleAsset<Sprite>("OfficerShootButton", TouAssets.MainBundle);
     public override Color TextOutlineColor => TouExtensionColors.BountyHunter;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override int MaxUses =>
         Mathf.Max(1, (int)OptionGroupSingleton<BountyHunterOptions>.Instance.TargetsToKill.Value);

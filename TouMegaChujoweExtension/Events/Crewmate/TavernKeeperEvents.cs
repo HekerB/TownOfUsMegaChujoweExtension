@@ -1,7 +1,10 @@
 using MiraAPI.Events;
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.GameOptions;
 using TouMegaChujoweExtension.Modifiers.Crewmate;
 using TouMegaChujoweExtension.Roles.Classic.Crewmate;
+using TownOfUs;
+using TownOfUs.Options;
 using TownOfUs.Utilities;
 using TownOfUs.Buttons;
 using UnityEngine;
@@ -58,7 +61,10 @@ public static class TavernKeeperEvents
             button.Timer = button.Cooldown;
         }
 
-        Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.TavernKeeper, alpha: 0.5f));
+        var flashColor = OptionGroupSingleton<GameMechanicOptions>.Instance.AnonymousShields
+            ? TownOfUsColors.NeutralWiki
+            : TouExtensionColors.TavernKeeper;
+        Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(flashColor, alpha: 0.5f));
     }
 }
 

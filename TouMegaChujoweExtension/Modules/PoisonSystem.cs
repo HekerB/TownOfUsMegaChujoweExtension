@@ -3,6 +3,7 @@ using TownOfUs.Networking;
 using TownOfUs.Utilities;
 using UnityEngine;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Collections.Generic;
 using TouMegaChujoweExtension.Options.Roles.Impostor;
@@ -37,7 +38,9 @@ public static class PoisonSystem
         public byte PoisonerId;
         public byte TargetId;
         public float TimeLeft;
+        public float AlertTimeLeft;
         public bool IsVine;
+        public bool AlertShown;
     }
 
     private static readonly List<PoisonEntry> ActivePoisons = [];
@@ -66,13 +69,16 @@ public static class PoisonSystem
     {
         if (ActivePoisons.Any(e => e.TargetId == targetId && !e.IsVine)) return;
 
-        var duration = OptionGroupSingleton<PoisonerOptions>.Instance.PoisonDuration;
+        var options = OptionGroupSingleton<PoisonerOptions>.Instance;
+        var duration = options.PoisonDuration;
         ActivePoisons.Add(new PoisonEntry
         {
             PoisonerId = poisonerId,
             TargetId = targetId,
             TimeLeft = duration,
-            IsVine = false
+            AlertTimeLeft = options.VictimAlertDelay,
+            IsVine = false,
+            AlertShown = !options.VictimAlertEnabled
         });
 
         var local = PlayerControl.LocalPlayer;
@@ -153,6 +159,13 @@ public static class PoisonSystem
                     var mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     PlayerControl? clickedTarget = null;
                     var minClickDist = 0.8f;
+                    var vineBtn = CustomButtonSingleton<PoisonerVineButton>.Instance;
+
+                    if (JokerCloneSystem.TryTriggerClosestClone(localPlayer, mouseWorldPos, minClickDist))
+                    {
+                        vineBtn?.EndSeeking(true);
+                        return;
+                    }
 
                     foreach (var pc in PlayerControl.AllPlayerControls)
                     {
@@ -172,7 +185,6 @@ public static class PoisonSystem
                     {
                         if (CheckAndTriggerShields(localPlayer, clickedTarget))
                         {
-                            var vineBtn = CustomButtonSingleton<PoisonerVineButton>.Instance;
                             if (vineBtn != null)
                             {
                                 vineBtn.EndSeeking(true);
@@ -180,7 +192,6 @@ public static class PoisonSystem
                         }
                         else
                         {
-                            var vineBtn = CustomButtonSingleton<PoisonerVineButton>.Instance;
                             if (vineBtn != null)
                             {
                                 vineBtn.EndSeeking(false);
@@ -231,6 +242,16 @@ public static class PoisonSystem
             }
 
             entry.TimeLeft -= Time.deltaTime;
+            if (!entry.IsVine && !entry.AlertShown)
+            {
+                entry.AlertTimeLeft -= Time.deltaTime;
+                if (entry.AlertTimeLeft <= 0f && localPlayer != null && localPlayer.PlayerId == entry.TargetId)
+                {
+                    ShowVictimPoisonedNotification(Mathf.Max(0f, entry.TimeLeft));
+                    entry.AlertShown = true;
+                }
+            }
+
             ActivePoisons[i] = entry;
 
             if (entry.TimeLeft > 0f && localPlayer != null && entry.PoisonerId == localPlayer.PlayerId && !entry.IsVine)
@@ -555,6 +576,24 @@ public static class PoisonSystem
         catch (System.Exception ex)
         {
             Logger<TouMegaChujoweExtensionPlugin>.Error($"[PoisonSystem] Failed to show poison notification: {ex.Message}");
+        }
+    }
+
+    public static void ShowVictimPoisonedNotification(float secondsUntilDeath)
+    {
+        HidePoisonedNotification();
+        if (HudManager.Instance == null) return;
+
+        try
+        {
+            var format = TouLocale.Get("ExtensionPoisonerNotificationVictimPoisoned", "You have been poisoned! You will die in {0} seconds.");
+            var secondsText = secondsUntilDeath.ToString("0.#", CultureInfo.InvariantCulture);
+            var message = string.Format(CultureInfo.InvariantCulture, format, secondsText);
+            Coroutines.Start(CoShowPoisonedNotificationThreeTimes(message));
+        }
+        catch (System.Exception ex)
+        {
+            Logger<TouMegaChujoweExtensionPlugin>.Error($"[PoisonSystem] Failed to show victim poison notification: {ex.Message}");
         }
     }
 

@@ -13,7 +13,7 @@ using System;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
-public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, PlayerControl>
+public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, PlayerControl>, IDiseaseableButton
 {
     private bool _isInjecting;
     private float _injectTimer;
@@ -38,6 +38,12 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
     public override int MaxUses => (int)OptionGroupSingleton<InjectorOptions>.Instance.InitialUses;
 
     public override bool ZeroIsInfinite { get; set; } = true;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
+
     public override void CreateButton(Transform parent)
     {
         base.CreateButton(parent);

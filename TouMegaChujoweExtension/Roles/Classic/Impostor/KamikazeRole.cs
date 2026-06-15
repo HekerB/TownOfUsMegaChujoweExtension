@@ -16,6 +16,7 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Networking;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Modules;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
@@ -133,6 +134,8 @@ public sealed class KamikazeRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         }
 
         var maxKills = (int)opts.MaxKills;
+
+        JokerCloneSystem.TriggerClonesInRadius(kamikaze, pos, radius);
 
         var victims = PlayerControl.AllPlayerControls.ToArray()
             .Where(p => p != null

@@ -523,6 +523,7 @@ public sealed class RcXdCar : IDisposable
         if (_owner != null)
         {
             var radius = opts.DetonateRadius * ShipStatus.Instance.MaxLightRadius;
+            JokerCloneSystem.TriggerClonesInRadius(_owner, bombPos, radius);
             var allNear = Helpers.GetClosestPlayers(bombPos, radius);
 
 
