@@ -24,6 +24,38 @@ namespace TouMegaChujoweExtension.Patches.Roles.Joker;
 [HarmonyPatch]
 public static class JokerCloneInteractionPatches
 {
+    private static readonly HashSet<string> CloneInteractableRoleNames =
+    [
+        "ArcanistRole",
+        "ArsonistRole",
+        "BakerRole",
+        "BerserkerRole",
+        "BountyHunterRole",
+        "DeathRole",
+        "DeputyRole",
+        "DoppelgangerRole",
+        "FamineRole",
+        "GlitchRole",
+        "HunterRole",
+        "InquisitorRole",
+        "JackalRole",
+        "JailorRole",
+        "JuggernautRole",
+        "OfficerRole",
+        "PelicanRole",
+        "PestilenceRole",
+        "SerialKillerRole",
+        "SheriffRole",
+        "ShroudRole",
+        "SoulCollectorRole",
+        "VampireHunterRole",
+        "VampireRole",
+        "VeteranRole",
+        "VigilanteRole",
+        "WarRole",
+        "WerewolfRole"
+    ];
+
     private static readonly HashSet<string> NonCloneInteractableButtonNames =
     [
         "BomberPlantButton",
@@ -37,18 +69,41 @@ public static class JokerCloneInteractionPatches
 
     private static readonly HashSet<string> CloneInteractableButtonNames =
     [
+        "ArcanistDrawButton",
         "ArsonistDouseButton",
         "ArsonistIgniteButton",
+        "BakerGiveButton",
+        "BerserkerKillButton",
+        "BountyHunterKillButton",
         "CampButton",
         "DeathKillButton",
         "DoomsayerObserveButton",
+        "DoppelgangerKillButton",
+        "FamineStarveButton",
+        "GlitchHackButton",
         "GlitchKillButton",
+        "GlitchMimicButton",
+        "HunterKillButton",
         "HunterStalkButton",
+        "InquisitorInquireButton",
+        "InquisitorVanquishButton",
+        "JackalKillButton",
         "JailorJailButton",
         "JuggernautKillButton",
+        "OfficerLoadButton",
+        "OfficerShootButton",
+        "OutlawKillButton",
+        "PelicanSwallowButton",
         "PestilenceKillButton",
+        "SerialKillerKillButton",
+        "SheriffShootButton",
+        "ShroudAbilityButton",
+        "ShroudKillButton",
         "SoulCollectorReapButton",
+        "StakeButton",
+        "VampireBiteButton",
         "VeteranAlertButton",
+        "WarKillButton",
         "WerewolfKillButton",
         "WerewolfRampageButton"
     ];
@@ -120,7 +175,8 @@ public static class JokerCloneInteractionPatches
             return;
         }
 
-        if (__instance.KillButton != null &&
+        if (CanLocalRoleInteractWithClones() &&
+            __instance.KillButton != null &&
             __instance.KillButton.isActiveAndEnabled &&
             !__instance.KillButton.isCoolingDown)
         {
@@ -145,7 +201,11 @@ public static class JokerCloneInteractionPatches
     public static bool KillButtonDoClickPrefix()
     {
         var hud = HudManager.Instance;
-        if (hud == null || hud.KillButton == null || !hud.KillButton.isActiveAndEnabled || hud.KillButton.isCoolingDown)
+        if (!CanLocalRoleInteractWithClones() ||
+            hud == null ||
+            hud.KillButton == null ||
+            !hud.KillButton.isActiveAndEnabled ||
+            hud.KillButton.isCoolingDown)
         {
             return true;
         }
@@ -471,6 +531,13 @@ public static class JokerCloneInteractionPatches
                typeName.Contains("Vanquish", StringComparison.OrdinalIgnoreCase) ||
                typeName.Contains("Reap", StringComparison.OrdinalIgnoreCase) ||
                typeName.Contains("Spell", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool CanLocalRoleInteractWithClones()
+    {
+        var local = PlayerControl.LocalPlayer;
+        var role = local?.Data?.Role;
+        return role != null && (CloneInteractableRoleNames.Contains(role.GetType().Name) || local!.IsImpostorAligned());
     }
 
     private static bool CanButtonClick(object instance)
