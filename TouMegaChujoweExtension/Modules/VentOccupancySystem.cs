@@ -64,6 +64,12 @@ public static class VentOccupancySystem
         return null!;
     }
 
+    private static System.Reflection.PropertyInfo? _ventsBlockedProp;
+    private static System.Reflection.PropertyInfo? _ventFlushSetProp;
+    private static System.Reflection.FieldInfo? _ventsBlockedField;
+    private static System.Reflection.FieldInfo? _ventFlushSetField;
+    private static bool _checkedProperties = false;
+
     /// <summary>
     /// Checks if a vent is currently blocked by a Plumber's barricade or flushing action.
     /// </summary>
@@ -71,11 +77,48 @@ public static class VentOccupancySystem
     {
         try
         {
-            if (PlumberRole.VentsBlocked == null || PlumberRole.VentFlushSet == null)
+            if (!_checkedProperties)
+            {
+                _checkedProperties = true;
+                var plumberType = typeof(PlumberRole);
+                _ventsBlockedProp = plumberType.GetProperty("VentsBlocked", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                _ventFlushSetProp = plumberType.GetProperty("VentFlushSet", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                if (_ventsBlockedProp == null)
+                {
+                    _ventsBlockedField = plumberType.GetField("VentsBlocked", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+                }
+                if (_ventFlushSetProp == null)
+                {
+                    _ventFlushSetField = plumberType.GetField("VentFlushSet", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+                }
+            }
+
+            System.Collections.Generic.Dictionary<int, int>? ventsBlocked = null;
+            if (_ventsBlockedProp != null)
+            {
+                ventsBlocked = _ventsBlockedProp.GetValue(null) as System.Collections.Generic.Dictionary<int, int>;
+            }
+            else if (_ventsBlockedField != null)
+            {
+                ventsBlocked = _ventsBlockedField.GetValue(null) as System.Collections.Generic.Dictionary<int, int>;
+            }
+
+            System.Collections.Generic.HashSet<int>? ventFlushSet = null;
+            if (_ventFlushSetProp != null)
+            {
+                ventFlushSet = _ventFlushSetProp.GetValue(null) as System.Collections.Generic.HashSet<int>;
+            }
+            else if (_ventFlushSetField != null)
+            {
+                ventFlushSet = _ventFlushSetField.GetValue(null) as System.Collections.Generic.HashSet<int>;
+            }
+
+            if (ventsBlocked == null || ventFlushSet == null)
             {
                 return false;
             }
-            return PlumberRole.VentsBlocked.ContainsKey(ventId) || PlumberRole.VentFlushSet.Contains(ventId);
+
+            return ventsBlocked.ContainsKey(ventId) || ventFlushSet.Contains(ventId);
         }
         catch (System.Exception ex)
         {
