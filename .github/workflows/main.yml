@@ -13,9 +13,9 @@ jobs:
           path: |
             ~/.nuget/packages
             ~/.cache/bepinex
-          key: ${{ runner.os }}-nuget-v2-${{ hashFiles('packages.local/*.nupkg', 'AmongUs.props', '**/packages.lock.json') }}
+          key: ${{ runner.os }}-nuget-v3-${{ hashFiles('packages.local/*.nupkg', 'AmongUs.props', '**/packages.lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-nuget-v2-
+            ${{ runner.os }}-nuget-v3-
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
