@@ -3,9 +3,6 @@ using TownOfUs.Roles.Crewmate;
 
 namespace TouMegaChujoweExtension.Modules;
 
-/// <summary>
-/// Tracks which players are currently in which vents.
-/// </summary>
 public static class VentOccupancySystem
 {
     private static readonly Dictionary<int, byte> VentOccupants = new();
