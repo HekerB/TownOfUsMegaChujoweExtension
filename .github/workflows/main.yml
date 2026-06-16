@@ -13,7 +13,7 @@ jobs:
           path: |
             ~/.nuget/packages
             ~/.cache/bepinex
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('packages.local/*.nupkg', 'AmongUs.props', '**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
 
