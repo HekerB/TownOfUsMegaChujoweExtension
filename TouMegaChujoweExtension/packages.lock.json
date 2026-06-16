@@ -60,7 +60,7 @@
         "type": "Direct",
         "requested": "[1.6.3-dev, 1.6.3-dev]",
         "resolved": "1.6.3-dev",
-        "contentHash": "ffnWDa1VofvXRnNseqw4iZyNd4kcyiMDTF+f1lUF0hZe5YJBbUQsqUwu0qDQDD3kvGAfRwTGgm7WHVtbWh7FIQ==",
+        "contentHash": "T8emKBz3l1N1VzxfJV990/abltmO45QmM1ci8Y6MYOb732Cp6rVEEd7uN9R6zdefDI1JcgN2LCsC11UTxgxz7g==",
         "dependencies": {
           "AllOfUs.MiraAPI": "0.4.0",
           "BepInEx.Unity.IL2CPP": "6.0.0-be.735",
