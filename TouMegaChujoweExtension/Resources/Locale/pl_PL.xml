@@ -1445,6 +1445,7 @@
   <string name="ExtensionRoleBakerWikiDescription">Rozdaje chleb i czeka na transformacje w Jezdzca.</string>
   <string name="ExtensionRoleBakerGive">Daj chleb</string>
   <string name="ExtensionRoleBakerGiveWikiDescription">Podaj chleb graczowi.</string>
+  <string name="ExtensionRoleBakerMeetingSummary">Rozdany chleb: {0} / {1}</string>
   <string name="ExtensionRoleBakerFamineAnnouncement">Nadszedl Glod! \%color=#023020FF\%Glod\%/color\% przybyl!</string>
   <string name="ExtensionRoleBakerFamineAnnouncementTitle">PRZYBYCIE GLODU</string>
   <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} zginal z chlebem!</string>
@@ -1462,7 +1463,10 @@
   <string name="ExtensionRoleBerserkerIntroBlurb">Zabijaj, by przeobrazic sie w Wojne.</string>
   <string name="ExtensionRoleBerserkerTabDescription">Kille skracaja cooldown.\%nl\%Zabij wystarczajaco wielu, by zostac &lt;color=#5E3929&gt;Wojna&lt;/color&gt;.</string>
   <string name="ExtensionRoleBerserkerWikiDescription">Jezdziec, ktory rosnie w sile z kazdym killem.</string>
+  <string name="ExtensionRoleBerserkerKillWikiDescription">Zabijaj graczy, zeby skracac cooldown i przebudzic Wojne.</string>
+  <string name="ExtensionRoleBerserkerWarWikiAbilityDescription">Po wystarczajacej liczbie killi przemieniasz sie w Wojne, jezdzca Apokalipsy.</string>
   <string name="ExtensionRoleBerserkerKillsTab">Kille do Wojny</string>
+  <string name="ExtensionRoleBerserkerMeetingSummary">Kille do przemiany w Wojne: {0} / {1}</string>
   <string name="ExtensionRoleBerserkerWarAnnouncement">Wojna przybyla na statek! \%color=#5E3929FF\%Wojna\%/color\% powstal!</string>
   <string name="ExtensionRoleBerserkerWarAnnouncementTitle">PRZYBYCIE WOJNY</string>
   <string name="ExtensionOptionBerserkerInstantWarChance">Szansa na instant Wojne</string>
@@ -1470,17 +1474,25 @@
   <string name="ExtensionOptionBerserkerKillCooldownReduction">Skrocenie za kill</string>
   <string name="ExtensionOptionBerserkerKillsNeededToTransform">Kille do formy ostatecznej</string>
   <string name="ExtensionOptionBerserkerAnnounceWar">Oglos przybycie Wojny</string>
-  <string name="ExtensionOptionBerserkerWarCanVent">Wojna uzywa rur</string>
+  <string name="ExtensionOptionBerserkerWhoCanVent">Kto moze uzywac rur</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentNoOne">Nikt</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentBerserker">Tylko Berserker</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentWar">Tylko Wojna</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentBoth">Wojna + Berserker</string>
+  <string name="ExtensionRoleCantVent">Nie moze ventowac</string>
   <string name="ExtensionOptionWarKillingSpreeDuration">Szal Wojny (s)</string>
   <string name="ExtensionRoleWar">Wojna</string>
-  <string name="ExtensionRoleWarIntroBlurb">Jestes Jezdzcem Apokalipsy!</string>
-  <string name="ExtensionRoleWarTabDescription">Forma Wojny. Zabijaj seriami.\%nl\%Jestes niesmiertelny.</string>
+  <string name="ExtensionRoleWarIntroBlurb">&lt;b&gt;\%color=#5E3929FF\%Wojna\%/color\%&lt;/b&gt;\%nl\%Jezdziec Apokalipsy!</string>
+  <string name="ExtensionRoleWarTabDescription">Przemieniony Berserker.\%nl\%Zabijaj w krotkich seriach.\%nl\%Wojna jest niesmiertelna.</string>
   <string name="ExtensionRoleWarWikiDescription">Moze zabijac bez cooldownu w krotkim oknie szalu.</string>
+  <string name="ExtensionRoleWarMeetingSummary">Wojna przebudzona: pole bitwy nalezy do ciebie.</string>
   <string name="ExtensionRoleWarSpreeKill">Seryjny Atak</string>
   <string name="ExtensionRoleFamine">Glod</string>
-  <string name="ExtensionRoleFamineIntroBlurb">Jestes Jezdzcem Apokalipsy!</string>
-  <string name="ExtensionRoleFamineTabDescription">Forma Glodu. Ofiary umra przy naradzie.\%nl\%Jestes niesmiertelny.</string>
+  <string name="ExtensionRoleFamineIntroBlurb">&lt;b&gt;\%color=#023020FF\%Glod\%/color\%&lt;/b&gt;\%nl\%Jezdziec Apokalipsy!</string>
+  <string name="ExtensionRoleFamineTabDescription">Przemieniony Piekarz.\%nl\%Zaglodzeni umieraja przy naradzie.\%nl\%Gdy nakarmieni zgina, glodzisz kazdego.\%nl\%Glod jest niesmiertelny.</string>
   <string name="ExtensionRoleFamineWikiDescription">Skazuje graczy na smierc z glodu.</string>
+  <string name="ExtensionRoleFamineMeetingSummary">Naznaczeni Glodem: {0}</string>
+  <string name="ExtensionRoleFamineMeetingSummaryUnlocked">Glod przebudzony: nikt nie jest bezpieczny.</string>
   <string name="ExtensionRoleFamineStarve">Zaglodz</string>
   <string name="ExtensionRoleFamineStarveWikiDescription">Skaz gracza na smierc przy naradzie.</string>
   <string name="ExtensionOptionBakerBreadNeeded">Wymagany chleb</string>
@@ -1571,6 +1583,7 @@
   <string name="ExtensionRoleSoulCollectorWikiDescription">Zbiera dusze oznaczonych graczy, ktorzy polegli.</string>
   <string name="ExtensionRoleSoulCollectorReap">Zniwa</string>
   <string name="ExtensionRoleSoulCollectorReapWikiDescription">Oznacz gracza do zebrania duszy.</string>
+  <string name="ExtensionRoleSoulCollectorMeetingSummary">Zebrane dusze: {0} / {1} | Znaki zniw: {2} / {3}</string>
   <string name="ExtensionRoleSoulCollectorMarkedDiedNotif">Dusza {0} zebrana!</string>
   <string name="ExtensionRoleSoulCollectorDeathAnnouncement">Smierc przybyla! \%color=#202020FF\%Smierc\%/color\% powstal!</string>
   <string name="ExtensionRoleSoulCollectorDeathAnnouncementTitle">ALARM: SMIERC</string>
@@ -1579,6 +1592,7 @@
   <string name="ExtensionRoleDeathIntroBlurb">Jestes Jezdzcem Apokalipsy!</string>
   <string name="ExtensionRoleDeathTabDescription">Ostateczna forma. Twoje ofiary sa nieuchwytne.\%nl\%Smierc jest niesmiertelna.</string>
   <string name="ExtensionRoleDeathWikiDescription">Zabija bez animacji i dowodow.</string>
+  <string name="ExtensionRoleDeathMeetingSummary">Smierc przebudzona: zadna dusza nie ucieknie.</string>
   <string name="DiedToExtensionDeathClaimed">Zabrany</string>
   <string name="ExtensionOptionSoulCollectorInstantDeathChance">Szansa na instant Smierc</string>
   <string name="ExtensionOptionSoulCollectorReapCooldown">Cooldown Zniw</string>

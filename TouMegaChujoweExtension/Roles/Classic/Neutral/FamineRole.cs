@@ -10,6 +10,7 @@ using Reactor.Networking.Attributes;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
+using TownOfUs.Interfaces;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -102,14 +103,7 @@ public sealed class FamineRole(IntPtr cppPtr)
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        var stringB = new StringBuilder();
-        stringB.AppendLine(TownOfUsPlugin.Culture,
-            $"{RoleColor.ToTextColor()}{YouAreText}<b> {RoleName},\n<size=80%>{RoleDescription}</size></b></color>");
-        stringB.AppendLine(TownOfUsPlugin.Culture,
-            $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(RoleAlignment, true)}</b></size>");
-        stringB.Append("<size=70%>");
-        stringB.AppendLine(TownOfUsPlugin.Culture, $"{RoleLongDescription}");
-
+        var stringB = ITownOfUsRole.SetNewTabText(this);
         return stringB;
     }
 

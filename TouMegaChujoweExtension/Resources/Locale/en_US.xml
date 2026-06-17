@@ -1500,6 +1500,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleBakerWikiDescription">The Baker is a Neutral Killing role that gives bread to living players. Breaded players are marked for you and trigger alerts when they die. Give enough bread to become \%color=#023020FF\%Famine\%/color\%.</string>
   <string name="ExtensionRoleBakerGive">Give Bread</string>
   <string name="ExtensionRoleBakerGiveWikiDescription">Give bread to a nearby living player.</string>
+  <string name="ExtensionRoleBakerMeetingSummary">Bread Given: {0} / {1}</string>
   <string name="ExtensionRoleBakerFamineAnnouncement">A terrible famine has consumed the Crew.\%nl\%\%color=#023020FF\%Famine\%/color\%, Horseman of the Apocalypse, has emerged!</string>
   <string name="ExtensionRoleBakerFamineAnnouncementTitle">Baker Warning</string>
   <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} died with your bread!</string>
@@ -1517,7 +1518,10 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleBerserkerIntroBlurb">Kill to shorten your cooldown and become War.</string>
   <string name="ExtensionRoleBerserkerTabDescription">Kill players to reduce your cooldown.\%nl\%Collect enough kills to become &lt;color=#5E3929&gt;War&lt;/color&gt;.</string>
   <string name="ExtensionRoleBerserkerWikiDescription">The &lt;color=#880814&gt;Berserker&lt;/color&gt; is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Each kill lowers your kill cooldown, helping you snowball into &lt;color=#5E3929&gt;War&lt;/color&gt;.\%nl\%Once transformed, you lose cooldown reduction and become an invincible horseman who can chain kills during a short spree window.\%nl\%If Apocalypse Wins Together is enabled, Apocalypse roles are treated as allies.</string>
+  <string name="ExtensionRoleBerserkerKillWikiDescription">Kill players to reduce your cooldown and evolve into War.</string>
+  <string name="ExtensionRoleBerserkerWarWikiAbilityDescription">After enough kills, evolve into War and gain the final horseman's power.</string>
   <string name="ExtensionRoleBerserkerKillsTab">Kills to become War</string>
+  <string name="ExtensionRoleBerserkerMeetingSummary">Kills to become War: {0} / {1}</string>
   <string name="ExtensionRoleBerserkerWarAnnouncement">War has consumed the battlefield.\%nl\%\%color=#5E3929FF\%War\%/color\%, Horseman of the Apocalypse, has emerged!</string>
   <string name="ExtensionRoleBerserkerWarAnnouncementTitle">Berserker Warning</string>
   <string name="ExtensionOptionBerserkerInstantWarChance">Instant War Chance</string>
@@ -1525,17 +1529,25 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionBerserkerKillCooldownReduction">Kill Cooldown Reduction Per Kill</string>
   <string name="ExtensionOptionBerserkerKillsNeededToTransform">Kills Needed To Become War</string>
   <string name="ExtensionOptionBerserkerAnnounceWar">Announce War Transformation</string>
-  <string name="ExtensionOptionBerserkerWarCanVent">War Can Vent</string>
+  <string name="ExtensionOptionBerserkerWhoCanVent">Who Can Vent</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentNoOne">No One</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentBerserker">Berserker Only</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentWar">War Only</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentBoth">War + Berserker</string>
+  <string name="ExtensionRoleCantVent">Can't Vent</string>
   <string name="ExtensionOptionWarKillingSpreeDuration">War Killing Spree Duration</string>
   <string name="ExtensionRoleWar">War</string>
-  <string name="ExtensionRoleWarIntroBlurb">Horseman of the Apocalypse!</string>
-  <string name="ExtensionRoleWarTabDescription">Transformed Berserker. Chain kills during a short spree.\%nl\%War is invincible.</string>
+  <string name="ExtensionRoleWarIntroBlurb">&lt;b&gt;\%color=#5E3929FF\%War\%/color\%&lt;/b&gt;\%nl\%Horseman of the Apocalypse!</string>
+  <string name="ExtensionRoleWarTabDescription">Transformed Berserker.\%nl\%Chain kills during short sprees.\%nl\%War is invincible.</string>
   <string name="ExtensionRoleWarWikiDescription">The &lt;color=#5E3929&gt;War&lt;/color&gt; is the transformed &lt;color=#880814&gt;Berserker&lt;/color&gt;.\%nl\%War is invincible, cannot be guessed, and can only die by being voted out.\%nl\%After a successful kill, War enters a short Killing Spree where the next kill has no cooldown.</string>
+  <string name="ExtensionRoleWarMeetingSummary">War Evolved: the battlefield is yours.</string>
   <string name="ExtensionRoleWarSpreeKill">Spree Kill</string>
   <string name="ExtensionRoleFamine">Famine</string>
-  <string name="ExtensionRoleFamineIntroBlurb">Horseman of the Apocalypse!</string>
-  <string name="ExtensionRoleFamineTabDescription">Transformed Baker. Starve breaded players (die next meeting).\%nl\%Once they all die, you can starve anyone.\%nl\%Famine is invincible.</string>
+  <string name="ExtensionRoleFamineIntroBlurb">&lt;b&gt;\%color=#023020FF\%Famine\%/color\%&lt;/b&gt;\%nl\%Horseman of the Apocalypse!</string>
+  <string name="ExtensionRoleFamineTabDescription">Transformed Baker.\%nl\%Starved players die next meeting.\%nl\%Once breaded targets die, starve anyone.\%nl\%Famine is invincible.</string>
   <string name="ExtensionRoleFamineWikiDescription">The Famine is the transformed Baker. Famine is invincible, cannot be guessed, and can only die by being voted out.\%nl\%Initially, Famine can only starve players who received bread from Baker. After all breaded players are dead, Famine can starve any player. Starved players die at the next meeting.</string>
+  <string name="ExtensionRoleFamineMeetingSummary">Marked for Famine: {0}</string>
+  <string name="ExtensionRoleFamineMeetingSummaryUnlocked">Famine Evolved: the hunger spreads to all.</string>
   <string name="ExtensionRoleFamineStarve">Starve</string>
   <string name="ExtensionRoleFamineStarveWikiDescription">Mark a breaded player to die next meeting.</string>
   <string name="ExtensionOptionBakerBreadNeeded">Bread Needed</string>
@@ -1626,6 +1638,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleSoulCollectorWikiDescription">The \%color=#242A5EFF\%Soul Collector\%/color\% is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Use Reap to mark targets; if a marked target dies before the deadline, you gain a soul. Collect enough souls to become \%color=#202020FF\%Death\%/color\%. Doctor and Cleric cleanse can remove Reap marks.</string>
   <string name="ExtensionRoleSoulCollectorReap">Reap</string>
   <string name="ExtensionRoleSoulCollectorReapWikiDescription">Mark a nearby living player. If they die before the mark expires, gain one soul.</string>
+  <string name="ExtensionRoleSoulCollectorMeetingSummary">Souls Claimed: {0} / {1} | Reap Marks: {2} / {3}</string>
   <string name="ExtensionRoleSoulCollectorMarkedDiedNotif">{0}'s soul has been collected!</string>
   <string name="ExtensionRoleSoulCollectorDeathAnnouncement">The final soul has been claimed.\%nl\%\%color=#202020FF\%Death\%/color\%, Horseman of the Apocalypse, has emerged!</string>
   <string name="ExtensionRoleSoulCollectorDeathAnnouncementTitle">Soul Collector Warning</string>
@@ -1634,6 +1647,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleDeathIntroBlurb">Horseman of the Apocalypse!</string>
   <string name="ExtensionRoleDeathTabDescription">Transformed Soul Collector. Kill players with Reap.\%nl\%Death is invincible and leaves unreportable bodies.</string>
   <string name="ExtensionRoleDeathWikiDescription">Death is the transformed Soul Collector.\%nl\%Death is invincible, cannot be guessed, and can only die by being voted out.\%nl\%Death kills without a jump animation and leaves bodies that cannot be reported.</string>
+  <string name="ExtensionRoleDeathMeetingSummary">Death Evolved: no soul escapes.</string>
   <string name="DiedToExtensionDeathClaimed">Claimed by Death</string>
   <string name="ExtensionOptionSoulCollectorInstantDeathChance">Instant Death Chance</string>
   <string name="ExtensionOptionSoulCollectorReapCooldown">Reap Cooldown</string>

@@ -30,7 +30,7 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 {
     public const string Id = "toumegachujowe.tou.extension";
     public const string Name = "Tou Mega Ch**owe Extension";
-    public const string Version = "1.4.3";
+    public const string Version = "1.4.3-dev";
     public const string UncensoredDisplayName = "Tou Mega Chujowe Extension";
     public const string CensoredDisplayName = "Tou Mega Ch**owe Extension";
 

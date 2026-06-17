@@ -1,9 +1,13 @@
 using TownOfUs.Utilities;
 using HarmonyLib;
+using MiraAPI.LocalSettings;
 using TouMegaChujoweExtension.Assets;
 using TownOfUs.Extensions;
 using UnityEngine;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
+using TouMegaChujoweExtension.Modules;
+using TownOfUs;
+using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Patches.Roles;
 
@@ -11,13 +15,237 @@ namespace TouMegaChujoweExtension.Patches.Roles;
 public static class NeutralVentButtonPatch
 {
     private static bool? _lastHasTarget;
+    private static bool IsMeetingOpen => MeetingHud.Instance != null || ExileController.Instance != null;
+    private static bool OffsetButtonsWhenCantVent =>
+        LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value;
+
+    private static bool? GetBerserkerVentState(PlayerControl? player)
+    {
+        return player?.Data?.Role switch
+        {
+            BerserkerRole berserkerRole => berserkerRole.CanVentByState(),
+            WarRole warRole => warRole.CanVentByState(),
+            _ => null
+        };
+    }
+
+    private static void CleanupVentButtonForMeeting(VentButton? ventButton)
+    {
+        _lastHasTarget = null;
+
+        if (ventButton == null)
+        {
+            return;
+        }
+
+        ventButton.currentTarget = null;
+
+        if (ventButton.cooldownTimerText != null)
+        {
+            ventButton.cooldownTimerText.gameObject.SetActive(false);
+        }
+    }
+
+    private static void HideVentButtonWhenOffset(VentButton? ventButton)
+    {
+        _lastHasTarget = null;
+
+        if (ventButton == null)
+        {
+            return;
+        }
+
+        ventButton.currentTarget = null;
+        ventButton.gameObject?.SetActive(false);
+    }
+
+    private static void RestoreVentButtonGraphic(VentButton? ventButton)
+    {
+        _lastHasTarget = null;
+
+        if (ventButton == null)
+        {
+            return;
+        }
+
+        ventButton.currentTarget = null;
+
+        if (ventButton.graphic != null)
+        {
+            if (!ventButton.graphic.gameObject.activeSelf)
+            {
+                ventButton.graphic.gameObject.SetActive(true);
+            }
+
+            ventButton.graphic.enabled = true;
+            var color = ventButton.graphic.color;
+            color.r = 1f;
+            color.g = 1f;
+            color.b = 1f;
+            color.a = 1f;
+            ventButton.graphic.color = color;
+        }
+
+        if (ventButton.buttonLabelText != null)
+        {
+            ventButton.buttonLabelText.gameObject.SetActive(true);
+        }
+
+        if (ventButton.cooldownTimerText != null)
+        {
+            ventButton.cooldownTimerText.gameObject.SetActive(false);
+        }
+    }
+
+    private static void SetVentButtonState(VentButton ventButton, bool canVent, Color roleColor, Sprite activeSprite)
+    {
+        if (ventButton == null || ventButton.gameObject == null)
+        {
+            return;
+        }
+
+        if (!canVent && OffsetButtonsWhenCantVent)
+        {
+            HideVentButtonWhenOffset(ventButton);
+            return;
+        }
+
+        if (!canVent && ventButton.currentTarget != null)
+        {
+            ventButton.currentTarget = null;
+        }
+
+        if (!ventButton.gameObject.activeSelf)
+        {
+            ventButton.gameObject.SetActive(true);
+        }
+
+        if (ventButton.graphic != null)
+        {
+            if (!ventButton.graphic.gameObject.activeSelf)
+            {
+                ventButton.graphic.gameObject.SetActive(true);
+            }
+
+            ventButton.graphic.enabled = true;
+            ventButton.graphic.sprite = activeSprite;
+
+            var graphicColor = Color.white;
+            graphicColor.a = canVent ? 1f : 0.32f;
+            ventButton.graphic.color = graphicColor;
+        }
+
+        if (ventButton.buttonLabelText != null)
+        {
+            if (!ventButton.buttonLabelText.gameObject.activeSelf)
+            {
+                ventButton.buttonLabelText.gameObject.SetActive(true);
+            }
+
+            var alpha = canVent ? 1f : 0.45f;
+            var outline = roleColor;
+            outline.a = alpha;
+
+            ventButton.buttonLabelText.text = canVent
+                ? TouLocale.Get("Vent", "Vent")
+                : TouLocale.Get("ExtensionRoleCantVent", "Can't Vent");
+            ventButton.buttonLabelText.color = new Color(1f, 1f, 1f, alpha);
+            ventButton.buttonLabelText.outlineColor = outline;
+            ventButton.buttonLabelText.fontMaterial?.SetColor("_OutlineColor", outline);
+        }
+
+        if (ventButton.cooldownTimerText != null)
+        {
+            ventButton.cooldownTimerText.gameObject.SetActive(false);
+        }
+    }
+
+    [HarmonyPatch(typeof(VentButton), nameof(VentButton.DoClick))]
+    [HarmonyPrefix]
+    public static bool DoClickPrefix()
+    {
+        if (IsMeetingOpen)
+        {
+            return false;
+        }
+
+        return GetBerserkerVentState(PlayerControl.LocalPlayer) != false;
+    }
+
+    [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
+    [HarmonyPostfix]
+    public static void CanUseVentPostfix(
+        Vent __instance,
+        NetworkedPlayerInfo pc,
+        ref bool canUse,
+        ref bool couldUse,
+        ref float __result)
+    {
+        if (__instance == null || pc?.Object == null || pc.IsDead || pc.Disconnected)
+        {
+            return;
+        }
+
+        var player = pc.Object;
+        var canRoleVent = GetBerserkerVentState(player);
+
+        if (!canRoleVent.HasValue)
+        {
+            return;
+        }
+
+        if (!canRoleVent.Value)
+        {
+            canUse = false;
+            couldUse = false;
+            __result = float.MaxValue;
+            return;
+        }
+
+        if (player.inVent)
+        {
+            if (Vent.currentVent != null && __instance.Id == Vent.currentVent.Id)
+            {
+                canUse = true;
+                couldUse = true;
+                __result = 0f;
+            }
+
+            return;
+        }
+
+        var truePosition = player.GetTruePosition();
+        var ventPosition = (Vector2)__instance.transform.position;
+        var distance = Vector2.Distance(truePosition, ventPosition);
+        var inRange = distance <= __instance.UsableDistance;
+        var clearPath = !PhysicsHelpers.AnythingBetween(truePosition, ventPosition, Constants.ShipOnlyMask, false);
+
+        couldUse = inRange && clearPath;
+        canUse = couldUse;
+        __result = distance;
+    }
 
     [HarmonyPatch(typeof(VentButton), nameof(VentButton.SetTarget))]
     [HarmonyPostfix]
+    [HarmonyPriority(Priority.Last)]
     public static void SetTargetPostfix(VentButton __instance)
     {
+        if (IsMeetingOpen)
+        {
+            CleanupVentButtonForMeeting(__instance);
+            return;
+        }
+
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.Data == null) return;
+
+        var berserkerVentState = GetBerserkerVentState(player);
+        if (berserkerVentState == false)
+        {
+            var roleColor = player.Data.Role is BerserkerRole berserkerRole ? berserkerRole.RoleColor : TouExtensionColors.War;
+            SetVentButtonState(__instance, false, roleColor, TownOfUs.Assets.TouNeutAssets.WerewolfVentSprite.LoadAsset());
+            return;
+        }
 
         Sprite? customSprite = null;
         if (player.IsRole<SerialKillerRole>())
@@ -40,6 +268,10 @@ public static class NeutralVentButtonPatch
         {
             customSprite = TownOfUs.Assets.TouNeutAssets.WerewolfVentSprite.LoadAsset();
         }
+        else if (player.IsRole<BerserkerRole>())
+        {
+            customSprite = TouAssets.VentSprite.LoadAsset();
+        }
         else if (player.IsRole<WarRole>())
         {
             customSprite = TownOfUs.Assets.TouNeutAssets.WerewolfVentSprite.LoadAsset();
@@ -57,8 +289,15 @@ public static class NeutralVentButtonPatch
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     [HarmonyPostfix]
+    [HarmonyPriority(Priority.Last)]
     public static void HudUpdatePostfix(HudManager __instance)
     {
+        if (IsMeetingOpen)
+        {
+            CleanupVentButtonForMeeting(__instance?.ImpostorVentButton);
+            return;
+        }
+
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.Data?.Role == null) return;
 
@@ -75,10 +314,15 @@ public static class NeutralVentButtonPatch
         else if (role is BerserkerRole berserkerRole)
         {
             var shouldShowVent = berserkerRole.CanVentByState();
-            if (ventButton.gameObject.activeSelf != shouldShowVent)
+            if (player.Data.Role != null && player.Data.Role.CanVent != shouldShowVent)
             {
-                ventButton.gameObject.SetActive(shouldShowVent);
+                player.Data.Role.CanVent = shouldShowVent;
             }
+
+            var ventSprite = berserkerRole.IsWar
+                ? TownOfUs.Assets.TouNeutAssets.WerewolfVentSprite.LoadAsset()
+                : TouAssets.VentSprite.LoadAsset();
+            SetVentButtonState(ventButton, shouldShowVent, berserkerRole.RoleColor, ventSprite);
 
             if (!shouldShowVent)
             {
@@ -87,18 +331,15 @@ public static class NeutralVentButtonPatch
 
             roleColor = berserkerRole.RoleColor;
         }
-        else if (role is WarRole)
+        else if (role is WarRole warRole)
         {
-            var shouldShowVent = MiraAPI.GameOptions.OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent;
-            if (ventButton.gameObject.activeSelf != shouldShowVent)
+            var shouldShowVent = warRole.CanVentByState();
+            if (player.Data.Role != null && player.Data.Role.CanVent != shouldShowVent)
             {
-                ventButton.gameObject.SetActive(shouldShowVent);
+                player.Data.Role.CanVent = shouldShowVent;
             }
 
-            if (ventButton.graphic != null && ventButton.graphic.enabled != shouldShowVent)
-            {
-                ventButton.graphic.enabled = shouldShowVent;
-            }
+            SetVentButtonState(ventButton, shouldShowVent, TouExtensionColors.War, TownOfUs.Assets.TouNeutAssets.WerewolfVentSprite.LoadAsset());
 
             if (!shouldShowVent)
             {
@@ -124,9 +365,9 @@ public static class NeutralVentButtonPatch
 
                 if (ventButton.graphic != null)
                 {
-                    var c = ventButton.graphic.color;
-                    c.a = alpha;
-                    ventButton.graphic.color = c;
+                    ventButton.graphic.color = hasTarget
+                        ? Color.white
+                        : new Color(0.55f, 0.55f, 0.55f, alpha);
                 }
 
                 // Always force the color for these roles to prevent flickering with default Impostor red
@@ -136,6 +377,13 @@ public static class NeutralVentButtonPatch
                 ventButton.buttonLabelText.fontMaterial?.SetColor("_OutlineColor", finalColor);
             }
         }
+    }
+
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Close))]
+    [HarmonyPostfix]
+    public static void MeetingClosePostfix()
+    {
+        RestoreVentButtonGraphic(HudManager.Instance?.ImpostorVentButton);
     }
 }
 

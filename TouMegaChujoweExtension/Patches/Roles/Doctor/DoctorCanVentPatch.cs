@@ -119,9 +119,6 @@ public static class DoctorCanVentPatch
         }
         
         VentUtilities.InitializeVentButton(ventButton);
-        if (VentUtilities.IsSafeToSetCooldown(ventButton))
-        {
-            ventButton.SetCoolDown(0f, 1f);
-        }
+        VentUtilities.TrySetCooldown(ventButton, 0f, 1f);
     }
 }

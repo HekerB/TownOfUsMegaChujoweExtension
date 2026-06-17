@@ -63,7 +63,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = IsWar && OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent,
+        CanUseVent = CanVentByState(),
         IntroSound = TouAudio.WarlockIntroSound,
         Icon = IsWar ? TouExtensionIcons.WarRoleIcon : TouExtensionIcons.BerserkerRoleIcon,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
@@ -90,7 +90,13 @@ public sealed class BerserkerRole(IntPtr cppPtr)
             return builder;
         }
 
-        var needed = (int)OptionGroupSingleton<BerserkerOptions>.Instance.KillsNeededToTransform;
+        var options = OptionGroupSingleton<BerserkerOptions>.Instance;
+        if (options == null)
+        {
+            return builder;
+        }
+
+        var needed = (int)options.KillsNeededToTransform;
         builder.AppendLine(TownOfUsPlugin.Culture,
             $"{TouExtensionColors.Berserker.ToTextColor()}{TouLocale.Get("ExtensionRoleBerserkerKillsTab", "Kills to become War")}: <b>{KillCount}/{needed}</b></color>");
         return builder;
@@ -202,7 +208,11 @@ public sealed class BerserkerRole(IntPtr cppPtr)
     public bool CanVentByState()
     {
         var options = OptionGroupSingleton<BerserkerOptions>.Instance;
-        return IsWar && options.WarCanVent;
+        if (options == null)
+        {
+            return false;
+        }
+        return IsWar ? options.WarCanVent : options.BerserkerCanVent;
     }
 
     public bool ShouldShowVentButton()
@@ -218,6 +228,10 @@ public sealed class BerserkerRole(IntPtr cppPtr)
     public static float GetKillCooldownForKills(int killCount)
     {
         var options = OptionGroupSingleton<BerserkerOptions>.Instance;
+        if (options == null)
+        {
+            return 25f;
+        }
         var needed = Math.Max(1, (int)options.KillsNeededToTransform);
         var maxReductionKills = Math.Max(0, needed - 1);
         var cappedKills = Math.Min(Math.Max(0, killCount), maxReductionKills);
@@ -232,8 +246,14 @@ public sealed class BerserkerRole(IntPtr cppPtr)
             return;
         }
 
+        var options = OptionGroupSingleton<BerserkerOptions>.Instance;
+        if (options == null)
+        {
+            return;
+        }
+
         var nextKillCount = KillCount + 1;
-        var needed = Math.Max(1, (int)OptionGroupSingleton<BerserkerOptions>.Instance.KillsNeededToTransform);
+        var needed = Math.Max(1, (int)options.KillsNeededToTransform);
         if (nextKillCount >= needed)
         {
             RpcSetBerserkerKills(Player, needed);
@@ -265,13 +285,22 @@ public sealed class BerserkerRole(IntPtr cppPtr)
 
         role.IsWar = true;
         role.WarSpreeUntil = 0f;
-        role.KillCount = Math.Max(role.KillCount, (int)OptionGroupSingleton<BerserkerOptions>.Instance.KillsNeededToTransform);
-        EnsureWarInvulnerability(player);
-
-        if (OptionGroupSingleton<BerserkerOptions>.Instance.AnnounceWarTransformation)
+        var options = OptionGroupSingleton<BerserkerOptions>.Instance;
+        if (options != null)
         {
-            PendingWarAnnouncement = true;
-            ShowPendingWarAnnouncement();
+            role.KillCount = Math.Max(role.KillCount, (int)options.KillsNeededToTransform);
+            EnsureWarInvulnerability(player);
+
+            if (options.AnnounceWarTransformation)
+            {
+                PendingWarAnnouncement = true;
+                ShowPendingWarAnnouncement();
+            }
+        }
+        else
+        {
+            role.KillCount = Math.Max(role.KillCount, 4);
+            EnsureWarInvulnerability(player);
         }
 
         if (player.AmOwner)

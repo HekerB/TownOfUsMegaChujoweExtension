@@ -19,7 +19,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
-public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole, PlayerControl>, IDiseaseableButton, IKillButton
+public sealed class BountyHunterKillButton : TownOfUsKillRoleButton<BountyHunterRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     public override string Name => TouLocale.Get("ExtensionRoleBountyHunterKill", "Hunt");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
@@ -53,7 +53,7 @@ public sealed class BountyHunterKillButton : TownOfUsRoleButton<BountyHunterRole
 
         if (Button != null)
         {
-            Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterPlayerSprite.LoadAsset();
+            Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterKillSprite.LoadAsset();
             Button.usesRemainingText.gameObject.SetActive(true);
             Button.usesRemainingSprite.gameObject.SetActive(true);
         }

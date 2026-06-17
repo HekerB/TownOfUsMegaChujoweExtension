@@ -64,6 +64,7 @@ public sealed class DeathRole(IntPtr cppPtr)
     public CustomRoleConfiguration Configuration => new(this)
     {
         CanUseVent = OptionGroupSingleton<SoulCollectorOptions>.Instance.DeathCanVent,
+        UseVanillaKillButton = false,
         HideSettings = true,
         CanModifyChance = false,
         DefaultChance = 0,
@@ -77,22 +78,44 @@ public sealed class DeathRole(IntPtr cppPtr)
     [HideFromIl2Cpp]
     public void TriggerDeathAnnouncement()
     {
+        var localData = PlayerControl.LocalPlayer?.Data;
+        if (localData == null)
+        {
+            return;
+        }
+
         var msg = TouLocale.GetParsed("ExtensionRoleSoulCollectorDeathAnnouncement", "The final soul has been claimed.\\%nl\\%\\%color=#202020FF\\%Death\\%/color\\%, Horseman of the Apocalypse, has emerged!");
         var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TownOfUsColors.SoulCollector)}>{TouLocale.Get("ExtensionRoleSoulCollectorDeathAnnouncementTitle", "Death Warning")}</color>";
 
-        TouMegaChujoweExtension.Modules.RoleAlertUtils.ShowRoleAlert(
-            $"<b>{msg.Replace("\n", " ").Replace("\\%nl\\%", " ")}</b>",
-            Color.white,
-            TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
+        try
+        {
+            TouMegaChujoweExtension.Modules.RoleAlertUtils.ShowRoleAlert(
+                $"<b>{msg.Replace("\n", " ").Replace("\\%nl\\%", " ")}</b>",
+                Color.white,
+                TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
+        }
+        catch (Exception ex)
+        {
+            UnityEngine.Debug.LogWarning($"[TOUMCE] Death role alert failed: {ex}");
+        }
 
-        MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
+        try
+        {
+            MiscUtils.AddFakeChat(localData, title, msg, false, true);
+        }
+        catch (Exception ex)
+        {
+            UnityEngine.Debug.LogWarning($"[TOUMCE] Death fake chat failed: {ex}");
+        }
     }
 
     public override void OnMeetingStart()
     {
         RoleBehaviourStubs.OnMeetingStart(this);
 
-        if (Announced || !OptionGroupSingleton<SoulCollectorOptions>.Instance.AnnounceDeath)
+        if (Announced ||
+            PlayerControl.LocalPlayer?.Data == null ||
+            !OptionGroupSingleton<SoulCollectorOptions>.Instance.AnnounceDeath)
         {
             return;
         }
@@ -112,7 +135,10 @@ public sealed class DeathRole(IntPtr cppPtr)
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TouExtensionColors.Death);
         }
 
-        if (MeetingHud.Instance != null && !Announced && OptionGroupSingleton<SoulCollectorOptions>.Instance.AnnounceDeath)
+        if (MeetingHud.Instance != null &&
+            !Announced &&
+            PlayerControl.LocalPlayer?.Data != null &&
+            OptionGroupSingleton<SoulCollectorOptions>.Instance.AnnounceDeath)
         {
             Announced = true;
             TriggerDeathAnnouncement();

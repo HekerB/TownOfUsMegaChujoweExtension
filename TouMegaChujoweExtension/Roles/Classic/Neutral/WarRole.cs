@@ -12,6 +12,7 @@ using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TownOfUs;
 using TownOfUs.Assets;
 using TownOfUs.Extensions;
+using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
@@ -60,7 +61,7 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent,
+        CanUseVent = CanVentByState(),
         HideSettings = true,
         Icon = TouExtensionIcons.WarRoleIcon,
         IntroSound = TouAudio.WarlockIntroSound,
@@ -111,7 +112,7 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
 
     public void OffsetButtons()
     {
-        var canVent = OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent ||
+        var canVent = CanVentByState() ||
                       LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value;
         var kill = MiraAPI.Hud.CustomButtonSingleton<WarKillButton>.Instance;
         if (kill != null)
@@ -159,9 +160,19 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
         {
             OffsetButtons();
             var ventButton = HudManager.Instance.ImpostorVentButton;
-            ventButton.gameObject.SetActive(OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent);
-            ventButton.graphic.sprite = TouNeutAssets.WerewolfVentSprite.LoadAsset();
-            ventButton.buttonLabelText.SetOutlineColor(TouExtensionColors.War);
+            var canVent = CanVentByState();
+            ventButton.gameObject.SetActive(canVent);
+            if (ventButton.graphic != null)
+            {
+                ventButton.graphic.gameObject.SetActive(canVent);
+                ventButton.graphic.enabled = canVent;
+                ventButton.graphic.sprite = TouNeutAssets.WerewolfVentSprite.LoadAsset();
+            }
+
+            if (canVent)
+            {
+                ventButton.buttonLabelText.SetOutlineColor(TouExtensionColors.War);
+            }
         }
 
         if (MeetingHud.Instance != null && !Announced && OptionGroupSingleton<BerserkerOptions>.Instance.AnnounceWarTransformation)
@@ -209,7 +220,7 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
         }
 
         var vent = usable.TryCast<Vent>();
-        if (vent != null && !OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent)
+        if (vent != null && !CanVentByState())
         {
             return false;
         }
@@ -228,17 +239,16 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
         return WinConditionMet();
     }
 
+    public bool CanVentByState()
+    {
+        var options = OptionGroupSingleton<BerserkerOptions>.Instance;
+        return options != null && options.WarCanVent;
+    }
+
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        var stringB = new StringBuilder();
-        stringB.AppendLine(TownOfUsPlugin.Culture,
-            $"{RoleColor.ToTextColor()}{YouAreText}<b> {RoleName},\n<size=80%>{RoleDescription}</size></b></color>");
-        stringB.AppendLine(TownOfUsPlugin.Culture,
-            $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(RoleAlignment, true)}</b></size>");
-        stringB.Append("<size=70%>");
-        stringB.AppendLine(TownOfUsPlugin.Culture, $"{RoleLongDescription}");
-
+        var stringB = ITownOfUsRole.SetNewTabText(this);
         return stringB;
     }
 }
