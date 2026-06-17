@@ -299,12 +299,10 @@ public sealed class BerserkerRole(IntPtr cppPtr)
         var msg = TouLocale.GetParsed("ExtensionRoleBerserkerWarAnnouncement", "War has consumed the battlefield.\\%nl\\%\\%color=#EEEEEEFF\\%War\\%/color\\%, Horseman of the Apocalypse, has emerged!");
         var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TouExtensionColors.War)}>{TouLocale.Get("ExtensionRoleBerserkerWarAnnouncementTitle", "War Warning")}</color>";
 
-        var notif = Helpers.CreateAndShowNotification(
+        TouMegaChujoweExtension.Modules.RoleAlertUtils.ShowRoleAlert(
             $"<b>{msg.Replace("\n", " ")}</b>",
             Color.white,
-            new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.WarRoleIcon.LoadAsset());
-        notif?.AdjustNotification();
+            TouExtensionIcons.WarRoleIcon.LoadAsset());
 
         MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
     }

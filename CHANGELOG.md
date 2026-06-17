@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.4.3 - Perfect Comms API Integration
+
+### Perfect Comms
+
+- Moved the custom voice settings from the old Perfect Comms fork into this extension through the official Perfect Comms v3 API.
+- Added a `ToU:Ch**owe` Perfect Comms tab with role-colored options for Impostor, Neutral, and Crewmate voice behavior.
+- Added team radios for Pelican belly chat, Recruit/Jackal, Lawyer/Client, Apocalypse, and Spirit Master ghost link.
+- Added local listener muffles for Evoker blindness and Injector/Doctor negative effects.
+- Added hidden-player muting for invisibility-style roles and modifiers.
+
+### Fixes
+
+- Added Voodoo Master voice options, including mute carry-over for the next round during gameplay.
+- Cleared active Doppelganger disguises when meetings start so the wrong head no longer appears to talk.
+- Switched the Perfect Comms reference to use installed Perfect Comms instead of the old custom fork.
+
 ## 1.4.2 - Draft Balance & Role Polish
 
 ### Draft Mode

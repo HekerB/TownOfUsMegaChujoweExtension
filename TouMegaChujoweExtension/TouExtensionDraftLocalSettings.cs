@@ -2,6 +2,7 @@ using BepInEx.Configuration;
 using MiraAPI.LocalSettings;
 using TownOfUs.LocalSettings.Attributes;
 using TownOfUs.LocalSettings.SettingTypes;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension;
 
@@ -30,7 +31,8 @@ public class TouExtensionDraftLocalSettings(ConfigFile config) : LocalSettingsTa
 
     public override LocalSettingTabAppearance TabAppearance => new()
     {
-        TabIcon = TouRoleIcons.Traitor
+        TabIcon = TouRoleIcons.Traitor,
+        TabButtonHoverColor = Color.red
     };
 
     [LocalizedLocalEnumSetting("ExtensionLocalSettingDraftAlert", names: ["DraftAlertStartOnly", "DraftAlertStartAndEnd", "DraftAlertEndOnly", "DraftAlertNever"])]

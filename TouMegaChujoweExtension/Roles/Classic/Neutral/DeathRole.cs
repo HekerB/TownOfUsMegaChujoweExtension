@@ -80,12 +80,10 @@ public sealed class DeathRole(IntPtr cppPtr)
         var msg = TouLocale.GetParsed("ExtensionRoleSoulCollectorDeathAnnouncement", "The final soul has been claimed.\\%nl\\%\\%color=#202020FF\\%Death\\%/color\\%, Horseman of the Apocalypse, has emerged!");
         var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TownOfUsColors.SoulCollector)}>{TouLocale.Get("ExtensionRoleSoulCollectorDeathAnnouncementTitle", "Death Warning")}</color>";
 
-        var notif = Helpers.CreateAndShowNotification(
+        TouMegaChujoweExtension.Modules.RoleAlertUtils.ShowRoleAlert(
             $"<b>{msg.Replace("\n", " ").Replace("\\%nl\\%", " ")}</b>",
             Color.white,
-            new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
-        notif?.AdjustNotification();
+            TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
 
         MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
     }

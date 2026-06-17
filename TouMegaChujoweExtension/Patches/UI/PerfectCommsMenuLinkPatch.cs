@@ -9,7 +9,7 @@ namespace TouMegaChujoweExtension.Patches.UI;
 [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
 public static class PerfectCommsMenuLinkPatch
 {
-    private const string PerfectCommsUrl = "https://github.com/marzecoo/Chujowe-Perfect-Comms";
+    private const string PerfectCommsUrl = "https://github.com/artriy/Perfect-Comms";
 
     public static void Postfix(MainMenuManager __instance)
     {

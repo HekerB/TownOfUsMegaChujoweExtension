@@ -1,4 +1,5 @@
 using MiraAPI.Events.Vanilla.Gameplay;
+using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events.Vanilla.Player;
 using MiraAPI.Events;
 using MiraAPI.GameOptions;
@@ -106,8 +107,16 @@ public static class DoppelgangerEvents
     }
 
     [RegisterEvent]
+    public static void StartMeetingEventHandler(StartMeetingEvent @event)
+    {
+        ClearActiveDisguises();
+    }
+
+    [RegisterEvent]
     public static void RoundStartHandler(RoundStartEvent @event)
     {
+        ClearActiveDisguises();
+
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player == null || !player.IsRole<DoppelgangerRole>())
@@ -115,16 +124,22 @@ public static class DoppelgangerEvents
                 continue;
             }
 
-            if (player.TryGetModifier<DoppelgangerDisguiseModifier>(out var disguise))
-            {
-                player.RemoveModifier(disguise);
-            }
-
             var role = player.GetRole<DoppelgangerRole>();
             if (role != null)
             {
                 var maxSteals = (int)OptionGroupSingleton<DoppelgangerOptions>.Instance.MaxSteals;
                 role.RemainingIdentityThefts = maxSteals == 0 ? -1 : maxSteals;
+            }
+        }
+    }
+
+    private static void ClearActiveDisguises()
+    {
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player != null && player.TryGetModifier<DoppelgangerDisguiseModifier>(out var disguise))
+            {
+                player.RemoveModifier(disguise);
             }
         }
     }
