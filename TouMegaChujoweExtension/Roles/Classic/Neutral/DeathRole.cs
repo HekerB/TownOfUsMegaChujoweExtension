@@ -63,7 +63,7 @@ public sealed class DeathRole(IntPtr cppPtr)
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = OptionGroupSingleton<SoulCollectorOptions>.Instance.DeathCanVent,
+        CanUseVent = OptionGroupSingleton<SoulCollectorOptions>.Instance?.DeathCanVent ?? false,
         UseVanillaKillButton = false,
         HideSettings = true,
         CanModifyChance = false,
@@ -113,9 +113,11 @@ public sealed class DeathRole(IntPtr cppPtr)
     {
         RoleBehaviourStubs.OnMeetingStart(this);
 
+        var options = OptionGroupSingleton<SoulCollectorOptions>.Instance;
         if (Announced ||
             PlayerControl.LocalPlayer?.Data == null ||
-            !OptionGroupSingleton<SoulCollectorOptions>.Instance.AnnounceDeath)
+            options == null ||
+            !options.AnnounceDeath)
         {
             return;
         }
@@ -135,10 +137,12 @@ public sealed class DeathRole(IntPtr cppPtr)
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TouExtensionColors.Death);
         }
 
+        var options = OptionGroupSingleton<SoulCollectorOptions>.Instance;
         if (MeetingHud.Instance != null &&
             !Announced &&
             PlayerControl.LocalPlayer?.Data != null &&
-            OptionGroupSingleton<SoulCollectorOptions>.Instance.AnnounceDeath)
+            options != null &&
+            options.AnnounceDeath)
         {
             Announced = true;
             TriggerDeathAnnouncement();

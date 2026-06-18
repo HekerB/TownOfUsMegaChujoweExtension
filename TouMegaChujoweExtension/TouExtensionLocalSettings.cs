@@ -16,7 +16,7 @@ public class TouExtensionLocalSettings : LocalSettingsTab
         CensorModName = config.Bind("Visuals", "CensorModName", true);
         UsePolishLanguage = config.Bind("Localization", "UsePolishLanguage", false);
         TranslateRoleNames = config.Bind("Localization", "TranslateRoleNames", false);
-        MuteLivingPlayersWhileDead = config.Bind("PerfectComms", "MuteLivingPlayersWhileDead", false);
+        MuteAliveWhenGhost = config.Bind("PerfectComms", "MuteAliveWhenGhost", false);
 
         UsePolishLanguage.SettingChanged += (s, e) => Modules.ExtensionLocale.SearchInternalLocale();
         TranslateRoleNames.SettingChanged += (s, e) => Modules.ExtensionLocale.SearchInternalLocale();
@@ -69,7 +69,8 @@ public class TouExtensionLocalSettings : LocalSettingsTab
     [LocalizedLocalToggleSetting("ExtensionLocalSettingTranslateRoleNames")]
     public ConfigEntry<bool> TranslateRoleNames { get; private set; }
 
-    public ConfigEntry<bool> MuteLivingPlayersWhileDead { get; private set; }
+    [LocalizedLocalToggleSetting("ExtensionLocalSettingPCMuteAliveWhenGhost")]
+    public ConfigEntry<bool> MuteAliveWhenGhost { get; private set; }
 }
 
 public enum MapColorType

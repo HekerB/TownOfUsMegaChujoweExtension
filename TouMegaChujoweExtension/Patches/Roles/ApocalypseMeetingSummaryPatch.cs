@@ -90,10 +90,12 @@ public static class ApocalypseMeetingSummaryPatch
             return;
         }
 
-        _summaryText = Object.Instantiate(timerText, timerText.transform.parent);
-        _summaryText.name = "TOUMCE_ApocalypseMeetingSummary";
-        Object.Destroy(_summaryText.GetComponent<TextTranslatorTMP>());
-        Object.Destroy(_summaryText.GetComponent<TmpMiraTranslator>());
+        var go = new GameObject("TOUMCE_ApocalypseMeetingSummary");
+        go.transform.SetParent(timerText.transform.parent);
+
+        _summaryText = go.AddComponent<TextMeshPro>();
+        _summaryText.font = timerText.font;
+        _summaryText.fontSharedMaterial = timerText.fontSharedMaterial;
         _summaryText.color = Color.white;
         _summaryText.enableAutoSizing = false;
         SetSummaryFontSize(timerText);
@@ -133,11 +135,13 @@ public static class ApocalypseMeetingSummaryPatch
 
     private static string GetSummaryLine(PlayerControl localPlayer)
     {
-        if (localPlayer.Data.Role is SoulCollectorRole soulCollectorRole)
+        var soulCollectorRole = localPlayer.GetRole<SoulCollectorRole>();
+        var soulOptions = OptionGroupSingleton<SoulCollectorOptions>.Instance;
+        if (soulCollectorRole != null && soulOptions != null)
         {
             var soulsNeeded = SoulCollectorRole.GetEffectiveSoulGoal(localPlayer);
             var activeMarks = SoulCollectorRole.GetActiveMarkCount(localPlayer.PlayerId);
-            var maxMarks = (int)OptionGroupSingleton<SoulCollectorOptions>.Instance.MaxMarks;
+            var maxMarks = (int)soulOptions.MaxMarks;
             var soulText = TouLocale.Get(
                     "ExtensionRoleSoulCollectorMeetingSummary",
                     "Souls Claimed: {0} / {1} | Reap Marks: {2} / {3}")
@@ -149,7 +153,8 @@ public static class ApocalypseMeetingSummaryPatch
             return $"{SoulCollectorSummaryColor.ToTextColor()}{soulText}</color>";
         }
 
-        if (localPlayer.Data.Role is BakerRole)
+        var bakerRole = localPlayer.GetRole<BakerRole>();
+        if (bakerRole != null)
         {
             var breadCount = PlayerControl.AllPlayerControls.ToArray()
                 .Count(player => player != null &&
@@ -165,7 +170,8 @@ public static class ApocalypseMeetingSummaryPatch
             return $"{TouExtensionColors.Baker.ToTextColor()}{bakerText}</color>";
         }
 
-        if (localPlayer.Data.Role is FamineRole famineRole)
+        var famineRole = localPlayer.GetRole<FamineRole>();
+        if (famineRole != null)
         {
             var starvingCount = PlayerControl.AllPlayerControls.ToArray()
                 .Count(player => player != null &&
@@ -179,7 +185,9 @@ public static class ApocalypseMeetingSummaryPatch
             return $"{TouExtensionColors.Famine.ToTextColor()}{famineText}</color>";
         }
 
-        if (localPlayer.Data.Role is BerserkerRole berserkerRole)
+        var berserkerRole = localPlayer.GetRole<BerserkerRole>();
+        var berserkerOptions = OptionGroupSingleton<BerserkerOptions>.Instance;
+        if (berserkerRole != null && berserkerOptions != null)
         {
             if (berserkerRole.IsWar)
             {
@@ -187,7 +195,7 @@ public static class ApocalypseMeetingSummaryPatch
                 return $"{TouExtensionColors.War.ToTextColor()}{warText}</color>";
             }
 
-            var needed = (int)OptionGroupSingleton<BerserkerOptions>.Instance.KillsNeededToTransform;
+            var needed = (int)berserkerOptions.KillsNeededToTransform;
             var kills = Math.Min(berserkerRole.KillCount, needed);
             var berserkerText = TouLocale.Get("ExtensionRoleBerserkerMeetingSummary", "Kills to become War: {0} / {1}")
                 .Replace("{0}", kills.ToString(CultureInfo.InvariantCulture))
@@ -196,13 +204,15 @@ public static class ApocalypseMeetingSummaryPatch
             return $"{TouExtensionColors.Berserker.ToTextColor()}{berserkerText}</color>";
         }
 
-        if (localPlayer.Data.Role is WarRole)
+        var warRole = localPlayer.GetRole<WarRole>();
+        if (warRole != null)
         {
             var warText = TouLocale.Get("ExtensionRoleWarMeetingSummary", "War Evolved: the battlefield is yours.");
             return $"{TouExtensionColors.War.ToTextColor()}{warText}</color>";
         }
 
-        if (localPlayer.Data.Role is DeathRole)
+        var deathRole = localPlayer.GetRole<DeathRole>();
+        if (deathRole != null)
         {
             var deathText = TouLocale.Get("ExtensionRoleDeathMeetingSummary", "Death Evolved: no soul escapes.");
             return $"{TouExtensionColors.Death.ToTextColor()}{deathText}</color>";
