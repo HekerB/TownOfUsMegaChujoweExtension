@@ -126,6 +126,11 @@ public static class PerfectCommsIntegration
         SyncListenerFilterOptions(ctx);
         TrackPhaseTransition(ctx.Phase);
 
+        if (ShouldMuteLivingPlayerForLocalGhost(ctx))
+        {
+            return bridge!.Mute("Living Players Muted While Dead");
+        }
+
         if (ctx.Player == null || IsDead(ctx.Player))
         {
             return bridge!.PassResult;
@@ -160,6 +165,29 @@ public static class PerfectCommsIntegration
         return bridge!.PassResult;
     }
 
+    private static bool ShouldMuteLivingPlayerForLocalGhost(VoiceContext ctx)
+    {
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (ctx.Phase is not ("Tasks" or "Meeting") ||
+            localPlayer == null ||
+            ctx.Player == null ||
+            IsDead(ctx.Player) ||
+            !IsDead(localPlayer))
+        {
+            return false;
+        }
+
+        try
+        {
+            return LocalSettingsTabSingleton<TouExtensionLocalSettings>.Instance
+                .MuteLivingPlayersWhileDead.Value;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     private static bool IsVoodooMutedForVoice(VoiceContext ctx)
     {
         bool hasActiveCurse = ctx.Player!.HasModifier<VoodooMutedModifier>();
@@ -185,6 +213,12 @@ public static class PerfectCommsIntegration
         }
 
         return hasActiveCurse || nextRoundVoodooMutedPlayers.Contains(ctx.Player.PlayerId);
+    }
+
+    public static void ClearVoodooMute(byte playerId)
+    {
+        meetingVoodooMutedPlayers.Remove(playerId);
+        nextRoundVoodooMutedPlayers.Remove(playerId);
     }
 
     private static void TrackPhaseTransition(string phase)

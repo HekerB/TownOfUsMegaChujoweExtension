@@ -14,6 +14,7 @@
   
    <!-- Use Polish Language -->
   <string name="ExtensionLocalSettingUsePolishLanguage">Uzyj jezyka polskiego</string>
+  <string name="ExtensionLocalSettingTranslateRoleNames">Tlumacz nazwy rol</string>
   
   <!-- Use Role Color for Map -->
   <string name="ExtensionLocalSettingMapColor">Kolor obrysu mapy</string>
@@ -171,7 +172,7 @@
   <string name="ExtensionRoleShifterWikiDescription">Mozesz przejac role dowolnego czlonka Zalogi. Proba kradziezy roli Impostora konczy sie smiercia.</string>
   <string name="ExtensionRoleShifterShift">Przejmij</string>
   <string name="ExtensionRoleShifterShiftWikiDescription">Wybierz gracza, ktorego role chcesz przejac podczas narady.</string>
-  <string name="ExtensionShifterRoleStolenIntro">TWOJA ROLA ZOSTAŁA SKRADZIONA!</string>
+  <string name="ExtensionShifterRoleStolenIntro">ROLA SKRADZIONA</string>
 
   <!-- Shifter Options -->
   <string name="ExtensionOptionShifterCooldown">Czas odnowienia kradziezy</string>
@@ -307,6 +308,9 @@
 
   <!-- Pirate Notifications -->
   <string name="ExtensionPirateDuelNotification">Pirat wyzwal Cie na pojedynek!</string>
+  <string name="ExtensionPirateCompletedDuelsOwner">Ukonczyles wszystkie pojedynki jako {0}! Teraz obserwujesz gre i wygrasz ze zwycieska druzyna.</string>
+  <string name="ExtensionPirateCompletedDuelsOther">{0}, {1}, ukonczyl wszystkie wymagane pojedynki!</string>
+  <string name="ExtensionPirateDuelsWonCounter">Wygrane pojedynki: {0} / {1}</string>
   <string name="ExtensionPirateDuelJailedPirateNotif">Jestes uwieziony! Pojedynek anulowany.</string>
   <string name="ExtensionPirateDuelJailedTargetNotif">Cel uwieziony! Akcja anulowana.</string>
   <string name="ExtensionPirateCantDuelSamePersonTwiceNotif">Nie mozesz wyzwac tej samej osoby dwa razy pod rzad.</string>
@@ -826,9 +830,9 @@
   <string name="ExtensionOptionDraftModeTimeToChoose">Czas wyboru</string>
   <string name="ExtensionOptionDraftModeRolesToShow">Role do wyboru</string>
 	
-  <string name="ExtensionDraftModeTitle">Wybor ról</string>
+  <string name="ExtensionDraftModeTitle">Wybor rol</string>
   <string name="ExtensionDraftRoleListTitle">Tryb Draft</string>
-  <string name="ExtensionDraftRoleListEmpty">Brak ról</string>
+  <string name="ExtensionDraftRoleListEmpty">Brak rol</string>
   <string name="ExtensionDraftModeCurrentlyPicking">Wybiera:</string>
   <string name="ExtensionDraftModeYourTurn">Twoja kolej!</string>
   <string name="ExtensionDraftModeWaiting">Oczekiwanie...</string>
@@ -836,6 +840,80 @@
   <string name="ExtensionDraftModeAutoSelect">Auto-wybor za:</string>
   <string name="ExtensionDraftModeTurnsUntil">Tury do Ciebie</string>
   <string name="ExtensionDraftModePlayerPicks">Podsumowanie:</string>
+  <string name="ExtensionDraftModeHeader">TRYB DRAFT</string>
+  <string name="ExtensionDraftModeVanillaMode">TRYB KLASYCZNY</string>
+  <string name="ExtensionDraftModeBy">OD</string>
+  <string name="ExtensionDraftModeMute">WYCISZ</string>
+  <string name="ExtensionDraftModeUnmute">WLACZ DZWIEK</string>
+  <string name="ExtensionDraftModeCancel">ANULUJ</string>
+  <string name="ExtensionDraftModeStart">START</string>
+  <string name="ExtensionDraftModeSystem">SYSTEM</string>
+  <string name="ExtensionDraftModePlayer">Gracz</string>
+  <string name="ExtensionDraftModeYou">TY</string>
+  <string name="ExtensionDraftModeDisconnected">Rozlaczony</string>
+  <string name="ExtensionDraftModeReady">GOTOWY</string>
+  <string name="ExtensionDraftModePicking">WYBIERA</string>
+  <string name="ExtensionDraftModeRandomTooltip">Przydziela calkowicie losowa role z dostepnej puli.</string>
+  <string name="ExtensionDraftModeComplete">DRAFT ZAKOŃCZONY!</string>
+  <string name="ExtensionDraftModeGameStarting">GRA SIE ROZPOCZYNA!</string>
+  <string name="ExtensionDraftModeTimeLeft">Pozostaly czas</string>
+  <string name="ExtensionDraftModeSecondsShort">s</string>
+  <string name="ExtensionDraftModeWaitingForTurn">OCZEKIWANIE NA TWOJA KOLEJ</string>
+  <string name="ExtensionDraftModeEnabled">Wlaczony</string>
+  <string name="ExtensionDraftModeDisabled">Wylaczony</string>
+  <string name="ExtensionDraftModeOther">Pozostali</string>
+  <string name="ExtensionDraftModeKilling">Zabojcy</string>
+  <string name="ExtensionDraftModeMin">Min.</string>
+  <string name="ExtensionDraftModeMax">Maks.</string>
+  <string name="ExtensionDraftHudCrewmate">Czlonek zalogi</string>
+  <string name="ExtensionDraftHudCrewmates">Czlonkowie zalogi</string>
+  <string name="ExtensionDraftHudCrewInvestigative">Zaloga sledcza</string>
+  <string name="ExtensionDraftHudCrewKilling">Zaloga zabijajaca</string>
+  <string name="ExtensionDraftHudCrewPower">Zaloga specjalna</string>
+  <string name="ExtensionDraftHudCrewProtective">Zaloga ochronna</string>
+  <string name="ExtensionDraftHudCrewSupport">Zaloga wspierajaca</string>
+  <string name="ExtensionDraftHudImpostors">Impostorzy</string>
+  <string name="ExtensionDraftHudImpConcealing">Impostorzy ukrywajacy</string>
+  <string name="ExtensionDraftHudImpKilling">Impostorzy zabijajacy</string>
+  <string name="ExtensionDraftHudImpPower">Impostorzy specjalni</string>
+  <string name="ExtensionDraftHudImpSupport">Impostorzy wspierajacy</string>
+  <string name="ExtensionDraftHudNeutrals">Neutralni</string>
+  <string name="ExtensionDraftHudNeutralBenign">Neutralni lagodni</string>
+  <string name="ExtensionDraftHudNeutralEvil">Neutralni zli</string>
+  <string name="ExtensionDraftHudNeutralKilling">Neutralni zabijajacy</string>
+  <string name="ExtensionDraftHudNeutralOutlier">Neutralni nietypowi</string>
+  <string name="ExtensionDraftOptionPoolMode">Tryb puli Draftu</string>
+  <string name="ExtensionDraftPoolModeOld">Stary Draft</string>
+  <string name="ExtensionDraftPoolModeMinMax">Min./Maks.</string>
+  <string name="ExtensionDraftPoolModeRoleList">Lista rol</string>
+  <string name="ExtensionDraftOptionUseRoleChances">Uwzgledniaj szanse rol</string>
+  <string name="ExtensionDraftOptionExcludePreviousRoles">Wyklucz role z poprzedniej gry</string>
+  <string name="ExtensionDraftOptionReduceKillingStreak">Ogranicz serie rol zabijajacych</string>
+  <string name="ExtensionDraftOptionReductionChance">Redukcja zabijajacych Impostorow i Neutralnych</string>
+  <string name="ExtensionDraftOldSettingsGroup">Ustawienia starego Draftu</string>
+  <string name="ExtensionDraftCrewmateSettingsGroup">Ustawienia zalogi Draftu</string>
+  <string name="ExtensionDraftImpostorSettingsGroup">Ustawienia Impostorow Draftu</string>
+  <string name="ExtensionDraftNeutralSettingsGroup">Ustawienia Neutralnych Draftu</string>
+  <string name="ExtensionDraftRoleListSettingsGroup">Lista rol Draftu</string>
+  <string name="ExtensionDraftOptionMinNeutralsPerChoice">Min. Neutralnych na wybor</string>
+  <string name="ExtensionDraftOptionMaxNeutralsPerChoice">Maks. Neutralnych na wybor</string>
+  <string name="ExtensionDraftOptionMinOtherNeutrals">Min. pozostalych Neutralnych</string>
+  <string name="ExtensionDraftOptionMaxOtherNeutrals">Maks. pozostalych Neutralnych</string>
+  <string name="ExtensionDraftOptionMinNeutralKilling">Min. Neutralnych zabijajacych</string>
+  <string name="ExtensionDraftOptionMaxNeutralKillingRoles">Maks. Neutralnych zabijajacych</string>
+  <string name="ExtensionDraftOptionMaxInvestigative">Maks. rol sledczych</string>
+  <string name="ExtensionDraftOptionMaxKilling">Maks. rol zabijajacych</string>
+  <string name="ExtensionDraftOptionMaxPower">Maks. rol specjalnych</string>
+  <string name="ExtensionDraftOptionMaxProtective">Maks. rol ochronnych</string>
+  <string name="ExtensionDraftOptionMaxSupport">Maks. rol wspierajacych</string>
+  <string name="ExtensionDraftOptionMaxImpostorsTotal">Maks. Impostorow lacznie</string>
+  <string name="ExtensionDraftOptionMaxConcealing">Maks. rol ukrywajacych</string>
+  <string name="ExtensionDraftOptionMaxNeutralTotal">Maks. rol Neutralnych</string>
+  <string name="ExtensionDraftOptionMaxBenign">Maks. Neutralnych lagodnych</string>
+  <string name="ExtensionDraftOptionMaxEvil">Maks. Neutralnych zlych</string>
+  <string name="ExtensionDraftOptionMaxNeutralKilling">Maks. Neutralnych zabijajacych</string>
+  <string name="ExtensionDraftOptionMaxOutlier">Maks. Neutralnych nietypowych</string>
+  <string name="ExtensionDraftOptionSlot">Slot</string>
   <string name="Neutral">Neutralny</string>
   
   <!-- Bounty Hunter Role -->
@@ -1659,7 +1737,11 @@
   <string name="ExtensionVoodooEffectBlindness">Oslepienie</string>
   <string name="ExtensionVoodooEffectMute">Uciszenie</string>
   <string name="ExtensionVoodooEffectConfuse">Chaos</string>
-  <string name="ExtensionVoodooMuteAlert">Mistrz Voodoo Cie przeklal. Tylko Ty to widzisz i zostaniesz uciszony na nastepnej naradzie!</string>
+  <string name="ExtensionVoodooMuteAlert">Mistrz Voodoo Cie przeklal. Tylko Ty to widzisz i jestes uciszony podczas tej narady!</string>
+  <string name="ExtensionVoodooMuteWarningTitle">MUTE ALERT</string>
+  <string name="ExtensionVoodooMuteScheduledTitle">Urok Voodoo</string>
+  <string name="ExtensionVoodooMuteScheduledAlert">Mistrz Voodoo rzucil na Ciebie urok. Tylko Ty wiesz o tej klatwie.\%nl\%Podczas nastepnej narady nie mozesz pisac na czacie, ale nadal mozesz glosowac.</string>
+  <string name="ExtensionVoodooMuteChatBlocked">Uciszony przez Voodoo — czat zablokowany.</string>
   <string name="ExtensionVoodooMutedIntro">ZOSTAŁEŚ UCISZONY!</string>
 
   <!-- Inverter Role -->

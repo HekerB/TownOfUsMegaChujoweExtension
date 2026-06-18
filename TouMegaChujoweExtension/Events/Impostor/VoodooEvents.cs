@@ -73,16 +73,20 @@ public static class VoodooEvents
     [RegisterEvent]
     public static void PlayerDeathEventHandler(MiraAPI.Events.Vanilla.Player.PlayerDeathEvent @event)
     {
-        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
-        {
-            return;
-        }
-
         var victim = @event.Player;
         if (victim == null)
         {
             return;
         }
+
+        PerfectCommsIntegration.ClearVoodooMute(victim.PlayerId);
+
+        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
+        {
+            return;
+        }
+
+        RemoveMuteFromDeadPlayer(victim);
 
         foreach (var player in PlayerControl.AllPlayerControls)
         {
@@ -104,16 +108,20 @@ public static class VoodooEvents
     [RegisterEvent]
     public static void OnEjection(EjectionEvent @event)
     {
-        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
-        {
-            return;
-        }
-
         var exiled = @event.ExileController?.initData?.networkedPlayer?.Object;
         if (exiled == null)
         {
             return;
         }
+
+        PerfectCommsIntegration.ClearVoodooMute(exiled.PlayerId);
+
+        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
+        {
+            return;
+        }
+
+        RemoveMuteFromDeadPlayer(exiled);
 
         foreach (var player in PlayerControl.AllPlayerControls)
         {
@@ -129,6 +137,21 @@ public static class VoodooEvents
                     player.RpcRemoveModifier(targetLock.UniqueId);
                 }
             }
+        }
+    }
+
+    private static void RemoveMuteFromDeadPlayer(PlayerControl player)
+    {
+        if (player.HasModifier<VoodooMutedModifier>())
+        {
+            player.RpcRemoveModifier<VoodooMutedModifier>();
+        }
+
+        foreach (var scheduledMute in player.GetModifiers<VoodooScheduledCurseModifier>()
+                     .Where(curse => curse.CurseType == VoodooEffect.Mute)
+                     .ToArray())
+        {
+            player.RpcRemoveModifier(scheduledMute.UniqueId);
         }
     }
 }

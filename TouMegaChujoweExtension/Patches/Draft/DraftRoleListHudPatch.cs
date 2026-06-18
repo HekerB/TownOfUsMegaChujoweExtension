@@ -109,7 +109,7 @@ public static class DraftRoleListHudPatch
             return string.Empty;
         }
 
-        if (!text.Contains("<b>Draft Mode:</b>"))
+        if (!text.StartsWith($"<color={DraftModeTitleColor}><b>", StringComparison.Ordinal))
         {
             return text;
         }
@@ -131,8 +131,8 @@ public static class DraftRoleListHudPatch
     private static string BuildDraftStatusLine(bool enabled)
     {
         return enabled
-            ? $"<color={DraftModeTitleColor}><b>Draft Mode:</b></color> <color={DraftEnabledColor}><b>Enabled</b></color>\n"
-            : $"<color={DraftModeTitleColor}><b>Draft Mode:</b></color> <color={DraftDisabledColor}><b>Disabled</b></color>\n";
+            ? $"<color={DraftModeTitleColor}><b>{TouLocale.Get("ExtensionDraftModeGroupName", "Draft Mode")}:</b></color> <color={DraftEnabledColor}><b>{TouLocale.Get("ExtensionDraftModeEnabled", "Enabled")}</b></color>\n"
+            : $"<color={DraftModeTitleColor}><b>{TouLocale.Get("ExtensionDraftModeGroupName", "Draft Mode")}:</b></color> <color={DraftDisabledColor}><b>{TouLocale.Get("ExtensionDraftModeDisabled", "Disabled")}</b></color>\n";
     }
 
     private static void AppendDraftContent(StringBuilder builder)
@@ -177,18 +177,20 @@ public static class DraftRoleListHudPatch
 
         builder.Append("<color=#");
         builder.Append(neutralColor);
-        builder.Append(">Neutral</color> Other ");
-        builder.Append("<color=#FFD700>Min</color> ");
+        builder.Append('>').Append(TouLocale.Get("Neutral", "Neutral")).Append("</color> ")
+            .Append(TouLocale.Get("ExtensionDraftModeOther", "Other")).Append(' ');
+        builder.Append("<color=#FFD700>").Append(TouLocale.Get("ExtensionDraftModeMin", "Min")).Append("</color> ");
         builder.Append(Mathf.RoundToInt(options.MinOtherNeutrals.Value));
-        builder.Append(" <color=#FFD700>Max</color> ");
+        builder.Append(" <color=#FFD700>").Append(TouLocale.Get("ExtensionDraftModeMax", "Max")).Append("</color> ");
         builder.Append(Mathf.RoundToInt(options.MaxOtherNeutrals.Value));
         builder.AppendLine();
         builder.Append("<color=#");
         builder.Append(neutralColor);
-        builder.Append(">Neutral</color> Killing ");
-        builder.Append("<color=#FFD700>Min</color> ");
+        builder.Append('>').Append(TouLocale.Get("Neutral", "Neutral")).Append("</color> ")
+            .Append(TouLocale.Get("ExtensionDraftModeKilling", "Killing")).Append(' ');
+        builder.Append("<color=#FFD700>").Append(TouLocale.Get("ExtensionDraftModeMin", "Min")).Append("</color> ");
         builder.Append(Mathf.RoundToInt(options.MinNeutralKilling.Value));
-        builder.Append(" <color=#FFD700>Max</color> ");
+        builder.Append(" <color=#FFD700>").Append(TouLocale.Get("ExtensionDraftModeMax", "Max")).Append("</color> ");
         builder.Append(Mathf.RoundToInt(options.MaxNeutralKilling.Value));
         builder.AppendLine();
     }
@@ -209,24 +211,29 @@ public static class DraftRoleListHudPatch
         var impTotal = Round(impOptions.MaxImpostorsTotal.Value);
         var neutralTotal = Round(neutralOptions.MaxNeutralTotal.Value);
 
-        AppendColoredLine(builder, CrewColor, $"Crewmates: {crewTotal}");
-        AppendColoredLine(builder, CrewColor, $"Crewmate Investigative: {Round(crewOptions.MaxCrewInvestigative.Value)}");
-        AppendColoredLine(builder, CrewColor, $"Crewmate Killing: {Round(crewOptions.MaxCrewKilling.Value)}");
-        AppendColoredLine(builder, CrewColor, $"Crewmate Power: {Round(crewOptions.MaxCrewPower.Value)}");
-        AppendColoredLine(builder, CrewColor, $"Crewmate Protective: {Round(crewOptions.MaxCrewProtective.Value)}");
-        AppendColoredLine(builder, CrewColor, $"Crewmate Support: {Round(crewOptions.MaxCrewSupport.Value)}");
+        AppendLocalizedCount(builder, CrewColor, "ExtensionDraftHudCrewmates", "Crewmates", crewTotal);
+        AppendLocalizedCount(builder, CrewColor, "ExtensionDraftHudCrewInvestigative", "Crewmate Investigative", Round(crewOptions.MaxCrewInvestigative.Value));
+        AppendLocalizedCount(builder, CrewColor, "ExtensionDraftHudCrewKilling", "Crewmate Killing", Round(crewOptions.MaxCrewKilling.Value));
+        AppendLocalizedCount(builder, CrewColor, "ExtensionDraftHudCrewPower", "Crewmate Power", Round(crewOptions.MaxCrewPower.Value));
+        AppendLocalizedCount(builder, CrewColor, "ExtensionDraftHudCrewProtective", "Crewmate Protective", Round(crewOptions.MaxCrewProtective.Value));
+        AppendLocalizedCount(builder, CrewColor, "ExtensionDraftHudCrewSupport", "Crewmate Support", Round(crewOptions.MaxCrewSupport.Value));
 
-        AppendColoredLine(builder, ImpColor, $"Impostors: {impTotal}");
-        AppendColoredLine(builder, ImpColor, $"Impostor Concealing: {Round(impOptions.MaxImpConcealing.Value)}");
-        AppendColoredLine(builder, ImpColor, $"Impostor Killing: {Round(impOptions.MaxImpKilling.Value)}");
-        AppendColoredLine(builder, ImpColor, $"Impostor Power: {Round(impOptions.MaxImpPower.Value)}");
-        AppendColoredLine(builder, ImpColor, $"Impostor Support: {Round(impOptions.MaxImpSupport.Value)}");
+        AppendLocalizedCount(builder, ImpColor, "ExtensionDraftHudImpostors", "Impostors", impTotal);
+        AppendLocalizedCount(builder, ImpColor, "ExtensionDraftHudImpConcealing", "Impostor Concealing", Round(impOptions.MaxImpConcealing.Value));
+        AppendLocalizedCount(builder, ImpColor, "ExtensionDraftHudImpKilling", "Impostor Killing", Round(impOptions.MaxImpKilling.Value));
+        AppendLocalizedCount(builder, ImpColor, "ExtensionDraftHudImpPower", "Impostor Power", Round(impOptions.MaxImpPower.Value));
+        AppendLocalizedCount(builder, ImpColor, "ExtensionDraftHudImpSupport", "Impostor Support", Round(impOptions.MaxImpSupport.Value));
 
-        AppendColoredLine(builder, NeutralColor, $"Neutrals: {neutralTotal}");
-        AppendColoredLine(builder, NeutralColor, $"Neutral Benign: {Round(neutralOptions.MaxNeutralBenign.Value)}");
-        AppendColoredLine(builder, NeutralColor, $"Neutral Evil: {Round(neutralOptions.MaxNeutralEvil.Value)}");
-        AppendColoredLine(builder, NeutralColor, $"Neutral Killing: {Round(neutralOptions.MaxNeutralKillingRoles.Value)}");
-        AppendColoredLine(builder, NeutralColor, $"Neutral Outlier: {Round(neutralOptions.MaxNeutralOutlier.Value)}");
+        AppendLocalizedCount(builder, NeutralColor, "ExtensionDraftHudNeutrals", "Neutrals", neutralTotal);
+        AppendLocalizedCount(builder, NeutralColor, "ExtensionDraftHudNeutralBenign", "Neutral Benign", Round(neutralOptions.MaxNeutralBenign.Value));
+        AppendLocalizedCount(builder, NeutralColor, "ExtensionDraftHudNeutralEvil", "Neutral Evil", Round(neutralOptions.MaxNeutralEvil.Value));
+        AppendLocalizedCount(builder, NeutralColor, "ExtensionDraftHudNeutralKilling", "Neutral Killing", Round(neutralOptions.MaxNeutralKillingRoles.Value));
+        AppendLocalizedCount(builder, NeutralColor, "ExtensionDraftHudNeutralOutlier", "Neutral Outlier", Round(neutralOptions.MaxNeutralOutlier.Value));
+    }
+
+    private static void AppendLocalizedCount(StringBuilder builder, string color, string key, string fallback, int count)
+    {
+        AppendColoredLine(builder, color, $"{TouLocale.Get(key, fallback)}: {count}");
     }
 
     private static void AppendColoredLine(StringBuilder builder, string color, string line)
@@ -255,7 +262,8 @@ public static class DraftRoleListHudPatch
     {
         if (slot == DraftRoleListOption.CrewNeu)
         {
-            return "<color=#8CFFFF>Crewmate</color> + <color=#B8B8B8>Neutral</color>";
+            return $"<color=#8CFFFF>{TouLocale.Get("ExtensionDraftHudCrewmate", "Crewmate")}</color> + " +
+                   $"<color=#B8B8B8>{TouLocale.Get("Neutral", "Neutral")}</color>";
         }
 
         if (RoleListSlotTextCache.TryGetValue(slot, out var cached))

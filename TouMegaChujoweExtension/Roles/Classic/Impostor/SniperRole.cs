@@ -116,6 +116,8 @@ public sealed class SniperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
             volume = 1f;
         }
 
+        if (!Constants.ShouldPlaySfx()) return;
+
         var source = SoundManager.Instance.PlaySound(clip, false, Mathf.Clamp(volume, 0.05f, 1f));
         if (source != null)
         {

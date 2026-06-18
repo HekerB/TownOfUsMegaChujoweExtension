@@ -14,6 +14,7 @@
   
   <!-- Use Polish Language -->
   <string name="ExtensionLocalSettingUsePolishLanguage">Use Polish Language</string>
+  <string name="ExtensionLocalSettingTranslateRoleNames">Translate Role Names</string>
   
   <!-- Use Role Color for Map -->
   <string name="ExtensionLocalSettingMapColor">Map Outline Color</string>
@@ -171,7 +172,7 @@
   <string name="ExtensionRoleShifterWikiDescription">You can steal a player's role, but if you try to steal an Impostor/Neutral role you will commit suicide instantly.</string>
   <string name="ExtensionRoleShifterShift">Shift</string>
   <string name="ExtensionRoleShifterShiftWikiDescription">Select a player to steal their role at the next meeting.</string>
-  <string name="ExtensionShifterRoleStolenIntro">YOUR ROLE HAS BEEN STOLEN!</string>
+  <string name="ExtensionShifterRoleStolenIntro">ROLE STOLEN</string>
 
   <!-- Shifter Options -->
   <string name="ExtensionOptionShifterCooldown">Shift Cooldown</string>
@@ -308,6 +309,9 @@
 
   <!-- Pirate Notifications -->
   <string name="ExtensionPirateDuelNotification">You are being dueled by the Pirate!</string>
+  <string name="ExtensionPirateCompletedDuelsOwner">You have successfully completed your duels as the {0}! You will now spectate and win with the winning team.</string>
+  <string name="ExtensionPirateCompletedDuelsOther">The {0}, {1}, has completed all required duels!</string>
+  <string name="ExtensionPirateDuelsWonCounter">Duels won: {0} / {1}</string>
   <string name="ExtensionPirateDuelJailedPirateNotif">You are jailed! Your duel has been cancelled.</string>
   <string name="ExtensionPirateDuelJailedTargetNotif">Your duel target is jailed! Duel cancelled.</string>
   <string name="ExtensionPirateCantDuelSamePersonTwiceNotif">You can't duel the same person twice in a row.</string>
@@ -836,6 +840,80 @@
   <string name="ExtensionDraftModeAutoSelect">Auto-selecting in</string>
   <string name="ExtensionDraftModeTurnsUntil">turns until your pick</string>
   <string name="ExtensionDraftModePlayerPicks">Player Picks:</string>
+  <string name="ExtensionDraftModeHeader">DRAFT MODE</string>
+  <string name="ExtensionDraftModeVanillaMode">VANILLA MODE</string>
+  <string name="ExtensionDraftModeBy">BY</string>
+  <string name="ExtensionDraftModeMute">MUTE</string>
+  <string name="ExtensionDraftModeUnmute">UNMUTE</string>
+  <string name="ExtensionDraftModeCancel">CANCEL</string>
+  <string name="ExtensionDraftModeStart">START</string>
+  <string name="ExtensionDraftModeSystem">SYSTEM</string>
+  <string name="ExtensionDraftModePlayer">Player</string>
+  <string name="ExtensionDraftModeYou">YOU</string>
+  <string name="ExtensionDraftModeDisconnected">Disconnected</string>
+  <string name="ExtensionDraftModeReady">READY</string>
+  <string name="ExtensionDraftModePicking">PICKING</string>
+  <string name="ExtensionDraftModeRandomTooltip">Gives you a completely random role from the allowed pool.</string>
+  <string name="ExtensionDraftModeComplete">DRAFT COMPLETE!</string>
+  <string name="ExtensionDraftModeGameStarting">GAME IS STARTING!</string>
+  <string name="ExtensionDraftModeTimeLeft">Time Left</string>
+  <string name="ExtensionDraftModeSecondsShort">s</string>
+  <string name="ExtensionDraftModeWaitingForTurn">WAITING FOR YOUR TURN</string>
+  <string name="ExtensionDraftModeEnabled">Enabled</string>
+  <string name="ExtensionDraftModeDisabled">Disabled</string>
+  <string name="ExtensionDraftModeOther">Other</string>
+  <string name="ExtensionDraftModeKilling">Killing</string>
+  <string name="ExtensionDraftModeMin">Min</string>
+  <string name="ExtensionDraftModeMax">Max</string>
+  <string name="ExtensionDraftHudCrewmate">Crewmate</string>
+  <string name="ExtensionDraftHudCrewmates">Crewmates</string>
+  <string name="ExtensionDraftHudCrewInvestigative">Crewmate Investigative</string>
+  <string name="ExtensionDraftHudCrewKilling">Crewmate Killing</string>
+  <string name="ExtensionDraftHudCrewPower">Crewmate Power</string>
+  <string name="ExtensionDraftHudCrewProtective">Crewmate Protective</string>
+  <string name="ExtensionDraftHudCrewSupport">Crewmate Support</string>
+  <string name="ExtensionDraftHudImpostors">Impostors</string>
+  <string name="ExtensionDraftHudImpConcealing">Impostor Concealing</string>
+  <string name="ExtensionDraftHudImpKilling">Impostor Killing</string>
+  <string name="ExtensionDraftHudImpPower">Impostor Power</string>
+  <string name="ExtensionDraftHudImpSupport">Impostor Support</string>
+  <string name="ExtensionDraftHudNeutrals">Neutrals</string>
+  <string name="ExtensionDraftHudNeutralBenign">Neutral Benign</string>
+  <string name="ExtensionDraftHudNeutralEvil">Neutral Evil</string>
+  <string name="ExtensionDraftHudNeutralKilling">Neutral Killing</string>
+  <string name="ExtensionDraftHudNeutralOutlier">Neutral Outlier</string>
+  <string name="ExtensionDraftOptionPoolMode">Draft Pool Mode</string>
+  <string name="ExtensionDraftPoolModeOld">Old Draft</string>
+  <string name="ExtensionDraftPoolModeMinMax">Min/Max</string>
+  <string name="ExtensionDraftPoolModeRoleList">Role List</string>
+  <string name="ExtensionDraftOptionUseRoleChances">Use Role Chances</string>
+  <string name="ExtensionDraftOptionExcludePreviousRoles">Exclude Previous Game Roles</string>
+  <string name="ExtensionDraftOptionReduceKillingStreak">Reduce Killing Streak</string>
+  <string name="ExtensionDraftOptionReductionChance">Impostor &amp; Neutral Killing Reduction</string>
+  <string name="ExtensionDraftOldSettingsGroup">Old Draft Settings</string>
+  <string name="ExtensionDraftCrewmateSettingsGroup">Draft Crewmate Settings</string>
+  <string name="ExtensionDraftImpostorSettingsGroup">Draft Impostor Settings</string>
+  <string name="ExtensionDraftNeutralSettingsGroup">Draft Neutral Settings</string>
+  <string name="ExtensionDraftRoleListSettingsGroup">Draft Role List Settings</string>
+  <string name="ExtensionDraftOptionMinNeutralsPerChoice">Min Neutrals Per Choice</string>
+  <string name="ExtensionDraftOptionMaxNeutralsPerChoice">Max Neutrals Per Choice</string>
+  <string name="ExtensionDraftOptionMinOtherNeutrals">Min Other Neutrals</string>
+  <string name="ExtensionDraftOptionMaxOtherNeutrals">Max Other Neutrals</string>
+  <string name="ExtensionDraftOptionMinNeutralKilling">Min Neutral Killing</string>
+  <string name="ExtensionDraftOptionMaxNeutralKilling">Max Neutral Killing</string>
+  <string name="ExtensionDraftOptionMaxInvestigative">Max Investigative Roles</string>
+  <string name="ExtensionDraftOptionMaxKilling">Max Killing Roles</string>
+  <string name="ExtensionDraftOptionMaxPower">Max Power Roles</string>
+  <string name="ExtensionDraftOptionMaxProtective">Max Protective Roles</string>
+  <string name="ExtensionDraftOptionMaxSupport">Max Support Roles</string>
+  <string name="ExtensionDraftOptionMaxImpostorsTotal">Max Impostors Total</string>
+  <string name="ExtensionDraftOptionMaxConcealing">Max Concealing Roles</string>
+  <string name="ExtensionDraftOptionMaxNeutralTotal">Max Neutral Roles</string>
+  <string name="ExtensionDraftOptionMaxBenign">Max Benign Roles</string>
+  <string name="ExtensionDraftOptionMaxEvil">Max Evil Roles</string>
+  <string name="ExtensionDraftOptionMaxNeutralKillingRoles">Max Neutral Killing Roles</string>
+  <string name="ExtensionDraftOptionMaxOutlier">Max Outlier Roles</string>
+  <string name="ExtensionDraftOptionSlot">Slot</string>
   <string name="Reduce Killing Streak">Reduce Killing Streak</string>
   <string name="Impostor">Impostor</string>
   <string name="Neutral">Neutral</string>
@@ -1715,7 +1793,11 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionVoodooEffectBlindness">Blind</string>
   <string name="ExtensionVoodooEffectMute">Mute</string>
   <string name="ExtensionVoodooEffectConfuse">Confuse</string>
-  <string name="ExtensionVoodooMuteAlert">You have been cursed by the Voodoo Master. Only you will see this, and you will be muted next meeting!</string>
+  <string name="ExtensionVoodooMuteAlert">You have been cursed by the Voodoo Master. Only you can see this, and you are muted this meeting!</string>
+  <string name="ExtensionVoodooMuteWarningTitle">MUTE ALERT</string>
+  <string name="ExtensionVoodooMuteScheduledTitle">Voodoo Charm</string>
+  <string name="ExtensionVoodooMuteScheduledAlert">The Voodoo Master has charmed you. Only you know about this curse.\%nl\%During the next meeting you cannot chat, but you can still vote.</string>
+  <string name="ExtensionVoodooMuteChatBlocked">Muted by Voodoo — chat disabled.</string>
   <string name="ExtensionVoodooMutedIntro">YOU ARE MUTED!</string>
 
   <!-- Inverter Role -->

@@ -7,6 +7,7 @@ using Object = UnityEngine.Object;
 using Reactor.Utilities;
 using System.Collections.Generic;
 using TMPro;
+using TownOfUs.Modules.Localization;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace TouMegaChujoweExtension.Patches.Draft;
 [HarmonyPatch]
 public static class DraftLobbyPatch
 {
+    private static string Localize(string key, string fallback) => TouLocale.Get(key, fallback);
+
     // === UI ===
     private static GameObject? _draftContainer;
     private static GameObject? _overlayBackground;
@@ -72,7 +75,7 @@ public static class DraftLobbyPatch
     private static readonly float _crossfadeDuration = 1.25f;
     private static bool _isCrossfading;
 
-    private static readonly float _musicVolume = 0.25f;
+    private static readonly float _musicVolume = 0.75f;
     private static readonly float _musicPitch = 1f;
 
     private static float _crossfadeFromVol = 0.25f;
@@ -805,6 +808,7 @@ public static class DraftLobbyPatch
             Object.DontDestroyOnLoad(obj);
 
             _draftMusicSourceA = obj.AddComponent<AudioSource>();
+            _draftMusicSourceA.outputAudioMixerGroup = SoundManager.Instance.MusicChannel;
             _draftMusicSourceA.loop = true;
             _draftMusicSourceA.playOnAwake = false;
             _draftMusicSourceA.spatialBlend = 0f;
@@ -815,6 +819,7 @@ public static class DraftLobbyPatch
             _draftMusicSourceA.Play();
 
             _draftMusicSourceB = obj.AddComponent<AudioSource>();
+            _draftMusicSourceB.outputAudioMixerGroup = SoundManager.Instance.MusicChannel;
             _draftMusicSourceB.loop = true;
             _draftMusicSourceB.playOnAwake = false;
             _draftMusicSourceB.spatialBlend = 0f;
@@ -965,6 +970,8 @@ public static class DraftLobbyPatch
 
     private static bool PlayDraftAlertClip()
     {
+        if (!Constants.ShouldPlaySfx()) return false;
+
         var clip = FindTimeToHideClip();
         if (clip != null)
         {
@@ -993,6 +1000,7 @@ public static class DraftLobbyPatch
     private static void TryPlayPickerAlert()
     {
         if (!_draftInProgress) return;
+        if (!Constants.ShouldPlaySfx()) return;
         if (DraftSystem.PickOrder.Count == 0) return;
 
         var picker = DraftSystem.CurrentPicker;
@@ -1077,7 +1085,7 @@ public static class DraftLobbyPatch
             2 => "KAJOJAJO",
             _ => "HEKER"
         };
-        titleText.text = $"<size=130%><b>DRAFT MODE</b></size>\nBY {startAuthor}";
+        titleText.text = $"<size=130%><b>{Localize("ExtensionDraftModeHeader", "DRAFT MODE")}</b></size>\n{Localize("ExtensionDraftModeBy", "BY")} {startAuthor}";
         _draftTitleText = titleText;
         if (!_isTitleAnimRunning) Coroutines.Start(CoAnimateDraftTitle());
 
@@ -1420,7 +1428,9 @@ public static class DraftLobbyPatch
         textObj.layer = LayerMask.NameToLayer("UI");
 
         var text = textObj.AddComponent<TextMeshPro>();
-        text.text = _isMusicMuted ? "UNMUTE" : "MUTE";
+        text.text = _isMusicMuted
+            ? Localize("ExtensionDraftModeUnmute", "UNMUTE")
+            : Localize("ExtensionDraftModeMute", "MUTE");
         text.fontSize = 1.2f;
         text.alignment = TextAlignmentOptions.Center;
         text.color = _isMusicMuted ? Color.red : Color.green;
@@ -1439,7 +1449,9 @@ public static class DraftLobbyPatch
             _isMusicMuted = !_isMusicMuted;
             if (_draftMusicSourceA != null) _draftMusicSourceA.mute = _isMusicMuted;
             if (_draftMusicSourceB != null) _draftMusicSourceB.mute = _isMusicMuted;
-            text.text = _isMusicMuted ? "UNMUTE" : "MUTE";
+            text.text = _isMusicMuted
+                ? Localize("ExtensionDraftModeUnmute", "UNMUTE")
+                : Localize("ExtensionDraftModeMute", "MUTE");
             text.color = _isMusicMuted ? Color.red : Color.green;
         }));
 
@@ -1518,7 +1530,7 @@ public static class DraftLobbyPatch
         textObj.layer = LayerMask.NameToLayer("UI");
 
         var text = textObj.AddComponent<TextMeshPro>();
-        text.text = "CANCEL";
+        text.text = Localize("ExtensionDraftModeCancel", "CANCEL");
         text.fontSize = 0.9f;
         text.alignment = TextAlignmentOptions.Center;
         text.color = Color.white;
@@ -1590,7 +1602,7 @@ public static class DraftLobbyPatch
         textObj.layer = LayerMask.NameToLayer("UI");
 
         var text = textObj.AddComponent<TextMeshPro>();
-        text.text = "START";
+        text.text = Localize("ExtensionDraftModeStart", "START");
         text.fontSize = 0.9f;
         text.alignment = TextAlignmentOptions.Center;
         text.color = Color.white;
@@ -1673,7 +1685,7 @@ public static class DraftLobbyPatch
             pooledBubble.SetLeft();
             pooledBubble.SetCosmetics(player.Data);
 
-            pooledBubble.NameText.text = "<color=#FFD700>SYSTEM</color>";
+            pooledBubble.NameText.text = $"<color=#FFD700>{Localize("ExtensionDraftModeSystem", "SYSTEM")}</color>";
             pooledBubble.NameText.color = Color.white;
             pooledBubble.votedMark.enabled = false;
             pooledBubble.Xmark.enabled = false;
@@ -1790,16 +1802,24 @@ public static class DraftLobbyPatch
             bool hasPicked = DraftSystem.DraftPicks.ContainsKey(pid);
             bool isDisconnected = _disconnectedDuringDraft.Contains(pid);
 
-            string name = $"<b>Player {num}</b>";
-            string prefix = isMe ? "<color=#AAAAFF>(YOU)</color>" : "";
+            string name = $"<b>{Localize("ExtensionDraftModePlayer", "Player")} {num}</b>";
+            string prefix = isMe
+                ? $"<color=#AAAAFF>({Localize("ExtensionDraftModeYou", "YOU")})</color>"
+                : "";
 
             if (isDisconnected)
             {
-                _playerListBuilder.Append(prefix).Append("<pos=12%><color=#FF4444><s>").Append(name).Append("</s></color><pos=35%>: <color=#FF4444>Disconnected</color>\n");
+                _playerListBuilder.Append(prefix).Append("<pos=12%><color=#FF4444><s>").Append(name)
+                    .Append("</s></color><pos=35%>: <color=#FF4444>")
+                    .Append(Localize("ExtensionDraftModeDisconnected", "Disconnected"))
+                    .Append("</color>\n");
             }
             else if (hasPicked)
             {
-                _playerListBuilder.Append(prefix).Append("<pos=12%><color=#888888>").Append(name).Append("</color><pos=35%>: <color=#44AA44>READY</color>\n");
+                _playerListBuilder.Append(prefix).Append("<pos=12%><color=#888888>").Append(name)
+                    .Append("</color><pos=35%>: <color=#44AA44>")
+                    .Append(Localize("ExtensionDraftModeReady", "READY"))
+                    .Append("</color>\n");
             }
             else if (isPicker)
             {
@@ -1813,7 +1833,8 @@ public static class DraftLobbyPatch
                 string voffset = $"<voffset={jump:F2}em>";
 
                 _playerListBuilder.Append("<color=").Append(timerColor).Append('>').Append(voffset).Append(">>").Append(Mathf.CeilToInt(timeLeft)).Append("</voffset></color>")
-                                 .Append("<pos=12%><color=#FFFFFF>").Append(name).Append("</color><pos=35%>: <color=").Append(timerColor).Append(">PICKING").Append(dots).Append("</color>\n");
+                                 .Append("<pos=12%><color=#FFFFFF>").Append(name).Append("</color><pos=35%>: <color=").Append(timerColor).Append('>')
+                                 .Append(Localize("ExtensionDraftModePicking", "PICKING")).Append(dots).Append("</color>\n");
             }
             else
             {
@@ -2345,7 +2366,9 @@ public static class DraftLobbyPatch
         labelObj.transform.localPosition = new(0.15f, 0f, -0.02f);
         labelObj.layer = LayerMask.NameToLayer("UI");
 
-        string labelText = (isRandom || role == null) ? "RANDOM" : role.GetRoleName().ToUpper(System.Globalization.CultureInfo.InvariantCulture);
+        string labelText = (isRandom || role == null)
+            ? Localize("ExtensionDraftModeRandomRole", "RANDOM").ToUpper(System.Globalization.CultureInfo.InvariantCulture)
+            : GetLocalizedRoleName(role).ToUpper(System.Globalization.CultureInfo.InvariantCulture);
         if (!isRandom && role != null)
         {
             try
@@ -2412,12 +2435,16 @@ public static class DraftLobbyPatch
             {
                 if (isRandom)
                 {
-                    _tooltipText.text = "Gives you a completely random role from the allowed pool.";
+                    _tooltipText.text = Localize(
+                        "ExtensionDraftModeRandomTooltip",
+                        "Gives you a completely random role from the allowed pool.");
                 }
                 else
                 {
                     var desc = role != null ? GetRoleDescription(role) : null;
-                    string fallbackText = role != null ? role.GetRoleName() : "Random Role";
+                    string fallbackText = role != null
+                        ? GetLocalizedRoleName(role)
+                        : Localize("ExtensionDraftModeRandomRole", "Random Role");
                     _tooltipText.text = !string.IsNullOrEmpty(desc) ? desc : fallbackText;
                 }
             }
@@ -2563,7 +2590,15 @@ public static class DraftLobbyPatch
 
     private static void PlayPickSound()
     {
+        if (!Constants.ShouldPlaySfx()) return;
         try { SoundManager.Instance.PlaySound(TouExtensionAudio.DraftPickSound.LoadAsset(), false); } catch (System.Exception) { /* ignore sound error */ }
+    }
+
+    private static string GetLocalizedRoleName(RoleBehaviour role)
+    {
+        return role is TownOfUs.Roles.ITownOfUsRole touRole
+            ? touRole.RoleName
+            : role.GetRoleName();
     }
 
     private static AudioClip? FindHoverSound()
@@ -2588,6 +2623,8 @@ public static class DraftLobbyPatch
 
     private static void PlayHoverSound()
     {
+        if (!Constants.ShouldPlaySfx()) return;
+
         try
         {
             var clip = FindHoverSound();
@@ -2659,8 +2696,8 @@ public static class DraftLobbyPatch
         if (_draftCompleteText != null)
         {
             _draftCompleteText.text =
-                "<size=170%><color=#00FF00><b>DRAFT COMPLETE!</b></color></size>\n" +
-                "<size=140%><color=#FFFFFF><b>GAME IS STARTING!1!</b></size>";
+                $"<size=170%><color=#00FF00><b>{Localize("ExtensionDraftModeComplete", "DRAFT COMPLETE!")}</b></color></size>\n" +
+                $"<size=140%><color=#FFFFFF><b>{Localize("ExtensionDraftModeGameStarting", "GAME IS STARTING!")}</b></size>";
         }
         yield return CoAnimateDraftComplete();
     }
@@ -2704,7 +2741,9 @@ public static class DraftLobbyPatch
                 }
 
                 if (_draftTitleText == null) yield break;
-                _draftTitleText.text = $"<size=130%><b>DRAFT MODE</b></size>\nBY {targetAuthor}";
+                _draftTitleText.text =
+                    $"<size=130%><b>{Localize("ExtensionDraftModeHeader", "DRAFT MODE")}</b></size>\n" +
+                    $"{Localize("ExtensionDraftModeBy", "BY")} {targetAuthor}";
                 elapsed = 0f;
 
                 
@@ -2773,7 +2812,8 @@ public static class DraftLobbyPatch
             if (iAmPickingNow)
             {
                 var color = timeLeft <= 4.0f ? "#FF4444" : "#ffffff";
-                _timerText.text = $"<color={color}>Time Left: {Mathf.CeilToInt(timeLeft)}s</color>";
+                _timerText.text =
+                    $"<color={color}>{Localize("ExtensionDraftModeTimeLeft", "Time Left")}: {Mathf.CeilToInt(timeLeft)}{Localize("ExtensionDraftModeSecondsShort", "s")}</color>";
 
                 if (timeLeft <= 4.0f)
                 {
@@ -2796,7 +2836,7 @@ public static class DraftLobbyPatch
                 int currentPickNumber = Mathf.Clamp(totalPicks - remainingPicks + 1, 1, Mathf.Max(1, totalPicks));
 
                 _draftCompleteText.text =
-                    "<size=120%><color=#AAAAAA><b>WAITING FOR YOUR TURN</b></color></size>\n" +
+                    $"<size=120%><color=#AAAAAA><b>{Localize("ExtensionDraftModeWaitingForTurn", "WAITING FOR YOUR TURN")}</b></color></size>\n" +
                     $"<size=105%><color=#FFFFFF>{currentPickNumber}/{totalPicks}</color></size>";
 
                 _draftCompleteText.gameObject.SetActive(true);
@@ -2814,16 +2854,19 @@ public static class DraftLobbyPatch
             _countdownSoundTimer -= Time.deltaTime;
             if (_countdownSoundTimer <= 0f)
             {
-                try
+                if (Constants.ShouldPlaySfx())
                 {
-                    var pitch = 1.5f - (timeLeft / 10f) / 2f;
-                    SoundManager.Instance.PlaySoundImmediate(
-                        GameManagerCreator.Instance.HideAndSeekManagerPrefab.FinalHideCountdownSFX,
-                        false, 1f, pitch, SoundManager.Instance.SfxChannel);
-                }
-                catch (System.Exception ex)
-                {
-                    Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"Draft countdown sound error: {ex.Message}");
+                    try
+                    {
+                        var pitch = 1.5f - (timeLeft / 10f) / 2f;
+                        SoundManager.Instance.PlaySoundImmediate(
+                            GameManagerCreator.Instance.HideAndSeekManagerPrefab.FinalHideCountdownSFX,
+                            false, 1f, pitch, SoundManager.Instance.SfxChannel);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Error($"Draft countdown sound error: {ex.Message}");
+                    }
                 }
 
                 _countdownSoundTimer = 1f;

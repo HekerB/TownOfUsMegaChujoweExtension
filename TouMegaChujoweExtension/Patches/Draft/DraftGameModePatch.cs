@@ -1,6 +1,7 @@
 using HarmonyLib;
 using MiraAPI.GameOptions;
 using TMPro;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -9,9 +10,6 @@ namespace TouMegaChujoweExtension.Patches.Draft;
 [HarmonyPatch]
 public static class DraftGameModePatch
 {
-    private const string DraftModeText = "<color=#00FF00>DRAFT MODE</color>";
-    private const string VanillaModeText = "<color=#FF0000>VANILLA MODE</color>";
-
     private static TextMeshPro? _cachedModeText;
     private static bool? _lastDraftMode;
     private static int _cachedDraftModeFrame = -1;
@@ -77,7 +75,9 @@ public static class DraftGameModePatch
         }
 
         var isDraftMode = IsDraftMode();
-        var desiredText = isDraftMode ? DraftModeText : VanillaModeText;
+        var desiredText = isDraftMode
+            ? $"<color=#00FF00>{TouLocale.Get("ExtensionDraftModeHeader", "DRAFT MODE")}</color>"
+            : $"<color=#FF0000>{TouLocale.Get("ExtensionDraftModeVanillaMode", "VANILLA MODE")}</color>";
         if (_lastDraftMode == isDraftMode && _cachedModeText.text == desiredText)
         {
             return;

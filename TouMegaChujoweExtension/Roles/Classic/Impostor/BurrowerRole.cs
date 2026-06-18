@@ -375,6 +375,6 @@ public sealed class BurrowerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         }
 
         var volume = Mathf.Clamp01(1f - distance / BurrowSoundRadius) * BurrowSoundVolume;
-        SoundManager.Instance.PlaySound(TouAudio.MineSound.LoadAsset(), false, volume);
+        TouAudio.PlaySound(TouAudio.MineSound, volume);
     }
 }

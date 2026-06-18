@@ -94,11 +94,7 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
         if (PlayerControl.LocalPlayer == null || detonator == null) return;
         if (PlayerControl.LocalPlayer.PlayerId != detonator.PlayerId) return;
 
-        var clip = TouAudio.TrackerActivateSound.LoadAsset();
-        if (clip != null)
-        {
-            SoundManager.Instance.PlaySound(clip, false, 1f);
-        }
+        TouAudio.PlaySound(TouAudio.TrackerActivateSound);
     }
 
     [MethodRpc((uint)ExtensionRpc.DetonatorDetonate)]
@@ -138,7 +134,6 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
     }
 
     private static AudioClip? _cachedBeep;
-    private static AudioClip? _cachedTrackerDeactivate;
 
     public static void PlayBeep(PlayerControl victim, byte detonatorId, float volume)
     {
@@ -146,7 +141,7 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
         _cachedBeep ??= TouExtensionAudio.C4Beep.LoadAsset();
         var clip = _cachedBeep;
-        if (clip == null) return;
+        if (clip == null || !Constants.ShouldPlaySfx()) return;
 
         var local = PlayerControl.LocalPlayer;
         bool isDetonator = local.PlayerId == detonatorId;
@@ -175,12 +170,7 @@ public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOf
 
         if (PlayerControl.LocalPlayer.PlayerId == detonator.PlayerId)
         {
-            _cachedTrackerDeactivate ??= TouAudio.TrackerDeactivateSound.LoadAsset();
-            var clip = _cachedTrackerDeactivate;
-            if (clip != null)
-            {
-                SoundManager.Instance.PlaySound(clip, false, 1f);
-            }
+            TouAudio.PlaySound(TouAudio.TrackerDeactivateSound);
         }
     }
 

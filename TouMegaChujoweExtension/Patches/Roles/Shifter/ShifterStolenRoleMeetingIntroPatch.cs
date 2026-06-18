@@ -72,7 +72,7 @@ public static class ShifterStolenRoleMeetingIntroPatch
         var previousPosition = emblem.transform.localPosition;
         var previousDuration = emblem.HoldDuration;
         var previousText = emblem.TextImage.text;
-        var introText = TouLocale.Get("ExtensionShifterRoleStolenIntro", "YOUR ROLE HAS BEEN STOLEN!");
+        var introText = TouLocale.Get("ExtensionShifterRoleStolenIntro", "ROLE STOLEN");
 
         emblem.transform.localPosition = new Vector3(
             emblem.transform.localPosition.x,

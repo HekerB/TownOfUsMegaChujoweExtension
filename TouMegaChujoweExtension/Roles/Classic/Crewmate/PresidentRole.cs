@@ -246,7 +246,10 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
         if (Player.AmOwner)
         {
-            SoundManager.Instance.PlaySound(meeting.VoteLockinSound, false);
+            if (Constants.ShouldPlaySfx())
+            {
+                SoundManager.Instance.PlaySound(meeting.VoteLockinSound, false);
+            }
 
             meeting.SkipVoteButton.voteComplete = true;
             meeting.SkipVoteButton.gameObject.SetActive(false);

@@ -236,7 +236,7 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
     {
         try
         {
-            SoundManager.Instance.PlaySound(TouAudio.DiscoveredSound.LoadAsset(), false, 1f);
+            TouAudio.PlaySound(TouAudio.DiscoveredSound);
             Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Joker));
 
             Helpers.CreateAndShowNotification(
