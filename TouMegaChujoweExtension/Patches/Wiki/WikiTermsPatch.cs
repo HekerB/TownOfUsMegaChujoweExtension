@@ -1,82 +1,47 @@
 using HarmonyLib;
 using MiraAPI.GameOptions;
 using System.Collections.Generic;
-using System.Reflection;
 using System;
 using TownOfUs.Assets;
-using TownOfUs.Options.Maps;
+using TownOfUs.Modules.Wiki;
 using TownOfUs.Options;
+using TownOfUs.Options.Maps;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 
 namespace TouMegaChujoweExtension.Patches.Wiki;
 
-[HarmonyPatch]
+[HarmonyPatch(typeof(IngameWikiMinigame), nameof(IngameWikiMinigame.AddNewTerms))]
 public static class WikiTermsPatch
 {
-    public static MethodInfo TargetMethod()
-    {
-        var wikiType = AccessTools.TypeByName("TownOfUs.Modules.Wiki.IngameWikiMinigame");
-        return AccessTools.Method(wikiType, "AddNewTerms");
-    }
-
     [HarmonyPostfix]
-    public static void Postfix(object __0)
+    public static void Postfix(IngameWikiMinigame __0)
     {
         try
         {
-            var wikiType = AccessTools.TypeByName("TownOfUs.Modules.Wiki.IngameWikiMinigame");
-            var termType = AccessTools.TypeByName("TownOfUs.Modules.Wiki.TermWikiInfo");
-
-            if (wikiType == null || termType == null)
-            {
-                Warning("Wiki types not found - skipping TOUMCE terms");
-                return;
-            }
-
-            var termsField = AccessTools.Field(wikiType, "_activeTerms");
-            var termsList = termsField?.GetValue(__0);
-            var addMethod = termsList?.GetType().GetMethod("Add");
-
-            if (addMethod == null)
-            {
-                Warning("_activeTerms.Add not found");
-                return;
-            }
-
-            // Page 1: Symbols
-            var symbolsTerm = Activator.CreateInstance(termType,
+            __0._activeTerms.Add(new TermWikiInfo(
                 "TOUMCETermsSymbolsTitle",
                 "TOUMCETermsSymbolsInfo",
-                (object)TouRoleIcons.Lawyer);
-            addMethod.Invoke(termsList, [symbolsTerm]);
+                TouRoleIcons.Lawyer));
 
-            // Page 2: Shield Flashes
-            var flashesTerm = Activator.CreateInstance(termType,
+            __0._activeTerms.Add(new TermWikiInfo(
                 "TOUMCETermsShieldFlashesTitle",
                 "TOUMCETermsShieldFlashesInfo",
-                (object)TouRoleIcons.Medic);
-            addMethod.Invoke(termsList, [flashesTerm]);
+                TouRoleIcons.Medic));
 
-            // Page 3: Draft Mode
-            var draftModeTerm = Activator.CreateInstance(termType,
+            __0._activeTerms.Add(new TermWikiInfo(
                 "TOUMCETermsDraftModeTitle",
                 "TOUMCETermsDraftModeInfo",
-                (object)TouRoleIcons.Traitor);
-            addMethod.Invoke(termsList, [draftModeTerm]);
+                TouRoleIcons.Traitor));
 
-            // Page 4: Apocalypse
-            var apocalypseTerm = Activator.CreateInstance(termType,
+            __0._activeTerms.Add(new TermWikiInfo(
                 "TOUMCETermsApocalypseTitle",
                 "TOUMCETermsApocalypseInfo",
-                (object)TouRoleIcons.Pestilence);
-            addMethod.Invoke(termsList, [apocalypseTerm]);
+                TouRoleIcons.Pestilence));
 
-            // Page 5: Draft Factions
-            var draftFactionsTerm = Activator.CreateInstance(termType,
+            __0._activeTerms.Add(new TermWikiInfo(
                 "TOUMCETermsDraftFactionsTitle",
                 "TOUMCETermsDraftFactionsInfo",
-                (object)TouRoleIcons.Jackal);
-            addMethod.Invoke(termsList, [draftFactionsTerm]);
+                TouRoleIcons.Jackal));
 
             Info("TOUMCE wiki terms added successfully");
         }
@@ -87,67 +52,63 @@ public static class WikiTermsPatch
     }
 }
 
-[HarmonyPatch]
+[HarmonyPatch(typeof(IngameWikiMinigame), nameof(IngameWikiMinigame.AddNewSettings))]
 public static class WikiSettingsPatch
 {
-    public static MethodInfo TargetMethod()
-    {
-        var wikiType = AccessTools.TypeByName("TownOfUs.Modules.Wiki.IngameWikiMinigame");
-        return AccessTools.Method(wikiType, "AddNewSettings");
-    }
-
     [HarmonyPostfix]
-    public static void Postfix(object __0)
+    public static void Postfix(IngameWikiMinigame __0)
     {
         try
         {
-            var wikiType = AccessTools.TypeByName("TownOfUs.Modules.Wiki.IngameWikiMinigame");
-            var infoType = AccessTools.TypeByName("TownOfUs.Modules.Wiki.OptionWikiInfo");
-
-            if (wikiType == null || infoType == null) return;
-
-            var settingsField = AccessTools.Field(wikiType, "_activeSettings");
-            var settingsList = settingsField?.GetValue(__0);
-            var addMethod = settingsList?.GetType().GetMethod("Add");
-
-            if (addMethod == null) return;
-
-            // Create List<AbstractOptionGroup>
-            var draftGroupList = new List<MiraAPI.GameOptions.AbstractOptionGroup>
+            var draftGroupList = new List<MiraAPI.GameOptions.AbstractOptionGroup>();
+            var draftOpt = OptionGroupSingleton<TouMegaChujoweExtension.Options.DraftModeOptions>.Instance;
+            if (draftOpt != null)
             {
-                MiraAPI.GameOptions.OptionGroupSingleton<TouMegaChujoweExtension.Options.DraftModeOptions>.Instance
-            };
+                draftGroupList.Add(draftOpt);
+            }
 
-            // Create OptionWikiInfo for Draft
-            var draftSettings = Activator.CreateInstance(infoType,
-                "TOUMCETermsDraftModeTitle",
-                draftGroupList,
-                (object)TouExtensionIcons.HackerRole,
-                false);
-
-            addMethod.Invoke(settingsList, [draftSettings]);
-
-            // Create List<AbstractOptionGroup> for Role Extensions
-            var extensionGroupList = new List<MiraAPI.GameOptions.AbstractOptionGroup>
+            if (draftGroupList.Count > 0)
             {
-                MiraAPI.GameOptions.OptionGroupSingleton<EgotistExtendedOptions>.Instance,
-                MiraAPI.GameOptions.OptionGroupSingleton<ForensicExtensionOptions>.Instance,
-                MiraAPI.GameOptions.OptionGroupSingleton<MayorExtensionOptions>.Instance,
-                MiraAPI.GameOptions.OptionGroupSingleton<SonarExtendedOptions>.Instance,
-                MiraAPI.GameOptions.OptionGroupSingleton<TimeLordExtensionOptions>.Instance,
-                MiraAPI.GameOptions.OptionGroupSingleton<AdvancedSabotageOptions>.Instance,
-                MiraAPI.GameOptions.OptionGroupSingleton<VampireExtendedOptions>.Instance,
-                MiraAPI.GameOptions.OptionGroupSingleton<JackalOptions>.Instance
-            };
+                __0._activeSettings.Add(new OptionWikiInfo(
+                    "TOUMCETermsDraftModeTitle",
+                    draftGroupList,
+                    TouExtensionIcons.HackerRole,
+                    false));
+            }
 
-            // Create OptionWikiInfo for Role Extensions
-            var roleExtensionsSettings = Activator.CreateInstance(infoType,
-                "TOUMCETermsRoleExtensionsTitle",
-                extensionGroupList,
-                (object)TouRoleIcons.Engineer,
-                false);
+            var extensionGroupList = new List<MiraAPI.GameOptions.AbstractOptionGroup>();
+            void AddIfNotNull<T>() where T : MiraAPI.GameOptions.AbstractOptionGroup
+            {
+                var inst = OptionGroupSingleton<T>.Instance;
+                if (inst != null)
+                {
+                    extensionGroupList.Add(inst);
+                }
+            }
+            AddIfNotNull<EgotistExtendedOptions>();
+            AddIfNotNull<ForensicExtensionOptions>();
+            AddIfNotNull<MayorExtensionOptions>();
+            AddIfNotNull<SonarExtendedOptions>();
+            AddIfNotNull<TimeLordExtensionOptions>();
+            AddIfNotNull<AdvancedSabotageOptions>();
+            AddIfNotNull<VampireExtendedOptions>();
+            AddIfNotNull<JackalOptions>();
 
-            addMethod.Invoke(settingsList, [roleExtensionsSettings]);
+
+
+
+
+
+
+
+            if (extensionGroupList.Count > 0)
+            {
+                __0._activeSettings.Add(new OptionWikiInfo(
+                    "TOUMCETermsRoleExtensionsTitle",
+                    extensionGroupList,
+                    TouRoleIcons.Engineer,
+                    false));
+            }
 
             Info("TOUMCE draft and role extension settings added to wiki successfully");
         }

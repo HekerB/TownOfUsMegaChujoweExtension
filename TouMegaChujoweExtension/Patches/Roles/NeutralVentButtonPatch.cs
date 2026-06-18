@@ -1,3 +1,4 @@
+using System;
 using TownOfUs.Utilities;
 using HarmonyLib;
 using MiraAPI.LocalSettings;
@@ -100,77 +101,83 @@ public static class NeutralVentButtonPatch
 
     private static void SetVentButtonState(VentButton ventButton, bool canVent, Color roleColor, Sprite activeSprite)
     {
-        if (ventButton == null || ventButton.gameObject == null)
+        try
         {
-            return;
-        }
-
-        if (!_lastCanVent.HasValue || _lastCanVent.Value != canVent)
-        {
-            _lastCanVent = canVent;
-            _lastHasTarget = null;
-        }
-
-        if (!canVent && OffsetButtonsWhenCantVent)
-        {
-            HideVentButtonWhenOffset(ventButton);
-            return;
-        }
-
-        if (!canVent && ventButton.currentTarget != null)
-        {
-            ventButton.currentTarget = null;
-        }
-
-        if (!ventButton.gameObject.activeSelf)
-        {
-            ventButton.gameObject.SetActive(true);
-        }
-
-        if (ventButton.graphic != null)
-        {
-            if (!ventButton.graphic.gameObject.activeSelf)
+            if (ventButton == null || ventButton.gameObject == null)
             {
-                ventButton.graphic.gameObject.SetActive(true);
+                return;
             }
 
-            ventButton.graphic.enabled = true;
-            ventButton.graphic.sprite = activeSprite;
-
-            if (!canVent)
+            if (!_lastCanVent.HasValue || _lastCanVent.Value != canVent)
             {
-                var graphicColor = Color.white;
-                graphicColor.a = 0.32f;
-                ventButton.graphic.color = graphicColor;
+                _lastCanVent = canVent;
+                _lastHasTarget = null;
+            }
+
+            if (!canVent && OffsetButtonsWhenCantVent)
+            {
+                HideVentButtonWhenOffset(ventButton);
+                return;
+            }
+
+            if (!canVent && ventButton.currentTarget != null)
+            {
+                ventButton.currentTarget = null;
+            }
+
+            if (!ventButton.gameObject.activeSelf)
+            {
+                ventButton.gameObject.SetActive(true);
+            }
+
+            if (ventButton.graphic != null)
+            {
+                if (!ventButton.graphic.gameObject.activeSelf)
+                {
+                    ventButton.graphic.gameObject.SetActive(true);
+                }
+
+                ventButton.graphic.enabled = true;
+                ventButton.graphic.sprite = activeSprite;
+
+                if (!canVent)
+                {
+                    var graphicColor = Color.white;
+                    graphicColor.a = 0.32f;
+                    ventButton.graphic.color = graphicColor;
+                }
+            }
+
+            if (ventButton.buttonLabelText != null)
+            {
+                if (!ventButton.buttonLabelText.gameObject.activeSelf)
+                {
+                    ventButton.buttonLabelText.gameObject.SetActive(true);
+                }
+
+                var alpha = canVent ? 1f : 0.45f;
+                var outline = roleColor;
+                outline.a = alpha;
+
+                ventButton.buttonLabelText.text = canVent
+                    ? TouLocale.Get("Vent", "Vent")
+                    : TouLocale.Get("ExtensionRoleCantVent", "Can't Vent");
+
+                if (!canVent)
+                {
+                    ventButton.buttonLabelText.color = new Color(1f, 1f, 1f, alpha);
+                    ventButton.buttonLabelText.SetOutlineColor(outline);
+                }
+            }
+
+            if (ventButton.cooldownTimerText != null)
+            {
+                ventButton.cooldownTimerText.gameObject.SetActive(false);
             }
         }
-
-        if (ventButton.buttonLabelText != null)
+        catch (Exception ex)
         {
-            if (!ventButton.buttonLabelText.gameObject.activeSelf)
-            {
-                ventButton.buttonLabelText.gameObject.SetActive(true);
-            }
-
-            var alpha = canVent ? 1f : 0.45f;
-            var outline = roleColor;
-            outline.a = alpha;
-
-            ventButton.buttonLabelText.text = canVent
-                ? TouLocale.Get("Vent", "Vent")
-                : TouLocale.Get("ExtensionRoleCantVent", "Can't Vent");
-
-            if (!canVent)
-            {
-                ventButton.buttonLabelText.color = new Color(1f, 1f, 1f, alpha);
-                ventButton.buttonLabelText.outlineColor = outline;
-                ventButton.buttonLabelText.fontMaterial?.SetColor("_OutlineColor", outline);
-            }
-        }
-
-        if (ventButton.cooldownTimerText != null)
-        {
-            ventButton.cooldownTimerText.gameObject.SetActive(false);
+            UnityEngine.Debug.LogWarning($"[TOUMCE] SetVentButtonState failed: {ex}");
         }
     }
 
@@ -244,11 +251,13 @@ public static class NeutralVentButtonPatch
     [HarmonyPriority(Priority.Last)]
     public static void SetTargetPostfix(VentButton __instance)
     {
-        if (IsMeetingOpen)
+        try
         {
-            CleanupVentButtonForMeeting(__instance);
-            return;
-        }
+            if (IsMeetingOpen)
+            {
+                CleanupVentButtonForMeeting(__instance);
+                return;
+            }
 
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.Data == null) return;
@@ -299,6 +308,11 @@ public static class NeutralVentButtonPatch
         {
             __instance.graphic.sprite = customSprite;
         }
+        }
+        catch (Exception ex)
+        {
+            UnityEngine.Debug.LogWarning($"[TOUMCE] SetTargetPostfix failed: {ex}");
+        }
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
@@ -306,6 +320,8 @@ public static class NeutralVentButtonPatch
     [HarmonyPriority(Priority.Last)]
     public static void HudUpdatePostfix(HudManager __instance)
     {
+        try
+        {
         if (IsMeetingOpen)
         {
             CleanupVentButtonForMeeting(__instance?.ImpostorVentButton);
@@ -386,10 +402,15 @@ public static class NeutralVentButtonPatch
 
                 // Always force the color for these roles to prevent flickering with default Impostor red
                 ventButton.buttonLabelText.color = new Color(1f, 1f, 1f, alpha);
-                ventButton.buttonLabelText.outlineColor = finalColor;
+                ventButton.buttonLabelText.SetOutlineColor(finalColor);
                 
-                ventButton.buttonLabelText.fontMaterial?.SetColor("_OutlineColor", finalColor);
+
             }
+        }
+        }
+        catch (Exception ex)
+        {
+            UnityEngine.Debug.LogWarning($"[TOUMCE] HudUpdatePostfix failed: {ex}");
         }
     }
 
@@ -397,7 +418,14 @@ public static class NeutralVentButtonPatch
     [HarmonyPostfix]
     public static void MeetingClosePostfix()
     {
-        RestoreVentButtonGraphic(HudManager.Instance?.ImpostorVentButton);
+        try
+        {
+            RestoreVentButtonGraphic(HudManager.Instance?.ImpostorVentButton);
+        }
+        catch (Exception ex)
+        {
+            UnityEngine.Debug.LogWarning($"[TOUMCE] MeetingClosePostfix failed: {ex}");
+        }
     }
 }
 

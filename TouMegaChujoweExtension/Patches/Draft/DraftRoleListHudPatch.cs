@@ -20,8 +20,9 @@ namespace TouMegaChujoweExtension.Patches.Draft;
 public static class DraftRoleListHudPatch
 {
     private const string DraftModeTitleColor = "#FF9999";
-    private const string DraftEnabledColor = "#00FF00";
     private const string DraftDisabledColor = "#FF2222";
+    private const string DraftStatusMarker = "<link=\"TOUMCE_DRAFT_STATUS\">";
+    private const string DraftStatusMarkerEnd = "</link>";
 
     private const string TitleColor = "#FFD700";
     private const string CrewColor = "#8CFFFF";
@@ -73,13 +74,14 @@ public static class DraftRoleListHudPatch
         var now = Time.time;
         if (_lastHudText == null || now >= _nextHudTextRefresh)
         {
-            _lastHudText = BuildDraftHudText();
+            _lastHudText = BuildDraftContentText();
             _nextHudTextRefresh = now + 0.25f;
         }
 
-        if (text.text != _lastHudText)
+        var desiredText = BuildDraftStatusLine(true) + _lastHudText;
+        if (text.text != desiredText)
         {
-            text.text = _lastHudText;
+            text.text = desiredText;
         }
 
         HudManagerPatches.RoleList.SetActive(true);
@@ -109,7 +111,8 @@ public static class DraftRoleListHudPatch
             return string.Empty;
         }
 
-        if (!text.StartsWith($"<color={DraftModeTitleColor}><b>", StringComparison.Ordinal))
+        if (!text.StartsWith(DraftStatusMarker, StringComparison.Ordinal) &&
+            !text.StartsWith($"<color={DraftModeTitleColor}><b>", StringComparison.Ordinal))
         {
             return text;
         }
@@ -118,21 +121,76 @@ public static class DraftRoleListHudPatch
         return firstLineEnd < 0 ? string.Empty : text[(firstLineEnd + 1)..];
     }
 
-    private static string BuildDraftHudText()
+    private static string BuildDraftContentText()
     {
         var builder = new StringBuilder();
-
-        builder.Append(BuildDraftStatusLine(true));
         AppendDraftContent(builder);
-
         return builder.ToString();
     }
 
     private static string BuildDraftStatusLine(bool enabled)
     {
-        return enabled
-            ? $"<color={DraftModeTitleColor}><b>{TouLocale.Get("ExtensionDraftModeGroupName", "Draft Mode")}:</b></color> <color={DraftEnabledColor}><b>{TouLocale.Get("ExtensionDraftModeEnabled", "Enabled")}</b></color>\n"
-            : $"<color={DraftModeTitleColor}><b>{TouLocale.Get("ExtensionDraftModeGroupName", "Draft Mode")}:</b></color> <color={DraftDisabledColor}><b>{TouLocale.Get("ExtensionDraftModeDisabled", "Disabled")}</b></color>\n";
+        var title = TouLocale.Get("ExtensionDraftModeGroupName", "Draft Mode");
+        var status = enabled
+            ? TouLocale.Get("ExtensionDraftModeEnabled", "Enabled")
+            : TouLocale.Get("ExtensionDraftModeDisabled", "Disabled");
+        var builder = new StringBuilder(DraftStatusMarker);
+        var separatorIndex = title.LastIndexOf(' ');
+
+        builder.Append("<b>");
+        if (enabled)
+        {
+            if (separatorIndex > 0 && separatorIndex < title.Length - 1)
+            {
+                var firstPart = title[..separatorIndex];
+                var secondPart = title[(separatorIndex + 1)..];
+                AppendShimmerText(builder, firstPart, new Color(1f, 0.6f, 0.6f), Color.white, Time.time, 0);
+                builder.Append(' ');
+                AppendShimmerText(builder, secondPart, new Color(1f, 0.6f, 0.6f), Color.white, Time.time, firstPart.Length + 1);
+            }
+            else
+            {
+                AppendShimmerText(builder, title, new Color(1f, 0.6f, 0.6f), Color.white, Time.time, 0);
+            }
+        }
+        else
+        {
+            builder.Append("<color=").Append(DraftModeTitleColor).Append('>').Append(title).Append("</color>");
+        }
+
+        builder.Append(":</b> <b>");
+        if (enabled)
+        {
+            AppendShimmerText(builder, status, new Color(0f, 0.6f, 0f), new Color(0.5f, 1f, 0.5f), Time.time, title.Length + 2);
+        }
+        else
+        {
+            AppendShimmerText(builder, status, new Color(1f, 0.13f, 0.13f), new Color(1f, 0.53f, 0.53f), Time.time, title.Length + 2);
+        }
+        builder.Append("</b>").Append(DraftStatusMarkerEnd).Append('\n');
+        return builder.ToString();
+    }
+
+    private static void AppendShimmerText(
+        StringBuilder builder,
+        string text,
+        Color baseColor,
+        Color targetColor,
+        float time,
+        int startIndex)
+    {
+        for (var index = 0; index < text.Length; index++)
+        {
+            var character = text[index];
+            var shimmer = (Mathf.Sin(time * 2.2f - (startIndex + index) * 0.6f) + 1f) * 0.5f;
+            shimmer *= shimmer;
+            var color = Color.Lerp(baseColor, targetColor, shimmer * 0.8f);
+            builder.Append("<color=#")
+                .Append(ColorUtility.ToHtmlStringRGB(color))
+                .Append('>')
+                .Append(character)
+                .Append("</color>");
+        }
     }
 
     private static void AppendDraftContent(StringBuilder builder)

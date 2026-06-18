@@ -1764,12 +1764,61 @@ public static class DraftLobbyPatch
         if (HudManager.Instance != null)
         {
             
-            var namesToHide = new[] { "GameSettings", "RoleListRegion", "SetRoleList", "PlayerCounter", "LobbyButtons" };
+            var namesToHide = new[] { "GameSettings", "RoleListRegion", "SetRoleList", "PlayerCounter" };
             foreach (var name in namesToHide)
             {
                 var t = HudManager.Instance.transform.Find(name);
                 t?.gameObject.SetActive(!hide);
             }
+
+            if (hide)
+            {
+                KeepTopRightButtonsVisible();
+            }
+        }
+    }
+
+    private static void KeepTopRightButtonsVisible()
+    {
+        var hud = HudManager.Instance;
+        if (hud == null)
+        {
+            return;
+        }
+
+        ShowHudGroup(hud.MapButton?.transform.parent?.gameObject);
+        ShowHudGroup(TownOfUs.Patches.HudManagerPatches.UiTopRight);
+        ShowHudGroup(TownOfUs.Patches.HudManagerPatches.ExtraUiTopRight);
+
+        if (GameSettingMenu.Instance == null && Minigame.Instance == null)
+        {
+            ShowHudGroup(hud.SettingsButton);
+            ShowHudGroup(TownOfUs.Patches.HudManagerPatches.WikiButton);
+        }
+    }
+
+    private static void ShowHudGroup(GameObject? group)
+    {
+        if (group == null)
+        {
+            return;
+        }
+
+        group.SetActive(true);
+        foreach (var renderer in group.GetComponentsInChildren<Renderer>(true))
+        {
+            renderer.enabled = true;
+        }
+    }
+
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    [HarmonyPostfix]
+    [HarmonyPriority(Priority.Last)]
+    public static void KeepDraftTopRightButtonsVisiblePostfix()
+    {
+        if (_draftInProgress || _draftCompletedWaitingForStart)
+        {
+            KeepTopRightButtonsVisible();
         }
     }
 

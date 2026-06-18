@@ -29,6 +29,7 @@
   <string name="DraftAlertEndOnly">Tylko na koncu</string>
   <string name="DraftAlertNever">Nigdy</string>
   <string name="ExtensionLocalSettingStartDraftMusicMuted">Startuj z wyciszona muzyka Draftu</string>
+  <string name="ExtensionLocalSettingPCMuteAliveWhenGhost">Duchy nie słyszą żywych</string>
 
   <!-- Renamed Trapper to Revealer -->
   <string name="TouRoleRevealer">Wykrywacz</string>
@@ -824,6 +825,10 @@
   <string name="ExtensionModifierSpitefulEffectSlownessDescription">Predkosc mniejsza o &lt;impact&gt;%</string>
   <string name="ExtensionModifierSpitefulEffectIncreasedCooldownsDescription">Cooldowny dluzsze o &lt;impact&gt;%</string>
     
+  <!-- Perfect Comms -->
+  <string name="ExtensionOptionPCMorphedCamouflagedGroup">Przebrani</string>
+  <string name="ExtensionOptionPCMorphedCamouflagedMute">Są wyciszeni</string>
+
   <!-- Draft Mode -->
   <string name="ExtensionDraftModeGroupName">Tryb Draft</string>
   <string name="ExtensionOptionDraftModeEnabled">Wlacz Draft</string>

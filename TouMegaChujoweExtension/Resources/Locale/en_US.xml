@@ -29,6 +29,7 @@
   <string name="DraftAlertEndOnly">End Only</string>
   <string name="DraftAlertNever">Never</string>
   <string name="ExtensionLocalSettingStartDraftMusicMuted">Start With Draft Music Muted</string>
+  <string name="ExtensionLocalSettingPCMuteAliveWhenGhost">Mute Alive When Ghost</string>
 
   <!-- Renamed Trapper to Revealer -->
   <string name="TouRoleRevealer">Revealer</string>
@@ -824,6 +825,10 @@
   <string name="ExtensionModifierSpitefulEffectSlownessDescription">Your speed is reduced by &lt;impact&gt;%</string>
   <string name="ExtensionModifierSpitefulEffectIncreasedCooldownsDescription">Your ability cooldowns are increased by &lt;impact&gt;%</string>
     
+  <!-- Perfect Comms -->
+  <string name="ExtensionOptionPCMorphedCamouflagedGroup">Morphed</string>
+  <string name="ExtensionOptionPCMorphedCamouflagedMute">Stay Muted</string>
+
   <!-- Draft Mode -->
   <string name="ExtensionDraftModeGroupName">Draft Mode</string>
   <string name="ExtensionOptionDraftModeEnabled">Enable Draft Mode</string>

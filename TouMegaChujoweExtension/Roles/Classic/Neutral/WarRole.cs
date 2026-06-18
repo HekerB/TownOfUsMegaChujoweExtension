@@ -175,7 +175,7 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
                 ventButton.graphic.sprite = TouNeutAssets.WerewolfVentSprite.LoadAsset();
             }
 
-            if (canVent)
+            if (canVent && ventButton.buttonLabelText != null)
             {
                 ventButton.buttonLabelText.SetOutlineColor(TouExtensionColors.War);
             }
@@ -208,8 +208,15 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
 
         if (targetPlayer.AmOwner && HudManager.Instance?.ImpostorVentButton != null)
         {
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
-            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
+            var ventButton = HudManager.Instance.ImpostorVentButton;
+            if (ventButton.graphic != null)
+            {
+                ventButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
+            }
+            if (ventButton.buttonLabelText != null)
+            {
+                ventButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
+            }
         }
     }
 

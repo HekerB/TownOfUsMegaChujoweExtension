@@ -172,10 +172,17 @@ public sealed class BerserkerRole(IntPtr cppPtr)
             targetPlayer.RemoveModifier<InvulnerabilityModifier>();
         }
 
-        if (targetPlayer.AmOwner)
+        if (targetPlayer.AmOwner && HudManager.Instance?.ImpostorVentButton != null)
         {
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
-            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
+            var ventButton = HudManager.Instance.ImpostorVentButton;
+            if (ventButton.graphic != null)
+            {
+                ventButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
+            }
+            if (ventButton.buttonLabelText != null)
+            {
+                ventButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
+            }
         }
     }
 
@@ -362,9 +369,15 @@ public sealed class BerserkerRole(IntPtr cppPtr)
 
         var ventButton = HudManager.Instance.ImpostorVentButton;
         ventButton.gameObject.SetActive(CanVentByState());
-        ventButton.graphic.sprite = IsWar
-            ? TouNeutAssets.WerewolfVentSprite.LoadAsset()
-            : TouAssets.VentSprite.LoadAsset();
-        ventButton.buttonLabelText.SetOutlineColor(RoleColor);
+        if (ventButton.graphic != null)
+        {
+            ventButton.graphic.sprite = IsWar
+                ? TouNeutAssets.WerewolfVentSprite.LoadAsset()
+                : TouAssets.VentSprite.LoadAsset();
+        }
+        if (ventButton.buttonLabelText != null)
+        {
+            ventButton.buttonLabelText.SetOutlineColor(RoleColor);
+        }
     }
 }

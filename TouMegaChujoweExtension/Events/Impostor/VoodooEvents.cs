@@ -79,8 +79,6 @@ public static class VoodooEvents
             return;
         }
 
-        PerfectCommsIntegration.ClearVoodooMute(victim.PlayerId);
-
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
         {
             return;
@@ -113,8 +111,6 @@ public static class VoodooEvents
         {
             return;
         }
-
-        PerfectCommsIntegration.ClearVoodooMute(exiled.PlayerId);
 
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
         {

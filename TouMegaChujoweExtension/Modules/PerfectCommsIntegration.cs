@@ -11,8 +11,10 @@ using TouMegaChujoweExtension.Roles.Classic.Crewmate;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TouMegaChujoweExtension.Utilities;
 using TownOfUs;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Extensions;
 using TownOfUs.Utilities;
+using TownOfUs.Utilities.Appearances;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
@@ -33,11 +35,12 @@ public static class PerfectCommsIntegration
     private const string MuteHiddenPlayers = "MuteHiddenPlayers";
     private const string EvokerMufflesHearing = "EvokerMufflesHearing";
     private const string DoctorInjectorMufflesHearing = "DoctorInjectorMufflesHearing";
-
+    private const string MuteMorphedPlayers = "MuteMorphedPlayers";
     private static bool registered;
     private static bool evokerMufflesHearing = true;
     private static bool doctorInjectorMufflesHearing = true;
-    private static string lastPhase = "Lobby";
+    private static bool hackerJamMutesVoice = true;
+    private static VoicePhase lastPhase = VoicePhase.Lobby;
     private static readonly HashSet<byte> meetingVoodooMutedPlayers = [];
     private static readonly HashSet<byte> nextRoundVoodooMutedPlayers = [];
     private static PerfectCommsBridge? bridge;
@@ -60,9 +63,12 @@ public static class PerfectCommsIntegration
         try
         {
             bridge = PerfectCommsBridge.Create();
-            bridge.RegisterModTab(ModId, "ToU:Ch**owe");
+            bridge.Unregister(ModId);
+            bridge.RegisterModTab(ModId, TouMegaChujoweExtensionPlugin.CensorVisibleText("ToU: Chujowe"));
             RegisterOptions();
             bridge.RegisterVoiceRule(ModId, ResolveRuleObject);
+            bridge.RegisterGlobalGate(ModId, VoicePhase.Tasks, IsHackerJamVoiceGateActive, "Hacker Jam");
+            bridge.RegisterGlobalGate(ModId, VoicePhase.Meeting, IsHackerJamVoiceGateActive, "Hacker Jam");
             bridge.RegisterListenerFilter(ModId, ShouldMuffleLocalListener);
             bridge.RegisterVoiceChannel(ModId, ResolvePelicanChannelObject);
             bridge.RegisterVoiceChannel(ModId, ResolveSpiritMasterChannelObject);
@@ -75,6 +81,16 @@ public static class PerfectCommsIntegration
         }
         catch (Exception ex)
         {
+            try
+            {
+                bridge?.Unregister(ModId);
+            }
+            catch
+            {
+                // Registration already failed; cleanup is best-effort.
+            }
+
+            bridge = null;
             Error($"[PerfectCommsIntegration] Registration failed: {ex}");
         }
     }
@@ -102,12 +118,13 @@ public static class PerfectCommsIntegration
         bridge.RegisterHostOption(ModId, ApocalypseVoice, Label(TouExtensionColors.Death, "Apocalypse", "Horsemen Radio"), true);
 
         bridge.RegisterHostOption(ModId, EvokerMufflesHearing, Label(TouExtensionColors.Evoker, "Evoker", "Blindness Muffles Hearing"), true);
+        bridge.RegisterHostOption(ModId, MuteMorphedPlayers, Label(Palette.ImpostorRed, TouLocale.Get("ExtensionOptionPCMorphedCamouflagedGroup", "Morphed"), TouLocale.Get("ExtensionOptionPCMorphedCamouflagedMute", "Stay Muted")), true);
         bridge.RegisterHostEnumOption(
             ModId,
             SpiritMasterGhostVoice,
             Label(TouExtensionColors.SpiritMaster, "Spirit Master", "Ghost Link"),
             (int)GhostVoiceMode.Both,
-            ["Off", Label(TouExtensionColors.SpiritMaster, "Spirit", "Talks to Ghost"), Label(Palette.White, "Ghost", "Talks to Spirit"), "Both Ways"]);
+            ["Off", "Both Ways"]);
     }
 
     private static string Label(Color color, string roleName, string suffix)
@@ -126,25 +143,52 @@ public static class PerfectCommsIntegration
         SyncListenerFilterOptions(ctx);
         TrackPhaseTransition(ctx.Phase);
 
-        if (ShouldMuteLivingPlayerForLocalGhost(ctx))
-        {
-            return bridge!.Mute("Living Players Muted While Dead");
-        }
-
-        if (ctx.Player == null || IsDead(ctx.Player))
+        if (ctx.Player == null || ctx.IsDead)
         {
             return bridge!.PassResult;
         }
 
-        bool voicePhase = ctx.Phase is "Tasks" or "Meeting";
+        bool voicePhase = ctx.Phase is VoicePhase.Tasks or VoicePhase.Meeting;
         if (!voicePhase)
         {
             return bridge!.PassResult;
         }
 
-        if (ctx.GetOption(HackerJamMutesVoice) && HackerSystem.IsJammed)
+        if (MiraAPI.LocalSettings.LocalSettingsTabSingleton<TouExtensionLocalSettings>.Instance?.MuteAliveWhenGhost.Value ?? true)
         {
-            return bridge!.Mute("Hacker Jam");
+            var localPlayer = PlayerControl.LocalPlayer;
+            if (localPlayer != null && IsDead(localPlayer))
+            {
+                return bridge!.Mute("Dead");
+            }
+        }
+
+        var local = PlayerControl.LocalPlayer;
+        if (local != null)
+        {
+            byte localId = local.PlayerId;
+            byte speakerId = ctx.Player.PlayerId;
+
+            bool localSwallowed = PelicanSystem.IsSwallowed(localId);
+            bool speakerSwallowed = PelicanSystem.IsSwallowed(speakerId);
+
+            if (localSwallowed || speakerSwallowed)
+            {
+                bool canHear = false;
+                if (ctx.GetOption(PelicanBellyVoice))
+                {
+                    byte? localPelican = PelicanSystem.GetPelicanOf(localId);
+                    byte? speakerPelican = PelicanSystem.GetPelicanOf(speakerId);
+
+                    canHear = (localPelican.HasValue && localPelican.Value == speakerId) ||
+                              (speakerPelican.HasValue && speakerPelican.Value == localId) ||
+                              (localPelican.HasValue && speakerPelican.HasValue && localPelican.Value == speakerPelican.Value);
+                }
+                if (!canHear)
+                {
+                    return bridge!.Mute("Swallowed");
+                }
+            }
         }
 
         if (ctx.GetOption(VoodooMutesVoice) && IsVoodooMutedForVoice(ctx))
@@ -152,46 +196,23 @@ public static class PerfectCommsIntegration
             return bridge!.Mute("Voodoo Muted");
         }
 
-        if (!ctx.GetOption(PelicanBellyVoice) && PelicanSystem.IsSwallowed(ctx.Player.PlayerId))
-        {
-            return bridge!.Mute("Swallowed");
-        }
-
         if (ctx.GetOption(MuteHiddenPlayers) && IsHiddenForVoice(ctx.Player))
         {
             return bridge!.Mute("Hidden");
         }
 
+        if (ctx.GetOption(MuteMorphedPlayers) && IsDisguisedOrCamouflaged(ctx.Player))
+        {
+            return bridge!.Mute("Disguised");
+        }
+
         return bridge!.PassResult;
-    }
-
-    private static bool ShouldMuteLivingPlayerForLocalGhost(VoiceContext ctx)
-    {
-        var localPlayer = PlayerControl.LocalPlayer;
-        if (ctx.Phase is not ("Tasks" or "Meeting") ||
-            localPlayer == null ||
-            ctx.Player == null ||
-            IsDead(ctx.Player) ||
-            !IsDead(localPlayer))
-        {
-            return false;
-        }
-
-        try
-        {
-            return LocalSettingsTabSingleton<TouExtensionLocalSettings>.Instance
-                .MuteLivingPlayersWhileDead.Value;
-        }
-        catch
-        {
-            return false;
-        }
     }
 
     private static bool IsVoodooMutedForVoice(VoiceContext ctx)
     {
         bool hasActiveCurse = ctx.Player!.HasModifier<VoodooMutedModifier>();
-        if (ctx.Phase == "Meeting")
+        if (ctx.Phase == VoicePhase.Meeting)
         {
             if (hasActiveCurse)
             {
@@ -201,7 +222,7 @@ public static class PerfectCommsIntegration
             return hasActiveCurse;
         }
 
-        if (ctx.Phase != "Tasks")
+        if (ctx.Phase != VoicePhase.Tasks)
         {
             return false;
         }
@@ -215,20 +236,15 @@ public static class PerfectCommsIntegration
         return hasActiveCurse || nextRoundVoodooMutedPlayers.Contains(ctx.Player.PlayerId);
     }
 
-    public static void ClearVoodooMute(byte playerId)
-    {
-        meetingVoodooMutedPlayers.Remove(playerId);
-        nextRoundVoodooMutedPlayers.Remove(playerId);
-    }
-
-    private static void TrackPhaseTransition(string phase)
+    private static void TrackPhaseTransition(VoicePhase phase)
     {
         if (phase == lastPhase)
         {
             return;
         }
 
-        if (lastPhase == "Meeting" && phase == "Tasks")
+        if (phase == VoicePhase.Tasks &&
+            lastPhase is VoicePhase.Meeting or VoicePhase.Exile)
         {
             nextRoundVoodooMutedPlayers.Clear();
             foreach (byte playerId in meetingVoodooMutedPlayers)
@@ -238,7 +254,11 @@ public static class PerfectCommsIntegration
 
             meetingVoodooMutedPlayers.Clear();
         }
-        else if (phase is "Lobby" or "Exile")
+        else if (phase == VoicePhase.Meeting)
+        {
+            nextRoundVoodooMutedPlayers.Clear();
+        }
+        else if (phase == VoicePhase.Lobby)
         {
             meetingVoodooMutedPlayers.Clear();
             nextRoundVoodooMutedPlayers.Clear();
@@ -250,7 +270,7 @@ public static class PerfectCommsIntegration
     private static object? ResolvePelicanChannelObject(object context)
     {
         var ctx = new VoiceContext(context);
-        if (!ctx.GetOption(PelicanBellyVoice) || !IsLiveVoicePhase(ctx) || IsDead(ctx.Player))
+        if (!ctx.GetOption(PelicanBellyVoice) || !IsLiveVoicePhase(ctx) || ctx.IsDead)
         {
             return null;
         }
@@ -284,7 +304,7 @@ public static class PerfectCommsIntegration
             return null;
         }
 
-        if (!IsDead(ctx.Player) && ctx.Player!.GetRole<SpiritMasterRole>() is { MediatedPlayers.Count: > 0 })
+        if (!ctx.IsDead && ctx.Player!.GetRole<SpiritMasterRole>() is { MediatedPlayers.Count: > 0 })
         {
             return Radio($"spirit-master:{ctx.Player.PlayerId}");
         }
@@ -300,7 +320,7 @@ public static class PerfectCommsIntegration
     private static object? ResolveLawyerChannelObject(object context)
     {
         var ctx = new VoiceContext(context);
-        if (!ctx.GetOption(LawyerClientVoice) || !IsLiveVoicePhase(ctx) || IsDead(ctx.Player))
+        if (!ctx.GetOption(LawyerClientVoice) || !IsLiveVoicePhase(ctx) || ctx.IsDead)
         {
             return null;
         }
@@ -317,7 +337,7 @@ public static class PerfectCommsIntegration
     private static object? ResolveRecruitChannelObject(object context)
     {
         var ctx = new VoiceContext(context);
-        if (!ctx.GetOption(RecruitVoice) || !IsLiveVoicePhase(ctx) || IsDead(ctx.Player))
+        if (!ctx.GetOption(RecruitVoice) || !IsLiveVoicePhase(ctx) || ctx.IsDead)
         {
             return null;
         }
@@ -336,7 +356,7 @@ public static class PerfectCommsIntegration
     private static object? ResolveApocalypseChannelObject(object context)
     {
         var ctx = new VoiceContext(context);
-        if (!ctx.GetOption(ApocalypseVoice) || !IsLiveVoicePhase(ctx) || IsDead(ctx.Player))
+        if (!ctx.GetOption(ApocalypseVoice) || !IsLiveVoicePhase(ctx) || ctx.IsDead)
         {
             return null;
         }
@@ -354,8 +374,14 @@ public static class PerfectCommsIntegration
 
     private static void SyncListenerFilterOptions(VoiceContext ctx)
     {
+        hackerJamMutesVoice = ctx.GetOption(HackerJamMutesVoice);
         evokerMufflesHearing = ctx.GetOption(EvokerMufflesHearing);
         doctorInjectorMufflesHearing = ctx.GetOption(DoctorInjectorMufflesHearing);
+    }
+
+    private static bool IsHackerJamVoiceGateActive()
+    {
+        return hackerJamMutesVoice && HackerSystem.IsJammed;
     }
 
     private static bool HasDoctorInjectorNegativeEffect(PlayerControl player)
@@ -383,6 +409,13 @@ public static class PerfectCommsIntegration
                player.HasModifier<WraithLanternInvisibilityModifier>();
     }
 
+    private static bool IsDisguisedOrCamouflaged(PlayerControl player)
+    {
+        return player.HasModifier<TownOfUs.Modifiers.Impostor.MorphlingMorphModifier>() ||
+               player.HasModifier<TownOfUs.Modifiers.Neutral.GlitchMimicModifier>() ||
+               player.HasModifier<DoppelgangerDisguiseModifier>();
+    }
+
     private static object Radio(string key)
     {
         return bridge!.CreateChannelResult(key);
@@ -390,7 +423,7 @@ public static class PerfectCommsIntegration
 
     private static bool IsLiveVoicePhase(VoiceContext ctx)
     {
-        return ctx.Phase is "Tasks" or "Meeting";
+        return ctx.Phase is VoicePhase.Tasks or VoicePhase.Meeting;
     }
 
     private static bool IsDead(PlayerControl? player)
@@ -401,38 +434,46 @@ public static class PerfectCommsIntegration
     private enum GhostVoiceMode
     {
         None,
-        SpiritMasterToGhost,
-        GhostToSpiritMaster,
         Both,
     }
 
-    private sealed class VoiceContext
+    private enum VoicePhase
     {
-        private readonly object context;
-        private readonly Type contextType;
+        Lobby,
+        Tasks,
+        Meeting,
+        Exile,
+    }
+
+    private readonly struct VoiceContext
+    {
+        private readonly Func<string, bool>? getOption;
+        private readonly Func<string, int>? getEnumOption;
 
         public VoiceContext(object context)
         {
-            this.context = context;
-            contextType = context.GetType();
-            Player = (PlayerControl?)contextType.GetProperty("Player")?.GetValue(context);
-            Phase = contextType.GetProperty("Phase")?.GetValue(context)?.ToString() ?? "Lobby";
+            var values = bridge!.ReadContext(context);
+            Player = values.Player;
+            Phase = values.Phase;
+            IsDead = values.IsDead;
+            getOption = values.GetOption;
+            getEnumOption = values.GetEnumOption;
         }
 
         public PlayerControl? Player { get; }
 
-        public string Phase { get; }
+        public VoicePhase Phase { get; }
+
+        public bool IsDead { get; }
 
         public bool GetOption(string key)
         {
-            var getter = contextType.GetProperty("GetOption")?.GetValue(context) as Delegate;
-            return getter != null && (bool)getter.DynamicInvoke(key)!;
+            return getOption?.Invoke(key) ?? false;
         }
 
         public int GetEnumOption(string key)
         {
-            var getter = contextType.GetProperty("GetEnumOption")?.GetValue(context) as Delegate;
-            return getter != null ? (int)getter.DynamicInvoke(key)! : 0;
+            return getEnumOption?.Invoke(key) ?? 0;
         }
     }
 
@@ -441,20 +482,32 @@ public static class PerfectCommsIntegration
         private readonly Type apiType;
         private readonly Type ruleContextType;
         private readonly Type ruleResultType;
+        private readonly Type phaseType;
         private readonly Type channelResultType;
         private readonly Type audioShapeType;
         private readonly Type hostOptionType;
         private readonly Type hostEnumOptionType;
+        private readonly Func<object, PlayerControl?> readPlayer;
+        private readonly Func<object, int> readPhase;
+        private readonly Func<object, bool> readIsDead;
+        private readonly Func<object, Func<string, bool>?> readGetOption;
+        private readonly Func<object, Func<string, int>?> readGetEnumOption;
 
         private PerfectCommsBridge(Assembly assembly)
         {
             apiType = GetRequiredType(assembly, "PerfectComms.Api.PerfectCommsApi");
             ruleContextType = GetRequiredType(assembly, "PerfectComms.Api.VoiceRuleContext");
             ruleResultType = GetRequiredType(assembly, "PerfectComms.Api.VoiceRuleResult");
+            phaseType = GetRequiredType(assembly, "PerfectComms.Api.VoicePhaseKind");
             channelResultType = GetRequiredType(assembly, "PerfectComms.Api.VoiceChannelResult");
             audioShapeType = GetRequiredType(assembly, "PerfectComms.Api.VoiceAudioShape");
             hostOptionType = GetRequiredType(assembly, "PerfectComms.Api.VoiceHostOption");
             hostEnumOptionType = GetRequiredType(assembly, "PerfectComms.Api.VoiceHostEnumOption");
+            readPlayer = BuildPropertyReader<PlayerControl?>(ruleContextType, "Player");
+            readPhase = BuildEnumPropertyReader(ruleContextType, "Phase");
+            readIsDead = BuildPropertyReader<bool>(ruleContextType, "IsDead");
+            readGetOption = BuildPropertyReader<Func<string, bool>?>(ruleContextType, "GetOption");
+            readGetEnumOption = BuildPropertyReader<Func<string, int>?>(ruleContextType, "GetEnumOption");
             PassResult = ruleResultType.GetField("Pass", BindingFlags.Public | BindingFlags.Static)?.GetValue(null)
                          ?? throw new MissingMemberException(ruleResultType.FullName, "Pass");
         }
@@ -494,6 +547,12 @@ public static class PerfectCommsIntegration
             InvokeApi(nameof(RegisterVoiceRule), modId, callback);
         }
 
+        public void RegisterGlobalGate(string modId, VoicePhase phase, Func<bool> isActive, string reason)
+        {
+            object apiPhase = Enum.ToObject(phaseType, (int)phase);
+            InvokeApi(nameof(RegisterGlobalGate), modId, apiPhase, isActive, reason);
+        }
+
         public void RegisterVoiceChannel(string modId, Func<object, object?> channel)
         {
             var delegateType = typeof(Func<,>).MakeGenericType(ruleContextType, channelResultType);
@@ -521,6 +580,22 @@ public static class PerfectCommsIntegration
                    ?? throw new InvalidOperationException("Could not create Perfect Comms channel result.");
         }
 
+        public void Unregister(string modId)
+        {
+            InvokeApi(nameof(Unregister), modId);
+        }
+
+        public ContextValues ReadContext(object context)
+        {
+            var phase = (VoicePhase)readPhase(context);
+            return new ContextValues(
+                readPlayer(context),
+                phase,
+                readIsDead(context),
+                readGetOption(context),
+                readGetEnumOption(context));
+        }
+
         private void InvokeApi(string methodName, params object[] args)
         {
             var method = apiType.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static)
@@ -540,10 +615,39 @@ public static class PerfectCommsIntegration
             return Expression.Lambda(delegateType, body, parameter).Compile();
         }
 
+        private static Func<object, T> BuildPropertyReader<T>(Type declaringType, string propertyName)
+        {
+            var property = declaringType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance)
+                           ?? throw new MissingMemberException(declaringType.FullName, propertyName);
+            var value = Expression.Parameter(typeof(object), "value");
+            var typedValue = Expression.Convert(value, declaringType);
+            var propertyValue = Expression.Property(typedValue, property);
+            var converted = Expression.Convert(propertyValue, typeof(T));
+            return Expression.Lambda<Func<object, T>>(converted, value).Compile();
+        }
+
+        private static Func<object, int> BuildEnumPropertyReader(Type declaringType, string propertyName)
+        {
+            var property = declaringType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance)
+                           ?? throw new MissingMemberException(declaringType.FullName, propertyName);
+            var value = Expression.Parameter(typeof(object), "value");
+            var typedValue = Expression.Convert(value, declaringType);
+            var propertyValue = Expression.Property(typedValue, property);
+            var converted = Expression.Convert(propertyValue, typeof(int));
+            return Expression.Lambda<Func<object, int>>(converted, value).Compile();
+        }
+
         private static Type GetRequiredType(Assembly assembly, string typeName)
         {
             return assembly.GetType(typeName)
                    ?? throw new TypeLoadException($"Perfect Comms API type not found: {typeName}");
         }
+
+        public readonly record struct ContextValues(
+            PlayerControl? Player,
+            VoicePhase Phase,
+            bool IsDead,
+            Func<string, bool>? GetOption,
+            Func<string, int>? GetEnumOption);
     }
 }

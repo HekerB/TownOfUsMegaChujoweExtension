@@ -17,13 +17,13 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
 public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, PlayerControl>
 {
-    public override string Name => GetButtonName(Role);
+    public override string Name => GetButtonName(GetCurrentEffect());
     public override BaseKeybind Keybind => Keybinds.ModifierAction;
     public override Color TextOutlineColor => Palette.ImpostorRed;
     public override float Cooldown => OptionGroupSingleton<VoodooMasterOptions>.Instance.CurseCooldown;
-    public override int MaxUses => Role?.GetMaxUses(Role.SelectedEffect) ?? (int)OptionGroupSingleton<VoodooMasterOptions>.Instance.MaxBlindCurses;
+    public override int MaxUses => GetConfiguredMaxUses(GetCurrentEffect());
     public override bool ZeroIsInfinite { get; set; } = true;
-    public override LoadableAsset<Sprite> Sprite => GetEffectSprite(Role?.SelectedEffect ?? VoodooEffect.Blindness);
+    public override LoadableAsset<Sprite> Sprite => GetEffectSprite(GetCurrentEffect());
 
     private bool _isProcessingClick;
     private float _delayEndsAt;
@@ -120,7 +120,7 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
         {
             base.FixedUpdate(playerControl);
             OverrideSprite(GetEffectSprite(Role!.SelectedEffect).LoadAsset());
-            OverrideName(GetButtonName(Role));
+            OverrideName(GetButtonName(Role!.SelectedEffect));
             UpdateUsesDisplay();
             UpdateDelayDisplay();
             UpdateActiveEffectTimer(playerControl);
@@ -194,14 +194,31 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
         Button.usesRemainingText.text = $"{Mathf.CeilToInt(remaining)}<size=80%>s</size>";
     }
 
-    private static string GetButtonName(VoodooMasterRole? role)
+    private static VoodooEffect GetCurrentEffect()
     {
-        if (role == null)
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer?.Data?.Role is VoodooMasterRole role)
         {
-            return TouLocale.Get("ExtensionRoleVoodooMasterCast", "Curse");
+            return role.SelectedEffect;
         }
 
-        return TouLocale.Get($"ExtensionVoodooEffect{role.SelectedEffect}", role.SelectedEffect.ToString());
+        return VoodooEffect.Blindness;
+    }
+
+    private static int GetConfiguredMaxUses(VoodooEffect effect)
+    {
+        var options = OptionGroupSingleton<VoodooMasterOptions>.Instance;
+        return effect switch
+        {
+            VoodooEffect.Mute => (int)options.MaxMuteCurses,
+            VoodooEffect.Confuse => (int)options.MaxConfuseCurses,
+            _ => (int)options.MaxBlindCurses
+        };
+    }
+
+    private static string GetButtonName(VoodooEffect effect)
+    {
+        return TouLocale.Get($"ExtensionVoodooEffect{effect}", effect.ToString());
     }
 
     private void UpdateActiveEffectTimer(PlayerControl playerControl)
