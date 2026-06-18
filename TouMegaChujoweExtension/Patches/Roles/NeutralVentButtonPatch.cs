@@ -15,6 +15,7 @@ namespace TouMegaChujoweExtension.Patches.Roles;
 public static class NeutralVentButtonPatch
 {
     private static bool? _lastHasTarget;
+    private static bool? _lastCanVent;
     private static bool IsMeetingOpen => MeetingHud.Instance != null || ExileController.Instance != null;
     private static bool OffsetButtonsWhenCantVent =>
         LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value;
@@ -104,6 +105,12 @@ public static class NeutralVentButtonPatch
             return;
         }
 
+        if (!_lastCanVent.HasValue || _lastCanVent.Value != canVent)
+        {
+            _lastCanVent = canVent;
+            _lastHasTarget = null;
+        }
+
         if (!canVent && OffsetButtonsWhenCantVent)
         {
             HideVentButtonWhenOffset(ventButton);
@@ -130,9 +137,12 @@ public static class NeutralVentButtonPatch
             ventButton.graphic.enabled = true;
             ventButton.graphic.sprite = activeSprite;
 
-            var graphicColor = Color.white;
-            graphicColor.a = canVent ? 1f : 0.32f;
-            ventButton.graphic.color = graphicColor;
+            if (!canVent)
+            {
+                var graphicColor = Color.white;
+                graphicColor.a = 0.32f;
+                ventButton.graphic.color = graphicColor;
+            }
         }
 
         if (ventButton.buttonLabelText != null)
@@ -149,9 +159,13 @@ public static class NeutralVentButtonPatch
             ventButton.buttonLabelText.text = canVent
                 ? TouLocale.Get("Vent", "Vent")
                 : TouLocale.Get("ExtensionRoleCantVent", "Can't Vent");
-            ventButton.buttonLabelText.color = new Color(1f, 1f, 1f, alpha);
-            ventButton.buttonLabelText.outlineColor = outline;
-            ventButton.buttonLabelText.fontMaterial?.SetColor("_OutlineColor", outline);
+
+            if (!canVent)
+            {
+                ventButton.buttonLabelText.color = new Color(1f, 1f, 1f, alpha);
+                ventButton.buttonLabelText.outlineColor = outline;
+                ventButton.buttonLabelText.fontMaterial?.SetColor("_OutlineColor", outline);
+            }
         }
 
         if (ventButton.cooldownTimerText != null)

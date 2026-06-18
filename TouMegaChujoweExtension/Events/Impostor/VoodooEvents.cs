@@ -28,8 +28,7 @@ public static class VoodooEvents
 
             if (scheduledCurse.CurseType == VoodooEffect.Mute)
             {
-                var meetings = (int)OptionGroupSingleton<VoodooMasterOptions>.Instance.MuteDuration;
-                player.RpcAddModifier<VoodooMutedModifier>(meetings);
+                player.RpcAddModifier<VoodooMutedModifier>(1);
             }
 
             player.RpcRemoveModifier(scheduledCurse.UniqueId);

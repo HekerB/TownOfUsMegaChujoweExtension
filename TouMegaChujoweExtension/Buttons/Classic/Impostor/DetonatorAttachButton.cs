@@ -125,9 +125,13 @@ public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole
         // Handling Attach phase (progress bar on button)
         if (_isAttaching)
         {
-            if (_attachTarget == null || _attachTarget.Data.IsDead || !CanClick())
+            if (_attachTarget == null ||
+                _attachTarget.Data.IsDead ||
+                _attachTarget != target ||
+                !CanClick())
             {
                 _isAttaching = false;
+                _attachTarget = null;
                 _attachTimer = 0f;
             }
             else

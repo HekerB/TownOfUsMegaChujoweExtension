@@ -171,6 +171,7 @@
   <string name="ExtensionRoleShifterWikiDescription">You can steal a player's role, but if you try to steal an Impostor/Neutral role you will commit suicide instantly.</string>
   <string name="ExtensionRoleShifterShift">Shift</string>
   <string name="ExtensionRoleShifterShiftWikiDescription">Select a player to steal their role at the next meeting.</string>
+  <string name="ExtensionShifterRoleStolenIntro">YOUR ROLE HAS BEEN STOLEN!</string>
 
   <!-- Shifter Options -->
   <string name="ExtensionOptionShifterCooldown">Shift Cooldown</string>
@@ -1537,13 +1538,13 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleCantVent">Can't Vent</string>
   <string name="ExtensionOptionWarKillingSpreeDuration">War Killing Spree Duration</string>
   <string name="ExtensionRoleWar">War</string>
-  <string name="ExtensionRoleWarIntroBlurb">&lt;b&gt;\%color=#5E3929FF\%War\%/color\%&lt;/b&gt;\%nl\%Horseman of the Apocalypse!</string>
+  <string name="ExtensionRoleWarIntroBlurb">Horseman of the Apocalypse!</string>
   <string name="ExtensionRoleWarTabDescription">Transformed Berserker.\%nl\%Chain kills during short sprees.\%nl\%War is invincible.</string>
   <string name="ExtensionRoleWarWikiDescription">The &lt;color=#5E3929&gt;War&lt;/color&gt; is the transformed &lt;color=#880814&gt;Berserker&lt;/color&gt;.\%nl\%War is invincible, cannot be guessed, and can only die by being voted out.\%nl\%After a successful kill, War enters a short Killing Spree where the next kill has no cooldown.</string>
   <string name="ExtensionRoleWarMeetingSummary">War Evolved: the battlefield is yours.</string>
   <string name="ExtensionRoleWarSpreeKill">Spree Kill</string>
   <string name="ExtensionRoleFamine">Famine</string>
-  <string name="ExtensionRoleFamineIntroBlurb">&lt;b&gt;\%color=#023020FF\%Famine\%/color\%&lt;/b&gt;\%nl\%Horseman of the Apocalypse!</string>
+  <string name="ExtensionRoleFamineIntroBlurb">Horseman of the Apocalypse!</string>
   <string name="ExtensionRoleFamineTabDescription">Transformed Baker.\%nl\%Starved players die next meeting.\%nl\%Once breaded targets die, starve anyone.\%nl\%Famine is invincible.</string>
   <string name="ExtensionRoleFamineWikiDescription">The Famine is the transformed Baker. Famine is invincible, cannot be guessed, and can only die by being voted out.\%nl\%Initially, Famine can only starve players who received bread from Baker. After all breaded players are dead, Famine can starve any player. Starved players die at the next meeting.</string>
   <string name="ExtensionRoleFamineMeetingSummary">Marked for Famine: {0}</string>
@@ -1707,7 +1708,6 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionVoodooMasterMaxMuteUses">Mute Uses</string>
   <string name="ExtensionOptionVoodooMasterBlindDuration">Blind Duration</string>
   <string name="ExtensionOptionVoodooMasterConfuseDuration">Confuse Duration</string>
-  <string name="ExtensionOptionVoodooMasterMuteDuration">Mute Duration In Meetings</string>
   <string name="ExtensionOptionVoodooMasterTargetLockDuration">Target Lock Duration (Meetings)</string>
   <string name="ExtensionOptionVoodooMasterBlindDelay">Blind Delay</string>
   <string name="ExtensionOptionVoodooMasterConfuseDelay">Confuse Delay</string>

@@ -19,6 +19,9 @@ namespace TouMegaChujoweExtension.Patches.Roles;
 [HarmonyPatch(typeof(MeetingHud))]
 public static class ApocalypseMeetingSummaryPatch
 {
+    private const float SummaryFontScale = 0.52f;
+    private static readonly Vector3 SummaryOffset = new(0f, -0.18f, -0.01f);
+    private static readonly Color SoulCollectorSummaryColor = new Color32(119, 122, 168, 255);
     private static TextMeshPro? _summaryText;
 
     [HarmonyPostfix]
@@ -81,7 +84,8 @@ public static class ApocalypseMeetingSummaryPatch
     {
         if (_summaryText != null)
         {
-            _summaryText.transform.localPosition = timerText.transform.localPosition + new Vector3(0f, -0.25f, -0.01f);
+            SetSummaryFontSize(timerText);
+            _summaryText.transform.localPosition = timerText.transform.localPosition + SummaryOffset;
             _summaryText.transform.localScale = timerText.transform.localScale;
             return;
         }
@@ -91,15 +95,29 @@ public static class ApocalypseMeetingSummaryPatch
         Object.Destroy(_summaryText.GetComponent<TextTranslatorTMP>());
         Object.Destroy(_summaryText.GetComponent<TmpMiraTranslator>());
         _summaryText.color = Color.white;
-        _summaryText.fontSize = timerText.fontSize * 0.7f;
-        _summaryText.alignment = TextAlignmentOptions.Center;
+        _summaryText.enableAutoSizing = false;
+        SetSummaryFontSize(timerText);
+        _summaryText.alignment = TextAlignmentOptions.Right;
         _summaryText.enableWordWrapping = false;
         _summaryText.richText = true;
         _summaryText.sortingLayerID = timerText.sortingLayerID;
         _summaryText.sortingOrder = timerText.sortingOrder + 1;
         _summaryText.transform.localScale = timerText.transform.localScale;
-        _summaryText.transform.localPosition = timerText.transform.localPosition + new Vector3(0f, -0.25f, -0.01f);
+        _summaryText.transform.localPosition = timerText.transform.localPosition + SummaryOffset;
         _summaryText.gameObject.SetActive(true);
+    }
+
+    private static void SetSummaryFontSize(TextMeshPro timerText)
+    {
+        if (_summaryText == null)
+        {
+            return;
+        }
+
+        var fontSize = timerText.fontSize * SummaryFontScale;
+        _summaryText.fontSize = fontSize;
+        _summaryText.fontSizeMin = fontSize;
+        _summaryText.fontSizeMax = fontSize;
     }
 
     private static void CleanupSummaryText()
@@ -128,7 +146,7 @@ public static class ApocalypseMeetingSummaryPatch
                 .Replace("{2}", activeMarks.ToString(CultureInfo.InvariantCulture))
                 .Replace("{3}", maxMarks.ToString(CultureInfo.InvariantCulture));
 
-            return $"{TouExtensionColors.SoulCollector.ToTextColor()}{soulText}</color>";
+            return $"{SoulCollectorSummaryColor.ToTextColor()}{soulText}</color>";
         }
 
         if (localPlayer.Data.Role is BakerRole)

@@ -37,10 +37,15 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed("ExtensionRoleWarWikiDescription");
+
+
     }
 
     [HideFromIl2Cpp]
     public List<Type> RoleButtons => [typeof(WarKillButton)];
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities => [];
 
     [HideFromIl2Cpp]
     public float WarSpreeUntil { get; set; }
@@ -139,7 +144,8 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
     {
         RoleBehaviourStubs.OnMeetingStart(this);
 
-        if (Announced || !OptionGroupSingleton<BerserkerOptions>.Instance.AnnounceWarTransformation)
+        var options = OptionGroupSingleton<BerserkerOptions>.Instance;
+        if (Announced || options == null || !options.AnnounceWarTransformation)
         {
             return;
         }
@@ -175,7 +181,8 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
             }
         }
 
-        if (MeetingHud.Instance != null && !Announced && OptionGroupSingleton<BerserkerOptions>.Instance.AnnounceWarTransformation)
+        var optionsInit = OptionGroupSingleton<BerserkerOptions>.Instance;
+        if (MeetingHud.Instance != null && !Announced && optionsInit != null && optionsInit.AnnounceWarTransformation)
         {
             Announced = true;
             TriggerWarAnnouncement();
@@ -248,7 +255,13 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        var stringB = ITownOfUsRole.SetNewTabText(this);
+        var stringB = new StringBuilder();
+        stringB.AppendLine(TownOfUsPlugin.Culture,
+            $"{RoleColor.ToTextColor()}{YouAreText}<b> {RoleName},\n<size=80%>{RoleDescription}</size></b></color>");
+        stringB.AppendLine(TownOfUsPlugin.Culture,
+            $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(RoleAlignment, true)}</b></size>");
+        stringB.Append("<size=70%>");
+        stringB.AppendLine(TownOfUsPlugin.Culture, $"{RoleLongDescription}");
         return stringB;
     }
 }

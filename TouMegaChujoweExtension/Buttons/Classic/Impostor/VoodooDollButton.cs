@@ -26,6 +26,7 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
     public override LoadableAsset<Sprite> Sprite => GetEffectSprite(Role?.SelectedEffect ?? VoodooEffect.Blindness);
 
     private bool _isProcessingClick;
+    private float _delayEndsAt;
 
     public override void CreateButton(Transform parent)
     {
@@ -98,6 +99,8 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
         if (!TouMegaChujoweExtension.Modules.PoisonSystem.CheckAndTriggerShields(PlayerControl.LocalPlayer, Target))
         {
             VoodooMasterRole.CastVoodooDoll(PlayerControl.LocalPlayer, Target, effect);
+            var delay = GetEffectDelay(effect);
+            _delayEndsAt = delay > 0f ? Time.time + delay : 0f;
         }
         
         Timer = Cooldown;
@@ -119,6 +122,7 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
             OverrideSprite(GetEffectSprite(Role!.SelectedEffect).LoadAsset());
             OverrideName(GetButtonName(Role));
             UpdateUsesDisplay();
+            UpdateDelayDisplay();
             UpdateActiveEffectTimer(playerControl);
 
             if (playerControl.TryGetModifier<VoodooTargetLockModifier>(out var targetLock))
@@ -168,6 +172,26 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
             Button.usesRemainingText.gameObject.SetActive(maxUses > 0);
             Button.usesRemainingText.color = Color.white;
         }
+    }
+
+    private void UpdateDelayDisplay()
+    {
+        if (Button == null || _delayEndsAt <= 0f)
+        {
+            return;
+        }
+
+        var remaining = _delayEndsAt - Time.time;
+        if (remaining <= 0f || MeetingHud.Instance != null)
+        {
+            _delayEndsAt = 0f;
+            UpdateUsesDisplay();
+            return;
+        }
+
+        Button.usesRemainingSprite.gameObject.SetActive(true);
+        Button.usesRemainingText.gameObject.SetActive(true);
+        Button.usesRemainingText.text = $"{Mathf.CeilToInt(remaining)}<size=80%>s</size>";
     }
 
     private static string GetButtonName(VoodooMasterRole? role)
@@ -243,8 +267,19 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
         return effect switch
         {
             VoodooEffect.Confuse => options.ConfuseDuration,
-            VoodooEffect.Mute => options.MuteDuration,
+            VoodooEffect.Mute => 0f,
             _ => options.BlindDuration
+        };
+    }
+
+    private static float GetEffectDelay(VoodooEffect effect)
+    {
+        var options = OptionGroupSingleton<VoodooMasterOptions>.Instance;
+        return effect switch
+        {
+            VoodooEffect.Blindness => options.BlindDelay,
+            VoodooEffect.Confuse => options.ConfuseDelay,
+            _ => 0f
         };
     }
 
@@ -285,7 +320,11 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
         {
             var target = PlayerControl.AllPlayerControls.ToArray()
                 .FirstOrDefault(x => x != null && x.PlayerId == targetLock.TargetId);
-            if (target != null && IsTargetValid(target) && Vector2.Distance(target.GetTruePosition(), localPlayer.GetTruePosition()) <= Distance)
+            if (target != null &&
+                target.PlayerId != localPlayer.PlayerId &&
+                !target.HasDied() &&
+                target.Data != null &&
+                !target.Data.Disconnected)
             {
                 return target;
             }

@@ -35,9 +35,6 @@ public static class DetonatorSystem
 
     private static readonly List<ActiveBomb> _activeBombs = [];
     private static readonly HashSet<byte> _bombTargets = [];
-    private static float _timeSinceRoundStart;
-
-    public static bool IsAtRoundStart => _timeSinceRoundStart < 30f;
     
     public static float GetDetonateCooldown()
     {
@@ -82,13 +79,20 @@ public static class DetonatorSystem
 
     public static void AttachBomb(byte detonatorId, byte targetId)
     {
-        var target = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == targetId);
+        if (HasAnyActiveBomb(detonatorId) || HasBomb(targetId))
+        {
+            return;
+        }
+
+        var target = MiscUtils.PlayerById(targetId);
         var detonator = MiscUtils.PlayerById(detonatorId);
         
-        if (target != null && detonator != null)
+        if (target == null || target.HasDied() || detonator == null || detonator.HasDied())
         {
-            target.AddModifier(new DetonatorBombModifier(detonator));
+            return;
         }
+
+        target.AddModifier(new DetonatorBombModifier(detonator));
 
         _activeBombs.Add(new ActiveBomb
         {
@@ -116,36 +120,27 @@ public static class DetonatorSystem
         foreach (var bomb in bombs)
         {
             _bombTargets.Remove(bomb.TargetId);
+            MiscUtils.PlayerById(bomb.TargetId)?.RemoveModifier<DetonatorBombModifier>();
             Detonate(bomb);
         }
+
+        _activeBombs.RemoveAll(b => b.DetonatorId == detonatorId && b.Detonated);
     }
 
     public static void Update()
     {
-        _timeSinceRoundStart += Time.deltaTime;
         if (MeetingHud.Instance != null || ExileController.Instance != null) return;
         UpdateTimers(Time.deltaTime);
     }
 
-    public static void OnRoundStart()
-    {
-        _timeSinceRoundStart = 0f;
-        // Don't clear bombs here - they should persist through meetings!
-    }
-
     public static void OnMeetingEnd()
     {
-        var impostors = PlayerControl.AllPlayerControls.ToArray().Where(p => p.Data.Role.IsImpostor);
-        foreach (var imp in impostors)
+        foreach (var bomb in _activeBombs.Where(b => !b.Detonated))
         {
-            var bomb = _activeBombs.FirstOrDefault(b => b.DetonatorId == imp.PlayerId && !b.Detonated);
-            if (bomb != null) bomb.CreationTime = Time.time;
+            bomb.CreationTime = Time.time;
+            bomb.TimeElapsed = 0f;
+            bomb.LastBeepTime = 0f;
         }
-    }
-
-    public static void MeetingUpdate() 
-    {
-        // Handled by other systems
     }
 
     private static void UpdateTimers(float dt)
@@ -202,7 +197,15 @@ public static class DetonatorSystem
         var detonator = MiscUtils.PlayerById(bomb.DetonatorId);
         var actualKiller = detonator ?? mainTarget;
         JokerCloneSystem.TriggerClonesInRadius(actualKiller, pos, radius);
-        var victims = PlayerControl.AllPlayerControls.ToArray().Where(p => p != null && !p.HasDied() && !PelicanSystem.IsSwallowed(p.PlayerId) && Vector2.Distance(pos, p.transform.position) <= radius).OrderBy(p => Vector2.Distance(pos, p.transform.position)).Take((int)options.MaxKills).ToList();
+        var victims = PlayerControl.AllPlayerControls.ToArray()
+            .Where(p => p != null &&
+                        p.PlayerId != bomb.DetonatorId &&
+                        !p.HasDied() &&
+                        !PelicanSystem.IsSwallowed(p.PlayerId) &&
+                        Vector2.Distance(pos, p.transform.position) <= radius)
+            .OrderBy(p => Vector2.Distance(pos, p.transform.position))
+            .Take((int)options.MaxKills)
+            .ToList();
         if (!victims.Contains(mainTarget) && !PelicanSystem.IsSwallowed(mainTarget.PlayerId)) victims.Add(mainTarget);
         foreach (var victim in victims.Where(victim => victim != null && !victim.HasDied()))
         {
@@ -211,7 +214,7 @@ public static class DetonatorSystem
                     !actualKiller.HasModifier<TownOfUs.Modifiers.IgnoreInvulnerabilityModifier>())
                 {
                     // If target is Pestilence (AttackMurderer), kill the attacker
-                    if (invic.AttackMurderer && actualKiller.AmOwner)
+                    if (invic.AttackMurderer)
                     {
                         victim.RpcCustomMurder(actualKiller);
                     }

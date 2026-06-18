@@ -84,12 +84,19 @@ public sealed class BerserkerRole(IntPtr cppPtr)
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        var builder = ITownOfUsRole.SetNewTabText(this);
         if (IsWar)
         {
-            return builder;
+            var warBuilder = new StringBuilder();
+            warBuilder.AppendLine(TownOfUsPlugin.Culture,
+                $"{RoleColor.ToTextColor()}{TouLocale.Get("YouAre")}<b> {RoleName},\n<size=80%>{RoleDescription}</size></b></color>");
+            warBuilder.AppendLine(TownOfUsPlugin.Culture,
+                $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(RoleAlignment, true)}</b></size>");
+            warBuilder.Append("<size=70%>");
+            warBuilder.AppendLine(TownOfUsPlugin.Culture, $"{RoleLongDescription}");
+            return warBuilder;
         }
 
+        var builder = ITownOfUsRole.SetNewTabText(this);
         var options = OptionGroupSingleton<BerserkerOptions>.Instance;
         if (options == null)
         {

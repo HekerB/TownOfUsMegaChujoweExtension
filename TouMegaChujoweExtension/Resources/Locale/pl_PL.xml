@@ -171,6 +171,7 @@
   <string name="ExtensionRoleShifterWikiDescription">Mozesz przejac role dowolnego czlonka Zalogi. Proba kradziezy roli Impostora konczy sie smiercia.</string>
   <string name="ExtensionRoleShifterShift">Przejmij</string>
   <string name="ExtensionRoleShifterShiftWikiDescription">Wybierz gracza, ktorego role chcesz przejac podczas narady.</string>
+  <string name="ExtensionShifterRoleStolenIntro">TWOJA ROLA ZOSTAŁA SKRADZIONA!</string>
 
   <!-- Shifter Options -->
   <string name="ExtensionOptionShifterCooldown">Czas odnowienia kradziezy</string>
@@ -1482,13 +1483,13 @@
   <string name="ExtensionRoleCantVent">Nie moze ventowac</string>
   <string name="ExtensionOptionWarKillingSpreeDuration">Szal Wojny (s)</string>
   <string name="ExtensionRoleWar">Wojna</string>
-  <string name="ExtensionRoleWarIntroBlurb">&lt;b&gt;\%color=#5E3929FF\%Wojna\%/color\%&lt;/b&gt;\%nl\%Jezdziec Apokalipsy!</string>
+  <string name="ExtensionRoleWarIntroBlurb">Jezdziec Apokalipsy!</string>
   <string name="ExtensionRoleWarTabDescription">Przemieniony Berserker.\%nl\%Zabijaj w krotkich seriach.\%nl\%Wojna jest niesmiertelna.</string>
   <string name="ExtensionRoleWarWikiDescription">Moze zabijac bez cooldownu w krotkim oknie szalu.</string>
   <string name="ExtensionRoleWarMeetingSummary">Wojna przebudzona: pole bitwy nalezy do ciebie.</string>
   <string name="ExtensionRoleWarSpreeKill">Seryjny Atak</string>
   <string name="ExtensionRoleFamine">Glod</string>
-  <string name="ExtensionRoleFamineIntroBlurb">&lt;b&gt;\%color=#023020FF\%Glod\%/color\%&lt;/b&gt;\%nl\%Jezdziec Apokalipsy!</string>
+  <string name="ExtensionRoleFamineIntroBlurb">Jezdziec Apokalipsy!</string>
   <string name="ExtensionRoleFamineTabDescription">Przemieniony Piekarz.\%nl\%Zaglodzeni umieraja przy naradzie.\%nl\%Gdy nakarmieni zgina, glodzisz kazdego.\%nl\%Glod jest niesmiertelny.</string>
   <string name="ExtensionRoleFamineWikiDescription">Skazuje graczy na smierc z glodu.</string>
   <string name="ExtensionRoleFamineMeetingSummary">Naznaczeni Glodem: {0}</string>
@@ -1651,7 +1652,6 @@
   <string name="ExtensionOptionVoodooMasterMaxMuteUses">Użycia wyciszenia</string>
   <string name="ExtensionOptionVoodooMasterBlindDuration">Czas oslepienia</string>
   <string name="ExtensionOptionVoodooMasterConfuseDuration">Czas chaosu</string>
-  <string name="ExtensionOptionVoodooMasterMuteDuration">Czas wyciszenia (narady)</string>
   <string name="ExtensionOptionVoodooMasterTargetLockDuration">Czas blokady celu (narady)</string>
   <string name="ExtensionOptionVoodooMasterBlindDelay">Opóźnienie oslepienia</string>
   <string name="ExtensionOptionVoodooMasterConfuseDelay">Opóźnienie chaosu</string>

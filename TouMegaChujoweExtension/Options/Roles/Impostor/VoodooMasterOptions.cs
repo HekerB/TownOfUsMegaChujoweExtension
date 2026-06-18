@@ -32,9 +32,6 @@ public sealed class VoodooMasterOptions : AbstractOptionGroup<VoodooMasterRole>
 
     public ModdedNumberOption MaxMuteCurses { get; } = new("ExtensionOptionVoodooMasterMaxMuteUses", 7f, -1f, 15f, 1f, "#", "∞", MiraNumberSuffixes.None, "0");
 
-    [ModdedNumberOption("ExtensionOptionVoodooMasterMuteDuration", 1f, 3f, 1f, MiraNumberSuffixes.None)]
-    public float MuteDuration { get; set; } = 1f;
-
     [ModdedNumberOption("ExtensionOptionVoodooMasterTargetLockDuration", 0f, 5f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float TargetLockDurationRounds { get; set; } = 2f;
 }
