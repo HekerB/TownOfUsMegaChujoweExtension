@@ -19,6 +19,7 @@
 <div align="center">
   <img src="./Images/Logo.png" alt="TouMegaChujoweExtension"/>
   <br/>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases/latest"><img src="https://img.shields.io/github/v/release/HekerB/TownOfUsMegaChujoweExtension?color=blue&label=latest%20release" alt="Latest Release"/></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases"><img src="https://img.shields.io/github/downloads/HekerB/TownOfUsMegaChujoweExtension/total" alt="GitHub downloads"/></a>
   <p>                                         </p>
 </div>
