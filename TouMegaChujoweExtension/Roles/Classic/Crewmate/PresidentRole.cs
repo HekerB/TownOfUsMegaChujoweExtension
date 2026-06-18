@@ -196,6 +196,7 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         AbstainButton.gameObject.GetComponentInChildren<TextTranslatorTMP>().Destroy();
         AbstainButton.gameObject.GetComponentInChildren<TextMeshPro>().text =
             TouLocale.Get("ExtensionRolePresidentAbstain", "ABSTAIN").ToUpperInvariant();
+
         AbstainButton.gameObject.name = "button_abstainButton";
 
         skip.transform.localPosition += new Vector3(0f, 0.20f, 0f);

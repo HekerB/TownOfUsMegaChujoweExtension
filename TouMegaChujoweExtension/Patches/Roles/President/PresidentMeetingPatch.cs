@@ -53,17 +53,3 @@ public static class PresidentMeetingPatch
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

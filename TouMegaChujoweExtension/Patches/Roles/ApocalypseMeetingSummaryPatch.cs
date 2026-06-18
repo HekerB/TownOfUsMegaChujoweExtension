@@ -12,41 +12,17 @@ using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TouMegaChujoweExtension.Patches.Roles;
 
 [HarmonyPatch(typeof(MeetingHud))]
 public static class ApocalypseMeetingSummaryPatch
 {
-    private const float SummaryFontScale = 0.52f;
-    private static readonly Vector3 SummaryOffset = new(0f, -0.18f, -0.01f);
     private static readonly Color SoulCollectorSummaryColor = new Color32(119, 122, 168, 255);
-    private static TextMeshPro? _summaryText;
 
     [HarmonyPostfix]
-    [HarmonyPatch(nameof(MeetingHud.Start))]
-    public static void StartPostfix(MeetingHud __instance)
-    {
-        UpdateSummaryText(__instance);
-    }
-
-    [HarmonyPostfix]
-    [HarmonyPriority(Priority.Last)]
     [HarmonyPatch(nameof(MeetingHud.UpdateTimerText))]
-    public static void UpdateTimerTextPostfix(MeetingHud __instance)
-    {
-        UpdateSummaryText(__instance);
-    }
-
-    [HarmonyPostfix]
-    [HarmonyPatch(nameof(MeetingHud.Close))]
-    public static void ClosePostfix()
-    {
-        CleanupSummaryText();
-    }
-
-    private static void UpdateSummaryText(MeetingHud __instance)
+    public static void TimerUpdatePostfix(MeetingHud __instance)
     {
         try
         {
@@ -61,76 +37,15 @@ public static class ApocalypseMeetingSummaryPatch
             }
 
             var summary = GetSummaryLine(localPlayer);
-            if (string.IsNullOrEmpty(summary))
+            if (!string.IsNullOrEmpty(summary))
             {
-                CleanupSummaryText();
-                return;
-            }
-
-            EnsureSummaryText(timerText);
-            if (_summaryText != null)
-            {
-                _summaryText.text = summary;
-                _summaryText.gameObject.SetActive(true);
+                timerText.text += $"\n{summary}";
             }
         }
         catch (Exception ex)
         {
             UnityEngine.Debug.LogWarning($"[TOUMCE] Apocalypse meeting summary failed: {ex}");
         }
-    }
-
-    private static void EnsureSummaryText(TextMeshPro timerText)
-    {
-        if (_summaryText != null)
-        {
-            SetSummaryFontSize(timerText);
-            _summaryText.transform.localPosition = timerText.transform.localPosition + SummaryOffset;
-            _summaryText.transform.localScale = timerText.transform.localScale;
-            return;
-        }
-
-        var go = new GameObject("TOUMCE_ApocalypseMeetingSummary");
-        go.transform.SetParent(timerText.transform.parent);
-
-        _summaryText = go.AddComponent<TextMeshPro>();
-        _summaryText.font = timerText.font;
-        _summaryText.fontSharedMaterial = timerText.fontSharedMaterial;
-        _summaryText.color = Color.white;
-        _summaryText.enableAutoSizing = false;
-        SetSummaryFontSize(timerText);
-        _summaryText.alignment = TextAlignmentOptions.Right;
-        _summaryText.enableWordWrapping = false;
-        _summaryText.richText = true;
-        _summaryText.sortingLayerID = timerText.sortingLayerID;
-        _summaryText.sortingOrder = timerText.sortingOrder + 1;
-        _summaryText.transform.localScale = timerText.transform.localScale;
-        _summaryText.transform.localPosition = timerText.transform.localPosition + SummaryOffset;
-        _summaryText.gameObject.SetActive(true);
-    }
-
-    private static void SetSummaryFontSize(TextMeshPro timerText)
-    {
-        if (_summaryText == null)
-        {
-            return;
-        }
-
-        var fontSize = timerText.fontSize * SummaryFontScale;
-        _summaryText.fontSize = fontSize;
-        _summaryText.fontSizeMin = fontSize;
-        _summaryText.fontSizeMax = fontSize;
-    }
-
-    private static void CleanupSummaryText()
-    {
-        if (_summaryText == null)
-        {
-            return;
-        }
-
-        Object.Destroy(_summaryText.gameObject);
-        _summaryText = null;
     }
 
     private static string GetSummaryLine(PlayerControl localPlayer)
