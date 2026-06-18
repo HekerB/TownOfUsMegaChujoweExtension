@@ -103,15 +103,31 @@ public static class VentUtilities
 
         FindFields();
 
-        if (_timerTextField == null) return true; // Can't check, let it try (might crash but better than permanent block if we are wrong)
+        if (_timerTextField == null || _visualField == null) return false;
 
         try
         {
-            return _timerTextField.GetValue(button) != null;
+            return _timerTextField.GetValue(button) != null && _visualField.GetValue(button) != null;
         }
         catch
         {
+            return false;
+        }
+    }
+
+    public static bool TrySetCooldown(ActionButton? button, float timer, float maxTimer)
+    {
+        if (!IsSafeToSetCooldown(button)) return false;
+
+        try
+        {
+            button!.SetCoolDown(timer, maxTimer);
             return true;
+        }
+        catch (System.Exception ex)
+        {
+            UnityEngine.Debug.LogWarning($"[TOUMCE] VentUtilities: skipped unsafe SetCoolDown: {ex.Message}");
+            return false;
         }
     }
 }

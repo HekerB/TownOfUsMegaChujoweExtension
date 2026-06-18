@@ -12,12 +12,15 @@
 > Want to suggest ideas, help with graphics, report issues, or find people to play with? Join our [Discord](https://discord.gg/qaQZAmAVh4) — we have a diverse and friendly community!
 
 > [!IMPORTANT]
-> **Voice Chat:** For proximity voice chat with this extension, use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-Comms)**. It is a fork made specifically for **Town Of Us Mega Chujowe Extension** and works with **Town of Us: Mira**. Do **not** use the original Perfect Comms build with this extension, because extension-specific role behavior can bug out or leak information without the fork.
+> **Voice Chat:** For proximity voice chat with this extension, install the regular **[Perfect Comms](https://github.com/artriy/Perfect-Comms/releases/latest)** v3.0.0 or newer. Tou Mega Chujowe Extension integrates with Perfect Comms through its public API, which now supports all options and features from the extension, so the old custom Perfect Comms fork is no longer required and is not planned to be continued.
 
 -----------------------
 
 <div align="center">
   <img src="./Images/Logo.png" alt="TouMegaChujoweExtension"/>
+  <br/>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases/latest"><img src="https://img.shields.io/github/v/release/HekerB/TownOfUsMegaChujoweExtension?color=blue&label=latest%20release" alt="Latest Release"/></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases"><img src="https://img.shields.io/github/downloads/HekerB/TownOfUsMegaChujoweExtension/total" alt="GitHub downloads"/></a>
   <p>                                         </p>
 </div>
 <br/>
@@ -30,7 +33,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
 
 | Extension Version | Among Us Version | TOU: Mira Version | Download Mira |
 |-------------------|------------------|-------------------|---------------|
-| 1.4.2 or newer    | 17.3.x           | 1.6.3             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.3) |
+| 1.4.3 or newer    | 17.3.x           | 1.6.3             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.3) |
 | 1.3.0 or newer    | 17.3.x           | 1.6.2             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.2) |
 | Older than 1.3.0  | 17.3.x           | 1.6.1             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.1) |
 | Older than 1.3.0  | 17.3.x           | 1.6.0             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.0) |
@@ -262,7 +265,7 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 
 ## Optional Voice Chat
 
-Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-Comms)** if you want in-game proximity voice chat. This fork includes compatibility for TouMCE roles such as Pelican, Infiltrator/Recruits, Lawyer, Spirit Master, and custom invisible roles. Do not install the original Perfect Comms build for TouMCE lobbies; use the fork to avoid role voice bugs.
+Use **[Perfect Comms](https://github.com/artriy/Perfect-Comms)** if you want in-game proximity voice chat. TouMCE integrates with Perfect Comms through its public API, which now supports all options and features from the extension, so the custom fork is no longer required.
 
 -----------------------
 

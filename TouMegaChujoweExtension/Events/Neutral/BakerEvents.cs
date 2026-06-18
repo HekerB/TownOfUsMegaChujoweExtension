@@ -86,13 +86,11 @@ public static class BakerEvents
         Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Baker, 0.15f, 0.15f));
 
         var victimName = $"{TouExtensionColors.Baker.ToTextColor()}{victim.Data.PlayerName}</color>";
-        var notif = Helpers.CreateAndShowNotification(
+        RoleAlertUtils.ShowRoleAlert(
             TouLocale.Get("ExtensionRoleBakerBreadTargetDiedNotif", "{0} died with your bread!")
                 .Replace("{0}", victimName),
             Color.white,
-            new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.BakerRoleIcon.LoadAsset());
-        notif?.AdjustNotification();
+            TouExtensionIcons.BakerRoleIcon.LoadAsset());
 
         if (victim.HasModifier<BakerBreadRevealModifier>())
         {

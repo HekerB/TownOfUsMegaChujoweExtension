@@ -10,6 +10,7 @@ using Reactor.Networking.Attributes;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
+using TownOfUs.Interfaces;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
@@ -109,7 +110,6 @@ public sealed class FamineRole(IntPtr cppPtr)
             $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(RoleAlignment, true)}</b></size>");
         stringB.Append("<size=70%>");
         stringB.AppendLine(TownOfUsPlugin.Culture, $"{RoleLongDescription}");
-
         return stringB;
     }
 
@@ -129,12 +129,10 @@ public sealed class FamineRole(IntPtr cppPtr)
         var msg = TouLocale.GetParsed("ExtensionRoleBakerFamineAnnouncement", "A terrible famine has consumed the Crew.\\%nl\\%\\%color=#023020FF\\%Famine\\%/color\\%, Horseman of the Apocalypse, has emerged!");
         var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Baker)}>{TouLocale.Get("ExtensionRoleBakerFamineAnnouncementTitle", "Famine Warning")}</color>";
 
-        var notif = Helpers.CreateAndShowNotification(
+        TouMegaChujoweExtension.Modules.RoleAlertUtils.ShowRoleAlert(
             $"<b>{msg.Replace("\n", " ").Replace("\\%nl\\%", " ")}</b>",
             Color.white,
-            new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.FamineRoleIcon.LoadAsset());
-        notif?.AdjustNotification();
+            TouExtensionIcons.FamineRoleIcon.LoadAsset());
 
         MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
     }
@@ -271,12 +269,10 @@ public sealed class FamineRole(IntPtr cppPtr)
 
         Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(Color.white, 0.15f, 0.35f));
 
-        var notif = Helpers.CreateAndShowNotification(
+        TouMegaChujoweExtension.Modules.RoleAlertUtils.ShowRoleAlert(
             TouLocale.Get("ExtensionRoleFamineAllBreadTargetsDead", "All your breaded targets have died. You can now starve anyone!"),
             Color.white,
-            new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.FamineRoleIcon.LoadAsset());
-        notif?.AdjustNotification();
+            TouExtensionIcons.FamineRoleIcon.LoadAsset());
     }
 
     [MethodRpc((uint)ExtensionRpc.FamineQueueStarveAnimation, LocalHandling = Reactor.Networking.Rpc.RpcLocalHandling.Before)]

@@ -133,13 +133,14 @@ public static class MayorVoteCountPatch
             var formatKnighted = TouLocale.Get("ExtensionMeetingPresidentBankInfoKnighted");
             var formatNormal = TouLocale.Get("ExtensionMeetingPresidentBankInfo");
 
+            var colorTag = TouExtensionColors.President.ToTextColor();
             if (knightBonus > 0 && !string.IsNullOrEmpty(formatKnighted))
             {
-                info = "\n" + string.Format(System.Globalization.CultureInfo.InvariantCulture, formatKnighted, remaining, knightBonus);
+                info = "\n" + colorTag + string.Format(System.Globalization.CultureInfo.InvariantCulture, formatKnighted, remaining, knightBonus) + "</color>";
             }
             else if (!string.IsNullOrEmpty(formatNormal))
             {
-                info = "\n" + string.Format(System.Globalization.CultureInfo.InvariantCulture, formatNormal, remaining);
+                info = "\n" + colorTag + string.Format(System.Globalization.CultureInfo.InvariantCulture, formatNormal, remaining) + "</color>";
             }
             
             if (string.IsNullOrEmpty(info)) return;

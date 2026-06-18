@@ -1,5 +1,6 @@
 using HarmonyLib;
 using MiraAPI.GameOptions;
+using TownOfUs.Modules.Localization;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Pirate;
@@ -41,7 +42,10 @@ public static class PirateDuelHudPatch
         }
 
         var duelsNeeded = (int)OptionGroupSingleton<PirateOptions>.Instance.DuelsToWin.Value;
-        _duelCounter.text = $"<color=#{ColorUtility.ToHtmlStringRGB(TouExtensionColors.Pirate)}>Duels won: {pirateRole.DuelsWon} / {duelsNeeded}</color>";
+        var counter = TouLocale.Get("ExtensionPirateDuelsWonCounter", "Duels won: {0} / {1}")
+            .Replace("{0}", pirateRole.DuelsWon.ToString(System.Globalization.CultureInfo.InvariantCulture))
+            .Replace("{1}", duelsNeeded.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        _duelCounter.text = $"<color=#{ColorUtility.ToHtmlStringRGB(TouExtensionColors.Pirate)}>{counter}</color>";
         _duelCounter.gameObject.SetActive(true);
     }
 }

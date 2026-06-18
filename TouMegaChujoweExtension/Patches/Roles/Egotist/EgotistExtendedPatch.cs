@@ -161,10 +161,7 @@ public static class EgotistExtendedPatch
             _ventTimer += Time.deltaTime;
             float remainingInVent = Mathf.Max(0f, opts.MaxVentTime - _ventTimer);
             VentUtilities.InitializeVentButton(button);
-            if (VentUtilities.IsSafeToSetCooldown(button))
-            {
-                button.SetCoolDown(remainingInVent, opts.MaxVentTime);
-            }
+            VentUtilities.TrySetCooldown(button, remainingInVent, opts.MaxVentTime);
             SetTimerText(timerText, remainingInVent);
 
             if (_ventTimer >= opts.MaxVentTime)
@@ -183,20 +180,14 @@ public static class EgotistExtendedPatch
         else if (_onCooldown)
         {
             VentUtilities.InitializeVentButton(button);
-            if (VentUtilities.IsSafeToSetCooldown(button))
-            {
-                button.SetCoolDown(_ventCooldownTimer, opts.VentCooldown);
-            }
+            VentUtilities.TrySetCooldown(button, _ventCooldownTimer, opts.VentCooldown);
             SetTimerText(timerText, _ventCooldownTimer);
         }
         else
         {
             _ventTimer = 0f;
             VentUtilities.InitializeVentButton(button);
-            if (VentUtilities.IsSafeToSetCooldown(button))
-            {
-                button.SetCoolDown(0f, 1f);
-            }
+            VentUtilities.TrySetCooldown(button, 0f, 1f);
             timerText.gameObject.SetActive(false);
         }
     }

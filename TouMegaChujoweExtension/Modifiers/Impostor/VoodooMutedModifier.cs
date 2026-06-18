@@ -119,8 +119,16 @@ public sealed class VoodooMutedModifier : BaseModifier
         }
 
         shownMuteNotificationThisMeeting = true;
+        var alertText = TouLocale.Get(
+            "ExtensionVoodooMuteAlert",
+            "You have been cursed by the Voodoo Master. Only you can see this, and you are muted this meeting!");
+        var chatTitle =
+            $"{Palette.ImpostorRed.ToTextColor()}{TouLocale.Get("ExtensionVoodooMuteWarningTitle", "Voodoo Warning")}</color>";
+
+        MiscUtils.AddFakeChat(Player.Data, chatTitle, alertText, false, true);
+
         Helpers.CreateAndShowNotification(
-            $"<b>{Palette.ImpostorRed.ToTextColor()}{TouLocale.Get("ExtensionVoodooMuteAlert", "You have been cursed by the Voodoo Master. Only you can see this, and you are muted this meeting!")}</color></b>",
+            $"<b>{Palette.ImpostorRed.ToTextColor()}{alertText}</color></b>",
             Color.white,
             new Vector3(0f, 1f, -20f),
             spr: TouExtensionIcons.VoodooRoleIcon.LoadAsset());

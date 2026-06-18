@@ -516,7 +516,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         lawyerRole.ObjectionsUsed++; lawyerRole.ObjectionsUsedThisMeeting++; lawyerRole.HasObjected = true;
 
         var clip = TouExtensionAudio.ObjectionSound.LoadAsset();
-        if (clip != null)
+        if (clip != null && Constants.ShouldPlaySfx())
         {
             var source = SoundManager.Instance.PlaySound(clip, false, 1f);
             if (source != null) Coroutines.Start(LawyerCoroutines.CoFadeOutObjection(source, 1.2f, 0.5f));

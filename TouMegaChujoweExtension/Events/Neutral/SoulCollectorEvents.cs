@@ -179,13 +179,11 @@ public static class SoulCollectorEvents
         PlayerControl.LocalPlayer.AddModifier<SoulDeathArrowModifier>(victim.transform.position);
 
         var victimName = $"{TouExtensionColors.SoulCollector.ToTextColor()}{victim.Data.PlayerName}</color>";
-        var notif = Helpers.CreateAndShowNotification(
+        RoleAlertUtils.ShowRoleAlert(
             TouLocale.Get("ExtensionRoleSoulCollectorMarkedDiedNotif", "{0}'s soul has been collected!")
                 .Replace("{0}", victimName),
             Color.white,
-            new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
-        notif?.AdjustNotification();
+            TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
     }
 
     [RegisterEvent(100)]

@@ -14,6 +14,7 @@
   
    <!-- Use Polish Language -->
   <string name="ExtensionLocalSettingUsePolishLanguage">Uzyj jezyka polskiego</string>
+  <string name="ExtensionLocalSettingTranslateRoleNames">Tlumacz nazwy rol</string>
   
   <!-- Use Role Color for Map -->
   <string name="ExtensionLocalSettingMapColor">Kolor obrysu mapy</string>
@@ -28,6 +29,7 @@
   <string name="DraftAlertEndOnly">Tylko na koncu</string>
   <string name="DraftAlertNever">Nigdy</string>
   <string name="ExtensionLocalSettingStartDraftMusicMuted">Startuj z wyciszona muzyka Draftu</string>
+  <string name="ExtensionLocalSettingPCMuteAliveWhenGhost">Duchy nie słyszą żywych</string>
 
   <!-- Renamed Trapper to Revealer -->
   <string name="TouRoleRevealer">Wykrywacz</string>
@@ -171,6 +173,7 @@
   <string name="ExtensionRoleShifterWikiDescription">Mozesz przejac role dowolnego czlonka Zalogi. Proba kradziezy roli Impostora konczy sie smiercia.</string>
   <string name="ExtensionRoleShifterShift">Przejmij</string>
   <string name="ExtensionRoleShifterShiftWikiDescription">Wybierz gracza, ktorego role chcesz przejac podczas narady.</string>
+  <string name="ExtensionShifterRoleStolenIntro">ROLA SKRADZIONA</string>
 
   <!-- Shifter Options -->
   <string name="ExtensionOptionShifterCooldown">Czas odnowienia kradziezy</string>
@@ -306,6 +309,9 @@
 
   <!-- Pirate Notifications -->
   <string name="ExtensionPirateDuelNotification">Pirat wyzwal Cie na pojedynek!</string>
+  <string name="ExtensionPirateCompletedDuelsOwner">Ukonczyles wszystkie pojedynki jako {0}! Teraz obserwujesz gre i wygrasz ze zwycieska druzyna.</string>
+  <string name="ExtensionPirateCompletedDuelsOther">{0}, {1}, ukonczyl wszystkie wymagane pojedynki!</string>
+  <string name="ExtensionPirateDuelsWonCounter">Wygrane pojedynki: {0} / {1}</string>
   <string name="ExtensionPirateDuelJailedPirateNotif">Jestes uwieziony! Pojedynek anulowany.</string>
   <string name="ExtensionPirateDuelJailedTargetNotif">Cel uwieziony! Akcja anulowana.</string>
   <string name="ExtensionPirateCantDuelSamePersonTwiceNotif">Nie mozesz wyzwac tej samej osoby dwa razy pod rzad.</string>
@@ -819,15 +825,19 @@
   <string name="ExtensionModifierSpitefulEffectSlownessDescription">Predkosc mniejsza o &lt;impact&gt;%</string>
   <string name="ExtensionModifierSpitefulEffectIncreasedCooldownsDescription">Cooldowny dluzsze o &lt;impact&gt;%</string>
     
+  <!-- Perfect Comms -->
+  <string name="ExtensionOptionPCMorphedCamouflagedGroup">Przebrani</string>
+  <string name="ExtensionOptionPCMorphedCamouflagedMute">Są wyciszeni</string>
+
   <!-- Draft Mode -->
   <string name="ExtensionDraftModeGroupName">Tryb Draft</string>
   <string name="ExtensionOptionDraftModeEnabled">Wlacz Draft</string>
   <string name="ExtensionOptionDraftModeTimeToChoose">Czas wyboru</string>
   <string name="ExtensionOptionDraftModeRolesToShow">Role do wyboru</string>
 	
-  <string name="ExtensionDraftModeTitle">Wybor ról</string>
+  <string name="ExtensionDraftModeTitle">Wybor rol</string>
   <string name="ExtensionDraftRoleListTitle">Tryb Draft</string>
-  <string name="ExtensionDraftRoleListEmpty">Brak ról</string>
+  <string name="ExtensionDraftRoleListEmpty">Brak rol</string>
   <string name="ExtensionDraftModeCurrentlyPicking">Wybiera:</string>
   <string name="ExtensionDraftModeYourTurn">Twoja kolej!</string>
   <string name="ExtensionDraftModeWaiting">Oczekiwanie...</string>
@@ -835,6 +845,80 @@
   <string name="ExtensionDraftModeAutoSelect">Auto-wybor za:</string>
   <string name="ExtensionDraftModeTurnsUntil">Tury do Ciebie</string>
   <string name="ExtensionDraftModePlayerPicks">Podsumowanie:</string>
+  <string name="ExtensionDraftModeHeader">TRYB DRAFT</string>
+  <string name="ExtensionDraftModeVanillaMode">TRYB KLASYCZNY</string>
+  <string name="ExtensionDraftModeBy">OD</string>
+  <string name="ExtensionDraftModeMute">WYCISZ</string>
+  <string name="ExtensionDraftModeUnmute">WLACZ DZWIEK</string>
+  <string name="ExtensionDraftModeCancel">ANULUJ</string>
+  <string name="ExtensionDraftModeStart">START</string>
+  <string name="ExtensionDraftModeSystem">SYSTEM</string>
+  <string name="ExtensionDraftModePlayer">Gracz</string>
+  <string name="ExtensionDraftModeYou">TY</string>
+  <string name="ExtensionDraftModeDisconnected">Rozlaczony</string>
+  <string name="ExtensionDraftModeReady">GOTOWY</string>
+  <string name="ExtensionDraftModePicking">WYBIERA</string>
+  <string name="ExtensionDraftModeRandomTooltip">Przydziela calkowicie losowa role z dostepnej puli.</string>
+  <string name="ExtensionDraftModeComplete">DRAFT ZAKOŃCZONY!</string>
+  <string name="ExtensionDraftModeGameStarting">GRA SIE ROZPOCZYNA!</string>
+  <string name="ExtensionDraftModeTimeLeft">Pozostaly czas</string>
+  <string name="ExtensionDraftModeSecondsShort">s</string>
+  <string name="ExtensionDraftModeWaitingForTurn">OCZEKIWANIE NA TWOJA KOLEJ</string>
+  <string name="ExtensionDraftModeEnabled">Wlaczony</string>
+  <string name="ExtensionDraftModeDisabled">Wylaczony</string>
+  <string name="ExtensionDraftModeOther">Pozostali</string>
+  <string name="ExtensionDraftModeKilling">Zabojcy</string>
+  <string name="ExtensionDraftModeMin">Min.</string>
+  <string name="ExtensionDraftModeMax">Maks.</string>
+  <string name="ExtensionDraftHudCrewmate">Czlonek zalogi</string>
+  <string name="ExtensionDraftHudCrewmates">Czlonkowie zalogi</string>
+  <string name="ExtensionDraftHudCrewInvestigative">Zaloga sledcza</string>
+  <string name="ExtensionDraftHudCrewKilling">Zaloga zabijajaca</string>
+  <string name="ExtensionDraftHudCrewPower">Zaloga specjalna</string>
+  <string name="ExtensionDraftHudCrewProtective">Zaloga ochronna</string>
+  <string name="ExtensionDraftHudCrewSupport">Zaloga wspierajaca</string>
+  <string name="ExtensionDraftHudImpostors">Impostorzy</string>
+  <string name="ExtensionDraftHudImpConcealing">Impostorzy ukrywajacy</string>
+  <string name="ExtensionDraftHudImpKilling">Impostorzy zabijajacy</string>
+  <string name="ExtensionDraftHudImpPower">Impostorzy specjalni</string>
+  <string name="ExtensionDraftHudImpSupport">Impostorzy wspierajacy</string>
+  <string name="ExtensionDraftHudNeutrals">Neutralni</string>
+  <string name="ExtensionDraftHudNeutralBenign">Neutralni lagodni</string>
+  <string name="ExtensionDraftHudNeutralEvil">Neutralni zli</string>
+  <string name="ExtensionDraftHudNeutralKilling">Neutralni zabijajacy</string>
+  <string name="ExtensionDraftHudNeutralOutlier">Neutralni nietypowi</string>
+  <string name="ExtensionDraftOptionPoolMode">Tryb puli Draftu</string>
+  <string name="ExtensionDraftPoolModeOld">Stary Draft</string>
+  <string name="ExtensionDraftPoolModeMinMax">Min./Maks.</string>
+  <string name="ExtensionDraftPoolModeRoleList">Lista rol</string>
+  <string name="ExtensionDraftOptionUseRoleChances">Uwzgledniaj szanse rol</string>
+  <string name="ExtensionDraftOptionExcludePreviousRoles">Wyklucz role z poprzedniej gry</string>
+  <string name="ExtensionDraftOptionReduceKillingStreak">Ogranicz serie rol zabijajacych</string>
+  <string name="ExtensionDraftOptionReductionChance">Redukcja zabijajacych Impostorow i Neutralnych</string>
+  <string name="ExtensionDraftOldSettingsGroup">Ustawienia starego Draftu</string>
+  <string name="ExtensionDraftCrewmateSettingsGroup">Ustawienia zalogi Draftu</string>
+  <string name="ExtensionDraftImpostorSettingsGroup">Ustawienia Impostorow Draftu</string>
+  <string name="ExtensionDraftNeutralSettingsGroup">Ustawienia Neutralnych Draftu</string>
+  <string name="ExtensionDraftRoleListSettingsGroup">Lista rol Draftu</string>
+  <string name="ExtensionDraftOptionMinNeutralsPerChoice">Min. Neutralnych na wybor</string>
+  <string name="ExtensionDraftOptionMaxNeutralsPerChoice">Maks. Neutralnych na wybor</string>
+  <string name="ExtensionDraftOptionMinOtherNeutrals">Min. pozostalych Neutralnych</string>
+  <string name="ExtensionDraftOptionMaxOtherNeutrals">Maks. pozostalych Neutralnych</string>
+  <string name="ExtensionDraftOptionMinNeutralKilling">Min. Neutralnych zabijajacych</string>
+  <string name="ExtensionDraftOptionMaxNeutralKillingRoles">Maks. Neutralnych zabijajacych</string>
+  <string name="ExtensionDraftOptionMaxInvestigative">Maks. rol sledczych</string>
+  <string name="ExtensionDraftOptionMaxKilling">Maks. rol zabijajacych</string>
+  <string name="ExtensionDraftOptionMaxPower">Maks. rol specjalnych</string>
+  <string name="ExtensionDraftOptionMaxProtective">Maks. rol ochronnych</string>
+  <string name="ExtensionDraftOptionMaxSupport">Maks. rol wspierajacych</string>
+  <string name="ExtensionDraftOptionMaxImpostorsTotal">Maks. Impostorow lacznie</string>
+  <string name="ExtensionDraftOptionMaxConcealing">Maks. rol ukrywajacych</string>
+  <string name="ExtensionDraftOptionMaxNeutralTotal">Maks. rol Neutralnych</string>
+  <string name="ExtensionDraftOptionMaxBenign">Maks. Neutralnych lagodnych</string>
+  <string name="ExtensionDraftOptionMaxEvil">Maks. Neutralnych zlych</string>
+  <string name="ExtensionDraftOptionMaxNeutralKilling">Maks. Neutralnych zabijajacych</string>
+  <string name="ExtensionDraftOptionMaxOutlier">Maks. Neutralnych nietypowych</string>
+  <string name="ExtensionDraftOptionSlot">Slot</string>
   <string name="Neutral">Neutralny</string>
   
   <!-- Bounty Hunter Role -->
@@ -861,7 +945,7 @@
   <string name="ExtensionOptionBHGameContinues">Gra trwa po zlecenich</string>
   <string name="ExtensionOptionBHWinMode">Tryb zwyciestwa</string>
   <string name="ExtensionOptionBHWinModeEnumSoloWin">Samotna wygrana</string>
-  <string name="ExtensionOptionBHWinModeEnumWinWithWinners">Wygrana ze zwyciezcami</string>
+  <string name="ExtensionOptionBHWinModeEnumLeavesInVictory">Wychodzi po wygranej</string>
   <string name="ExtensionOptionBHArrowRange">Zasieg strzalki</string>
   <string name="ExtensionOptionBHArrowRangeShort">Krotki</string>
   <string name="ExtensionOptionBHArrowRangeMedium">Sredni</string>
@@ -880,6 +964,8 @@
   <string name="ExtensionBHNoTargets">Brak celow!</string>
   <string name="ExtensionBHWinWithWinnersSelf">Kontrakty wykonane! Wygrywasz ze zwyciezcami.</string>
   <string name="ExtensionBHWinWithWinnersOthers">Lowca &lt;player&gt; wykonal wszystkie kontrakty!</string>
+  <string name="ExtensionBHLeavesInVictorySelf">Wykonales wszystkie kontrakty i wychodzisz jako zwyciezca!</string>
+  <string name="ExtensionBHLeavesInVictoryOthers">Lowca &lt;player&gt; wykonal wszystkie kontrakty i wyszedl jako zwyciezca!</string>
   <string name="DiedToWinning">Zwyciezca</string>
   <string name="ExtensionBountyHunterWins">Wygrywa</string>
   
@@ -901,6 +987,8 @@
   
   <!-- Poisoner Options -->
   <string name="ExtensionOptionPoisonerPoisonDuration">Czas do zgonu</string>
+  <string name="ExtensionOptionPoisonerVictimAlertEnabled">Alert ofiary</string>
+  <string name="ExtensionOptionPoisonerVictimAlertDelay">Opoznienie alertu ofiary</string>
   <string name="ExtensionOptionPoisonerVineDuration">Czas miazdzenia</string>
   <string name="ExtensionOptionPoisonerCanVent">Truciciel uzywa rur</string>
   <string name="ExtensionOptionPoisonerVineSeekingDuration">Czas szukania pnączami</string>
@@ -909,6 +997,7 @@
 
   <!-- Poisoner Notifications -->
   <string name="ExtensionPoisonerNotificationPoisoned">Zatrules gracza {0}!</string>
+  <string name="ExtensionPoisonerNotificationVictimPoisoned">Zostales otruty! Umrzesz za {0} sekund.</string>
   <string name="ExtensionPoisonerNotificationTargetDied">Ofiara {0} zmarla od trucizny!</string>
   <string name="PoisonerVineSeekingCancelledPenalty">Anulowano! Kara do cooldownu.</string>
   <string name="PoisonerVineSeekingExpiredPenalty">Czas minal! Kara do cooldownu.</string>
@@ -1440,6 +1529,7 @@
   <string name="ExtensionRoleBakerWikiDescription">Rozdaje chleb i czeka na transformacje w Jezdzca.</string>
   <string name="ExtensionRoleBakerGive">Daj chleb</string>
   <string name="ExtensionRoleBakerGiveWikiDescription">Podaj chleb graczowi.</string>
+  <string name="ExtensionRoleBakerMeetingSummary">Rozdany chleb: {0} / {1}</string>
   <string name="ExtensionRoleBakerFamineAnnouncement">Nadszedl Glod! \%color=#023020FF\%Glod\%/color\% przybyl!</string>
   <string name="ExtensionRoleBakerFamineAnnouncementTitle">PRZYBYCIE GLODU</string>
   <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} zginal z chlebem!</string>
@@ -1457,7 +1547,10 @@
   <string name="ExtensionRoleBerserkerIntroBlurb">Zabijaj, by przeobrazic sie w Wojne.</string>
   <string name="ExtensionRoleBerserkerTabDescription">Kille skracaja cooldown.\%nl\%Zabij wystarczajaco wielu, by zostac &lt;color=#5E3929&gt;Wojna&lt;/color&gt;.</string>
   <string name="ExtensionRoleBerserkerWikiDescription">Jezdziec, ktory rosnie w sile z kazdym killem.</string>
+  <string name="ExtensionRoleBerserkerKillWikiDescription">Zabijaj graczy, zeby skracac cooldown i przebudzic Wojne.</string>
+  <string name="ExtensionRoleBerserkerWarWikiAbilityDescription">Po wystarczajacej liczbie killi przemieniasz sie w Wojne, jezdzca Apokalipsy.</string>
   <string name="ExtensionRoleBerserkerKillsTab">Kille do Wojny</string>
+  <string name="ExtensionRoleBerserkerMeetingSummary">Kille do przemiany w Wojne: {0} / {1}</string>
   <string name="ExtensionRoleBerserkerWarAnnouncement">Wojna przybyla na statek! \%color=#5E3929FF\%Wojna\%/color\% powstal!</string>
   <string name="ExtensionRoleBerserkerWarAnnouncementTitle">PRZYBYCIE WOJNY</string>
   <string name="ExtensionOptionBerserkerInstantWarChance">Szansa na instant Wojne</string>
@@ -1465,17 +1558,25 @@
   <string name="ExtensionOptionBerserkerKillCooldownReduction">Skrocenie za kill</string>
   <string name="ExtensionOptionBerserkerKillsNeededToTransform">Kille do formy ostatecznej</string>
   <string name="ExtensionOptionBerserkerAnnounceWar">Oglos przybycie Wojny</string>
-  <string name="ExtensionOptionBerserkerWarCanVent">Wojna uzywa rur</string>
+  <string name="ExtensionOptionBerserkerWhoCanVent">Kto moze uzywac rur</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentNoOne">Nikt</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentBerserker">Tylko Berserker</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentWar">Tylko Wojna</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentBoth">Wojna + Berserker</string>
+  <string name="ExtensionRoleCantVent">Nie moze ventowac</string>
   <string name="ExtensionOptionWarKillingSpreeDuration">Szal Wojny (s)</string>
   <string name="ExtensionRoleWar">Wojna</string>
-  <string name="ExtensionRoleWarIntroBlurb">Jestes Jezdzcem Apokalipsy!</string>
-  <string name="ExtensionRoleWarTabDescription">Forma Wojny. Zabijaj seriami.\%nl\%Jestes niesmiertelny.</string>
+  <string name="ExtensionRoleWarIntroBlurb">Jezdziec Apokalipsy!</string>
+  <string name="ExtensionRoleWarTabDescription">Przemieniony Berserker.\%nl\%Zabijaj w krotkich seriach.\%nl\%Wojna jest niesmiertelna.</string>
   <string name="ExtensionRoleWarWikiDescription">Moze zabijac bez cooldownu w krotkim oknie szalu.</string>
+  <string name="ExtensionRoleWarMeetingSummary">Wojna przebudzona: pole bitwy nalezy do ciebie.</string>
   <string name="ExtensionRoleWarSpreeKill">Seryjny Atak</string>
   <string name="ExtensionRoleFamine">Glod</string>
-  <string name="ExtensionRoleFamineIntroBlurb">Jestes Jezdzcem Apokalipsy!</string>
-  <string name="ExtensionRoleFamineTabDescription">Forma Glodu. Ofiary umra przy naradzie.\%nl\%Jestes niesmiertelny.</string>
+  <string name="ExtensionRoleFamineIntroBlurb">Jezdziec Apokalipsy!</string>
+  <string name="ExtensionRoleFamineTabDescription">Przemieniony Piekarz.\%nl\%Zaglodzeni umieraja przy naradzie.\%nl\%Gdy nakarmieni zgina, glodzisz kazdego.\%nl\%Glod jest niesmiertelny.</string>
   <string name="ExtensionRoleFamineWikiDescription">Skazuje graczy na smierc z glodu.</string>
+  <string name="ExtensionRoleFamineMeetingSummary">Naznaczeni Glodem: {0}</string>
+  <string name="ExtensionRoleFamineMeetingSummaryUnlocked">Glod przebudzony: nikt nie jest bezpieczny.</string>
   <string name="ExtensionRoleFamineStarve">Zaglodz</string>
   <string name="ExtensionRoleFamineStarveWikiDescription">Skaz gracza na smierc przy naradzie.</string>
   <string name="ExtensionOptionBakerBreadNeeded">Wymagany chleb</string>
@@ -1566,6 +1667,7 @@
   <string name="ExtensionRoleSoulCollectorWikiDescription">Zbiera dusze oznaczonych graczy, ktorzy polegli.</string>
   <string name="ExtensionRoleSoulCollectorReap">Zniwa</string>
   <string name="ExtensionRoleSoulCollectorReapWikiDescription">Oznacz gracza do zebrania duszy.</string>
+  <string name="ExtensionRoleSoulCollectorMeetingSummary">Zebrane dusze: {0} / {1} | Znaki zniw: {2} / {3}</string>
   <string name="ExtensionRoleSoulCollectorMarkedDiedNotif">Dusza {0} zebrana!</string>
   <string name="ExtensionRoleSoulCollectorDeathAnnouncement">Smierc przybyla! \%color=#202020FF\%Smierc\%/color\% powstal!</string>
   <string name="ExtensionRoleSoulCollectorDeathAnnouncementTitle">ALARM: SMIERC</string>
@@ -1574,6 +1676,7 @@
   <string name="ExtensionRoleDeathIntroBlurb">Jestes Jezdzcem Apokalipsy!</string>
   <string name="ExtensionRoleDeathTabDescription">Ostateczna forma. Twoje ofiary sa nieuchwytne.\%nl\%Smierc jest niesmiertelna.</string>
   <string name="ExtensionRoleDeathWikiDescription">Zabija bez animacji i dowodow.</string>
+  <string name="ExtensionRoleDeathMeetingSummary">Smierc przebudzona: zadna dusza nie ucieknie.</string>
   <string name="DiedToExtensionDeathClaimed">Zabrany</string>
   <string name="ExtensionOptionSoulCollectorInstantDeathChance">Szansa na instant Smierc</string>
   <string name="ExtensionOptionSoulCollectorReapCooldown">Cooldown Zniw</string>
@@ -1632,7 +1735,6 @@
   <string name="ExtensionOptionVoodooMasterMaxMuteUses">Użycia wyciszenia</string>
   <string name="ExtensionOptionVoodooMasterBlindDuration">Czas oslepienia</string>
   <string name="ExtensionOptionVoodooMasterConfuseDuration">Czas chaosu</string>
-  <string name="ExtensionOptionVoodooMasterMuteDuration">Czas wyciszenia (narady)</string>
   <string name="ExtensionOptionVoodooMasterTargetLockDuration">Czas blokady celu (narady)</string>
   <string name="ExtensionOptionVoodooMasterBlindDelay">Opóźnienie oslepienia</string>
   <string name="ExtensionOptionVoodooMasterConfuseDelay">Opóźnienie chaosu</string>
@@ -1640,7 +1742,11 @@
   <string name="ExtensionVoodooEffectBlindness">Oslepienie</string>
   <string name="ExtensionVoodooEffectMute">Uciszenie</string>
   <string name="ExtensionVoodooEffectConfuse">Chaos</string>
-  <string name="ExtensionVoodooMuteAlert">Mistrz Voodoo Cie przeklal. Tylko Ty to widzisz i zostaniesz uciszony na nastepnej naradzie!</string>
+  <string name="ExtensionVoodooMuteAlert">Mistrz Voodoo Cie przeklal. Tylko Ty to widzisz i jestes uciszony podczas tej narady!</string>
+  <string name="ExtensionVoodooMuteWarningTitle">MUTE ALERT</string>
+  <string name="ExtensionVoodooMuteScheduledTitle">Urok Voodoo</string>
+  <string name="ExtensionVoodooMuteScheduledAlert">Mistrz Voodoo rzucil na Ciebie urok. Tylko Ty wiesz o tej klatwie.\%nl\%Podczas nastepnej narady nie mozesz pisac na czacie, ale nadal mozesz glosowac.</string>
+  <string name="ExtensionVoodooMuteChatBlocked">Uciszony przez Voodoo — czat zablokowany.</string>
   <string name="ExtensionVoodooMutedIntro">ZOSTAŁEŚ UCISZONY!</string>
 
   <!-- Inverter Role -->

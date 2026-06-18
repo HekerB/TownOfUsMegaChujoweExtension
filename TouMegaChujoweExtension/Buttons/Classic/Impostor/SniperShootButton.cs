@@ -15,7 +15,7 @@ using TouMegaChujoweExtension.Modules;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
-public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
+public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>, IDiseaseableButton
 {
     private const float CancelLockDuration = 2f;
     public override string Name => TouLocale.GetParsed("ExtensionRoleSniperShoot", "Snipe");
@@ -28,6 +28,11 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
     public override bool ZeroIsInfinite { get; set; } = true;
 
     private IEnumerator? _activeZoomCoroutine;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override void CreateButton(Transform parent)
     {

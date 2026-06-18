@@ -12,6 +12,11 @@ namespace TouMegaChujoweExtension.Patches.UI;
 [HarmonyPatch]
 public static class MapColorPatch
 {
+    private const int WhiteColorId = 7;
+    private const int CyanColorId = 10;
+    private const int AzureColorId = 26;
+    private const int SnowColorId = 34;
+
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowSabotageMap))]
     [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowCountOverlay))]
@@ -87,28 +92,24 @@ public static class MapColorPatch
             return;
         }
 
-        map.ColorControl?.SetColor(Palette.PlayerColors[colorId]);
+        var mapColor = GetReadablePlayerMapColor(colorId);
 
-        if (map.HerePoint != null)
-        {
-            player.SetPlayerMaterialColors(map.HerePoint);
-        }
-
-        if (map.TrackedHerePoint != null)
-        {
-            player.SetPlayerMaterialColors(map.TrackedHerePoint);
-        }
+        map.ColorControl?.SetColor(mapColor);
     }
 
-    private static void ApplySolidColor(SpriteRenderer? renderer, Color color)
+    private static Color GetReadablePlayerMapColor(int colorId)
     {
-        if (renderer == null)
+        if (colorId == SnowColorId && WhiteColorId < Palette.PlayerColors.Length)
         {
-            return;
+            return Palette.PlayerColors[WhiteColorId];
         }
 
-        PlayerMaterial.SetColors(color, renderer);
-        renderer.color = color;
+        if (colorId == CyanColorId && AzureColorId < Palette.PlayerColors.Length)
+        {
+            return Palette.PlayerColors[AzureColorId];
+        }
+
+        return Palette.PlayerColors[colorId];
     }
 }
 

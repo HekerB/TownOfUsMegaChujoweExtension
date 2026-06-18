@@ -24,7 +24,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
-public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, PlayerControl>
+public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, PlayerControl>, IDiseaseableButton
 {
     public override string Name => TouLocale.GetParsed("ExtensionRolePelicanSwallow", "Swallow");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
@@ -34,6 +34,11 @@ public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, Playe
     public override float EffectDuration => 0f;
     public override bool HasEffect => false;
     public override LoadableAsset<Sprite> Sprite => TouExtensionNeuAssets.PelicanSwallowButtonSprite;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
 
     public override int MaxUses =>

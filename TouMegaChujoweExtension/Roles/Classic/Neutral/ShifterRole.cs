@@ -25,6 +25,7 @@ using TownOfUs;
 using MiraAPI.Hud;
 using TownOfUs.Buttons;
 using TouMegaChujoweExtension.Buttons.Classic.Neutral;
+using TouMegaChujoweExtension.Patches.Roles.Shifter;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
@@ -297,8 +298,7 @@ public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
 
         if (target.AmOwner)
         {
-            PirateDuelSystem.FlashScreen(TouExtensionColors.Shifter, 0.5f, 0.3f);
-            ShowShifterNotification("Your role has been stolen!");
+            ShifterStolenRoleMeetingIntroPatch.QueueForLocalPlayer();
         }
 
         if (shifter.AmOwner)

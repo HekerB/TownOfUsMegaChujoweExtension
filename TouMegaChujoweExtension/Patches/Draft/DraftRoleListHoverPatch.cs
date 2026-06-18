@@ -89,6 +89,12 @@ public static class DraftRoleListHoverPatch
 
         EnsureTooltip(__instance);
 
+        var tooltipGo = TooltipGoRef(__instance);
+        if (tooltipGo != null && tooltipGo.activeSelf)
+        {
+            UpdateTooltipLinks(__instance);
+        }
+
         var line = GetLineUnderMouse(__instance);
 
         if (line == LastLineRef(__instance))
@@ -361,7 +367,11 @@ public static class BuildTooltipTextPatch
                 if (!RoleDisplayNameCache.TryGetValue(r.ClassFullName, out displayName))
                 {
                     var role = MiscUtils.AllRoles.FirstOrDefault(x => x.GetType().FullName == r.ClassFullName);
-                    displayName = role != null ? role.GetRoleName() : r.DisplayName;
+                    displayName = role is TownOfUs.Roles.ITownOfUsRole touRole
+                        ? touRole.RoleName
+                        : role != null
+                            ? role.GetRoleName()
+                            : r.DisplayName;
                     RoleDisplayNameCache[r.ClassFullName] = displayName;
                 }
             }

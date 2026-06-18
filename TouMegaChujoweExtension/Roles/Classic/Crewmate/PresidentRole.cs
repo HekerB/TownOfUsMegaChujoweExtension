@@ -196,6 +196,7 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         AbstainButton.gameObject.GetComponentInChildren<TextTranslatorTMP>().Destroy();
         AbstainButton.gameObject.GetComponentInChildren<TextMeshPro>().text =
             TouLocale.Get("ExtensionRolePresidentAbstain", "ABSTAIN").ToUpperInvariant();
+
         AbstainButton.gameObject.name = "button_abstainButton";
 
         skip.transform.localPosition += new Vector3(0f, 0.20f, 0f);
@@ -246,7 +247,10 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
 
         if (Player.AmOwner)
         {
-            SoundManager.Instance.PlaySound(meeting.VoteLockinSound, false);
+            if (Constants.ShouldPlaySfx())
+            {
+                SoundManager.Instance.PlaySound(meeting.VoteLockinSound, false);
+            }
 
             meeting.SkipVoteButton.voteComplete = true;
             meeting.SkipVoteButton.gameObject.SetActive(false);

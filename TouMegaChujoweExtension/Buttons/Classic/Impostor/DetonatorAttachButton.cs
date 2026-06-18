@@ -18,7 +18,7 @@ using UnityEngine.UI;
 
 namespace TouMegaChujoweExtension.Buttons.Impostor;
 
-public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole, PlayerControl>
+public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole, PlayerControl>, IDiseaseableButton
 {
     private PlayerControl? _attachTarget;
     private float _attachTimer;
@@ -43,6 +43,11 @@ public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole
     }
     public override LoadableAsset<Sprite> Sprite => TouImpAssets.PursueSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override PlayerControl? GetTarget()
     {
@@ -120,9 +125,13 @@ public sealed class DetonatorAttachButton : TownOfUsKillRoleButton<DetonatorRole
         // Handling Attach phase (progress bar on button)
         if (_isAttaching)
         {
-            if (_attachTarget == null || _attachTarget.Data.IsDead || !CanClick())
+            if (_attachTarget == null ||
+                _attachTarget.Data.IsDead ||
+                _attachTarget != target ||
+                !CanClick())
             {
                 _isAttaching = false;
+                _attachTarget = null;
                 _attachTimer = 0f;
             }
             else

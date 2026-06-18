@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
-public sealed class BerserkerKillButton : TownOfUsRoleButton<BerserkerRole, PlayerControl>, IDiseaseableButton, IKillButton
+public sealed class BerserkerKillButton : TownOfUsKillRoleButton<BerserkerRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     private bool _lastKillSucceeded;
     private bool _warStateRefreshed;
@@ -29,10 +29,29 @@ public sealed class BerserkerKillButton : TownOfUsRoleButton<BerserkerRole, Play
     public override LoadableAsset<Sprite> Sprite => (PlayerControl.LocalPlayer == null ? null : Role)?.IsWar == true ? TouNeutAssets.WerewolfKillSprite : TouAssets.KillSprite;
     public override float Distance => GameManager.Instance.LogicOptions.GetKillDistance();
     public override bool ShouldPauseInVent => true;
+    public override int MaxUses => Math.Max(1, (int)OptionGroupSingleton<BerserkerOptions>.Instance.KillsNeededToTransform);
+    public override bool ZeroIsInfinite => false;
 
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
+    }
+
+    public override bool CanUse()
+    {
+        return base.CanUse();
+    }
+
+    public override void CreateButton(Transform parent)
+    {
+        base.CreateButton(parent);
+
+        if (Button != null)
+        {
+            Button.usesRemainingSprite.sprite = TouAssets.AbilityCounterKillSprite.LoadAsset();
+            Button.usesRemainingSprite.gameObject.SetActive(true);
+            Button.usesRemainingText.gameObject.SetActive(true);
+        }
     }
 
     public void RefreshWarState()
@@ -113,6 +132,21 @@ public sealed class BerserkerKillButton : TownOfUsRoleButton<BerserkerRole, Play
     protected override void FixedUpdate(PlayerControl playerControl)
     {
         base.FixedUpdate(playerControl);
+
+        if (playerControl.AmOwner && Role != null)
+        {
+            var showUses = !Role.IsWar;
+            if (Button != null)
+            {
+                Button.usesRemainingSprite.gameObject.SetActive(showUses);
+                Button.usesRemainingText.gameObject.SetActive(showUses);
+            }
+
+            if (showUses)
+            {
+                SetUses(Math.Max(0, MaxUses - Role.KillCount));
+            }
+        }
 
         if (Role == null || !Role.IsWar)
         {

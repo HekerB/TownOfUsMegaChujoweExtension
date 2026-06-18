@@ -15,7 +15,7 @@ using TouMegaChujoweExtension.Modules;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
-public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
+public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>, IDiseaseableButton
 {
     private const float CancelLockDuration = 2f;
 
@@ -35,6 +35,11 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
     public override int MaxUses => 0;
     public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.VineButtonSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override void CreateButton(Transform parent)
     {

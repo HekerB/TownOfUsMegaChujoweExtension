@@ -20,7 +20,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Crewmate;
 
-public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IKillButton
+public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IDiseaseableButton, IKillButton
 {
     static StakeButton()
     {
@@ -42,6 +42,11 @@ public sealed class StakeButton : TownOfUsRoleButton<VampireHunterRole>, IKillBu
 
     public override int MaxUses => (int)OptionGroupSingleton<VampireHunterOptions>.Instance.MaxFailedStakes;
     public override bool ZeroIsInfinite { get; set; } = true;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override bool CanUse()
     {

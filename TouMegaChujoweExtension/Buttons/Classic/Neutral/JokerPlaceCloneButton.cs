@@ -90,13 +90,14 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
             _isTabletOpen = false;
         }
 
-        var activeIndex = FindMyActiveCloneIndex(local.PlayerId);
-        var previewIndex = FindMyPreviewCloneIndex(local.PlayerId);
-        var activeCount = JokerCloneSystem.GetActiveCloneCountForJoker(local.PlayerId);
+        var cloneSummary = JokerCloneSystem.GetCloneSummaryForJoker(local.PlayerId);
+        var activeIndex = cloneSummary.FirstActiveIndex;
+        var previewIndex = cloneSummary.PreviewIndex;
+        var activeCount = cloneSummary.ActiveCount;
         var maxClones = (int)OptionGroupSingleton<JokerOptions>.Instance.MaxClones;
         var hasActive = activeIndex >= 0;
         var hasPreview = previewIndex >= 0;
-        UpdateUsesRemaining(local.PlayerId);
+        UpdateUsesRemaining(maxClones, activeCount);
 
         if (hasPreview)
         {
@@ -215,7 +216,7 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
 
         if (_stage == Stage.ActiveFull)
         {
-            var index = FindLastMyActiveCloneIndex(player.PlayerId);
+            var index = JokerCloneSystem.GetCloneSummaryForJoker(player.PlayerId).LastActiveIndex;
             if (index >= 0)
             {
                 JokerRole.RpcJokerDestroyClone(player, (byte)index);
@@ -276,8 +277,7 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
                     continue;
                 }
 
-                var control = clone.Fake.Body.GetComponent<JokerCloneControlComponent>();
-                if (control != null && control.OwnerId == local.PlayerId)
+                if (clone.JokerId == local.PlayerId)
                 {
                     JokerCloneSystem.TryRemoveClone(i, out _);
                 }
@@ -302,10 +302,8 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
                !candidate.HasDied();
     }
 
-    private void UpdateUsesRemaining(byte ownerId)
+    private void UpdateUsesRemaining(int maxClones, int activeClones)
     {
-        var maxClones = (int)OptionGroupSingleton<JokerOptions>.Instance.MaxClones;
-        var activeClones = JokerCloneSystem.GetActiveCloneCountForJoker(ownerId);
         UsesLeft = Mathf.Max(0, maxClones - activeClones);
         Button?.SetUsesRemaining(UsesLeft);
     }
@@ -315,38 +313,7 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
         for (var i = 0; i < JokerCloneSystem.Clones.Count; i++)
         {
             var clone = JokerCloneSystem.Clones[i];
-            var control = clone.Fake.Body?.GetComponent<JokerCloneControlComponent>();
-            if (clone.IsPreview && control != null && control.OwnerId == ownerId)
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    private static int FindMyActiveCloneIndex(byte ownerId)
-    {
-        for (var i = 0; i < JokerCloneSystem.Clones.Count; i++)
-        {
-            var clone = JokerCloneSystem.Clones[i];
-            var control = clone.Fake.Body?.GetComponent<JokerCloneControlComponent>();
-            if (!clone.IsPreview && control != null && control.OwnerId == ownerId)
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    private static int FindLastMyActiveCloneIndex(byte ownerId)
-    {
-        for (var i = JokerCloneSystem.Clones.Count - 1; i >= 0; i--)
-        {
-            var clone = JokerCloneSystem.Clones[i];
-            var control = clone.Fake.Body?.GetComponent<JokerCloneControlComponent>();
-            if (!clone.IsPreview && control != null && control.OwnerId == ownerId)
+            if (clone.IsPreview && clone.JokerId == ownerId)
             {
                 return i;
             }

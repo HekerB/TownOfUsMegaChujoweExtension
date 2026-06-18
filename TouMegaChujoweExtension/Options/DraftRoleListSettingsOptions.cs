@@ -3,6 +3,7 @@ using AmongUs.GameOptions;
 using MiraAPI.GameOptions;
 using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.Utilities;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -10,12 +11,14 @@ namespace TouMegaChujoweExtension.Options;
 
 public sealed class DraftRoleListSettingsOptions : AbstractOptionGroup
 {
-    public override string GroupName => "Draft Role List Settings";
+    public override string GroupName => TouLocale.Get("ExtensionDraftRoleListSettingsGroup", "Draft Role List Settings");
     public override uint GroupPriority => 104;
     public override Color GroupColor => new Color32(255, 182, 200, 255);
     public override Func<bool> GroupVisible => () => OptionGroupSingleton<DraftModeOptions>.Instance.IsRoleListDraft;
 
-    private const string CrewNeuName = "<color=#8CFFFF>Crewmate</color> + <color=#B8B8B8>Neutral</color>";
+    private static string CrewNeuName =>
+        $"<color=#8CFFFF>{TouLocale.Get("ExtensionDraftHudCrewmate", "Crewmate")}</color> + " +
+        $"<color=#B8B8B8>{TouLocale.Get("Neutral", "Neutral")}</color>";
 
     private static readonly string[] RoleListOptionNames =
     [
@@ -97,7 +100,7 @@ public sealed class DraftRoleListSettingsOptions : AbstractOptionGroup
 
     private static ModdedEnumOption<DraftRoleListOption> CreateSlotOption(int slot, DraftRoleListOption defaultValue)
     {
-        return new($"Slot {slot}", defaultValue, RoleListOptionNames)
+        return new($"{TouLocale.Get("ExtensionDraftOptionSlot", "Slot")} {slot}", defaultValue, RoleListOptionNames)
         {
             Visible = () => SlotVisible(slot)
         };

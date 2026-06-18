@@ -63,7 +63,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = IsWar && OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent,
+        CanUseVent = CanVentByState(),
         IntroSound = TouAudio.WarlockIntroSound,
         Icon = IsWar ? TouExtensionIcons.WarRoleIcon : TouExtensionIcons.BerserkerRoleIcon,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
@@ -84,13 +84,26 @@ public sealed class BerserkerRole(IntPtr cppPtr)
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
-        var builder = ITownOfUsRole.SetNewTabText(this);
         if (IsWar)
+        {
+            var warBuilder = new StringBuilder();
+            warBuilder.AppendLine(TownOfUsPlugin.Culture,
+                $"{RoleColor.ToTextColor()}{TouLocale.Get("YouAre")}<b> {RoleName},\n<size=80%>{RoleDescription}</size></b></color>");
+            warBuilder.AppendLine(TownOfUsPlugin.Culture,
+                $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(RoleAlignment, true)}</b></size>");
+            warBuilder.Append("<size=70%>");
+            warBuilder.AppendLine(TownOfUsPlugin.Culture, $"{RoleLongDescription}");
+            return warBuilder;
+        }
+
+        var builder = ITownOfUsRole.SetNewTabText(this);
+        var options = OptionGroupSingleton<BerserkerOptions>.Instance;
+        if (options == null)
         {
             return builder;
         }
 
-        var needed = (int)OptionGroupSingleton<BerserkerOptions>.Instance.KillsNeededToTransform;
+        var needed = (int)options.KillsNeededToTransform;
         builder.AppendLine(TownOfUsPlugin.Culture,
             $"{TouExtensionColors.Berserker.ToTextColor()}{TouLocale.Get("ExtensionRoleBerserkerKillsTab", "Kills to become War")}: <b>{KillCount}/{needed}</b></color>");
         return builder;
@@ -159,10 +172,17 @@ public sealed class BerserkerRole(IntPtr cppPtr)
             targetPlayer.RemoveModifier<InvulnerabilityModifier>();
         }
 
-        if (targetPlayer.AmOwner)
+        if (targetPlayer.AmOwner && HudManager.Instance?.ImpostorVentButton != null)
         {
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
-            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
+            var ventButton = HudManager.Instance.ImpostorVentButton;
+            if (ventButton.graphic != null)
+            {
+                ventButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
+            }
+            if (ventButton.buttonLabelText != null)
+            {
+                ventButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
+            }
         }
     }
 
@@ -202,7 +222,11 @@ public sealed class BerserkerRole(IntPtr cppPtr)
     public bool CanVentByState()
     {
         var options = OptionGroupSingleton<BerserkerOptions>.Instance;
-        return IsWar && options.WarCanVent;
+        if (options == null)
+        {
+            return false;
+        }
+        return IsWar ? options.WarCanVent : options.BerserkerCanVent;
     }
 
     public bool ShouldShowVentButton()
@@ -218,6 +242,10 @@ public sealed class BerserkerRole(IntPtr cppPtr)
     public static float GetKillCooldownForKills(int killCount)
     {
         var options = OptionGroupSingleton<BerserkerOptions>.Instance;
+        if (options == null)
+        {
+            return 25f;
+        }
         var needed = Math.Max(1, (int)options.KillsNeededToTransform);
         var maxReductionKills = Math.Max(0, needed - 1);
         var cappedKills = Math.Min(Math.Max(0, killCount), maxReductionKills);
@@ -232,8 +260,14 @@ public sealed class BerserkerRole(IntPtr cppPtr)
             return;
         }
 
+        var options = OptionGroupSingleton<BerserkerOptions>.Instance;
+        if (options == null)
+        {
+            return;
+        }
+
         var nextKillCount = KillCount + 1;
-        var needed = Math.Max(1, (int)OptionGroupSingleton<BerserkerOptions>.Instance.KillsNeededToTransform);
+        var needed = Math.Max(1, (int)options.KillsNeededToTransform);
         if (nextKillCount >= needed)
         {
             RpcSetBerserkerKills(Player, needed);
@@ -265,13 +299,22 @@ public sealed class BerserkerRole(IntPtr cppPtr)
 
         role.IsWar = true;
         role.WarSpreeUntil = 0f;
-        role.KillCount = Math.Max(role.KillCount, (int)OptionGroupSingleton<BerserkerOptions>.Instance.KillsNeededToTransform);
-        EnsureWarInvulnerability(player);
-
-        if (OptionGroupSingleton<BerserkerOptions>.Instance.AnnounceWarTransformation)
+        var options = OptionGroupSingleton<BerserkerOptions>.Instance;
+        if (options != null)
         {
-            PendingWarAnnouncement = true;
-            ShowPendingWarAnnouncement();
+            role.KillCount = Math.Max(role.KillCount, (int)options.KillsNeededToTransform);
+            EnsureWarInvulnerability(player);
+
+            if (options.AnnounceWarTransformation)
+            {
+                PendingWarAnnouncement = true;
+                ShowPendingWarAnnouncement();
+            }
+        }
+        else
+        {
+            role.KillCount = Math.Max(role.KillCount, 4);
+            EnsureWarInvulnerability(player);
         }
 
         if (player.AmOwner)
@@ -299,12 +342,10 @@ public sealed class BerserkerRole(IntPtr cppPtr)
         var msg = TouLocale.GetParsed("ExtensionRoleBerserkerWarAnnouncement", "War has consumed the battlefield.\\%nl\\%\\%color=#EEEEEEFF\\%War\\%/color\\%, Horseman of the Apocalypse, has emerged!");
         var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TouExtensionColors.War)}>{TouLocale.Get("ExtensionRoleBerserkerWarAnnouncementTitle", "War Warning")}</color>";
 
-        var notif = Helpers.CreateAndShowNotification(
+        TouMegaChujoweExtension.Modules.RoleAlertUtils.ShowRoleAlert(
             $"<b>{msg.Replace("\n", " ")}</b>",
             Color.white,
-            new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.WarRoleIcon.LoadAsset());
-        notif?.AdjustNotification();
+            TouExtensionIcons.WarRoleIcon.LoadAsset());
 
         MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
     }
@@ -328,9 +369,15 @@ public sealed class BerserkerRole(IntPtr cppPtr)
 
         var ventButton = HudManager.Instance.ImpostorVentButton;
         ventButton.gameObject.SetActive(CanVentByState());
-        ventButton.graphic.sprite = IsWar
-            ? TouNeutAssets.WerewolfVentSprite.LoadAsset()
-            : TouAssets.VentSprite.LoadAsset();
-        ventButton.buttonLabelText.SetOutlineColor(RoleColor);
+        if (ventButton.graphic != null)
+        {
+            ventButton.graphic.sprite = IsWar
+                ? TouNeutAssets.WerewolfVentSprite.LoadAsset()
+                : TouAssets.VentSprite.LoadAsset();
+        }
+        if (ventButton.buttonLabelText != null)
+        {
+            ventButton.buttonLabelText.SetOutlineColor(RoleColor);
+        }
     }
 }

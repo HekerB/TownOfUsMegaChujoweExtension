@@ -24,9 +24,25 @@ public sealed class BerserkerOptions : AbstractOptionGroup<BerserkerRole>
     [ModdedToggleOption("ExtensionOptionBerserkerAnnounceWar")]
     public bool AnnounceWarTransformation { get; set; } = true;
 
-    [ModdedToggleOption("ExtensionOptionBerserkerWarCanVent")]
-    public bool WarCanVent { get; set; } = false;
+    [ModdedEnumOption("ExtensionOptionBerserkerWhoCanVent", typeof(BerserkerVentMode),
+        ["ExtensionOptionBerserkerWhoCanVentNoOne",
+         "ExtensionOptionBerserkerWhoCanVentBerserker",
+         "ExtensionOptionBerserkerWhoCanVentWar",
+         "ExtensionOptionBerserkerWhoCanVentBoth"])]
+    public BerserkerVentMode WhoCanVent { get; set; } = BerserkerVentMode.WarOnly;
+
+    public bool BerserkerCanVent => WhoCanVent is BerserkerVentMode.BerserkerOnly or BerserkerVentMode.WarAndBerserker;
+
+    public bool WarCanVent => WhoCanVent is BerserkerVentMode.WarOnly or BerserkerVentMode.WarAndBerserker;
 
     [ModdedNumberOption("ExtensionOptionWarKillingSpreeDuration", 0f, 10f, 0.5f, MiraNumberSuffixes.Seconds)]
     public float WarKillingSpreeDuration { get; set; } = 1f;
+}
+
+public enum BerserkerVentMode
+{
+    NoOne,
+    BerserkerOnly,
+    WarOnly,
+    WarAndBerserker
 }

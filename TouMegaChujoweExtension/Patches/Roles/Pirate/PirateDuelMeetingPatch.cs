@@ -9,6 +9,7 @@ using System.Linq;
 using System;
 using TMPro;
 using TownOfUs.Modifiers.Crewmate;
+using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
 using UnityEngine;
 using UObject = UnityEngine.Object;
@@ -410,7 +411,7 @@ public static class PirateDuelMeetingPatch
         try
         {
             var notif = Helpers.CreateAndShowNotification(
-                "You are being dueled by the Pirate!",
+                TouLocale.Get("ExtensionPirateDuelNotification", "You are being dueled by the Pirate!"),
                 Color.white,
                 new Vector3(0f, 1f, -20f),
                 spr: TouExtensionIcons.PirateRoleIcon.LoadAsset());

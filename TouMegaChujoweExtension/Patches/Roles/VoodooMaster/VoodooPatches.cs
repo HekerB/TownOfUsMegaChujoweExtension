@@ -48,7 +48,9 @@ public static class VoodooPatches
         {
             if (noticeText != null)
             {
-                noticeText.text = "You have been muted by a Voodoo curse.";
+                noticeText.text = TouLocale.Get(
+                    "ExtensionVoodooMuteChatBlocked",
+                    "Muted by Voodoo — chat disabled.");
             }
 
             __instance.freeChatField.SetVisible(false);

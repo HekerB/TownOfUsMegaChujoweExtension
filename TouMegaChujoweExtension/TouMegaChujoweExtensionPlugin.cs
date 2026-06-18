@@ -24,12 +24,13 @@ namespace TouMegaChujoweExtension;
 [BepInDependency(ReactorPlugin.Id)]
 [BepInDependency(MiraApiPlugin.Id)]
 [BepInDependency(TownOfUsPlugin.Id)]
+[BepInDependency("com.edgetel.perfectcomms", BepInDependency.DependencyFlags.SoftDependency)]
 [ReactorModFlags(ModFlags.RequireOnAllClients)]
 public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 {
     public const string Id = "toumegachujowe.tou.extension";
     public const string Name = "Tou Mega Ch**owe Extension";
-    public const string Version = "1.4.2";
+    public const string Version = "1.4.3-dev";
     public const string UncensoredDisplayName = "Tou Mega Chujowe Extension";
     public const string CensoredDisplayName = "Tou Mega Ch**owe Extension";
 
@@ -95,11 +96,41 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
         IL2CPPChainloader.Instance.Finished += Patches.Roles.Apocalypse.ApocalypseTeamChatRegistration.Register;
         // IL2CPPChainloader.Instance.Finished += Patches.Roles.Agent.AgentTeamChatRegistration.Register;
         IL2CPPChainloader.Instance.Finished += Patches.Roles.Pelican.PelicanTargetBlockPatches.Init;
+        IL2CPPChainloader.Instance.Finished += RegisterPerfectCommsIntegrationIfLoaded;
         IL2CPPChainloader.Instance.Finished += () => ExtensionModNewsFetcher.CheckForNews();
 
         PatchAllWithErrorHandling();
 
         WinConditionRegistry.Register(new NeutralExtensionWinCondition());
+    }
+
+    private static void RegisterPerfectCommsIntegrationIfLoaded()
+    {
+        const string perfectCommsPluginId = "com.edgetel.perfectcomms";
+
+        if (!IL2CPPChainloader.Instance.Plugins.ContainsKey(perfectCommsPluginId))
+        {
+            Info("Perfect Comms not loaded; skipping voice integration.");
+            return;
+        }
+
+        try
+        {
+            var integrationType = typeof(TouMegaChujoweExtensionPlugin).Assembly.GetType("TouMegaChujoweExtension.Modules.PerfectCommsIntegration");
+            var register = integrationType?.GetMethod("Register", BindingFlags.Public | BindingFlags.Static);
+
+            if (register == null)
+            {
+                Warning("Perfect Comms is loaded, but TouMCE voice integration could not be found.");
+                return;
+            }
+
+            register.Invoke(null, null);
+        }
+        catch (Exception ex)
+        {
+            Error($"Perfect Comms integration registration failed: {ex}");
+        }
     }
 
     private static void PatchAllWithErrorHandling()
