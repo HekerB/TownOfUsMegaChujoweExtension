@@ -60,10 +60,10 @@ public static class InjectorEvents
 
         if (pending.Target == null || pending.Target.HasDied() || pending.Injector == null || pending.Injector.HasDied())
         {
-            if (PendingInjections.ContainsKey(pending.Target.PlayerId))
+            if (pending.Target != null && PendingInjections.TryGetValue(pending.Target.PlayerId, out var pendingInjection))
             {
-                PendingInjections[pending.Target.PlayerId].RemoveAll(p => p.InjectionId == pending.InjectionId);
-                if (PendingInjections[pending.Target.PlayerId].Count == 0)
+                pendingInjection.RemoveAll(p => p.InjectionId == pending.InjectionId);
+                if (pendingInjection.Count == 0)
                 {
                     PendingInjections.Remove(pending.Target.PlayerId);
                 }
@@ -73,10 +73,10 @@ public static class InjectorEvents
 
         ApplyInjectionEffect(pending.Injector, pending.Target, pending.InjectionId);
         
-        if (PendingInjections.ContainsKey(pending.Target.PlayerId))
+        if (PendingInjections.TryGetValue(pending.Target.PlayerId, out var pendingInjection2))
         {
-            PendingInjections[pending.Target.PlayerId].RemoveAll(p => p.InjectionId == pending.InjectionId);
-            if (PendingInjections[pending.Target.PlayerId].Count == 0)
+            pendingInjection2.RemoveAll(p => p.InjectionId == pending.InjectionId);
+            if (pendingInjection2.Count == 0)
             {
                 PendingInjections.Remove(pending.Target.PlayerId);
             }
