@@ -46,11 +46,11 @@ public static class InjectorEvents
             InjectionId = Guid.NewGuid()
         };
 
-        if (!PendingInjections.ContainsKey(target.PlayerId))
+        if (!PendingInjections.TryGetValue(target.PlayerId, out var pendingInjection))
         {
-            PendingInjections[target.PlayerId] = new List<PendingInjection>();
+            pendingInjection = new List<PendingInjection>();
         }
-        PendingInjections[target.PlayerId].Add(pending);
+        pendingInjection.Add(pending);
         Coroutines.Start(CoApplyInjection(pending));
     }
 
@@ -233,22 +233,6 @@ public static class InjectorEvents
                 }
             }
         }
-
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (player == null || player.HasDied())
-            {
-                continue;
-            }
-
-            if (player.HasModifier<InjectedInvertedControlsModifier>() ||
-                player.HasModifier<InjectedLowVisionModifier>() ||
-                player.HasModifier<InjectedVeryLowVisionModifier>() ||
-                player.HasModifier<InjectedSlownessModifier>() ||
-                player.HasModifier<InjectedConfusedModifier>())
-            {
-            }
-        }
     }
 
     [RegisterEvent]
@@ -292,7 +276,7 @@ public static class InjectorEvents
         }
     }
 
-    private class PendingInjection
+    private sealed class PendingInjection
     {
         public PlayerControl? Injector { get; set; }
         public PlayerControl? Target { get; set; }
