@@ -25,6 +25,7 @@ using TownOfUs;
 using MiraAPI.Hud;
 using TownOfUs.Buttons;
 using TouMegaChujoweExtension.Buttons.Classic.Neutral;
+using TouMegaChujoweExtension.Patches.Roles.Shifter;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
@@ -54,7 +55,6 @@ public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
     public Color RoleColor => TouExtensionColors.Shifter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralBenign;
-
     public byte PendingTargetId { get; set; } = byte.MaxValue;
     public ushort PendingStolenRoleId { get; set; } = ushort.MaxValue;
     public bool ShiftUsed { get; set; }
@@ -158,8 +158,6 @@ public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
             RpcCancelShift(Player);
             return;
         }
-
-        // Block shift against protective shields (Warden, FirstDead, Cleric)
         if (target.HasModifier<TownOfUs.Modifiers.Crewmate.WardenFortifiedModifier>() ||
             target.HasModifier<TownOfUs.Modifiers.FirstDeadShield>() ||
             target.HasModifier<TownOfUs.Modifiers.Crewmate.ClericBarrierModifier>())
@@ -240,8 +238,6 @@ public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
             return;
         }
         var options = OptionGroupSingleton<ShifterOptions>.Instance;
-
-        // Get all modifiers for target
         var targetModifiers = target.GetModifiers<BaseModifier>();
 
         if (options.StealModifiers)
@@ -252,17 +248,12 @@ public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
                 target.RemoveModifier(modifier.GetType());
             }
         }
-
-        // Force role change even if base role matches (important for Imitator)
-        // If the target is a CustomRole already imitating the role they are becoming,
-        // ChangeRole might skip the update. We force it by resetting the base role first.
         if (target.Data?.Role != null && target.Data.Role is ICustomRole)
         {
             target.Data.Role.Role = (RoleTypes)byte.MaxValue;
         }
         target.ChangeRole(becomeRoleId);
 
-        // BUG FIX: Remove role-defining modifiers from the target that might desync the UI
         foreach (var modifier in targetModifiers)
         {
             if (modifier == null) continue;
@@ -305,11 +296,9 @@ public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         wasShifterRole.PendingTargetId = byte.MaxValue;
         wasShifterRole.PendingStolenRoleId = ushort.MaxValue;
 
-        // Notifications
         if (target.AmOwner)
         {
-            PirateDuelSystem.FlashScreen(TouExtensionColors.Shifter, 0.5f, 0.3f);
-            ShowShifterNotification("Your role has been stolen!");
+            ShifterStolenRoleMeetingIntroPatch.QueueForLocalPlayer();
         }
 
         if (shifter.AmOwner)

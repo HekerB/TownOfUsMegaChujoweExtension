@@ -12,10 +12,14 @@ public class TouExtensionLocalSettings : LocalSettingsTab
         EnableNauseaCameraShake = config.Bind("Accessibility", "EnableNauseaCameraShake", true);
         UseLegacyGuessDeathAnimation = config.Bind("Visuals", "UseLegacyGuessDeathAnimation", false);
         UseClassicAssassinGuessing = config.Bind("Visuals", "UseClassicAssassinGuessing", false);
+        MapColor = config.Bind("Visuals", "MapColor", MapColorType.PlayerColor);
         CensorModName = config.Bind("Visuals", "CensorModName", true);
         UsePolishLanguage = config.Bind("Localization", "UsePolishLanguage", false);
+        TranslateRoleNames = config.Bind("Localization", "TranslateRoleNames", false);
+        MuteAliveWhenGhost = config.Bind("PerfectComms", "MuteAliveWhenGhost", false);
 
         UsePolishLanguage.SettingChanged += (s, e) => Modules.ExtensionLocale.SearchInternalLocale();
+        TranslateRoleNames.SettingChanged += (s, e) => Modules.ExtensionLocale.SearchInternalLocale();
     }
 
     public override string TabName => TouMegaChujoweExtensionPlugin.CensorVisibleText("ToU: Chujowe");
@@ -52,20 +56,26 @@ public class TouExtensionLocalSettings : LocalSettingsTab
 
     [LocalizedLocalToggleSetting("ExtensionLocalSettingUseClassicAssassinGuessing")]
     public ConfigEntry<bool> UseClassicAssassinGuessing { get; private set; }
-	
+
+    [LocalizedLocalEnumSetting("ExtensionLocalSettingMapColor", names: ["MapColorOff", "MapColorRole", "MapColorPlayer"])]
+    public ConfigEntry<MapColorType> MapColor { get; private set; }
+
     [LocalizedLocalToggleSetting("ExtensionLocalSettingCensorModName")]
     public ConfigEntry<bool> CensorModName { get; private set; }
 
     [LocalizedLocalToggleSetting("ExtensionLocalSettingUsePolishLanguage")]
     public ConfigEntry<bool> UsePolishLanguage { get; private set; }
+
+    [LocalizedLocalToggleSetting("ExtensionLocalSettingTranslateRoleNames")]
+    public ConfigEntry<bool> TranslateRoleNames { get; private set; }
+
+    [LocalizedLocalToggleSetting("ExtensionLocalSettingPCMuteAliveWhenGhost")]
+    public ConfigEntry<bool> MuteAliveWhenGhost { get; private set; }
 }
 
-
-
-
-
-
-
-
-
-
+public enum MapColorType
+{
+    Off,
+    Role,
+    PlayerColor
+}

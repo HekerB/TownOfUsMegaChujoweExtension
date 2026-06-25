@@ -41,6 +41,7 @@ public sealed class FalconZoomButton : TownOfUsRoleButton<FalconRole>
         if (IsLightsSabotaged()) return false;
         if (Timer > 0) return false;
         if (LimitedUses && UsesLeft <= 0) return false;
+        if (Minigame.Instance != null) return false;
         return true;
     }
 
@@ -108,7 +109,7 @@ public sealed class FalconZoomButton : TownOfUsRoleButton<FalconRole>
 
         if (_isZoomed)
         {
-            if (MeetingHud.Instance || IsLightsSabotaged() || playerControl == null || playerControl.HasDied())
+            if (MeetingHud.Instance || IsLightsSabotaged() || playerControl == null || playerControl.HasDied() || Minigame.Instance != null)
             {
                 ForceReset();
                 return;

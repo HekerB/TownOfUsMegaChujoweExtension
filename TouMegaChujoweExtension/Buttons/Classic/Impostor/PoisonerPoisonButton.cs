@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
-public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
+public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>, IDiseaseableButton
 {
     public override string Name => TouLocale.GetParsed("ExtensionRolePoisonerPoison", "Poison");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
@@ -30,6 +30,11 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
     public override int MaxUses => 0;
     public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.PoisonButtonSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override void CreateButton(Transform parent)
     {
@@ -58,6 +63,7 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.HasDied()) return false;
         if (player.inVent) return false;
+        if (TouMegaChujoweExtension.Modules.PelicanSystem.IsSwallowed(player.PlayerId)) return false;
 
         if (_isPoisoning) return true;
 
@@ -146,7 +152,10 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
                 {
                     Button.SetEnabled();
                     Button.SetFillUp(_poisonTimer, _poisonDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_poisonTimer).ToString();
+                    var format = _poisonTimer <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+                        ? "0.0"
+                        : "0";
+                    Button.cooldownTimerText.text = _poisonTimer.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
             }
@@ -176,6 +185,7 @@ public sealed class PoisonerPoisonButton : TownOfUsRoleButton<PoisonerRole>
         {
             if (pc == null || pc.Data.IsDead || pc.PlayerId == playerControl.PlayerId) continue;
             if (pc.IsImpostorAligned()) continue;
+            if (TouMegaChujoweExtension.Modules.PelicanSystem.IsSwallowed(pc.PlayerId)) continue;
 
             var dist = Vector2.Distance(playerControl.transform.position, pc.transform.position);
             if (dist <= killDist && dist < minDist)

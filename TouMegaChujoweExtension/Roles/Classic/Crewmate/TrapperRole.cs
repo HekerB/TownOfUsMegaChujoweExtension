@@ -20,9 +20,6 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-/// <summary>
-/// Trapper role: Places traps on vents that immobilize players who use them.
-/// </summary>
 public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
 {
     public override bool IsAffectedByComms => false;
@@ -106,11 +103,11 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 
     [HideFromIl2Cpp]
     [MethodRpc((uint)ExtensionRpc.TrapperTriggerTrap)]
-    public static IEnumerator RpcTrapperTriggerTrap(PlayerControl trapper, int ventId, byte victimId)
+    public static void RpcTrapperTriggerTrap(PlayerControl trapper, int ventId, byte victimId)
     {
         if (trapper == null)
         {
-            yield break;
+            return;
         }
 
         VentTrapSystem.Remove(ventId);
@@ -118,17 +115,22 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         var victim = MiscUtils.PlayerById(victimId);
         if (victim == null)
         {
-            yield break;
+            return;
         }
 
         if (!VentTrapSystem.IsEligibleToBeTrapped(victim))
         {
-            yield break;
+            return;
         }
 
         var vent = Helpers.GetVentById(ventId);
         var ventTopPos = vent != null ? VentTrapSystem.GetVentTopPosition(vent) : (Vector2)victim.transform.position;
 
+        Coroutines.Start(CoTrapperTriggerTrap(trapper, victim, ventId, ventTopPos, vent));
+    }
+
+    private static IEnumerator CoTrapperTriggerTrap(PlayerControl trapper, PlayerControl victim, int ventId, Vector2 ventTopPos, Vent? vent)
+    {
         yield return new WaitForSeconds(0.3f);
 
         if (victim.AmOwner)
@@ -206,7 +208,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
 
         if (myTraps.Count != 0)
         {
-            stringB.AppendLine($"\n<b>{TouLocale.GetParsed("ExtensionRoleTrapperTabHeader", "Active Traps:")}</b>");
+            stringB.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"\n<b>{TouLocale.GetParsed("ExtensionRoleTrapperTabHeader", "Active Traps:")}</b>");
             var roundsLast = (int)OptionGroupSingleton<TrapperOptions>.Instance.TrapRoundsLast;
             foreach (var trap in myTraps)
             {
@@ -216,31 +218,13 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
                     .Replace("<room>", room);
                 var roundsText = roundsLast <= 0
                     ? string.Empty
-                    : $": {TouLocale.GetParsed("ExtensionRoleTrapperVentRoundsTabText", "<rounds> Round(s) Remaining").Replace("<rounds>", trap.Value.ToString())}";
-                stringB.AppendLine($"<b><size=70%>{ventLabel}{roundsText}</size></b>");
+                    : $": {TouLocale.GetParsed("ExtensionRoleTrapperVentRoundsTabText", "<rounds> Round(s) Remaining").Replace("<rounds>", trap.Value.ToString(System.Globalization.CultureInfo.InvariantCulture))}";
+                stringB.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"<b><size=70%>{ventLabel}{roundsText}</size></b>");
             }
         }
 
         return stringB;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

@@ -211,12 +211,10 @@ public sealed class BakerRole(IntPtr cppPtr)
         FamineAnnounced = true;
         var msg = TouLocale.GetParsed("ExtensionRoleBakerFamineAnnouncement", "A terrible famine has consumed the Crew.\\%nl\\%\\%color=#023020FF\\%Famine\\%/color\\%, Horseman of the Apocalypse, has emerged!");
         var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TouExtensionColors.Baker)}>{TouLocale.Get("ExtensionRoleBakerFamineAnnouncementTitle", "Famine Warning")}</color>";
-        var notif = Helpers.CreateAndShowNotification(
+        TouMegaChujoweExtension.Modules.RoleAlertUtils.ShowRoleAlert(
             $"<b>{msg.Replace("\n", " ")}</b>",
             Color.white,
-            new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.FamineRoleIcon.LoadAsset());
-        notif?.AdjustNotification();
+            TouExtensionIcons.FamineRoleIcon.LoadAsset());
 
         MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
     }

@@ -12,6 +12,7 @@ using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TownOfUs;
 using TownOfUs.Assets;
 using TownOfUs.Extensions;
+using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
@@ -36,10 +37,15 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed("ExtensionRoleWarWikiDescription");
+
+
     }
 
     [HideFromIl2Cpp]
     public List<Type> RoleButtons => [typeof(WarKillButton)];
+
+    [HideFromIl2Cpp]
+    public List<CustomButtonWikiDescription> Abilities => [];
 
     [HideFromIl2Cpp]
     public float WarSpreeUntil { get; set; }
@@ -60,7 +66,7 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent,
+        CanUseVent = CanVentByState(),
         HideSettings = true,
         Icon = TouExtensionIcons.WarRoleIcon,
         IntroSound = TouAudio.WarlockIntroSound,
@@ -111,7 +117,7 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
 
     public void OffsetButtons()
     {
-        var canVent = OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent ||
+        var canVent = CanVentByState() ||
                       LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.OffsetButtonsToggle.Value;
         var kill = MiraAPI.Hud.CustomButtonSingleton<WarKillButton>.Instance;
         if (kill != null)
@@ -126,12 +132,10 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
         var msg = TouLocale.GetParsed("ExtensionRoleBerserkerWarAnnouncement", "War has consumed the battlefield.\\%nl\\%\\%color=#EEEEEEFF\\%War\\%/color\\%, Horseman of the Apocalypse, has emerged!");
         var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TouExtensionColors.War)}>{TouLocale.Get("ExtensionRoleBerserkerWarAnnouncementTitle", "War Warning")}</color>";
 
-        var notif = Helpers.CreateAndShowNotification(
+        TouMegaChujoweExtension.Modules.RoleAlertUtils.ShowRoleAlert(
             $"<b>{msg.Replace("\n", " ").Replace("\\%nl\\%", " ")}</b>",
             Color.white,
-            new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.WarRoleIcon.LoadAsset());
-        notif?.AdjustNotification();
+            TouExtensionIcons.WarRoleIcon.LoadAsset());
 
         MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
     }
@@ -140,7 +144,8 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
     {
         RoleBehaviourStubs.OnMeetingStart(this);
 
-        if (Announced || !OptionGroupSingleton<BerserkerOptions>.Instance.AnnounceWarTransformation)
+        var options = OptionGroupSingleton<BerserkerOptions>.Instance;
+        if (Announced || options == null || !options.AnnounceWarTransformation)
         {
             return;
         }
@@ -161,12 +166,23 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
         {
             OffsetButtons();
             var ventButton = HudManager.Instance.ImpostorVentButton;
-            ventButton.gameObject.SetActive(OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent);
-            ventButton.graphic.sprite = TouNeutAssets.WerewolfVentSprite.LoadAsset();
-            ventButton.buttonLabelText.SetOutlineColor(TouExtensionColors.War);
+            var canVent = CanVentByState();
+            ventButton.gameObject.SetActive(canVent);
+            if (ventButton.graphic != null)
+            {
+                ventButton.graphic.gameObject.SetActive(canVent);
+                ventButton.graphic.enabled = canVent;
+                ventButton.graphic.sprite = TouNeutAssets.WerewolfVentSprite.LoadAsset();
+            }
+
+            if (canVent && ventButton.buttonLabelText != null)
+            {
+                ventButton.buttonLabelText.SetOutlineColor(TouExtensionColors.War);
+            }
         }
 
-        if (MeetingHud.Instance != null && !Announced && OptionGroupSingleton<BerserkerOptions>.Instance.AnnounceWarTransformation)
+        var optionsInit = OptionGroupSingleton<BerserkerOptions>.Instance;
+        if (MeetingHud.Instance != null && !Announced && optionsInit != null && optionsInit.AnnounceWarTransformation)
         {
             Announced = true;
             TriggerWarAnnouncement();
@@ -192,8 +208,15 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
 
         if (targetPlayer.AmOwner && HudManager.Instance?.ImpostorVentButton != null)
         {
-            HudManager.Instance.ImpostorVentButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
-            HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
+            var ventButton = HudManager.Instance.ImpostorVentButton;
+            if (ventButton.graphic != null)
+            {
+                ventButton.graphic.sprite = TouAssets.VentSprite.LoadAsset();
+            }
+            if (ventButton.buttonLabelText != null)
+            {
+                ventButton.buttonLabelText.SetOutlineColor(TownOfUsColors.Impostor);
+            }
         }
     }
 
@@ -211,7 +234,7 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
         }
 
         var vent = usable.TryCast<Vent>();
-        if (vent != null && !OptionGroupSingleton<BerserkerOptions>.Instance.WarCanVent)
+        if (vent != null && !CanVentByState())
         {
             return false;
         }
@@ -230,6 +253,12 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
         return WinConditionMet();
     }
 
+    public bool CanVentByState()
+    {
+        var options = OptionGroupSingleton<BerserkerOptions>.Instance;
+        return options != null && options.WarCanVent;
+    }
+
     [HideFromIl2Cpp]
     public StringBuilder SetTabText()
     {
@@ -240,7 +269,6 @@ public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole,
             $"<size=60%>{TouLocale.Get("Alignment")}: <b>{MiscUtils.GetParsedRoleAlignment(RoleAlignment, true)}</b></size>");
         stringB.Append("<size=70%>");
         stringB.AppendLine(TownOfUsPlugin.Culture, $"{RoleLongDescription}");
-
         return stringB;
     }
 }

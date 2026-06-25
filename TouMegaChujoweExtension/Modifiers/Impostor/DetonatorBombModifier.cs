@@ -11,7 +11,7 @@ namespace TouMegaChujoweExtension.Modifiers.Impostor;
 
 public sealed class DetonatorBombModifier : BaseModifier
 {
-    private PlayerControl _detonator;
+    private readonly PlayerControl _detonator;
 
     public override string ModifierName => "Bomb Attached";
 

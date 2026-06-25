@@ -110,7 +110,7 @@ public sealed class JackalKillButton : TownOfUsKillRoleButton<JackalRole, Player
 
         if (target.inVent) return false;
 
-        if (target.GetModifiers<DisabledModifier>().Any(mod => !mod.CanBeInteractedWith)) return false;
+        if (target.GetModifiers<DisabledModifier>().Any(mod => !mod.CanBeInteractedWith && mod.GetType().Name != "JailedModifier")) return false;
 
         if (SpectatorRole.TrackedSpectators.Contains(target.Data.PlayerName)) return false;
 

@@ -15,6 +15,7 @@ using TownOfUs.Buttons;
 using TownOfUs.Extensions;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
+using TownOfUs.Patches;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -23,6 +24,90 @@ namespace TouMegaChujoweExtension.Patches.Roles.Joker;
 [HarmonyPatch]
 public static class JokerCloneInteractionPatches
 {
+    private static readonly HashSet<string> CloneInteractableRoleNames =
+    [
+        "ArcanistRole",
+        "ArsonistRole",
+        "BakerRole",
+        "BerserkerRole",
+        "BountyHunterRole",
+        "DeathRole",
+        "DeputyRole",
+        "DoppelgangerRole",
+        "FamineRole",
+        "GlitchRole",
+        "HunterRole",
+        "InquisitorRole",
+        "JackalRole",
+        "JailorRole",
+        "JuggernautRole",
+        "OfficerRole",
+        "PelicanRole",
+        "PestilenceRole",
+        "SerialKillerRole",
+        "SheriffRole",
+        "ShroudRole",
+        "SoulCollectorRole",
+        "VampireHunterRole",
+        "VampireRole",
+        "VeteranRole",
+        "VigilanteRole",
+        "WarRole",
+        "WerewolfRole"
+    ];
+
+    private static readonly HashSet<string> NonCloneInteractableButtonNames =
+    [
+        "BomberPlantButton",
+        "DetonatorAttachButton",
+        "KamikazeSuicideButton",
+        "PoisonerVineButton",
+        "RcXdDeployButton",
+        "ShifterShiftButton",
+        "SniperShootButton"
+    ];
+
+    private static readonly HashSet<string> CloneInteractableButtonNames =
+    [
+        "ArcanistDrawButton",
+        "ArsonistDouseButton",
+        "ArsonistIgniteButton",
+        "BakerGiveButton",
+        "BerserkerKillButton",
+        "BountyHunterKillButton",
+        "CampButton",
+        "DeathKillButton",
+        "DoomsayerObserveButton",
+        "DoppelgangerKillButton",
+        "FamineStarveButton",
+        "GlitchHackButton",
+        "GlitchKillButton",
+        "GlitchMimicButton",
+        "HunterKillButton",
+        "HunterStalkButton",
+        "InquisitorInquireButton",
+        "InquisitorVanquishButton",
+        "JackalKillButton",
+        "JailorJailButton",
+        "JuggernautKillButton",
+        "OfficerLoadButton",
+        "OfficerShootButton",
+        "OutlawKillButton",
+        "PelicanSwallowButton",
+        "PestilenceKillButton",
+        "SerialKillerKillButton",
+        "SheriffShootButton",
+        "ShroudAbilityButton",
+        "ShroudKillButton",
+        "SoulCollectorReapButton",
+        "StakeButton",
+        "VampireBiteButton",
+        "VeteranAlertButton",
+        "WarKillButton",
+        "WerewolfKillButton",
+        "WerewolfRampageButton"
+    ];
+
     private static bool TryTriggerFromLocalPlayer(float maxDistance)
     {
         var local = PlayerControl.LocalPlayer;
@@ -31,20 +116,7 @@ public static class JokerCloneInteractionPatches
             return false;
         }
 
-        if (!JokerCloneSystem.TryGetClosestClone(local.GetTruePosition(), maxDistance, out var cloneIndex, out _))
-        {
-            return false;
-        }
-
-        var clone = JokerCloneSystem.Clones[cloneIndex];
-        var joker = MiscUtils.PlayerById(clone.JokerId);
-        if (joker == null || joker.HasDied() || !joker.IsRole<JokerRole>())
-        {
-            return false;
-        }
-
-        JokerRole.RpcJokerCloneKilled(local, clone.JokerId, (byte)cloneIndex);
-        return true;
+        return JokerCloneSystem.TryTriggerClosestClone(local, local.GetTruePosition(), maxDistance);
     }
 
     private static float GetKillDistance()
@@ -103,17 +175,18 @@ public static class JokerCloneInteractionPatches
             return;
         }
 
-        if (__instance.KillButton != null &&
+        if (CanLocalRoleInteractWithClones() &&
+            __instance.KillButton != null &&
             __instance.KillButton.isActiveAndEnabled &&
             !__instance.KillButton.isCoolingDown)
         {
             var local = PlayerControl.LocalPlayer;
             var dist = GetKillDistance();
-            if (local != null && JokerCloneSystem.TryGetClosestClone(local.GetTruePosition(), dist, out _, out _))
+            if (local != null && JokerCloneSystem.TryGetClosestClone(local.GetTruePosition(), dist, out var cloneIndex, out _))
             {
                 __instance.KillButton.SetEnabled();
                 ForceKillButtonVisualEnabled(__instance.KillButton);
-                JokerCloneSystem.UpdateLocalOutline(local.GetTruePosition(), dist, Palette.ImpostorRed);
+                JokerCloneSystem.UpdateLocalOutline(cloneIndex, Palette.ImpostorRed);
             }
             else
             {
@@ -128,7 +201,11 @@ public static class JokerCloneInteractionPatches
     public static bool KillButtonDoClickPrefix()
     {
         var hud = HudManager.Instance;
-        if (hud == null || hud.KillButton == null || !hud.KillButton.isActiveAndEnabled || hud.KillButton.isCoolingDown)
+        if (!CanLocalRoleInteractWithClones() ||
+            hud == null ||
+            hud.KillButton == null ||
+            !hud.KillButton.isActiveAndEnabled ||
+            hud.KillButton.isCoolingDown)
         {
             return true;
         }
@@ -252,6 +329,11 @@ public static class JokerCloneInteractionPatches
                 return;
             }
 
+            if (!IsKillButton(__instance))
+            {
+                return;
+            }
+
             var local = PlayerControl.LocalPlayer;
             var actionButton = GetActionButton(__instance);
             if (local == null || local.HasDied() || actionButton == null || !actionButton.isActiveAndEnabled)
@@ -261,7 +343,7 @@ public static class JokerCloneInteractionPatches
             }
 
             var distance = GetDistance(__instance);
-            if (!JokerCloneSystem.TryGetClosestClone(local.GetTruePosition(), distance, out _, out _))
+            if (!JokerCloneSystem.TryGetClosestClone(local.GetTruePosition(), distance, out var cloneIndex, out _))
             {
                 JokerCloneSystem.ClearLocalOutline();
                 return;
@@ -273,7 +355,7 @@ public static class JokerCloneInteractionPatches
                 ForceActionButtonVisualEnabled(actionButton);
             }
 
-            JokerCloneSystem.UpdateLocalOutline(local.GetTruePosition(), distance, GetOutlineColor(__instance));
+            JokerCloneSystem.UpdateLocalOutline(cloneIndex, GetOutlineColor(__instance));
         }
 
         private static ActionButton? GetActionButton(object instance)
@@ -417,7 +499,18 @@ public static class JokerCloneInteractionPatches
 
     private static bool IsKillButtonType(Type type)
     {
-        if (typeof(IKillButton).IsAssignableFrom(type) || IsPlayerTargetKillRoleButton(type))
+        if (NonCloneInteractableButtonNames.Contains(type.Name))
+        {
+            return false;
+        }
+
+        if (CloneInteractableButtonNames.Contains(type.Name))
+        {
+            return true;
+        }
+
+        if (typeof(IKillButton).IsAssignableFrom(type) ||
+            IsPlayerTargetKillRoleButton(type))
         {
             return true;
         }
@@ -434,9 +527,17 @@ public static class JokerCloneInteractionPatches
                typeName.Contains("Overtake", StringComparison.OrdinalIgnoreCase) ||
                typeName.Contains("Poison", StringComparison.OrdinalIgnoreCase) ||
                typeName.Contains("Starve", StringComparison.OrdinalIgnoreCase) ||
+               typeName.Contains("Hunt", StringComparison.OrdinalIgnoreCase) ||
                typeName.Contains("Vanquish", StringComparison.OrdinalIgnoreCase) ||
                typeName.Contains("Reap", StringComparison.OrdinalIgnoreCase) ||
                typeName.Contains("Spell", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool CanLocalRoleInteractWithClones()
+    {
+        var local = PlayerControl.LocalPlayer;
+        var role = local?.Data?.Role;
+        return role != null && (CloneInteractableRoleNames.Contains(role.GetType().Name) || local!.IsImpostorAligned());
     }
 
     private static bool CanButtonClick(object instance)
@@ -463,12 +564,12 @@ public static class JokerCloneInteractionPatches
 
         var local = PlayerControl.LocalPlayer;
         var distance = GetDistance(instance);
-        if (local == null || !JokerCloneSystem.TryGetClosestClone(local.GetTruePosition(), distance, out _, out _))
+        if (local == null || !JokerCloneSystem.TryGetClosestClone(local.GetTruePosition(), distance, out var cloneIndex, out _))
         {
             return true;
         }
 
-        if (!TryTriggerFromLocalPlayer(distance))
+        if (!JokerCloneSystem.TryTriggerClone(local, cloneIndex))
         {
             return true;
         }
@@ -483,14 +584,17 @@ public static class JokerCloneInteractionPatches
     {
         for (var current = type; current != null; current = current.BaseType)
         {
-            if (!current.IsGenericType ||
-                current.GetGenericTypeDefinition() != typeof(TownOfUsKillRoleButton<,>))
+            if (!current.IsGenericType)
             {
                 continue;
             }
 
-            var targetType = current.GetGenericArguments()[1];
-            return typeof(PlayerControl).IsAssignableFrom(targetType);
+            var genericDefinition = current.GetGenericTypeDefinition();
+            if (genericDefinition == typeof(TownOfUsKillRoleButton<,>))
+            {
+                var targetType = current.GetGenericArguments()[1];
+                return typeof(PlayerControl).IsAssignableFrom(targetType);
+            }
         }
 
         return false;
@@ -587,5 +691,14 @@ public static class JokerCloneInteractionPatches
         }
 
         return null;
+    }
+}
+
+[HarmonyPatch(typeof(HudManagerPatches), nameof(HudManagerPatches.UpdateCamouflageComms))]
+public static class JokerCloneCamoCommsPatch
+{
+    public static void Postfix()
+    {
+        JokerCloneSystem.SyncCamouflageComms();
     }
 }

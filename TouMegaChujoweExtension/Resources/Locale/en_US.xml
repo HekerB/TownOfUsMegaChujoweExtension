@@ -14,13 +14,22 @@
   
   <!-- Use Polish Language -->
   <string name="ExtensionLocalSettingUsePolishLanguage">Use Polish Language</string>
+  <string name="ExtensionLocalSettingTranslateRoleNames">Translate Role Names</string>
+  
+  <!-- Use Role Color for Map -->
+  <string name="ExtensionLocalSettingMapColor">Map Outline Color</string>
+  <string name="MapColorOff">Off (mira style)</string>
+  <string name="MapColorRole">Role</string>
+  <string name="MapColorPlayer">Player Color</string>
   
   <!-- Draft Alert Local Settings -->
   <string name="ExtensionLocalSettingDraftAlert">Draft Alert Notification</string>
-  <string name="DraftAlertOff">Off</string>
   <string name="DraftAlertStartOnly">Start Only</string>
-  <string name="DraftAlertEndOnly">End Only</string>
   <string name="DraftAlertStartAndEnd">Start and End</string>
+  <string name="DraftAlertEndOnly">End Only</string>
+  <string name="DraftAlertNever">Never</string>
+  <string name="ExtensionLocalSettingStartDraftMusicMuted">Start With Draft Music Muted</string>
+  <string name="ExtensionLocalSettingPCMuteAliveWhenGhost">Mute Alive When Ghost</string>
 
   <!-- Renamed Trapper to Revealer -->
   <string name="TouRoleRevealer">Revealer</string>
@@ -164,6 +173,7 @@
   <string name="ExtensionRoleShifterWikiDescription">You can steal a player's role, but if you try to steal an Impostor/Neutral role you will commit suicide instantly.</string>
   <string name="ExtensionRoleShifterShift">Shift</string>
   <string name="ExtensionRoleShifterShiftWikiDescription">Select a player to steal their role at the next meeting.</string>
+  <string name="ExtensionShifterRoleStolenIntro">ROLE STOLEN</string>
 
   <!-- Shifter Options -->
   <string name="ExtensionOptionShifterCooldown">Shift Cooldown</string>
@@ -289,8 +299,8 @@
 
   <!-- Pirate Win Mode Options -->
   <string name="ExtensionOptionPirateWinMode">Win Mode</string>
-  <string name="ExtensionOptionPirateWinModePirateWins">Pirate Wins</string>
-  <string name="ExtensionOptionPirateWinModePirateWinsWithOthers">Pirate Wins With Others</string>
+  <string name="ExtensionOptionPirateWinModePirateWins">Ends Game</string>
+  <string name="ExtensionOptionPirateWinModePirateWinsWithOthers">Leaves in Victory</string>
 
   <!-- Pirate Victory -->
   <string name="ExtensionPirateWins">Wins</string>
@@ -300,6 +310,9 @@
 
   <!-- Pirate Notifications -->
   <string name="ExtensionPirateDuelNotification">You are being dueled by the Pirate!</string>
+  <string name="ExtensionPirateCompletedDuelsOwner">You have successfully completed your duels as the {0}! You will now spectate and win with the winning team.</string>
+  <string name="ExtensionPirateCompletedDuelsOther">The {0}, {1}, has completed all required duels!</string>
+  <string name="ExtensionPirateDuelsWonCounter">Duels won: {0} / {1}</string>
   <string name="ExtensionPirateDuelJailedPirateNotif">You are jailed! Your duel has been cancelled.</string>
   <string name="ExtensionPirateDuelJailedTargetNotif">Your duel target is jailed! Duel cancelled.</string>
   <string name="ExtensionPirateCantDuelSamePersonTwiceNotif">You can't duel the same person twice in a row.</string>
@@ -425,7 +438,7 @@
   <string name="ExtensionRoleRcXdIntroBlurb">Steer a bomb-car to destroy the crew.</string>
   <string name="ExtensionRoleRcXdTabDescription">Deploy and drive an RC car.\%nl\%Detonate it near enemies.</string>
   <string name="ExtensionRoleRcXdWikiDescription">The RC-XD is an Impostor Power role that can deploy and detonate an RC-XD car to kill players around the map. Use movement keys or joystick to steer it and detonate near enemies.</string>
-  <string name="ExtensionRoleRcXdDeploy">Deploy RC</string>
+  <string name="ExtensionRoleRcXdDeploy">Deploy</string>
   <string name="ExtensionRoleRcXdDeployWikiDescription">Deploy an RC car to steer it towards targets.</string>
   <string name="ExtensionRoleRcXdDetonate">Detonate</string>
   <string name="ExtensionRoleRcXdDetonateWikiDescription">Detonate your RC car to kill nearby players.</string>
@@ -812,14 +825,19 @@
   <string name="ExtensionModifierSpitefulEffectSlownessDescription">Your speed is reduced by &lt;impact&gt;%</string>
   <string name="ExtensionModifierSpitefulEffectIncreasedCooldownsDescription">Your ability cooldowns are increased by &lt;impact&gt;%</string>
     
+  <!-- Perfect Comms -->
+  <string name="ExtensionOptionPCMorphedCamouflagedGroup">Morphed</string>
+  <string name="ExtensionOptionPCMorphedCamouflagedMute">Stay Muted</string>
+
   <!-- Draft Mode -->
   <string name="ExtensionDraftModeGroupName">Draft Mode</string>
   <string name="ExtensionOptionDraftModeEnabled">Enable Draft Mode</string>
-  <string name="ExtensionOptionDraftModeLockLobby">Lock Lobby During Draft</string>
   <string name="ExtensionOptionDraftModeTimeToChoose">Time To Choose</string>
   <string name="ExtensionOptionDraftModeRolesToShow">Roles To Show</string>
 	
   <string name="ExtensionDraftModeTitle">Role Draft</string>
+  <string name="ExtensionDraftRoleListTitle">Draft Mode</string>
+  <string name="ExtensionDraftRoleListEmpty">No roles enabled</string>
   <string name="ExtensionDraftModeCurrentlyPicking">Currently Picking:</string>
   <string name="ExtensionDraftModeYourTurn">Your Turn!</string>
   <string name="ExtensionDraftModeWaiting">Waiting...</string>
@@ -827,6 +845,80 @@
   <string name="ExtensionDraftModeAutoSelect">Auto-selecting in</string>
   <string name="ExtensionDraftModeTurnsUntil">turns until your pick</string>
   <string name="ExtensionDraftModePlayerPicks">Player Picks:</string>
+  <string name="ExtensionDraftModeHeader">DRAFT MODE</string>
+  <string name="ExtensionDraftModeVanillaMode">VANILLA MODE</string>
+  <string name="ExtensionDraftModeBy">BY</string>
+  <string name="ExtensionDraftModeMute">MUTE</string>
+  <string name="ExtensionDraftModeUnmute">UNMUTE</string>
+  <string name="ExtensionDraftModeCancel">CANCEL</string>
+  <string name="ExtensionDraftModeStart">START</string>
+  <string name="ExtensionDraftModeSystem">SYSTEM</string>
+  <string name="ExtensionDraftModePlayer">Player</string>
+  <string name="ExtensionDraftModeYou">YOU</string>
+  <string name="ExtensionDraftModeDisconnected">Disconnected</string>
+  <string name="ExtensionDraftModeReady">READY</string>
+  <string name="ExtensionDraftModePicking">PICKING</string>
+  <string name="ExtensionDraftModeRandomTooltip">Gives you a completely random role from the allowed pool.</string>
+  <string name="ExtensionDraftModeComplete">DRAFT COMPLETE!</string>
+  <string name="ExtensionDraftModeGameStarting">GAME IS STARTING!</string>
+  <string name="ExtensionDraftModeTimeLeft">Time Left</string>
+  <string name="ExtensionDraftModeSecondsShort">s</string>
+  <string name="ExtensionDraftModeWaitingForTurn">WAITING FOR YOUR TURN</string>
+  <string name="ExtensionDraftModeEnabled">Enabled</string>
+  <string name="ExtensionDraftModeDisabled">Disabled</string>
+  <string name="ExtensionDraftModeOther">Other</string>
+  <string name="ExtensionDraftModeKilling">Killing</string>
+  <string name="ExtensionDraftModeMin">Min</string>
+  <string name="ExtensionDraftModeMax">Max</string>
+  <string name="ExtensionDraftHudCrewmate">Crewmate</string>
+  <string name="ExtensionDraftHudCrewmates">Crewmates</string>
+  <string name="ExtensionDraftHudCrewInvestigative">Crewmate Investigative</string>
+  <string name="ExtensionDraftHudCrewKilling">Crewmate Killing</string>
+  <string name="ExtensionDraftHudCrewPower">Crewmate Power</string>
+  <string name="ExtensionDraftHudCrewProtective">Crewmate Protective</string>
+  <string name="ExtensionDraftHudCrewSupport">Crewmate Support</string>
+  <string name="ExtensionDraftHudImpostors">Impostors</string>
+  <string name="ExtensionDraftHudImpConcealing">Impostor Concealing</string>
+  <string name="ExtensionDraftHudImpKilling">Impostor Killing</string>
+  <string name="ExtensionDraftHudImpPower">Impostor Power</string>
+  <string name="ExtensionDraftHudImpSupport">Impostor Support</string>
+  <string name="ExtensionDraftHudNeutrals">Neutrals</string>
+  <string name="ExtensionDraftHudNeutralBenign">Neutral Benign</string>
+  <string name="ExtensionDraftHudNeutralEvil">Neutral Evil</string>
+  <string name="ExtensionDraftHudNeutralKilling">Neutral Killing</string>
+  <string name="ExtensionDraftHudNeutralOutlier">Neutral Outlier</string>
+  <string name="ExtensionDraftOptionPoolMode">Draft Pool Mode</string>
+  <string name="ExtensionDraftPoolModeOld">Old Draft</string>
+  <string name="ExtensionDraftPoolModeMinMax">Min/Max</string>
+  <string name="ExtensionDraftPoolModeRoleList">Role List</string>
+  <string name="ExtensionDraftOptionUseRoleChances">Use Role Chances</string>
+  <string name="ExtensionDraftOptionExcludePreviousRoles">Exclude Previous Game Roles</string>
+  <string name="ExtensionDraftOptionReduceKillingStreak">Reduce Killing Streak</string>
+  <string name="ExtensionDraftOptionReductionChance">Impostor &amp; Neutral Killing Reduction</string>
+  <string name="ExtensionDraftOldSettingsGroup">Old Draft Settings</string>
+  <string name="ExtensionDraftCrewmateSettingsGroup">Draft Crewmate Settings</string>
+  <string name="ExtensionDraftImpostorSettingsGroup">Draft Impostor Settings</string>
+  <string name="ExtensionDraftNeutralSettingsGroup">Draft Neutral Settings</string>
+  <string name="ExtensionDraftRoleListSettingsGroup">Draft Role List Settings</string>
+  <string name="ExtensionDraftOptionMinNeutralsPerChoice">Min Neutrals Per Choice</string>
+  <string name="ExtensionDraftOptionMaxNeutralsPerChoice">Max Neutrals Per Choice</string>
+  <string name="ExtensionDraftOptionMinOtherNeutrals">Min Other Neutrals</string>
+  <string name="ExtensionDraftOptionMaxOtherNeutrals">Max Other Neutrals</string>
+  <string name="ExtensionDraftOptionMinNeutralKilling">Min Neutral Killing</string>
+  <string name="ExtensionDraftOptionMaxNeutralKilling">Max Neutral Killing</string>
+  <string name="ExtensionDraftOptionMaxInvestigative">Max Investigative Roles</string>
+  <string name="ExtensionDraftOptionMaxKilling">Max Killing Roles</string>
+  <string name="ExtensionDraftOptionMaxPower">Max Power Roles</string>
+  <string name="ExtensionDraftOptionMaxProtective">Max Protective Roles</string>
+  <string name="ExtensionDraftOptionMaxSupport">Max Support Roles</string>
+  <string name="ExtensionDraftOptionMaxImpostorsTotal">Max Impostors Total</string>
+  <string name="ExtensionDraftOptionMaxConcealing">Max Concealing Roles</string>
+  <string name="ExtensionDraftOptionMaxNeutralTotal">Max Neutral Roles</string>
+  <string name="ExtensionDraftOptionMaxBenign">Max Benign Roles</string>
+  <string name="ExtensionDraftOptionMaxEvil">Max Evil Roles</string>
+  <string name="ExtensionDraftOptionMaxNeutralKillingRoles">Max Neutral Killing Roles</string>
+  <string name="ExtensionDraftOptionMaxOutlier">Max Outlier Roles</string>
+  <string name="ExtensionDraftOptionSlot">Slot</string>
   <string name="Reduce Killing Streak">Reduce Killing Streak</string>
   <string name="Impostor">Impostor</string>
   <string name="Neutral">Neutral</string>
@@ -857,12 +949,12 @@
   <string name="ExtensionOptionBHArrowRangeLong">Long</string>
   <string name="ExtensionOptionBHArrowRangeInfinite">Infinite</string>
   <string name="ExtensionOptionFairyKeepsProtectAfterDeath">Fairy keeps protect after death</string>
-  <string name="ExtensionOptionBHCanKillInRoundOne">Allow first round kill</string>
+  <string name="ExtensionOptionBHCanKillInRoundOne">Allow Hunt in First Round</string>
   <string name="ExtensionOptionBHArrowUpdateInterval">Arrow Update Interval</string>
   <string name="ExtensionOptionBHGameContinues">Game Continues Without Other Killers</string>
   <string name="ExtensionOptionBHWinMode">Win Mode</string>
-  <string name="ExtensionOptionBHWinModeEnumSoloWin">Solo Win (Ends Game)</string>
-  <string name="ExtensionOptionBHWinModeEnumWinWithWinners">Win With Winners</string>
+  <string name="ExtensionOptionBHWinModeEnumSoloWin">Ends Game</string>
+  <string name="ExtensionOptionBHWinModeEnumLeavesInVictory">Leaves in Victory</string>
   
   <string name="ExtensionBHTabTargetsKilled">Targets Killed: {0} / {1}</string>
   <string name="ExtensionBHTabCurrentTarget">Current Target: {0}</string>
@@ -875,6 +967,8 @@
   <string name="ExtensionBHNoTargets">No valid targets available!</string>
   <string name="ExtensionBHWinWithWinnersSelf">You have successfully completed your bounties as the &lt;color=#B0BEC5&gt;Bounty Hunter&lt;/color&gt;! You will now spectate and win with the winning team.</string>
   <string name="ExtensionBHWinWithWinnersOthers">The &lt;color=#B0BEC5&gt;Bounty Hunter&lt;/color&gt;, &lt;player&gt;, has completed all their bounties!</string>
+  <string name="ExtensionBHLeavesInVictorySelf">You completed every bounty and left victorious!</string>
+  <string name="ExtensionBHLeavesInVictoryOthers">The Bounty Hunter, &lt;player&gt;, completed every bounty and left victorious!</string>
   <string name="DiedToWinning">Victorious</string>
   <string name="ExtensionBountyHunterWins">Wins</string>
   
@@ -896,6 +990,8 @@
   
   <!-- Poisoner Options -->
   <string name="ExtensionOptionPoisonerPoisonDuration">Poison Duration</string>
+  <string name="ExtensionOptionPoisonerVictimAlertEnabled">Victim Alert</string>
+  <string name="ExtensionOptionPoisonerVictimAlertDelay">Victim Alert Delay</string>
   <string name="ExtensionOptionPoisonerVineDuration">Vine Stasis Duration</string>
   <string name="ExtensionOptionPoisonerCanVent">Can Vent</string>
   <string name="ExtensionOptionPoisonerVineSeekingDuration">Vine Seeking Duration</string>
@@ -904,6 +1000,7 @@
 
   <!-- Poisoner Notifications -->
   <string name="ExtensionPoisonerNotificationPoisoned">You have poisoned {0}!</string>
+  <string name="ExtensionPoisonerNotificationVictimPoisoned">You have been poisoned! You will die in {0} seconds.</string>
   <string name="ExtensionPoisonerNotificationTargetDied">Your poisoned target {0} has died!</string>
   <string name="PoisonerVineSeekingCancelledPenalty">Seeking cancelled! Cooldown applied.</string>
   <string name="PoisonerVineSeekingExpiredPenalty">Seeking expired! Cooldown applied.</string>
@@ -1103,7 +1200,7 @@
 
   <!-- TOUMCE Wiki Terms - Symbols -->
   <string name="TOUMCETermsSymbolsTitle">TOUMCE Symbols</string>
-  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player given cream cake by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client</string>
+  <string name="TOUMCETermsSymbolsInfo">TOUMCE Symbols Glossary • &lt;color=#FFD700&gt;&lt;b&gt;Θ&lt;/b&gt;&lt;/color&gt; - Player given cream cake by Pope • &lt;color=#6699FF&gt;&lt;b&gt;♢&lt;/b&gt;&lt;/color&gt; - Player set as trap by the Shroud • &lt;color=#8B00FF&gt;&lt;b&gt;♡&lt;/b&gt;&lt;/color&gt; - Player entered in Death Note • &lt;color=#003380&gt;&lt;b&gt;Σ&lt;/b&gt;&lt;/color&gt; - Player shielded by the Bodyguard • &lt;color=#00FF00&gt;&lt;b&gt;%&lt;/b&gt;&lt;/color&gt; - Player poisoned by the Poisoner • &lt;color=#EDB38C&gt;&lt;b&gt;§&lt;/b&gt;&lt;/color&gt; - Lawyer's client • &lt;color=#FF0000&gt;&lt;b&gt;?&lt;/b&gt;&lt;/color&gt; - Player disoriented by the Inverter</string>
 
   <!-- TOUMCE Wiki Terms - Shield Flashes -->
   <string name="TOUMCETermsShieldFlashesTitle">General Shield Flashes</string>
@@ -1118,7 +1215,7 @@
 • By default, all players draft from the complete pool of enabled roles for their side (Crewmate, Impostor, or Neutral). Restrictive categories have been removed for a more flexible experience.</string>
 
   <string name="TOUMCETermsApocalypseTitle">Apocalypse</string>
-  <string name="TOUMCETermsApocalypseInfo">&lt;b&gt;Apocalypse&lt;/b&gt; roles are horsemen-style neutral threats: &lt;color=#C4F076&gt;Plaguebearer&lt;/color&gt;, &lt;color=#B4D7A8&gt;Pestilence&lt;/color&gt;, &lt;color=#E59A3B&gt;Baker&lt;/color&gt;, &lt;color=#023020&gt;Famine&lt;/color&gt;, &lt;color=#242A5E&gt;Soul Collector&lt;/color&gt;, &lt;color=#202020&gt;Death&lt;/color&gt;, &lt;color=#BE1020&gt;Berserker&lt;/color&gt;, and &lt;color=#5E3929&gt;War&lt;/color&gt;. If &lt;b&gt;Apocalypse Wins Together&lt;/b&gt; is enabled, they share victory, cannot guess each other, and reveal each other's roles. Apocalypse meeting chat is controlled in General settings.</string>
+  <string name="TOUMCETermsApocalypseInfo">&lt;b&gt;Apocalypse&lt;/b&gt; roles are horsemen-style neutral threats: &lt;color=#C4F076&gt;Plaguebearer&lt;/color&gt;, &lt;color=#B4D7A8&gt;Pestilence&lt;/color&gt;, &lt;color=#E59A3B&gt;Baker&lt;/color&gt;, &lt;color=#023020&gt;Famine&lt;/color&gt;, &lt;color=#242A5E&gt;Soul Collector&lt;/color&gt;, &lt;color=#202020&gt;Death&lt;/color&gt;, &lt;color=#880814&gt;Berserker&lt;/color&gt;, and &lt;color=#5E3929&gt;War&lt;/color&gt;. If &lt;b&gt;Apocalypse Wins Together&lt;/b&gt; is enabled, they share victory, cannot guess each other, and reveal each other's roles. Apocalypse meeting chat is controlled in General settings.</string>
 
   <!-- TOUMCE Wiki Terms - Draft Factions -->
   <string name="TOUMCETermsDraftFactionsTitle">Draft Factions</string>
@@ -1146,7 +1243,6 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <!-- TOUMCE Wiki Terms - Game Settings -->
   <string name="TOUMCETermsGameSettingsTitle">Game Settings</string>
   <string name="TOUMCETermsGameSettingsInfo">TOUMCE introduces several global settings that change the game flow:
-• <b>Lock Lobby During Draft</b> - Prevents new players from joining while a draft is in progress to ensure stability.
 • <b>System of Thirds</b> - A balanced pick order that distributes Impostors and Neutrals evenly across the beginning, middle, and end of the draft phase.
 • <b>Use Role Chances</b> - If enabled, the probability of roles appearing in the Draft will be based on their individual 'Chance' settings in the lobby.
 • <b>Neutrals Per Choice</b> - Controls how many Neutral roles are mixed into each Crewmate's selection pool.
@@ -1200,7 +1296,6 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="Max Neutral Killing">Max Neutral Killing</string>
   <string name="Neutral Killing">Neutral Killing</string>
   <string name="Enable Draft Mode">Enable Draft Mode</string>
-  <string name="Lock Lobby During Draft">Lock Lobby During Draft</string>
   <string name="Use Role Chances">Use Role Chances</string>
 
   <!-- Infiltrator & Recruits -->
@@ -1474,8 +1569,8 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionJokerResetClonesEachMeeting">Reset Clones Each Meeting</string>
   <string name="ExtensionOptionJokerMoveWithTablet">Can Move With Tablet</string>
   <string name="ExtensionOptionJokerWinMode">Win Condition</string>
-  <string name="JokerWinOptionsSoloWin">Ends Game (Solo)</string>
-  <string name="JokerWinOptionsWinWithWinners">Win With Winners</string>
+  <string name="JokerWinOptionsSoloWin">Ends Game</string>
+  <string name="JokerWinOptionsWinWithWinners">Leaves in Victory</string>
   <string name="ExtensionRoleJokerFooledNotif">You've been fooled!</string>
   <string name="ExtensionRoleJokerCloneKilledNotif">Your clone was killed in {0}! ({1}/{2})</string>
   <string name="ExtensionRoleJokerObjectiveCompleteNotif">Objective complete! You are now Victorious</string>
@@ -1489,6 +1584,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleBakerWikiDescription">The Baker is a Neutral Killing role that gives bread to living players. Breaded players are marked for you and trigger alerts when they die. Give enough bread to become \%color=#023020FF\%Famine\%/color\%.</string>
   <string name="ExtensionRoleBakerGive">Give Bread</string>
   <string name="ExtensionRoleBakerGiveWikiDescription">Give bread to a nearby living player.</string>
+  <string name="ExtensionRoleBakerMeetingSummary">Bread Given: {0} / {1}</string>
   <string name="ExtensionRoleBakerFamineAnnouncement">A terrible famine has consumed the Crew.\%nl\%\%color=#023020FF\%Famine\%/color\%, Horseman of the Apocalypse, has emerged!</string>
   <string name="ExtensionRoleBakerFamineAnnouncementTitle">Baker Warning</string>
   <string name="ExtensionRoleBakerBreadTargetDiedNotif">{0} died with your bread!</string>
@@ -1505,8 +1601,11 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleBerserker">Berserker</string>
   <string name="ExtensionRoleBerserkerIntroBlurb">Kill to shorten your cooldown and become War.</string>
   <string name="ExtensionRoleBerserkerTabDescription">Kill players to reduce your cooldown.\%nl\%Collect enough kills to become &lt;color=#5E3929&gt;War&lt;/color&gt;.</string>
-  <string name="ExtensionRoleBerserkerWikiDescription">The &lt;color=#BE1020&gt;Berserker&lt;/color&gt; is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Each kill lowers your kill cooldown, helping you snowball into &lt;color=#5E3929&gt;War&lt;/color&gt;.\%nl\%Once transformed, you lose cooldown reduction and become an invincible horseman who can chain kills during a short spree window.\%nl\%If Apocalypse Wins Together is enabled, Apocalypse roles are treated as allies.</string>
+  <string name="ExtensionRoleBerserkerWikiDescription">The &lt;color=#880814&gt;Berserker&lt;/color&gt; is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Each kill lowers your kill cooldown, helping you snowball into &lt;color=#5E3929&gt;War&lt;/color&gt;.\%nl\%Once transformed, you lose cooldown reduction and become an invincible horseman who can chain kills during a short spree window.\%nl\%If Apocalypse Wins Together is enabled, Apocalypse roles are treated as allies.</string>
+  <string name="ExtensionRoleBerserkerKillWikiDescription">Kill players to reduce your cooldown and evolve into War.</string>
+  <string name="ExtensionRoleBerserkerWarWikiAbilityDescription">After enough kills, evolve into War and gain the final horseman's power.</string>
   <string name="ExtensionRoleBerserkerKillsTab">Kills to become War</string>
+  <string name="ExtensionRoleBerserkerMeetingSummary">Kills to become War: {0} / {1}</string>
   <string name="ExtensionRoleBerserkerWarAnnouncement">War has consumed the battlefield.\%nl\%\%color=#5E3929FF\%War\%/color\%, Horseman of the Apocalypse, has emerged!</string>
   <string name="ExtensionRoleBerserkerWarAnnouncementTitle">Berserker Warning</string>
   <string name="ExtensionOptionBerserkerInstantWarChance">Instant War Chance</string>
@@ -1514,17 +1613,25 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionBerserkerKillCooldownReduction">Kill Cooldown Reduction Per Kill</string>
   <string name="ExtensionOptionBerserkerKillsNeededToTransform">Kills Needed To Become War</string>
   <string name="ExtensionOptionBerserkerAnnounceWar">Announce War Transformation</string>
-  <string name="ExtensionOptionBerserkerWarCanVent">War Can Vent</string>
+  <string name="ExtensionOptionBerserkerWhoCanVent">Who Can Vent</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentNoOne">No One</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentBerserker">Berserker Only</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentWar">War Only</string>
+  <string name="ExtensionOptionBerserkerWhoCanVentBoth">War + Berserker</string>
+  <string name="ExtensionRoleCantVent">Can't Vent</string>
   <string name="ExtensionOptionWarKillingSpreeDuration">War Killing Spree Duration</string>
   <string name="ExtensionRoleWar">War</string>
   <string name="ExtensionRoleWarIntroBlurb">Horseman of the Apocalypse!</string>
-  <string name="ExtensionRoleWarTabDescription">Transformed Berserker. Chain kills during a short spree.\%nl\%War is invincible.</string>
-  <string name="ExtensionRoleWarWikiDescription">The &lt;color=#5E3929&gt;War&lt;/color&gt; is the transformed &lt;color=#BE1020&gt;Berserker&lt;/color&gt;.\%nl\%War is invincible, cannot be guessed, and can only die by being voted out.\%nl\%After a successful kill, War enters a short Killing Spree where the next kill has no cooldown.</string>
+  <string name="ExtensionRoleWarTabDescription">Transformed Berserker.\%nl\%Chain kills during short sprees.\%nl\%War is invincible.</string>
+  <string name="ExtensionRoleWarWikiDescription">The &lt;color=#5E3929&gt;War&lt;/color&gt; is the transformed &lt;color=#880814&gt;Berserker&lt;/color&gt;.\%nl\%War is invincible, cannot be guessed, and can only die by being voted out.\%nl\%After a successful kill, War enters a short Killing Spree where the next kill has no cooldown.</string>
+  <string name="ExtensionRoleWarMeetingSummary">War Evolved: the battlefield is yours.</string>
   <string name="ExtensionRoleWarSpreeKill">Spree Kill</string>
   <string name="ExtensionRoleFamine">Famine</string>
   <string name="ExtensionRoleFamineIntroBlurb">Horseman of the Apocalypse!</string>
-  <string name="ExtensionRoleFamineTabDescription">Transformed Baker. Starve breaded players (die next meeting).\%nl\%Once they all die, you can starve anyone.\%nl\%Famine is invincible.</string>
+  <string name="ExtensionRoleFamineTabDescription">Transformed Baker.\%nl\%Starved players die next meeting.\%nl\%Once breaded targets die, starve anyone.\%nl\%Famine is invincible.</string>
   <string name="ExtensionRoleFamineWikiDescription">The Famine is the transformed Baker. Famine is invincible, cannot be guessed, and can only die by being voted out.\%nl\%Initially, Famine can only starve players who received bread from Baker. After all breaded players are dead, Famine can starve any player. Starved players die at the next meeting.</string>
+  <string name="ExtensionRoleFamineMeetingSummary">Marked for Famine: {0}</string>
+  <string name="ExtensionRoleFamineMeetingSummaryUnlocked">Famine Evolved: the hunger spreads to all.</string>
   <string name="ExtensionRoleFamineStarve">Starve</string>
   <string name="ExtensionRoleFamineStarveWikiDescription">Mark a breaded player to die next meeting.</string>
   <string name="ExtensionOptionBakerBreadNeeded">Bread Needed</string>
@@ -1553,14 +1660,14 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionLonerChangeRoleAfterKills">Loner Becomes Random Impostor Role</string>
   <string name="ExtensionOptionLonerKillsNeededToChangeRole">Kills After Recruit Needed To Gain New Role</string>
   <string name="ExtensionOptionLonerRecruitedImpostorBecomesAssassin">Recruited Impostor Becomes Assassin</string>
-  <string name="ExtensionOptionLonerRecruitBecomesTraitor">Recruit Becomes Traitor</string>
+  <string name="ExtensionOptionLonerRecruitBecomesRandomImpostor">Recruit Becomes Random Impostor</string>
   <string name="ExtensionOptionLonerRemoveExistingImpostorRoles">Avoid Impostor Roles Used This Game</string>
 
   <!-- Burrower Role -->
-  <string name="ExtensionRoleBurrower">Burrower</string>
+  <string name="ExtensionRoleBurrower">Tunneler</string>
   <string name="ExtensionRoleBurrowerIntroBlurb">Dig hidden tunnels</string>
   <string name="ExtensionRoleBurrowerTabDescription">Dig underground and emerge to link two vents.</string>
-  <string name="ExtensionRoleBurrowerWikiDescription">The Burrower is an Impostor Concealing role that creates hidden tunnels. Dig to enter a vent after a short delay and travel underground. Emerge to create a linked vent pair.</string>
+  <string name="ExtensionRoleBurrowerWikiDescription">The Tunneler is an Impostor Concealing role that creates hidden tunnels. Dig to enter a vent after a short delay and travel underground. Emerge to create a linked vent pair.</string>
   <string name="ExtensionRoleBurrowerDig">Dig</string>
   <string name="ExtensionRoleBurrowerEmerge">Emerge</string>
   <string name="ExtensionRoleBurrowerDigWikiDescription">Dig underground and emerge through a linked vent.</string>
@@ -1572,9 +1679,9 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionBurrowerEnterDelay">Enter Vent Delay</string>
   <string name="ExtensionOptionBurrowerDigDuration">Dig Duration</string>
   <string name="ExtensionOptionBurrowerDigCooldown">Dig Cooldown</string>
-  <string name="ExtensionOptionBurrowerMaxBurrows">Max Burrows</string>
+  <string name="ExtensionOptionBurrowerMaxBurrows">Max Tunnels</string>
   <string name="ExtensionOptionBurrowerEmergeVisionDuration">Emerge Low Vision Duration</string>
-  <string name="ExtensionOptionBurrowerVentsStayAfterMeeting">Vents Stay After Meeting</string>
+  <string name="ExtensionOptionBurrowerVentsStayAfterMeeting">Tunnels Stay After Meeting</string>
 
   <string name="ExtensionRoleGunGameMutationNotification">ROLE CHANGED! You are now &lt;role&gt;!</string>
   <string name="ExtensionRoleGunGameProgressRandom">Mode: Random role after enough kills</string>
@@ -1615,6 +1722,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleSoulCollectorWikiDescription">The \%color=#242A5EFF\%Soul Collector\%/color\% is a &lt;b&gt;Neutral Apocalypse&lt;/b&gt; role. Use Reap to mark targets; if a marked target dies before the deadline, you gain a soul. Collect enough souls to become \%color=#202020FF\%Death\%/color\%. Doctor and Cleric cleanse can remove Reap marks.</string>
   <string name="ExtensionRoleSoulCollectorReap">Reap</string>
   <string name="ExtensionRoleSoulCollectorReapWikiDescription">Mark a nearby living player. If they die before the mark expires, gain one soul.</string>
+  <string name="ExtensionRoleSoulCollectorMeetingSummary">Souls Claimed: {0} / {1} | Reap Marks: {2} / {3}</string>
   <string name="ExtensionRoleSoulCollectorMarkedDiedNotif">{0}'s soul has been collected!</string>
   <string name="ExtensionRoleSoulCollectorDeathAnnouncement">The final soul has been claimed.\%nl\%\%color=#202020FF\%Death\%/color\%, Horseman of the Apocalypse, has emerged!</string>
   <string name="ExtensionRoleSoulCollectorDeathAnnouncementTitle">Soul Collector Warning</string>
@@ -1623,6 +1731,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionRoleDeathIntroBlurb">Horseman of the Apocalypse!</string>
   <string name="ExtensionRoleDeathTabDescription">Transformed Soul Collector. Kill players with Reap.\%nl\%Death is invincible and leaves unreportable bodies.</string>
   <string name="ExtensionRoleDeathWikiDescription">Death is the transformed Soul Collector.\%nl\%Death is invincible, cannot be guessed, and can only die by being voted out.\%nl\%Death kills without a jump animation and leaves bodies that cannot be reported.</string>
+  <string name="ExtensionRoleDeathMeetingSummary">Death Evolved: no soul escapes.</string>
   <string name="DiedToExtensionDeathClaimed">Claimed by Death</string>
   <string name="ExtensionOptionSoulCollectorInstantDeathChance">Instant Death Chance</string>
   <string name="ExtensionOptionSoulCollectorReapCooldown">Reap Cooldown</string>
@@ -1635,4 +1744,117 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionSoulCollectorDeathCanVent">Death Can Vent</string>
   <string name="ExtensionModifierSoulCollectorReaped">Reaped</string>
 
+  <!-- Innocent -->
+  <string name="ExtensionRoleInnocent">Innocent</string>
+  <string name="ExtensionRoleInnocentIntroBlurb">Make someone look guilty.</string>
+  <string name="ExtensionRoleInnocentTabDescription">Taunt a player for a short time.\%nl\%Win if that killer is voted out at the next meeting.</string>
+  <string name="ExtensionRoleInnocentWikiDescription">The Innocent is a Neutral Evil role. Use Taunt on a living player. During the configured time window, if the closest player near the taunted player is a Crewmate, the taunted player kills and reports them as if they hit Bait. If that killer is voted out at the next meeting, the Innocent wins. If limited taunts run out without a win, the Innocent transforms into the configured role.</string>
+  <string name="ExtensionRoleInnocentTaunt">Taunt</string>
+  <string name="ExtensionRoleInnocentTauntWikiDescription">Mark a living player. After a delay, they will kill the nearest Crewmate, and you must get them exiled at the next meeting.</string>
+  <string name="ExtensionRoleInnocentTauntedNotif">{0} has been taunted!</string>
+  <string name="ExtensionRoleInnocentTauntedButton">Taunted</string>
+  <string name="ExtensionOptionInnocentTauntCooldown">Taunt Cooldown</string>
+  <string name="ExtensionOptionInnocentTauntDuration">Taunt Duration</string>
+  <string name="ExtensionOptionInnocentMaxTaunts">Max Taunts</string>
+  <string name="ExtensionOptionInnocentTransformAfterTauntsInto">Transform After Taunts Into</string>
+  <string name="ExtensionOptionInnocentCanTauntFirstRound">Can Taunt First Round</string>
+  <string name="ExtensionOptionInnocentAfterWin">After Win</string>
+  <string name="ExtensionOptionInnocentAfterWinEndGame">Ends Game</string>
+  <string name="ExtensionOptionInnocentAfterWinNothing">Leaves in Victory</string>
+  <string name="ExtensionOptionInnocentAfterWinHaunt">Haunt</string>
+  <string name="ExtensionRoleInnocentHaunt">Haunt</string>
+  <string name="ExtensionRoleInnocentWinNotif">Your target was exiled. You won!</string>
+  <string name="ExtensionRoleInnocentWonSelf">You have successfully won as the %role%, as your taunted target was exiled!</string>
+  <string name="ExtensionRoleInnocentWonOther">The %role%, %player%, has successfully won, as their taunted target was exiled!</string>
+  <string name="ExtensionRoleInnocentForcedKillNotif">Your taunted player killed a Crewmate. Get them exiled at the next meeting!</string>
+  <string name="ExtensionRoleInnocentNoKillNotif">Your taunted player did not kill a Crewmate in time.</string>
+  <string name="ExtensionInnocentWins">Wins</string>
+
+  <!-- Voodoo Master -->
+  <string name="ExtensionRoleVoodooMaster">Voodoo Master</string>
+  <string name="ExtensionRoleVoodooMasterIntroBlurb">Curse players with Voodoo.</string>
+  <string name="ExtensionRoleVoodooMasterTabDescription">Cycle between blindness, mute, and confuse.</string>
+  <string name="ExtensionRoleVoodooMasterWikiDescription">The Voodoo Master is an Impostor Support role that cycles between three curses and casts the selected curse on a living player. Blindness covers the target's vision, mute silences them during meetings, and confuse makes living players appear scrambled to them.</string>
+  <string name="ExtensionRoleVoodooMasterCast">Curse</string>
+  <string name="ExtensionRoleVoodooMasterCastWikiDescription">Choose a living player and apply the currently selected Voodoo curse.</string>
+  <string name="ExtensionRoleVoodooMasterBlindness">Blindness</string>
+  <string name="ExtensionRoleVoodooMasterBlindnessWikiDescription">Curse a player with blindness. After the configured delay, their vision is fully covered for the configured duration.</string>
+  <string name="ExtensionRoleVoodooMasterMute">Mute</string>
+  <string name="ExtensionRoleVoodooMasterMuteWikiDescription">Curse a player with mute. The curse triggers at the next meeting and prevents only that player from chatting for the configured number of meetings. Only the muted player knows they are muted; other players are not told and do not see a meeting overlay like Blackmailer.</string>
+  <string name="ExtensionRoleVoodooMasterConfuse">Confuse</string>
+  <string name="ExtensionRoleVoodooMasterConfuseWikiDescription">Curse a player with confuse. After the configured delay, living players appear scrambled to the target like Herbalist Confuse, making players harder to identify.</string>
+  <string name="ExtensionRoleVoodooMasterCycle">Cycle Curse</string>
+  <string name="ExtensionRoleVoodooMasterCycleWikiDescription">Switch between blindness, mute, and confuse.</string>
+  <string name="ExtensionOptionVoodooMasterCurseCooldown">Curse Cooldown</string>
+  <string name="ExtensionOptionVoodooMasterMaxBlindUses">Blind Uses</string>
+  <string name="ExtensionOptionVoodooMasterMaxConfuseUses">Confuse Uses</string>
+  <string name="ExtensionOptionVoodooMasterMaxMuteUses">Mute Uses</string>
+  <string name="ExtensionOptionVoodooMasterBlindDuration">Blind Duration</string>
+  <string name="ExtensionOptionVoodooMasterConfuseDuration">Confuse Duration</string>
+  <string name="ExtensionOptionVoodooMasterTargetLockDuration">Target Lock Duration (Meetings)</string>
+  <string name="ExtensionOptionVoodooMasterBlindDelay">Blind Delay</string>
+  <string name="ExtensionOptionVoodooMasterConfuseDelay">Confuse Delay</string>
+  <string name="ExtensionVoodooBlindAlert">You have been cursed by the Voodoo Master!</string>
+  <string name="ExtensionVoodooEffectBlindness">Blind</string>
+  <string name="ExtensionVoodooEffectMute">Mute</string>
+  <string name="ExtensionVoodooEffectConfuse">Confuse</string>
+  <string name="ExtensionVoodooMuteAlert">You have been cursed by the Voodoo Master. Only you can see this, and you are muted this meeting!</string>
+  <string name="ExtensionVoodooMuteWarningTitle">MUTE ALERT</string>
+  <string name="ExtensionVoodooMuteScheduledTitle">Voodoo Charm</string>
+  <string name="ExtensionVoodooMuteScheduledAlert">The Voodoo Master has charmed you. Only you know about this curse.\%nl\%During the next meeting you cannot chat, but you can still vote.</string>
+  <string name="ExtensionVoodooMuteChatBlocked">Muted by Voodoo — chat disabled.</string>
+  <string name="ExtensionVoodooMutedIntro">YOU ARE MUTED!</string>
+
+  <!-- Inverter Role -->
+  <string name="ExtensionRoleInverter">Flipper</string>
+  <string name="ExtensionRoleInverterIntroBlurb">Disorient crewmate to flip their screen.</string>
+  <string name="ExtensionRoleInverterTabDescription">Choose a player to flip their screen and invert their movement controls.</string>
+  <string name="ExtensionRoleInverterWikiDescription">The Flipper is an Impostor Support role. They can choose a living target and apply Disoriented. The target's screen is flipped upside-down and their movement controls are inverted for the configured duration.</string>
+  <string name="ExtensionRoleInverterDisorient">Disorient</string>
+  <string name="ExtensionRoleInverterDisorientWikiDescription">Flip a player's screen and invert their movement controls.</string>
+  <string name="ExtensionOptionInverterDisorientCooldown">Disorient Cooldown</string>
+  <string name="ExtensionOptionInverterDisorientDuration">Disorient Duration</string>
+  <string name="ExtensionOptionInverterMaxDisorients">Max Number Of Disorients</string>
+  <string name="ExtensionOptionInverterMoveWhileMenu">Can Move While Menu</string>
+  <string name="ExtensionOptionInverterDisorientSamePersonTwice">Disorient Same Person Twice In A Row</string>
+  <string name="ExtensionOptionInverterApplyDrunk">Apply Drunk Effect</string>
+  <string name="ExtensionOptionInverterApplyHerbalistConfuse">Apply Herbalist Confuse</string>
+  <string name="ExtensionModifierDisoriented">Disoriented</string>
+
+  <!-- Tavern Keeper -->
+  <string name="ExtensionRoleTavernKeeper">Tavern Keeper</string>
+  <string name="ExtensionRoleTavernKeeperIntroBlurb">Drink with others to protect them and disable their abilities.</string>
+  <string name="ExtensionRoleTavernKeeperTabDescription">Drink with another player to protect them from death.\%nl\%The hangover disables their abilities while it lasts.</string>
+  <string name="ExtensionRoleTavernKeeperWikiDescription">The Tavern Keeper is a Crewmate Protective role that can drink with another player. The target is protected from death while the hangover lasts, but their abilities are disabled. If enabled, the target becomes immune to future drinks after the hangover ends.</string>
+  <string name="ExtensionRoleTavernKeeperDrink">Drink</string>
+  <string name="ExtensionRoleTavernKeeperDrinkWikiDescription">Drink with a player to protect them from death and disable their abilities for \%duration\%s.</string>
+  <string name="ExtensionRoleTavernKeeperTabRoleblockedDuration">Hangover Duration: \%duration\%s</string>
+  <string name="ExtensionRoleTavernKeeperTabMaxUses">Drinks Remaining: \%uses\%</string>
+  <string name="ExtensionRoleTavernKeeperTabTargetImmunity">Targets become immune to future drinks when the hangover ends.</string>
+  <string name="ExtensionRoleTavernKeeperTabCurrentlyRoleblocked">Drinking With: \%player\%</string>
+  <string name="ExtensionRoleTavernKeeperNotificationRoleblocked">\%player\% is protected by your drink and cannot use abilities!</string>
+  <string name="ExtensionRoleTavernKeeperNotificationImmune">\%player\% resisted your drink!</string>
+  <string name="ExtensionRoleTavernKeeperAlertImmune">The Tavern Keeper drank with you, but you resisted it!</string>
+  <string name="ExtensionRoleTavernKeeperAlertRoleblocked">The Tavern Keeper drank with you and protects you from deaths with a hangover, but you cannot use abilities.</string>
+  <string name="ExtensionOptionTavernKeeperCooldown">Drink Cooldown</string>
+  <string name="ExtensionOptionTavernKeeperDuration">Hangover Duration</string>
+  <string name="ExtensionOptionTavernKeeperInvertControls">Invert controls during hangover</string>
+  <string name="ExtensionOptionTavernKeeperImmunity">Drink Immunity</string>
+  <string name="ExtensionOptionTavernKeeperImmunityDuration">Immunity Duration</string>
+  <string name="ExtensionOptionTavernKeeperMaxUses">Max Uses</string>
+  <string name="ExtensionOptionTavernKeeperResetAfterMeeting">Reset uses after meeting</string>
+  <string name="ExtensionOptionTavernKeeperShowAlert">Alert drinking partner</string>
+  <string name="ExtensionOptionTavernKeeperAlertDelay">Drinking partner alert delay</string>
+
+  <!-- Agent -->
+  <string name="ExtensionRoleAgent">Agent</string>
+  <string name="ExtensionRoleAgentIntroBlurb">Blend in with the Impostors</string>
+  <string name="ExtensionRoleAgentTabDescription">Win with the Crewmates from inside the Impostor chat.\%nl\%You can speak there, but their names stay hidden.</string>
+  <string name="ExtensionRoleAgentWikiDescription">The Agent is a Crewmate Investigative role that appears friendly to the Impostors. They can read and send Impostor chat messages, but all Impostor names are hidden from them. Impostors cannot shoot or guess the Agent, and the Agent wins with the Crewmates.</string>
+  <string name="ExtensionOptionAgentAppearsAs">Appears As</string>
+  <string name="ExtensionOptionAgentCanVent">Can Vent</string>
+  <string name="ExtensionOptionAgentCanUseImpostorChat">Can Use Impostor Chat</string>
+  <string name="ExtensionOptionAgentImpostorsCanKillEachOther">Impostors Can Kill Each Other</string>
 </resources>
+
+

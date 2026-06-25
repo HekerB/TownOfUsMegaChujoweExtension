@@ -19,6 +19,7 @@ using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine.UI;
 using UnityEngine;
+using TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
 namespace TouMegaChujoweExtension.Modules;
 
@@ -505,6 +506,7 @@ public static class ClassicAssassinSystem
         if (role is IUnguessable { IsGuessable: false }) return false;
         if (role is IGuessable { CanBeGuessed: false }) return false;
         if (role is TownOfUs.Roles.Impostor.TraitorRole && assassin.Player.IsImpostorAligned()) return false;
+        // if (role is AgentRole && assassin.Player.IsImpostorAligned()) return false;
 
         var options = OptionGroupSingleton<AssassinOptions>.Instance;
         var alignment = role.GetRoleAlignment();
@@ -689,6 +691,9 @@ public static class ClassicAssassinSystem
 
         if (assassin.Player.IsImpostorAligned() && player.IsImpostorAligned() && !genOptions.FFAImpostorMode)
             return true;
+
+        // if (assassin.Player.IsImpostorAligned() && player.IsRole<AgentRole>())
+        //     return true;
 
         if (assassin.Player.Data.Role is VampireRole &&
             player.Data.Role is VampireRole)

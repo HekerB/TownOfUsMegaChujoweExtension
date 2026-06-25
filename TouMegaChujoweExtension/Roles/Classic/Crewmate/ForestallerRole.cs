@@ -11,10 +11,6 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-/// <summary>
-/// Forestaller role: when they complete all tasks, sabotages are disabled (while they are alive).
-/// They are revealed in meetings after completing all tasks.
-/// </summary>
 public sealed class ForestallerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IGuessable, IUnguessable
 {
     public bool CanBeGuessed => Player == null || !Modules.ForestallerSystem.IsForestallerRevealed(Player.PlayerId);
@@ -55,15 +51,3 @@ public sealed class ForestallerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     public bool IsGuessable => Player == null || !Modules.ForestallerSystem.IsForestallerRevealed(Player.PlayerId);
     public RoleBehaviour AppearAs => this;
 }
-
-
-
-
-
-
-
-
-
-
-
-

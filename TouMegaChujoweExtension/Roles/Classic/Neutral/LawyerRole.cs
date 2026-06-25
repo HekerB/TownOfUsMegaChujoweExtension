@@ -142,7 +142,6 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                         continue;
                     }
 
-                    // If killerChance is 0, exclude killers from the fallback pool
                     if (killerChance == 0 && (pc.IsImpostorAligned() || pc.Is(RoleAlignment.NeutralKilling)))
                     {
                         continue;
@@ -258,7 +257,6 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public bool WinConditionMet()
     {
-        /* Win condition depends on Client's survival and AboutToWin status */
         if (Player.HasDied() || !AboutToWin)
         {
             return false;
@@ -518,7 +516,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         lawyerRole.ObjectionsUsed++; lawyerRole.ObjectionsUsedThisMeeting++; lawyerRole.HasObjected = true;
 
         var clip = TouExtensionAudio.ObjectionSound.LoadAsset();
-        if (clip != null)
+        if (clip != null && Constants.ShouldPlaySfx())
         {
             var source = SoundManager.Instance.PlaySound(clip, false, 1f);
             if (source != null) Coroutines.Start(LawyerCoroutines.CoFadeOutObjection(source, 1.2f, 0.5f));
@@ -531,8 +529,6 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
         MiscUtils.AddFakeChat(lawyer.Data, title, message, false, true);
 
-        // Updated chat bubble handling: Show local player instead of random/lawyer 
-        // (requested "everyone shows themselves")
         try
         {
             var chat = HudManager.Instance.Chat;
@@ -547,7 +543,6 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                         lastBubble.Player.gameObject.SetActive(true);
                         lastBubble.SetCosmetics(PlayerControl.LocalPlayer.Data);
                         
-                        // Medic style: Black background
                         if (lastBubble.Background != null)
                         {
                             lastBubble.Background.color = new Color(0.05f, 0.05f, 0.05f, 0.9f);
@@ -562,7 +557,6 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         }
         catch (Exception)
         {
-            /* Failed to update chat avatar - non-critical UI error */
         }
 
         var meeting = MeetingHud.Instance;
@@ -580,7 +574,6 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             }
             catch (Exception)
             {
-                /* Option access failed - non-critical */
             }
         }
 
@@ -621,7 +614,6 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                         }
                         else
                         {
-                            /* Current vote not found */
                         }
                     }
                     
@@ -631,7 +623,6 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                     }
                     else
                     {
-                        /* Vote to store was skip/null */
                     }
                 }
 
@@ -699,7 +690,6 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             }
             catch
             {
-                /* ignore win-check failure for client role */
             }
 
             try
@@ -711,7 +701,6 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             }
             catch
             {
-                /* ignore win-check failure for client modifiers */
             }
         }
 
@@ -979,23 +968,4 @@ public static class LawyerCoroutines
         if (source != null) source.Stop();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

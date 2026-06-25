@@ -10,45 +10,98 @@ namespace TouMegaChujoweExtension.Modules;
 
 public static class ExtensionLocale
 {
-
+    private static readonly HashSet<string> AdditionalRoleNameKeys =
+    [
+        "ExtensionRoleEclipsal",
+        "ExtensionRoleVampire",
+        "TouRoleDoomsayer",
+        "TouRoleSpellslinger",
+    ];
 
     public static void SearchInternalLocale()
     {
         var assembly = Assembly.GetExecutingAssembly();
 
         bool forcePolish = false;
+        bool translateRoleNames = false;
         try
         {
             if (LocalSettingsTabSingleton<TouExtensionLocalSettings>.Instance != null)
             {
-                forcePolish = LocalSettingsTabSingleton<TouExtensionLocalSettings>.Instance.UsePolishLanguage.Value;
+                var settings = LocalSettingsTabSingleton<TouExtensionLocalSettings>.Instance;
+                forcePolish = settings.UsePolishLanguage.Value;
+                translateRoleNames = settings.TranslateRoleNames.Value;
             }
         }
-        catch { /* Fallback */ }
+        catch { }
 
-        string resourceName = forcePolish
-            ? "TouMegaChujoweExtension.Resources.Locale.pl_PL.xml"
-            : "TouMegaChujoweExtension.Resources.Locale.en_US.xml";
-        using var resourceStream = assembly.GetManifestResourceStream(resourceName);
-
-        if (resourceStream == null && forcePolish)
+        using (var enStream = assembly.GetManifestResourceStream("TouMegaChujoweExtension.Resources.Locale.en_US.xml"))
         {
-            using var fallbackStream = assembly.GetManifestResourceStream("TouMegaChujoweExtension.Resources.Locale.en_US.xml");
-            if (fallbackStream != null)
+            if (enStream != null)
             {
-                ForceInjectTranslations(fallbackStream);
+                ForceInjectTranslations(enStream, null);
             }
-
-            return;
         }
 
-        if (resourceStream != null)
+        using (var plStream = assembly.GetManifestResourceStream("TouMegaChujoweExtension.Resources.Locale.pl_PL.xml"))
         {
-            ForceInjectTranslations(resourceStream);
+            if (plStream != null)
+            {
+                if (forcePolish)
+                {
+                    ForceInjectTranslations(plStream, null);
+                }
+                else
+                {
+                    ForceInjectTranslations(plStream, (SupportedLangs)ExtendedLangs.Polish);
+                }
+            }
+        }
+
+        if (!translateRoleNames)
+        {
+            UseEnglishRoleNames(forcePolish ? null : (SupportedLangs)ExtendedLangs.Polish);
         }
     }
 
-    private static void ForceInjectTranslations(Stream stream)
+    private static void UseEnglishRoleNames(SupportedLangs? targetLang)
+    {
+        if (!TouLocale.TouLocalization.TryGetValue(SupportedLangs.English, out var englishTranslations))
+        {
+            return;
+        }
+
+        var roleNames = englishTranslations
+            .Where(entry => IsRoleNameKey(entry.Key, englishTranslations))
+            .ToArray();
+
+        var targetLanguages = targetLang.HasValue
+            ? TouLocale.TouLocalization.Where(entry => entry.Key == targetLang.Value)
+            : TouLocale.TouLocalization;
+
+        foreach (var translations in targetLanguages)
+        {
+            foreach (var roleName in roleNames)
+            {
+                translations.Value[roleName.Key] = roleName.Value;
+            }
+        }
+    }
+
+    private static bool IsRoleNameKey(string key, Dictionary<string, string> englishTranslations)
+    {
+        if (!key.StartsWith("TouRole", System.StringComparison.Ordinal) &&
+            !key.StartsWith("ExtensionRole", System.StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        return AdditionalRoleNameKeys.Contains(key) ||
+               englishTranslations.ContainsKey(key + "IntroBlurb") ||
+               englishTranslations.ContainsKey(key + "TabDescription");
+    }
+
+    private static void ForceInjectTranslations(Stream stream, SupportedLangs? targetLang)
     {
         try
         {
@@ -74,17 +127,30 @@ public static class ExtensionLocale
 
                     if (!string.IsNullOrEmpty(key))
                     {
-                        foreach (var langKey in TouLocale.LangList.Keys)
+                        if (targetLang.HasValue)
                         {
-                            var langEnum = (SupportedLangs)langKey;
-
+                            var langEnum = targetLang.Value;
                             if (!TouLocale.TouLocalization.TryGetValue(langEnum, out var dict))
                             {
                                 dict = [];
                                 TouLocale.TouLocalization[langEnum] = dict;
                             }
-
                             dict[key] = value;
+                        }
+                        else
+                        {
+                            foreach (var langKey in TouLocale.LangList.Keys)
+                            {
+                                var langEnum = (SupportedLangs)langKey;
+
+                                if (!TouLocale.TouLocalization.TryGetValue(langEnum, out var dict))
+                                {
+                                    dict = [];
+                                    TouLocale.TouLocalization[langEnum] = dict;
+                                }
+
+                                dict[key] = value;
+                            }
                         }
                     }
                 }
@@ -92,7 +158,7 @@ public static class ExtensionLocale
         }
         catch (System.Exception)
         {
-            // Ignore parsing errors; translations will fall back to default game text
         }
     }
 }
+

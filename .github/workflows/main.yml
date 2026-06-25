@@ -13,9 +13,9 @@ jobs:
           path: |
             ~/.nuget/packages
             ~/.cache/bepinex
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          key: ${{ runner.os }}-nuget-v3-${{ hashFiles('packages.local/*.nupkg', 'AmongUs.props', '**/packages.lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-nuget-
+            ${{ runner.os }}-nuget-v3-
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -29,6 +29,8 @@ jobs:
         uses: cake-build/cake-action@v3
         with:
           verbosity: Diagnostic
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/upload-artifact@v4
         with:

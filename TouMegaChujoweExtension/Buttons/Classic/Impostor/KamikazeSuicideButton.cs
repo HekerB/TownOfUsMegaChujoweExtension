@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
-public sealed class KamikazeSuicideButton : TownOfUsKillRoleButton<KamikazeRole>
+public sealed class KamikazeSuicideButton : TownOfUsKillRoleButton<KamikazeRole>, IDiseaseableButton
 {
     private GameObject? _radiusSphere;
 
@@ -25,6 +25,11 @@ public sealed class KamikazeSuicideButton : TownOfUsKillRoleButton<KamikazeRole>
     public override float Cooldown => PlayerControl.LocalPlayer?.GetKillCooldown() ?? 25f;
     public override int MaxUses => 1;
     public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.KamikazeSuicideButtonSprite;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override bool CanUse()
     {

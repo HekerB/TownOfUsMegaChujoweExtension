@@ -18,7 +18,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
-public sealed class SoulCollectorReapButton : TownOfUsRoleButton<SoulCollectorRole, PlayerControl>
+public sealed class SoulCollectorReapButton : TownOfUsRoleButton<SoulCollectorRole, PlayerControl>, IDiseaseableButton
 {
     public override string Name => TouLocale.Get("ExtensionRoleSoulCollectorReap", "Reap");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
@@ -27,6 +27,11 @@ public sealed class SoulCollectorReapButton : TownOfUsRoleButton<SoulCollectorRo
     public override float EffectDuration => 0f;
     public override LoadableAsset<Sprite> Sprite => TouNeutAssets.ReapSprite;
     public override float Distance => GameManager.Instance.LogicOptions.GetKillDistance();
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override PlayerControl? GetTarget()
     {

@@ -56,7 +56,6 @@ global using TouMegaChujoweExtension.Patches.Roles.Spiteful;
 global using TouMegaChujoweExtension.Patches.Roles.TimeLord;
 global using TouMegaChujoweExtension.Patches.Roles.Trapper;
 global using TouMegaChujoweExtension.Patches.Roles.Venomous;
-
 global using TouMegaChujoweExtension.Patches.Roles.Witch;
 global using TouMegaChujoweExtension.Patches.Roles.Wraith;
 global using TouMegaChujoweExtension.Patches.UI;

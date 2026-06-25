@@ -1,23 +1,12 @@
-using System;
 using System.Text;
-using System.Collections.Generic;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
-using TouMegaChujoweExtension.Assets;
-using TouMegaChujoweExtension.Buttons.Classic.Neutral;
-using TouMegaChujoweExtension.Modules;
-using TouMegaChujoweExtension.Networking;
-using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TownOfUs;
-using TownOfUs.Assets;
-using TownOfUs.Extensions;
-using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
@@ -74,7 +63,8 @@ public sealed class DeathRole(IntPtr cppPtr)
 
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = OptionGroupSingleton<SoulCollectorOptions>.Instance.DeathCanVent,
+        CanUseVent = OptionGroupSingleton<SoulCollectorOptions>.Instance?.DeathCanVent ?? false,
+        UseVanillaKillButton = false,
         HideSettings = true,
         CanModifyChance = false,
         DefaultChance = 0,
@@ -88,24 +78,46 @@ public sealed class DeathRole(IntPtr cppPtr)
     [HideFromIl2Cpp]
     public void TriggerDeathAnnouncement()
     {
+        var localData = PlayerControl.LocalPlayer?.Data;
+        if (localData == null)
+        {
+            return;
+        }
+
         var msg = TouLocale.GetParsed("ExtensionRoleSoulCollectorDeathAnnouncement", "The final soul has been claimed.\\%nl\\%\\%color=#202020FF\\%Death\\%/color\\%, Horseman of the Apocalypse, has emerged!");
         var title = $"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGBA(TownOfUsColors.SoulCollector)}>{TouLocale.Get("ExtensionRoleSoulCollectorDeathAnnouncementTitle", "Death Warning")}</color>";
 
-        var notif = Helpers.CreateAndShowNotification(
-            $"<b>{msg.Replace("\n", " ").Replace("\\%nl\\%", " ")}</b>",
-            Color.white,
-            new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
-        notif?.AdjustNotification();
+        try
+        {
+            TouMegaChujoweExtension.Modules.RoleAlertUtils.ShowRoleAlert(
+                $"<b>{msg.Replace("\n", " ").Replace("\\%nl\\%", " ")}</b>",
+                Color.white,
+                TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
+        }
+        catch (Exception ex)
+        {
+            UnityEngine.Debug.LogWarning($"[TOUMCE] Death role alert failed: {ex}");
+        }
 
-        MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, title, msg, false, true);
+        try
+        {
+            MiscUtils.AddFakeChat(localData, title, msg, false, true);
+        }
+        catch (Exception ex)
+        {
+            UnityEngine.Debug.LogWarning($"[TOUMCE] Death fake chat failed: {ex}");
+        }
     }
 
     public override void OnMeetingStart()
     {
         RoleBehaviourStubs.OnMeetingStart(this);
 
-        if (Announced || !OptionGroupSingleton<SoulCollectorOptions>.Instance.AnnounceDeath)
+        var options = OptionGroupSingleton<SoulCollectorOptions>.Instance;
+        if (Announced ||
+            PlayerControl.LocalPlayer?.Data == null ||
+            options == null ||
+            !options.AnnounceDeath)
         {
             return;
         }
@@ -117,6 +129,7 @@ public sealed class DeathRole(IntPtr cppPtr)
     {
         RoleBehaviourStubs.Initialize(this, player);
         EnsureInvulnerability(player);
+        EnsureInvisibility(player);
 
         if (player.AmOwner && HudManager.Instance?.ImpostorVentButton != null)
         {
@@ -124,7 +137,12 @@ public sealed class DeathRole(IntPtr cppPtr)
             HudManager.Instance.ImpostorVentButton.buttonLabelText.SetOutlineColor(TouExtensionColors.Death);
         }
 
-        if (MeetingHud.Instance != null && !Announced && OptionGroupSingleton<SoulCollectorOptions>.Instance.AnnounceDeath)
+        var options = OptionGroupSingleton<SoulCollectorOptions>.Instance;
+        if (MeetingHud.Instance != null &&
+            !Announced &&
+            PlayerControl.LocalPlayer?.Data != null &&
+            options != null &&
+            options.AnnounceDeath)
         {
             Announced = true;
             TriggerDeathAnnouncement();
@@ -141,6 +159,11 @@ public sealed class DeathRole(IntPtr cppPtr)
         if (targetPlayer.HasModifier<InvulnerabilityModifier>())
         {
             targetPlayer.RemoveModifier<InvulnerabilityModifier>();
+        }
+
+        if (targetPlayer.HasModifier<DeathInvisibleModifier>())
+        {
+            targetPlayer.RemoveModifier<DeathInvisibleModifier>();
         }
 
         if (targetPlayer.AmOwner && HudManager.Instance?.ImpostorVentButton != null)
@@ -199,6 +222,14 @@ public sealed class DeathRole(IntPtr cppPtr)
         }
 
         death.AddModifier<InvulnerabilityModifier>(false, false, false);
+    }
+
+    private static void EnsureInvisibility(PlayerControl death)
+    {
+        if (!death.HasModifier<DeathInvisibleModifier>())
+        {
+            death.AddModifier<DeathInvisibleModifier>();
+        }
     }
 
     [MethodRpc((uint)ExtensionRpc.DeathKill)]

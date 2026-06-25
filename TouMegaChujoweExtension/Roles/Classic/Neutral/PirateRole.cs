@@ -25,17 +25,13 @@ using TouMegaChujoweExtension.Buttons.Classic.Neutral;
 using UnityEngine;
 using HarmonyLib;
 using TownOfUs.Patches;
-using TownOfUs.Utilities;
 using MiraAPI.GameEnd;
-using TownOfUs.Modifiers;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
 public sealed class PirateRole(IntPtr cppPtr)
     : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IContinuesGame
 {
-    // // // private static readonly BepInEx.Logging.ManualLogSource Log =
-    // // //     BepInEx.Logging.Logger.CreateLogSource("PirateRole");
 
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "Pirate";
@@ -150,6 +146,7 @@ public sealed class PirateRole(IntPtr cppPtr)
                     "DiedToWinning",
                     DeathEventHandlers.CurrentRound,
                     DeathHandlerOverride.SetFalse,
+                    killedBy: PlayerControl.LocalPlayer,
                     lockInfo: DeathHandlerOverride.SetTrue);
                 PlayerControl.LocalPlayer.RpcPlayerExile();
             }
@@ -347,8 +344,6 @@ public sealed class PirateRole(IntPtr cppPtr)
         var choiceNames = new[] { "Rock", "Paper", "Scissors" };
         var pirateChoiceName = choiceNames[pirateRole.PirateChoice];
         var targetChoiceName = choiceNames[pirateRole.TargetChoice];
-        // Always update last target ID if a duel was attempted, 
-        // independent of the option check (we check the option in IsBlacklisted)
         pirateRole.LastDuelTargetId = targetId;
 
         if (result == 1)
@@ -376,7 +371,6 @@ public sealed class PirateRole(IntPtr cppPtr)
                     killedBy: TouLocale.GetParsed("ExtensionDiedByPirateDuel", "Dueled by <player>").Replace("<player>", pirate.Data.PlayerName),
                     lockInfo: DeathHandlerOverride.SetTrue);
 
-                // Trigger AfterMurderEvent so other systems (like Legacy Animation) pick it up
                 var afterMurderEvent = new MiraAPI.Events.Vanilla.Gameplay.AfterMurderEvent(pirate, target, null);
                 MiraEventManager.InvokeEvent(afterMurderEvent);
             }

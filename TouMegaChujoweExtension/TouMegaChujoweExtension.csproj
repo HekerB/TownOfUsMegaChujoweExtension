@@ -16,6 +16,12 @@
         <EmbeddedResource Include="Resources/**/*.*" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Compile Remove="Scratch\**" />
+        <EmbeddedResource Remove="Scratch\**" />
+        <None Remove="Scratch\**" />
+    </ItemGroup>
+
     <ItemGroup Condition="Exists('Resources/Audio/toumega-audio-win.bundle') Or Exists('Resources/Audio/toumega-audio-android.bundle')">
         <EmbeddedResource Remove="Resources/Audio/**/*.mp3" />
         <EmbeddedResource Remove="Resources/Audio/**/*.ogg" />
@@ -28,6 +34,10 @@
     </ItemGroup>
 
     <Import Project="../AmongUs.props" />
+
+    <ItemGroup>
+        <PackageReference Remove="BepInEx.AutoPlugin" />
+    </ItemGroup>
 
     <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(AmongUs)/BepInEx/plugins/" UseSymboliclinksIfPossible="true" />

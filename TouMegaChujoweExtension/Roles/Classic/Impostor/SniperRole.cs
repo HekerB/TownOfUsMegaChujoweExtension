@@ -84,10 +84,6 @@ public sealed class SniperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
         }
     }
 
-    /// <summary>
-    /// Plays the sniper shot sound spatially for all players.
-    /// Players near the shooter or near the victim hear it louder (Doppler-like falloff).
-    /// </summary>
     [MethodRpc((uint)ExtensionRpc.SniperPlaySound)]
     public static void RpcSniperPlaySound(PlayerControl sniper, byte targetId)
     {
@@ -115,11 +111,12 @@ public sealed class SniperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsR
 
         if (volume <= 0f) return;
 
-        // Sniper themselves always hear it full volume
         if (local.PlayerId == sniper.PlayerId)
         {
             volume = 1f;
         }
+
+        if (!Constants.ShouldPlaySfx()) return;
 
         var source = SoundManager.Instance.PlaySound(clip, false, Mathf.Clamp(volume, 0.05f, 1f));
         if (source != null)

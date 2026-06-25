@@ -13,16 +13,6 @@ public static class DetonatorSystemHudUpdatePatch
     }
 }
 
-[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
-public static class DetonatorSystemMeetingUpdatePatch
-{
-    [HarmonyPostfix]
-    public static void Postfix()
-    {
-        DetonatorSystem.MeetingUpdate();
-    }
-}
-
 [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
 public static class DetonatorExileWrapUpPatch
 {

@@ -37,14 +37,14 @@ public sealed class BountyHunterOptions : AbstractOptionGroup<BountyHunterRole>
 
     [ModdedEnumOption("ExtensionOptionBHWinMode", typeof(BountyHunterWinMode),
         ["ExtensionOptionBHWinModeEnumSoloWin",
-         "ExtensionOptionBHWinModeEnumWinWithWinners"])]
+         "ExtensionOptionBHWinModeEnumLeavesInVictory"])]
     public BountyHunterWinMode WinMode { get; set; } = BountyHunterWinMode.SoloWin;
 }
 
 public enum BountyHunterWinMode
 {
     SoloWin,
-    WinWithWinners
+    LeavesInVictory
 }
 
 public enum BountyHunterArrowRange

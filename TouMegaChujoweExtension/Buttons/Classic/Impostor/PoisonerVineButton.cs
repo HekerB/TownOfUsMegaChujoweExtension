@@ -15,7 +15,7 @@ using TouMegaChujoweExtension.Modules;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
-public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
+public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>, IDiseaseableButton
 {
     private const float CancelLockDuration = 2f;
 
@@ -35,6 +35,11 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
     public override int MaxUses => 0;
     public override LoadableAsset<Sprite> Sprite => TouExtensionImpAssets.VineButtonSprite;
     public override bool ZeroIsInfinite { get; set; } = true;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override void CreateButton(Transform parent)
     {
@@ -75,6 +80,7 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.HasDied()) return false;
         if (player.inVent) return false;
+        if (TouMegaChujoweExtension.Modules.PelicanSystem.IsSwallowed(player.PlayerId)) return false;
 
         return true;
     }
@@ -142,7 +148,10 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
                 {
                     Button.SetEnabled();
                     Button.SetFillUp(_vineTimer, _vineDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_vineTimer).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    var format = _vineTimer <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+                        ? "0.0"
+                        : "0";
+                    Button.cooldownTimerText.text = _vineTimer.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
             }
@@ -179,7 +188,10 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
                         Button.SetDisabled();
                     }
                     Button.SetFillUp(_seekingTimer, _seekingDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_seekingTimer).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    var format = _seekingTimer <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+                        ? "0.0"
+                        : "0";
+                    Button.cooldownTimerText.text = _seekingTimer.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
 
@@ -193,6 +205,7 @@ public sealed class PoisonerVineButton : TownOfUsRoleButton<PoisonerRole>
                     {
                         if (pc == null || pc.Data.IsDead || pc.PlayerId == playerControl.PlayerId) continue;
                         if (pc.IsImpostorAligned()) continue;
+                        if (TouMegaChujoweExtension.Modules.PelicanSystem.IsSwallowed(pc.PlayerId)) continue;
                         if (Vector2.Distance(mouseWorldPos, pc.transform.position) < minClickDist)
                         {
                             mouseTarget = pc;

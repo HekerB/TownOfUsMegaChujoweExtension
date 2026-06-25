@@ -74,6 +74,29 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
             UnityEngine.Debug.Log($"[TOUMCE] Sidekick {player.Data?.PlayerName} discovered their Jackal: {jId}");
         }
 
+        try
+        {
+            if (player.myTasks != null)
+            {
+                foreach (var task in player.myTasks)
+                {
+                    if (task != null && task.gameObject != null)
+                    {
+                        UnityEngine.Object.Destroy(task.gameObject);
+                    }
+                }
+                player.myTasks.Clear();
+            }
+            if (player.Data?.Tasks != null)
+            {
+                player.Data.Tasks.Clear();
+            }
+        }
+        catch (System.Exception ex)
+        {
+            UnityEngine.Debug.LogError($"[TOUMCE] Error clearing tasks for Sidekick: {ex}");
+        }
+
         if (player.AmOwner)
         {
             var intro = UnityEngine.Object.FindObjectOfType<IntroCutscene>();
@@ -114,14 +137,11 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
         try
         {
             var notification = MiraAPI.Utilities.Helpers.CreateAndShowNotification(
-                TouLocale.Get("ExtensionSidekickRecruitedAlert"), 
-                TouExtensionColors.Jackal, 
+                TouLocale.Get("ExtensionSidekickRecruitedAlert"),
+                TouExtensionColors.Jackal,
                 spr: TouRoleIcons.Jackal.LoadAsset()
             );
-            if (notification != null)
-            {
-                notification.AdjustNotification();
-            }
+            notification.AdjustNotification();
             Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
         }
         catch (System.Exception ex)
@@ -165,6 +185,7 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
 public static class SidekickFriendlyFirePatch
 {
     [HarmonyPrefix]
+    [HarmonyPriority(Priority.First)]
     public static bool Prefix(PlayerControl __instance, PlayerControl target)
     {
         if (__instance == null || target == null) return true;
@@ -177,6 +198,37 @@ public static class SidekickFriendlyFirePatch
             if (targetSidekick != null && targetSidekick.JackalId == killerSidekick.JackalId) return false;
         }
 
+        if (target.HasModifier<TownOfUs.Modifiers.Crewmate.JailedModifier>())
+        {
+            var isJackal = __instance.GetRole<JackalRole>() != null;
+            var isSidekick = killerSidekick != null;
+
+            if (isJackal || isSidekick)
+            {
+                __instance.MurderPlayer(target, MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost);
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+[HarmonyPatch(typeof(TownOfUs.Modifiers.DisabledModifier), nameof(TownOfUs.Modifiers.DisabledModifier.CanBeInteractedWith), MethodType.Getter)]
+public static class DisabledModifierCanBeInteractedWithPatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix(TownOfUs.Modifiers.DisabledModifier __instance, ref bool __result)
+    {
+        if (__instance.GetType().Name == "JailedModifier")
+        {
+            var local = PlayerControl.LocalPlayer;
+            if (local != null && (local.GetRole<JackalRole>() != null || local.TryGetModifier<SidekickModifier>(out _)))
+            {
+                __result = true;
+                return false;
+            }
+        }
         return true;
     }
 }

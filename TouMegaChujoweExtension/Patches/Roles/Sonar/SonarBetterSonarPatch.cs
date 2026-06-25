@@ -6,6 +6,7 @@ using MiraAPI.Modifiers;
 using Object = UnityEngine.Object;
 using System.Collections.Generic;
 using System.Linq;
+using MiraAPI.Modifiers.Types;
 using TownOfUs.Modifiers.Crewmate;
 using TownOfUs.Utilities.Appearances;
 using UnityEngine;
@@ -17,9 +18,15 @@ public static class SonarBetterSonarPatch
 {
     public static readonly Dictionary<byte, GameObject> TrackerIcons = new();
     private static readonly Dictionary<byte, Queue<(float time, Vector3 pos)>> PositionHistory = new();
-    private static readonly List<TrackerArrowTargetModifier> LocalTrackers = [];
+    private static readonly List<SonarTracker> LocalTrackers = [];
     private static readonly HashSet<byte> TrackedIds = [];
     private static readonly List<byte> IdsToRemove = [];
+
+    private readonly record struct SonarTracker(
+        TimedModifier Modifier,
+        PlayerControl Owner,
+        PlayerControl Player,
+        Vector3? TargetPosition);
 
     public static bool GetTrackerResetEveryRound()
     {
@@ -111,9 +118,20 @@ public static class SonarBetterSonarPatch
         return 0f;
     }
 
-    [HarmonyPatch(typeof(TrackerArrowTargetModifier), nameof(TrackerArrowTargetModifier.OnActivate))]
+    [HarmonyPatch(typeof(SonarArrowTargetModifier), nameof(SonarArrowTargetModifier.OnActivate))]
     [HarmonyPostfix]
-    public static void TrackerArrowOnActivatePostfix(TrackerArrowTargetModifier __instance)
+    public static void TrackerArrowOnActivatePostfix(SonarArrowTargetModifier __instance)
+    {
+        var opts = OptionGroupSingleton<SonarExtendedOptions>.Instance;
+        if (opts.BetterSonar && opts.Mode == SonarDisplayMode.MapOnly && __instance.Arrow != null)
+        {
+            __instance.Arrow.gameObject.SetActive(false);
+        }
+    }
+
+    [HarmonyPatch(typeof(SonarHeartbeatTargetModifier), nameof(SonarHeartbeatTargetModifier.OnActivate))]
+    [HarmonyPostfix]
+    public static void TrackerHeartbeatOnActivatePostfix(SonarHeartbeatTargetModifier __instance)
     {
         var opts = OptionGroupSingleton<SonarExtendedOptions>.Instance;
         if (opts.BetterSonar && opts.Mode == SonarDisplayMode.MapOnly && __instance.Arrow != null)
@@ -151,13 +169,7 @@ public static class SonarBetterSonarPatch
         }
 
         LocalTrackers.Clear();
-        foreach (var mod in ModifierUtils.GetActiveModifiers<TrackerArrowTargetModifier>())
-        {
-            if (mod.Owner == PlayerControl.LocalPlayer)
-            {
-                LocalTrackers.Add(mod);
-            }
-        }
+        AddLocalTrackers();
 
         if (LocalTrackers.Count == 0)
         {
@@ -171,7 +183,7 @@ public static class SonarBetterSonarPatch
         foreach (var tracker in LocalTrackers)
         {
             var trackedPlayer = tracker.Player;
-            if (trackedPlayer == null || trackedPlayer.Data.IsDead)
+            if (trackedPlayer == null || trackedPlayer.Data == null || trackedPlayer.Data.IsDead)
             {
                 continue;
             }
@@ -181,9 +193,9 @@ public static class SonarBetterSonarPatch
 
             // Use the arrow's target, which already respects the update interval
             Vector3 targetPos;
-            if (tracker.Arrow != null)
+            if (tracker.TargetPosition.HasValue)
             {
-                targetPos = tracker.Arrow.target;
+                targetPos = tracker.TargetPosition.Value;
             }
             else
             {
@@ -248,20 +260,33 @@ public static class SonarBetterSonarPatch
             return;
 
         LocalTrackers.Clear();
-        foreach (var mod in ModifierUtils.GetActiveModifiers<TrackerArrowTargetModifier>())
-        {
-            if (mod.Owner == PlayerControl.LocalPlayer)
-            {
-                LocalTrackers.Add(mod);
-            }
-        }
+        AddLocalTrackers();
 
         foreach (var tracker in LocalTrackers)
         {
-            tracker?.Owner.RemoveModifier(tracker);
+            tracker.Owner.RemoveModifier(tracker.Modifier);
         }
 
         ClearIcons();
+    }
+
+    private static void AddLocalTrackers()
+    {
+        foreach (var mod in ModifierUtils.GetActiveModifiers<SonarArrowTargetModifier>())
+        {
+            if (mod.Owner == PlayerControl.LocalPlayer)
+            {
+                LocalTrackers.Add(new SonarTracker(mod, mod.Owner, mod.Player, mod.Arrow?.target));
+            }
+        }
+
+        foreach (var mod in ModifierUtils.GetActiveModifiers<SonarHeartbeatTargetModifier>())
+        {
+            if (mod.Owner == PlayerControl.LocalPlayer)
+            {
+                LocalTrackers.Add(new SonarTracker(mod, mod.Owner, mod.Player, mod.Arrow?.target));
+            }
+        }
     }
 
     public static void ClearIcons()

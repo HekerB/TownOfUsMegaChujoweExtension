@@ -2,6 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Reactor.Utilities.Extensions;
 using TMPro;
+using TouMegaChujoweExtension.Roles.Classic.Neutral;
+using TownOfUs.Extensions;
+using TownOfUs.Patches;
+using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modules;
@@ -18,8 +22,15 @@ public static class JokerCloneSystem
         public bool IsPreview { get; set; }
     }
 
+    public readonly record struct JokerCloneSummary(
+        int ActiveCount,
+        int FirstActiveIndex,
+        int LastActiveIndex,
+        int PreviewIndex);
+
     private static readonly List<CloneData> ActiveClones = [];
     private static int _currentMeetingCount;
+    private static int _localOutlinedCloneIndex = -1;
 
     public static int KilledCloneCount { get; private set; }
     public static IReadOnlyList<CloneData> Clones => ActiveClones;
@@ -28,6 +39,38 @@ public static class JokerCloneSystem
     public static int GetActiveCloneCountForJoker(byte jokerId)
     {
         return ActiveClones.Count(clone => clone.JokerId == jokerId && !clone.IsPreview);
+    }
+
+    public static JokerCloneSummary GetCloneSummaryForJoker(byte jokerId)
+    {
+        var activeCount = 0;
+        var firstActiveIndex = -1;
+        var lastActiveIndex = -1;
+        var previewIndex = -1;
+
+        for (var i = 0; i < ActiveClones.Count; i++)
+        {
+            var clone = ActiveClones[i];
+            if (clone.JokerId != jokerId)
+            {
+                continue;
+            }
+
+            if (clone.IsPreview)
+            {
+                previewIndex = i;
+                continue;
+            }
+
+            activeCount++;
+            lastActiveIndex = i;
+            if (firstActiveIndex < 0)
+            {
+                firstActiveIndex = i;
+            }
+        }
+
+        return new JokerCloneSummary(activeCount, firstActiveIndex, lastActiveIndex, previewIndex);
     }
 
     public static void IncrementMeetingCount()
@@ -56,8 +99,7 @@ public static class JokerCloneSystem
         {
             if (ActiveClones[i].JokerId == jokerId && ActiveClones[i].IsPreview)
             {
-                ActiveClones[i].Fake.Destroy();
-                ActiveClones.RemoveAt(i);
+                DestroyAndRemoveAt(i);
             }
         }
     }
@@ -78,6 +120,8 @@ public static class JokerCloneSystem
 
         fake.Body.transform.position = worldPos;
         SetAlpha(fake.Body, isPreview ? 0.35f : 1f);
+        fake.SetCamouflaged(HudManagerPatches.CamouflageCommsEnabled);
+        SetAlpha(fake.Body, isPreview ? 0.35f : 1f);
 
         var control = fake.Body.AddComponent<JokerCloneControlComponent>();
         control.OwnerId = jokerId;
@@ -91,11 +135,31 @@ public static class JokerCloneSystem
         return ActiveClones.Count - 1;
     }
 
+    public static void SyncCamouflageComms()
+    {
+        SetCloneCamouflage(HudManagerPatches.CamouflageCommsEnabled);
+    }
+
+    private static void SetCloneCamouflage(bool camouflaged)
+    {
+        foreach (var clone in ActiveClones)
+        {
+            if (clone.Fake.Body == null)
+            {
+                continue;
+            }
+
+            clone.Fake.SetCamouflaged(camouflaged);
+            SetAlpha(clone.Fake.Body, clone.IsPreview ? 0.35f : 1f);
+        }
+    }
+
     public static bool TryGetClosestClone(Vector2 from, float maxDistance, out int cloneIndex, out Vector2 clonePos)
     {
         cloneIndex = -1;
         clonePos = default;
-        var bestDistance = float.MaxValue;
+        var maxDistanceSq = maxDistance * maxDistance;
+        var bestDistanceSq = float.MaxValue;
 
         for (var i = 0; i < ActiveClones.Count; i++)
         {
@@ -108,16 +172,81 @@ public static class JokerCloneSystem
             var position = clone.Fake.Body != null
                 ? (Vector2)clone.Fake.Body.transform.position
                 : (Vector2)clone.WorldPosition;
-            var distance = Vector2.Distance(from, position);
-            if (distance <= maxDistance && distance < bestDistance)
+            var distanceSq = (from - position).sqrMagnitude;
+            if (distanceSq <= maxDistanceSq && distanceSq < bestDistanceSq)
             {
-                bestDistance = distance;
+                bestDistanceSq = distanceSq;
                 cloneIndex = i;
                 clonePos = position;
             }
         }
 
         return cloneIndex >= 0;
+    }
+
+    public static bool TryTriggerClosestClone(PlayerControl killer, Vector2 from, float maxDistance)
+    {
+        if (!TryGetClosestClone(from, maxDistance, out var cloneIndex, out _))
+        {
+            return false;
+        }
+
+        return TryTriggerClone(killer, cloneIndex);
+    }
+
+    public static int TriggerClonesInRadius(PlayerControl killer, Vector2 center, float radius, int maxClones = int.MaxValue)
+    {
+        if (killer == null || killer.HasDied() || MeetingHud.Instance || maxClones <= 0)
+        {
+            return 0;
+        }
+
+        var radiusSq = radius * radius;
+        var cloneIndices = ActiveClones
+            .Select((clone, index) => new
+            {
+                Clone = clone,
+                Index = index,
+                DistanceSq = (center - GetClonePosition(clone)).sqrMagnitude
+            })
+            .Where(entry => !entry.Clone.IsPreview && entry.DistanceSq <= radiusSq)
+            .OrderBy(entry => entry.DistanceSq)
+            .Take(maxClones)
+            .Select(entry => entry.Index)
+            .OrderByDescending(index => index)
+            .ToList();
+
+        foreach (var cloneIndex in cloneIndices)
+        {
+            TryTriggerClone(killer, cloneIndex);
+        }
+
+        return cloneIndices.Count;
+    }
+
+    public static bool TryTriggerClone(PlayerControl killer, int cloneIndex)
+    {
+        if (killer == null || cloneIndex < 0 || cloneIndex >= ActiveClones.Count)
+        {
+            return false;
+        }
+
+        var clone = ActiveClones[cloneIndex];
+        var joker = MiscUtils.PlayerById(clone.JokerId);
+        if (joker == null || joker.HasDied() || !joker.IsRole<JokerRole>())
+        {
+            return false;
+        }
+
+        JokerRole.RpcJokerCloneKilled(killer, clone.JokerId, (byte)cloneIndex);
+        return true;
+    }
+
+    private static Vector2 GetClonePosition(CloneData clone)
+    {
+        return clone.Fake.Body != null
+            ? clone.Fake.Body.transform.position
+            : clone.WorldPosition;
     }
 
     public static bool TryRemoveClone(int index, out CloneData removed)
@@ -129,8 +258,7 @@ public static class JokerCloneSystem
         }
 
         removed = ActiveClones[index];
-        removed.Fake.Destroy();
-        ActiveClones.RemoveAt(index);
+        DestroyAndRemoveAt(index);
         return true;
     }
 
@@ -140,8 +268,7 @@ public static class JokerCloneSystem
         {
             if (ActiveClones[i].JokerId == jokerId)
             {
-                ActiveClones[i].Fake.Destroy();
-                ActiveClones.RemoveAt(i);
+                DestroyAndRemoveAt(i);
             }
         }
     }
@@ -155,9 +282,25 @@ public static class JokerCloneSystem
                 continue;
             }
 
-            ActiveClones[i].Fake.Destroy();
-            ActiveClones.RemoveAt(i);
+            DestroyAndRemoveAt(i);
         }
+    }
+
+    private static void DestroyAndRemoveAt(int index)
+    {
+        var clone = ActiveClones[index];
+        if (_localOutlinedCloneIndex == index)
+        {
+            ClearCloneOutline(clone);
+            _localOutlinedCloneIndex = -1;
+        }
+        else if (_localOutlinedCloneIndex > index)
+        {
+            _localOutlinedCloneIndex--;
+        }
+
+        clone.Fake.Destroy();
+        ActiveClones.RemoveAt(index);
     }
 
     public static void ClearAll()
@@ -171,10 +314,27 @@ public static class JokerCloneSystem
     {
         if (!TryGetClosestClone(from, maxDistance, out var index, out _))
         {
+            ClearLocalOutline();
             return;
         }
 
-        var clone = ActiveClones[index];
+        UpdateLocalOutline(index, color);
+    }
+
+    public static void UpdateLocalOutline(int cloneIndex, Color color)
+    {
+        if (cloneIndex < 0 || cloneIndex >= ActiveClones.Count)
+        {
+            ClearLocalOutline();
+            return;
+        }
+
+        if (_localOutlinedCloneIndex >= 0 && _localOutlinedCloneIndex != cloneIndex)
+        {
+            ClearLocalOutline();
+        }
+
+        var clone = ActiveClones[cloneIndex];
         if (clone.Fake.Body == null)
         {
             return;
@@ -191,6 +351,7 @@ public static class JokerCloneSystem
         {
             cosmetics.SetOutline(true, new Il2CppSystem.Nullable<Color>(color));
             body.SetOutline(color);
+            _localOutlinedCloneIndex = cloneIndex;
         }
         catch
         {
@@ -200,24 +361,33 @@ public static class JokerCloneSystem
 
     public static void ClearLocalOutline()
     {
-        foreach (var clone in ActiveClones)
+        if (_localOutlinedCloneIndex >= 0 && _localOutlinedCloneIndex < ActiveClones.Count)
         {
-            if (clone.Fake.Body == null)
-            {
-                continue;
-            }
+            ClearCloneOutline(ActiveClones[_localOutlinedCloneIndex]);
+            _localOutlinedCloneIndex = -1;
+            return;
+        }
 
-            try
-            {
-                var cosmetics = clone.Fake.Body.GetComponentInChildren<CosmeticsLayer>(true);
-                var body = cosmetics?.currentBodySprite?.BodySprite;
-                cosmetics?.SetOutline(false, new Il2CppSystem.Nullable<Color>(Color.clear));
-                body?.SetOutline(null);
-            }
-            catch
-            {
-                // visual-only fallback
-            }
+        _localOutlinedCloneIndex = -1;
+    }
+
+    private static void ClearCloneOutline(CloneData clone)
+    {
+        if (clone.Fake.Body == null)
+        {
+            return;
+        }
+
+        try
+        {
+            var cosmetics = clone.Fake.Body.GetComponentInChildren<CosmeticsLayer>(true);
+            var body = cosmetics?.currentBodySprite?.BodySprite;
+            cosmetics?.SetOutline(false, new Il2CppSystem.Nullable<Color>(Color.clear));
+            body?.SetOutline(null);
+        }
+        catch
+        {
+            // visual-only fallback
         }
     }
 

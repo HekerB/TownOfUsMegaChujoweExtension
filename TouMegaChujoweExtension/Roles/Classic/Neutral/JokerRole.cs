@@ -210,6 +210,7 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
                     "DiedToWinning",
                     DeathEventHandlers.CurrentRound,
                     DeathHandlerOverride.SetFalse,
+                    killedBy: PlayerControl.LocalPlayer,
                     lockInfo: DeathHandlerOverride.SetTrue);
             }
         }
@@ -235,7 +236,7 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
     {
         try
         {
-            SoundManager.Instance.PlaySound(TouAudio.DiscoveredSound.LoadAsset(), false, 1f);
+            TouAudio.PlaySound(TouAudio.DiscoveredSound);
             Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Joker));
 
             Helpers.CreateAndShowNotification(
@@ -246,7 +247,6 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
         }
         catch
         {
-            // notification fallback
         }
     }
 
@@ -270,7 +270,6 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
         }
         catch
         {
-            // notification fallback
         }
     }
 

@@ -29,17 +29,13 @@ public static class PelicanSystem
     private static IEnumerator? _spectateCoroutine;
     private static GameObject? _swallowedNotificationObject;
     private static readonly Dictionary<byte, Vector2> LastPelicanPositions = [];
-
     private static readonly HashSet<byte> PendingDigestVictims = [];
     private static readonly Dictionary<byte, byte> PendingDigestKillers = [];
     private static readonly HashSet<byte> DigestKillVictims = [];
-
     private static bool _preWinDigestDone;
-
     public static bool IsPendingDigest(byte victimId) => PendingDigestVictims.Contains(victimId);
     public static byte? GetDigestKiller(byte victimId) =>
         PendingDigestKillers.TryGetValue(victimId, out var id) ? id : null;
-
     public static void ClearPendingDigest(byte victimId)
     {
         PendingDigestVictims.Remove(victimId);
@@ -130,16 +126,8 @@ public static class PelicanSystem
 
         if (nonSwallowedAliveOthers > 0) return false;
 
-        // Win condition met, triggering digest for win!
         return false;
     }
-
-    // ==================== SHIELD CHECKING ====================
-    // Shield checks are now handled by the MiraAPI BeforeMurderEvent system.
-    // PelicanSwallowButton.ClickHandler() fires BeforeMurderEvent before calling OnClick/RpcPelicanSwallow.
-    // Native TOU-Mira event handlers (MedicEvents, WardenEvents, etc.) and BodyguardShieldEvents
-    // will cancel the event if the target is shielded, preventing the swallow from happening.
-
 
     // ==================== SWALLOW / DIGEST / RELEASE ====================
 
@@ -204,7 +192,7 @@ public static class PelicanSystem
 
             if (isMeVictim || isMePelican)
             {
-                // Play swallow sound for both the victim and the pelican
+
                 try
                 {
                     TownOfUs.Assets.TouAudio.PlaySound(TouMegaChujoweExtension.Assets.TouExtensionAudio.SwallowSound);
@@ -217,10 +205,23 @@ public static class PelicanSystem
 
             if (isMeVictim)
             {
+                try
+                {
+                    var btn = MiraAPI.Hud.CustomButtonSingleton<AstralPhaseButton>.Instance;
+                    if (btn != null && btn.EffectActive)
+                    {
+                        btn.CancelPhaseWithoutTeleport();
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Logger<TouMegaChujoweExtensionPlugin>.Error($"[PelicanSystem] Failed to cancel Astral phase: {ex.Message}");
+                }
+
                 ShowSwallowedNotification();
                 StartSpectatingPelican(pelicanId);
 
-                // Flash the screen in Pelican's color for the victim
+
                 try
                 {
                     PirateDuelSystem.FlashScreen(TouExtensionColors.Pelican, 0.5f, 0.5f);
@@ -325,14 +326,14 @@ public static class PelicanSystem
             {
                 AllSwallowed.Remove(victimId);
                 SwallowTracker.Remove(victimId);
-            SwallowTimes.Remove(victimId);
+                SwallowTimes.Remove(victimId);
                 OriginalPositions.Remove(victimId);
 
                 DigestKillVictims.Add(victimId);
                 victim.Die(DeathReason.Kill, false);
 
                 var pelican = MiscUtils.PlayerById(pelicanId);
-                
+
                 // Trigger AfterMurderEvent so it counts as a real kill for the system
                 if (pelican != null)
                 {
@@ -350,8 +351,8 @@ public static class PelicanSystem
 
                 try
                 {
-                    string killerText = (isGhostOrPelican && pelican != null) 
-                        ? TouLocale.GetParsed("ExtensionDiedByPelican", "by <player>").Replace("<player>", pelican.Data.PlayerName) 
+                    string killerText = (isGhostOrPelican && pelican != null)
+                        ? TouLocale.GetParsed("ExtensionDiedByPelican", "by <player>").Replace("<player>", pelican.Data.PlayerName)
                         : "";
 
                     DeathHandlerModifier.UpdateDeathHandlerImmediate(
@@ -385,7 +386,7 @@ public static class PelicanSystem
             SwallowTimes.Remove(victimId);
             OriginalPositions.Remove(victimId);
 
-            // Host assigns the proper Ghost role so the player gets ghost abilities (like Haunt)
+
             if (AmongUsClient.Instance.AmHost && victim != null)
             {
                 try
@@ -587,14 +588,14 @@ public static class PelicanSystem
     {
         if (targetPosition.x < -500f || targetPosition.y < -500f)
         {
-        var safePos = OriginalPositions.Values.FirstOrDefault(pos => IsPositionSafe(pos, pos));
-        if (safePos != default) return safePos;
-        return Vector2.zero;
+            var safePos = OriginalPositions.Values.FirstOrDefault(pos => IsPositionSafe(pos, pos));
+            if (safePos != default) return safePos;
+            return Vector2.zero;
         }
 
         if (IsPositionSafe(targetPosition, targetPosition)) return targetPosition;
 
-        float[] distances = [ 0.3f, 0.5f, 0.7f, 1.0f, 1.3f, 1.5f, 2.0f ];
+        float[] distances = [0.3f, 0.5f, 0.7f, 1.0f, 1.3f, 1.5f, 2.0f];
         int directions = 8;
 
         foreach (var dist in distances)
@@ -847,7 +848,7 @@ public static class PelicanSystem
 
                 AllSwallowed.Remove(victimId);
                 SwallowTracker.Remove(victimId);
-            SwallowTimes.Remove(victimId);
+                SwallowTimes.Remove(victimId);
                 OriginalPositions.Remove(victimId);
             }
 
@@ -924,22 +925,3 @@ public static class PelicanSystem
         _preWinDigestDone = false;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

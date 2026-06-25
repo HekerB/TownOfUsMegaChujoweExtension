@@ -23,6 +23,7 @@ public sealed class DoctorCleanseModifier : TimedModifier
         // Remove negative modifiers
         var modifiersToRemove = Player.GetModifiers<BaseModifier>().Where(m =>
             m is InjectedInvertedControlsModifier ||
+            m is InverterDisorientedModifier ||
             m is InjectedLowVisionModifier ||
             m is InjectedSlownessModifier ||
             m is InjectedVeryLowVisionModifier ||

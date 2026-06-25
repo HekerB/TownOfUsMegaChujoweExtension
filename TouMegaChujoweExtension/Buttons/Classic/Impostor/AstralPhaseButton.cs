@@ -16,6 +16,8 @@ using System.Linq;
 using TownOfUs.Modifiers;
 using TouMegaChujoweExtension.Assets;
 
+using TouMegaChujoweExtension.Modules;
+
 namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
 public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
@@ -86,6 +88,12 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
 
     private void Materialize(PlayerControl player)
     {
+        if (PelicanSystem.IsSwallowed(player.PlayerId))
+        {
+            CancelPhaseWithoutTeleport();
+            return;
+        }
+
         bool shouldDie = false;
         var options = OptionGroupSingleton<AstralOptions>.Instance;
 
@@ -122,6 +130,12 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
 
         var player = PlayerControl.LocalPlayer;
         if (player == null) return;
+
+        if (PelicanSystem.IsSwallowed(player.PlayerId))
+        {
+            CancelPhaseWithoutTeleport();
+            return;
+        }
 
         var options = OptionGroupSingleton<AstralOptions>.Instance;
         bool shouldDie = false;
@@ -202,6 +216,22 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
         }
     }
 
+    public void CancelPhaseWithoutTeleport()
+    {
+        _isPhasing = false;
+        EffectActive = false;
+        var player = PlayerControl.LocalPlayer;
+        if (player != null)
+        {
+            player.RpcRemoveModifier<AstralPhaseModifier>();
+        }
+        if (_hasCapturedButtonPos && Button != null)
+        {
+            Button.transform.localPosition = _defaultButtonLocalPos;
+            _hasCapturedButtonPos = false;
+        }
+    }
+
     public override bool CanUse()
     {
         if (HudManager.Instance.Chat.IsOpenOrOpening || MeetingHud.Instance) return false;
@@ -210,6 +240,8 @@ public sealed class AstralPhaseButton : TownOfUsRoleButton<AstralRole>
         if (player == null || player.Data.IsDead) return false;
 
         if (player.GetModifiers<DisabledModifier>().Any(x => !x.CanUseAbilities)) return false;
+
+        if (PelicanSystem.IsSwallowed(player.PlayerId)) return false;
 
         if (EffectActive)
         {

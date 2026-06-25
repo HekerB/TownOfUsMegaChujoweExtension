@@ -22,6 +22,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> ArcanistRoleIconTraitor { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Arcanist_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> PortalmakerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.PortalMaker.png", 200f);
         public static LoadableAsset<Sprite> GardenerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Gardener_Role_Icon.png", 200f);
+        public static LoadableAsset<Sprite> AgentRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Agent_Role_Icon.png", 100f);
         //neutrals
         public static LoadableAsset<Sprite> VultureRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Vulture_Icon.png", 200f);
         public static LoadableAsset<Sprite> PelicanRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Pelican_Role_Icon.png", 100f);
@@ -36,6 +37,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> FamineRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Famine_Role_Icon.png", 200f);
         public static LoadableAsset<Sprite> SoulCollectorRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Soul_Role_Icon.png", 170f);
         public static LoadableAsset<Sprite> WarRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.War_Role_Icon.png", 200f);
+        public static LoadableAsset<Sprite> InnocentRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Innocent_Role_Icon.png", 200f);
         //impostors
         public static LoadableAsset<Sprite> OutlawRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Outlaw_Role_Icon.png", 180f);
         public static LoadableAsset<Sprite> HackerRole { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Hacker.Hacker_Role.png");
@@ -52,6 +54,8 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> GunGameRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.GunGame_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> LonerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Loner_Role_Icon.png", 100f);
         public static LoadableAsset<Sprite> BurrowerRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Burrower_Role_Icon.png", 100f);
+        public static LoadableAsset<Sprite> InverterRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Inverter_Role_Icon.png", 100f);
+        public static LoadableAsset<Sprite> VoodooRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Voodoo_Role_Icon.png", 200f);
         public static LoadableAsset<Sprite> SidekickModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Sidekick_Modifier_Icon.png", 200f);
         public static LoadableAsset<Sprite> MicLogo { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.miclogo.png", 200f);
     }

@@ -8,40 +8,44 @@ using Reactor.Networking.Attributes;
 using Reactor.Networking;
 using Reactor.Utilities;
 using Reactor;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using TownOfUs.Patches;
 using TownOfUs;
 
 namespace TouMegaChujoweExtension;
 
-[BepInAutoPlugin("toumegachujowe.tou.extension", "Tou Mega Ch**owe Extension")]
+[BepInPlugin(Id, Name, Version)]
 [BepInProcess("Among Us.exe")]
 [BepInDependency(ReactorPlugin.Id)]
 [BepInDependency(MiraApiPlugin.Id)]
 [BepInDependency(TownOfUsPlugin.Id)]
+[BepInDependency("com.edgetel.perfectcomms", BepInDependency.DependencyFlags.SoftDependency)]
 [ReactorModFlags(ModFlags.RequireOnAllClients)]
 public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
 {
+    public const string Id = "toumegachujowe.tou.extension";
+    public const string Name = "Tou Mega Ch**owe Extension";
+    public const string Version = "1.4.3";
     public const string UncensoredDisplayName = "Tou Mega Chujowe Extension";
     public const string CensoredDisplayName = "Tou Mega Ch**owe Extension";
 
-    /// <summary>
-    ///     Gets the specified Culture for string manipulations.
-    /// </summary> 
     public static CultureInfo Culture => TownOfUsPlugin.Culture;
-    /// <inheritdoc />
-    public string OptionsTitleText => ShouldCensorModName ? "TOU Mega Ch**owe Extension" : "TOU Mega Chujowe Extension";
 
-    /// <inheritdoc />
+    public string OptionsTitleText => ShouldCensorModName
+        ? "TOU Mega Ch**owe Extension"
+        : "TOU Mega Chujowe Extension";
+
     public string CustomOptionMenuNameOne => TownOfUs.Modules.Localization.TouLocale.Get("TOUMCETabOptionBetterRoles");
 
-    /// <inheritdoc />
     public string CustomOptionMenuOneDescription => TownOfUs.Modules.Localization.TouLocale.Get("TOUMCETabOptionBetterRolesDesc");
-    /// <summary>
-    ///     Determines if the current build is a dev build or not.
-    /// </summary>
+
     public static bool IsDevBuild => false;
+
     public static bool ShouldCensorModName
     {
         get
@@ -58,10 +62,13 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
     }
 
     public static string DisplayName => ShouldCensorModName ? CensoredDisplayName : UncensoredDisplayName;
+
     public static string CensorVisibleText(string text)
     {
         if (!ShouldCensorModName || string.IsNullOrEmpty(text))
+        {
             return text;
+        }
 
         return text
             .Replace("TOU Mega Chujowe Extension", "TOU Mega Ch**owe Extension")
@@ -70,24 +77,26 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
             .Replace("ToU: Chujowe", "ToU: Ch**owe");
     }
 
-    /// <inheritdoc />
     public ConfigFile GetConfigFile() => Config;
 
-    // public static Harmony
     public static Harmony Harmony { get; private set; } = null!;
 
     public override void Load()
     {
         DuplicateChecker.Check();
+
         Harmony = new Harmony(Id);
 
         ReactorCredits.Register(DisplayName, Version, IsDevBuild, ReactorCredits.AlwaysShow);
+
         IL2CPPChainloader.Instance.Finished += Modules.ExtensionLocale.SearchInternalLocale;
         IL2CPPChainloader.Instance.Finished += LawyerTeamChatRegistration.Register;
         IL2CPPChainloader.Instance.Finished += Patches.Roles.Lovers.LoverMeetingChatRegistration.Register;
         IL2CPPChainloader.Instance.Finished += Patches.Roles.Jackal.JackalTeamChatRegistration.Register;
         IL2CPPChainloader.Instance.Finished += Patches.Roles.Apocalypse.ApocalypseTeamChatRegistration.Register;
+        // IL2CPPChainloader.Instance.Finished += Patches.Roles.Agent.AgentTeamChatRegistration.Register;
         IL2CPPChainloader.Instance.Finished += Patches.Roles.Pelican.PelicanTargetBlockPatches.Init;
+        IL2CPPChainloader.Instance.Finished += RegisterPerfectCommsIntegrationIfLoaded;
         IL2CPPChainloader.Instance.Finished += () => ExtensionModNewsFetcher.CheckForNews();
 
         PatchAllWithErrorHandling();
@@ -95,40 +104,113 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
         WinConditionRegistry.Register(new NeutralExtensionWinCondition());
     }
 
+    private static void RegisterPerfectCommsIntegrationIfLoaded()
+    {
+        const string perfectCommsPluginId = "com.edgetel.perfectcomms";
+
+        if (!IL2CPPChainloader.Instance.Plugins.ContainsKey(perfectCommsPluginId))
+        {
+            Info("Perfect Comms not loaded; skipping voice integration.");
+            return;
+        }
+
+        try
+        {
+            var integrationType = typeof(TouMegaChujoweExtensionPlugin).Assembly.GetType("TouMegaChujoweExtension.Modules.PerfectCommsIntegration");
+            var register = integrationType?.GetMethod("Register", BindingFlags.Public | BindingFlags.Static);
+
+            if (register == null)
+            {
+                Warning("Perfect Comms is loaded, but TouMCE voice integration could not be found.");
+                return;
+            }
+
+            register.Invoke(null, null);
+        }
+        catch (Exception ex)
+        {
+            Error($"Perfect Comms integration registration failed: {ex}");
+        }
+    }
+
     private static void PatchAllWithErrorHandling()
     {
         var assembly = Assembly.GetExecutingAssembly();
+        var debugPath = GetPatchDebugPath();
+
+        WritePatchDebugHeader(debugPath);
+
         var patchTypes = SafeReflection.GetTypesSafe(assembly)
-            .Where(t => t.GetCustomAttributes(typeof(HarmonyPatch), true).Length > 0)
+            .Where(HasHarmonyPatch)
+            .OrderBy(type => type.FullName)
             .ToList();
 
-        int successCount = 0;
-        int failCount = 0;
-        List<string> failedTypes = [];
+        var successCount = 0;
+        var failCount = 0;
+        var skipCount = 0;
+
+        var failedTypes = new List<string>();
+        var skippedTypes = new List<string>();
+
+        AppendPatchDebug(debugPath, $"Found patch classes: {patchTypes.Count}");
+        AppendPatchDebug(debugPath, "");
 
         foreach (var type in patchTypes)
         {
+            var typeName = type.FullName ?? type.Name;
+
+            if (ShouldSkipPatchType(type))
+            {
+                skipCount++;
+                skippedTypes.Add(typeName);
+
+                AppendPatchDebug(debugPath, $"SKIP: {typeName}");
+                Warning($"Skipped Harmony patch class: {typeName}");
+                continue;
+            }
+
+            AppendPatchDebug(debugPath, $"PATCHING: {typeName}");
+
             try
             {
                 Harmony.PatchAll(type);
+
                 successCount++;
+                AppendPatchDebug(debugPath, $"OK: {typeName}");
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 failCount++;
-                failedTypes.Add(type.FullName ?? type.Name);
-                Error($"Failed to patch class: {type.FullName}");
+                failedTypes.Add(typeName);
+
+                AppendPatchDebug(debugPath,
+                    $"FAILED: {typeName}\n" +
+                    $"{ex.GetType().FullName}: {ex.Message}\n" +
+                    $"{ex.StackTrace}\n");
+
+                Error($"Failed to patch class: {typeName}");
                 Error($"Error type: {ex.GetType().FullName}");
                 Error($"Error message: {ex.Message}");
 
                 if (ex.InnerException != null)
+                {
                     Error($"Inner exception: {ex.InnerException.GetType().FullName}: {ex.InnerException.Message}");
+                    AppendPatchDebug(debugPath,
+                        $"INNER: {ex.InnerException.GetType().FullName}: {ex.InnerException.Message}\n" +
+                        $"{ex.InnerException.StackTrace}\n");
+                }
 
                 Debug($"Stack trace: {ex.StackTrace}");
             }
         }
 
-        Info($"Harmony patching completed: {successCount} classes patched successfully, {failCount} classes had errors");
+        AppendPatchDebug(debugPath,
+            "\n==== TouMega patch debug finished ====\n" +
+            $"Patched: {successCount}\n" +
+            $"Failed: {failCount}\n" +
+            $"Skipped: {skipCount}\n");
+
+        Info($"Harmony patching completed: {successCount} classes patched successfully, {failCount} classes had errors, {skipCount} classes skipped");
 
         if (failCount > 0)
         {
@@ -136,25 +218,118 @@ public partial class TouMegaChujoweExtensionPlugin : BasePlugin, IMiraPlugin
             Warning("The mod may function partially. If you experience issues, please report which patch classes failed.");
         }
 
+        if (skipCount > 0)
+        {
+            Warning($"Skipped the following patch classes: {string.Join(", ", skippedTypes)}");
+        }
+
         if (successCount == 0 && failCount > 0)
         {
             Error("All Harmony patches failed! The mod cannot function without patches.");
-            throw new System.InvalidOperationException($"Failed to apply any Harmony patches. {failCount} patch classes failed. See log for details.");
+            throw new InvalidOperationException($"Failed to apply any Harmony patches. {failCount} patch classes failed. See log for details.");
+        }
+    }
+
+    private static bool HasHarmonyPatch(Type type)
+    {
+        try
+        {
+            return type.GetCustomAttributes(typeof(HarmonyPatch), true).Length > 0;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool ShouldSkipPatchType(Type type)
+    {
+        _ = type;
+        return false;
+    }
+
+    private static string GetPatchDebugPath()
+    {
+        try
+        {
+            var pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            if (!string.IsNullOrWhiteSpace(pluginFolder))
+            {
+                return Path.Combine(pluginFolder, "TouMegaPatchDebug.log");
+            }
+        }
+        catch
+        {
+            // fallback
         }
 
+        return Path.Combine(Environment.CurrentDirectory, "TouMegaPatchDebug.log");
+    }
+
+    private static bool IsPluginLoaded(string guid)
+    {
+        try
+        {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            if (guid == "com.divani.mods")
+            {
+                return assemblies.Any(assembly =>
+                    assembly.GetName().Name?.Contains("Divani", StringComparison.OrdinalIgnoreCase) == true);
+            }
+
+            if (guid == TownOfUsPlugin.Id)
+            {
+                return assemblies.Any(assembly =>
+                    assembly.GetName().Name?.Contains("TownOfUs", StringComparison.OrdinalIgnoreCase) == true);
+            }
+
+            if (guid == MiraApiPlugin.Id)
+            {
+                return assemblies.Any(assembly =>
+                    assembly.GetName().Name?.Contains("MiraAPI", StringComparison.OrdinalIgnoreCase) == true);
+            }
+
+            return assemblies.Any(assembly =>
+                assembly.FullName?.Contains(guid, StringComparison.OrdinalIgnoreCase) == true);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static void WritePatchDebugHeader(string debugPath)
+    {
+        try
+        {
+            File.WriteAllText(debugPath,
+                "==== TouMega patch debug start ====\n" +
+                $"Time: {DateTime.Now:yyyy-MM-dd HH:mm:ss}\n" +
+                $"Plugin Id: {Id}\n" +
+                $"Plugin Version: {Version}\n" +
+                $"Debug Path: {debugPath}\n" +
+                $"Divani loaded: {IsPluginLoaded("com.divani.mods")}\n" +
+                $"TownOfUs loaded: {IsPluginLoaded(TownOfUsPlugin.Id)}\n" +
+                $"MiraAPI loaded: {IsPluginLoaded(MiraApiPlugin.Id)}\n" +
+                "\n");
+        }
+        catch (Exception ex)
+        {
+            Error($"Could not write patch debug header: {ex}");
+        }
+    }
+
+    private static void AppendPatchDebug(string debugPath, string text)
+    {
+        try
+        {
+            File.AppendAllText(debugPath, text + "\n");
+        }
+        catch (Exception ex)
+        {
+            Error($"Could not append patch debug log: {ex}");
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

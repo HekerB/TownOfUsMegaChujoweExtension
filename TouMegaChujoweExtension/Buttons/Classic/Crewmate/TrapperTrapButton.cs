@@ -12,8 +12,6 @@ namespace TouMegaChujoweExtension.Buttons.Classic.Crewmate;
 
 public sealed class TrapperTrapButton : TownOfUsRoleButton<TrapperRole, Vent>
 {
-    private static readonly ContactFilter2D Filter = Helpers.CreateFilter(Constants.Usables);
-
     public override string Name => TouLocale.GetParsed("ExtensionRoleTrapperTrap", "Trap");
     public override BaseKeybind Keybind => Keybinds.SecondaryAction;
     public override Color TextOutlineColor => TouExtensionColors.Trapper;
@@ -41,17 +39,20 @@ public sealed class TrapperTrapButton : TownOfUsRoleButton<TrapperRole, Vent>
 
     public override bool IsTargetValid(Vent? target)
     {
-        return base.IsTargetValid(target) && target != null && !VentTrapSystem.IsTrapped(target.Id);
+        return base.IsTargetValid(target) &&
+               target != null &&
+               !BurrowerSystem.IsBurrowerVent(target) &&
+               !VentTrapSystem.IsTrapped(target.Id);
     }
 
     public override Vent? GetTarget()
     {
-        var vent = PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 4, Filter) ??
-                   PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 3, Filter) ??
-                   PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance / 2, Filter) ??
-                   PlayerControl.LocalPlayer.GetNearestObjectOfType<Vent>(Distance, Filter);
+        var vent = BurrowerSystem.GetClosestUsableMapVent(
+            PlayerControl.LocalPlayer,
+            Distance,
+            candidate => !VentTrapSystem.IsTrapped(candidate.Id));
 
-        if (vent != null && PlayerControl.LocalPlayer.CanUseVent(vent))
+        if (vent != null && HasClearPathToVent(PlayerControl.LocalPlayer, vent))
         {
             return vent;
         }
@@ -81,5 +82,18 @@ public sealed class TrapperTrapButton : TownOfUsRoleButton<TrapperRole, Vent>
         }
 
         TrapperRole.RpcTrapperPlaceTrap(PlayerControl.LocalPlayer, Target.Id);
+    }
+
+    private static bool HasClearPathToVent(PlayerControl player, Vent vent)
+    {
+        if (player?.Collider == null || vent == null)
+        {
+            return false;
+        }
+
+        var center = player.Collider.bounds.center;
+        var position = vent.transform.position;
+        return Vector2.Distance(center, position) <= vent.UsableDistance &&
+               !PhysicsHelpers.AnythingBetween(player.Collider, center, position, Constants.ShipOnlyMask, false);
     }
 }

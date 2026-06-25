@@ -1,4 +1,4 @@
-using HarmonyLib;
+/*using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +34,7 @@ public static class JackalTeamKillBlockPatch
 
             foreach (var type in killButtonTypes)
             {
-                var method = AccessTools.Method(type, "IsTargetValid", new[] { typeof(PlayerControl) });
+                var method = AccessTools.Method(type, "IsTargetValid", [typeof(PlayerControl)]);
                 if (method != null)
                 {
                     methods.Add(method);
@@ -50,14 +50,17 @@ public static class JackalTeamKillBlockPatch
     }
 
     [HarmonyPostfix]
-    public static void Postfix(ref bool __result, PlayerControl? target)
+    public static void Postfix(ref bool __result, object __instance, object? target)
     {
-        if (!__result || target == null) return;
+        if (!__result || target == null || __instance == null) return;
+
+        if (__instance is not IKillButton) return;
+        if (target is not PlayerControl playerTarget) return;
 
         var local = PlayerControl.LocalPlayer;
         if (local == null) return;
 
-        if (IsJackalAlly(local, target))
+        if (IsJackalAlly(local, playerTarget))
         {
             __result = false;
         }
@@ -96,7 +99,7 @@ public static class JackalTeamKillBlockPatch
 public static class KillButtonSetTargetPatch
 {
     [HarmonyPrefix]
-    public static void Prefix(KillButton __instance, ref PlayerControl target)
+    public static void Prefix(ref PlayerControl target)
     {
         if (target == null) return;
         var local = PlayerControl.LocalPlayer;
@@ -104,7 +107,7 @@ public static class KillButtonSetTargetPatch
 
         if (JackalTeamKillBlockPatch.IsJackalAlly(local, target))
         {
-            target = null;
+            target = null!;
         }
     }
 }
@@ -133,12 +136,9 @@ public static class JackalGuessBlockPatch
         var guesser = GetGuesser(__instance);
         var target = voteArea == null ? null : MiscUtils.PlayerById(voteArea.TargetPlayerId);
 
-        if (guesser != null && target != null)
+        if (guesser != null && target != null && JackalTeamKillBlockPatch.IsJackalAlly(guesser, target))
         {
-            if (JackalTeamKillBlockPatch.IsJackalAlly(guesser, target))
-            {
-                return false; // Skip / block guessing
-            }
+            return false; // Skip / block guessing
         }
 
         return true;
@@ -157,3 +157,4 @@ public static class JackalGuessBlockPatch
     }
 }
 
+*/

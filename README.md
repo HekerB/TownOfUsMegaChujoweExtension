@@ -12,12 +12,15 @@
 > Want to suggest ideas, help with graphics, report issues, or find people to play with? Join our [Discord](https://discord.gg/qaQZAmAVh4) — we have a diverse and friendly community!
 
 > [!IMPORTANT]
-> **Voice Chat:** For proximity voice chat with this extension, use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-Comms)**. It is a fork made specifically for **Town Of Us Mega Chujowe Extension** and works with **Town of Us: Mira**. Do **not** use the original Perfect Comms build with this extension, because extension-specific role behavior can bug out or leak information without the fork.
+> **Voice Chat:** For proximity voice chat with this extension, install the regular **[Perfect Comms](https://github.com/artriy/Perfect-Comms/releases/latest)** v3.0.0 or newer. Tou Mega Chujowe Extension integrates with Perfect Comms through its public API, which now supports all options and features from the extension, so the old custom Perfect Comms fork is no longer required and is not planned to be continued.
 
 -----------------------
 
 <div align="center">
   <img src="./Images/Logo.png" alt="TouMegaChujoweExtension"/>
+  <br/>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases/latest"><img src="https://img.shields.io/github/v/release/HekerB/TownOfUsMegaChujoweExtension?color=blue&label=latest%20release" alt="Latest Release"/></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/releases"><img src="https://img.shields.io/github/downloads/HekerB/TownOfUsMegaChujoweExtension/total" alt="GitHub downloads"/></a>
   <p>                                         </p>
 </div>
 <br/>
@@ -30,6 +33,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
 
 | Extension Version | Among Us Version | TOU: Mira Version | Download Mira |
 |-------------------|------------------|-------------------|---------------|
+| 1.4.3 or newer    | 17.3.x           | 1.6.3             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.3) |
 | 1.3.0 or newer    | 17.3.x           | 1.6.2             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.2) |
 | Older than 1.3.0  | 17.3.x           | 1.6.1             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.1) |
 | Older than 1.3.0  | 17.3.x           | 1.6.0             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.0) |
@@ -79,6 +83,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <img src="./Images/Groups/CrewProtect.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#bodyguard"><img width="10%" src="./Images/Icons/Bodyguard_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#gardener"><img width="10%" src="./Images/Icons/Gardener_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#tavern-keeper"><img width="10%" src="./Images/Icons/TavernKeeper_Role_Icon.png" /></a>
   <img src="./Images/Groups/CrewSupport.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#doctor"><img width="10%" src="./Images/Icons/Doctor_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#evoker"><img width="10%" src="./Images/Icons/Evoker_Role_Icon.png" /></a>
@@ -106,6 +111,8 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#charlatan"><img width="10%" src="./Images/Icons/Charlatan_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#hacker"><img width="10%" src="./Images/Icons/Hacker_Role.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#injector"><img width="10%" src="./Images/Icons/Injector_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#flipper"><img width="10%" src="./Images/Icons/Inverter_Role_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#voodoo-master"><img width="10%" src="./Images/Icons/VoodooMaster_Role_Icon.png" /></a>
   <img src="./Images/Groups/NeutBenign.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#lawyer"><img width="10%" src="./Images/Icons/Lawyer_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#shifter"><img width="10%" src="./Images/Icons/Shifter_Role_Icon.png" /></a>
@@ -115,6 +122,7 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#pirate"><img width="10%" src="./Images/Icons/Pirate_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#pope"><img width="10%" src="./Images/Icons/Pope_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#vulture"><img width="10%" src="./Images/Icons/Vulture_Icon.png" /></a>
+  <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#innocent"><img width="10%" src="./Images/Icons/Innocent_Role_Icon.png" /></a>
   <img src="./Images/Groups/NeutKilling.png" align="center" />
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#baker--famine"><img width="10%" src="./Images/Icons/Baker_Role_Icon.png" /></a>
   <a href="https://github.com/HekerB/TownOfUsMegaChujoweExtension/wiki#baker--famine"><img width="10%" src="./Images/Icons/Famine_Role_Icon.png" /></a>
@@ -257,7 +265,7 @@ https://github.com/user-attachments/assets/d7a01fdc-148b-4a66-bbf1-6043da6a9b04
 
 ## Optional Voice Chat
 
-Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-Comms)** if you want in-game proximity voice chat. This fork includes compatibility for TouMCE roles such as Pelican, Infiltrator/Recruits, Lawyer, Spirit Master, and custom invisible roles. Do not install the original Perfect Comms build for TouMCE lobbies; use the fork to avoid role voice bugs.
+Use **[Perfect Comms](https://github.com/artriy/Perfect-Comms)** if you want in-game proximity voice chat. TouMCE integrates with Perfect Comms through its public API, which now supports all options and features from the extension, so the custom fork is no longer required.
 
 -----------------------
 
@@ -288,7 +296,7 @@ Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-C
 > **Huge shoutout to Atony**, creator of Town of Us: Mira. A large part of this mod's art comes from his work, Town of Us: Mira builds, and resources shared around the TOU Mira community.
 
 - **[Asterisken [スター]](https://github.com/aasteriisken)** ([Discord](https://discord.com/users/1220041311323684955)) - Injector, Trapper, Clueless, Mirage, Charlatan, Vulture, Forestaller, Spiteful, Objection Button, Bodyguard Guard button, Soul Collector role icon, Berserker role icon, and War role icon
-- **Atony / Town of Us: Mira / Town of Us Discord** - Serial Killer, Kamikaze, Loner, Joker, Burrower, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, Detonator, and Death role icons; Shifter role icon and button; Poisoner role icon and buttons; Drunk modifier icon; Jackal and Sidekicks icons.
+- **Atony / Town of Us: Mira / Town of Us Discord** - Serial Killer, Kamikaze, Loner, Joker, Burrower, Lawyer, Witch, Wraith, Doctor, RC-XD, Portalmaker, Vanisher, Vampire Hunter, Bodyguard, Bounty Hunter, Pelican, Doppelganger, Speedy, Astral, Sniper, Detonator; Shifter role icon and button; Poisoner role icon and buttons; Drunk modifier icon; Jackal and Sidekicks icons; Innocent role icon; Flipper (changed) role icon; Tavern Keeper role icon; Agent role icon.
 - **Atony / [Town Of Us Fusion](https://github.com/AtonyGit/Town-Of-Us-Fusion)** - Vampire Hunter stake button
 - **CraftR / Town of Us Discord** - Pirate role icon and Pirate Duel button; Baker role icon and bread assets; Pope role icon and Sanctify button
 - **CraftR / [Town-Of-Us-Mira-JK](https://github.com/JoaKing08/Town-Of-Us-Mira-JK)** - Famine role icon
@@ -296,6 +304,7 @@ Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-C
 - **Syzyf / Syzyfowe TOU** - Gardener ability button icon
 - **Xinav's** - Tarot card asset
 - **Town of Salem** - Shroud visual assets/source inspiration
+- **Unknown** - The Voodoo Master icon was taken from original rewalo's extension.
 
 ## Sound Credits
 - **Radzik360** - Joker laugh (intro & in-game), Kamikaze explosion sound, Pelican swallow sound
@@ -315,7 +324,7 @@ Use **[Mega Chujowe Perfect Comms](https://github.com/marzecoo/Chujowe-Perfect-C
 - **[TOHE (Town of Host Enhanced)](https://github.com/0xDrMoe/TownofHost-Enhanced)** - Doppelganger role concept; Shroud role concept
 - **[Syzyfowe TOU](https://github.com/LimeShep/Town-Of-Us/)** - Evoker, Pelican, and Gardener role concepts
 - **Town of Us: Mira** - Infiltrator (Jackal) role concept
-- **Tajemniczy Among Us (Tajemniczy Typiarz)** - Pirate role concept
+- **Town of Salem 1 & 2** - Pirate role, Berserker, War, Baker, Famine, Soul Collectorm, Death and Shroud role concepts
 - **[Town of Us WYGON](https://github.com/wygon/Town-Of-Us-WYGON)** - Falcon and Kamikaze role concepts
 - **Sidemen (YouTube)** - RC-XD, Detonator, Doctor, Astral, Speedy, Sniper, Poisoner, and Loner role concepts
 - **[TownOfUsMiraDivaniModsAddOn](https://github.com/DivaniNL/TownOfUsMiraDivaniModsAddOn)** - Portalmaker role concept
@@ -360,7 +369,7 @@ You can toggle between **English** and **Polish** in the game settings via `Exte
 - **[BepInEx](https://github.com/BepInEx)** - Game function hooking
 
 
-## Honorable Mention 🙃
+## Honorable Mention 
 - **Pozwo** for encouraging us to bring this project to Github!
 - **Arbuzia** for saying that im too young to program mods without putting in them viruses!
 - no offence lol

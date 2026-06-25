@@ -70,9 +70,7 @@ public sealed class InjectedInvertedControlsModifier : TimedModifier, IVisualApp
 
     public VisualAppearance GetVisualAppearance()
     {
-        var appearance = Player.GetDefaultAppearance();
-        appearance.Speed = -1;
-        return appearance;
+        return Player.GetDefaultAppearance();
     }
 }
 

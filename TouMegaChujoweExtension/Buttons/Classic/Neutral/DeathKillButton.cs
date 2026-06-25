@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
-public sealed class DeathKillButton : TownOfUsRoleButton<DeathRole, PlayerControl>, IDiseaseableButton, IKillButton
+public sealed class DeathKillButton : TownOfUsKillRoleButton<DeathRole, PlayerControl>, IDiseaseableButton, IKillButton
 {
     public override string Name => TouLocale.Get("ExtensionRoleSoulCollectorReap", "Reap");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
@@ -27,6 +27,16 @@ public sealed class DeathKillButton : TownOfUsRoleButton<DeathRole, PlayerContro
     public void SetDiseasedTimer(float multiplier)
     {
         SetTimer(Cooldown * multiplier);
+    }
+
+    public override bool CanUse()
+    {
+        return base.CanUse();
+    }
+
+    public override void ClickHandler()
+    {
+        base.ClickHandler();
     }
 
     public override PlayerControl? GetTarget()

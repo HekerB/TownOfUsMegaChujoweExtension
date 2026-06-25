@@ -12,6 +12,7 @@ using Reactor.Utilities;
 using System.Collections;
 using System.Linq;
 using System;
+using TouMegaChujoweExtension.Modifiers.Impostor;
 using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Modifiers;
@@ -23,7 +24,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Neutral;
 
-public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, PlayerControl>
+public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, PlayerControl>, IDiseaseableButton
 {
     public override string Name => TouLocale.GetParsed("ExtensionRolePelicanSwallow", "Swallow");
     public override BaseKeybind Keybind => Keybinds.PrimaryAction;
@@ -33,6 +34,11 @@ public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, Playe
     public override float EffectDuration => 0f;
     public override bool HasEffect => false;
     public override LoadableAsset<Sprite> Sprite => TouExtensionNeuAssets.PelicanSwallowButtonSprite;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
 
     public override int MaxUses =>
@@ -88,6 +94,7 @@ public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, Playe
             if (other.Data.Disconnected) continue;
             if (other.HasDied()) continue;
             if (PelicanSystem.IsSwallowed(other.PlayerId)) continue;
+            if (other.HasModifier<AstralPhaseModifier>()) continue;
 
             float dist = Vector2.Distance(myPos, other.GetTruePosition());
             if (dist > Distance) continue;
@@ -107,6 +114,7 @@ public sealed class PelicanSwallowButton : TownOfUsRoleButton<PelicanRole, Playe
         if (target == null || target.HasDied() || target.Data == null) return false;
         if (target.Data.Disconnected) return false;
         if (PelicanSystem.IsSwallowed(target.PlayerId)) return false;
+        if (target.HasModifier<AstralPhaseModifier>()) return false;
 
         // Block targeting ONLY for Child.
         var child = target.GetModifiers<ChildModifier>().FirstOrDefault();

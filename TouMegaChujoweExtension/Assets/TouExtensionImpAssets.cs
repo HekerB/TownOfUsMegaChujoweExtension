@@ -36,6 +36,7 @@ public static class TouExtensionImpAssets
     public static LoadableAsset<Sprite> KamikazeSuicideButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Suicide_Button.png", 170f);
     public static LoadableAsset<Sprite> DetonatorAttachSprite { get; } = TouImpAssets.PursueSprite;
     public static LoadableAsset<Sprite> DetonatorDetonateSprite { get; } = TouImpAssets.RecallSprite;
+    public static LoadableAsset<Sprite> InverterDisorientButtonSprite { get; } = new LoadableResourceAsset($"{ShortPath}.Inverter_Disorient_Button.png", 100f);
 }
 
 

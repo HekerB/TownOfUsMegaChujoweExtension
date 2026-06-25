@@ -17,6 +17,8 @@ using System.Linq;
 using Reactor.Networking.Attributes;
 using TouMegaChujoweExtension.Networking;
 using TouMegaChujoweExtension.Assets;
+using TouMegaChujoweExtension.Buttons.Classic.Crewmate;
+using MiraAPI.Hud;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
@@ -70,6 +72,20 @@ public sealed class PortalmakerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITown
     public override void Deinitialize(PlayerControl targetPlayer)
     {
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
+    }
+
+    public override void OnMeetingStart()
+    {
+        RoleBehaviourStubs.OnMeetingStart(this);
+
+        if (Player.AmOwner)
+        {
+            var placeButton = CustomButtonSingleton<PortalmakerPlaceButton>.Instance;
+            if (placeButton != null)
+            {
+                placeButton.ResetCooldownAndOrEffect();
+            }
+        }
     }
 
     public void PlacePortal(Vector2 position)

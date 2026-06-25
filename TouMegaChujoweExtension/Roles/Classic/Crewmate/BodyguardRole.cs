@@ -1,23 +1,18 @@
 using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
-using MiraAPI.Networking;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
-using Reactor.Utilities.Extensions;
 using Reactor.Utilities;
 using System.Collections;
 using System.Text;
-using TownOfUs.Extensions;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
-using TownOfUs.Networking;
+using TownOfUs.Options;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using TownOfUs;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
@@ -206,8 +201,8 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (Player.AmOwner)
         {
-            TriggerBodyguardFlash(Player);
-            
+            TriggerBodyguardFlash(Player, revealRoleColor: true);
+
             var notif = Helpers.CreateAndShowNotification(
                 TouLocale.Get("ExtensionRoleBodyguardShieldAttacked"),
                 TouExtensionColors.Bodyguard,
@@ -293,7 +288,7 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
         if (attacker != null && attacker.AmOwner)
         {
-            TriggerBodyguardFlash(attacker);
+            TriggerBodyguardFlash(attacker, revealRoleColor: false);
         }
     }
 
@@ -355,10 +350,12 @@ public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOf
 
     private static SpriteRenderer? _flashRenderer;
 
-    public static void TriggerBodyguardFlash(PlayerControl player)
+    public static void TriggerBodyguardFlash(PlayerControl player, bool revealRoleColor)
     {
         if (player == null || !player.AmOwner) return;
-        var color = TouExtensionColors.ShieldFlashes.BodyguardFlash;
+        var color = OptionGroupSingleton<GameMechanicOptions>.Instance.AnonymousShields && !revealRoleColor
+            ? TownOfUsColors.NeutralWiki
+            : new Color(0.412f, 0.647f, 1f);
         Info($"[Bodyguard] Triggering shield flash for {player.Data.PlayerName}");
         Coroutines.Start(CoFlash(color));
     }

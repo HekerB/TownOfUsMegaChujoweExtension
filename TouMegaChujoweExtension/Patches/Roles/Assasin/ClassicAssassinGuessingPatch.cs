@@ -1,5 +1,6 @@
 using HarmonyLib;
 using System.Reflection;
+using TouMegaChujoweExtension.Roles.Classic.Impostor;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
@@ -11,6 +12,11 @@ public static class BlockMiraAssassinButtonsPatch
 {
     public static bool Prefix(AssassinModifier __instance)
     {
+        if (__instance.Player.Data?.Role is LonerRole && !LonerRole.HasRecruited(__instance.Player))
+        {
+            return false;
+        }
+
         if (!ClassicAssassinSystem.IsActive)
             return true;
 

@@ -13,7 +13,7 @@ using System;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
-public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, PlayerControl>
+public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, PlayerControl>, IDiseaseableButton
 {
     private bool _isInjecting;
     private float _injectTimer;
@@ -38,6 +38,12 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
     public override int MaxUses => (int)OptionGroupSingleton<InjectorOptions>.Instance.InitialUses;
 
     public override bool ZeroIsInfinite { get; set; } = true;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
+
     public override void CreateButton(Transform parent)
     {
         base.CreateButton(parent);
@@ -200,7 +206,10 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
                 {
                     Button.SetEnabled();
                     Button.SetFillUp(_injectTimer, _injectDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_injectTimer).ToString();
+                    var format = _injectTimer <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+                        ? "0.0"
+                        : "0";
+                    Button.cooldownTimerText.text = _injectTimer.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
             }

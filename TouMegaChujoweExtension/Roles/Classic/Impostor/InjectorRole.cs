@@ -69,7 +69,6 @@ public sealed class InjectorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
     {
         if (injector.Data.Role is not InjectorRole)
         {
-            // ("RpcInjectorInject - Invalid injector");
             return;
         }
 
@@ -81,18 +80,3 @@ public sealed class InjectorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         InjectorEvents.ScheduleInjection(injector, target);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

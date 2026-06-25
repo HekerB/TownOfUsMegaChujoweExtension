@@ -24,6 +24,10 @@ public static class DraftNetworking
         foreach (var playerId in DraftSystem.PickOrder)
             writer.Write(playerId);
 
+        writer.Write((byte)DraftSystem.RoleListSlotOrder.Count);
+        foreach (var slotIndex in DraftSystem.RoleListSlotOrder)
+            writer.Write((byte)slotIndex);
+
         writer.Write((byte)DraftSystem.PlayerFactions.Count);
         foreach (var kvp in DraftSystem.PlayerFactions)
         {
@@ -32,6 +36,10 @@ public static class DraftNetworking
         }
 
         writer.Write((byte)DraftSystem.TargetOtherNeutralCount);
+
+        writer.Write((byte)DraftSystem.PreviousGameRoleIds.Count);
+        foreach (var roleId in DraftSystem.PreviousGameRoleIds)
+            writer.Write(roleId);
 
         AmongUsClient.Instance.FinishRpcImmediately(writer);
 
@@ -50,8 +58,6 @@ public static class DraftNetworking
         DraftSystem.ImpostorPlayerIds = impostorIds;
         DraftSystem.DraftActiveThisRound = true;
         DraftSystem.IsRunning = true;
-
-        DraftLobbyPatch.ShowSystemMessage("<color=#FF0000>Draft Mode</color> has Started. Be Ready to Pick Your Role!");
     }
 
     public static void ReceiveDraftStartFromReader(MessageReader reader)
@@ -65,8 +71,18 @@ public static class DraftNetworking
 
             var orderCount = reader.ReadByte();
             DraftSystem.PickOrder.Clear();
+            DraftSystem.OriginalPickOrder.Clear();
             for (var i = 0; i < orderCount; i++)
-                DraftSystem.PickOrder.Add(reader.ReadByte());
+            {
+                var val = reader.ReadByte();
+                DraftSystem.PickOrder.Add(val);
+                DraftSystem.OriginalPickOrder.Add(val);
+            }
+
+            var roleListSlotOrderCount = reader.ReadByte();
+            DraftSystem.RoleListSlotOrder.Clear();
+            for (var i = 0; i < roleListSlotOrderCount; i++)
+                DraftSystem.RoleListSlotOrder.Add(reader.ReadByte());
 
             var factionCount = reader.ReadByte();
             DraftSystem.PlayerFactions.Clear();
@@ -78,6 +94,12 @@ public static class DraftNetworking
             }
 
             DraftSystem.TargetOtherNeutralCount = reader.ReadByte();
+
+            var previousRoleCount = reader.ReadByte();
+            var previousRoles = new List<ushort>();
+            for (var i = 0; i < previousRoleCount; i++)
+                previousRoles.Add(reader.ReadUInt16());
+            DraftSystem.SetPreviousGameRoles(previousRoles);
 
             ReceiveDraftStart(impostorIds);
             DraftSystem.DraftActiveThisRound = true;
@@ -138,8 +160,6 @@ public static class DraftNetworking
     {
         DraftSystem.IsRunning = false;
         DraftSystem.DraftComplete = true;
-
-        DraftLobbyPatch.ShowSystemMessage("<color=#00FF00>Draft Complete!</color> The game is starting soon.");
     }
 
     public static void SendDraftCancel()

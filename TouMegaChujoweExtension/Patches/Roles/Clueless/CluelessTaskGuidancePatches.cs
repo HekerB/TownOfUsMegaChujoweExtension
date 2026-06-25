@@ -16,6 +16,7 @@ public static class CluelessTaskGuidancePatches
     internal static bool LocalIsClueless()
     {
         return PlayerControl.LocalPlayer != null &&
+               !(PlayerControl.LocalPlayer.Data?.IsDead ?? false) &&
                PlayerControl.LocalPlayer.HasModifier<CluelessModifier>();
     }
 

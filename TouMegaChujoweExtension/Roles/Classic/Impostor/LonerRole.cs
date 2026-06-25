@@ -18,6 +18,7 @@ using TouMegaChujoweExtension.Roles.Impostor;
 using TownOfUs.Assets;
 using TownOfUs.Extensions;
 using TownOfUs.Interfaces;
+using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Localization;
@@ -224,7 +225,7 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
     }
 
     [MethodRpc((uint)ExtensionRpc.LonerRecruit)]
-    public static void RpcRecruit(PlayerControl loner, PlayerControl target)
+    public static void RpcRecruit(PlayerControl loner, PlayerControl target, ushort nextRoleId)
     {
         if (loner == null || target == null || loner.Data?.Role is not LonerRole || HasRecruited(loner))
         {
@@ -240,11 +241,20 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         PendingMutations.Remove(loner.PlayerId);
         CurrentKillCount[loner.PlayerId] = 0;
         var options = OptionGroupSingleton<LonerOptions>.Instance;
-        var roleId = options.RecruitBecomesTraitor
-            ? RoleId.Get<TraitorRole>()
-            : (ushort)RoleTypes.Impostor;
 
-        target.ChangeRole(roleId, recordRole: false);
+        if (target.TryGetModifier<EgotistModifier>(out var egotistModifier))
+        {
+            target.RemoveModifier(egotistModifier);
+        }
+
+        if (options.RecruitBecomesRandomImpostor)
+        {
+            target.ChangeRole(nextRoleId, recordRole: true);
+        }
+        else
+        {
+            target.ChangeRole((ushort)RoleTypes.Impostor, recordRole: false);
+        }
 
         if (options.RecruitedImpostorBecomesAssassin && !target.HasModifier<ImpostorAssassinModifier>())
         {
@@ -253,14 +263,13 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
 
         if (target.AmOwner)
         {
-            ButtonResetPatches.ResetCooldowns();
-            target.SetKillTimer(target.GetKillCooldown());
+            RefreshRoleChangeHud(target, resetCooldowns: options.RecruitBecomesRandomImpostor);
         }
 
         ShowRecruitNotification(loner, target);
     }
 
-    private static ushort GetNextRoleId(bool removeExistingImpostorRoles)
+    public static ushort GetNextRoleId(bool removeExistingImpostorRoles)
     {
         if (removeExistingImpostorRoles)
         {
@@ -271,12 +280,42 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
             ? RandomImpostorRoles.Where(role => !UsedImpostorRoleIds.Contains(RoleId.Get(role)) && !IsDisallowedMutationRole(role)).ToList()
             : RandomImpostorRoles.Where(role => !IsDisallowedMutationRole(role)).ToList();
 
-        if (rolePool.Count == 0)
+        var filteredPool = rolePool.Where(role =>
         {
-            rolePool = RandomImpostorRoles.Where(role => !IsDisallowedMutationRole(role)).ToList();
+            var assignData = TownOfUs.Utilities.MiscUtils.GetAssignData((RoleTypes)RoleId.Get(role));
+            return assignData != null && assignData.Count > 0 && assignData.Chance > 0;
+        }).ToList();
+
+        if (filteredPool.Count == 0)
+        {
+            filteredPool = RandomImpostorRoles.Where(role => !IsDisallowedMutationRole(role)).ToList();
         }
 
-        return RoleId.Get(rolePool[UnityEngine.Random.Range(0, rolePool.Count)]);
+        var totalWeight = filteredPool.Sum(role =>
+        {
+            var assignData = TownOfUs.Utilities.MiscUtils.GetAssignData((RoleTypes)RoleId.Get(role));
+            return assignData != null ? assignData.Chance : 0f;
+        });
+
+        if (totalWeight <= 0)
+        {
+            return RoleId.Get(filteredPool[UnityEngine.Random.Range(0, filteredPool.Count)]);
+        }
+
+        var r = UnityEngine.Random.Range(0f, (float)totalWeight);
+        var currentSum = 0f;
+        foreach (var role in filteredPool)
+        {
+            var assignData = TownOfUs.Utilities.MiscUtils.GetAssignData((RoleTypes)RoleId.Get(role));
+            var chance = assignData != null ? assignData.Chance : 0f;
+            currentSum += chance;
+            if (r <= currentSum)
+            {
+                return RoleId.Get(role);
+            }
+        }
+
+        return RoleId.Get(filteredPool.Last());
     }
 
     private static bool IsTrackedImpostorRole(RoleBehaviour? role)
@@ -316,18 +355,23 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         if (player.AmOwner)
         {
             player.RpcChangeRole(nextRoleId, false);
-            ApplyMutationCooldowns(player);
+            RefreshRoleChangeHud(player, resetCooldowns: true);
             ShowMutationNotification(nextRoleId);
         }
     }
 
     [HideFromIl2Cpp]
-    private static void ApplyMutationCooldowns(PlayerControl player)
+    private static void RefreshRoleChangeHud(PlayerControl player, bool resetCooldowns)
     {
         var role = player?.Data?.Role;
         if (role == null)
         {
             return;
+        }
+
+        if (resetCooldowns)
+        {
+            ButtonResetPatches.ResetCooldowns();
         }
 
         if (role.CanUseKillButton)
@@ -340,20 +384,31 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
             return;
         }
 
+        HudManager.Instance.SetHudActive(player, role, true);
+
+        if (MeetingHud.Instance || ExileController.Instance)
+        {
+            HudManager.Instance.SetHudActive(player, role, false);
+        }
+
         foreach (var button in CustomButtonManager.Buttons)
         {
-            if (button == null || !button.Enabled(role))
+            if (button == null)
             {
                 continue;
             }
 
-            if (button.Button == null)
+            var enabled = button.Enabled(role);
+            if (enabled && button.Button == null)
             {
                 button.CreateButton(HudManager.Instance.transform);
             }
 
-            button.SetActive(true, role);
-            button.SetTimer(button.Cooldown);
+            button.SetActive(enabled, role);
+            if (enabled)
+            {
+                button.SetTimer(button.Cooldown);
+            }
         }
     }
 

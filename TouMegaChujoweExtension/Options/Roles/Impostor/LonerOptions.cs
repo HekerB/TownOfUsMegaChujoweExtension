@@ -22,8 +22,8 @@ public sealed class LonerOptions : AbstractOptionGroup<LonerRole>
     [ModdedToggleOption("ExtensionOptionLonerRecruitedImpostorBecomesAssassin")]
     public bool RecruitedImpostorBecomesAssassin { get; set; } = false;
 
-    [ModdedToggleOption("ExtensionOptionLonerRecruitBecomesTraitor")]
-    public bool RecruitBecomesTraitor { get; set; } = false;
+    [ModdedToggleOption("ExtensionOptionLonerRecruitBecomesRandomImpostor")]
+    public bool RecruitBecomesRandomImpostor { get; set; } = false;
 
     [ModdedToggleOption("ExtensionOptionLonerRemoveExistingImpostorRoles")]
     public bool RemoveExistingImpostorRoles { get; set; } = true;

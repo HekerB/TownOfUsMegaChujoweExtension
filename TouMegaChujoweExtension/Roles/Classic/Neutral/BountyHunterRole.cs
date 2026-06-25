@@ -1,19 +1,11 @@
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
-using MiraAPI.GameEnd;
-using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Patches.Stubs;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
-using MiraAPI.Utilities.Assets;
 using Reactor.Networking.Attributes;
-using System.Collections.Generic;
 using System.Text;
-using System;
-using TownOfUs.Assets;
-using TownOfUs.Extensions;
-using TownOfUs.GameOver;
 using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;
@@ -22,25 +14,19 @@ using TownOfUs.Roles.Neutral;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using TownOfUs;
-using TownOfUs.Buttons;
-using MiraAPI.Hud;
-using TouMegaChujoweExtension.Buttons.Classic.Neutral;
 using UnityEngine;
-using System.Linq;
-using HarmonyLib;
-using TownOfUs.Patches;
-using MiraAPI.GameEnd;
+
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IContinuesGame
+public sealed class BountyHunterRole(IntPtr cppPtr)
+    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IContinuesGame
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "BountyHunter";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
-
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"ExtensionRole{LocaleKey}WikiDescription") +
@@ -48,15 +34,18 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
     }
 
     [HideFromIl2Cpp]
-    public List<CustomButtonWikiDescription> Abilities => new()
+    public List<CustomButtonWikiDescription> Abilities
     {
-        new CustomButtonWikiDescription(
-            TouLocale.Get("ExtensionRoleBountyHunterKill"),
-            TouLocale.Get("ExtensionRoleBountyHunterKillWikiDescription"),
-            new LoadableBundleAsset<Sprite>("OfficerShootButton", TouAssets.MainBundle)
-        )
-    };
-
+        get
+        {
+            return
+            [
+                new(TouLocale.GetParsed($"ExtensionRole{LocaleKey}Hunt", "Hunt"),
+                    TouLocale.GetParsed($"ExtensionRole{LocaleKey}KillWikiDescription"),
+                    TouCrewAssets.OfficerShootSprite)
+            ];
+        }
+    }
     public Color RoleColor => TouExtensionColors.BountyHunter;
     public ModdedRoleTeams Team => ModdedRoleTeams.Custom;
     public RoleAlignment RoleAlignment => RoleAlignment.NeutralEvil;
@@ -69,16 +58,13 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
     public bool Hunting { get; set; }
     public bool IntroFinished { get; set; }
     public float IntroFinishTime { get; set; }
-
     public bool MetWinCon => HasWon;
 
     public bool ContinuesGame => !Player.HasDied()
-        && OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode == BountyHunterWinMode.WinWithWinners
+        && OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode == BountyHunterWinMode.LeavesInVictory
         && Helpers.GetAlivePlayers().Count > 1;
-
     public CustomRoleConfiguration Configuration => new(this)
     {
-        CanUseVent = false,
         Icon = TouExtensionIcons.BountyHunterRoleIcon,
         IntroSound = TouExtensionAudio.BountyHunterIntroSound,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
@@ -92,12 +78,22 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         var needed = (int)OptionGroupSingleton<BountyHunterOptions>.Instance.TargetsToKill.Value;
         var done = KillsDone;
 
-        stringB.Append(TownOfUsPlugin.Culture,
-            $"\n{TouLocale.GetParsed("ExtensionBHTabTargetsKilled", "Targets Killed: {0} / {1}").Replace("{0}", done.ToString()).Replace("{1}", needed.ToString())}");
+        _ = stringB.AppendFormat(
+            TownOfUsPlugin.Culture,
+            "\n" + TouLocale.GetParsed("ExtensionBHTabTargetsKilled", "Targets Killed: {0} / {1}"),
+            done,
+            needed
+        );
 
         if (CurrentTarget != null && Hunting)
-            stringB.Append(TownOfUsPlugin.Culture,
-                $"\n{TouLocale.GetParsed("ExtensionBHTabCurrentTarget", "Current Target: {0}").Replace("{0}", CurrentTarget.Data.PlayerName)}");
+        {
+            _ = stringB.AppendFormat(
+                TownOfUsPlugin.Culture,
+                "\n" + TouLocale.GetParsed("ExtensionBHTabCurrentTarget", "Current Target: {0}"),
+                CurrentTarget.Data.PlayerName
+            );
+        }
+
         return stringB;
     }
 
@@ -194,8 +190,6 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
             LastTargetPlayerId = null;
             return;
         }
-
-        // Implement weighted selection: Neutrals and Impostors have 10% more chance
         var weightedCandidates = new List<PlayerControl>();
         foreach (var p in candidates)
         {
@@ -205,7 +199,7 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
                                                            role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralEvil ||
                                                            role.RoleAlignment == TownOfUs.Roles.RoleAlignment.NeutralBenign)))
             {
-                weight = 110; // 10% more
+                weight = 110;
             }
 
             for (int i = 0; i < weight; i++)
@@ -275,7 +269,7 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
             return false;
 
         var winMode = OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode;
-        if (winMode == BountyHunterWinMode.WinWithWinners)
+        if (winMode == BountyHunterWinMode.LeavesInVictory)
             return true;
 
         return BountyHunterSystem.GameEndedByBH;
@@ -291,17 +285,48 @@ public sealed class BountyHunterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITown
         if (player?.Data?.Role is BountyHunterRole bh)
         {
             bh.HasWon = true;
+            bh.ClearArrowModifiers();
 
-            if (player.AmOwner)
+            if (OptionGroupSingleton<BountyHunterOptions>.Instance.WinMode == BountyHunterWinMode.LeavesInVictory)
             {
-                DeathHandlerModifier.RpcUpdateLocalDeathHandler(
-                    player,
-                    "DiedToWinning",
-                    TownOfUs.Events.DeathEventHandlers.CurrentRound,
-                    DeathHandlerOverride.SetFalse,
-                    lockInfo: DeathHandlerOverride.SetTrue);
-                player.RpcPlayerExile();
+                ShowLeavesInVictoryNotification(player);
+
+                if (player.AmOwner)
+                {
+                    DeathHandlerModifier.RpcUpdateLocalDeathHandler(
+                        player,
+                        "DiedToWinning",
+                        TownOfUs.Events.DeathEventHandlers.CurrentRound,
+                        DeathHandlerOverride.SetFalse,
+                        killedBy: player,
+                        lockInfo: DeathHandlerOverride.SetTrue);
+                    player.RpcPlayerExile();
+                }
             }
+        }
+    }
+
+    private static void ShowLeavesInVictoryNotification(PlayerControl player)
+    {
+        var text = player.AmOwner
+            ? TouLocale.Get("ExtensionBHLeavesInVictorySelf",
+                "You completed every bounty and left victorious!")
+            : TouLocale.Get("ExtensionBHLeavesInVictoryOthers",
+                "The Bounty Hunter, <player>, completed every bounty and left victorious!")
+                .Replace("<player>", player.Data.PlayerName);
+
+        try
+        {
+            var notif = Helpers.CreateAndShowNotification(
+                $"<b>{text}</b>",
+                Color.white,
+                new Vector3(0f, 1f, -20f),
+                spr: TouExtensionIcons.BountyHunterRoleIcon.LoadAsset());
+            notif?.AdjustNotification();
+        }
+        catch
+        {
+            HudManager.Instance?.Notifier.AddDisconnectMessage(text);
         }
     }
 

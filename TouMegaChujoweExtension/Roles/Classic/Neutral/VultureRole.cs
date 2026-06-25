@@ -170,17 +170,14 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
     {
         if (sender == null) return;
 
-        // Find body
         var body = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == bodyId);
         if (body == null)
         {
-            // Try fallback
             body = TimeLordBodyManager.FindDeadBodyIncludingInactive(bodyId);
         }
 
         if (body == null) return;
 
-        // Update count for Vulture
         if (sender.Data?.Role is VultureRole role)
         {
             role.BodiesEaten++;
@@ -196,7 +193,6 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
 
         Coroutines.Start(CoSafeClean(body, cleanDuration, sender));
 
-        // Win condition check (only for host or owner)
         if (sender.AmOwner || (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost))
         {
             CheckWinConditionFor(sender);
@@ -215,7 +211,6 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
             MiscUtils.RemovePet(bodyPlayer);
         }
 
-        // Fade out
         if (duration > 0f && body.bodyRenderers != null && body.bodyRenderers.Length > 0)
         {
             var renderer = body.bodyRenderers[^1];
@@ -227,7 +222,6 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
             }
         }
 
-        // Definitive removal
         if (body == null || body.gameObject == null) yield break;
         body.gameObject.SetActive(false);
 
@@ -278,23 +272,7 @@ public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
             return;
         }
 
-
         var options = OptionGroupSingleton<VultureOptions>.Instance;
         VultureSystem.StartScavenge(Vulture.PlayerId, options.ScavengeDuration.Value);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

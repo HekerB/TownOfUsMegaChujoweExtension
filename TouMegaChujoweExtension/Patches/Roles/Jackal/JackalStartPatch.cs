@@ -90,7 +90,7 @@ public static class JackalStartPatch
         WasExecuted = true;
         UnityEngine.Debug.Log("[TOUMCE] Starting sidekick assignment...");
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.2f);
 
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost || GameManager.Instance == null)
         {

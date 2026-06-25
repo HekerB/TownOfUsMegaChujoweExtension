@@ -16,6 +16,7 @@ using TownOfUs.Modules.Wiki;
 using TownOfUs.Networking;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
+using TouMegaChujoweExtension.Modules;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
@@ -105,14 +106,12 @@ public sealed class KamikazeRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         var pos = kamikaze.transform.position;
         var localPlayer = PlayerControl.LocalPlayer;
 
-        // Show sphere only for impostors
         if (localPlayer != null && localPlayer.IsImpostorAligned())
         {
             var sphere = CreateRadiusSphere(pos, opts.DetonateRadius, alpha: 0.35f);
             Coroutines.Start(CoDestroySphere(sphere));
         }
 
-        // Play sound for kamikaze and players in radius
         if (localPlayer != null)
         {
             var isKamikaze = localPlayer.PlayerId == kamikaze.PlayerId;
@@ -124,7 +123,6 @@ public sealed class KamikazeRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
             }
         }
 
-        // Only host processes kills
         if (!AmongUsClient.Instance.AmHost)
         {
             return;
@@ -136,6 +134,8 @@ public sealed class KamikazeRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         }
 
         var maxKills = (int)opts.MaxKills;
+
+        JokerCloneSystem.TriggerClonesInRadius(kamikaze, pos, radius);
 
         var victims = PlayerControl.AllPlayerControls.ToArray()
             .Where(p => p != null
@@ -189,18 +189,3 @@ public sealed class KamikazeRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         sphere?.Destroy();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

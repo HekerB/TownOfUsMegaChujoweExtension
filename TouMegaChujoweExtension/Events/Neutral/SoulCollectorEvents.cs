@@ -85,12 +85,38 @@ public static class SoulCollectorEvents
             ShowSoulCollectedFeedback(victim);
         }
 
-        if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost || soulCollector.AmOwner)
+        if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost)
         {
-            SoulCollectorRole.RpcSetSouls(soulCollector, soulCollectorRole.SoulsCollected + 1);
-            victim.RemoveModifier<SoulReapedModifier>();
-            TryTransformIfReady(soulCollector);
+            CollectDeadReapedTargets(soulCollector, soulCollectorRole);
         }
+        else if (soulCollector.AmOwner)
+        {
+            victim.RemoveModifier<SoulReapedModifier>();
+        }
+    }
+
+    private static void CollectDeadReapedTargets(PlayerControl soulCollector, SoulCollectorRole soulCollectorRole)
+    {
+        var deadReapedTargets = PlayerControl.AllPlayerControls.ToArray()
+            .Where(player => player != null &&
+                             player.HasDied() &&
+                             player.TryGetModifier<SoulReapedModifier>(out var modifier) &&
+                             modifier.SoulCollectorId == soulCollector.PlayerId)
+            .ToArray();
+
+        if (deadReapedTargets.Length == 0)
+        {
+            return;
+        }
+
+        SoulCollectorRole.RpcSetSouls(soulCollector, soulCollectorRole.SoulsCollected + deadReapedTargets.Length);
+
+        foreach (var target in deadReapedTargets)
+        {
+            target.RemoveModifier<SoulReapedModifier>();
+        }
+
+        TryTransformIfReady(soulCollector);
     }
 
     private static void GrantPassiveSouls()
@@ -140,7 +166,7 @@ public static class SoulCollectorEvents
             return;
         }
 
-        var soulsNeeded = (int)OptionGroupSingleton<SoulCollectorOptions>.Instance.SoulGoal;
+        var soulsNeeded = SoulCollectorRole.GetEffectiveSoulGoal(soulCollector);
         if (soulsNeeded > 0 && soulCollectorRole.SoulsCollected >= soulsNeeded)
         {
             SoulCollectorRole.RpcTransformToDeath(soulCollector);
@@ -153,13 +179,11 @@ public static class SoulCollectorEvents
         PlayerControl.LocalPlayer.AddModifier<SoulDeathArrowModifier>(victim.transform.position);
 
         var victimName = $"{TouExtensionColors.SoulCollector.ToTextColor()}{victim.Data.PlayerName}</color>";
-        var notif = Helpers.CreateAndShowNotification(
+        RoleAlertUtils.ShowRoleAlert(
             TouLocale.Get("ExtensionRoleSoulCollectorMarkedDiedNotif", "{0}'s soul has been collected!")
                 .Replace("{0}", victimName),
             Color.white,
-            new Vector3(0f, 1f, -20f),
-            spr: TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
-        notif?.AdjustNotification();
+            TouExtensionIcons.SoulCollectorRoleIcon.LoadAsset());
     }
 
     [RegisterEvent(100)]
@@ -203,7 +227,7 @@ public static class SoulCollectorEvents
         var source = PlayerControl.LocalPlayer;
         var target = button?.Target;
 
-        if (target == null || !button.CanClick()) return;
+        if (button == null || target == null || !button.CanClick()) return;
         if (source == null) return;
         if (target.PlayerId == source.PlayerId) return;
         if (MeetingHud.Instance || ExileController.Instance) return;

@@ -15,7 +15,7 @@ using TouMegaChujoweExtension.Modules;
 
 namespace TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
-public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
+public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>, IDiseaseableButton
 {
     private const float CancelLockDuration = 2f;
     public override string Name => TouLocale.GetParsed("ExtensionRoleSniperShoot", "Snipe");
@@ -28,6 +28,11 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
     public override bool ZeroIsInfinite { get; set; } = true;
 
     private IEnumerator? _activeZoomCoroutine;
+
+    public void SetDiseasedTimer(float multiplier)
+    {
+        SetTimer(Cooldown * multiplier);
+    }
 
     public override void CreateButton(Transform parent)
     {
@@ -61,6 +66,7 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.HasDied()) return false;
         if (player.inVent) return false;
+        if (PelicanSystem.IsSwallowed(player.PlayerId)) return false;
 
         if (SniperSystem.IsAiming)
         {
@@ -94,7 +100,7 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
             return;
         }
 
-        if (playerControl == null || !playerControl.IsRole<SniperRole>())
+        if (playerControl == null || !playerControl.IsRole<SniperRole>() || PelicanSystem.IsSwallowed(playerControl.PlayerId))
         {
             ClearOutline();
             if (_isAimingLocal) EndAiming(false);
@@ -128,7 +134,10 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
                         Button.SetDisabled();
                     }
                     Button.SetFillUp(_aimTimer, _aimDuration);
-                    Button.cooldownTimerText.text = Mathf.CeilToInt(_aimTimer).ToString();
+                    var format = _aimTimer <= 10f && MiraAPI.LocalSettings.LocalSettingsTabSingleton<TownOfUs.TownOfUsLocalSettings>.Instance.PreciseCooldownsToggle.Value
+                        ? "0.0"
+                        : "0";
+                    Button.cooldownTimerText.text = _aimTimer.ToString(format, System.Globalization.NumberFormatInfo.InvariantInfo);
                     Button.cooldownTimerText.gameObject.SetActive(true);
                 }
 
@@ -142,6 +151,7 @@ public sealed class SniperShootButton : TownOfUsRoleButton<SniperRole>
                     {
                         if (pc == null || pc.Data.IsDead || pc.PlayerId == playerControl.PlayerId) continue;
                         if (pc.IsImpostorAligned()) continue;
+                        if (PelicanSystem.IsSwallowed(pc.PlayerId)) continue;
                         if (Vector2.Distance(mouseWorldPos, pc.transform.position) < minClickDist)
                         {
                             mouseTarget = pc;

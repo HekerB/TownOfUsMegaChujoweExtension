@@ -3,6 +3,7 @@ using MiraAPI.Hud;
 using MiraAPI.Keybinds;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
+using TownOfUs.Assets;
 using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Roles.Crewmate;

@@ -86,11 +86,9 @@ public sealed class PoisonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         PoisonSystem.StartVine(poisoner.PlayerId, targetId);
     }
 
-    // Kept for ExtensionRpc enum compatibility — no longer used for killing
     [MethodRpc((uint)ExtensionRpc.PoisonerKillTarget)]
     public static void RpcPoisonKill(PlayerControl poisoner, byte targetId)
     {
-        // Kill is now handled by RpcSpecialMurder in PoisonSystem.ExecuteKill
     }
 
     [MethodRpc((uint)ExtensionRpc.PoisonerCleanse)]
@@ -99,19 +97,3 @@ public sealed class PoisonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfU
         PoisonSystem.CleanseTarget(targetId);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
