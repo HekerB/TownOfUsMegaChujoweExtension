@@ -11,11 +11,11 @@ namespace TouMiraRolesExtension.Patches;
 /// <summary>
 /// Patch to make spellbound players' names purple for everyone after first meeting if they have meetings left.
 /// </summary>
-[HarmonyPatch(typeof(PlayerRoleTextExtensions), nameof(PlayerRoleTextExtensions.UpdateTargetColor))]
+[HarmonyPatch(typeof(PlayerRoleTextExtensions), nameof(PlayerRoleTextExtensions.UpdateTargetColor), typeof(Color), typeof(PlayerControl), typeof(DataVisibility))]
 public static class WitchSpellboundColorPatch
 {
     [HarmonyPostfix]
-    public static void UpdateTargetColorPostfix(ref Color __result, PlayerControl player, bool hidden = false)
+    public static void UpdateTargetColorPostfix(ref Color __result, PlayerControl player, DataVisibility visibility)
     {
         if (player == null || !player.HasModifier<WitchSpellboundModifier>())
         {

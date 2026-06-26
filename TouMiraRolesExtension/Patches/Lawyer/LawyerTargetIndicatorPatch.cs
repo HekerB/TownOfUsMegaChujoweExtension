@@ -21,18 +21,19 @@ namespace TouMiraRolesExtension.Patches;
 /// <summary>
 /// Patch to add target indicator for lawyer's client (similar to executioner target indicator).
 /// </summary>
-[HarmonyPatch(typeof(PlayerRoleTextExtensions), nameof(PlayerRoleTextExtensions.UpdateTargetSymbols))]
+[HarmonyPatch(typeof(PlayerRoleTextExtensions), nameof(PlayerRoleTextExtensions.UpdateTargetSymbols), typeof(string), typeof(PlayerControl), typeof(DataVisibility))]
 public static class LawyerTargetIndicatorPatch
 {
     private const string Symbol = "§";
 
     [HarmonyPostfix]
-    public static void UpdateTargetSymbolsPostfix(ref string __result, PlayerControl player, bool hidden = false)
+    public static void UpdateTargetSymbolsPostfix(ref string __result, PlayerControl player, DataVisibility visibility)
     {
         if (PlayerControl.LocalPlayer == null)
         {
             return;
         }
+        var hidden = visibility == DataVisibility.Hidden;
 
         var genOpt = OptionGroupSingleton<GeneralOptions>.Instance;
         var localPlayer = PlayerControl.LocalPlayer;
@@ -61,7 +62,7 @@ public static class LawyerTargetIndicatorPatch
         }
 
         // Dead players should see ALL lawyer/client relationships
-        if (localPlayer.HasDied() && genOpt != null && genOpt.TheDeadKnow && !hidden)
+        if (localPlayer.HasDied() && genOpt.TheDeadKnow && !hidden)
         {
             // Check if the player being displayed is a lawyer (has a client)
             var isLawyer = player.IsRole<LawyerRole>();

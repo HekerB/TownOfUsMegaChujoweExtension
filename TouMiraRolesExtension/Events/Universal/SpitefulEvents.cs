@@ -13,6 +13,7 @@ using Reactor.Utilities;
 using Reactor.Utilities.Extensions;
 using TouMiraRolesExtension.Modifiers.Universal;
 using TouMiraRolesExtension.Options.Modifiers;
+using TownOfUs;
 using TownOfUs.Buttons;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Utilities;
@@ -253,15 +254,15 @@ public static class SpitefulEvents
             SpitefulEffectType.LowerVision => TouLocale.GetParsed(
                 "ExtensionModifierSpitefulEffectLowerVisionDescription",
                 $"Your vision is reduced by {impactPercent}%",
-                new Dictionary<string, string> { { "<impact>", impactPercent.ToString() } }),
+                new Dictionary<string, string> { { "<impact>", impactPercent.ToString(TownOfUsPlugin.Culture) } }),
             SpitefulEffectType.Slowness => TouLocale.GetParsed(
                 "ExtensionModifierSpitefulEffectSlownessDescription",
                 $"Your speed is reduced by {impactPercent}%",
-                new Dictionary<string, string> { { "<impact>", impactPercent.ToString() } }),
+                new Dictionary<string, string> { { "<impact>", impactPercent.ToString(TownOfUsPlugin.Culture) } }),
             SpitefulEffectType.IncreasedCooldowns => TouLocale.GetParsed(
                 "ExtensionModifierSpitefulEffectIncreasedCooldownsDescription",
                 $"Your ability cooldowns are increased by {impactPercent}%",
-                new Dictionary<string, string> { { "<impact>", impactPercent.ToString() } }),
+                new Dictionary<string, string> { { "<impact>", impactPercent.ToString(TownOfUsPlugin.Culture) } }),
             _ => string.Empty
         };
     }

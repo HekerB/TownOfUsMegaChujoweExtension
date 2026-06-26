@@ -46,11 +46,11 @@ public static class InjectorEvents
             InjectionId = Guid.NewGuid()
         };
 
-        if (!PendingInjections.ContainsKey(target.PlayerId))
+        if (!PendingInjections.TryGetValue(target.PlayerId, out var pendingInjection))
         {
-            PendingInjections[target.PlayerId] = new List<PendingInjection>();
+            pendingInjection = new List<PendingInjection>();
         }
-        PendingInjections[target.PlayerId].Add(pending);
+        pendingInjection.Add(pending);
         Coroutines.Start(CoApplyInjection(pending));
     }
 
@@ -60,10 +60,10 @@ public static class InjectorEvents
 
         if (pending.Target == null || pending.Target.HasDied() || pending.Injector == null || pending.Injector.HasDied())
         {
-            if (PendingInjections.ContainsKey(pending.Target.PlayerId))
+            if (pending.Target != null && PendingInjections.TryGetValue(pending.Target.PlayerId, out var pendingInjection))
             {
-                PendingInjections[pending.Target.PlayerId].RemoveAll(p => p.InjectionId == pending.InjectionId);
-                if (PendingInjections[pending.Target.PlayerId].Count == 0)
+                pendingInjection.RemoveAll(p => p.InjectionId == pending.InjectionId);
+                if (pendingInjection.Count == 0)
                 {
                     PendingInjections.Remove(pending.Target.PlayerId);
                 }
@@ -73,10 +73,10 @@ public static class InjectorEvents
 
         ApplyInjectionEffect(pending.Injector, pending.Target, pending.InjectionId);
         
-        if (PendingInjections.ContainsKey(pending.Target.PlayerId))
+        if (PendingInjections.TryGetValue(pending.Target.PlayerId, out var pendingInjection2))
         {
-            PendingInjections[pending.Target.PlayerId].RemoveAll(p => p.InjectionId == pending.InjectionId);
-            if (PendingInjections[pending.Target.PlayerId].Count == 0)
+            pendingInjection2.RemoveAll(p => p.InjectionId == pending.InjectionId);
+            if (pendingInjection2.Count == 0)
             {
                 PendingInjections.Remove(pending.Target.PlayerId);
             }
@@ -233,22 +233,6 @@ public static class InjectorEvents
                 }
             }
         }
-
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (player == null || player.HasDied())
-            {
-                continue;
-            }
-
-            if (player.HasModifier<InjectedInvertedControlsModifier>() ||
-                player.HasModifier<InjectedLowVisionModifier>() ||
-                player.HasModifier<InjectedVeryLowVisionModifier>() ||
-                player.HasModifier<InjectedSlownessModifier>() ||
-                player.HasModifier<InjectedConfusedModifier>())
-            {
-            }
-        }
     }
 
     [RegisterEvent]
@@ -292,7 +276,7 @@ public static class InjectorEvents
         }
     }
 
-    private class PendingInjection
+    private sealed class PendingInjection
     {
         public PlayerControl? Injector { get; set; }
         public PlayerControl? Target { get; set; }

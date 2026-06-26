@@ -386,6 +386,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         }
     }
 
+    [HideFromIl2Cpp]
     private IEnumerator ScaleObjectionButton()
     {
         yield return new WaitForSeconds(0.1f);
@@ -427,6 +428,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         }
     }
 
+    [HideFromIl2Cpp]
     private IEnumerator UpdateObjectionButton()
     {
         while (MeetingHud.Instance != null)

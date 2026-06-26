@@ -18,6 +18,7 @@ using Reactor.Utilities;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Components;
 using TownOfUs.Modules.TimeLord;
+using TownOfUs.Options;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Impostor;
@@ -168,27 +169,21 @@ public sealed class ScavengerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfU
         var optionEnabled = OptionGroupSingleton<TimeLordOptions>.Instance.UncleanBodiesOnRewind;
         var shouldRecord = isHost ? optionEnabled : (optionEnabled || TimeLordRewindSystem.MatchHasTimeLord());
 
-        var bodyPlayer = MiscUtils.PlayerById(bodyId);
-        if (bodyPlayer != null)
-        {
-            MiscUtils.RemovePet(bodyPlayer);
-        }
+        var destroyBody = (BodyVitalsMode)OptionGroupSingleton<GameMechanicOptions>.Instance.CleanedBodiesAppearance.Value;
 
         if (shouldRecord)
         {
+            var bodyPlayer = MiscUtils.PlayerById(bodyId);
             if (bodyPlayer != null)
             {
                 TownOfUs.Events.Crewmate.TimeLordEventHandlers.RecordBodyCleaned(scavenger, body, body.transform.position, 
                     TimeLordBodyManager.CleanedBodySource.Janitor);
             }
-            Coroutines.Start(TimeLordBodyManager.CoHideBodyForTimeLord(body));
+            Coroutines.Start(TimeLordBodyManager.CoHideBodyForTimeLord(body, destroyBody));
         }
-        else
+        else if (isHost)
         {
-            if (isHost)
-            {
-                GameObject.Destroy(body);
-            }
+            Coroutines.Start(body.CoCleanCustom(destroyBody));
         }
         Coroutines.Start(CrimeSceneComponent.CoClean(body));
 
