@@ -12,10 +12,10 @@ public sealed class SpitefulEffectModifier : BaseModifier, IVisualAppearance
     public override bool HideOnUi => false;
     public override bool Unique => true; // Prevent duplicate modifiers
 
-    private SpitefulEffectType _effectType;
-    private SpitefulDurationType _durationType;
+    private readonly SpitefulEffectType _effectType;
+    private readonly SpitefulDurationType _durationType;
     private int _roundsRemaining;
-    private float _impact;
+    private readonly float _impact;
 
     public SpitefulEffectModifier(SpitefulEffectType effectType, SpitefulDurationType durationType, int rounds, float impact)
     {

@@ -20,8 +20,8 @@ public sealed class InjectedNauseaModifier : TimedModifier, IVisualAppearance, I
     public override bool HideOnUi => true;
     public override LoadableAsset<Sprite>? ModifierIcon => null;
 
-    private float _duration;
-    private InjectorEffectDurationType _durationType;
+    private readonly float _duration;
+    private readonly InjectorEffectDurationType _durationType;
     private IEnumerator? _cameraShakeCoroutine;
     private Quaternion _originalCameraRotation;
 

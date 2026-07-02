@@ -28,11 +28,12 @@ public static class CluelessIntroInfoPatch
     [HarmonyPostfix]
     public static void RunModChecksPostfix()
     {
+        var option = OptionGroupSingleton<InitialRoundOptions>.Instance.ModifierReveal;
         var uniModifier = PlayerControl.LocalPlayer
             .GetModifiers<UniversalGameModifier>()
             .FirstOrDefault();
 
-        if (uniModifier is CluelessModifier)
+        if (uniModifier is CluelessModifier && option is ModReveal.Universal)
         {
             var modifierText = ModifierTextField?.GetValue(null) as TextMeshPro;
 

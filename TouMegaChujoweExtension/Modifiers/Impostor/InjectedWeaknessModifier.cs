@@ -15,8 +15,8 @@ public sealed class InjectedWeaknessModifier : TimedModifier, IVisualAppearance,
     public override bool HideOnUi => true;
     public override LoadableAsset<Sprite>? ModifierIcon => null;
 
-    private float _duration;
-    private InjectorEffectDurationType _durationType;
+    private readonly float _duration;
+    private readonly InjectorEffectDurationType _durationType;
 
     public InjectedWeaknessModifier(float duration, InjectorEffectDurationType durationType)
     {

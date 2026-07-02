@@ -16,8 +16,8 @@ public sealed class InjectedNoReportModifier : DisabledModifier, IInjectedModifi
     public override LoadableAsset<Sprite>? ModifierIcon => null;
     public override bool CanReport => false;
 
-    private float _duration;
-    private InjectorEffectDurationType _durationType;
+    private readonly float _duration;
+    private readonly InjectorEffectDurationType _durationType;
 
     public InjectedNoReportModifier(float duration, InjectorEffectDurationType durationType)
     {
