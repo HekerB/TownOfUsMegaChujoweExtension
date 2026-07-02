@@ -410,7 +410,7 @@ public static class DraftLobbyPatch
     {
         if (DraftSystem.IsEnabled && _draftCompletedWaitingForStart)
         {
-            
+
             __instance.countDownTimer = 0f;
             CleanupUI();
         }
@@ -481,7 +481,7 @@ public static class DraftLobbyPatch
             var biasPercent = options.ReductionChance.Value / 100f;
             var random = new System.Random();
 
-            
+
             HashSet<byte> lastImps = new(DraftSystem.LastImpostorIds);
             try
             {
@@ -511,7 +511,7 @@ public static class DraftLobbyPatch
 
             while (impostors.Count < impostorCount && (remainingPlayers.Count > 0 || skippedPlayers.Count > 0))
             {
-                
+
                 if (remainingPlayers.Count == 0)
                 {
                     remainingPlayers.AddRange(skippedPlayers);
@@ -527,7 +527,7 @@ public static class DraftLobbyPatch
 
                 if (shouldSkip)
                 {
-                    
+
                     skippedPlayers.Add(playerId);
                     remainingPlayers.RemoveAt(num);
                     continue;
@@ -1085,7 +1085,7 @@ public static class DraftLobbyPatch
         var titleText = CreateTMP("DraftTitle", _draftContainer.transform,
             new Vector3(2.23f, 2.15f, -510f), 1.8f, TextAlignmentOptions.Center, true);
 
-        
+
         _titleRandomOffset = UnityEngine.Random.Range(0f, 60f);
         int cycle = (int)((Time.time + _titleRandomOffset) / 20f) % 3;
         string startAuthor = cycle switch
@@ -1247,7 +1247,7 @@ public static class DraftLobbyPatch
             var tmps = new List<(TextMeshPro, Color)>();
             foreach (var tmp in obj.GetComponentsInChildren<TextMeshPro>(true)) tmps.Add((tmp, tmp.color));
 
-            
+
             Vector2 dir = (new Vector2(obj.transform.localPosition.x, obj.transform.localPosition.y) - new Vector2(2.2f, 0f)).normalized;
             if (dir.magnitude < 0.1f) dir = Vector2.right;
             Vector3 vel = (Vector3)dir * UnityEngine.Random.Range(2f, 4f);
@@ -1305,7 +1305,7 @@ public static class DraftLobbyPatch
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
 
-            
+
             float eased;
             if (t < 0.5f)
             {
@@ -1350,7 +1350,7 @@ public static class DraftLobbyPatch
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
 
-            
+
             float eased = t < 0.6f
                 ? Mathf.Lerp(0f, 1.15f, 1f - Mathf.Pow(1f - (t / 0.6f), 3f))
                 : Mathf.Lerp(1.15f, 1f, (t - 0.6f) / 0.4f);
@@ -1687,7 +1687,7 @@ public static class DraftLobbyPatch
             if (HudManager.Instance == null || HudManager.Instance.Chat == null) return;
             var chat = HudManager.Instance.Chat;
 
-            
+
             var player = PlayerControl.LocalPlayer;
             if (player == null) return;
 
@@ -1777,7 +1777,7 @@ public static class DraftLobbyPatch
 
         if (HudManager.Instance != null)
         {
-            
+
             var namesToHide = new[] { "GameSettings", "RoleListRegion", "SetRoleList", "PlayerCounter" };
             foreach (var name in namesToHide)
             {
@@ -1869,7 +1869,7 @@ public static class DraftLobbyPatch
     {
         _pickLocked = true;
 
-        
+
         foreach (var obj in _roleButtonObjects)
         {
             if (obj != selected && obj != null && _buttonRefs.TryGetValue(obj, out var refs))
@@ -1900,12 +1900,14 @@ public static class DraftLobbyPatch
 
         var others = _roleButtonObjects.Where(obj => obj != selected && obj != null).ToList();
 
-        
+
         ButtonRefs? selectedRefs = null;
         Color selectedOrigBG = Color.white;
+        float selectedBaseScale = 1.0f;
         if (selected != null && _buttonRefs.TryGetValue(selected, out selectedRefs))
         {
             selectedOrigBG = selectedRefs.BG.color;
+            selectedBaseScale = selectedRefs.BaseScale;
         }
 
         while (elapsed < duration)
@@ -1914,17 +1916,17 @@ public static class DraftLobbyPatch
             float t = Mathf.Clamp01(elapsed / duration);
             float eased = t * t * (3f - 2f * t);
 
-            
+
             if (selected != null && selectedRefs != null)
             {
-                
+
                 float punch;
-                if (t < 0.3f) punch = Mathf.Lerp(1.0f, 1.22f, t / 0.3f);
-                else punch = Mathf.Lerp(1.22f, 1.06f, (t - 0.3f) / 0.7f);
+                if (t < 0.3f) punch = Mathf.Lerp(1.0f, 1.22f, t / 0.3f) * selectedBaseScale;
+                else punch = Mathf.Lerp(1.22f, 1.06f, (t - 0.3f) / 0.7f) * selectedBaseScale;
 
                 selected.transform.localScale = new(punch, punch, 1f);
 
-                
+
                 if (t < 0.2f)
                 {
                     float flash = 1f - (t / 0.2f);
@@ -1935,15 +1937,15 @@ public static class DraftLobbyPatch
                     selectedRefs.BG.color = selectedOrigBG;
                 }
 
-                
+
                 if (selectedRefs.Border != null)
                 {
-                    
+
                     selectedRefs.Border.color = Color.Lerp(Color.white, new(1f, 0.9f, 0.2f, 1f), eased);
                 }
             }
 
-            
+
             float otherAlpha = Mathf.Lerp(1f, 0.45f, t * 2f);
             float otherScale = Mathf.Lerp(1f, 0.92f, t);
 
@@ -1952,9 +1954,10 @@ public static class DraftLobbyPatch
                 if (obj == null) continue;
                 if (!_buttonRefs.TryGetValue(obj, out var refs)) continue;
 
-                obj.transform.localScale = new(otherScale, otherScale, 1f);
+                float finalOtherScale = otherScale * refs.BaseScale;
+                obj.transform.localScale = new(finalOtherScale, finalOtherScale, 1f);
 
-                
+
                 Color grayBase = new(0.25f, 0.25f, 0.25f, 1f);
                 if (refs.BG != null)
                 {
@@ -1971,10 +1974,11 @@ public static class DraftLobbyPatch
             yield return null;
         }
 
-        
+
         if (selected != null && selectedRefs != null)
         {
-            selected.transform.localScale = new Vector3(1.06f, 1.06f, 1f);
+            float finalScale = 1.06f * selectedBaseScale;
+            selected.transform.localScale = new Vector3(finalScale, finalScale, 1f);
             if (selectedRefs.Border != null) selectedRefs.Border.color = new Color(1f, 0.9f, 0.2f, 1f);
         }
     }
@@ -2727,7 +2731,7 @@ public static class DraftLobbyPatch
     {
         if (icon == null) yield break;
 
-        
+
         float normScale = 0.45f;
         foreach (var refs in _buttonRefs.Values)
         {
@@ -2813,7 +2817,7 @@ public static class DraftLobbyPatch
             var clip = obj.Cast<AudioClip>();
             string n = clip.name.ToLower(System.Globalization.CultureInfo.InvariantCulture);
 
-            
+
             if (n.Contains("rollover") || n.Contains("buttonhover") || n.Contains("ui_hover"))
             {
                 _hoverSoundClip = clip;
@@ -2916,7 +2920,7 @@ public static class DraftLobbyPatch
         {
             if (_draftTitleText == null) yield break;
 
-            
+
             int cycle = (int)((Time.time + _titleRandomOffset) / interval) % 3;
             string currentText = _draftTitleText.text;
             string targetAuthor = cycle switch
@@ -2927,14 +2931,14 @@ public static class DraftLobbyPatch
                 _ => "HEKER"
             };
 
-            
+
             if (!currentText.Contains(targetAuthor))
             {
                 float duration = 0.8f;
                 float elapsed = 0f;
                 var origColor = _draftTitleText.color;
 
-                
+
                 while (elapsed < duration)
                 {
                     if (_draftTitleText == null) yield break;
@@ -2950,7 +2954,7 @@ public static class DraftLobbyPatch
                     $"{Localize("ExtensionDraftModeBy", "BY")} {targetAuthor}";
                 elapsed = 0f;
 
-                
+
                 while (elapsed < duration)
                 {
                     if (_draftTitleText == null) yield break;
@@ -2977,7 +2981,7 @@ public static class DraftLobbyPatch
 
     private static System.Collections.IEnumerator CoStartAfterDelay()
     {
-        
+
         yield return new WaitForSeconds(1.8f);
 
         var gsm = Object.FindObjectOfType<GameStartManager>();
@@ -3323,8 +3327,6 @@ public static class DraftLobbyPatch
         CleanupUI(!_suppressHudDuringGameStart);
         _suppressHudDuringGameStart = false;
         SetDraftHudChromeVisible(true);
-        _hideChatUntilTime = Time.time + 8f;
-        SetDraftChatVisible(false);
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnDisconnected))]
@@ -3358,7 +3360,7 @@ public static class DraftLobbyPatch
     [HarmonyPrefix]
     public static bool ChatControllerUpdatePrefix(ChatController __instance)
     {
-        if (_suppressHudDuringGameStart || (_hideChatUntilTime > 0f && Time.time < _hideChatUntilTime))
+        if (_suppressHudDuringGameStart)
         {
             try { __instance.SetVisible(false); } catch { /* best effort */ }
             return false;

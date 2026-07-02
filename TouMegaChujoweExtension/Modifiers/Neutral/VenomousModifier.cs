@@ -1,6 +1,7 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Interfaces;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;

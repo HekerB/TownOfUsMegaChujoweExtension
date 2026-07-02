@@ -9,7 +9,7 @@ public sealed class LuckyModifierOptions : AbstractOptionGroup<LuckyModifier>
 {
     public override string GroupName => "Lucky";
     public override Color GroupColor => new Color32(214, 64, 66, 255);
-    public override bool ShowInModifiersMenu => true;
+    public override MenuCategory ParentMenu => MenuCategory.Modifiers;
     public override uint GroupPriority => 30;
 
     public ModdedNumberOption LuckyMinCooldown { get; } =

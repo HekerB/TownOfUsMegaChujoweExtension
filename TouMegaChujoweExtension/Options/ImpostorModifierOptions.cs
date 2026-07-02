@@ -10,7 +10,7 @@ public sealed class ImpostorModifierOptions : AbstractOptionGroup
 {
     public override string GroupName => "Impostor Modifiers";
     public override Color GroupColor => Palette.ImpostorRoleHeaderRed;
-    public override bool ShowInModifiersMenu => true;
+    public override MenuCategory ParentMenu => MenuCategory.Modifiers;
     public override uint GroupPriority => 3;
 
     [ModdedNumberOption("ExtensionModifierLuckyAmount", 0, 15)]

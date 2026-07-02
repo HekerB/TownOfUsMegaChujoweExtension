@@ -12,7 +12,6 @@ public sealed class MayorExtensionOptions : AbstractOptionGroup
 {
     public override string GroupName => TownOfUs.Modules.Localization.TouLocale.Get("TOUMCEBetterRolePrefix") + TownOfUs.Modules.Localization.TouLocale.Get("Mayor");
     public override Color GroupColor => TownOfUsColors.Mayor;
-    public override bool ShowInModifiersMenu => false;
     public override MenuCategory ParentMenu => MenuCategory.CustomOne;
     public override uint GroupPriority => 104;
 

@@ -4,6 +4,7 @@ using MiraAPI.Modifiers;
 using Reactor.Utilities.Extensions;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using TouMegaChujoweExtension.Options.Modifiers.Crewmate;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Clueless;
 

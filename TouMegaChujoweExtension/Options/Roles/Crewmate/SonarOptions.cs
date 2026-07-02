@@ -17,7 +17,6 @@ public sealed class SonarExtendedOptions : AbstractOptionGroup
 {
     public override string GroupName => TownOfUs.Modules.Localization.TouLocale.Get("TOUMCEBetterRolePrefix") + TownOfUs.Modules.Localization.TouLocale.Get("Sonar");
     public override Color GroupColor => TownOfUsColors.Tracker;
-    public override bool ShowInModifiersMenu => false;
     public override MenuCategory ParentMenu => MenuCategory.CustomOne;
     public override uint GroupPriority => 106;
 

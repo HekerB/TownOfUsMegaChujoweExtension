@@ -12,7 +12,6 @@ public sealed class ForetellerExtensionOptions : AbstractOptionGroup
 {
     public override string GroupName => TouLocale.Get("TOUMCEBetterRolePrefix") + TouLocale.Get("TouRoleDoomsayer", "Foreteller");
     public override Color GroupColor => TownOfUsColors.Doomsayer;
-    public override bool ShowInModifiersMenu => false;
     public override MenuCategory ParentMenu => MenuCategory.CustomOne;
     public override uint GroupPriority => 103;
 

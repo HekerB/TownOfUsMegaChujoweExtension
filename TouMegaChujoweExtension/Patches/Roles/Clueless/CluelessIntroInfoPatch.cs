@@ -28,20 +28,20 @@ public static class CluelessIntroInfoPatch
     [HarmonyPostfix]
     public static void RunModChecksPostfix()
     {
-        var option = OptionGroupSingleton<InitialRoundOptions>.Instance.ModifierReveal;
-        var uniModifier = PlayerControl.LocalPlayer
-            .GetModifiers<UniversalGameModifier>()
+        var option = OptionGroupSingleton<InitialRoundOptions>.Instance.TeamModifierReveal;
+        var touModifier = PlayerControl.LocalPlayer
+            .GetModifiers<TouGameModifier>()
             .FirstOrDefault();
 
-        if (uniModifier is CluelessModifier && option is ModReveal.Universal)
+        if (touModifier is CluelessModifier && option)
         {
             var modifierText = ModifierTextField?.GetValue(null) as TextMeshPro;
 
             if (modifierText != null)
             {
                 var introBlurb = TouLocale.GetParsed("ExtensionModifierCluelessIntroBlurb");
-                modifierText.text = $"<size={uniModifier.IntroSize}>{introBlurb}</size>";
-                modifierText.color = MiscUtils.GetModifierColour(uniModifier);
+                modifierText.text = $"<size={touModifier.IntroSize}>{introBlurb}</size>";
+                modifierText.color = MiscUtils.GetModifierColour(touModifier);
             }
         }
     }

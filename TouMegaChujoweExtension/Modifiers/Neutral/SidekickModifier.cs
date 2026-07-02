@@ -2,6 +2,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Modifiers.Types;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers.Game;
+using TownOfUs.Modifiers;
 using UnityEngine;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Assets;
@@ -19,15 +20,17 @@ using System;
 using HarmonyLib;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
+using TownOfUs.Interfaces;
 
 namespace TouMegaChujoweExtension.Modifiers.Neutral;
 
-public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
+public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable, IColoredModifier
 {
     public override string ModifierName => "Recruit";
     public override bool HideOnUi => false;
     public override LoadableAsset<Sprite> ModifierIcon => TouExtensionIcons.SidekickModifierIcon;
     public override Color FreeplayFileColor => TouExtensionColors.Jackal;
+    public Color ModifierColor => TouExtensionColors.Jackal;
 
     public byte JackalId { get; set; } = 255;
     public bool HasBetrayed { get; set; } = true;
@@ -51,6 +54,8 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable
     public static string ShortName => TouLocale.Get("ExtensionModifierSidekickShortName");
 
     public override int GetAssignmentChance() => 0;
+    public override int CustomChance => 100;
+    public override int CustomAmount => 2;
 
     [HideFromIl2Cpp]
     public List<CustomButtonWikiDescription> Abilities => [];

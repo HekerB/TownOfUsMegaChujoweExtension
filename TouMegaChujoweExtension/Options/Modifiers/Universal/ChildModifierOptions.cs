@@ -9,7 +9,7 @@ public sealed class ChildModifierOptions : AbstractOptionGroup<ChildModifier>
 {
     public override string GroupName => "Child";
     public override Color GroupColor => new Color32(255, 140, 0, 255);
-    public override bool ShowInModifiersMenu => true;
+    public override MenuCategory ParentMenu => MenuCategory.Modifiers;
     public override uint GroupPriority => 53;
 
     public ModdedNumberOption StartingAge { get; } =

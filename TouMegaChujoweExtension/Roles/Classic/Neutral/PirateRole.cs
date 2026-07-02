@@ -143,10 +143,10 @@ public sealed class PirateRole(IntPtr cppPtr)
             {
                 DeathHandlerModifier.RpcUpdateLocalDeathHandler(
                     PlayerControl.LocalPlayer,
+                    PlayerControl.LocalPlayer,
                     "DiedToWinning",
                     DeathEventHandlers.CurrentRound,
                     DeathHandlerOverride.SetFalse,
-                    killedBy: PlayerControl.LocalPlayer,
                     lockInfo: DeathHandlerOverride.SetTrue);
                 PlayerControl.LocalPlayer.RpcPlayerExile();
             }

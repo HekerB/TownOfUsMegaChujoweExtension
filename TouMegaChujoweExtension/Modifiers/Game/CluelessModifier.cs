@@ -1,6 +1,7 @@
 using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Assets;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
@@ -8,10 +9,12 @@ using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;
 using UnityEngine;
+using TownOfUs.Extensions;
+using TouMegaChujoweExtension.Options;
 
 namespace TouMegaChujoweExtension.Modifiers.Game;
 
-public sealed class CluelessModifier : UniversalGameModifier, IWikiDiscoverable
+public sealed class CluelessModifier : TouGameModifier, IWikiDiscoverable
 {
     public override string LocaleKey => "Clueless";
     public override string ModifierName => TouLocale.Get($"ExtensionModifier{LocaleKey}");
@@ -26,26 +29,26 @@ public sealed class CluelessModifier : UniversalGameModifier, IWikiDiscoverable
     public string GetAdvancedDescription()
     {
         return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}WikiDescription")
-               + MiscUtils.AppendOptionsText(GetType());
+            + MiscUtils.AppendOptionsText(GetType());
     }
 
-    public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);
-    public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
+    public override Color FreeplayFileColor => new Color32(104, 172, 244, 255);
+    public override ModifierFaction FactionType => ModifierFaction.CrewmatePassive;
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
 
     public override int GetAssignmentChance()
     {
-        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.CluelessChance;
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.CluelessChance;
     }
 
     public override int GetAmountPerGame()
     {
-        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.CluelessAmount;
+        return (int)OptionGroupSingleton<CrewmateModifierOptions>.Instance.CluelessAmount;
     }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
     {
-        if (!base.IsModifierValidOn(role) || role is SnitchRole || role is ForestallerRole)
+        if (!base.IsModifierValidOn(role) || !role.IsCrewmate() || role is SnitchRole || role is ForestallerRole)
         {
             return false;
         }

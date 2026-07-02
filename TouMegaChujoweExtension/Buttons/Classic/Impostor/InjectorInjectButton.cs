@@ -162,7 +162,8 @@ public sealed class InjectorInjectButton : TownOfUsKillRoleButton<InjectorRole, 
             return;
         }
 
-        InjectorRole.RpcInjectorInject(player, Target);
+        var seed = UnityEngine.Random.RandomRange(int.MinValue, int.MaxValue);
+        InjectorRole.RpcInjectorInject(player, Target, seed);
         
         if (OptionGroupSingleton<InjectorOptions>.Instance.SharedCooldown)
         {

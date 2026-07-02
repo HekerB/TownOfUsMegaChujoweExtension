@@ -9,7 +9,7 @@ public sealed class DrunkModifierOptions : AbstractOptionGroup<DrunkModifier>
 {
     public override string GroupName => "Drunk";
     public override Color GroupColor => new Color32(64, 168, 100, 255);
-    public override bool ShowInModifiersMenu => true;
+    public override MenuCategory ParentMenu => MenuCategory.Modifiers;
     public override uint GroupPriority => 52;
 
     public ModdedNumberOption DrunkDuration { get; } =

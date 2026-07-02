@@ -11,7 +11,6 @@ public sealed class MirrorCasterExtensionOptions : AbstractOptionGroup
 {
     public override string GroupName => TouLocale.Get("TOUMCEBetterRolePrefix") + TouLocale.Get("Mirror Caster");
     public override Color GroupColor => TownOfUsColors.Mirrorcaster;
-    public override bool ShowInModifiersMenu => false;
     public override MenuCategory ParentMenu => MenuCategory.CustomOne;
     public override uint GroupPriority => 105;
 

@@ -56,7 +56,7 @@ public sealed class PelicanRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
     {
         CanUseVent = OptionGroupSingleton<PelicanOptions>.Instance.CanVent,
         Icon = TouExtensionIcons.PelicanRoleIcon,
-        IntroSound = TouAudio.PhantomIntroSound,
+        IntroSound = TouAudio.ScreamIntro,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
         OptionsScreenshot = TouBanners.NeutralRoleBanner,
     };
@@ -85,7 +85,7 @@ public sealed class PelicanRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
 
         return false;
     }
-	
+
     [HideFromIl2Cpp]
     private static bool CanPlayerThreatenPelican(PlayerControl player)
     {
@@ -208,4 +208,3 @@ public sealed class PelicanRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
         PelicanSystem.ReleaseAll(pelican.PlayerId);
     }
 }
-

@@ -8,6 +8,7 @@ using Reactor.Networking.Rpc;
 using Reactor.Utilities;
 using System.Collections;
 using TownOfUs.Interfaces;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;

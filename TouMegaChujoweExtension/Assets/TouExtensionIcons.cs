@@ -38,6 +38,8 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> SoulCollectorRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Soul_Role_Icon.png", 170f);
         public static LoadableAsset<Sprite> WarRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.War_Role_Icon.png", 200f);
         public static LoadableAsset<Sprite> InnocentRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Innocent_Role_Icon.png", 200f);
+        public static LoadableAsset<Sprite> DeathRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Death_Role_Icon.png", 200f);
+
         //impostors
         public static LoadableAsset<Sprite> OutlawRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Outlaw_Role_Icon.png", 180f);
         public static LoadableAsset<Sprite> HackerRole { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Hacker.Hacker_Role.png");
