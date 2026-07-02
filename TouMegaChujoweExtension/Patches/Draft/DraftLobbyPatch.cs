@@ -8,6 +8,7 @@ using Reactor.Utilities;
 using System.Collections.Generic;
 using TMPro;
 using TownOfUs.Modules.Localization;
+using TownOfUs.Roles;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine;
@@ -34,20 +35,24 @@ public static class DraftLobbyPatch
     private static GameObject? _randomButtonContainer;
     private static readonly System.Text.StringBuilder _playerListBuilder = new();
 
-    // === BUTTON REFS ===
     private sealed class ButtonRefs
     {
         public SpriteRenderer BG = null!;
         public SpriteRenderer Border = null!;
         public TextMeshPro Label = null!;
+        public TextMeshPro? SubLabel;
         public SpriteRenderer? Icon;
         public SpriteRenderer? RandomIcon;
         public float NormalizedScale;
+        public float BaseScale = 1.0f;
+        public Vector3 BasePosition;
+        public Quaternion BaseRotation;
     }
     private static readonly Dictionary<GameObject, ButtonRefs> _buttonRefs = [];
     private static readonly Dictionary<GameObject, System.Collections.IEnumerator> _hoverCoroutines = [];
     private static readonly Dictionary<GameObject, System.Collections.IEnumerator> _bounceCoroutines = [];
     private static readonly Dictionary<GameObject, float> _targetScales = [];
+    private static GameObject? _hoveredCard;
 
     // === STATE ===
     private static bool _draftInProgress;
@@ -61,6 +66,9 @@ public static class DraftLobbyPatch
     private static GameObject? _cancelButtonObj;
     private static GameObject? _forceStartButtonObj;
     private static bool _pickLocked;
+    private static bool _suppressHudDuringGameStart;
+    private static float _hideChatUntilTime;
+    private static bool? _lastHudChromeVisible;
     private static byte? _lastAlertedPicker;
     private static int _lastTimeLeftInt = -1;
     private static int _lastDotState = -1;
@@ -1066,6 +1074,8 @@ public static class DraftLobbyPatch
 
         StartDraftMusic();
         HideLobby(true);
+        SetDraftLobbyPanelsVisible(false);
+        SetDraftHudChromeVisible(false);
 
         _draftContainer = new GameObject("DraftContainer");
         _draftContainer.transform.SetParent(HudManager.Instance.transform);
@@ -1105,9 +1115,11 @@ public static class DraftLobbyPatch
         CreateMuteButton();
         CreateCancelButton();
         CreateForceStartButton();
+        TouMegaChujoweExtension.Buttons.Draft.DraftCancelButton.Show();
 
         _tooltipText = CreateTMP("DraftTooltip", _draftContainer.transform,
-            new Vector3(2.23f, -2.1f, -510f), 1.0f, TextAlignmentOptions.Top, true);
+            new Vector3(2.23f, -2.05f, -510f), 1.0f, TextAlignmentOptions.Bottom, true);
+        _tooltipText.rectTransform.pivot = new Vector2(0.5f, 0f);
         _tooltipText.rectTransform.sizeDelta = new Vector2(3.8f, 2f);
         _tooltipText.enableWordWrapping = true;
         _tooltipText.text = "";
@@ -1643,6 +1655,8 @@ public static class DraftLobbyPatch
 
     public static void ForceCancelDraft()
     {
+        _suppressHudDuringGameStart = false;
+        _hideChatUntilTime = 0f;
         CleanupUI();
         UnlockLobby();
         HideLobby(false);
@@ -1771,54 +1785,6 @@ public static class DraftLobbyPatch
                 t?.gameObject.SetActive(!hide);
             }
 
-            if (hide)
-            {
-                KeepTopRightButtonsVisible();
-            }
-        }
-    }
-
-    private static void KeepTopRightButtonsVisible()
-    {
-        var hud = HudManager.Instance;
-        if (hud == null)
-        {
-            return;
-        }
-
-        ShowHudGroup(hud.MapButton?.transform.parent?.gameObject);
-        ShowHudGroup(TownOfUs.Patches.HudManagerPatches.UiTopRight);
-        ShowHudGroup(TownOfUs.Patches.HudManagerPatches.ExtraUiTopRight);
-
-        if (GameSettingMenu.Instance == null && Minigame.Instance == null)
-        {
-            ShowHudGroup(hud.SettingsButton);
-            ShowHudGroup(TownOfUs.Patches.HudManagerPatches.WikiButton);
-        }
-    }
-
-    private static void ShowHudGroup(GameObject? group)
-    {
-        if (group == null)
-        {
-            return;
-        }
-
-        group.SetActive(true);
-        foreach (var renderer in group.GetComponentsInChildren<Renderer>(true))
-        {
-            renderer.enabled = true;
-        }
-    }
-
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    [HarmonyPostfix]
-    [HarmonyPriority(Priority.Last)]
-    public static void KeepDraftTopRightButtonsVisiblePostfix()
-    {
-        if (_draftInProgress || _draftCompletedWaitingForStart)
-        {
-            KeepTopRightButtonsVisible();
         }
     }
 
@@ -2031,15 +1997,52 @@ public static class DraftLobbyPatch
 
         if (roles == null || roles.Count == 0) return;
 
-        float xPos = 2.2f, startY = 1.0f, spacingY = 0.8f;
+        float xPos = 2.23f;
+        float startY = 1.0f;
         var useTwoColumns = roles.Count > 3;
-        var leftX = useTwoColumns ? 0.68f : xPos;
-        var rightX = 3.72f;
-        var displayedRows = roles.Count;
 
+        float baseScale = 1.0f;
+        float spacingY = 0.8f;
         if (useTwoColumns)
         {
-            if (roles.Count == 4)
+            if (roles.Count <= 6)
+            {
+                baseScale = 0.85f;
+                spacingY = 0.70f;
+                startY = 1.0f;
+            }
+            else if (roles.Count <= 8)
+            {
+                baseScale = 0.76f;
+                spacingY = 0.60f;
+                startY = 1.2f;
+            }
+            else
+            {
+                baseScale = 0.68f;
+                spacingY = 0.55f;
+                startY = 1.3f;
+            }
+        }
+        else
+        {
+            if (roles.Count == 3)
+            {
+                baseScale = 0.85f;
+                spacingY = 0.70f;
+                startY = 1.1f;
+            }
+        }
+
+        float center = 2.23f;
+        float offsetX = 1.34f * (useTwoColumns ? (baseScale / 0.78f) : 1.0f);
+        float leftX = center - offsetX;
+        float rightX = center + offsetX;
+
+        var displayedRows = roles.Count;
+        if (useTwoColumns)
+        {
+            if (roles.Count <= 4)
             {
                 displayedRows = 2;
             }
@@ -2076,25 +2079,37 @@ public static class DraftLobbyPatch
                     }
                     else
                     {
-                        buttonX = xPos;
+                        buttonX = center;
                         row = 2;
                     }
                 }
                 else
                 {
-                    int rowsPerColumn = Mathf.CeilToInt(roles.Count / 2f);
-                    buttonX = (i / rowsPerColumn == 0) ? leftX : rightX;
-                    row = i % rowsPerColumn;
+                    if (roles.Count % 2 != 0 && i == roles.Count - 1)
+                    {
+                        buttonX = center;
+                        row = i / 2;
+                    }
+                    else
+                    {
+                        buttonX = (i % 2 == 0) ? leftX : rightX;
+                        row = i / 2;
+                    }
                 }
             }
 
-            CreateRoleButton(buttonX, startY - row * spacingY, roles[i], false, isImp);
+            CreateRoleButton(buttonX, startY - row * spacingY, roles[i], false, isImp, baseScale);
         }
 
         var randomY = useTwoColumns
-            ? startY - displayedRows * spacingY - 0.15f
-            : startY - roles.Count * spacingY - 0.4f;
-        CreateRoleButton(xPos, randomY, null, true, isImp);
+            ? startY - displayedRows * spacingY - 0.15f * (baseScale / 0.78f)
+            : startY - roles.Count * spacingY - 0.4f * baseScale;
+        CreateRoleButton(center, randomY, null, true, isImp, baseScale);
+
+        if (_tooltipText != null)
+        {
+            _tooltipText.transform.localPosition = new Vector3(center, -2.05f, -510f);
+        }
 
         Coroutines.Start(AnimateButtonsIn());
 
@@ -2125,10 +2140,13 @@ public static class DraftLobbyPatch
         if (delay > 0) yield return new WaitForSeconds(delay);
         if (obj == null) yield break;
 
+        float baseScale = 1.0f;
+        if (_buttonRefs.TryGetValue(obj, out var refs))
+            baseScale = refs.BaseScale;
+
         float duration = 0.5f;
         float elapsed = 0f;
 
-        
         var renderers = obj.GetComponentsInChildren<SpriteRenderer>(true);
         var tmps = obj.GetComponentsInChildren<TextMeshPro>(true);
 
@@ -2143,7 +2161,6 @@ public static class DraftLobbyPatch
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
 
-            
             float eased;
             if (t < 0.6f)
             {
@@ -2157,7 +2174,8 @@ public static class DraftLobbyPatch
             }
 
             if (obj == null) yield break;
-            obj.transform.localScale = new Vector3(eased, eased, 1f);
+            float currentScale = eased * baseScale;
+            obj.transform.localScale = new Vector3(currentScale, currentScale, 1f);
 
             float alpha = Mathf.Clamp01(t * 2.5f);
             for (int i = 0; i < renderers.Length; i++)
@@ -2170,7 +2188,7 @@ public static class DraftLobbyPatch
 
         if (obj != null)
         {
-            obj.transform.localScale = Vector3.one;
+            obj.transform.localScale = new Vector3(baseScale, baseScale, 1f);
             for (int i = 0; i < renderers.Length; i++)
                 if (renderers[i] != null) renderers[i].color = rendererOrigColors[i];
             for (int i = 0; i < tmps.Length; i++)
@@ -2182,7 +2200,6 @@ public static class DraftLobbyPatch
     {
         if (obj == null) return;
 
-        
         if (_targetScales.TryGetValue(obj, out var currentTarget) && Mathf.Approximately(currentTarget, targetScale))
             return;
 
@@ -2199,13 +2216,17 @@ public static class DraftLobbyPatch
     private static System.Collections.IEnumerator CoAnimateButtonHover(GameObject obj, float targetScale, float duration)
     {
         if (obj == null) yield break;
+
+        float baseScale = 1.0f;
+        if (_buttonRefs.TryGetValue(obj, out var refs))
+            baseScale = refs.BaseScale;
+
         Vector3 startScale = obj.transform.localScale;
-        Vector3 endScale = new(targetScale, targetScale, 1f);
+        Vector3 endScale = new(targetScale * baseScale, targetScale * baseScale, 1f);
         float elapsed = 0f;
 
-        
         SpriteRenderer? border = null;
-        if (_buttonRefs.TryGetValue(obj, out var refs)) border = refs.Border;
+        if (refs != null) border = refs.Border;
 
         while (elapsed < duration || (targetScale > 1.01f && !_pickLocked))
         {
@@ -2217,7 +2238,6 @@ public static class DraftLobbyPatch
             if (elapsed <= duration)
                 obj.transform.localScale = Vector3.Lerp(startScale, endScale, eased);
 
-            
             if (targetScale > 1.01f && border != null && !_pickLocked)
             {
                 float pulse = 0.7f + Mathf.Abs(Mathf.Sin(Time.time * 6f)) * 0.3f;
@@ -2297,7 +2317,97 @@ public static class DraftLobbyPatch
         return null;
     }
 
-    private static void CreateRoleButton(float x, float y, RoleBehaviour? role, bool isRandom, bool isImp)
+    private static Color GetRoleCardBorderColor(Color cardColor, RoleBehaviour? role, bool isRandom)
+    {
+        if (isRandom)
+        {
+            return new Color(0.25f, 0.25f, 0.35f, 1f);
+        }
+
+        if (role != null && role.TeamType == RoleTeamTypes.Impostor)
+        {
+            return new Color(0.3f, 0.02f, 0.02f, 1f);
+        }
+
+        var luminance = (cardColor.r * 0.299f) + (cardColor.g * 0.587f) + (cardColor.b * 0.114f);
+        var mix = luminance > 0.45f ? 0.58f : 0.38f;
+        var border = Color.Lerp(cardColor, Color.black, mix);
+        return new Color(border.r, border.g, border.b, 1f);
+    }
+
+    private static string GetRoleAlignmentLabel(RoleBehaviour role)
+    {
+        RoleAlignment? alignment = null;
+
+        if (role is ITownOfUsRole touRole)
+        {
+            alignment = touRole.RoleAlignment;
+        }
+        else
+        {
+            try
+            {
+                alignment = TownOfUs.Utilities.MiscUtils.GetRoleAlignment(role);
+            }
+            catch { /* best effort fallback below */ }
+        }
+
+        if (alignment == null)
+        {
+            var name = role.name ?? "";
+            var typeName = role.GetType().Name ?? "";
+            var roleEnumStr = role.Role.ToString() ?? "";
+
+            bool Match(string target) =>
+                name.Contains(target, StringComparison.OrdinalIgnoreCase) ||
+                typeName.Contains(target, StringComparison.OrdinalIgnoreCase) ||
+                roleEnumStr.Contains(target, StringComparison.OrdinalIgnoreCase);
+
+            if (Match("Pelican") || Match("SerialKiller") || Match("Jackal") ||
+                Match("Berserker") || Match("Death") || Match("Pirate") ||
+                Match("War") || Match("Shroud") || Match("Famine") ||
+                Match("BountyHunter"))
+            {
+                return "NEUTRAL KILLING";
+            }
+            if (Match("Arcanist") || Match("Doppelganger") || Match("Shifter") ||
+                Match("SoulCollector") || Match("Vulture") || Match("Pope") ||
+                Match("Lawyer") || Match("Baker"))
+            {
+                return "NEUTRAL OUTLIER";
+            }
+            if (Match("Joker"))
+            {
+                return "NEUTRAL EVIL";
+            }
+            if (Match("Innocent"))
+            {
+                return "NEUTRAL BENIGN";
+            }
+        }
+
+        return alignment switch
+        {
+            RoleAlignment.CrewmateInvestigative => "CREW INVESTIGATIVE",
+            RoleAlignment.CrewmateKilling => "CREW KILLING",
+            RoleAlignment.CrewmateProtective => "CREW PROTECTIVE",
+            RoleAlignment.CrewmatePower => "CREW POWER",
+            RoleAlignment.CrewmateSupport => "CREW SUPPORT",
+            RoleAlignment.ImpostorConcealing => "IMP CONCEALING",
+            RoleAlignment.ImpostorKilling => "IMP KILLING",
+            RoleAlignment.ImpostorPower => "IMP POWER",
+            RoleAlignment.ImpostorSupport => "IMP SUPPORT",
+            RoleAlignment.NeutralBenign => "NEUTRAL BENIGN",
+            RoleAlignment.NeutralEvil => "NEUTRAL EVIL",
+            RoleAlignment.NeutralOutlier => "NEUTRAL OUTLIER",
+            RoleAlignment.NeutralKilling => "NEUTRAL KILLING",
+            _ when role.TeamType == RoleTeamTypes.Impostor => "IMPOSTOR",
+            _ when role.TeamType == RoleTeamTypes.Crewmate => "CREWMATE",
+            _ => ""
+        };
+    }
+
+    private static void CreateRoleButton(float x, float y, RoleBehaviour? role, bool isRandom, bool isImp, float baseScale = 1.0f)
     {
         if (_draftContainer == null) return;
 
@@ -2319,13 +2429,7 @@ public static class DraftLobbyPatch
 
         var borderRenderer = borderObj.AddComponent<SpriteRenderer>();
         borderRenderer.sprite = CreateRoundedSprite();
-        if (role != null && role.TeamType == RoleTeamTypes.Impostor)
-            borderRenderer.color = new(0.3f, 0.02f, 0.02f, 1f);
-        else
-            borderRenderer.color = new(
-                Mathf.Max(btnColor.r - 0.15f, 0f),
-                Mathf.Max(btnColor.g - 0.15f, 0f),
-                Mathf.Max(btnColor.b - 0.15f, 0f), 1f);
+        borderRenderer.color = GetRoleCardBorderColor(btnColor, role, isRandom);
         borderRenderer.sortingOrder = 14;
         borderObj.transform.localScale = new(1.1f, 1.1f, 1f);
 
@@ -2405,14 +2509,34 @@ public static class DraftLobbyPatch
         }
 
         Color labelColor;
+        float labelOutlineWidth = 0.08f;
+        float subLabelOutlineWidth = 0.08f;
+
         if (isRandom)
-            labelColor = new(0.15f, 0.15f, 0.2f);
+        {
+            labelColor = new Color(0.15f, 0.15f, 0.2f, 1f);
+        }
+        else if (role != null && role.TeamType == RoleTeamTypes.Impostor)
+        {
+            labelColor = Color.Lerp(TownOfUs.TownOfUsColors.Vampire, Color.white, 0.85f);
+        }
         else
-            labelColor = new(btnColor.r * 0.2f, btnColor.g * 0.2f, btnColor.b * 0.2f, 1f);
+        {
+            float luminance = 0.2126f * btnColor.r + 0.7152f * btnColor.g + 0.0722f * btnColor.b;
+            if (luminance < 0.31f)
+            {
+                labelColor = Color.Lerp(btnColor, Color.white, 0.85f);
+            }
+            else
+            {
+                labelColor = new Color(btnColor.r * 0.2f, btnColor.g * 0.2f, btnColor.b * 0.2f, 1f);
+            }
+        }
+        Color subLabelColor = labelColor;
 
         var labelObj = new GameObject("Label");
         labelObj.transform.SetParent(container.transform);
-        labelObj.transform.localPosition = new(0.15f, 0f, -0.02f);
+        labelObj.transform.localPosition = isRandom ? new(0.15f, 0f, -0.02f) : new(0.15f, -0.1f, -0.02f);
         labelObj.layer = LayerMask.NameToLayer("UI");
 
         string labelText = (isRandom || role == null)
@@ -2435,24 +2559,54 @@ public static class DraftLobbyPatch
 
         var label = labelObj.AddComponent<TextMeshPro>();
         label.text = labelText;
-        label.fontSize = 2.2f;
         label.alignment = TextAlignmentOptions.Center;
         label.sortingOrder = 25;
         label.color = labelColor;
         label.fontStyle = FontStyles.Bold;
-        label.outlineWidth = 0.08f;
+        label.outlineWidth = labelOutlineWidth;
         label.outlineColor = Color.black;
-        label.rectTransform.sizeDelta = new(2.4f, 0.65f);
+        label.rectTransform.sizeDelta = isRandom ? new(2.4f, 0.65f) : new(2.4f, 0.45f);
+        label.enableAutoSizing = true;
+        label.fontSizeMin = 0.8f;
+        label.fontSizeMax = isRandom ? 2.2f : 1.4f;
         ApplyFont(label);
+
+        TextMeshPro? subLabel = null;
+        if (!isRandom && role != null)
+        {
+            var subLabelObj = new GameObject("SubLabel");
+            subLabelObj.transform.SetParent(container.transform);
+            subLabelObj.transform.localPosition = new(0.15f, 0.16f, -0.03f);
+            subLabelObj.layer = LayerMask.NameToLayer("UI");
+
+            subLabel = subLabelObj.AddComponent<TextMeshPro>();
+            string subText = GetRoleAlignmentLabel(role);
+            subLabel.text = subText;
+            subLabel.alignment = TextAlignmentOptions.Center;
+            subLabel.sortingOrder = 25;
+            subLabel.color = subLabelColor;
+            subLabel.fontStyle = FontStyles.Bold;
+            subLabel.outlineWidth = subLabelOutlineWidth;
+            subLabel.outlineColor = Color.black;
+            subLabel.rectTransform.sizeDelta = new(2.4f, 0.35f);
+            subLabel.enableAutoSizing = true;
+            subLabel.fontSizeMin = 0.5f;
+            subLabel.fontSizeMax = 0.75f;
+            ApplyFont(subLabel);
+        }
 
         _buttonRefs[container] = new ButtonRefs
         {
             BG = bgRenderer,
             Border = borderRenderer,
             Label = label,
+            SubLabel = subLabel,
             Icon = iconRenderer,
             RandomIcon = randomIconRenderer,
-            NormalizedScale = normalizedScale
+            NormalizedScale = normalizedScale,
+            BaseScale = baseScale,
+            BasePosition = container.transform.localPosition,
+            BaseRotation = container.transform.localRotation
         };
 
         var collider = container.AddComponent<BoxCollider2D>();
@@ -2472,6 +2626,7 @@ public static class DraftLobbyPatch
         btn.OnMouseOver.AddListener((System.Action)(() =>
         {
             if (_pickLocked) return;
+            _hoveredCard = container;
             if (bgRenderer) bgRenderer.color = hoverColor;
             if (borderRenderer) borderRenderer.color = Color.white;
             PlayHoverSound();
@@ -2505,14 +2660,12 @@ public static class DraftLobbyPatch
             if (iconRenderer != null) StartIconWobble(iconRenderer.gameObject, false);
             if (randomIconRenderer != null) StartIconWobble(randomIconRenderer.gameObject, false);
 
+            if (_hoveredCard == container) _hoveredCard = null;
             if (_pickLocked) return;
             if (bgRenderer) bgRenderer.color = normalColor;
             if (borderRenderer)
             {
-                if (role != null && role.TeamType == RoleTeamTypes.Impostor)
-                    borderRenderer.color = new(0.3f, 0.02f, 0.02f, 1f);
-                else
-                    borderRenderer.color = new(Mathf.Max(normalColor.r - 0.15f, 0f), Mathf.Max(normalColor.g - 0.15f, 0f), Mathf.Max(normalColor.b - 0.15f, 0f), 1f);
+                borderRenderer.color = GetRoleCardBorderColor(normalColor, role, isRandom);
             }
             StartHoverAnimation(container, 1.0f, 0.15f);
             if (_tooltipText != null)
@@ -2733,6 +2886,8 @@ public static class DraftLobbyPatch
 
         _forceStartButtonObj?.SetActive(true);
 
+        _suppressHudDuringGameStart = true;
+
         if (AmongUsClient.Instance.AmHost)
             Coroutines.Start(CoStartAfterDelay());
     }
@@ -2842,6 +2997,8 @@ public static class DraftLobbyPatch
         if (!_draftInProgress) return;
         if (DraftSystem.PickOrder.Count == 0) return;
 
+        UpdateCardIdleMotion();
+
         _pickTimer += Time.deltaTime;
         var maxTime = DraftSystem.TimeToChoose;
         var timeLeft = Mathf.Max(0, maxTime - _pickTimer);
@@ -2947,6 +3104,31 @@ public static class DraftLobbyPatch
         gsm?.StartButton?.gameObject.SetActive(false);
     }
 
+    private static void UpdateCardIdleMotion()
+    {
+        if (!_draftInProgress || _pickLocked || _buttonRefs.Count == 0) return;
+
+        float countFactor = _buttonRefs.Count > 4 ? 0.55f : 1f;
+        float bobAmount = 0.028f * countFactor;
+        float swayAmount = 0.018f * countFactor;
+        float rotAmount = 1.15f * countFactor;
+        int index = 0;
+
+        foreach (var obj in _roleButtonObjects)
+        {
+            if (obj == null || obj == _hoveredCard) { index++; continue; }
+            if (!_buttonRefs.TryGetValue(obj, out var refs)) { index++; continue; }
+
+            float phase = Time.time * 1.65f + index * 0.72f;
+            obj.transform.localPosition = refs.BasePosition + new Vector3(
+                Mathf.Sin(phase * 0.73f) * swayAmount,
+                Mathf.Sin(phase) * bobAmount,
+                0f);
+            obj.transform.localRotation = refs.BaseRotation * Quaternion.Euler(0f, 0f, Mathf.Sin(phase * 0.91f) * rotAmount);
+            index++;
+        }
+    }
+
     // === CLEANUP ===
 
     private static void ClearRoleButtons()
@@ -2959,11 +3141,17 @@ public static class DraftLobbyPatch
         _pickLocked = false;
     }
 
-    private static void CleanupUI()
+    private static void CleanupUI(bool restoreLobby)
     {
+        TouMegaChujoweExtension.Buttons.Draft.DraftCancelButton.Hide();
         ClearRoleButtons();
         StopDraftMusic();
-        HideLobby(false);
+        if (restoreLobby)
+        {
+            HideLobby(false);
+            SetDraftLobbyPanelsVisible(true);
+            SetDraftHudChromeVisible(true);
+        }
         if (_muteButtonObj != null) { Object.Destroy(_muteButtonObj); _muteButtonObj = null; }
         if (_cancelButtonObj != null) { Object.Destroy(_cancelButtonObj); _cancelButtonObj = null; }
         if (_forceStartButtonObj != null) { Object.Destroy(_forceStartButtonObj); _forceStartButtonObj = null; }
@@ -2972,6 +3160,58 @@ public static class DraftLobbyPatch
         _playerListText = null;
         _timerText = null;
         _draftCompleteText = null;
+    }
+
+    private static void CleanupUI()
+    {
+        CleanupUI(true);
+    }
+
+    private static void SetDraftHudChromeVisible(bool visible)
+    {
+        if (!visible)
+        {
+            // Do not hide lobby buttons manually, as the draft overlay covers them naturally.
+            // This prevents hiding parent containers that the Cancel button relies on.
+            return;
+        }
+
+        var hud = HudManager.Instance;
+        if (hud == null) return;
+
+        hud.SettingsButton?.gameObject?.SetActive(true);
+        hud.Chat?.chatButton?.gameObject?.SetActive(true);
+
+        var counter = hud.transform.Find("PlayerCounter");
+        if (counter != null) counter.gameObject.SetActive(true);
+
+        try
+        {
+            TownOfUs.Patches.HudManagerPatches.WikiButton?.SetActive(true);
+            TownOfUs.Patches.HudManagerPatches.UiTopRight?.SetActive(true);
+            TownOfUs.Patches.HudManagerPatches.ExtraUiTopRight?.SetActive(true);
+        }
+        catch { /* best effort */ }
+
+        _lastHudChromeVisible = true;
+    }
+
+    private static void SetDraftLobbyPanelsVisible(bool visible)
+    {
+        if (HudManager.Instance == null) return;
+        var names = new[] { "GameSettings", "RoleListRegion", "SetRoleList", "PlayerCounter" };
+        foreach (var name in names)
+        {
+            var t = HudManager.Instance.transform.Find(name);
+            t?.gameObject.SetActive(visible);
+        }
+    }
+
+    private static void SetDraftChatVisible(bool visible)
+    {
+        var hud = HudManager.Instance;
+        if (hud == null || hud.Chat == null || hud.Chat.chatButton == null) return;
+        hud.Chat.chatButton.gameObject.SetActive(visible);
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerLeft))]
@@ -3058,9 +3298,17 @@ public static class DraftLobbyPatch
     [HarmonyPostfix]
     public static void IntroCutsceneCleanup()
     {
-        CleanupUI();
+        bool keepHudHiddenForIntro = _suppressHudDuringGameStart;
+        CleanupUI(!keepHudHiddenForIntro);
         UnlockLobby();
-        HideLobby(false);
+        if (!keepHudHiddenForIntro)
+        {
+            HideLobby(false);
+        }
+        else
+        {
+            SetDraftHudChromeVisible(false);
+        }
         _draftInProgress = false;
         _draftCompletedWaitingForStart = false;
         _lastAlertedPicker = null;
@@ -3072,13 +3320,18 @@ public static class DraftLobbyPatch
     [HarmonyPostfix]
     public static void ShipStatusStartCleanup()
     {
-        CleanupUI();
+        CleanupUI(!_suppressHudDuringGameStart);
+        _suppressHudDuringGameStart = false;
+        SetDraftHudChromeVisible(true);
+        _hideChatUntilTime = Time.time + 8f;
+        SetDraftChatVisible(false);
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnDisconnected))]
     [HarmonyPostfix]
     public static void OnDisconnected()
     {
+        _suppressHudDuringGameStart = false;
         CleanupUI();
         UnlockLobby();
         _draftInProgress = false;
@@ -3092,6 +3345,7 @@ public static class DraftLobbyPatch
     [HarmonyPostfix]
     public static void MainMenuCleanup()
     {
+        _suppressHudDuringGameStart = false;
         StopDraftMusic();
         _draftInProgress = false;
         _draftCompletedWaitingForStart = false;
@@ -3102,11 +3356,18 @@ public static class DraftLobbyPatch
 
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
     [HarmonyPrefix]
-    public static void ChatControllerUpdatePrefix(ChatController __instance)
+    public static bool ChatControllerUpdatePrefix(ChatController __instance)
     {
+        if (_suppressHudDuringGameStart || (_hideChatUntilTime > 0f && Time.time < _hideChatUntilTime))
+        {
+            try { __instance.SetVisible(false); } catch { /* best effort */ }
+            return false;
+        }
+
         if (_draftInProgress && Input.GetKeyDown(KeyCode.Return) && !__instance.IsOpenOrOpening)
         {
             __instance.SetVisible(true);
         }
+        return true;
     }
 }

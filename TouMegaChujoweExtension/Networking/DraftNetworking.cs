@@ -1,7 +1,13 @@
 using AmongUs.GameOptions;
 using Hazel;
+using MiraAPI.Hud;
 using MiraAPI.Utilities;
 using System.Collections.Generic;
+using TownOfUs;
+using TownOfUs.Extensions;
+using TownOfUs.Modules.Localization;
+using TownOfUs.Utilities;
+using UnityEngine;
 
 namespace TouMegaChujoweExtension.Networking;
 
@@ -182,5 +188,17 @@ public static class DraftNetworking
         DraftLobbyPatch.ForceCancelDraft();
 
         DraftLobbyPatch.ShowSystemMessage("<color=#FF4444>Draft Cancelled</color> by the Host.");
+
+        try
+        {
+            var msg = "<color=#FF0000>Draft Mode</color> has been cancelled by the <color=#FFBFCC><b>Host</b></color>!";
+            var notif = Helpers.CreateAndShowNotification(
+                msg,
+                Color.white,
+                new Vector3(0f, 1f, -20f),
+                spr: TownOfUs.Assets.TouRoleIcons.Traitor.LoadAsset());
+            notif?.AdjustNotification();
+        }
+        catch {}
     }
 }

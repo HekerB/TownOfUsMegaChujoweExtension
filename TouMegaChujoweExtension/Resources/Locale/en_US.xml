@@ -851,6 +851,7 @@
   <string name="ExtensionDraftModeMute">MUTE</string>
   <string name="ExtensionDraftModeUnmute">UNMUTE</string>
   <string name="ExtensionDraftModeCancel">CANCEL</string>
+  <string name="ExtensionDraftCancelledAlert">Draft Mode has been cancelled by the Host!</string>
   <string name="ExtensionDraftModeStart">START</string>
   <string name="ExtensionDraftModeSystem">SYSTEM</string>
   <string name="ExtensionDraftModePlayer">Player</string>

@@ -851,6 +851,7 @@
   <string name="ExtensionDraftModeMute">WYCISZ</string>
   <string name="ExtensionDraftModeUnmute">WLACZ DZWIEK</string>
   <string name="ExtensionDraftModeCancel">ANULUJ</string>
+  <string name="ExtensionDraftCancelledAlert">Tryb Draft zostal anulowany przez Hosta!</string>
   <string name="ExtensionDraftModeStart">START</string>
   <string name="ExtensionDraftModeSystem">SYSTEM</string>
   <string name="ExtensionDraftModePlayer">Gracz</string>
