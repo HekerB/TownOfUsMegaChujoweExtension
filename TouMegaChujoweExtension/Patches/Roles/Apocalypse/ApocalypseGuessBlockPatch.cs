@@ -1,6 +1,7 @@
 using HarmonyLib;
 using TouMegaChujoweExtension.Modules;
 using TownOfUs.Modifiers.Game;
+using TownOfUs.Modifiers.Game.Assailant;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TownOfUs.Utilities;

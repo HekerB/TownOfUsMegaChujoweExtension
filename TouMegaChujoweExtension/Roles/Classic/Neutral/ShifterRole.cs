@@ -13,7 +13,6 @@ using System;
 using TownOfUs.Assets;
 using TownOfUs.Extensions;
 using TownOfUs.Modifiers.Game.Alliance;
-using TownOfUs.Modifiers.Game.Neutral;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modifiers;
 using TownOfUs.Modules.Localization;

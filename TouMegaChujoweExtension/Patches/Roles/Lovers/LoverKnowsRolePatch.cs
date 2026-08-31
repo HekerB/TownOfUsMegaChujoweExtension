@@ -8,6 +8,7 @@ using TownOfUs;
 using TownOfUs.Utilities.Appearances;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Patches;
+using TownOfUs.Modules.Components;
 using TownOfUs.Utilities;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
@@ -24,7 +25,7 @@ using TMPro;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Lovers;
 
-[HarmonyPatch(typeof(HudManagerPatches), nameof(HudManagerPatches.UpdateRoleNameText))]
+[HarmonyPatch(typeof(HudManagerHelper), nameof(HudManagerHelper.UpdateRoleNameText))]
 public static class LoverKnowsRolePatch
 {
     [HarmonyPostfix]
@@ -81,8 +82,7 @@ public static class LoverKnowsRolePatch
             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
         }
 
-        var taskOpt = OptionGroupSingleton<TaskTrackingOptions>.Instance;
-        if (taskOpt.ShowTaskInMeetings && (otherLover.IsCrewmate() || otherLover.Data.Role is SpectreRole))
+        if (otherLover.IsCrewmate() || otherLover.Data.Role is SpectreRole)
         {
             roleName += $" <size=80%>{otherLover.TaskInfo()}</size>";
         }
@@ -134,8 +134,7 @@ public static class LoverKnowsRolePatch
             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
         }
 
-        var taskOpt = OptionGroupSingleton<TaskTrackingOptions>.Instance;
-        if (taskOpt.ShowTaskRound && (otherLover.IsCrewmate() || otherLover.Data.Role is SpectreRole))
+        if (otherLover.IsCrewmate() || otherLover.Data.Role is SpectreRole)
         {
             roleName += $" <size=80%>{otherLover.TaskInfo()}</size>";
         }

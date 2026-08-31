@@ -4,9 +4,9 @@
     "net6.0": {
       "AllOfUs.MiraAPI": {
         "type": "Direct",
-        "requested": "[0.4.1, )",
-        "resolved": "0.4.1",
-        "contentHash": "Dt+EjS5e7N/oRVwXE0eXoBldKa+r8qVccwRELBP2N3+6Sr53oHwGxAhbcIeYPPwO0abpkpiVgmrzl/np0/G2RQ==",
+        "requested": "[0.4.3, )",
+        "resolved": "0.4.3",
+        "contentHash": "M6RFA9U7Sps+y2BmIhQAYnaYdmJjtfOhdoqdtwCgAOxkZAt8olytYjaA7P+v65OkonqmMDM+p3ruiLLz3RXZ+g==",
         "dependencies": {
           "BepInEx.Unity.IL2CPP": "6.0.0-be.735",
           "Reactor": "2.5.0-ci.371"
@@ -58,11 +58,11 @@
       },
       "TownOfUsMira": {
         "type": "Direct",
-        "requested": "[1.6.3-beta2, )",
-        "resolved": "1.6.3-beta2",
-        "contentHash": "VAjl2hZs+t2V2FswNDAO+IMaoKA9iO3YvbwI8BbJLWwTRz/5t1kbJjtkaMvjUFBPt441dGCfYIeebmfcuapGwg==",
+        "requested": "[1.7.1, )",
+        "resolved": "1.7.1",
+        "contentHash": "qRKWOM4FCqkUQ3SHzo/EzVzGM2i/Xwo8FfIl2846knrHJKATkxTitCQrXOjn4KnFu3yM8l+GQ1sh7v9RfOlNdg==",
         "dependencies": {
-          "AllOfUs.MiraAPI": "0.4.1",
+          "AllOfUs.MiraAPI": "0.4.3",
           "BepInEx.Unity.IL2CPP": "6.0.0-be.735",
           "Reactor": "2.5.0-ci.371"
         }

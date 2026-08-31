@@ -16,6 +16,7 @@ using TownOfUs.Extensions;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Neutral;
 using TownOfUs.Patches;
+using TownOfUs.Modules.Components;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -694,7 +695,7 @@ public static class JokerCloneInteractionPatches
     }
 }
 
-[HarmonyPatch(typeof(HudManagerPatches), nameof(HudManagerPatches.UpdateCamouflageComms))]
+[HarmonyPatch(typeof(HudManagerHelper), nameof(HudManagerHelper.UpdateCamouflageComms))]
 public static class JokerCloneCamoCommsPatch
 {
     public static void Postfix()

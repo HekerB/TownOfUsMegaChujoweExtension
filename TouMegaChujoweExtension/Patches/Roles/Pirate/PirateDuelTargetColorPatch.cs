@@ -1,11 +1,12 @@
 using HarmonyLib;
 using TownOfUs.Patches;
+using TownOfUs.Modules.Components;
 using TownOfUs.Utilities;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Pirate
 {
-    [HarmonyPatch(typeof(HudManagerPatches), nameof(HudManagerPatches.UpdateRoleNameText))]
+    [HarmonyPatch(typeof(HudManagerHelper), nameof(HudManagerHelper.UpdateRoleNameText))]
     public static class PirateDuelTargetColorPatch
     {
         [HarmonyPostfix]

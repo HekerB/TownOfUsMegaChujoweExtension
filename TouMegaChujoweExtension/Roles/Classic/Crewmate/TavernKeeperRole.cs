@@ -145,7 +145,7 @@ public sealed class TavernKeeperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
         var targetName = target.CachedPlayerData.PlayerName;
 
         var immune = true;
-        if (!target.HasModifier<DrinkImmunityModifier>() && !target.HasModifier<DrunkModifier>() &&
+        if (!target.HasModifier<DrinkImmunityModifier>() && !target.HasModifier<TouMegaChujoweExtension.Modifiers.Game.DrunkModifier>() &&
             !target.HasModifier<RoleblockedModifier>() && !target.IsRole<TavernKeeperRole>())
         {
             immune = false;

@@ -13,6 +13,7 @@ using TownOfUs.Events;
 using TownOfUs.Extensions;
 using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
+using TownOfUs.Modules.Components;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles.Neutral;
@@ -132,7 +133,7 @@ public sealed class PirateRole(IntPtr cppPtr)
 
         if (PlayerControl.LocalPlayer != null)
         {
-            HudManagerPatches.UpdateRoleNameText();
+            HudManagerHelper.UpdateRoleNameText();
         }
 
         if (OptionGroupSingleton<PirateOptions>.Instance.WinMode == PirateWinMode.PirateWinsWithOthers)
@@ -304,7 +305,7 @@ public sealed class PirateRole(IntPtr cppPtr)
 
         if (PlayerControl.LocalPlayer != null)
         {
-            HudManagerPatches.UpdateRoleNameText();
+            HudManagerHelper.UpdateRoleNameText();
         }
     }
 
