@@ -485,7 +485,9 @@ public static class DraftLobbyPatch
             HashSet<byte> lastImps = new(DraftSystem.LastImpostorIds);
             try
             {
-                var type = AccessTools.TypeByName("TownOfUs.Patches.TouRoleManagerPatches");
+                // typeof, not AccessTools.TypeByName - the class is in a referenced assembly, and
+                // TypeByName scans every loaded assembly (throwing on the Il2Cpp ones) to find it.
+                var type = typeof(TownOfUs.Patches.TouRoleManagerPatches);
                 if (type != null)
                 {
 #pragma warning disable S3011
