@@ -310,7 +310,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                         HandleDuplicateRole(player, card);
                         break;
                     }
-                    player.RpcChangeRole(RoleId.Get<JesterRole>(), true);
+                    BecomeRole(player, RoleId.Get<JesterRole>());
                     break;
                 case TarotCard.TheMagician:
                     foreach (var pc in PlayerControl.AllPlayerControls)
@@ -327,7 +327,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                         HandleDuplicateRole(player, card);
                         break;
                     }
-                    player.RpcChangeRole(RoleId.Get<DoomsayerRole>(), true);
+                    BecomeRole(player, RoleId.Get<DoomsayerRole>());
                     break;
                 case TarotCard.TheEmpress:
                     player.RpcAddModifier<KnightedModifier>();
@@ -343,7 +343,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                             HandleDuplicateRole(player, card);
                             break;
                         }
-                        player.RpcChangeRole(subRole, true);
+                        BecomeRole(player, subRole);
                     }
                     break;
                 case TarotCard.TheLovers:
@@ -365,7 +365,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                             HandleDuplicateRole(player, card);
                             break;
                         }
-                        player.RpcChangeRole(subRole, true);
+                        BecomeRole(player, subRole);
                     }
                     break;
                 case TarotCard.TheHangedMan:
@@ -374,7 +374,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                         HandleDuplicateRole(player, card);
                         break;
                     }
-                    player.RpcChangeRole(RoleId.Get<BountyHunterRole>(), true);
+                    BecomeRole(player, RoleId.Get<BountyHunterRole>());
                     break;
                 case TarotCard.Death:
                     if (subRole == 0)
@@ -392,7 +392,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                         HandleDuplicateRole(player, card);
                         break;
                     }
-                    player.RpcChangeRole(RoleId.Get<LawyerRole>(), true);
+                    BecomeRole(player, RoleId.Get<LawyerRole>());
                     break;
                 case TarotCard.TheTower:
                     break;
@@ -410,7 +410,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                         HandleDuplicateRole(player, card);
                         break;
                     }
-                    player.RpcChangeRole(RoleId.Get<PopeRole>(), true);
+                    BecomeRole(player, RoleId.Get<PopeRole>());
                     break;
                 case TarotCard.TheWorld:
                     player.RpcAddModifier<TouMegaChujoweExtension.Modifiers.Neutral.DeathNoteModifier>();
@@ -437,6 +437,35 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                     MiscUtils.AddFakeChat(PlayerControl.LocalPlayer.Data, "<color=#FF0000>System</color>", TouLocale.Get("ExtensionArcanistDevilMeeting", "Someone has made a deal with the Devil and become a Lawyer!"), false, true);
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// Turns the Arcanist into another role, and gives that role its target if it is owed one.
+    /// </summary>
+    /// <remarks>
+    /// Targets are handed out once, when roles are dealt, so a role picked up partway through a game
+    /// arrived without one: an Arcanist who drew the Lawyer stood there with nobody to represent, and
+    /// the same goes for the Executioner and the Fairy. Asking the role to assign targets now fills
+    /// that gap, and it is safe to ask twice - each of those skips anyone already holding a target, so
+    /// a Fairy who has been guarding the same player all game keeps them.
+    /// <para>
+    /// Only the host picks. Every client runs this method, but the pick is broadcast from the host, so
+    /// letting each client choose would have them all choose differently.
+    /// </para>
+    /// </remarks>
+    private static void BecomeRole(PlayerControl player, ushort newRoleType)
+    {
+        player.RpcChangeRole(newRoleType, true);
+
+        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
+        {
+            return;
+        }
+
+        if (player.Data?.Role is TownOfUs.Extensions.IAssignableTargets assignable)
+        {
+            assignable.AssignTargets();
         }
     }
 

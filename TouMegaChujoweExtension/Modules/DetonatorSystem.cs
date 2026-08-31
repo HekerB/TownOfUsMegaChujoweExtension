@@ -116,6 +116,14 @@ public static class DetonatorSystem
 
     public static void ManualDetonate(byte detonatorId)
     {
+        // Never detonate during a meeting or ejection: a detonate click fired the same instant a
+        // meeting is called would otherwise race in and blow players up mid-meeting. The bomb stays
+        // live so the Detonator can set it off once the meeting ends.
+        if (MeetingHud.Instance != null || ExileController.Instance != null)
+        {
+            return;
+        }
+
         var bombs = _activeBombs.Where(b => b.DetonatorId == detonatorId && !b.Detonated).ToList();
         foreach (var bomb in bombs)
         {
@@ -186,6 +194,12 @@ public static class DetonatorSystem
 
     private static void Detonate(ActiveBomb bomb)
     {
+        // Defense in depth: refuse to blow up during a meeting even if some path reaches here.
+        if (MeetingHud.Instance != null || ExileController.Instance != null)
+        {
+            return;
+        }
+
         bomb.Detonated = true;
         if (!AmongUsClient.Instance.AmHost) return;
         PlayerControl? mainTarget = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == bomb.TargetId);

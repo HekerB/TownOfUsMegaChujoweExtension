@@ -122,16 +122,15 @@ public sealed class VoodooMutedModifier : BaseModifier
         var alertText = TouLocale.Get(
             "ExtensionVoodooMuteAlert",
             "You have been cursed by the Voodoo Master. Only you can see this, and you are muted this meeting!");
-        var chatTitle =
-            $"{Palette.ImpostorRed.ToTextColor()}{TouLocale.Get("ExtensionVoodooMuteWarningTitle", "Voodoo Warning")}</color>";
-
-        MiscUtils.AddFakeChat(Player.Data, chatTitle, alertText, false, true);
-
-        Helpers.CreateAndShowNotification(
+        // Said once, as a notification, the same way the Ambusher says its own - AdjustNotification is
+        // what gives it that shape and size. It used to be said twice, once here and once as a line in
+        // the chat, and the chat copy is the one that read as an alert stuck in the corner.
+        var notif = Helpers.CreateAndShowNotification(
             $"<b>{Palette.ImpostorRed.ToTextColor()}{alertText}</color></b>",
             Color.white,
             new Vector3(0f, 1f, -20f),
             spr: TouExtensionIcons.VoodooRoleIcon.LoadAsset());
+        notif.AdjustNotification();
     }
 
     private void CreateLocalBlackmailVisuals()

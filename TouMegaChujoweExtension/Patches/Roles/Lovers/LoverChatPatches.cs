@@ -28,6 +28,15 @@ public static class LoverChatPatches
             return true;
         }
 
+        // Voodoo block. The Voodoo patch cancels the send from its own prefix on this same method, but
+        // a cancelled prefix does not undo the ones after it and it leaves the typed text in the box -
+        // so the silenced player's words could still have gone out through this one. Asked here rather
+        // than relying on which patch happens to run first.
+        if (PlayerControl.LocalPlayer.HasModifier<VoodooMutedModifier>())
+        {
+            return true;
+        }
+
         var text = __instance.freeChatField.Text.WithoutRichText();
 
         if (text.Length < 1 || text.Length > 301)
