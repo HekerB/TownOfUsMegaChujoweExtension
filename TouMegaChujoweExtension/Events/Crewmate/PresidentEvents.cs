@@ -1,3 +1,4 @@
+using TouMegaChujoweExtension.Utilities;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.Events.Vanilla.Meeting;
 using MiraAPI.Events;
@@ -17,8 +18,9 @@ public static class PresidentEvents
                 continue;
             }
 
-            var voteData = player.GetVoteData();
-            if (voteData == null)
+            // TryGetVoteData: GetVoteData throws when a player has no vote data, so the null check
+            // that used to be here could never fire and the throw escaped the loop instead.
+            if (!player.TryGetVoteData(out var voteData))
             {
                 continue;
             }

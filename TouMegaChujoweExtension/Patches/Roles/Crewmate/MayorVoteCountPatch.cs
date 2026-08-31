@@ -1,3 +1,4 @@
+using TouMegaChujoweExtension.Utilities;
 using HarmonyLib;
 using MiraAPI.Events.Vanilla.Meeting.Voting;
 using MiraAPI.GameOptions;
@@ -24,8 +25,7 @@ public static class MayorVoteCountPatch
         var opts = OptionGroupSingleton<MayorExtensionOptions>.Instance;
         if (opts == null) return;
 
-        var voteData = __instance.Player.GetVoteData();
-        if (voteData != null)
+        if (__instance.Player.TryGetVoteData(out var voteData))
         {
             var count = (int)opts.VoteCount;
             voteData.SetRemainingVotes(count);
@@ -114,8 +114,7 @@ public static class MayorVoteCountPatch
         // --- PRESIDENT UI ---
         else if (PlayerControl.LocalPlayer.Data.Role is PresidentRole)
         {
-            var voteData = PlayerControl.LocalPlayer.GetVoteData();
-            if (voteData == null) return;
+            if (!PlayerControl.LocalPlayer.TryGetVoteData(out var voteData)) return;
 
             var remaining = voteData.VotesRemaining;
             var knightBonus = 0;

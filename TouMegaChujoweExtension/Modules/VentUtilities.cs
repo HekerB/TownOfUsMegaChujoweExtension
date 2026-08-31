@@ -1,42 +1,16 @@
-using System.Reflection;
 using TMPro;
 using UnityEngine;
-using System.Linq;
-using HarmonyLib;
 using AmongUs.GameOptions;
 
 namespace TouMegaChujoweExtension.Modules;
 
 public static class VentUtilities
 {
-    private static FieldInfo? _timerTextField;
-    private static FieldInfo? _visualField;
-    private static bool _fieldsFound;
-
-    private static readonly string[] TimerTextFieldNames = ["cooldownTimerText", "CooldownTimerText", "cooldownText", "TimerText"];
-    private static readonly string[] VisualFieldNames = ["cooldownVisual", "CooldownVisual", "ProgressImage", "Circle"];
-
-    private static void FindFields()
-    {
-        if (_fieldsFound) return;
-
-        foreach (var name in TimerTextFieldNames)
-        {
-            _timerTextField = AccessTools.Field(typeof(ActionButton), name);
-            if (_timerTextField != null) break;
-        }
-
-        foreach (var name in VisualFieldNames)
-        {
-            _visualField = AccessTools.Field(typeof(ActionButton), name);
-            if (_visualField != null) break;
-        }
-
-        if (_timerTextField == null) UnityEngine.Debug.LogWarning("[TOUMCE] VentUtilities: Could not find cooldownTimerText field on ActionButton!");
-        if (_visualField == null) UnityEngine.Debug.LogWarning("[TOUMCE] VentUtilities: Could not find cooldownVisual field on ActionButton!");
-
-        _fieldsFound = true;
-    }
+    // These used to be looked up with AccessTools.Field over a list of candidate names. That never
+    // matched anything: Il2CppInterop surfaces IL2CPP fields as PROPERTIES on the interop type, so
+    // every candidate missed, IsSafeToSetCooldown answered "no" for every non-impostor, and the vent
+    // button of a role that had venting granted to it never got its cooldown set at all. The members
+    // are read directly below, the way MiraAPI and TOU already read them.
 
     /// <summary>
     /// Ensures that a vanilla ActionButton (like ImpostorVentButton) has its internal fields
@@ -48,10 +22,7 @@ public static class VentUtilities
 
         try
         {
-            FindFields();
-
-            // Check if already initialized or needs initialization
-            if (_timerTextField != null && _timerTextField.GetValue(button) == null)
+            if (button.cooldownTimerText == null)
             {
                 // Try multiple ways to find the text component
                 var text = button.transform.Find("CooldownTimerText")?.GetComponent<TextMeshPro>()
@@ -65,18 +36,7 @@ public static class VentUtilities
 
                 if (text != null)
                 {
-                    _timerTextField.SetValue(button, text);
-                }
-            }
-
-            if (_visualField != null && _visualField.GetValue(button) == null)
-            {
-                var visual = button.transform.Find("CooldownVisual")?.GetComponent<PassiveButton>()
-                             ?? button.GetComponentInChildren<PassiveButton>(true);
-
-                if (visual != null)
-                {
-                    _visualField.SetValue(button, visual);
+                    button.cooldownTimerText = text;
                 }
             }
         }
@@ -89,25 +49,19 @@ public static class VentUtilities
     /// <summary>
     /// Checks if the button is safe to call SetCoolDown on.
     /// </summary>
+    /// <remarks>
+    /// Vanilla's SetCoolDown reads the timer text and the graphic straight off the button, and on one
+    /// that is not finished being built that throws - once per frame for as long as a cooldown runs.
+    /// Being an impostor is not the exemption it was treated as: their button is not always ready
+    /// either.
+    /// </remarks>
     public static bool IsSafeToSetCooldown(ActionButton? button)
     {
         if (button == null) return false;
 
-        // If we are an Impostor or Engineer, the base game should have handled this.
-        // We only really need this safety for custom roles we manually enabled venting for.
-        var local = PlayerControl.LocalPlayer;
-        if (local != null && local.Data != null && (local.Data.Role.IsImpostor || local.Data.Role.Role == RoleTypes.Engineer))
-        {
-            return true;
-        }
-
-        FindFields();
-
-        if (_timerTextField == null || _visualField == null) return false;
-
         try
         {
-            return _timerTextField.GetValue(button) != null && _visualField.GetValue(button) != null;
+            return button.cooldownTimerText != null && button.graphic != null;
         }
         catch
         {

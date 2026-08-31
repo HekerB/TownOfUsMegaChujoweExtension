@@ -18,25 +18,18 @@ public static class ClassicAssassinCleanupPatch
             return;
         }
 
-        var source = @event.Source;
         var target = @event.Target;
 
-        if (source == null || source.Data == null || target == null || target.Data == null)
+        if (target == null || target.Data == null)
         {
             return;
         }
 
-        var isMeetingKiller =
-            source.HasModifier<AssassinModifier>() ||
-            source.Data.Role is VigilanteRole ||
-            source.Data.Role is DoomsayerRole ||
-            source.Data.Role is JailorRole;
-
-        if (!isMeetingKiller)
-        {
-            return;
-        }
-
+        // Who did the killing does not matter; that somebody in this meeting is now dead does. This
+        // used to run only when the killer was one of the meeting killers, so a Deputy shooting an
+        // Assassin left that Assassin holding a full set of live guess buttons for the rest of the
+        // meeting. Pressing them did nothing - a guess by a dead guesser is refused at the far end -
+        // which is exactly what a broken button looks like.
         if (ClassicAssassinSystem.IsActive)
         {
             if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)

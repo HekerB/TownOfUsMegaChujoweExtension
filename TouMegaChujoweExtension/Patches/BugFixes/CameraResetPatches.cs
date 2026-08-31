@@ -45,7 +45,10 @@ public static class CameraResetPatches
 
         try
         {
-            if (HudManager.Instance != null && HudManager.Instance.ShadowQuad != null)
+            // InstanceExists, not a null-check: the Instance getter creates a blank HudManager when
+            // none exists, and this runs at game end / lobby load where that zombie then kills the real
+            // HUD.
+            if (HudManager.InstanceExists && HudManager.Instance.ShadowQuad != null)
             {
                 HudManager.Instance.ShadowQuad.gameObject.SetActive(true);
             }

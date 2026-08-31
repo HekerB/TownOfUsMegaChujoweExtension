@@ -1,3 +1,4 @@
+using TouMegaChujoweExtension.Utilities;
 using MiraAPI.Utilities;
 using Reactor.Networking.Attributes;
 
@@ -18,8 +19,7 @@ public static class PresidentVoteSystem
             return;
         }
 
-        var voteData = president.GetVoteData();
-        if (voteData != null)
+        if (president.TryGetVoteData(out var voteData))
         {
             voteData.SetRemainingVotes(0);
         }

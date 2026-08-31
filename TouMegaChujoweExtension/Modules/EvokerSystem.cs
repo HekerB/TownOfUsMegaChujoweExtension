@@ -2,6 +2,8 @@ using MiraAPI.Events;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
+using TownOfUs.Modifiers.Game.Assailant;
+using TownOfUs.Modifiers.Game.Alliance;
 using Random = UnityEngine.Random;
 using TownOfUs.Extensions;
 using TownOfUs.Roles;
@@ -164,16 +166,22 @@ public static class EvokerSystem
 
     private static bool IsAlwaysKillerRole(PlayerControl player, RoleBehaviour role)
     {
-        if (role.IsImpostor)
+        if (role.IsImpostor || player.Is(RoleAlignment.NeutralKilling))
         {
             return true;
         }
 
-        if (player.Is(RoleAlignment.NeutralKilling))
+        // Killing granted by a modifier rather than by the role. This was missed entirely: a
+        // Crewpostor, or anyone holding the Assassin modifier, reads as a harmless crewmate by
+        // alignment yet can kill.
+        if (player.HasModifier<CrewpostorModifier>() || player.HasModifier<AssassinModifier>())
         {
             return true;
         }
 
+        // Roles that kill from outside a *Killing alignment - all three are NeutralOutlier. Most other
+        // outliers (Fairy, Oracle, Sage, Opportunist, Arcanist) do not kill, so blinding the whole
+        // alignment would be wrong. Keep this list in sync when a new killing outlier is added.
         return role is ExtensionBountyHunterRole
             or ExtensionJackalRole
             or TouInquisitorRole;

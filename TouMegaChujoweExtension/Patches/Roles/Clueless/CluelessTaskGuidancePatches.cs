@@ -167,32 +167,24 @@ public static class CluelessTaskGuidancePatches
 
     private static void TryDestroyExistingTaskArrow(NormalPlayerTask task)
     {
+        // This used to probe for the arrow with AccessTools.Field("Arrow"/"arrow"/"taskArrow"/"_arrow").
+        // NormalPlayerTask.Arrow does exist, but Il2CppInterop surfaces IL2CPP fields as PROPERTIES on
+        // the interop type, so AccessTools.Field never matched any of the four - Clueless kept its task
+        // arrows and the only trace was four HarmonyX warnings per call.
         try
         {
-            var t = task.GetType();
-            var field =
-                AccessTools.Field(t, "Arrow") ??
-                AccessTools.Field(t, "arrow") ??
-                AccessTools.Field(t, "taskArrow") ??
-                AccessTools.Field(t, "_arrow");
-
-            if (field == null)
+            var arrow = task.Arrow;
+            if (arrow == null)
             {
                 return;
             }
 
-            var arrowObj = field.GetValue(task) as MonoBehaviour;
-            if (arrowObj == null)
+            if (arrow.gameObject != null && arrow.gameObject.activeSelf)
             {
-                return;
+                arrow.gameObject.Destroy();
             }
 
-            if (arrowObj.gameObject != null && arrowObj.gameObject.activeSelf)
-            {
-                arrowObj.gameObject.Destroy();
-            }
-
-            field.SetValue(task, null);
+            task.Arrow = null;
         }
         catch
         {

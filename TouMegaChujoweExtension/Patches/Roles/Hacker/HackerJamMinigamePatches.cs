@@ -125,122 +125,29 @@ public static class HackerJamMinigamePatches
         }
     }
 
-    private static void TryEnableVitalsCommsDisabledUi(VitalsMinigame vitals)
+    // The Vitals "comms disabled" text used to be found by probing fifteen candidate field names with
+    // AccessTools.Field. That never worked: VitalsMinigame.SabText does exist, but Il2CppInterop surfaces
+    // IL2CPP fields as PROPERTIES on the interop type, so AccessTools.Field missed all fifteen and the
+    // Hacker's jam simply never touched the Vitals UI. All it produced was fifteen HarmonyX warnings per
+    // resolve. Read the member directly, the way the rest of the codebase does.
+    private static void SetVitalsCommsDisabledUi(VitalsMinigame vitals, bool active)
     {
         if (vitals == null)
         {
             return;
         }
 
-        var type = vitals.GetType();
-        var candidateFields = new[]
-        {
-            "SabText", "SabotageText", "NoCommsText", "CommsDownText", "CommsText",
-            "CommsDisabledText", "DisabledText", "sabotageText", "sabText"
-        };
+        TrySetActive(vitals.SabText, active);
+    }
 
-        foreach (var fName in candidateFields)
-        {
-            try
-            {
-                var field = AccessTools.Field(type, fName);
-                if (field == null)
-                {
-                    continue;
-                }
-
-                var value = field.GetValue(vitals);
-                TrySetActive(value, true);
-            }
-            catch
-            {
-                // ignore
-            }
-        }
-
-        var candidateContainers = new[]
-        {
-            "SabotagePanel", "NoCommsPanel", "CommsDownPanel", "CommsDisabledPanel",
-            "sabotagePanel", "noCommsPanel"
-        };
-
-        foreach (var fName in candidateContainers)
-        {
-            try
-            {
-                var field = AccessTools.Field(type, fName);
-                if (field == null)
-                {
-                    continue;
-                }
-
-                var value = field.GetValue(vitals);
-                TrySetActive(value, true);
-            }
-            catch
-            {
-                // ignore
-            }
-        }
+    private static void TryEnableVitalsCommsDisabledUi(VitalsMinigame vitals)
+    {
+        SetVitalsCommsDisabledUi(vitals, true);
     }
 
     private static void TryDisableVitalsCommsDisabledUi(VitalsMinigame vitals)
     {
-        if (vitals == null)
-        {
-            return;
-        }
-
-        var type = vitals.GetType();
-        var candidateFields = new[]
-        {
-            "SabText", "SabotageText", "NoCommsText", "CommsDownText", "CommsText",
-            "CommsDisabledText", "DisabledText", "sabotageText", "sabText"
-        };
-
-        foreach (var fName in candidateFields)
-        {
-            try
-            {
-                var field = AccessTools.Field(type, fName);
-                if (field == null)
-                {
-                    continue;
-                }
-
-                var value = field.GetValue(vitals);
-                TrySetActive(value, false);
-            }
-            catch
-            {
-                // ignore
-            }
-        }
-
-        var candidateContainers = new[]
-        {
-            "SabotagePanel", "NoCommsPanel", "CommsDownPanel", "CommsDisabledPanel",
-            "sabotagePanel", "noCommsPanel"
-        };
-
-        foreach (var fName in candidateContainers)
-        {
-            try
-            {
-                var field = AccessTools.Field(type, fName);
-                if (field == null)
-                {
-                    continue;
-                }
-
-                var value = field.GetValue(vitals);
-                TrySetActive(value, false);
-            }
-            catch
-            {
-                // ignore
-            }
-        }
+        SetVitalsCommsDisabledUi(vitals, false);
     }
 
     [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnEnable))]
@@ -286,8 +193,9 @@ public static class HackerJamMinigamePatches
         return false;
     }
 
+    // After Begin, and only after. Registering the same body as a prefix as well - which it was -
+    // ran the jamming pass over a camera view the original had not built yet.
     [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Begin))]
-    [HarmonyPrefix]
     [HarmonyPostfix]
     public static void SurveillanceMinigameBeginPostfix(SurveillanceMinigame __instance)
     {
@@ -318,7 +226,6 @@ public static class HackerJamMinigamePatches
     }
 
     [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Begin))]
-    [HarmonyPrefix]
     [HarmonyPostfix]
     public static void PlanetSurveillanceMinigameBeginPostfix(PlanetSurveillanceMinigame __instance)
     {
