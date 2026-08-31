@@ -77,8 +77,13 @@ public sealed class SpeedyAccelerateModifier : ConcealedModifier, IVisualAppeara
     public VisualAppearance GetVisualAppearance()
     {
         var options = OptionGroupSingleton<SpeedyOptions>.Instance;
-        var appearance = Player.GetDefaultAppearance();
-        appearance.Speed = options.AccelerationBuff;
+                // GetDefaultModifiedAppearance, not GetDefaultAppearance: the plain default has no idea the
+        // player is a Giant or a Mini, so rebuilding from it threw their size away the moment this
+        // effect landed - an Arcanist speed card made a Giant an ordinary-sized player. The modified
+        // one already folds Mini/Giant in, and the speed is applied on top of theirs rather than
+        // replacing it, so a Giant stays proportionally slower while still getting the boost.
+        var appearance = Player.GetDefaultModifiedAppearance();
+        appearance.Speed *= options.AccelerationBuff;
         appearance.HatId = "hat_NoHat";
         appearance.SkinId = "skin_None";
         appearance.VisorId = "visor_EmptyVisor";

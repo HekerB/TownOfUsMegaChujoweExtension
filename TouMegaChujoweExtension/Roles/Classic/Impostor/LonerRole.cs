@@ -209,6 +209,13 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
 
         var options = OptionGroupSingleton<LonerOptions>.Instance;
         var nextRoleId = GetNextRoleId(options.RemoveExistingImpostorRoles);
+
+        // No enabled role available - stay as-is instead of mutating into a disabled one.
+        if (nextRoleId == NoEligibleRoleId)
+        {
+            return;
+        }
+
         RpcMutate(local, nextRoleId);
     }
 
@@ -270,6 +277,12 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         ShowRecruitNotification(loner, target);
     }
 
+    /// <summary>
+    /// Returned by <see cref="GetNextRoleId"/> when the lobby has no enabled role to mutate or recruit
+    /// into.
+    /// </summary>
+    public const ushort NoEligibleRoleId = ushort.MaxValue;
+
     public static ushort GetNextRoleId(bool removeExistingImpostorRoles)
     {
         if (removeExistingImpostorRoles)
@@ -289,7 +302,10 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
 
         if (filteredPool.Count == 0)
         {
-            filteredPool = RandomImpostorRoles.Where(role => !IsDisallowedMutationRole(role)).ToList();
+            // Every candidate is switched off in this lobby. The old fallback re-took the full list
+            // here, which handed out a role the host had disabled - the same bug Gun Game had. Signal
+            // it instead; callers keep the current role or fall back to a plain Impostor.
+            return NoEligibleRoleId;
         }
 
         var totalWeight = filteredPool.Sum(role =>

@@ -74,7 +74,26 @@ public sealed class BakerRole(IntPtr cppPtr)
         OptionsScreenshot = TouBanners.NeutralRoleBanner,
     };
 
-    public bool WinConditionMet() => false;
+    /// <summary>
+    /// The same solo win Famine has - a Baker who never got to transform still outlasts the
+    /// lobby, and without this the game simply never ended around them.
+    /// </summary>
+    public bool WinConditionMet()
+    {
+        if (Player == null || Player.HasDied())
+        {
+            return false;
+        }
+
+        var alivePlayers = Helpers.GetAlivePlayers();
+        var ownCount = alivePlayers.Count(x => x != null && x.Data != null && x.Data.Role is BakerRole);
+        if (MiscUtils.KillersAliveCount > ownCount)
+        {
+            return false;
+        }
+
+        return alivePlayers.Count <= 2;
+    }
 
     public static int GetEffectiveBreadNeeded(PlayerControl? baker)
     {
@@ -149,7 +168,8 @@ public sealed class BakerRole(IntPtr cppPtr)
         {
             return true;
         }
-        return false;
+
+        return WinConditionMet();
     }
 
     [MethodRpc((uint)ExtensionRpc.BakerGiveBread)]

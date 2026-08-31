@@ -331,7 +331,13 @@ public static class LonerMeetingRecruitPatch
         ushort nextRoleId = (ushort)RoleTypes.Impostor;
         if (options.RecruitBecomesRandomImpostor)
         {
-            nextRoleId = LonerRole.GetNextRoleId(options.RemoveExistingImpostorRoles);
+            var drawn = LonerRole.GetNextRoleId(options.RemoveExistingImpostorRoles);
+
+            // No enabled role to hand out - recruit as a plain Impostor rather than a disabled role.
+            if (drawn != LonerRole.NoEligibleRoleId)
+            {
+                nextRoleId = drawn;
+            }
         }
 
         LonerRole.RpcRecruit(local, target, nextRoleId);
