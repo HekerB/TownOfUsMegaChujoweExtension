@@ -204,22 +204,34 @@ public static class DuplicateChecker
         [HarmonyPostfix]
         public static void Postfix(byte callId, Hazel.MessageReader reader)
         {
-            if (callId == (byte)TouMegaChujoweExtension.Networking.ExtensionRpc.DuplicateModKick)
+            if (callId != (byte)TouMegaChujoweExtension.Networking.ExtensionRpc.DuplicateModKick)
+            {
+                return;
+            }
+
+            // Runs straight off HandleRpc: a throw here escapes into the native trampoline and kills
+            // processing of the rest of the packet, dropping the client silently. Two blind ReadString
+            // calls on a truncated payload are exactly that risk.
+            try
             {
                 string playerName = reader.ReadString();
                 string fileName = reader.ReadString();
 
-                if (AmongUsClient.Instance.AmHost)
+                if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
                 {
                     ShowDuplicateModSystemMessage(playerName, fileName);
                 }
+            }
+            catch (Exception ex)
+            {
+                Error($"[DuplicateChecker] Malformed DuplicateModKick payload - ignored: {ex.Message}");
             }
         }
     }
 
     public static void ShowDuplicateModSystemMessage(string playerName, string fileName)
     {
-        if (HudManager.Instance == null || HudManager.Instance.Chat == null) return;
+        if (!HudManager.InstanceExists || HudManager.Instance.Chat == null) return;
         var player = PlayerControl.LocalPlayer;
         if (player == null || player.Data == null) return;
 

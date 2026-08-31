@@ -414,7 +414,10 @@ public static class PelicanSystem
     private static IEnumerator CoRefreshHud()
     {
         yield return new WaitForSeconds(0.1f);
-        if (HudManager.Instance != null)
+
+        // Swallowed players are processed at MEETING start - re-activating the HUD here made the
+        // vent/use/role buttons pop up over the meeting (and the voting results) for everyone.
+        if (HudManager.Instance != null && !MeetingHud.Instance && !ExileController.Instance)
         {
             try
             {
@@ -480,12 +483,18 @@ public static class PelicanSystem
             {
                 RemoveSwallowedModifier(victim);
 
-                try
+                // Only for someone coming back out alive. Someone who really was digested keeps
+                // theirs - the old code stripped the modifier either way and threw away the
+                // "Digested" cause of death along with it.
+                if (!victim.HasDied())
                 {
-                    if (victim.TryGetModifier<DeathHandlerModifier>(out var dhMod))
-                        victim.RemoveModifier(dhMod);
+                    try
+                    {
+                        if (victim.TryGetModifier<DeathHandlerModifier>(out var dhMod))
+                            victim.RemoveModifier(dhMod);
+                    }
+                    catch { /* ignore death handler removal errors */ }
                 }
-                catch { /* ignore death handler removal errors */ }
 
                 if (!victim.HasDied())
                 {
@@ -535,12 +544,17 @@ public static class PelicanSystem
         if (victim != null)
         {
             RemoveSwallowedModifier(victim);
-            try
+            // Only for someone coming back out alive - a digested player keeps their "Digested"
+            // cause of death, which the old unconditional strip threw away.
+            if (!victim.HasDied())
             {
-                if (victim.TryGetModifier<DeathHandlerModifier>(out var dhMod))
-                    victim.RemoveModifier(dhMod);
+                try
+                {
+                    if (victim.TryGetModifier<DeathHandlerModifier>(out var dhMod))
+                        victim.RemoveModifier(dhMod);
+                }
+                catch { /* ignore death handler removal errors */ }
             }
-            catch { /* ignore death handler removal errors */ }
 
             if (!victim.HasDied())
             {
