@@ -1,4 +1,6 @@
 using MiraAPI.Modifiers;
+using TownOfUs.Events;
+using MiraAPI.Networking;
 using MiraAPI.Modifiers.Types;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Modifiers.Game;
@@ -40,6 +42,11 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable, 
     public override bool CountTowardsTrueFaction => true;
     public override ModifierFaction FactionType => ModifierFaction.Alliance;
     public override bool GetsPunished => false;
+
+    // A Recruit has betrayed the crew: they keep their task list and can still complete tasks so
+    // nothing gives them away, but those tasks must not push the crew's task bar - they no longer
+    // win with the crew.
+    public override bool DoesTasks => false;
 
     public SidekickModifier() : base() { }
 
@@ -201,6 +208,18 @@ public static class SidekickFriendlyFirePatch
         {
             var targetSidekick = target.GetModifier<SidekickModifier>();
             if (targetSidekick != null && targetSidekick.JackalId == killerSidekick.JackalId) return false;
+
+            // Once the shield has expired the Infiltrator has no protection from anyone, its own
+            // Recruits included. Force the kill through before any friendly-fire or shield logic can
+            // swallow it, and force it over the network: a plain MurderPlayer here only ran on the
+            // host, so the Infiltrator died there and stayed alive everywhere else.
+            var shieldOptions = OptionGroupSingleton<JackalOptions>.Instance;
+            var shieldActive = shieldOptions != null && shieldOptions.IsShieldActive(DeathEventHandlers.CurrentRound);
+            if (!shieldActive && killerSidekick.JackalId == target.PlayerId && target.GetRole<JackalRole>() != null)
+            {
+                CustomMurderRpc.RpcCustomMurder(__instance, target, MeetingCheck.OutsideMeeting);
+                return false;
+            }
         }
 
         if (target.HasModifier<TownOfUs.Modifiers.Crewmate.JailedModifier>())

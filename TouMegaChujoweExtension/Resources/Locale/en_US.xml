@@ -1314,10 +1314,12 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionJackalNotifySidekickDeath">Notify on Recruit death</string>
   <string name="ExtensionJackalSidekickDiedAlert">Recruit {0} has died!</string>
   <string name="ExtensionJackalShieldLostAlert">You lost your shield!</string>
+  <string name="ExtensionJackalShieldExpiredAlert">Your shield has expired!</string>
   <string name="ExtensionJackalKillAbilityAlert">Your recruits are dead! Kill ability unlocks in 10s.</string>
   <string name="ExtensionModifierSidekickShortName">REC</string>
   <string name="ExtensionJackalShieldModifierTitle">RECRUIT ALIVE SHIELD</string>
-  <string name="ExtensionJackalShieldModifierDesc">Protects the Infiltrator from any killing attempt as long as at least one Recruit is alive.</string>
+  <string name="ExtensionJackalShieldModifierDesc">Blocks every killing attempt on the Infiltrator while at least one Recruit is alive, for a limited number of rounds.</string>
+  <string name="ExtensionJackalShieldRemainingRounds">Remaining: &lt;count&gt; round(s)</string>
   <string name="ExtensionJackalChatTitle">Infiltrator</string>
   <string name="ExtensionOptionGeneralJackalChat">Recruits Private Chat</string>
   <string name="ExtensionGeneralJackalChatDisplayName">Recruits Private Chat</string>
@@ -1480,7 +1482,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionJackalKillCooldown">Kill Cooldown</string>
   <string name="ExtensionOptionJackalKillDistance">Kill Distance</string>
   <string name="ExtensionOptionJackalCanVent">Can Vent</string>
-  <string name="ExtensionOptionJackalShieldWhileSidekicksAlive">Shield while Recruits alive</string>
+  <string name="ExtensionOptionJackalShieldRounds">Shield Duration (Rounds)</string>
   <string name="ExtensionOptionJackalLifelinkDeath">Lifelink Death with Recruits</string>
   <string name="ExtensionOptionGeneralPreventVampiresWithJackal">Infiltrator &amp; Vampires Mutual Exclusion</string>
   

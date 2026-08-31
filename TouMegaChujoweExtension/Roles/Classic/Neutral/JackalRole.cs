@@ -32,6 +32,7 @@ using TouMegaChujoweExtension.Modifiers.Neutral;
 using TouMegaChujoweExtension.Options;
 using HarmonyLib;
 using System.Collections.Generic;
+using System.Globalization;
 using TownOfUs.Modifiers;
 using TownOfUs.Events;
 
@@ -102,6 +103,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
         OptionsScreenshot = TouBanners.NeutralRoleBanner,
         IntroSound = TouAudio.VampIntroSound,
+        MaxRoleCount = 1,
     };
 
 
@@ -152,6 +154,11 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             if (killButton != null && killButton.Button != null && killButton.Button.gameObject != null)
             {
                 UnityEngine.Object.Destroy(killButton.Button.gameObject);
+
+                // Clear the reference as well. Mira reaches this button through `Button?.` in
+                // SetHudActive, and the null-conditional does not see Unity's destroyed-object null,
+                // so leaving it set throws on every hud refresh after the Infiltrator dies.
+                killButton.Button = null;
                 UnityEngine.Debug.Log("[TOUMCE] Deinitialize: Destroyed JackalKillButton.Button.gameObject for local Jackal.");
             }
             if (targetPlayer.HasModifier<TownOfUs.Modifiers.IgnoreInvulnerabilityModifier>())
@@ -162,6 +169,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
     }
 
     public bool KillAbilityAlertShown { get; set; }
+    public bool ShieldExpiredAlertShown { get; set; }
 
     public void OnRecruitDie()
     {
@@ -201,10 +209,11 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
                 try
                 {
-                    if (OptionGroupSingleton<JackalOptions>.Instance != null)
+                    var shieldOptions = OptionGroupSingleton<JackalOptions>.Instance;
+                    if (shieldOptions != null)
                     {
                         string msg = TouLocale.Get("ExtensionJackalKillAbilityAlert");
-                        if (OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
+                        if (shieldOptions.IsShieldActive(DeathEventHandlers.CurrentRound))
                         {
                             msg += "\n" + TouLocale.Get("ExtensionJackalShieldLostAlert");
                         }
@@ -241,19 +250,45 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                MiscUtils.AppendOptionsText(GetType());
     }
 
+    /// <summary>Packs the host's recruit -> Infiltrator map as "victim:jackal,victim:jackal".</summary>
+    public static string EncodeSidekickAssignments(IEnumerable<KeyValuePair<byte, byte>> assignments)
+    {
+        return string.Join(",", assignments.Select(kvp => $"{kvp.Key}:{kvp.Value}"));
+    }
+
+    /// <summary>
+    /// Broadcasts the host's recruit -> Infiltrator map.
+    /// <para>
+    /// This used to take two <c>byte[]</c> parameters, and Reactor's <c>MessageSerializer</c> cannot
+    /// serialize <c>Byte[]</c>: the send threw before the message left the host, so every non-host
+    /// client was left with an empty <see cref="Patches.Roles.Jackal.JackalStartPatch.PendingAssignments"/>
+    /// and no idea which Recruit belonged to which Infiltrator. A string is a type Reactor does
+    /// serialize, the same as the chat RPCs in this mod.
+    /// </para>
+    /// </summary>
     [MethodRpc((uint)ExtensionRpc.SetSidekickAssignments)]
-    public static void RpcSetSidekickAssignments(PlayerControl sender, byte[] victims, byte[] jackalIds)
+    public static void RpcSetSidekickAssignments(PlayerControl sender, string payload)
     {
         _ = sender;
         Patches.Roles.Jackal.JackalStartPatch.PendingAssignments.Clear();
-        if (victims == null || jackalIds == null) return;
+        if (string.IsNullOrEmpty(payload)) return;
 
-        for (int i = 0; i < victims.Length && i < jackalIds.Length; i++)
+        foreach (var pair in payload.Split(','))
         {
-            Patches.Roles.Jackal.JackalStartPatch.PendingAssignments[victims[i]] = jackalIds[i];
-            UnityEngine.Debug.Log($"[TOUMCE] Synced sidekick {victims[i]} to Jackal {jackalIds[i]}");
+            var parts = pair.Split(':');
+            if (parts.Length != 2 ||
+                !byte.TryParse(parts[0], NumberStyles.Integer, TouMegaChujoweExtensionPlugin.Culture, out var victimId) ||
+                !byte.TryParse(parts[1], NumberStyles.Integer, TouMegaChujoweExtensionPlugin.Culture, out var jackalId))
+            {
+                continue;
+            }
+
+            Patches.Roles.Jackal.JackalStartPatch.PendingAssignments[victimId] = jackalId;
+            UnityEngine.Debug.Log($"[TOUMCE] Synced sidekick {victimId} to Jackal {jackalId}");
         }
 
+        // The SidekickModifier carries the Jackal id as a constructor argument, but it can attach late
+        // on a remote client - re-stamp it here so the two records cannot disagree.
         foreach (var player in PlayerControl.AllPlayerControls)
         {
             if (player != null && player.Pointer != IntPtr.Zero && player.TryGetModifier<SidekickModifier>(out var mod) &&
