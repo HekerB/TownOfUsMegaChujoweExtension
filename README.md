@@ -33,7 +33,8 @@ An extension mod for [Town of Us: Mira](https://github.com/AU-Avengers/TOU-Mira)
 
 | Extension Version | Among Us Version | TOU: Mira Version | Download Mira |
 |-------------------|------------------|-------------------|---------------|
-| 1.4.3 or newer    | 17.3.x           | 1.6.3             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.3) |
+| 1.5.0 or newer    | 17.3.x           | 1.7.1             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.7.1) |
+| 1.4.3 - 1.4.4     | 17.3.x           | 1.6.3             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.3) |
 | 1.3.0 or newer    | 17.3.x           | 1.6.2             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.2) |
 | Older than 1.3.0  | 17.3.x           | 1.6.1             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.1) |
 | Older than 1.3.0  | 17.3.x           | 1.6.0             | [Link](https://github.com/AU-Avengers/TOU-Mira/releases/tag/1.6.0) |
@@ -280,8 +281,8 @@ Use **[Perfect Comms](https://github.com/artriy/Perfect-Comms)** if you want in-
 # Requirements
 
 - .NET 6.0
-- Town of Us: Mira 1.6.2 or later
-- MiraAPI 0.4.0 or later
+- Town of Us: Mira 1.7.1
+- MiraAPI 0.4.3
 - Reactor 2.5.0 or later
 
 -----------------------
