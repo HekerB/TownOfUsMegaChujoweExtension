@@ -8,10 +8,15 @@ namespace TouMegaChujoweExtension.Patches.Roles.Burrower;
 [HarmonyPatch]
 public static class BurrowerVentTargetPatches
 {
-    [HarmonyPatch(typeof(PlumberBlockButton), nameof(PlumberBlockButton.GetTarget))]
+    [HarmonyPatch(typeof(MiraAPI.Hud.CustomActionButton<Vent>), nameof(MiraAPI.Hud.CustomActionButton<Vent>.GetTarget))]
     [HarmonyPostfix]
-    public static void PlumberBlockButtonGetTargetPostfix(PlumberBlockButton __instance, ref Vent? __result)
+    public static void PlumberBlockButtonGetTargetPostfix(MiraAPI.Hud.CustomActionButton<Vent> __instance, ref Vent? __result)
     {
+        if (__instance is not PlumberBlockButton plumberButton)
+        {
+            return;
+        }
+
         if (__result != null && !BurrowerSystem.IsBurrowerVent(__result))
         {
             return;
@@ -19,7 +24,7 @@ public static class BurrowerVentTargetPatches
 
         __result = BurrowerSystem.GetClosestUsableMapVent(
             PlayerControl.LocalPlayer,
-            __instance.Distance,
+            plumberButton.Distance,
             candidate => !VentOccupancySystem.IsBlocked(candidate.Id));
     }
 

@@ -19,6 +19,7 @@ using TownOfUs.Assets;
 using TownOfUs.Extensions;
 using TownOfUs.Interfaces;
 using TownOfUs.Modifiers.Game.Alliance;
+using TownOfUs.Modifiers.Game.Assailant;
 using TownOfUs.Modifiers.Game.Impostor;
 using TownOfUs.Modules;
 using TownOfUs.Modules.Localization;
@@ -256,9 +257,9 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
             target.ChangeRole((ushort)RoleTypes.Impostor, recordRole: false);
         }
 
-        if (options.RecruitedImpostorBecomesAssassin && !target.HasModifier<ImpostorAssassinModifier>())
+        if (options.RecruitedImpostorBecomesAssassin && !target.HasModifier<AssassinModifier>())
         {
-            target.AddModifier<ImpostorAssassinModifier>();
+            target.AddModifier<AssassinModifier>();
         }
 
         if (target.AmOwner)

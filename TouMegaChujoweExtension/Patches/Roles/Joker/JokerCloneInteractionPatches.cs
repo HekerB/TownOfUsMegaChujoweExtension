@@ -694,7 +694,7 @@ public static class JokerCloneInteractionPatches
     }
 }
 
-[HarmonyPatch(typeof(HudManagerPatches), nameof(HudManagerPatches.UpdateCamouflageComms))]
+[HarmonyPatch(typeof(TownOfUs.Modules.Components.HudManagerHelper), nameof(TownOfUs.Modules.Components.HudManagerHelper.UpdateCamouflageComms))]
 public static class JokerCloneCamoCommsPatch
 {
     public static void Postfix()

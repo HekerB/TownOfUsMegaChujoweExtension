@@ -299,7 +299,8 @@ public sealed class BountyHunterRole(IntPtr cppPtr)
                         "DiedToWinning",
                         TownOfUs.Events.DeathEventHandlers.CurrentRound,
                         DeathHandlerOverride.SetFalse,
-                        lockInfo: DeathHandlerOverride.SetTrue);
+                        "null",
+                        DeathHandlerOverride.SetTrue);
                     player.RpcPlayerExile();
                 }
             }

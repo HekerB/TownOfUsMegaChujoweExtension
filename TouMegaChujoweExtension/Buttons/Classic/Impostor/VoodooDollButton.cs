@@ -152,7 +152,12 @@ public sealed class VoodooDollButton : TownOfUsRoleButton<VoodooMasterRole, Play
 
     public void UpdateUsesDisplay()
     {
-        if (Button == null || Role == null)
+        if (Button == null || PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null || PlayerControl.LocalPlayer.Data.Role is not VoodooMasterRole)
+        {
+            return;
+        }
+
+        if (Role == null)
         {
             return;
         }

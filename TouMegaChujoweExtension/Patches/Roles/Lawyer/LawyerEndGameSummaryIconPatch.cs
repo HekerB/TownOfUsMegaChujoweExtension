@@ -45,8 +45,9 @@ public static class LawyerEndGameSummaryIconPatch
 
         var tag = $" <b>{TownOfUsColors.Lawyer.ToTextColor()}<size=60%>{Symbol}</size></color></b>";
 
-        foreach (var record in EndGameData.PlayerRecords)
+        for (int i = 0; i < EndGameData.PlayerRecords.Count; i++)
         {
+            var record = EndGameData.PlayerRecords[i];
             if (record == null)
             {
                 continue;
@@ -62,7 +63,7 @@ public static class LawyerEndGameSummaryIconPatch
                 continue;
             }
 
-            record.PlayerName += tag;
+            EndGameData.PlayerRecords[i] = record with { PlayerName = record.PlayerName + tag };
         }
     }
 }

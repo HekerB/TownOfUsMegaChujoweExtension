@@ -11,6 +11,7 @@ using TownOfUs.Extensions;
 using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
+using TownOfUs.Modifiers.Game.Assailant;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Options;
@@ -836,6 +837,13 @@ public static class ClassicAssassinSystem
         return jackalIdA != 255 && jackalIdA == jackalIdB;
     }
 
+    private static bool CanMultiKill(AssassinModifier assassin)
+    {
+        var opts = OptionGroupSingleton<AssassinOptions>.Instance;
+        if (opts == null) return false;
+        return assassin.Player.IsImpostorAligned() ? opts.ImpAssassinMultiKill : opts.NeutAssassinMultiKill;
+    }
+
     // =========================
     // GUESS LOGIC
     // =========================
@@ -844,7 +852,7 @@ public static class ClassicAssassinSystem
         if (MeetingHud.Instance.state == MeetingHud.VoteStates.Discussion) return;
         if (PlayerControl.LocalPlayer.Data.IsDead) return;
         if (PlayerControl.LocalPlayer.HasModifier<TownOfUs.Modifiers.Crewmate.JailedModifier>()) return;
-        if (_guessedThisMeeting && !OptionGroupSingleton<AssassinOptions>.Instance.AssassinMultiKill) return;
+        if (_guessedThisMeeting && !CanMultiKill(assassin)) return;
         if (_remainingKills <= 0) return;
         if (!GuessIndices.TryGetValue(targetId, out var index) || index < 0) return;
 
@@ -916,7 +924,7 @@ public static class ClassicAssassinSystem
 
         if (victim == assassin.Player ||
             _remainingKills <= 0 ||
-            !OptionGroupSingleton<AssassinOptions>.Instance.AssassinMultiKill)
+            !CanMultiKill(assassin))
         {
             HideAllButtons();
             _guessedThisMeeting = true;

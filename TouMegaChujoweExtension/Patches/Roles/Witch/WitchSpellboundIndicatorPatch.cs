@@ -12,7 +12,7 @@ namespace TouMegaChujoweExtension.Patches.Roles.Witch;
 /// Patch to add spellbound indicator sprite for players who have been spelled by the Witch.
 /// Shows HexedSprite only to the Witch during gameplay, and to everyone in meetings or after first meeting if they have meetings left.
 /// </summary>
-[HarmonyPatch(typeof(HudManagerPatches), nameof(HudManagerPatches.UpdateRoleNameText))]
+[HarmonyPatch(typeof(TownOfUs.Modules.Components.HudManagerHelper), nameof(TownOfUs.Modules.Components.HudManagerHelper.UpdateRoleNameText))]
 public static class WitchSpellboundIndicatorPatch
 {
     private static readonly Dictionary<byte, SpriteRenderer> HexedSprites = [];
