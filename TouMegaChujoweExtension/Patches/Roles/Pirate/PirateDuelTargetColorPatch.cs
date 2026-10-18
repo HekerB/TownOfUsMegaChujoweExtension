@@ -10,10 +10,6 @@ namespace TouMegaChujoweExtension.Patches.Roles.Pirate
     public static class PirateDuelTargetColorPatch
     {
         [HarmonyPostfix]
-
-    public static class PirateDuelTargetColorPatch
-    {
-        [HarmonyPostfix]
         public static void Postfix()
         {
             var localPlayer = PlayerControl.LocalPlayer;

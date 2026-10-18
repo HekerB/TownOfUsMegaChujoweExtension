@@ -18,10 +18,6 @@ public static class WitchSpellboundIndicatorPatch
 {
     private static readonly Dictionary<byte, SpriteRenderer> HexedSprites = [];
 
-public static class WitchSpellboundIndicatorPatch
-{
-    private static readonly Dictionary<byte, SpriteRenderer> HexedSprites = [];
-
     [HarmonyPostfix]
     public static void UpdateRoleNameTextPostfix()
     {

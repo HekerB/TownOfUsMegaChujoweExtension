@@ -31,10 +31,6 @@ namespace TouMegaChujoweExtension.Patches.Roles.Lovers;
 public static class LoverKnowsRolePatch
 {
     [HarmonyPostfix]
-
-public static class LoverKnowsRolePatch
-{
-    [HarmonyPostfix]
     public static void Postfix()
     {
         var extGenOpt = OptionGroupSingleton<ExtensionGeneralOptions>.Instance;
@@ -111,7 +107,7 @@ public static class LoverKnowsRolePatch
             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
         }
 
-        if (otherLover.IsCrewmate() || otherLover.Data.Role is SpectreRole)
+        if (otherLover.IsCrewmate() || role is SpectreRole)
         {
             roleName += $" <size=80%>{otherLover.TaskInfo()}</size>";
         }
@@ -173,7 +169,7 @@ public static class LoverKnowsRolePatch
             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
         }
 
-        if (otherLover.IsCrewmate() || otherLover.Data.Role is SpectreRole)
+        if (otherLover.IsCrewmate() || role is SpectreRole)
         {
             roleName += $" <size=80%>{otherLover.TaskInfo()}</size>";
         }

@@ -837,13 +837,6 @@ public static class ClassicAssassinSystem
         return jackalIdA != 255 && jackalIdA == jackalIdB;
     }
 
-    private static bool CanMultiKill(AssassinModifier assassin)
-    {
-        var opts = OptionGroupSingleton<AssassinOptions>.Instance;
-        if (opts == null) return false;
-        return assassin.Player.IsImpostorAligned() ? opts.ImpAssassinMultiKill : opts.NeutAssassinMultiKill;
-    }
-
     // =========================
     // GUESS LOGIC
     // =========================

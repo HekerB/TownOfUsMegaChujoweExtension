@@ -699,10 +699,6 @@ public static class JokerCloneInteractionPatches
 public static class JokerCloneCamoCommsPatch
 {
     public static void Postfix()
-
-public static class JokerCloneCamoCommsPatch
-{
-    public static void Postfix()
     {
         JokerCloneSystem.SyncCamouflageComms();
     }
