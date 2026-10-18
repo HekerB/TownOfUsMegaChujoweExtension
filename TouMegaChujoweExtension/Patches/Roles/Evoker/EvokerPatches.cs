@@ -154,3 +154,100 @@ public static class EvokerGreyOutButtonsPatch
         return false;
     }
 }
+[HarmonyPatch(typeof(TownOfUs.Buttons.TownOfUsButton), nameof(TownOfUs.Buttons.TownOfUsButton.ClickHandler))]
+public static class EvokerBlockTownOfUsButtonClickHandlerPatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix()
+    {
+        return !EvokerSystem.IsLocalPlayerBlocked();
+    }
+}
+
+[HarmonyPatch(typeof(TownOfUs.Buttons.TownOfUsTargetButton<PlayerControl>), nameof(TownOfUs.Buttons.TownOfUsTargetButton<PlayerControl>.CanUse))]
+public static class EvokerBlockPlayerTargetButtonCanUsePatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix(ref bool __result)
+    {
+        if (!EvokerSystem.IsLocalPlayerBlocked()) return true;
+        __result = false;
+        return false;
+    }
+}
+
+[HarmonyPatch(typeof(TownOfUs.Buttons.TownOfUsTargetButton<PlayerControl>), nameof(TownOfUs.Buttons.TownOfUsTargetButton<PlayerControl>.ClickHandler))]
+public static class EvokerBlockPlayerTargetButtonClickHandlerPatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix()
+    {
+        return !EvokerSystem.IsLocalPlayerBlocked();
+    }
+}
+
+[HarmonyPatch(typeof(TownOfUs.Buttons.TownOfUsTargetButton<DeadBody>), nameof(TownOfUs.Buttons.TownOfUsTargetButton<DeadBody>.CanUse))]
+public static class EvokerBlockDeadBodyTargetButtonCanUsePatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix(ref bool __result)
+    {
+        if (!EvokerSystem.IsLocalPlayerBlocked()) return true;
+        __result = false;
+        return false;
+    }
+}
+
+[HarmonyPatch(typeof(TownOfUs.Buttons.TownOfUsTargetButton<DeadBody>), nameof(TownOfUs.Buttons.TownOfUsTargetButton<DeadBody>.ClickHandler))]
+public static class EvokerBlockDeadBodyTargetButtonClickHandlerPatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix()
+    {
+        return !EvokerSystem.IsLocalPlayerBlocked();
+    }
+}
+
+[HarmonyPatch(typeof(TownOfUs.Buttons.TownOfUsTargetButton<Vent>), nameof(TownOfUs.Buttons.TownOfUsTargetButton<Vent>.CanUse))]
+public static class EvokerBlockVentTargetButtonCanUsePatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix(ref bool __result)
+    {
+        if (!EvokerSystem.IsLocalPlayerBlocked()) return true;
+        __result = false;
+        return false;
+    }
+}
+
+[HarmonyPatch(typeof(TownOfUs.Buttons.TownOfUsTargetButton<Vent>), nameof(TownOfUs.Buttons.TownOfUsTargetButton<Vent>.ClickHandler))]
+public static class EvokerBlockVentTargetButtonClickHandlerPatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix()
+    {
+        return !EvokerSystem.IsLocalPlayerBlocked();
+    }
+}
+
+[HarmonyPatch(typeof(MiraAPI.Hud.CustomActionButton), nameof(MiraAPI.Hud.CustomActionButton.CanUse))]
+public static class EvokerBlockCustomActionButtonCanUsePatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix(ref bool __result)
+    {
+        if (!EvokerSystem.IsLocalPlayerBlocked()) return true;
+        __result = false;
+        return false;
+    }
+}
+
+[HarmonyPatch(typeof(MiraAPI.Hud.CustomActionButton), nameof(MiraAPI.Hud.CustomActionButton.ClickHandler))]
+public static class EvokerBlockCustomActionButtonClickHandlerPatch
+{
+    [HarmonyPrefix]
+    public static bool Prefix()
+    {
+        return !EvokerSystem.IsLocalPlayerBlocked();
+    }
+}

@@ -133,7 +133,7 @@ public sealed class PirateRole(IntPtr cppPtr)
 
         if (PlayerControl.LocalPlayer != null)
         {
-            HudManagerHelper.UpdateRoleNameText();
+            TownOfUs.Modules.Components.HudManagerHelper.UpdateRoleNameText();
         }
 
         if (OptionGroupSingleton<PirateOptions>.Instance.WinMode == PirateWinMode.PirateWinsWithOthers)
@@ -148,7 +148,8 @@ public sealed class PirateRole(IntPtr cppPtr)
                     "DiedToWinning",
                     DeathEventHandlers.CurrentRound,
                     DeathHandlerOverride.SetFalse,
-                    lockInfo: DeathHandlerOverride.SetTrue);
+                    "null",
+                    DeathHandlerOverride.SetTrue);
                 PlayerControl.LocalPlayer.RpcPlayerExile();
             }
         }
@@ -305,7 +306,7 @@ public sealed class PirateRole(IntPtr cppPtr)
 
         if (PlayerControl.LocalPlayer != null)
         {
-            HudManagerHelper.UpdateRoleNameText();
+            TownOfUs.Modules.Components.HudManagerHelper.UpdateRoleNameText();
         }
     }
 

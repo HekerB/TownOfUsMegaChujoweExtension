@@ -27,7 +27,11 @@ using TMPro;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Lovers;
 
-[HarmonyPatch(typeof(HudManagerHelper), nameof(HudManagerHelper.UpdateRoleNameText))]
+[HarmonyPatch(typeof(TownOfUs.Modules.Components.HudManagerHelper), nameof(TownOfUs.Modules.Components.HudManagerHelper.UpdateRoleNameText))]
+public static class LoverKnowsRolePatch
+{
+    [HarmonyPostfix]
+
 public static class LoverKnowsRolePatch
 {
     [HarmonyPostfix]
@@ -107,7 +111,7 @@ public static class LoverKnowsRolePatch
             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
         }
 
-        if (otherLover.IsCrewmate() || role is SpectreRole)
+        if (otherLover.IsCrewmate() || otherLover.Data.Role is SpectreRole)
         {
             roleName += $" <size=80%>{otherLover.TaskInfo()}</size>";
         }
@@ -169,7 +173,7 @@ public static class LoverKnowsRolePatch
             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
         }
 
-        if (otherLover.IsCrewmate() || role is SpectreRole)
+        if (otherLover.IsCrewmate() || otherLover.Data.Role is SpectreRole)
         {
             roleName += $" <size=80%>{otherLover.TaskInfo()}</size>";
         }

@@ -50,6 +50,10 @@ public static class LawyerEndGameSummaryIconPatch
         {
             var record = EndGameData.PlayerRecords[i];
             if (record == null)
+
+        {
+            var record = EndGameData.PlayerRecords[i];
+            if (record == null)
             {
                 continue;
             }

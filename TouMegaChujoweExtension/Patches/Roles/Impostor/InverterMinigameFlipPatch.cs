@@ -21,7 +21,7 @@ public static class InverterMinigameBeginPatch
     }
 }
 
-[HarmonyPatch(typeof(Minigame), nameof(Minigame.Close))]
+[HarmonyPatch(typeof(Minigame), nameof(Minigame.Close), new System.Type[0])]
 public static class InverterMinigameClosePatch
 {
     public static void Prefix(Minigame __instance)

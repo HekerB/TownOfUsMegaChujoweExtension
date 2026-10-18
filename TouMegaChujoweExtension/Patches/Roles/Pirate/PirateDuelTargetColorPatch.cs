@@ -6,7 +6,11 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Pirate
 {
-    [HarmonyPatch(typeof(HudManagerHelper), nameof(HudManagerHelper.UpdateRoleNameText))]
+    [HarmonyPatch(typeof(TownOfUs.Modules.Components.HudManagerHelper), nameof(TownOfUs.Modules.Components.HudManagerHelper.UpdateRoleNameText))]
+    public static class PirateDuelTargetColorPatch
+    {
+        [HarmonyPostfix]
+
     public static class PirateDuelTargetColorPatch
     {
         [HarmonyPostfix]
