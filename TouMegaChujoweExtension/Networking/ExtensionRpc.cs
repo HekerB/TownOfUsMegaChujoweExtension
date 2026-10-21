@@ -119,5 +119,7 @@ public enum ExtensionRpc : uint
     BerserkerSetKills = 134,
     BerserkerTransformToWar = 135,
     InverterDisorient = 136,
-    TavernKeeperRoleblock = 137
+    TavernKeeperRoleblock = 137,
+    IcenbergFreeze = 138,
+    IcenbergBlizzard = 139
 }

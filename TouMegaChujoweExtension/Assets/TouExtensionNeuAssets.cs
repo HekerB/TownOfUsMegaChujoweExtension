@@ -24,10 +24,14 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> DoppelgangerVentSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Doppelganger_Vent_Button.png", 90f);
         public static LoadableAsset<Sprite> BakerGiveButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Baker_Give_Button.png", 100f);
         public static LoadableAsset<Sprite> JokerCloneButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Joker_Clone_Button.png", 100f);
+        public static LoadableAsset<Sprite> IcenbergKillButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Icenberg_Kill_Button.png", 100f);
+        public static LoadableAsset<Sprite> IcenbergVentButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Icenberg_Vent_Button.png", 100f);
+        public static LoadableAsset<Sprite> FreezeButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Icenberg_Freeze_Button.png", 100f);
+        public static LoadableAsset<Sprite> BlizzardButtonSprite { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Buttons.Icenberg_Blizzard_Button.png", 100f);
+        public static LoadableAsset<Sprite> IcenbergStormOverlay { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Anims.Icenberg_Storm_Overlay.png", 100f);
 
     }
 }
-
 
 
 

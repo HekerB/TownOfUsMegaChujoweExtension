@@ -42,6 +42,7 @@ public static class TouExtensionColors
     public static Color SoulCollector => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(25, 25, 47, 255);
     public static Color Death => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(32, 32, 32, 255);
     public static Color Innocent => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(255, 141, 168, 255);
+    public static Color Icenberg => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(105, 220, 235, 255);
     //impostors
     public static Color Witch => Palette.ImpostorRed;
     public static Color Wraith => Palette.ImpostorRed;
