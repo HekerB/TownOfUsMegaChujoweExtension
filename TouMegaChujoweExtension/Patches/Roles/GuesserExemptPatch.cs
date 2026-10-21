@@ -2,6 +2,7 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection;
 using TownOfUs.Modifiers.Game;
+using TownOfUs.Modifiers.Game.Assailant;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 using TouMegaChujoweExtension.Modifiers.Neutral;

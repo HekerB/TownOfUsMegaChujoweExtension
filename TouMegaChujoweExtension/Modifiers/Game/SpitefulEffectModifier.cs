@@ -12,10 +12,10 @@ public sealed class SpitefulEffectModifier : BaseModifier, IVisualAppearance
     public override bool HideOnUi => false;
     public override bool Unique => true; // Prevent duplicate modifiers
 
-    private SpitefulEffectType _effectType;
-    private SpitefulDurationType _durationType;
+    private readonly SpitefulEffectType _effectType;
+    private readonly SpitefulDurationType _durationType;
     private int _roundsRemaining;
-    private float _impact;
+    private readonly float _impact;
 
     public SpitefulEffectModifier(SpitefulEffectType effectType, SpitefulDurationType durationType, int rounds, float impact)
     {
@@ -69,10 +69,15 @@ public sealed class SpitefulEffectModifier : BaseModifier, IVisualAppearance
 
     public VisualAppearance GetVisualAppearance()
     {
-        var appearance = Player.GetDefaultAppearance();
+                // GetDefaultModifiedAppearance, not GetDefaultAppearance: the plain default has no idea the
+        // player is a Giant or a Mini, so rebuilding from it threw their size away the moment this
+        // effect landed - an Arcanist speed card made a Giant an ordinary-sized player. The modified
+        // one already folds Mini/Giant in, and the speed is applied on top of theirs rather than
+        // replacing it, so a Giant stays proportionally slower while still getting the boost.
+        var appearance = Player.GetDefaultModifiedAppearance();
         if (_effectType == SpitefulEffectType.Slowness)
         {
-            appearance.Speed = SpeedMultiplier;
+            appearance.Speed *= SpeedMultiplier;
         }
         return appearance;
     }

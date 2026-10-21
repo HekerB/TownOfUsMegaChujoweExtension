@@ -45,8 +45,10 @@ public static class LawyerEndGameSummaryIconPatch
 
         var tag = $" <b>{TownOfUsColors.Lawyer.ToTextColor()}<size=60%>{Symbol}</size></color></b>";
 
-        foreach (var record in EndGameData.PlayerRecords)
+        // PlayerRecord is an init-only record in TOU 1.7.1, so the entry has to be replaced.
+        for (var i = 0; i < EndGameData.PlayerRecords.Count; i++)
         {
+            var record = EndGameData.PlayerRecords[i];
             if (record == null)
             {
                 continue;
@@ -62,7 +64,7 @@ public static class LawyerEndGameSummaryIconPatch
                 continue;
             }
 
-            record.PlayerName += tag;
+            EndGameData.PlayerRecords[i] = record with { PlayerName = record.PlayerName + tag };
         }
     }
 }

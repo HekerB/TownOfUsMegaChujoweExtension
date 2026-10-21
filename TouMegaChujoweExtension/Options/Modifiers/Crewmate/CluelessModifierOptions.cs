@@ -1,9 +1,10 @@
-using CluelessCensorTypeEnum = TouMegaChujoweExtension.Options.Modifiers.Universal.CluelessCensorType;
+using CluelessCensorTypeEnum = TouMegaChujoweExtension.Options.Modifiers.Crewmate.CluelessCensorType;
 using MiraAPI.GameOptions.OptionTypes;
 using MiraAPI.GameOptions;
 using UnityEngine;
+using TouMegaChujoweExtension.Modifiers.Game;
 
-namespace TouMegaChujoweExtension.Options.Modifiers.Universal;
+namespace TouMegaChujoweExtension.Options.Modifiers.Crewmate;
 
 public enum CluelessCensorType
 {
@@ -17,7 +18,7 @@ public sealed class CluelessModifierOptions : AbstractOptionGroup<CluelessModifi
 {
     public override string GroupName => "Clueless";
     public override Color GroupColor => new Color32(20, 45, 120, 255);
-    public override bool ShowInModifiersMenu => true;
+    public override MenuCategory ParentMenu => MenuCategory.Modifiers;
     public override uint GroupPriority => 50;
 
     private static readonly string[] CluelessCensorTypeValues =
@@ -31,16 +32,3 @@ public sealed class CluelessModifierOptions : AbstractOptionGroup<CluelessModifi
     public ModdedEnumOption<CluelessCensorType> CluelessCensorType { get; } =
         new("ExtensionModifierCluelessCensorType", CluelessCensorTypeEnum.Asterisks, CluelessCensorTypeValues);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

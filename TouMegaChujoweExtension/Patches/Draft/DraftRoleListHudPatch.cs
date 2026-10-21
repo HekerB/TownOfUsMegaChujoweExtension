@@ -138,34 +138,27 @@ public static class DraftRoleListHudPatch
         var separatorIndex = title.LastIndexOf(' ');
 
         builder.Append("<b>");
-        if (enabled)
+        if (separatorIndex > 0 && separatorIndex < title.Length - 1)
         {
-            if (separatorIndex > 0 && separatorIndex < title.Length - 1)
-            {
-                var firstPart = title[..separatorIndex];
-                var secondPart = title[(separatorIndex + 1)..];
-                AppendShimmerText(builder, firstPart, new Color(1f, 0.6f, 0.6f), Color.white, Time.time, 0);
-                builder.Append(' ');
-                AppendShimmerText(builder, secondPart, new Color(1f, 0.6f, 0.6f), Color.white, Time.time, firstPart.Length + 1);
-            }
-            else
-            {
-                AppendShimmerText(builder, title, new Color(1f, 0.6f, 0.6f), Color.white, Time.time, 0);
-            }
+            var firstPart = title[..separatorIndex];
+            var secondPart = title[(separatorIndex + 1)..];
+            AppendShimmerText(builder, firstPart, new Color(1f, 0.6f, 0.6f), Color.white, Time.time, 0);
+            builder.Append(' ');
+            AppendShimmerText(builder, secondPart, new Color(1f, 0.6f, 0.6f), Color.white, Time.time, firstPart.Length + 1);
         }
         else
         {
-            builder.Append("<color=").Append(DraftModeTitleColor).Append('>').Append(title).Append("</color>");
+            AppendShimmerText(builder, title, new Color(1f, 0.6f, 0.6f), Color.white, Time.time, 0);
         }
 
         builder.Append(":</b> <b>");
         if (enabled)
         {
-            AppendShimmerText(builder, status, new Color(0f, 0.6f, 0f), new Color(0.5f, 1f, 0.5f), Time.time, title.Length + 2);
+            AppendShimmerText(builder, status, new Color(0f, 1f, 0f), Color.white, Time.time, title.Length + 2);
         }
         else
         {
-            AppendShimmerText(builder, status, new Color(1f, 0.13f, 0.13f), new Color(1f, 0.53f, 0.53f), Time.time, title.Length + 2);
+            AppendShimmerText(builder, status, new Color(1f, 0.13f, 0.13f), Color.white, Time.time, title.Length + 2);
         }
         builder.Append("</b>").Append(DraftStatusMarkerEnd).Append('\n');
         return builder.ToString();
@@ -184,7 +177,7 @@ public static class DraftRoleListHudPatch
             var character = text[index];
             var shimmer = (Mathf.Sin(time * 2.2f - (startIndex + index) * 0.6f) + 1f) * 0.5f;
             shimmer *= shimmer;
-            var color = Color.Lerp(baseColor, targetColor, shimmer * 0.8f);
+            var color = Color.Lerp(baseColor, targetColor, shimmer);
             builder.Append("<color=#")
                 .Append(ColorUtility.ToHtmlStringRGB(color))
                 .Append('>')

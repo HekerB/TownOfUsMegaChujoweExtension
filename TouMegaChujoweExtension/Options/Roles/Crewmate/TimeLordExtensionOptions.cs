@@ -13,7 +13,6 @@ public sealed class TimeLordExtensionOptions : AbstractOptionGroup
 {
     public override string GroupName => TownOfUs.Modules.Localization.TouLocale.Get("TOUMCEBetterRolePrefix") + TownOfUs.Modules.Localization.TouLocale.Get("Time Lord");
     public override Color GroupColor => TownOfUsColors.TimeLord;
-    public override bool ShowInModifiersMenu => false;
     public override MenuCategory ParentMenu => MenuCategory.CustomOne;
     public override uint GroupPriority => 107;
 

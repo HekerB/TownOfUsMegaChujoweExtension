@@ -89,7 +89,7 @@ public static class DraftSystem
             return Mathf.RoundToInt(min);
         }
 
-        return Random.Range(0f, 100f) < 60f ? Mathf.RoundToInt(min) : Mathf.RoundToInt(max);
+        return DraftRng.Range(0f, 100f) < 60f ? Mathf.RoundToInt(min) : Mathf.RoundToInt(max);
     }
 
     public static bool IsRoleListSlotImpostor(int slotIndex)
@@ -109,7 +109,7 @@ public static class DraftSystem
         }
 
         var remaining = allPlayerIds.Where(id => !impostorIds.Contains(id)).ToList();
-        remaining.Shuffle();
+        DraftRng.Shuffle(remaining);
 
         if (options == null)
         {
@@ -499,7 +499,7 @@ public static class DraftSystem
             {
                 for (var i = pool.Count - 1; i > 0; i--)
                 {
-                    var j = Random.Range(0, i + 1);
+                    var j = DraftRng.Range(0, i + 1);
                     (pool[i], pool[j]) = (pool[j], pool[i]);
                 }
 
@@ -507,7 +507,7 @@ public static class DraftSystem
                 break;
             }
 
-            var r = Random.Range(0f, totalWeight);
+            var r = DraftRng.Range(0f, totalWeight);
             var current = 0f;
             var selected = pool[0];
 
@@ -529,11 +529,29 @@ public static class DraftSystem
         return result;
     }
 
+    /// <summary>
+    /// Puts a set of roles into a random order.
+    /// </summary>
+    /// <remarks>
+    /// A real Fisher-Yates pass rather than sorting on a random key. Sorting that way leans on every
+    /// key being different, and two roles drawing the same float keep their original order between
+    /// them - which is alphabetical here, so the same few names drifted to the front of the offer game
+    /// after game. Every ordering in the draft goes through this.
+    /// </remarks>
+    /// <param name="roles">The roles to shuffle.</param>
+    /// <returns>A new list in random order.</returns>
+    private static List<RoleBehaviour> Shuffled(IEnumerable<RoleBehaviour> roles)
+    {
+        var list = roles.ToList();
+        DraftRng.Shuffle(list);
+        return list;
+    }
+
     private static IEnumerable<RoleBehaviour> OrderRoles(IEnumerable<RoleBehaviour> roles)
     {
         if (!ShouldRespectRoleChances())
         {
-            return roles.OrderBy(_ => Random.Range(0f, 1f));
+            return Shuffled(roles);
         }
 
         return WeightedShuffle(roles, role =>
@@ -571,14 +589,13 @@ public static class DraftSystem
     {
         if (pool.Count <= roleCount)
         {
-            return pool.OrderBy(_ => Random.Range(0f, 1f)).ToList();
+            return Shuffled(pool);
         }
 
         if (!ShouldRespectRoleChances())
         {
             return OrderRoles(pool)
                 .Take(roleCount)
-                .OrderBy(_ => Random.Range(0f, 1f))
                 .ToList();
         }
 
@@ -593,7 +610,7 @@ public static class DraftSystem
                 .Take(roleCount - selected.Count));
         }
 
-        return selected.OrderBy(_ => Random.Range(0f, 1f)).ToList();
+        return Shuffled(selected);
     }
 
     private static int GetCurrentOtherNeutralCount()
@@ -622,12 +639,14 @@ public static class DraftSystem
     {
         var options = OptionGroupSingleton<DraftModeOptions>.Instance;
 
-        return options.PoolMode.Value switch
+        var offer = options.PoolMode.Value switch
         {
             DraftPoolMode.MinMax => SelectMinMaxRolesToOffer(),
             DraftPoolMode.RoleList => SelectRoleListRolesToOffer(),
             _ => SelectOldRolesToOffer(isImpostor)
         };
+
+        return offer;
     }
 
     private static List<RoleBehaviour> SelectOldRolesToOffer(bool isImpostor)
@@ -679,9 +698,9 @@ public static class DraftSystem
                 {
                     var offerChance = remainingEligiblePlayers <= 0 ? 0f : (float)neutralsNeeded / remainingEligiblePlayers;
 
-                    if (Random.Range(0f, 1f) < offerChance)
+                    if (DraftRng.Range(0f, 1f) < offerChance)
                     {
-                        wantedNeutrals = Random.Range(0f, 100f) < 60f
+                        wantedNeutrals = DraftRng.Range(0f, 100f) < 60f
                             ? (int)oldOptions.MinOtherNeutralsPerChoice.Value
                             : (int)oldOptions.MaxOtherNeutralsPerChoice.Value;
 
@@ -712,7 +731,7 @@ public static class DraftSystem
                 finalPool.AddRange(OrderRoles(crewPool).Take(roleCount - finalPool.Count));
             }
 
-            return finalPool.OrderBy(_ => Random.Range(0f, 1f)).ToList();
+            return Shuffled(finalPool);
         }
 
         var allRoles = faction == DraftFaction.Impostor
@@ -728,13 +747,12 @@ public static class DraftSystem
 
         if (allRoles.Count <= roleCount)
         {
-            return allRoles.OrderBy(_ => Random.Range(0f, 1f)).ToList();
+            return Shuffled(allRoles);
         }
 
-        return OrderRoles(allRoles)
-            .Take(roleCount)
-            .OrderBy(_ => Random.Range(0f, 1f))
-            .ToList();
+        // Shuffled again after the draw. With role chances respected the draw comes back in order of
+        // likelihood, and dealing the cards in that order tells the player which one it was.
+        return Shuffled(OrderRoles(allRoles).Take(roleCount));
     }
 
     private static List<RoleBehaviour> SelectMinMaxRolesToOffer()
@@ -771,13 +789,12 @@ public static class DraftSystem
 
         if (pool.Count <= roleCount)
         {
-            return pool.OrderBy(_ => Random.Range(0f, 1f)).ToList();
+            return Shuffled(pool);
         }
 
-        return OrderRoles(pool)
-            .Take(roleCount)
-            .OrderBy(_ => Random.Range(0f, 1f))
-            .ToList();
+        // Shuffled after the draw for the same reason as above: laid out in draw order, the cards
+        // would show which of them the weighting favoured.
+        return Shuffled(OrderRoles(pool).Take(roleCount));
     }
 
     private static List<RoleBehaviour> SelectRoleListRolesToOffer()
@@ -973,7 +990,7 @@ public static class DraftSystem
             RoleListSlotOrder.Add(i);
         }
 
-        RoleListSlotOrder.Shuffle();
+        DraftRng.Shuffle(RoleListSlotOrder);
     }
 
     private static int GetRoleListSlotOrderCount()
@@ -1121,7 +1138,7 @@ public static class DraftSystem
 
         if (freshOffer != null && freshOffer.Count > 0)
         {
-            return freshOffer[Random.Range(0, freshOffer.Count)];
+            return freshOffer[DraftRng.Range(0, freshOffer.Count)];
         }
 
         if (OptionGroupSingleton<DraftModeOptions>.Instance.PoolMode.Value != DraftPoolMode.OldDraft)
@@ -1153,6 +1170,9 @@ public static class DraftSystem
 
     public static void Reset()
     {
+        // A fresh sequence for every draft, so one run cannot colour the next.
+        DraftRng.ResetForNewDraft();
+
         IsRunning = false;
         DraftComplete = false;
         DraftActiveThisRound = false;
@@ -1377,8 +1397,22 @@ public static class DraftSystem
         }
     }
 
+    /// <summary>
+    /// Records a player's pick. The first one they send is the one they keep.
+    /// </summary>
+    /// <remarks>
+    /// A second pick for the same player used to overwrite the first, which makes the outcome of a
+    /// pick sent at the same moment the timer expires depend on which arrived last - and on a client
+    /// and the host that can be a different answer. A pick is final, so a later one is dropped.
+    /// </remarks>
     public static void RegisterPick(byte playerId, ushort roleId)
     {
+        if (DraftPicks.ContainsKey(playerId))
+        {
+            Warning($"[Draft] Player {playerId} sent a second pick; keeping the first one.");
+            return;
+        }
+
         AlreadyPicked.Add(roleId);
         DraftPicks[playerId] = roleId;
         PickOrder.Remove(playerId);
@@ -1446,7 +1480,7 @@ public static class DraftSystem
     {
         for (var i = list.Count - 1; i > 0; i--)
         {
-            var j = Random.Range(0, i + 1);
+            var j = DraftRng.Range(0, i + 1);
             (list[i], list[j]) = (list[j], list[i]);
         }
     }

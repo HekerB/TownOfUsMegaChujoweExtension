@@ -14,6 +14,7 @@ using TownOfUs.Extensions;
 using TownOfUs.Interfaces;
 using TownOfUs.Roles;
 using TownOfUs.Modules;
+using TownOfUs.Networking;
 using TownOfUs.Utilities;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,99 @@ namespace TouMegaChujoweExtension.Patches.Roles.Jackal;
 [HarmonyPatch]
 public static class JackalMechanicsPatch
 {
-    public static void ResetShieldState() {}
+    // Infiltrators whose Recruit lifelink has already been scheduled, so the two death paths
+    // (PlayerDeathEvent and EjectionEvent) cannot process the same Recruits twice.
+    private static readonly HashSet<byte> EliminatingRecruitsFor = [];
+
+    public static void ResetShieldState() => EliminatingRecruitsFor.Clear();
+
+    /// <summary>
+    /// Kills the Infiltrator's Recruits on the next frame. Running this straight from the
+    /// Infiltrator's own death handler interrupted that death mid-processing, which left the
+    /// Infiltrator half alive and made a Recruit's kill on them look like it had failed.
+    /// Host-only and idempotent per Infiltrator.
+    /// </summary>
+    private static void EliminateRecruitsDeferred(byte jackalId, bool wasExiled, string jackalRoleName)
+    {
+        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
+        {
+            return;
+        }
+
+        if (!EliminatingRecruitsFor.Add(jackalId))
+        {
+            return;
+        }
+
+        Reactor.Utilities.Coroutines.Start(CoEliminateRecruits(jackalId, wasExiled, jackalRoleName));
+    }
+
+    private static System.Collections.IEnumerator CoEliminateRecruits(byte jackalId, bool wasExiled, string jackalRoleName)
+    {
+        yield return new WaitForEndOfFrame();
+
+        var recruits = PlayerControl.AllPlayerControls.ToArray()
+            .Where(p => p != null && p.Pointer != IntPtr.Zero && !p.HasDied() &&
+                        p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == jackalId)
+            .ToList();
+
+        // The Infiltrator can go down during a meeting or the exile cutscene (guessed, duelled by the
+        // Pirate, or voted out). MeetingCheck.OutsideMeeting cancels a murder while MeetingHud or
+        // ExileController exists, which left the Recruits alive while still being stamped
+        // "Infiltrator eliminated" - a team half dead on paper and fully alive in the game.
+        var duringMeeting = MeetingHud.Instance || ExileController.Instance;
+
+        foreach (var sk in recruits)
+        {
+            // Always a networked self-murder. PlayerControl.Exiled() is local-only, so it killed the
+            // Recruits on the host and left them walking on every other client.
+            if (duringMeeting)
+            {
+                sk.RpcSpecialMurder(
+                    sk,
+                    MeetingCheck.Ignore,
+                    isIndirect: true,
+                    ignoreShield: false,
+                    createDeadBody: false,
+                    teleportMurderer: false,
+                    showKillAnim: false,
+                    playKillSound: false);
+            }
+            else
+            {
+                CustomMurderRpc.RpcCustomMurder(sk, sk, MeetingCheck.Ignore, showKillAnim: false);
+            }
+        }
+
+        // The self-murder's own death handling writes the victim role's suicide text a few frames
+        // later, so the lifelink cause has to be the last write to survive.
+        yield return new WaitForSeconds(0.5f);
+
+        foreach (var sk in recruits)
+        {
+            if (sk == null || sk.Pointer == IntPtr.Zero)
+            {
+                continue;
+            }
+
+            // Only label Recruits the murder above actually took - a protected survivor must not be
+            // shown as eliminated.
+            if (!sk.HasDied())
+            {
+                continue;
+            }
+
+            DeathHandlerModifier.RpcUpdateDeathHandler(
+                sk,
+                causeOfDeath: TouLocale.Get("ExtensionSidekickJackalEliminatedDeathReason"),
+                roundOfDeath: DeathEventHandlers.CurrentRound,
+                diedThisRound: wasExiled ? DeathHandlerOverride.SetFalse : DeathHandlerOverride.SetTrue,
+                killedBy: jackalRoleName,
+                lockInfo: DeathHandlerOverride.SetTrue);
+        }
+
+        EliminatingRecruitsFor.Remove(jackalId);
+    }
 
     [RegisterEvent]
     public static void BeforeMurderEventHandler(BeforeMurderEvent @event)
@@ -81,6 +174,13 @@ public static class JackalMechanicsPatch
         source.SetKillTimer(10f);
     }
 
+    /// <summary>Whether the Infiltrator's shield still covers the current round.</summary>
+    private static bool IsShieldActive()
+    {
+        var options = OptionGroupSingleton<JackalOptions>.Instance;
+        return options != null && options.IsShieldActive(DeathEventHandlers.CurrentRound);
+    }
+
     private static bool IsMurderBlockedByJackalShield(PlayerControl killer, PlayerControl victim)
     {
         try
@@ -93,7 +193,7 @@ public static class JackalMechanicsPatch
                 var sidekicksAlive = PlayerControl.AllPlayerControls.ToArray()
                     .Any(p => p != null && p.Pointer != IntPtr.Zero && !p.HasDied() && p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == victim.PlayerId);
 
-                if (sidekicksAlive && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive)
+                if (sidekicksAlive && IsShieldActive())
                 {
                     return true;
                 }
@@ -124,7 +224,13 @@ public static class JackalMechanicsPatch
 
             if (killerJackalTeamId != 255 && killerJackalTeamId == victimJackalTeamId)
             {
-                return true;
+                // With the shield expired the Infiltrator has no protection from anyone, its own
+                // Recruits included.
+                var victimIsInfiltrator = victim.GetRole<JackalRole>() != null;
+                if (!(victimIsInfiltrator && !IsShieldActive()))
+                {
+                    return true;
+                }
             }
 
             if (killer.GetRole<JackalRole>() != null)
@@ -174,36 +280,7 @@ public static class JackalMechanicsPatch
         if (deadPlayer.GetRoleWhenAlive() is JackalRole && AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
         {
             var jackalRoleName = (deadPlayer.GetRoleWhenAlive() as ITownOfUsRole)?.RoleName ?? "Jackal";
-            var sidekicks = PlayerControl.AllPlayerControls.ToArray()
-                .Where(p => p != null && p.Pointer != IntPtr.Zero && !p.HasDied() && p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == deadPlayer.PlayerId)
-                .ToList();
-
-            foreach (var sk in sidekicks)
-            {
-                switch (@event.DeathReason)
-                {
-                    case DeathReason.Exile:
-                        DeathHandlerModifier.UpdateDeathHandlerImmediate(
-                            sk,
-                            causeOfDeath: TouLocale.Get("ExtensionSidekickJackalEliminatedDeathReason"),
-                            roundOfDeath: DeathEventHandlers.CurrentRound,
-                            diedThisRound: DeathHandlerOverride.SetFalse,
-                            killedBy: jackalRoleName,
-                            lockInfo: DeathHandlerOverride.SetTrue);
-                        sk.Exiled();
-                        break;
-                    default: // Kill or other
-                        sk.RpcCustomMurder(sk, showKillAnim: false);
-                        DeathHandlerModifier.UpdateDeathHandlerImmediate(
-                            sk,
-                            causeOfDeath: TouLocale.Get("ExtensionSidekickJackalEliminatedDeathReason"),
-                            roundOfDeath: DeathEventHandlers.CurrentRound,
-                            diedThisRound: DeathHandlerOverride.SetTrue,
-                            killedBy: jackalRoleName,
-                            lockInfo: DeathHandlerOverride.SetTrue);
-                        break;
-                }
-            }
+            EliminateRecruitsDeferred(deadPlayer.PlayerId, @event.DeathReason == DeathReason.Exile, jackalRoleName);
         }
     }
 
@@ -241,8 +318,11 @@ public static class JackalMechanicsPatch
                       (p.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == teamJackalId ||
                        (JackalStartPatch.PendingAssignments.TryGetValue(p.PlayerId, out var jId) && jId == teamJackalId)));
 
+        var options = OptionGroupSingleton<JackalOptions>.Instance;
+        var shieldActive = IsShieldActive();
+
         var hasShieldMod = __instance.TryGetModifier<JackalShieldModifier>(out _);
-        var shouldHaveShield = jackal != null && sidekicksAlive && OptionGroupSingleton<JackalOptions>.Instance != null && OptionGroupSingleton<JackalOptions>.Instance.ShieldWhileSidekicksAlive;
+        var shouldHaveShield = jackal != null && sidekicksAlive && shieldActive;
 
         if (shouldHaveShield && !hasShieldMod)
         {
@@ -251,6 +331,29 @@ public static class JackalMechanicsPatch
         else if (!shouldHaveShield && hasShieldMod)
         {
             __instance.RpcRemoveModifier<JackalShieldModifier>();
+
+            // Losing the shield because its rounds ran out - not because the Recruits died - is the
+            // one case the Infiltrator gets no other signal for.
+            if (jackal != null && __instance.AmOwner && sidekicksAlive && !jackal.ShieldExpiredAlertShown &&
+                options != null && (int)options.ShieldRounds > 0 &&
+                DeathEventHandlers.CurrentRound > (int)options.ShieldRounds)
+            {
+                jackal.ShieldExpiredAlertShown = true;
+                try
+                {
+                    var notification = Helpers.CreateAndShowNotification(
+                        TouLocale.Get("ExtensionJackalShieldExpiredAlert"),
+                        TouExtensionColors.Jackal,
+                        new Vector3(0f, 1f, -20f),
+                        spr: TouRoleIcons.Jackal.LoadAsset());
+                    notification?.AdjustNotification();
+                    Reactor.Utilities.Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Jackal));
+                }
+                catch (Exception ex)
+                {
+                    UnityEngine.Debug.LogError($"[TOUMCE] Error showing Jackal shield expired alert: {ex}");
+                }
+            }
         }
     }
 
@@ -267,6 +370,11 @@ public static class JackalMechanicsPatch
             if (killButton != null && killButton.Button != null && killButton.Button.gameObject != null)
             {
                 UnityEngine.Object.Destroy(killButton.Button.gameObject);
+
+                // Drop the reference too: Mira reaches this button through `Button?.ToggleVisible(...)`
+                // and the null-conditional does not see Unity's destroyed-object null, so a stale
+                // reference throws on every hud refresh from here on.
+                killButton.Button = null;
                 UnityEngine.Debug.Log("[TOUMCE] Ejection event: Destroyed JackalKillButton.Button.gameObject for local Jackal.");
             }
         }
@@ -274,21 +382,7 @@ public static class JackalMechanicsPatch
         if (victim.GetRoleWhenAlive() is JackalRole && AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
         {
             var jackalRoleName = (victim.GetRoleWhenAlive() as ITownOfUsRole)?.RoleName ?? "Jackal";
-            foreach (var recruit in PlayerControl.AllPlayerControls.ToArray())
-            {
-                if (recruit != null && !recruit.HasDied() &&
-                    recruit.TryGetModifier<SidekickModifier>(out var m) && m != null && m.JackalId == victim.PlayerId)
-                {
-                    MiraAPI.Networking.CustomMurderRpc.RpcCustomMurder(recruit, recruit, MeetingCheck.OutsideMeeting, showKillAnim: false);
-                    DeathHandlerModifier.UpdateDeathHandlerImmediate(
-                        recruit,
-                        causeOfDeath: TouLocale.Get("ExtensionSidekickJackalEliminatedDeathReason"),
-                        roundOfDeath: DeathEventHandlers.CurrentRound,
-                        diedThisRound: DeathHandlerOverride.SetTrue,
-                        killedBy: jackalRoleName,
-                        lockInfo: DeathHandlerOverride.SetTrue);
-                }
-            }
+            EliminateRecruitsDeferred(victim.PlayerId, wasExiled: true, jackalRoleName);
         }
 
         if (victim.TryGetModifier<SidekickModifier>(out var mod) && mod != null)

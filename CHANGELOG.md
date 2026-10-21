@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.4.4 - Draft Visual Refinements & Lobby Fixes
+
+### Draft Mode Visuals
+- Restored the shimmering/blinking text effect for the "Draft Mode" title and the "Enabled" / "Disabled" status labels in the lobby.
+- Optimized card scaling and vertical spacing for draft setups with many roles (7-10 roles), ensuring the Random button stays higher up and leaves space for the tooltip.
+- Moved the draft role tooltip (descriptions) back to the right panel under the roles. The tooltip is now bottom-anchored, allowing descriptions to expand upwards and preventing any text from getting cut off at the bottom of the screen.
+- Set a custom pastel-lavender text color for Impostor roles on their card labels, providing high contrast and readability over the dark red backgrounds.
+
+### Lobby Fixes
+- Fixed a lobby button duplication bug where the Map and Friends List buttons were being forced visible in the dropship.
+- Refactored draft overlay cleanup so the lobby buttons (Settings, Chat, Wiki, PlayerCounter, and top-right elements) are naturally covered by the draft overlay and cleanly restored once the draft finishes or is cancelled.
+- Guaranteed the Custom Cancel button remains persistently visible and clickable for the host during the draft.
+
 ## 1.4.3 - Perfect Comms API Integration
 
 ### Perfect Comms

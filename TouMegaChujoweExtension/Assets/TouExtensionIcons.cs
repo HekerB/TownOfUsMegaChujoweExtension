@@ -39,6 +39,8 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> WarRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.War_Role_Icon.png", 200f);
         public static LoadableAsset<Sprite> InnocentRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Innocent_Role_Icon.png", 200f);
         public static LoadableAsset<Sprite> IcenbergRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Icenberg_Role_Icon.png", 200f);
+        public static LoadableAsset<Sprite> DeathRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Death_Role_Icon.png", 200f);
+
         //impostors
         public static LoadableAsset<Sprite> OutlawRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Outlaw_Role_Icon.png", 180f);
         public static LoadableAsset<Sprite> HackerRole { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Hacker.Hacker_Role.png");
@@ -59,5 +61,6 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> VoodooRoleIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Voodoo_Role_Icon.png", 200f);
         public static LoadableAsset<Sprite> SidekickModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Sidekick_Modifier_Icon.png", 200f);
         public static LoadableAsset<Sprite> MicLogo { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.miclogo.png", 200f);
+        public static LoadableAsset<Sprite> DraftQuitButton { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.DraftQuitButton.png", 83.33f);
     }
 }

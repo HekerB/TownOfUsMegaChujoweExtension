@@ -1,3 +1,4 @@
+using TouMegaChujoweExtension.Utilities;
 using HarmonyLib;
 using MiraAPI.Modifiers;
 using MiraAPI.Utilities;
@@ -27,8 +28,8 @@ public static class PresidentMeetingPatch
             return;
         }
 
-        var voteData = localPlayer.GetVoteData();
-        if (voteData == null)
+        // TryGetVoteData - the null check here could never fire, GetVoteData throws instead.
+        if (!localPlayer.TryGetVoteData(out var voteData))
         {
             return;
         }

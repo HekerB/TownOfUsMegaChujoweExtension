@@ -71,7 +71,7 @@ public sealed class DeathRole(IntPtr cppPtr)
         DefaultRoleCount = 0,
         MaxRoleCount = 0,
         IntroSound = TouAudio.PhantomIntroSound,
-        Icon = TouExtensionIcons.SoulCollectorRoleIcon,
+        Icon = TouExtensionIcons.DeathRoleIcon,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>()
     };
 

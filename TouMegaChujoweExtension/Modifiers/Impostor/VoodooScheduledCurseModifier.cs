@@ -7,9 +7,18 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modifiers.Impostor;
 
-public sealed class VoodooScheduledCurseModifier(VoodooEffect curseType) : BaseModifier
+/// <param name="curseType">
+///     The <see cref="VoodooEffect"/> as a raw byte. It is deliberately not typed as the enum: this
+///     modifier is created through <c>RpcAddModifier</c>, which serialises each constructor argument by
+///     writing its assembly-qualified type name and having the receiver resolve it with
+///     <c>Type.GetType</c> plus a generic deserialiser. Every other modifier in this project that
+///     carries an enum-like value converts it first, and this one was the sole exception - which is why
+///     the scheduled curse never reached the other clients and Mute silently did nothing while the use
+///     was still spent.
+/// </param>
+public sealed class VoodooScheduledCurseModifier(byte curseType) : BaseModifier
 {
-    public VoodooEffect CurseType { get; } = curseType;
+    public VoodooEffect CurseType { get; } = (VoodooEffect)curseType;
     public override string ModifierName => "Voodoo Curse Marked";
     public override bool HideOnUi => true;
 

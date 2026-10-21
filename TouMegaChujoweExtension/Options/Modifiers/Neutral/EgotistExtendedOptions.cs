@@ -12,7 +12,6 @@ public sealed class EgotistExtendedOptions : AbstractOptionGroup
 {
     public override string GroupName => TownOfUs.Modules.Localization.TouLocale.Get("TOUMCEBetterModifierPrefix") + TownOfUs.Modules.Localization.TouLocale.Get("Egotist");
     public override Color GroupColor => TownOfUsColors.Egotist;
-    public override bool ShowInModifiersMenu => false;
     public override MenuCategory ParentMenu => MenuCategory.CustomOne;
     public override uint GroupPriority => 100;
 

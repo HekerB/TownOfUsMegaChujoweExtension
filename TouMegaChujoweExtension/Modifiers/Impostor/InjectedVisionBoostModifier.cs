@@ -13,7 +13,8 @@ public sealed class InjectedVisionBoostModifier(float duration, InjectorEffectDu
 {
     public InjectedVisionBoostModifier(float duration, InjectorEffectDurationType durationType) : this(duration, durationType, true) { }
     public override string ModifierName => GetModifierName();
-    public override bool HideOnUi => isInjected;
+    // Never listed in the HUD - see the note on InjectedSpeedBoostModifier.
+    public override bool HideOnUi => true;
     public override LoadableAsset<Sprite>? ModifierIcon => null;
 
     private string GetModifierName()

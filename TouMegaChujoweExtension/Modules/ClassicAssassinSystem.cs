@@ -9,7 +9,9 @@ using System.Reflection;
 using TMPro;
 using TownOfUs.Extensions;
 using TownOfUs.Interfaces;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
+using TownOfUs.Modifiers.Game.Assailant;
 using TownOfUs.Options.Roles.Crewmate;
 using TownOfUs.Options.Roles.Neutral;
 using TownOfUs.Options;
@@ -596,6 +598,44 @@ public static class ClassicAssassinSystem
     // =========================
     // MODIFIER VALIDATION
     // =========================
+    private static bool IsCrewmateFaction(ModifierFaction faction)
+    {
+        return faction is ModifierFaction.Crewmate
+            or ModifierFaction.CrewmateAlliance
+            or ModifierFaction.CrewmateUtility
+            or ModifierFaction.CrewmateVisibility
+            or ModifierFaction.CrewmatePostmortem
+            or ModifierFaction.CrewmatePassive;
+    }
+
+    private static bool IsImpostorFaction(ModifierFaction faction)
+    {
+        return faction is ModifierFaction.Impostor
+            or ModifierFaction.ImpostorAlliance
+            or ModifierFaction.ImpostorUtility
+            or ModifierFaction.ImpostorVisibility
+            or ModifierFaction.ImpostorPostmortem
+            or ModifierFaction.ImpostorPassive;
+    }
+
+    private static bool IsNeutralFaction(ModifierFaction faction)
+    {
+        return faction is ModifierFaction.Neutral
+            or ModifierFaction.NeutralAlliance
+            or ModifierFaction.NeutralUtility
+            or ModifierFaction.NeutralVisibility
+            or ModifierFaction.NeutralPostmortem
+            or ModifierFaction.NeutralPassive;
+    }
+
+    private static ModifierFaction? GetFaction(BaseModifier modifier)
+    {
+        if (modifier is TouGameModifier tgm) return tgm.FactionType;
+        if (modifier is UniversalGameModifier ugm) return ugm.FactionType;
+        if (modifier is AllianceGameModifier agm) return agm.FactionType;
+        return null;
+    }
+
     private static bool IsModifierValid(BaseModifier modifier, AssassinOptions options)
     {
         if (modifier is DeathNoteModifier)
@@ -622,18 +662,28 @@ public static class ClassicAssassinSystem
         if (options.AssassinGuessAlliances && modifier is AllianceGameModifier)
             return true;
 
-        if (!options.AssassinGuessCrewModifiers)
-            return false;
+        var maybeFaction = GetFaction(modifier);
+        if (maybeFaction is { } faction)
+        {
 
-        if (!options.AssassinGuessUtilityModifiers &&
-            modifier is TouGameModifier touMod2 &&
-            touMod2.FactionType == ModifierFaction.CrewmateUtility)
-            return false;
+            if (IsCrewmateFaction(faction))
+            {
+                if (!options.AssassinGuessCrewModifiers)
+                    return false;
 
-        if (modifier is TouGameModifier crewMod &&
-            crewMod.FactionType.ToDisplayString().Contains("Crew") &&
-            !crewMod.FactionType.ToDisplayString().Contains("Non"))
-            return true;
+                if (!options.AssassinGuessUtilityModifiers &&
+                    faction == ModifierFaction.CrewmateUtility)
+                    return false;
+
+                return true;
+            }
+
+            if (IsImpostorFaction(faction))
+                return options.AssassinGuessNonCrewModifiers;
+
+            if (IsNeutralFaction(faction))
+                return options.AssassinGuessNonCrewModifiers;
+        }
 
         return false;
     }
@@ -663,12 +713,11 @@ public static class ClassicAssassinSystem
             return true;
         }
 
-        if (modifier is TouGameModifier impMod &&
-            (impMod.FactionType.ToDisplayString().Contains("Imp") ||
-             impMod.FactionType.ToDisplayString().Contains("Killer")) &&
-            !impMod.FactionType.ToDisplayString().Contains("Non"))
+        var maybeFaction = GetFaction(modifier);
+        if (maybeFaction is { } faction)
         {
-            return OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteGuessKillerMods;
+            if (IsImpostorFaction(faction))
+                return OptionGroupSingleton<VigilanteOptions>.Instance.VigilanteGuessKillerMods;
         }
 
         return false;
@@ -791,12 +840,19 @@ public static class ClassicAssassinSystem
     // =========================
     // GUESS LOGIC
     // =========================
+    // 1.7.1 split the single multi-kill toggle into impostor and neutral variants.
+    private static bool AllowsMultiKill(AssassinModifier assassin)
+    {
+        var opts = OptionGroupSingleton<AssassinOptions>.Instance;
+        return assassin.IsImpostorAssassin ? opts.ImpAssassinMultiKill.Value : opts.NeutAssassinMultiKill.Value;
+    }
+
     private static void DoGuess(byte targetId, AssassinModifier assassin)
     {
         if (MeetingHud.Instance.state == MeetingHud.VoteStates.Discussion) return;
         if (PlayerControl.LocalPlayer.Data.IsDead) return;
         if (PlayerControl.LocalPlayer.HasModifier<TownOfUs.Modifiers.Crewmate.JailedModifier>()) return;
-        if (_guessedThisMeeting && !OptionGroupSingleton<AssassinOptions>.Instance.AssassinMultiKill) return;
+        if (_guessedThisMeeting && !AllowsMultiKill(assassin)) return;
         if (_remainingKills <= 0) return;
         if (!GuessIndices.TryGetValue(targetId, out var index) || index < 0) return;
 
@@ -868,7 +924,7 @@ public static class ClassicAssassinSystem
 
         if (victim == assassin.Player ||
             _remainingKills <= 0 ||
-            !OptionGroupSingleton<AssassinOptions>.Instance.AssassinMultiKill)
+            !AllowsMultiKill(assassin))
         {
             HideAllButtons();
             _guessedThisMeeting = true;

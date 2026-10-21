@@ -13,6 +13,7 @@ using TownOfUs.Utilities;
 using TouMegaChujoweExtension.Options.Roles.Neutral;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TouMegaChujoweExtension.Modifiers.Neutral;
+using TownOfUs.Modules.Wiki;
 
 namespace TouMegaChujoweExtension.Patches.Wiki;
 
@@ -191,6 +192,22 @@ public static class WikiAppendOptionsPatch
         catch
         {
             // Ignore issues in formatting
+        }
+    }
+}
+
+[HarmonyPatch(typeof(InGameModifierWikiEntry), nameof(InGameModifierWikiEntry.SetData))]
+public static class WikiModifierEntryPatch
+{
+    [HarmonyPostfix]
+    public static void Postfix(InGameModifierWikiEntry __instance)
+    {
+        if (__instance.Modifier is SidekickModifier)
+        {
+            if (__instance.EntryAmountTmp != null && __instance.EntryAmountTmp.Value != null)
+            {
+                __instance.EntryAmountTmp.Value.text = "";
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using TouMegaChujoweExtension.Utilities;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
@@ -118,8 +119,7 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             return;
         }
 
-        var voteData = Player.GetVoteData();
-        var hasVotesLeft = voteData != null && voteData.VotesRemaining > 0;
+        var hasVotesLeft = Player.TryGetVoteData(out var voteData) && voteData.VotesRemaining > 0;
         var blackmailed = IsBlackmailActive();
 
         AbstainButton.gameObject.SetActive(
@@ -169,8 +169,7 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         HasVotedOnPlayer = false;
         HasCastKnightedVote = false;
 
-        var voteData = Player.GetVoteData();
-        if (voteData != null)
+        if (Player.TryGetVoteData(out var voteData))
         {
             var totalVotes = 1 + VoteBank;
             voteData.SetRemainingVotes(totalVotes);
@@ -196,7 +195,8 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         AbstainButton.gameObject.GetComponentInChildren<TextTranslatorTMP>().Destroy();
         AbstainButton.gameObject.GetComponentInChildren<TextMeshPro>().text =
             TouLocale.Get("ExtensionRolePresidentAbstain", "ABSTAIN").ToUpperInvariant();
-
+
+
         AbstainButton.gameObject.name = "button_abstainButton";
 
         skip.transform.localPosition += new Vector3(0f, 0.20f, 0f);

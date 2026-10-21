@@ -21,10 +21,16 @@ public sealed class JackalOptions : AbstractOptionGroup<JackalRole>
     [ModdedToggleOption("ExtensionOptionJackalCanVent")]
     public bool CanVent { get; set; } = true;
 
-    [ModdedToggleOption("ExtensionOptionJackalShieldWhileSidekicksAlive")]
-    public bool ShieldWhileSidekicksAlive { get; set; } = true;
+    [ModdedNumberOption("ExtensionOptionJackalShieldRounds", 0f, 5f, 1f, MiraNumberSuffixes.None)]
+    public float ShieldRounds { get; set; } = 3f;
 
     [ModdedToggleOption("ExtensionOptionJackalNotifySidekickDeath")]
     public bool NotifySidekickDeath { get; set; } = true;
 
+    /// <summary>The shield only holds for the first <see cref="ShieldRounds"/> rounds; 0 turns it off entirely.</summary>
+    public bool IsShieldActive(int round)
+    {
+        var maxRounds = (int)ShieldRounds;
+        return maxRounds > 0 && round <= maxRounds;
+    }
 }

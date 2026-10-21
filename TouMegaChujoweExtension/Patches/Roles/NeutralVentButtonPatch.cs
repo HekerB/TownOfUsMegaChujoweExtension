@@ -1,6 +1,7 @@
 using System;
 using TownOfUs.Utilities;
 using HarmonyLib;
+using MiraAPI.Roles;
 using MiraAPI.LocalSettings;
 using TouMegaChujoweExtension.Assets;
 using TownOfUs.Extensions;
@@ -31,6 +32,34 @@ public static class NeutralVentButtonPatch
         };
     }
 
+    /// <summary>
+    /// Whether the local player may actually enter a vent.
+    /// <para>
+    /// The vanilla <c>RoleBehaviour.CanVent</c> field is not the authority for a custom role. Mira sets
+    /// it as <c>CanUseVent || GetsVentData</c>, so a role that merely reads vent information (vent
+    /// arrows and the like) has the vanilla flag set while being unable to vent at all. Mira's own
+    /// visibility patch tests <c>Configuration.CanUseVent</c>, and testing the looser vanilla flag here
+    /// is what made the vent button reappear after a meeting: the restore force-activated the graphic
+    /// and label objects, which are children Mira's <c>ToggleVisible</c> does not manage, so nothing hid
+    /// them again.
+    /// </para>
+    /// </summary>
+    private static bool CanActuallyVent(PlayerControl? player)
+    {
+        var role = player?.Data?.Role;
+        if (role == null || !role.CanVent)
+        {
+            return false;
+        }
+
+        if (role is ICustomRole customRole && !customRole.Configuration.CanUseVent)
+        {
+            return false;
+        }
+
+        return GetBerserkerVentState(player) != false;
+    }
+
     private static void CleanupVentButtonForMeeting(VentButton? ventButton)
     {
         _lastHasTarget = null;
@@ -41,6 +70,16 @@ public static class NeutralVentButtonPatch
         }
 
         ventButton.currentTarget = null;
+
+        // Also take the button off screen, not just clear its target. Nobody can vent during a meeting
+        // or the exile screen, and leaving it merely target-less is what let it show up in the summary
+        // and then blink away once the owning patch caught up a moment later. The roles that manage
+        // their own vent button (Doctor, Egotist) already hide it here too and re-show it every frame
+        // afterwards, so this takes nothing away from anyone who may actually vent.
+        if (ventButton.gameObject != null && ventButton.gameObject.activeSelf)
+        {
+            ventButton.gameObject.SetActive(false);
+        }
 
         if (ventButton.cooldownTimerText != null)
         {
@@ -420,7 +459,23 @@ public static class NeutralVentButtonPatch
     {
         try
         {
-            RestoreVentButtonGraphic(HudManager.Instance?.ImpostorVentButton);
+            var ventButton = HudManager.Instance?.ImpostorVentButton;
+            if (ventButton == null)
+            {
+                return;
+            }
+
+            // This restore exists because the vent graphic could come back blank or invisible after a
+            // meeting. It used to run for everyone, which force-activated the graphic and label - so a
+            // vent button popped up after every meeting no matter the role. Only restore it for a
+            // player who may actually vent; for anyone else clear it back out.
+            if (!CanActuallyVent(PlayerControl.LocalPlayer))
+            {
+                HideVentButtonWhenOffset(ventButton);
+                return;
+            }
+
+            RestoreVentButtonGraphic(ventButton);
         }
         catch (Exception ex)
         {

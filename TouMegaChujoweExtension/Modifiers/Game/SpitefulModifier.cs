@@ -2,6 +2,7 @@ using MiraAPI.GameOptions;
 using MiraAPI.Utilities.Assets;
 using System;
 using TownOfUs.Assets;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
@@ -37,39 +38,8 @@ public sealed class SpitefulModifier : UniversalGameModifier, IWikiDiscoverable
             _ => options.SpitefulEffectType.Value.ToString()
         };
 
-        var optionsText = MiscUtils.AppendOptionsText(GetType());
-        var punishmentEffectLine = $"{effectTypeName}: {effectTypeValue}";
-        var alreadyIncluded = !string.IsNullOrWhiteSpace(optionsText) &&
-                              optionsText.Contains(punishmentEffectLine, StringComparison.Ordinal);
-
-        if (string.IsNullOrWhiteSpace(optionsText))
-        {
-            description += $"\n\n<size=50%> \n</size><b>{TownOfUsColors.Vigilante.ToTextColor()}{TouLocale.Get("Options")}</color></b>";
-            description += $"\n{punishmentEffectLine}";
-        }
-        else if (!alreadyIncluded)
-        {
-            var headerText = $"\n<size=50%> \n</size><b>{TownOfUsColors.Vigilante.ToTextColor()}{TouLocale.Get("Options")}</color></b>";
-            var headerIndex = optionsText.IndexOf(headerText, StringComparison.Ordinal);
-
-            if (headerIndex >= 0)
-            {
-                var afterHeader = headerIndex + headerText.Length;
-                description += optionsText.Substring(0, afterHeader);
-                description += $"\n{punishmentEffectLine}";
-                description += optionsText.Substring(afterHeader);
-            }
-            else
-            {
-                description += $"\n\n<size=50%> \n</size><b>{TownOfUsColors.Vigilante.ToTextColor()}{TouLocale.Get("Options")}</color></b>";
-                description += $"\n{punishmentEffectLine}";
-                description += optionsText;
-            }
-        }
-        else
-        {
-            description += optionsText;
-        }
+        description += $"\n\n<size=50%> \n</size><b>{TownOfUsColors.Vigilante.ToTextColor()}{TouLocale.Get("Options")}</color></b>";
+        description += $"\n{effectTypeName}: {effectTypeValue}";
 
         return description;
     }

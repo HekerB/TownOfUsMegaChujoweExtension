@@ -3,6 +3,7 @@ using MiraAPI.Events;
 using MiraAPI.LocalSettings;
 using MiraAPI.Modifiers;
 using TownOfUs.Modifiers.Game;
+using TownOfUs.Modifiers.Game.Assailant;
 using TownOfUs.Roles.Crewmate;
 using TownOfUs.Roles.Neutral;
 

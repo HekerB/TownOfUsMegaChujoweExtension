@@ -24,7 +24,7 @@ public sealed class SpitefulModifierOptions : AbstractOptionGroup<SpitefulModifi
 {
     public override string GroupName => "Spiteful";
     public override Color GroupColor => Palette.ImpostorRoleHeaderRed;
-    public override bool ShowInModifiersMenu => true;
+    public override MenuCategory ParentMenu => MenuCategory.Modifiers;
     public override uint GroupPriority => 51;
 
     public ModdedNumberOption SpitefulImpact { get; } =

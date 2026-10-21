@@ -12,7 +12,10 @@ public sealed class InjectedVeryLowVisionModifier(float duration, InjectorEffect
 {
     public InjectedVeryLowVisionModifier(float duration, InjectorEffectDurationType durationType) : this(duration, durationType, true) { }
     public override string ModifierName => GetModifierName();
-    public override bool HideOnUi => isInjected;
+    // Never listed in the HUD - see the note on InjectedSpeedBoostModifier. The Arcanist's Magician
+    // card drops this on the whole lobby at once, and a modifier appearing in everyone's list at the
+    // same moment announced the card louder than the blackout itself did.
+    public override bool HideOnUi => true;
     public override LoadableAsset<Sprite>? ModifierIcon => null;
 
     private string GetModifierName()

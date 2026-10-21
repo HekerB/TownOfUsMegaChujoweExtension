@@ -165,7 +165,37 @@ public sealed class GunGameRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
             options.RemoveExistingImpostorRoles,
             Mathf.Max(0, (int)options.MaxRememberedRoles),
             out var nextChainIndex);
+
+        // No enabled rotation role to move to - stay as-is rather than mutating into a disabled role.
+        if (nextRoleId == NoEligibleRoleId)
+        {
+            return;
+        }
+
         RpcMutate(local, nextRoleId, nextChainIndex);
+    }
+
+    /// <summary>
+    /// Returned by <see cref="GetNextRoleId"/> when no enabled rotation role is available; the caller
+    /// then skips the mutation entirely instead of falling back to a role the host switched off.
+    /// </summary>
+    private const ushort NoEligibleRoleId = ushort.MaxValue;
+
+    /// <summary>
+    /// A rotation role only counts if the host actually left it enabled - count and chance both above
+    /// zero. Without this, disabled roles still turned up in the Gun Game chain.
+    /// </summary>
+    private static bool IsRoleEnabledInLobby(Type roleType)
+    {
+        try
+        {
+            var assignData = TownOfUs.Utilities.MiscUtils.GetAssignData((RoleTypes)RoleId.Get(roleType));
+            return assignData != null && assignData.Count > 0 && assignData.Chance > 0;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private static ushort GetNextRoleId(byte playerId, bool removeExistingImpostorRoles, int maxRememberedRoles, out int nextChainIndex)
@@ -185,13 +215,24 @@ public sealed class GunGameRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
         }
 
         nextChainIndex = 0;
+
+        var candidates = RandomImpostorRoles.Where(role => !IsPowerRole(role) && IsRoleEnabledInLobby(role)).ToList();
         var rolePool = removeExistingImpostorRoles
-            ? RandomImpostorRoles.Where(role => !UsedImpostorRoleIds.Contains(RoleId.Get(role)) && !rememberedRoles.Contains(RoleId.Get(role)) && !IsPowerRole(role)).ToList()
-            : RandomImpostorRoles.Where(role => !rememberedRoles.Contains(RoleId.Get(role)) && !IsPowerRole(role)).ToList();
+            ? candidates.Where(role => !UsedImpostorRoleIds.Contains(RoleId.Get(role)) && !rememberedRoles.Contains(RoleId.Get(role))).ToList()
+            : candidates.Where(role => !rememberedRoles.Contains(RoleId.Get(role))).ToList();
 
         if (rolePool.Count == 0)
         {
-            rolePool = RandomImpostorRoles.Where(role => !IsPowerRole(role)).ToList();
+            // Any enabled candidate at all, dropping only the "not one you have had before" preference.
+            rolePool = candidates;
+        }
+
+        if (rolePool.Count == 0)
+        {
+            // Every rotation role is disabled in this lobby. The old fallback re-took the FULL list
+            // here, which handed the player a role the host had switched off. Signal "no eligible role"
+            // instead and keep the current one.
+            return NoEligibleRoleId;
         }
 
         var randomRoleType = rolePool[UnityEngine.Random.Range(0, rolePool.Count)];

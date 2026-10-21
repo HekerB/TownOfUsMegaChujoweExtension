@@ -1,9 +1,6 @@
 using MiraAPI.Utilities;
 using Reactor.Utilities;
-using System.Collections;
-using System.Reflection;
-using HarmonyLib;
-using TownOfUs.Events;
+using TownOfUs.Networking;
 using TownOfUs.Utilities;
 using UnityEngine;
 
@@ -11,8 +8,6 @@ namespace TouMegaChujoweExtension.Modules;
 
 public static class PirateDuelSystem
 {
-    private static MethodInfo? _coAnimateDeathMethod;
-
     public static int GetDuelResult(int pirateChoice, int targetChoice)
     {
         if (pirateChoice == targetChoice)
@@ -62,25 +57,11 @@ public static class PirateDuelSystem
         {
             return;
         }
-        if (_coAnimateDeathMethod == null)
-        {
-            _coAnimateDeathMethod = AccessTools.Method(typeof(TownOfUsEventHandlers), "CoAnimateDeath");
-
-            if (_coAnimateDeathMethod == null)
-            {
-                voteArea.AmDead = true;
-                voteArea.Overlay.gameObject.SetActive(true);
-                voteArea.XMark.gameObject.SetActive(true);
-                return;
-            }
-        }
 
         try
         {
-            if (_coAnimateDeathMethod.Invoke(null, [voteArea]) is IEnumerator coroutine)
-            {
-                Coroutines.Start(coroutine);
-            }
+            // -1 picks a random nameplate death animation, the same way TOU does it.
+            Coroutines.Start(CustomTouMurderRpcs.CoAnimateDeath(voteArea, -1));
         }
         catch (System.Exception)
         {

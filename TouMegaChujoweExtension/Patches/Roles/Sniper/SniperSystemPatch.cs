@@ -1,3 +1,4 @@
+using System;
 using HarmonyLib;
 using TouMegaChujoweExtension.Modules;
 using TownOfUs.Utilities;
@@ -7,10 +8,27 @@ namespace TouMegaChujoweExtension.Patches.Roles.Sniper;
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
 public static class SniperSystemUpdatePatch
 {
+    /// <summary>
+    /// Wrapped, because this hangs off <c>HudManager.Update</c> and scans every player once a frame.
+    /// <para>
+    /// A single player carrying null Data - a bot mid-spawn, someone mid-teardown - makes the role scan
+    /// inside throw, and a throw out of a postfix propagates out of the patched method and takes every
+    /// later postfix on it with it. What the player sees then is a dead HUD: frozen in place, no
+    /// buttons, abilities unable to find a target. Nothing drawn by a rifle sprite is worth that, so it
+    /// fails soft and stays loud.
+    /// </para>
+    /// </summary>
     [HarmonyPostfix]
     public static void Postfix()
     {
-        SniperSystem.Update();
+        try
+        {
+            SniperSystem.Update();
+        }
+        catch (Exception ex)
+        {
+            Error($"[Sniper] HUD update failed soft: {ex}");
+        }
     }
 }
 

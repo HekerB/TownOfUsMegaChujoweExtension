@@ -3,6 +3,7 @@ using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using TownOfUs.Assets;
 using TownOfUs.Extensions;
+using TownOfUs.Modifiers;
 using TownOfUs.Modifiers.Game;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
@@ -34,13 +35,8 @@ public sealed class DrunkModifier : UniversalGameModifier, IUnguessable, IWikiDi
         var options = OptionGroupSingleton<DrunkModifierOptions>.Instance;
         var description = TouLocale.GetParsed($"ExtensionModifier{LocaleKey}WikiDescription")
             .Replace("{meetings}", ((int)options.DrunkDuration.Value).ToString());
-        var optionsText = MiscUtils.AppendOptionsText(GetType());
-        if (!string.IsNullOrWhiteSpace(optionsText))
-        {
-            description += optionsText;
-        }
 
-        return description;
+        return description + MiscUtils.AppendOptionsText(GetType());
     }
 
     public override Color FreeplayFileColor => new Color32(180, 180, 180, 255);

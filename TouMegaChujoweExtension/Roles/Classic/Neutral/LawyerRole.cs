@@ -1,3 +1,4 @@
+using TouMegaChujoweExtension.Utilities;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Attributes;
@@ -590,7 +591,11 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                 var originalVote = voteArea.VotedFor;
                 voteArea.UnsetVote();
 
-                var voteData = voter.GetVoteData();
+                if (!voter.TryGetVoteData(out var voteData))
+                {
+                    continue;
+                }
+
                 var removedCount = voteData.Votes.Count;
                 voteData.Votes.Clear();
                 voteData.VotesRemaining += removedCount;

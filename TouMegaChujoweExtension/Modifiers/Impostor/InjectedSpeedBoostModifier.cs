@@ -13,7 +13,13 @@ public sealed class InjectedSpeedBoostModifier(float duration, InjectorEffectDur
 {
     public InjectedSpeedBoostModifier(float duration, InjectorEffectDurationType durationType) : this(duration, durationType, true) { }
     public override string ModifierName => GetModifierName();
-    public override bool HideOnUi => isInjected;
+    /// <summary>
+    /// Never listed in the HUD. An Injector's victim is not supposed to know, and the Arcanist - who
+    /// gets these from a tarot card - was shown a modifier counting down "30 / 999999", because an
+    /// all-game effect has no meaningful duration to display. The card notification already says what
+    /// they drew.
+    /// </summary>
+    public override bool HideOnUi => true;
     public override LoadableAsset<Sprite>? ModifierIcon => null;
 
     private string GetModifierName()
@@ -51,7 +57,11 @@ public sealed class InjectedSpeedBoostModifier(float duration, InjectorEffectDur
     public override void OnDeactivate()
     {
         Player?.ResetAppearance(fullReset: true);
-        if (Player != null && Player.AmOwner)
+
+        // Only when an Injector actually did this. The Arcanist hands out the same effect from a card,
+        // and firing the Injector's own wear-off line there told the player there was an Injector in
+        // the game when there was not.
+        if (isInjected && Player != null && Player.AmOwner)
         {
             InjectorEvents.ShowEffectWoreOffNotification(Player, "ExtensionInjectorNotificationWoreOffSpeedBoost");
         }
@@ -67,8 +77,13 @@ public sealed class InjectedSpeedBoostModifier(float duration, InjectorEffectDur
 
     public VisualAppearance GetVisualAppearance()
     {
-        var appearance = Player.GetDefaultAppearance();
-        appearance.Speed = SpeedFactor;
+                // GetDefaultModifiedAppearance, not GetDefaultAppearance: the plain default has no idea the
+        // player is a Giant or a Mini, so rebuilding from it threw their size away the moment this
+        // effect landed - an Arcanist speed card made a Giant an ordinary-sized player. The modified
+        // one already folds Mini/Giant in, and the speed is applied on top of theirs rather than
+        // replacing it, so a Giant stays proportionally slower while still getting the boost.
+        var appearance = Player.GetDefaultModifiedAppearance();
+        appearance.Speed *= SpeedFactor;
         return appearance;
     }
 

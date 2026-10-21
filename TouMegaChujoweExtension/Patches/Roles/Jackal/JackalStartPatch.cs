@@ -6,6 +6,7 @@ using TouMegaChujoweExtension.Modifiers.Neutral;
 using TouMegaChujoweExtension.Roles.Classic.Neutral;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Extensions;
+using TownOfUs.Interfaces;
 using TownOfUs.Patches;
 using TownOfUs.Utilities;
 using System.Collections;
@@ -138,9 +139,9 @@ public static class JackalStartPatch
 
         if (PendingAssignments.Count > 0 && PlayerControl.LocalPlayer != null)
         {
-            var victims = PendingAssignments.Keys.ToArray();
-            var jackalIds = PendingAssignments.Values.ToArray();
-            JackalRole.RpcSetSidekickAssignments(PlayerControl.LocalPlayer, victims, jackalIds);
+            JackalRole.RpcSetSidekickAssignments(
+                PlayerControl.LocalPlayer,
+                JackalRole.EncodeSidekickAssignments(PendingAssignments));
         }
     }
 
@@ -179,6 +180,7 @@ public static class JackalStartPatch
                         && !p.HasModifier<LoverModifier>()
                         && !p.HasModifier<EgotistModifier>()
                         && !p.HasModifier<CrewpostorModifier>()
+                        && (p.Data.Role is not ILoyalCrewmate loyalCrew || loyalCrew.CanBeOtherEvil)
                         && !excludeIds.Contains(p.PlayerId))
             .ToList();
 

@@ -134,12 +134,36 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
         RoleBehaviourStubs.Deinitialize(this, targetPlayer);
     }
 
-    public bool WinConditionMet() => false;
+    /// <summary>
+    /// The same solo win Death has - a Soul Collector who never got to transform still outlasts the
+    /// lobby, and without this the game simply never ended around them.
+    /// </summary>
+    public bool WinConditionMet()
+    {
+        if (Player == null || Player.HasDied())
+        {
+            return false;
+        }
+
+        var alivePlayers = Helpers.GetAlivePlayers();
+        var ownCount = alivePlayers.Count(x => x != null && x.Data != null && x.Data.Role is SoulCollectorRole);
+        if (MiscUtils.KillersAliveCount > ownCount)
+        {
+            return false;
+        }
+
+        return alivePlayers.Count <= 2;
+    }
 
     public override bool DidWin(GameOverReason gameOverReason)
     {
-        return gameOverReason == MiraAPI.GameEnd.CustomGameOver.GameOverReason<GameOver.ExtensionNeutralGameOver>() &&
-               TouMegaChujoweExtension.Patches.WinConditions.NeutralExtensionWinCondition.IsApocalypseAllianceWon;
+        if (gameOverReason == MiraAPI.GameEnd.CustomGameOver.GameOverReason<GameOver.ExtensionNeutralGameOver>() &&
+            TouMegaChujoweExtension.Patches.WinConditions.NeutralExtensionWinCondition.IsApocalypseAllianceWon)
+        {
+            return true;
+        }
+
+        return WinConditionMet();
     }
 
     public override bool CanUse(IUsable usable)

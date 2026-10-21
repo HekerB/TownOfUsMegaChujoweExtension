@@ -230,6 +230,7 @@ public sealed class VoodooMasterRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITow
             }
         }
 
-        target.RpcAddModifier<VoodooScheduledCurseModifier>(effect);
+        // Sent as a byte, not the enum - see VoodooScheduledCurseModifier for why.
+        target.RpcAddModifier<VoodooScheduledCurseModifier>((byte)effect);
     }
 }

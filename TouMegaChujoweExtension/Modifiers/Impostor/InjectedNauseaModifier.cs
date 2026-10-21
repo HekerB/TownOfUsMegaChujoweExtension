@@ -20,8 +20,8 @@ public sealed class InjectedNauseaModifier : TimedModifier, IVisualAppearance, I
     public override bool HideOnUi => true;
     public override LoadableAsset<Sprite>? ModifierIcon => null;
 
-    private float _duration;
-    private InjectorEffectDurationType _durationType;
+    private readonly float _duration;
+    private readonly InjectorEffectDurationType _durationType;
     private IEnumerator? _cameraShakeCoroutine;
     private Quaternion _originalCameraRotation;
 
@@ -138,8 +138,13 @@ public sealed class InjectedNauseaModifier : TimedModifier, IVisualAppearance, I
 
     public VisualAppearance GetVisualAppearance()
     {
-        var appearance = Player.GetDefaultAppearance();
-        appearance.Speed = SpeedFactor;
+                // GetDefaultModifiedAppearance, not GetDefaultAppearance: the plain default has no idea the
+        // player is a Giant or a Mini, so rebuilding from it threw their size away the moment this
+        // effect landed - an Arcanist speed card made a Giant an ordinary-sized player. The modified
+        // one already folds Mini/Giant in, and the speed is applied on top of theirs rather than
+        // replacing it, so a Giant stays proportionally slower while still getting the boost.
+        var appearance = Player.GetDefaultModifiedAppearance();
+        appearance.Speed *= SpeedFactor;
         return appearance;
     }
 

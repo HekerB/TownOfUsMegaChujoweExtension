@@ -54,8 +54,13 @@ public sealed class DoctorSpeedBoostModifier : TimedModifier, IVisualAppearance
 
     public VisualAppearance GetVisualAppearance()
     {
-        var appearance = Player.GetDefaultAppearance();
-        appearance.Speed = 1.4f;
+                // GetDefaultModifiedAppearance, not GetDefaultAppearance: the plain default has no idea the
+        // player is a Giant or a Mini, so rebuilding from it threw their size away the moment this
+        // effect landed - an Arcanist speed card made a Giant an ordinary-sized player. The modified
+        // one already folds Mini/Giant in, and the speed is applied on top of theirs rather than
+        // replacing it, so a Giant stays proportionally slower while still getting the boost.
+        var appearance = Player.GetDefaultModifiedAppearance();
+        appearance.Speed *= 1.4f;
         return appearance;
     }
 }

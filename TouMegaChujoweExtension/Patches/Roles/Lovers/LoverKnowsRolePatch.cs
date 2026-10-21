@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using HarmonyLib;
 using MiraAPI;
 using MiraAPI.GameOptions;
@@ -5,9 +6,11 @@ using MiraAPI.Modifiers;
 using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using TownOfUs;
+using TownOfUs.Modules;
 using TownOfUs.Utilities.Appearances;
 using TownOfUs.Modifiers.Game.Alliance;
 using TownOfUs.Patches;
+using TownOfUs.Modules.Components;
 using TownOfUs.Utilities;
 using TownOfUs.Roles;
 using TownOfUs.Roles.Neutral;
@@ -24,7 +27,7 @@ using TMPro;
 
 namespace TouMegaChujoweExtension.Patches.Roles.Lovers;
 
-[HarmonyPatch(typeof(HudManagerPatches), nameof(HudManagerPatches.UpdateRoleNameText))]
+[HarmonyPatch(typeof(TownOfUs.Modules.Components.HudManagerHelper), nameof(TownOfUs.Modules.Components.HudManagerHelper.UpdateRoleNameText))]
 public static class LoverKnowsRolePatch
 {
     [HarmonyPostfix]
@@ -59,6 +62,29 @@ public static class LoverKnowsRolePatch
         }
     }
 
+    /// <summary>
+    /// The role to show for the other lover.
+    /// </summary>
+    /// <remarks>
+    /// Once a lover dies, vanilla swaps their <c>Data.Role</c> for a ghost role, so reading it straight
+    /// off showed the partner as "Impostor Ghost" / "Crewmate Ghost" / "Neutral Ghost" instead of who
+    /// they actually were. It looked local-only because this postfix is the one place that writes the
+    /// lover's name text - everyone else's view came from the main path, which already resolves it this
+    /// way. Guardian Angel is left alone: that one is the player's real role, not a leftover.
+    /// </remarks>
+    private static RoleBehaviour? ResolveLoverRole(PlayerControl otherLover)
+    {
+        var role = otherLover.Data.Role;
+        if (role == null) return null;
+
+        if (role.IsDead && role.Role != RoleTypes.GuardianAngel)
+        {
+            return otherLover.GetRoleWhenAlive();
+        }
+
+        return role;
+    }
+
     private static void UpdateLoverNameTextMeeting(PlayerVoteArea playerVA, PlayerControl otherLover)
     {
         var colorPlayerNames = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.ColorPlayerNameToggle.Value;
@@ -71,18 +97,17 @@ public static class LoverKnowsRolePatch
         playerName = playerName.UpdateAllianceSymbols(otherLover);
         playerName = playerName.UpdateStatusSymbols(otherLover);
 
-        var role = otherLover.Data.Role;
+        var role = ResolveLoverRole(otherLover);
         if (role == null) return;
         var color = role.TeamColor;
-        var roleName = $"<size=80%>{color.ToTextColor()}{otherLover.Data.Role.GetRoleName()}</color></size>";
+        var roleName = $"<size=80%>{color.ToTextColor()}{role.GetRoleName()}</color></size>";
 
         if (!otherLover.HasModifier<VampireBittenModifier>() && role is VampireRole)
         {
             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
         }
 
-        var taskOpt = OptionGroupSingleton<TaskTrackingOptions>.Instance;
-        if (taskOpt.ShowTaskInMeetings && (otherLover.IsCrewmate() || otherLover.Data.Role is SpectreRole))
+        if (otherLover.IsCrewmate() || role is SpectreRole)
         {
             roleName += $" <size=80%>{otherLover.TaskInfo()}</size>";
         }
@@ -112,7 +137,17 @@ public static class LoverKnowsRolePatch
     private static void UpdateLoverNameTextInGame(PlayerControl otherLover)
     {
         var colorPlayerNames = LocalSettingsTabSingleton<TownOfUsLocalSettings>.Instance.ColorPlayerNameToggle.Value;
-        var playerName = otherLover.GetAppearance().PlayerName ?? "Unknown";
+        var appearance = otherLover.GetAppearance();
+
+        // Same rule as the main name path: a lover who has gone invisible gets nothing written over
+        // them, or the symbols would hang in the air and mark where they are standing.
+        if (appearance.RendererColor.a <= 0.001f && !otherLover.AmOwner)
+        {
+            otherLover.cosmetics.nameText.text = string.Empty;
+            return;
+        }
+
+        var playerName = appearance.PlayerName ?? "Unknown";
         var playerColor = Color.white;
 
         var isVisible = (PlayerControl.LocalPlayer.TryGetModifier<DeathHandlerModifier>(out var deathHandler) &&
@@ -124,18 +159,17 @@ public static class LoverKnowsRolePatch
         playerName = playerName.UpdateAllianceSymbols(otherLover, !isVisible);
         playerName = playerName.UpdateStatusSymbols(otherLover, !isVisible);
 
-        var role = otherLover.Data.Role;
+        var role = ResolveLoverRole(otherLover);
         if (role == null) return;
         var color = role.TeamColor;
-        var roleName = $"<size=80%>{color.ToTextColor()}{otherLover.Data.Role.GetRoleName()}</color></size>";
+        var roleName = $"<size=80%>{color.ToTextColor()}{role.GetRoleName()}</color></size>";
 
         if (!otherLover.HasModifier<VampireBittenModifier>() && role is VampireRole)
         {
             roleName += "<size=80%><color=#FFFFFF> (<color=#A22929>OG</color>)</color></size>";
         }
 
-        var taskOpt = OptionGroupSingleton<TaskTrackingOptions>.Instance;
-        if (taskOpt.ShowTaskRound && (otherLover.IsCrewmate() || otherLover.Data.Role is SpectreRole))
+        if (otherLover.IsCrewmate() || role is SpectreRole)
         {
             roleName += $" <size=80%>{otherLover.TaskInfo()}</size>";
         }

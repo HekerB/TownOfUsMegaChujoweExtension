@@ -194,6 +194,39 @@ public sealed class InnocentRole(IntPtr cppPtr)
         return MiscUtils.ImpAliveCount >= aliveNonImpostors;
     }
 
+    /// <summary>
+    /// True when an Innocent taunted this player and is still owed the win for it.
+    /// </summary>
+    /// <remarks>
+    /// A taunted player being voted out is the Innocent's win, and it should be theirs alone. Without
+    /// this, a taunted Jester was voted out and both of them won - the Jester for being ejected and the
+    /// Innocent for having taunted him - which reads as the town somehow losing to two different people
+    /// for the same vote. Same story for an Executioner whose target the Innocent had taunted.
+    /// <para>
+    /// The three flags are checked together because the ejection handlers do not run in a fixed order:
+    /// depending on which fires first, the Innocent's win is either still pending
+    /// (<see cref="AwaitingNextMeetingExile"/>) or already recorded (<see cref="AboutToWin"/> /
+    /// <see cref="TargetVoted"/>). An expired window claims nothing.
+    /// </para>
+    /// </remarks>
+    public static bool IsClaimedByTaunt(byte playerId)
+    {
+        foreach (var innocent in ActiveInnocents.Values)
+        {
+            if (innocent == null || innocent.TauntedKillerId != playerId || innocent.WinWindowExpired)
+            {
+                continue;
+            }
+
+            if (innocent.AwaitingNextMeetingExile || innocent.AboutToWin || innocent.TargetVoted)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static void ClearAndReload()
     {
         ActiveInnocents.Clear();

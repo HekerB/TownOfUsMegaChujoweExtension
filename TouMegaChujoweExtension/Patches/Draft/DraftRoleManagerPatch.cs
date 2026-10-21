@@ -28,10 +28,8 @@ public static class DraftRoleManagerPatch
     [HarmonyPriority(Priority.First)]
     public static bool BlockRoleListRandomRoles()
     {
-        System.Console.WriteLine(DraftSystem.DraftComplete);
         if (!AmongUsClient.Instance.AmHost) return true;
         if (!DraftSystem.DraftComplete) return true;
-        System.Console.WriteLine("HERE");
         ApplyDraftRoles();
         return false;
     }
@@ -72,7 +70,24 @@ public static class DraftRoleManagerPatch
 
             if (!effectivePicks.ContainsKey(player.PlayerId))
             {
-                player.RpcSetRole(RoleTypes.Crewmate);
+                // A player can reach this with no pick for several reasons: the timeout auto-pick found
+                // an empty pool (every role of their faction already taken), a dropped pick RPC, or a
+                // disconnect and rejoin mid-draft. Falling back to Crewmate for all of them silently ate
+                // an impostor slot - the "one impostor short" bug. Keep the slot's faction instead; the
+                // Loner reduction already removes its victim from both collections, so a legitimately
+                // reduced slot still lands on Crewmate here.
+                var keepsImpostorSlot =
+                    DraftSystem.ImpostorPlayerIds.Contains(player.PlayerId) ||
+                    (DraftSystem.PlayerFactions.TryGetValue(player.PlayerId, out var slotFaction) &&
+                     slotFaction == DraftFaction.Impostor);
+
+                if (keepsImpostorSlot)
+                {
+                    Warning($"[Draft] {player.Data.PlayerName} had no pick but holds an impostor slot - " +
+                            "assigning plain Impostor so the lobby keeps its impostor count.");
+                }
+
+                player.RpcSetRole(keepsImpostorSlot ? RoleTypes.Impostor : RoleTypes.Crewmate);
             }
         }
         JackalStartPatch.ExecuteAssignment();

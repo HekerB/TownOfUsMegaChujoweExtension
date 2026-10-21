@@ -8,17 +8,8 @@ namespace TouMegaChujoweExtension.Options;
 public sealed class UniversalModifierOptions : AbstractOptionGroup
 {
     public override string GroupName => "Universal Modifiers";
-    public override bool ShowInModifiersMenu => true;
+    public override MenuCategory ParentMenu => MenuCategory.Modifiers;
     public override uint GroupPriority => 1;
-
-    [ModdedNumberOption("ExtensionModifierCluelessAmount", 0, 15)]
-    public float CluelessAmount { get; set; } = 0;
-
-    public ModdedNumberOption CluelessChance { get; } =
-        new("ExtensionModifierCluelessChance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
-        {
-            Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.CluelessAmount > 0
-        };
 
     [ModdedNumberOption("ExtensionModifierSpitefulAmount", 0, 15)]
     public float SpitefulAmount { get; set; } = 0;

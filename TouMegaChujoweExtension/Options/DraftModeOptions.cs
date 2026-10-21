@@ -51,7 +51,7 @@ public sealed class DraftModeOptions : AbstractOptionGroup
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };
 
-    public ModdedNumberOption RolesToShow { get; } = new("ExtensionOptionDraftModeRolesToShow", 3f, 1f, 6f, 1f, MiraNumberSuffixes.None)
+    public ModdedNumberOption RolesToShow { get; } = new("ExtensionOptionDraftModeRolesToShow", 3f, 1f, 10f, 1f, MiraNumberSuffixes.None)
     {
         Visible = () => OptionGroupSingleton<DraftModeOptions>.Instance.EnableDraftMode
     };

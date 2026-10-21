@@ -13,6 +13,7 @@ using TownOfUs.Events;
 using TownOfUs.Extensions;
 using TownOfUs.Interfaces;
 using TownOfUs.Modifiers;
+using TownOfUs.Modules.Components;
 using TownOfUs.Modules.Localization;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Roles.Neutral;
@@ -132,7 +133,7 @@ public sealed class PirateRole(IntPtr cppPtr)
 
         if (PlayerControl.LocalPlayer != null)
         {
-            HudManagerPatches.UpdateRoleNameText();
+            TownOfUs.Modules.Components.HudManagerHelper.UpdateRoleNameText();
         }
 
         if (OptionGroupSingleton<PirateOptions>.Instance.WinMode == PirateWinMode.PirateWinsWithOthers)
@@ -143,11 +144,12 @@ public sealed class PirateRole(IntPtr cppPtr)
             {
                 DeathHandlerModifier.RpcUpdateLocalDeathHandler(
                     PlayerControl.LocalPlayer,
+                    PlayerControl.LocalPlayer,
                     "DiedToWinning",
                     DeathEventHandlers.CurrentRound,
                     DeathHandlerOverride.SetFalse,
-                    killedBy: PlayerControl.LocalPlayer,
-                    lockInfo: DeathHandlerOverride.SetTrue);
+                    "null",
+                    DeathHandlerOverride.SetTrue);
                 PlayerControl.LocalPlayer.RpcPlayerExile();
             }
         }
@@ -304,7 +306,7 @@ public sealed class PirateRole(IntPtr cppPtr)
 
         if (PlayerControl.LocalPlayer != null)
         {
-            HudManagerPatches.UpdateRoleNameText();
+            TownOfUs.Modules.Components.HudManagerHelper.UpdateRoleNameText();
         }
     }
 
@@ -359,7 +361,13 @@ public sealed class PirateRole(IntPtr cppPtr)
 
             PirateDuelSystem.AnimateMeetingDeath(targetId);
 
-            if (target != null && !target.HasDied() && AmongUsClient.Instance.AmHost)
+            // No AmHost gate here. RpcDuelResult already runs on every client (the host is the only
+            // sender - see PirateDuelMeetingPatch.ResolveDuel), and PlayerControl.Exiled() is local-only:
+            // gating it on the host killed the duel loser on the host alone and left them walking around
+            // alive on every other client. That is the "half dead" player - no role shown, seemingly
+            // alive but not - and for an Infiltrator it also meant the Recruit lifelink never ran
+            // anywhere but on the host.
+            if (target != null && !target.HasDied())
             {
                 target.Exiled();
 

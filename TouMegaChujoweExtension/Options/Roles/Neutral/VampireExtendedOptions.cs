@@ -13,7 +13,6 @@ public sealed class VampireExtendedOptions : AbstractOptionGroup<VampireRole>
 {
     public override string GroupName => TownOfUs.Modules.Localization.TouLocale.Get("TOUMCEBetterRolePrefix") + TouLocale.Get("ExtensionRoleVampire", "Vampire");
     public override Color GroupColor => TownOfUsColors.Vampire;
-    public override bool ShowInModifiersMenu => false;
     public override MenuCategory ParentMenu => MenuCategory.CustomOne;
     public override uint GroupPriority => 111;
 

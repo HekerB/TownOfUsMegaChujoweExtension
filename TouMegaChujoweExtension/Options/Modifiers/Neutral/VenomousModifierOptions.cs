@@ -9,7 +9,7 @@ public sealed class VenomousModifierOptions : AbstractOptionGroup<VenomousModifi
 {
     public override string GroupName => "Venomous";
     public override Color GroupColor => new Color32(0, 200, 90, 255);
-    public override bool ShowInModifiersMenu => true;
+    public override MenuCategory ParentMenu => MenuCategory.Modifiers;
     public override uint GroupPriority => 40;
 
     public ModdedNumberOption VenomousRotDelay { get; } =

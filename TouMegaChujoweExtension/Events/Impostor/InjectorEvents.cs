@@ -23,7 +23,7 @@ public static class InjectorEvents
     private static readonly Dictionary<byte, List<PendingInjection>> PendingInjections = [];
     private static readonly Dictionary<byte, int> AppliedInjectionCounts = [];
 
-    public static void ScheduleInjection(PlayerControl injector, PlayerControl target)
+    public static void ScheduleInjection(PlayerControl injector, PlayerControl target, int seed)
     {
         if (target == null || target.HasDied() || injector == null)
         {
@@ -33,13 +33,20 @@ public static class InjectorEvents
         var options = OptionGroupSingleton<InjectorOptions>.Instance;
         var delay = options.EffectDelay;
 
+        // Generate deterministic Guid from seed
+        var rng = new System.Random(seed);
+        var bytes = new byte[16];
+        rng.NextBytes(bytes);
+        var injectionId = new Guid(bytes);
+
         var pending = new PendingInjection
         {
             Injector = injector,
             Target = target,
             Delay = delay,
             ScheduledTime = Time.time,
-            InjectionId = Guid.NewGuid()
+            InjectionId = injectionId,
+            Seed = seed
         };
 
         if (!PendingInjections.TryGetValue(target.PlayerId, out var list))
@@ -68,7 +75,7 @@ public static class InjectorEvents
             yield break;
         }
 
-        ApplyInjectionEffect(pending.Injector, pending.Target, pending.InjectionId);
+        ApplyInjectionEffect(pending.Injector, pending.Target, pending.InjectionId, pending.Seed);
         
         if (PendingInjections.TryGetValue(pending.Target.PlayerId, out var list2))
         {
@@ -80,7 +87,7 @@ public static class InjectorEvents
         }
     }
 
-    private static void ApplyInjectionEffect(PlayerControl injector, PlayerControl target, Guid injectionId)
+    private static void ApplyInjectionEffect(PlayerControl injector, PlayerControl target, Guid injectionId, int seed)
     {
         if (target == null || target.HasDied())
         {
@@ -153,7 +160,9 @@ public static class InjectorEvents
             return;
         }
 
-        var randomValue = Random.RandomRange(0f, totalWeight);
+        // Use System.Random for deterministic generation across clients using the same seed
+        var rng = new System.Random(seed);
+        var randomValue = (float)(rng.NextDouble() * totalWeight);
         var cumulativeWeight = 0f;
         BaseModifier? selectedModifier = null;
         string selectedNotificationKey = string.Empty;
@@ -293,6 +302,7 @@ public static class InjectorEvents
         public float Delay { get; set; }
         public float ScheduledTime { get; set; }
         public Guid InjectionId { get; set; }
+        public int Seed { get; set; }
     }
 }
 

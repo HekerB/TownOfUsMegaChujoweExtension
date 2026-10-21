@@ -30,8 +30,13 @@ public static class PelicanTargetBlockPatches
                 Warning("Could not find method GetClosestLivingPlayer to patch!");
             }
 
-            // 2. Patch IsTargetValid dynamically on TownOfUsTargetButton<PlayerControl>
-            var isTargetValidMethod = AccessTools.Method(typeof(TownOfUsTargetButton<PlayerControl>), nameof(TownOfUsTargetButton<PlayerControl>.IsTargetValid));
+            // 2. Patch IsTargetValid dynamically. TownOfUsTargetButton<PlayerControl> does not declare
+            // it, so asking that type gave back the inherited CustomActionButton<PlayerControl> method
+            // and HarmonyX warned "You should only patch implemented methods" on every startup. Go
+            // straight to the declaring type - it is the same method either way.
+            var isTargetValidMethod = AccessTools.DeclaredMethod(
+                typeof(MiraAPI.Hud.CustomActionButton<PlayerControl>),
+                nameof(MiraAPI.Hud.CustomActionButton<PlayerControl>.IsTargetValid));
             if (isTargetValidMethod != null)
             {
                 var postfix = typeof(PelicanTargetBlockPatches).GetMethod(nameof(IsTargetValidPostfix), BindingFlags.Static | BindingFlags.Public);

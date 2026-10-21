@@ -10,7 +10,7 @@ public sealed class DeathNoteModifierOptions : AbstractOptionGroup<DeathNoteModi
 {
     public override string GroupName => "Death Note";
     public override Color GroupColor => new Color32(40, 0, 80, 255);
-    public override bool ShowInModifiersMenu => true;
+    public override MenuCategory ParentMenu => MenuCategory.Modifiers;
     public override uint GroupPriority => 41;
 
     public ModdedNumberOption DeathNoteTimer { get; } =
