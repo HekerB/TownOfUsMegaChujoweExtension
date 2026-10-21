@@ -55,10 +55,12 @@ public static class FortellerObserveHintCapPatch
                 hintType = doomableRole.DoomHintType;
             }
 
-            var fallback = TouLocale.GetParsed("TouRoleDoomsayerRoleHintDefault");
-            var hint = TouLocale.GetParsed($"TouRoleDoomsayerRoleHint{hintType}");
+            // TOU-Mira 1.7.3 keys; a missing key now comes back as the key itself (1.7.1 returned "STRMISS_...").
+            var fallback = TouLocale.GetParsed("TownOfUsMira.Role.DoomsayerRoleHintDefault");
+            var hintKey = $"TownOfUsMira.Role.DoomsayerRoleHint{hintType}";
+            var hint = TouLocale.GetParsed(hintKey);
 
-            if (hint.Contains("STRMISS"))
+            if (hint == hintKey || string.IsNullOrEmpty(hint))
             {
                 reportBuilder.AppendLine(System.Globalization.CultureInfo.InvariantCulture, $"{fallback.Replace("<player>", playerInfo.PlayerName)}\n");
             }

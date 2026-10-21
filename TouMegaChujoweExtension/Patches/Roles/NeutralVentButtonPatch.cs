@@ -199,7 +199,7 @@ public static class NeutralVentButtonPatch
                 outline.a = alpha;
 
                 ventButton.buttonLabelText.text = canVent
-                    ? TouLocale.Get("Vent", "Vent")
+                    ? TouLocale.Get("ExtensionVent", "Vent")
                     : TouLocale.Get("ExtensionRoleCantVent", "Can't Vent");
 
                 if (!canVent)

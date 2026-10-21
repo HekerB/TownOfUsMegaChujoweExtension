@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class BountyHunterOptions : AbstractOptionGroup<BountyHunterRole>
+public sealed class BountyHunterOptions : AbstractRoleOptionGroup<BountyHunterRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleBountyHunter", "Bounty Hunter");
 

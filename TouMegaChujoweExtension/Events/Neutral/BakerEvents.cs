@@ -29,6 +29,10 @@ public static class BakerEvents
     public static readonly HashSet<byte> PendingStarvationDeaths = [];
     public static readonly HashSet<byte> ShownStarvationAnimations = [];
 
+    // Bakers/Famines whose bread changed this frame and still need the host's recheck.
+    private static readonly HashSet<byte> DirtyBreadOwners = [];
+    private static bool _reevaluationRunning;
+
     [RegisterEvent(10000)]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
@@ -39,6 +43,7 @@ public static class BakerEvents
 
         PendingStarvationDeaths.Clear();
         ShownStarvationAnimations.Clear();
+        DirtyBreadOwners.Clear();
         BakerRole.PendingFamineAnnouncement = false;
         BakerRole.FamineAnnounced = false;
 
@@ -70,8 +75,18 @@ public static class BakerEvents
     {
         var victim = @event.Player;
         var localPlayer = PlayerControl.LocalPlayer;
-        var hasBakerMark = victim != null &&
-                            (victim.HasModifier<BakerBreadModifier>() ||
+
+        // The host rechecks every Famine that just lost a bread holder - whoever the host is playing.
+        if (victim != null)
+        {
+            foreach (var bread in victim.GetModifiers<BakerBreadModifier>())
+            {
+                QueueBreadReevaluation(bread.BakerId);
+            }
+        }
+
+        var hasBakerMark = victim != null && localPlayer != null &&
+                            (BakerBreadModifier.HasBreadFrom(victim, localPlayer.PlayerId) ||
                              victim.HasModifier<FamineStarvedModifier>());
         if (victim == null ||
             localPlayer == null ||
@@ -101,13 +116,17 @@ public static class BakerEvents
         {
             victim.RemoveModifier<FamineStarveRevealModifier>();
         }
-
-        TryUnlockFamine();
     }
 
     [RegisterEvent]
     public static void MiraButtonClickEventHandler(MiraButtonClickEvent @event)
     {
+        // Famine only shrugs off attacks; investigating, shielding or any other targeted ability still reaches it.
+        if (@event.Button is not IKillButton)
+        {
+            return;
+        }
+
         var button = @event.Button as CustomActionButton<PlayerControl>;
         var source = PlayerControl.LocalPlayer;
         var target = button?.Target;
@@ -138,14 +157,13 @@ public static class BakerEvents
 
         if (AmongUsClient.Instance != null && AmongUsClient.Instance.AmHost)
         {
-            // 2. Check for Baker transformation into Famine (host-side)
-            var baker = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(x => x != null && !x.HasDied() && x.Data.Role is BakerRole);
-            if (baker != null)
+            // 2. Each Baker turns into Famine on its own bread (host-side).
+            foreach (var baker in PlayerControl.AllPlayerControls.ToArray()
+                         .Where(x => x != null && !x.HasDied() && x.Data?.Role is BakerRole))
             {
-                var breadGivenCount = PlayerControl.AllPlayerControls.ToArray()
-                    .Count(x => x != null && !x.HasDied() && x.HasModifier<BakerBreadModifier>());
+                var breadGivenCount = BakerBreadModifier.CountFor(baker.PlayerId);
                 var breadNeeded = BakerRole.GetEffectiveBreadNeeded(baker);
-                if (breadNeeded > 0 && breadGivenCount >= breadNeeded)
+                if (breadGivenCount >= breadNeeded)
                 {
                     BakerRole.RpcTransformToFamine(baker);
                 }
@@ -230,29 +248,77 @@ public static class BakerEvents
 
     public static void TryUnlockFamine()
     {
+        foreach (var famine in PlayerControl.AllPlayerControls.ToArray()
+                     .Where(x => x != null && !x.HasDied() && x.Data?.Role is FamineRole))
+        {
+            TryUnlockFamine(famine);
+        }
+    }
+
+    /// <summary>
+    /// Host: a Famine whose own bread holders are all gone may starve anyone.
+    /// </summary>
+    public static void TryUnlockFamine(PlayerControl famine)
+    {
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
         {
             return;
         }
 
-        var activeFamine = PlayerControl.AllPlayerControls.ToArray()
-            .FirstOrDefault(x => x != null && !x.HasDied() && x.Data?.Role is FamineRole);
-        if (activeFamine == null ||
-            activeFamine.Data?.Role is not FamineRole famineRole ||
+        if (famine == null || famine.HasDied() ||
+            famine.Data?.Role is not FamineRole famineRole ||
             famineRole.CanStarveAnyone ||
             !famineRole.HadBreadTargets)
         {
             return;
         }
 
-        var anyBreadsAlive = PlayerControl.AllPlayerControls.ToArray()
-            .Any(x => x != null &&
-                      !x.HasDied() &&
-                      x != activeFamine &&
-                      x.HasModifier<BakerBreadModifier>());
-        if (!anyBreadsAlive)
+        if (BakerBreadModifier.CountFor(famine.PlayerId) == 0)
         {
-            FamineRole.RpcUnlockFamine(activeFamine);
+            FamineRole.RpcUnlockFamine(famine);
+        }
+    }
+
+    /// <summary>
+    /// Host: recheck this Baker's Famine once the change that triggered it is visible. MiraAPI runs a modifier's
+    /// OnDeactivate before the modifier leaves the player, and a death before it is reported everywhere, so the
+    /// check waits a frame; every change of that frame is checked in one pass.
+    /// </summary>
+    public static void QueueBreadReevaluation(byte ownerId)
+    {
+        if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost)
+        {
+            return;
+        }
+
+        DirtyBreadOwners.Add(ownerId);
+        if (!_reevaluationRunning)
+        {
+            _reevaluationRunning = true;
+            Reactor.Utilities.Coroutines.Start(CoReevaluateBreadOwners());
+        }
+    }
+
+    private static IEnumerator CoReevaluateBreadOwners()
+    {
+        yield return null;
+        yield return new WaitForFixedUpdate();
+
+        try
+        {
+            foreach (var ownerId in DirtyBreadOwners.ToArray())
+            {
+                var owner = MiscUtils.PlayerById(ownerId);
+                if (owner != null && owner.Data?.Role is FamineRole)
+                {
+                    TryUnlockFamine(owner);
+                }
+            }
+        }
+        finally
+        {
+            DirtyBreadOwners.Clear();
+            _reevaluationRunning = false;
         }
     }
 

@@ -21,7 +21,7 @@ using TouMegaChujoweExtension.Assets;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-public sealed class GardenerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class GardenerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Insight;
     public string LocaleKey => "Gardener";

@@ -19,7 +19,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, IDoomable
+public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IExtensionRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Insight;
 
@@ -127,8 +127,8 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             !blackmailed &&
             !HasAbstained &&
             !HasVotedOnPlayer &&
-            meeting.state == MeetingHud.VoteStates.NotVoted &&
-            !meeting.SkipVoteButton.voteComplete);
+            meeting.state == MeetingHud.MeetingStates.NotVoted &&
+            !meeting.SkipVoteButton.VoteComplete);
 
         if (!AbstainButton.gameObject.active)
         {
@@ -140,7 +140,7 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             return;
         }
 
-        if (meeting.state == MeetingHud.VoteStates.Discussion &&
+        if (meeting.state == MeetingHud.MeetingStates.Discussion &&
             meeting.discussionTimer < GameOptionsManager.Instance.currentNormalGameOptions.DiscussionTime)
         {
             AbstainButton.SetDisabled();
@@ -150,7 +150,7 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
             AbstainButton.SetEnabled();
         }
 
-        AbstainButton.voteComplete = meeting.SkipVoteButton.voteComplete;
+        AbstainButton.VoteComplete = meeting.SkipVoteButton.VoteComplete;
     }
 
     public bool HasCastKnightedVote { get; set; }
@@ -189,7 +189,7 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
         var skip = meeting.SkipVoteButton;
         AbstainButton = UnityEngine.Object.Instantiate(skip, skip.transform.parent);
         AbstainButton.Parent = meeting;
-        AbstainButton.SetTargetPlayerId(AbstainTargetId);
+        AbstainButton.SetPlayerId(AbstainTargetId);
         AbstainButton.transform.localPosition = skip.transform.localPosition + new Vector3(0f, -0.17f, 0f);
 
         AbstainButton.gameObject.GetComponentInChildren<TextTranslatorTMP>().Destroy();
@@ -252,7 +252,7 @@ public sealed class PresidentRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCre
                 SoundManager.Instance.PlaySound(meeting.VoteLockinSound, false);
             }
 
-            meeting.SkipVoteButton.voteComplete = true;
+            meeting.SkipVoteButton.VoteComplete = true;
             meeting.SkipVoteButton.gameObject.SetActive(false);
 
             foreach (var playerVoteArea in meeting.playerStates)

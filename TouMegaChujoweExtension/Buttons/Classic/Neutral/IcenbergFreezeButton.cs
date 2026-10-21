@@ -78,9 +78,9 @@ public sealed class IcenbergFreezeButton : TownOfUsRoleButton<IcenbergRole>
                && target.Data != null
                && !target.Data.Disconnected
                && !target.Data.IsDead
-               && !target.Data.Disconnected
                && target.PlayerId != local.PlayerId
                && !target.HasModifier<IcenbergFrozenModifier>()
+               && !target.inVent
                && !target.HasModifier<FirstDeadShield>();
     }
 }

@@ -24,9 +24,11 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IUnguessable
+public sealed class WarRole(IntPtr cppPtr) : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, IUnguessable, ICrewVariant
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
+    public string LocaleKey => "War";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.VeteranRole>();
     public string RoleName => TouLocale.Get("ExtensionRoleWar", "War");
     public string RoleDescription => TouLocale.GetParsed("ExtensionRoleWarIntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed("ExtensionRoleWarTabDescription");

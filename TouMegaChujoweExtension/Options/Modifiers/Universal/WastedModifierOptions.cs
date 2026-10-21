@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Options.Modifiers.Universal;
 
-public sealed class DrunkModifierOptions : AbstractOptionGroup<DrunkModifier>
+public sealed class WastedModifierOptions : AbstractOptionGroup<WastedModifier>
 {
-    public override string GroupName => "Drunk";
+    public override string GroupName => TownOfUs.Modules.Localization.TouLocale.Get("ExtensionModifierWasted", "Wasted");
     public override Color GroupColor => new Color32(64, 168, 100, 255);
     public override MenuCategory ParentMenu => MenuCategory.Modifiers;
     public override uint GroupPriority => 52;
 
-    public ModdedNumberOption DrunkDuration { get; } =
-        new("ExtensionModifierDrunkDuration", 3f, 1f, 20f, 1f, MiraNumberSuffixes.None);
+    public ModdedNumberOption WastedDuration { get; } =
+        new("ExtensionModifierWastedDuration", 3f, 1f, 20f, 1f, MiraNumberSuffixes.None);
 }
 
 

@@ -12,12 +12,16 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modifiers.Game;
 
-public sealed class DrunkModifier : UniversalGameModifier, IUnguessable, IWikiDiscoverable
+/// <summary>
+/// Inverted controls for a number of meetings. Formerly "Drunk"; TOU-Mira 1.7.3 ships its own Drunk with the
+/// same effect, so this one has its own name, icon and options and both can be enabled side by side.
+/// </summary>
+public sealed class WastedModifier : UniversalGameModifier, IUnguessable, IWikiDiscoverable
 {
-    public override string LocaleKey => "Drunk";
-    public override string ModifierName => TouLocale.Get($"ExtensionModifier{LocaleKey}");
-    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{LocaleKey}IntroBlurb");
-    public override LoadableAsset<Sprite>? ModifierIcon => TouModifierIcons.Drunk;
+    public override string IdPart => "Wasted";
+    public override string ModifierName => TouLocale.Get($"ExtensionModifier{IdPart}");
+    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{IdPart}IntroBlurb");
+    public override LoadableAsset<Sprite>? ModifierIcon => TouExtensionModifierIcons.WastedModifierIcon;
 
     private int _meetingsRemaining;
 
@@ -26,15 +30,15 @@ public sealed class DrunkModifier : UniversalGameModifier, IUnguessable, IWikiDi
 
     public override string GetDescription()
     {
-        return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}TabDescription")
+        return TouLocale.GetParsed($"ExtensionModifier{IdPart}TabDescription")
             .Replace("{meetings}", _meetingsRemaining.ToString());
     }
 
     public string GetAdvancedDescription()
     {
-        var options = OptionGroupSingleton<DrunkModifierOptions>.Instance;
-        var description = TouLocale.GetParsed($"ExtensionModifier{LocaleKey}WikiDescription")
-            .Replace("{meetings}", ((int)options.DrunkDuration.Value).ToString());
+        var options = OptionGroupSingleton<WastedModifierOptions>.Instance;
+        var description = TouLocale.GetParsed($"ExtensionModifier{IdPart}WikiDescription")
+            .Replace("{meetings}", ((int)options.WastedDuration.Value).ToString());
 
         return description + MiscUtils.AppendOptionsText(GetType());
     }
@@ -45,12 +49,12 @@ public sealed class DrunkModifier : UniversalGameModifier, IUnguessable, IWikiDi
 
     public override int GetAssignmentChance()
     {
-        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.DrunkChance.Value;
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.WastedChance.Value;
     }
 
     public override int GetAmountPerGame()
     {
-        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.DrunkAmount;
+        return (int)OptionGroupSingleton<UniversalModifierOptions>.Instance.WastedAmount;
     }
 
     public override bool IsModifierValidOn(RoleBehaviour role)
@@ -67,7 +71,8 @@ public sealed class DrunkModifier : UniversalGameModifier, IUnguessable, IWikiDi
 
     public override void OnActivate()
     {
-        _meetingsRemaining = (int)OptionGroupSingleton<DrunkModifierOptions>.Instance.DrunkDuration.Value;
+        _meetingsRemaining = (int)OptionGroupSingleton<WastedModifierOptions>.Instance.WastedDuration.Value;
+        base.OnActivate();
     }
 
     public override void OnMeetingStart()

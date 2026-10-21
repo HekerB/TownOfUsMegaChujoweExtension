@@ -29,7 +29,7 @@ using TownOfUs.Utilities;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-public sealed class TavernKeeperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class TavernKeeperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Fearmonger;
@@ -145,7 +145,7 @@ public sealed class TavernKeeperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITow
         var targetName = target.CachedPlayerData.PlayerName;
 
         var immune = true;
-        if (!target.HasModifier<DrinkImmunityModifier>() && !target.HasModifier<TouMegaChujoweExtension.Modifiers.Game.DrunkModifier>() &&
+        if (!target.HasModifier<DrinkImmunityModifier>() && !target.HasModifier<TouMegaChujoweExtension.Modifiers.Game.WastedModifier>() &&
             !target.HasModifier<RoleblockedModifier>() && !target.IsRole<TavernKeeperRole>())
         {
             immune = false;

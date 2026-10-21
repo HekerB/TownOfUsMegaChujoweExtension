@@ -15,7 +15,7 @@ public enum VampireHunterBecomes
     Officer
 }
 
-public sealed class VampireHunterOptions : AbstractOptionGroup<VampireHunterRole>
+public sealed class VampireHunterOptions : AbstractRoleOptionGroup<VampireHunterRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleVampireHunter", "Vampire Hunter");
 

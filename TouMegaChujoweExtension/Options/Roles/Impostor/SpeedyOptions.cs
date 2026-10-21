@@ -7,7 +7,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 
-public sealed class SpeedyOptions : AbstractOptionGroup<SpeedyRole>
+public sealed class SpeedyOptions : AbstractRoleOptionGroup<SpeedyRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleSpeedy", "Speedy");
     public override uint GroupPriority => 5;

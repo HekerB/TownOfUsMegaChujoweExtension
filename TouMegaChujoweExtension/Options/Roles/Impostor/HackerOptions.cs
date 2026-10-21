@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 
-public sealed class HackerOptions : AbstractOptionGroup<HackerRole>
+public sealed class HackerOptions : AbstractRoleOptionGroup<HackerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleHacker", "Hacker");
 

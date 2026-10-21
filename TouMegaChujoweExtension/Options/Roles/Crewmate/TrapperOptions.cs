@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
 
-public sealed class TrapperOptions : AbstractOptionGroup<TrapperRole>
+public sealed class TrapperOptions : AbstractRoleOptionGroup<TrapperRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleTrapper", "Trapper");
 

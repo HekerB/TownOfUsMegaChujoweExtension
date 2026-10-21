@@ -1,5 +1,27 @@
 # Changelog
 
+## Unreleased - Town of Us: Mira 1.7.3
+
+### Compatibility
+- Built against Town of Us: Mira 1.7.3, MiraAPI 0.5.0 and Among Us 18.0.x (game libraries 2026.8.18).
+- Role settings now live under Roles and modifier amount/chance under Modifiers again (MiraAPI 0.5.0 only routes groups by `ParentMenu`; role groups use `AbstractRoleOptionGroup`).
+- Extension strings load into MiraAPI's locale tables (TOU 1.7.3 reads all text through them); the old `\%nl\%`/`\%color\%` markup is converted on load, and "Use Polish" with "Translate Role Names" off keeps English role names.
+- Extension roles have their own translation ids, so the vanilla role menus, intro and causes of death show their names instead of raw keys.
+- Death details use TOU 1.7.3's `GameHistory` (the DeathHandlerModifier is gone); meeting code follows the new `PlayerVoteArea.PlayerId` / `MeetingStates` API.
+- Every extension Impostor and Neutral role has a crew counterpart for the Imitator.
+- Patches whose targets moved or changed fixed: Time Lord revive filter (wrong list type), Plumber/Burrower vent target (abstract method), Trapper is renamed to Revealer through its 1.7.3 strings.
+
+### Icenberg (new Neutral Killing role)
+- Kill, Freeze (any living player cannot move, use abilities or consoles, open the map, vent or report) and Blizzard (everyone else slowed).
+- Frozen and blizzard screen overlays; freezing never takes away movement that something else is holding.
+- Wins alone like the other neutral killers; full English and Polish text; own cause of death.
+
+### Fixes
+- Vision: the shadows were switched off for a living player whenever the camera was a little wider than usual; ghosts got the darkness back after every meeting.
+- Drunk: the extension's Drunk is now "Wasted" (PL "Nawalony") with its own icon and options, next to TOU's new Drunk, and never cancels TOU's control inversion out.
+- Baker: each Baker counts only its own bread and turns into Famine on its own; a Cleric or Doctor cleansing the last bread holder unlocks Famine at once; Famine only blocks attacks, not every targeted ability; the host unlocks Famine whoever it plays.
+- Foreteller hints and the Lawyer's team title read the TOU 1.7.3 strings again.
+
 ## 1.4.4 - Draft Visual Refinements & Lobby Fixes
 
 ### Draft Mode Visuals

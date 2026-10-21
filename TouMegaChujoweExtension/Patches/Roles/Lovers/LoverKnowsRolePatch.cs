@@ -50,7 +50,7 @@ public static class LoverKnowsRolePatch
         {
             foreach (var playerVA in MeetingHud.Instance.playerStates)
             {
-                if (playerVA != null && playerVA.TargetPlayerId == otherLover.PlayerId)
+                if (playerVA != null && playerVA.PlayerId == otherLover.PlayerId)
                 {
                     UpdateLoverNameTextMeeting(playerVA, otherLover);
                 }
@@ -112,9 +112,9 @@ public static class LoverKnowsRolePatch
             roleName += $" <size=80%>{otherLover.TaskInfo()}</size>";
         }
 
-        if (otherLover.Data.IsDead && otherLover.TryGetModifier<DeathHandlerModifier>(out var deathMod))
+        if (otherLover.Data.IsDead && ExtensionDeathInfo.TryGetDead(otherLover, out var deathMod))
         {
-            var deathReason = $"<size=60%>『{Color.yellow.ToTextColor()}{deathMod.CauseOfDeath}</color>』</size>\n";
+            var deathReason = $"<size=60%>『{Color.yellow.ToTextColor()}{deathMod.DeathString}</color>』</size>\n";
             roleName = $"{deathReason}{roleName}";
         }
 
@@ -150,8 +150,7 @@ public static class LoverKnowsRolePatch
         var playerName = appearance.PlayerName ?? "Unknown";
         var playerColor = Color.white;
 
-        var isVisible = (PlayerControl.LocalPlayer.TryGetModifier<DeathHandlerModifier>(out var deathHandler) &&
-                         !deathHandler.DiedThisRound) || TutorialManager.InstanceExists;
+        var isVisible = PlayerControl.LocalPlayer.DiedOtherRound() || TutorialManager.InstanceExists;
 
         playerColor = playerColor.UpdateTargetColor(otherLover, !isVisible);
         playerName = playerName.UpdateTargetSymbols(otherLover, !isVisible);
@@ -175,9 +174,9 @@ public static class LoverKnowsRolePatch
         }
 
         var canSeeDeathReason = false;
-        if (otherLover.Data.IsDead && isVisible && otherLover.TryGetModifier<DeathHandlerModifier>(out var deathMod))
+        if (otherLover.Data.IsDead && isVisible && ExtensionDeathInfo.TryGetDead(otherLover, out var deathMod))
         {
-            var deathReason = $"<size=75%>『{Color.yellow.ToTextColor()}{deathMod.CauseOfDeath}</color>』</size>\n";
+            var deathReason = $"<size=75%>『{Color.yellow.ToTextColor()}{deathMod.DeathString}</color>』</size>\n";
             roleName = $"{deathReason}{roleName}";
             canSeeDeathReason = true;
         }

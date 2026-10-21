@@ -14,9 +14,9 @@ namespace TouMegaChujoweExtension.Modifiers.Neutral;
 public sealed class VenomousModifier : UniversalGameModifier, IWikiDiscoverable, IColoredModifier, IGuessable
 {
     public Color ModifierColor => TouExtensionColors.Venomous;
-    public override string LocaleKey => "Venomous";
-    public override string ModifierName => TouLocale.Get($"ExtensionModifier{LocaleKey}");
-    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{LocaleKey}IntroBlurb");
+    public override string IdPart => "Venomous";
+    public override string ModifierName => TouLocale.Get($"ExtensionModifier{IdPart}");
+    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{IdPart}IntroBlurb");
     public override LoadableAsset<Sprite>? ModifierIcon => TouExtensionModifierIcons.VenomousModifierIcon;
     public string GuesserName => ModifierName;
     public Color GuesserColor => ModifierColor;
@@ -25,12 +25,12 @@ public sealed class VenomousModifier : UniversalGameModifier, IWikiDiscoverable,
 
     public override string GetDescription()
     {
-        return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}TabDescription");
+        return TouLocale.GetParsed($"ExtensionModifier{IdPart}TabDescription");
     }
 
     public string GetAdvancedDescription()
     {
-        var description = TouLocale.GetParsed($"ExtensionModifier{LocaleKey}WikiDescription");
+        var description = TouLocale.GetParsed($"ExtensionModifier{IdPart}WikiDescription");
         description += MiscUtils.AppendOptionsText(GetType());
         return description;
     }

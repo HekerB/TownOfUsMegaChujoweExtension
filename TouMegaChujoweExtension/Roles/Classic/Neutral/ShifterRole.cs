@@ -29,10 +29,11 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public DoomableType DoomHintType => DoomableType.Trickster;
     public string LocaleKey => "Shifter";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.MysticRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -241,8 +242,26 @@ public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
 
         if (options.StealModifiers)
         {
-            foreach (var modifier in targetModifiers.Where(modifier => modifier is not DeathHandlerModifier && modifier is not LoverModifier))
+            foreach (var modifier in targetModifiers.Where(modifier => modifier is not LoverModifier))
             {
+                // Bread keeps the Baker it came from; the bare type cannot be built without it.
+                if (modifier is BakerBreadModifier bread)
+                {
+                    if (shifter.PlayerId != bread.BakerId && !shifter.HasModifier<BakerBreadModifier>())
+                    {
+                        shifter.AddModifier<BakerBreadModifier>(bread.BakerId);
+                    }
+
+                    target.RemoveModifier(bread);
+                    continue;
+                }
+
+                // Effects that need constructor arguments (a duration, an owner) stay with the target.
+                if (modifier.GetType().GetConstructor(System.Type.EmptyTypes) == null)
+                {
+                    continue;
+                }
+
                 shifter.AddModifier(modifier.GetType());
                 target.RemoveModifier(modifier.GetType());
             }
@@ -283,13 +302,7 @@ public sealed class ShifterRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsR
             }
         }
 
-        if (target.Data?.Role is not ICustomRole && !target.HasModifier<DeathHandlerModifier>())
-            target.AddModifier<DeathHandlerModifier>();
-
         shifter.ChangeRole(stolenRoleId);
-
-        if (shifter.Data?.Role is not ICustomRole && !shifter.HasModifier<DeathHandlerModifier>())
-            shifter.AddModifier<DeathHandlerModifier>();
 
         wasShifterRole.ShiftUsed = true;
         wasShifterRole.PendingTargetId = byte.MaxValue;

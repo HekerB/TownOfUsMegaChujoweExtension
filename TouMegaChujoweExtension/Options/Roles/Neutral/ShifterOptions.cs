@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class ShifterOptions : AbstractOptionGroup<ShifterRole>
+public sealed class ShifterOptions : AbstractRoleOptionGroup<ShifterRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleShifter", "Shifter");
 

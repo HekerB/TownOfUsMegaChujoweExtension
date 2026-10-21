@@ -1044,14 +1044,14 @@
   <string name="DiedToTerminated">Terminated</string>
   <string name="DiedToBodyguard">Sacrificed</string>
   
-  <!-- Drunk Modifier -->
-  <string name="ExtensionModifierDrunk">Drunk</string>
-  <string name="ExtensionModifierDrunkIntroBlurb">Your controls are inverted!</string>
-  <string name="ExtensionModifierDrunkTabDescription">Your movement controls are inverted for {meetings} meetings.</string>
-  <string name="ExtensionModifierDrunkWikiDescription">The Drunk has their movement controls permanently inverted for {meetings} meetings. They cannot be guessed.</string>
-  <string name="ExtensionModifierDrunkChance">Drunk Chance</string>
-  <string name="ExtensionModifierDrunkAmount">Drunk Amount</string>
-  <string name="ExtensionModifierDrunkDuration">Drunk Duration (Meetings)</string>
+  <!-- Wasted Modifier (the extension's Drunk; TOU-Mira 1.7.3 has its own Drunk) -->
+  <string name="ExtensionModifierWasted">Wasted</string>
+  <string name="ExtensionModifierWastedIntroBlurb">Your controls are inverted!</string>
+  <string name="ExtensionModifierWastedTabDescription">Your movement controls are inverted for {meetings} meetings.</string>
+  <string name="ExtensionModifierWastedWikiDescription">The Wasted player has their movement controls permanently inverted for {meetings} meetings. They cannot be guessed.</string>
+  <string name="ExtensionModifierWastedChance">Wasted Chance</string>
+  <string name="ExtensionModifierWastedAmount">Wasted Amount</string>
+  <string name="ExtensionModifierWastedDuration">Wasted Duration (Meetings)</string>
   
   <!-- Falcon Role -->
   <string name="ExtensionRoleFalcon">Falcon</string>
@@ -1365,7 +1365,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="TarotCardTheMagicianDesc">Blind Crewmates (10s)</string>
   <string name="TarotCardTheHighPriestessDesc">Become Foreteller</string>
   <string name="TarotCardTheEmpressDesc">+1 Vote (Knighted)</string>
-  <string name="TarotCardTheEmperorDesc">Drunk effect</string>
+  <string name="TarotCardTheEmperorDesc">Wasted effect</string>
   <string name="TarotCardTheHierophantDesc">Become Neutral Benign</string>
   <string name="TarotCardTheLoversDesc">Link with random evil</string>
   <string name="TarotCardTheChariotDesc">Speed boost (30s)</string>
@@ -1429,7 +1429,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionArcanistWeight01">&lt;color=#FF3333&gt;The Magician&lt;/color&gt; (Blind Crewmates 10s)</string>
   <string name="ExtensionOptionArcanistWeight02">&lt;color=#33CCFF&gt;The High Priestess&lt;/color&gt; (Become Foreteller)</string>
   <string name="ExtensionOptionArcanistWeight03">&lt;color=#82E0AA&gt;The Empress&lt;/color&gt; (+1 Vote)</string>
-  <string name="ExtensionOptionArcanistWeight04">&lt;color=#D63031&gt;The Emperor&lt;/color&gt; (Drunk effect)</string>
+  <string name="ExtensionOptionArcanistWeight04">&lt;color=#D63031&gt;The Emperor&lt;/color&gt; (Wasted effect)</string>
   <string name="ExtensionOptionArcanistWeight05">&lt;color=#33CCFF&gt;The Hierophant&lt;/color&gt; (Become Neutral Benign)</string>
   <string name="ExtensionOptionArcanistWeight07">&lt;color=#33FF33&gt;The Chariot&lt;/color&gt; (Speed boost 30s)</string>
   <string name="ExtensionOptionArcanistWeight08">&lt;color=#82E0AA&gt;Strength&lt;/color&gt; (-20% Cooldown)</string>
@@ -1508,21 +1508,6 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionSniperAimZoomEnabled">Zoom Out While Aiming</string>
   <string name="ExtensionOptionSniperZoomDistance">Zoom Distance</string>
 
-  <!-- Sniper Role -->
-  <string name="ExtensionRoleSniper">Sniper</string>
-  <string name="ExtensionRoleSniperIntroBlurb">Aim carefully and eliminate targets from afar.</string>
-  <string name="ExtensionRoleSniperTabDescription">Enter Aiming to shoot from range.\%nl\%Click visible targets while standing still.</string>
-  <string name="ExtensionRoleSniperWikiDescription">The Sniper is an Impostor Killing role that can remotely shoot targets.\%nl\%When you use your ability, you enter aiming mode and cannot move. Click on a target on your screen to eliminate them.</string>
-  <string name="ExtensionRoleSniperShoot">Snipe</string>
-  <string name="ExtensionRoleSniperAiming">Aiming</string>
-  <string name="ExtensionRoleSniperShootWikiDescription">Enter aiming mode, stand in place, and click on a target on your screen to shoot them remotely.</string>
-
-  <!-- Sniper Options -->
-  <string name="ExtensionOptionSniperAimDuration">Aim Duration</string>
-  <string name="ExtensionOptionSniperCanVent">Can Vent</string>
-  <string name="ExtensionOptionSniperCanCancelAiming">Can Cancel Aiming</string>
-  <string name="ExtensionOptionSniperAimZoomEnabled">Zoom Out While Aiming</string>
-  <string name="ExtensionOptionSniperZoomDistance">Zoom Distance</string>
   <string name="SniperAimingCancelledPenalty">Aiming cancelled! Penalty cooldown applied.</string>
   <string name="SniperAimingExpiredPenalty">Aiming expired! Penalty cooldown applied.</string>
   <!-- Gun Game Role -->
@@ -1820,7 +1805,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionInverterMaxDisorients">Max Number Of Disorients</string>
   <string name="ExtensionOptionInverterMoveWhileMenu">Can Move While Menu</string>
   <string name="ExtensionOptionInverterDisorientSamePersonTwice">Disorient Same Person Twice In A Row</string>
-  <string name="ExtensionOptionInverterApplyDrunk">Apply Drunk Effect</string>
+  <string name="ExtensionOptionInverterApplyDrunk">Apply Wasted Effect</string>
   <string name="ExtensionOptionInverterApplyHerbalistConfuse">Apply Herbalist Confuse</string>
   <string name="ExtensionModifierDisoriented">Disoriented</string>
 
@@ -1858,6 +1843,84 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionAgentCanVent">Can Vent</string>
   <string name="ExtensionOptionAgentCanUseImpostorChat">Can Use Impostor Chat</string>
   <string name="ExtensionOptionAgentImpostorsCanKillEachOther">Impostors Can Kill Each Other</string>
+
+  <!-- Icenberg -->
+  <string name="ExtensionRoleIcenberg">Icenberg</string>
+  <string name="ExtensionRoleIcenbergIntroBlurb">Freeze the crew solid, then shatter it</string>
+  <string name="ExtensionRoleIcenbergTabDescription">Freeze a player in place or call a blizzard that slows everyone.\%nl\%Kill everyone to win alone.</string>
+  <string name="ExtensionRoleIcenbergWikiDescription">The Icenberg is a Neutral Killing role. Freeze picks any living player: for the freeze duration they cannot move, use abilities or consoles, open the map, vent or report. Blizzard slows every other living player for its duration. The Icenberg wins alone once no other killer is left and it is not outnumbered.</string>
+  <string name="ExtensionRoleIcenbergFreeze">Freeze</string>
+  <string name="ExtensionRoleIcenbergFreezeWikiDescription">Pick any living player. They are frozen in place and cannot use abilities, consoles, vents or report until the freeze ends.</string>
+  <string name="ExtensionRoleIcenbergBlizzard">Blizzard</string>
+  <string name="ExtensionRoleIcenbergBlizzardWikiDescription">Every other living player is slowed for the blizzard duration.</string>
+  <string name="ExtensionRoleIcenbergFrozenNotification">You have been frozen!</string>
+  <string name="ExtensionRoleIcenbergBlizzardNotification">A blizzard has started!</string>
+  <string name="ExtensionModifierIcenbergFrozen">Frozen</string>
+  <string name="ExtensionModifierIcenbergFrozenTabDescription">Frozen by the Icenberg: &lt;seconds&gt;s</string>
+  <string name="ExtensionModifierIcenbergBlizzard">Blizzard</string>
+  <string name="ExtensionOptionIcenbergKillCooldown">Kill Cooldown</string>
+  <string name="ExtensionOptionIcenbergCanVent">Can Vent</string>
+  <string name="ExtensionOptionIcenbergFreezeCooldown">Freeze Cooldown</string>
+  <string name="ExtensionOptionIcenbergFreezeDuration">Freeze Duration</string>
+  <string name="ExtensionOptionIcenbergFreezeUses">Freeze Uses</string>
+  <string name="ExtensionOptionIcenbergBlizzardCooldown">Blizzard Cooldown</string>
+  <string name="ExtensionOptionIcenbergBlizzardDuration">Blizzard Duration</string>
+  <string name="ExtensionOptionIcenbergBlizzardSpeed">Speed During Blizzard</string>
+  <string name="ExtensionOptionIcenbergBlizzardUses">Blizzard Uses</string>
+
+  <!-- Causes of death -->
+  <string name="DiedToExtensionSerialKiller">Murdered</string>
+  <string name="DiedToIcenbergFrozen">Frozen Solid</string>
+  <string name="DiedToIcenberg">Frozen Solid</string>
+  <string name="DiedToInnocentTaunt">Taunted</string>
+  <string name="DiedToInnocentHaunt">Haunted</string>
+  <string name="DiedToAstral">Phased</string>
+  <string name="DiedToBurrower">Buried</string>
+  <string name="DiedToCharlatan">Killed</string>
+  <string name="DiedToDetonator">Blown Up</string>
+  <string name="DiedToGunGame">Gunned Down</string>
+  <string name="DiedToHacker">Killed</string>
+  <string name="DiedToInjector">Overdosed</string>
+  <string name="DiedToInverter">Disoriented</string>
+  <string name="DiedToKamikaze">Blown Up</string>
+  <string name="DiedToLoner">Killed</string>
+  <string name="DiedToOutlaw">Gunned Down</string>
+  <string name="DiedToRcXd">Run Over</string>
+  <string name="DiedToSniper">Sniped</string>
+  <string name="DiedToSpeedy">Rushed</string>
+  <string name="DiedToVoodooMaster">Hexed</string>
+  <string name="DiedToWraith">Haunted</string>
+  <string name="DiedToBaker">Killed</string>
+  <string name="DiedToDeath">Reaped</string>
+  <string name="DiedToFamine">Starved</string>
+  <string name="DiedToWar">Slaughtered</string>
+  <string name="DiedToLawyer">Killed</string>
+  <string name="DiedToShifter">Killed</string>
+
+  <!-- Previously missing -->
+  <string name="ExtensionGardenerAttackKilled">Someone was killed in your garden!</string>
+  <string name="ExtensionGardenerAttackBlocked">An attack was blocked in your garden!</string>
+  <string name="ExtensionDiedByPelican">by &lt;player&gt;</string>
+  <string name="ExtensionDiedToPelican">Digested</string>
+  <string name="ExtensionRoleEvokerTabHeader">Verified Players:</string>
+  <string name="ExtensionRoleBountyHunterHunt">Hunt</string>
+  <string name="ExtensionRoleDeathReapWikiDescription">Kill a player and leave a blackened unreportable body.</string>
+  <string name="ExtensionRoleListTitle">Set Role List</string>
+  <string name="ExtensionFactionListTitle">Faction List</string>
+  <string name="ExtensionOldDraftSettingsTitle">Draft Mode Settings (Old)</string>
+  <string name="ExtensionModifierDoctorCanVent">Doctor (Can Vent)</string>
+  <string name="ExtensionModifierFamineStarveReveal">Starvation Mark</string>
+  <string name="ExtensionRolePoisonerPoisoning">Poisoning</string>
+  <string name="ExtensionConfirm">Confirm</string>
+  <string name="ExtensionCancel">Cancel</string>
+  <string name="ExtensionUnknownRoom">Unknown</string>
+  <string name="ExtensionVent">Vent</string>
+  <string name="ExtensionModifierNameSlowness">Slowness</string>
+  <string name="ExtensionModifierNameTemporarySlowness">Temporary slowness</string>
+  <string name="ExtensionModifierNameSpeedBoost">Speed boost</string>
+  <string name="ExtensionModifierNameTemporarySpeedBoost">Temporary speed boost</string>
+  <string name="ExtensionModifierNameLowVision">Low vision</string>
+  <string name="ExtensionModifierNameTemporaryLowVision">Temporary low vision</string>
+  <string name="ExtensionModifierNameVisionBoost">Vision boost</string>
+  <string name="ExtensionModifierNameTemporaryVisionBoost">Temporary vision boost</string>
 </resources>
-
-

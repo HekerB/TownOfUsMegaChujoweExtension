@@ -29,10 +29,11 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IContinuesGame
+public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, IContinuesGame, ICrewVariant
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "Joker";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.EngineerTouRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Joker");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -205,11 +206,11 @@ public sealed class JokerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRol
 
             if (options.WinMode == JokerWinOptions.WinWithWinners && jokerPlayer.AmOwner)
             {
-                DeathHandlerModifier.RpcUpdateLocalDeathHandler(
+                ExtensionDeathInfo.RpcUpdateLocalDeathHandler(
                     PlayerControl.LocalPlayer,
                     PlayerControl.LocalPlayer,
                     "DiedToWinning",
-                    DeathEventHandlers.CurrentRound,
+                    ExtensionDeathInfo.CurrentRound,
                     DeathHandlerOverride.SetFalse,
                     "null",
                     DeathHandlerOverride.SetTrue);

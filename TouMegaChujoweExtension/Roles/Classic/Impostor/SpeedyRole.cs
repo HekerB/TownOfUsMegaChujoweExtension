@@ -32,11 +32,13 @@ using TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
 
-public sealed class SpeedyRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class SpeedyRole(IntPtr cppPtr) : ImpostorRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public DoomableType DoomHintType => DoomableType.Trickster;
 
     public string LocaleKey => "Speedy";
+
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.TransporterRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.Get($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");

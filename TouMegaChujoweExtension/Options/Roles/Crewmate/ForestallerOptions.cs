@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
 
-public sealed class ForestallerOptions : AbstractOptionGroup<ForestallerRole>
+public sealed class ForestallerOptions : AbstractRoleOptionGroup<ForestallerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleForestaller", "Forestaller");
 

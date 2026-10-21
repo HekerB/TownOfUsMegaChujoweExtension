@@ -15,12 +15,13 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
 
-public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     private static readonly List<PlayerControl> _pendingNotifications = new();
 
     public DoomableType DoomHintType => DoomableType.Trickster;
     public string LocaleKey => "Witch";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.OracleRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -287,7 +288,7 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
         WitchSpellboundIndicatorPatch.UpdateRoleNameTextPostfix();
         if (MeetingHud.Instance != null)
         {
-            var pva = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == targetId);
+            var pva = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.PlayerId == targetId);
             if (pva != null) pva.NameText.color = Color.white;
         }
     }
@@ -318,7 +319,7 @@ public sealed class WitchRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
             {
                 foreach (var pva in MeetingHud.Instance.playerStates)
                 {
-                    var pc = MiscUtils.PlayerById(pva.TargetPlayerId);
+                    var pc = MiscUtils.PlayerById(pva.PlayerId);
                     if (pc != null && !pc.HasModifier<WitchSpellboundModifier>())
                     {
                         pva.NameText.color = Color.white;

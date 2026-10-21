@@ -32,10 +32,11 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ISpawnChange
+public sealed class VultureRole(IntPtr cppPtr) : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ISpawnChange, ICrewVariant
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "Vulture";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.ForensicRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");

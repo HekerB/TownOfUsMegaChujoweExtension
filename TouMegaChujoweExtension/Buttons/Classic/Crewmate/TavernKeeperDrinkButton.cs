@@ -185,7 +185,7 @@ public sealed class TavernKeeperDrinkButton : TownOfUsRoleButton<TavernKeeperRol
         if (Target == null) return;
 
         var targetImmune = Target.HasModifier<DrinkImmunityModifier>() ||
-                           Target.HasModifier<DrunkModifier>() ||
+                           Target.HasModifier<WastedModifier>() ||
                            Target.HasModifier<RoleblockedModifier>() ||
                            Target.IsRole<TavernKeeperRole>();
 

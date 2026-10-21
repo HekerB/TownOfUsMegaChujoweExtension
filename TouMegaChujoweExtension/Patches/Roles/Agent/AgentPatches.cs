@@ -63,7 +63,7 @@ namespace TouMegaChujoweExtension.Patches.Roles.Agent
                     }
                 }
 
-                var crewpostorName = TouLocale.Get("TouModifierCrewpostorShortName", "Imp");
+                var crewpostorName = TouLocale.Get("TownOfUsMira.Modifier.CrewpostorShortName", "Imp");
                 if (AgentUtils.AppearsAsCrewpostor && !__result.Contains(crewpostorName))
                 {
                     __result += $"<color=#FFFFFF> (<color=#D64042>{crewpostorName}</color>)</color>";

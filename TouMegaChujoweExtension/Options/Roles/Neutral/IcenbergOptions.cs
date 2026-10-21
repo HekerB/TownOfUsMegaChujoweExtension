@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class IcenbergOptions : AbstractOptionGroup<IcenbergRole>
+public sealed class IcenbergOptions : AbstractRoleOptionGroup<IcenbergRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleIcenberg", "Icenberg");
 
@@ -27,6 +27,9 @@ public sealed class IcenbergOptions : AbstractOptionGroup<IcenbergRole>
 
     [ModdedNumberOption("ExtensionOptionIcenbergBlizzardDuration", 1f, 20f, 1f, MiraNumberSuffixes.Seconds)]
     public float BlizzardDuration { get; set; } = 5f;
+
+    [ModdedNumberOption("ExtensionOptionIcenbergBlizzardSpeed", 10f, 90f, 10f, MiraNumberSuffixes.Percent)]
+    public float BlizzardSpeed { get; set; } = 50f;
 
     [ModdedNumberOption("ExtensionOptionIcenbergFreezeUses", 0f, 15f, 1f, MiraNumberSuffixes.None, "0", true)]
     public float FreezeUses { get; set; } = 0f;

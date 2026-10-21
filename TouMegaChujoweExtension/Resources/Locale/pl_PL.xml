@@ -1041,14 +1041,14 @@
   <string name="DiedToTerminated">Zlikwidowany</string>
   <string name="DiedToBodyguard">Poswiecenie</string>
   
-  <!-- Drunk Modifier -->
-  <string name="ExtensionModifierDrunk">Pijak</string>
-  <string name="ExtensionModifierDrunkIntroBlurb">Twoje sterowanie jest odwrocone!</string>
-  <string name="ExtensionModifierDrunkTabDescription">Masz odwrocone sterowanie przez &lt;meetings&gt; narad.</string>
-  <string name="ExtensionModifierDrunkWikiDescription">Modyfikator, ktory odwraca kierunki ruchu gracza.</string>
-  <string name="ExtensionModifierDrunkChance">Szansa na Pijaka</string>
-  <string name="ExtensionModifierDrunkAmount">Liczba Pijakow</string>
-  <string name="ExtensionModifierDrunkDuration">Czas trwania (narady)</string>
+  <!-- Wasted Modifier (the extension's Drunk; TOU-Mira 1.7.3 has its own Drunk) -->
+  <string name="ExtensionModifierWasted">Nawalony</string>
+  <string name="ExtensionModifierWastedIntroBlurb">Twoje sterowanie jest odwrocone!</string>
+  <string name="ExtensionModifierWastedTabDescription">Masz odwrocone sterowanie przez {meetings} narad.</string>
+  <string name="ExtensionModifierWastedWikiDescription">Modyfikator, ktory odwraca kierunki ruchu gracza.</string>
+  <string name="ExtensionModifierWastedChance">Szansa na Nawalonego</string>
+  <string name="ExtensionModifierWastedAmount">Liczba Nawalonych</string>
+  <string name="ExtensionModifierWastedDuration">Czas trwania (narady)</string>
   
   <!-- Falcon Role -->
   <string name="ExtensionRoleFalcon">Sokol</string>
@@ -1345,7 +1345,7 @@
   <string name="TarotCardTheMagicianDesc">Oslepienie Zalogi</string>
   <string name="TarotCardTheHighPriestessDesc">Zmiana we Wrozbite</string>
   <string name="TarotCardTheEmpressDesc">+1 Glos</string>
-  <string name="TarotCardTheEmperorDesc">Efekt Pijaka</string>
+  <string name="TarotCardTheEmperorDesc">Efekt Nawalonego</string>
   <string name="TarotCardTheHierophantDesc">Zmiana w Pomocnika</string>
   <string name="TarotCardTheLoversDesc">Laczy z losowym zlym</string>
   <string name="TarotCardTheChariotDesc">Speed na 30s</string>
@@ -1764,7 +1764,7 @@
   <string name="ExtensionOptionInverterMaxDisorients">Limit uzyc</string>
   <string name="ExtensionOptionInverterMoveWhileMenu">Ruch w menu</string>
   <string name="ExtensionOptionInverterDisorientSamePersonTwice">Podwojny atak na ten sam cel</string>
-  <string name="ExtensionOptionInverterApplyDrunk">Naklada efekt Pijaka</string>
+  <string name="ExtensionOptionInverterApplyDrunk">Naklada efekt Nawalonego</string>
   <string name="ExtensionOptionInverterApplyHerbalistConfuse">Naklada chaos Herbalisty</string>
   <string name="ExtensionModifierDisoriented">Chaos</string>
 
@@ -1802,5 +1802,109 @@
   <string name="ExtensionOptionAgentCanVent">Moze korzystac z wentylacji</string>
   <string name="ExtensionOptionAgentCanUseImpostorChat">Moze korzystac z czatu Impostorow</string>
   <string name="ExtensionOptionAgentImpostorsCanKillEachOther">Impostorzy moga sie zabijac</string>
-</resources>
 
+  <!-- Icenberg -->
+  <string name="ExtensionRoleIcenberg">Icenberg</string>
+  <string name="ExtensionRoleIcenbergIntroBlurb">Zamroź załogę, a potem ją roztrzaskaj</string>
+  <string name="ExtensionRoleIcenbergTabDescription">Zamrażaj graczy w miejscu albo wywołaj śnieżycę, która spowalnia wszystkich.\%nl\%Zabij wszystkich, aby wygrać samemu.</string>
+  <string name="ExtensionRoleIcenbergWikiDescription">Icenberg to neutralna rola zabójcy. Zamrożenie wybiera dowolnego żywego gracza: na czas zamrożenia nie może się ruszać, używać zdolności ani konsol, otwierać mapy, ventować ani zgłaszać. Śnieżyca spowalnia wszystkich pozostałych żywych graczy na czas jej trwania. Icenberg wygrywa samotnie, gdy nie zostaje inny zabójca i nie ma przewagi liczebnej przeciwko niemu.</string>
+  <string name="ExtensionRoleIcenbergFreeze">Zamróź</string>
+  <string name="ExtensionRoleIcenbergFreezeWikiDescription">Wybierz dowolnego żywego gracza. Zostaje zamrożony w miejscu i do końca zamrożenia nie może używać zdolności, konsol, ventów ani zgłaszać.</string>
+  <string name="ExtensionRoleIcenbergBlizzard">Śnieżyca</string>
+  <string name="ExtensionRoleIcenbergBlizzardWikiDescription">Wszyscy pozostali żywi gracze są spowolnieni na czas śnieżycy.</string>
+  <string name="ExtensionRoleIcenbergFrozenNotification">Zostałeś zamrożony!</string>
+  <string name="ExtensionRoleIcenbergBlizzardNotification">Rozpętała się śnieżyca!</string>
+  <string name="ExtensionModifierIcenbergFrozen">Zamrożony</string>
+  <string name="ExtensionModifierIcenbergFrozenTabDescription">Zamrożony przez Icenberga: &lt;seconds&gt; s</string>
+  <string name="ExtensionModifierIcenbergBlizzard">Śnieżyca</string>
+  <string name="ExtensionOptionIcenbergKillCooldown">Czas odnowienia zabicia</string>
+  <string name="ExtensionOptionIcenbergCanVent">Może używać ventów</string>
+  <string name="ExtensionOptionIcenbergFreezeCooldown">Czas odnowienia zamrożenia</string>
+  <string name="ExtensionOptionIcenbergFreezeDuration">Czas trwania zamrożenia</string>
+  <string name="ExtensionOptionIcenbergFreezeUses">Liczba zamrożeń</string>
+  <string name="ExtensionOptionIcenbergBlizzardCooldown">Czas odnowienia śnieżycy</string>
+  <string name="ExtensionOptionIcenbergBlizzardDuration">Czas trwania śnieżycy</string>
+  <string name="ExtensionOptionIcenbergBlizzardSpeed">Prędkość w śnieżycy</string>
+  <string name="ExtensionOptionIcenbergBlizzardUses">Liczba śnieżyc</string>
+
+  <!-- Causes of death -->
+  <string name="DiedToExtensionSerialKiller">Zamordowany</string>
+  <string name="DiedToIcenbergFrozen">Zamarznięty</string>
+  <string name="DiedToIcenberg">Zamarznięty</string>
+  <string name="DiedToInnocentTaunt">Sprowokowany</string>
+  <string name="DiedToInnocentHaunt">Nawiedzony</string>
+  <string name="DiedToAstral">Rozfazowany</string>
+  <string name="DiedToBurrower">Pogrzebany</string>
+  <string name="DiedToCharlatan">Zabity</string>
+  <string name="DiedToDetonator">Wysadzony</string>
+  <string name="DiedToGunGame">Zastrzelony</string>
+  <string name="DiedToHacker">Zabity</string>
+  <string name="DiedToInjector">Przedawkowany</string>
+  <string name="DiedToInverter">Zdezorientowany</string>
+  <string name="DiedToKamikaze">Wysadzony</string>
+  <string name="DiedToLoner">Zabity</string>
+  <string name="DiedToOutlaw">Zastrzelony</string>
+  <string name="DiedToRcXd">Przejechany</string>
+  <string name="DiedToSniper">Zastrzelony</string>
+  <string name="DiedToSpeedy">Staranowany</string>
+  <string name="DiedToVoodooMaster">Zaklęty</string>
+  <string name="DiedToWraith">Nawiedzony</string>
+  <string name="DiedToBaker">Zabity</string>
+  <string name="DiedToDeath">Skoszony</string>
+  <string name="DiedToFamine">Zagłodzony</string>
+  <string name="DiedToWar">Wyrżnięty</string>
+  <string name="DiedToLawyer">Zabity</string>
+  <string name="DiedToShifter">Zabity</string>
+
+  <!-- Previously missing -->
+  <string name="ExtensionGardenerAttackKilled">Ktoś zginął w twoim ogrodzie!</string>
+  <string name="ExtensionGardenerAttackBlocked">W twoim ogrodzie zablokowano atak!</string>
+  <string name="ExtensionDiedByPelican">przez &lt;player&gt;</string>
+  <string name="ExtensionDiedToPelican">Strawiony</string>
+  <string name="ExtensionRoleEvokerTabHeader">Sprawdzeni gracze:</string>
+  <string name="ExtensionRoleBountyHunterHunt">Polowanie</string>
+  <string name="ExtensionRoleDeathReapWikiDescription">Zabij gracza i zostaw poczerniałe ciało, którego nie da się zgłosić.</string>
+  <string name="ExtensionRoleListTitle">Ustalona lista ról</string>
+  <string name="ExtensionFactionListTitle">Lista frakcji</string>
+  <string name="ExtensionOldDraftSettingsTitle">Ustawienia draftu (stare)</string>
+  <string name="ExtensionModifierDoctorCanVent">Doktor (może używać ventów)</string>
+  <string name="ExtensionModifierFamineStarveReveal">Znak głodu</string>
+  <string name="ExtensionRolePoisonerPoisoning">Trucie</string>
+  <string name="ExtensionConfirm">Potwierdź</string>
+  <string name="ExtensionCancel">Anuluj</string>
+  <string name="ExtensionUnknownRoom">Nieznane</string>
+  <string name="ExtensionVent">Vent</string>
+  <string name="ExtensionModifierNameSlowness">Spowolnienie</string>
+  <string name="ExtensionModifierNameTemporarySlowness">Chwilowe spowolnienie</string>
+  <string name="ExtensionModifierNameSpeedBoost">Przyspieszenie</string>
+  <string name="ExtensionModifierNameTemporarySpeedBoost">Chwilowe przyspieszenie</string>
+  <string name="ExtensionModifierNameLowVision">Słaba wizja</string>
+  <string name="ExtensionModifierNameTemporaryLowVision">Chwilowo słaba wizja</string>
+  <string name="ExtensionModifierNameVisionBoost">Lepsza wizja</string>
+  <string name="ExtensionModifierNameTemporaryVisionBoost">Chwilowo lepsza wizja</string>
+
+  <!-- Arcanist card weights -->
+  <string name="ExtensionOptionArcanistWeight00">&lt;color=#33CCFF&gt;Glupiec&lt;/color&gt; (Staje się Jesterem)</string>
+  <string name="ExtensionOptionArcanistWeight01">&lt;color=#FF3333&gt;Mag&lt;/color&gt; (Oślepia załogantów na 10 s)</string>
+  <string name="ExtensionOptionArcanistWeight02">&lt;color=#33CCFF&gt;Kaplanka&lt;/color&gt; (Staje się Foretellerem)</string>
+  <string name="ExtensionOptionArcanistWeight03">&lt;color=#82E0AA&gt;Cesarzowa&lt;/color&gt; (+1 głos)</string>
+  <string name="ExtensionOptionArcanistWeight04">&lt;color=#D63031&gt;Cesarz&lt;/color&gt; (Efekt Nawalonego)</string>
+  <string name="ExtensionOptionArcanistWeight05">&lt;color=#33CCFF&gt;Hierofant&lt;/color&gt; (Staje się neutralnym łagodnym)</string>
+  <string name="ExtensionOptionArcanistWeight07">&lt;color=#33FF33&gt;Rydwan&lt;/color&gt; (Przyspieszenie na 30 s)</string>
+  <string name="ExtensionOptionArcanistWeight08">&lt;color=#82E0AA&gt;Sila&lt;/color&gt; (-20% czasu odnowienia)</string>
+  <string name="ExtensionOptionArcanistWeight09">&lt;color=#82E0AA&gt;Pustelnik&lt;/color&gt; (Stałe przyspieszenie)</string>
+  <string name="ExtensionOptionArcanistWeight10">&lt;color=#33CCFF&gt;Kolo Fortuny&lt;/color&gt; (NK 50% / Amnezjak 50%)</string>
+  <string name="ExtensionOptionArcanistWeight11">&lt;color=#D63031&gt;Sprawiedliwosc&lt;/color&gt; (Publicznie cię ujawnia)</string>
+  <string name="ExtensionOptionArcanistWeight12">&lt;color=#33CCFF&gt;Wisielec&lt;/color&gt; (Staje się Łowcą Nagród)</string>
+  <string name="ExtensionOptionArcanistWeight13">&lt;color=#D63031&gt;Smierc&lt;/color&gt; (50% szans na śmierć)</string>
+  <string name="ExtensionOptionArcanistWeight14">&lt;color=#D63031&gt;Umiarkowanie&lt;/color&gt; (+20% czasu odnowienia)</string>
+  <string name="ExtensionOptionArcanistWeight16">&lt;color=#D63031&gt;Wieza&lt;/color&gt; (Stałe spowolnienie)</string>
+  <string name="ExtensionOptionArcanistWeight17">&lt;color=#82E0AA&gt;Gwiazda&lt;/color&gt; (Stała lepsza wizja)</string>
+  <string name="ExtensionOptionArcanistWeight18">&lt;color=#FF3333&gt;Ksiezyc&lt;/color&gt; (Oślepia ciebie na 30 s)</string>
+  <string name="ExtensionOptionArcanistWeight19">&lt;color=#33FF33&gt;Slonce&lt;/color&gt; (Lepsza wizja na 30 s)</string>
+  <string name="ExtensionOptionArcanistWeight20">&lt;color=#33CCFF&gt;Sad&lt;/color&gt; (Staje się Papieżem)</string>
+  <string name="ExtensionOptionArcanistWeight21">&lt;color=#82E0AA&gt;Swiat&lt;/color&gt; (Dostajesz Death Note)</string>
+
+  <!-- Gardener -->
+  <string name="ExtensionRoleGardenerWikiDescription">Ogrodnik to ochronna rola załogi, która sadzi ochronne ogrody. Każdy w ogrodzie jest całkowicie chroniony przed zabójstwem. Próba zabójstwa zostaje zablokowana, a ty dostajesz natychmiastowe powiadomienie.</string>
+</resources>

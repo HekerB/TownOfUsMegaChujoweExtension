@@ -71,10 +71,7 @@ public static class ApocalypseMeetingSummaryPatch
         var bakerRole = localPlayer.GetRole<BakerRole>();
         if (bakerRole != null)
         {
-            var breadCount = PlayerControl.AllPlayerControls.ToArray()
-                .Count(player => player != null &&
-                                 !player.HasDied() &&
-                                 player.HasModifier<BakerBreadModifier>());
+            var breadCount = BakerBreadModifier.CountFor(localPlayer.PlayerId);
             var breadNeeded = BakerRole.GetEffectiveBreadNeeded(localPlayer);
             var bakerText = TouLocale.Get(
                     "ExtensionRoleBakerMeetingSummary",

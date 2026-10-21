@@ -93,10 +93,10 @@ public static class InnocentPatches
 
             if (OptionGroupSingleton<InnocentOptions>.Instance.AfterWin.Value == (int)InnocentAfterWin.Nothing)
             {
-                DeathHandlerModifier.UpdateDeathHandlerImmediate(
+                ExtensionDeathInfo.UpdateDeathHandlerImmediate(
                     innocent.Player,
                     TouLocale.Get("DiedToWinning"),
-                    TownOfUs.Events.DeathEventHandlers.CurrentRound,
+                    ExtensionDeathInfo.CurrentRound,
                     DeathHandlerOverride.SetFalse,
                     killedBy: innocent.Player.Data.PlayerName,
                     lockInfo: DeathHandlerOverride.SetTrue);

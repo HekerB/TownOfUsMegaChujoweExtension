@@ -70,9 +70,9 @@ public static class LawyerEvents
 
                 if (OptionGroupSingleton<LawyerOptions>.Instance.GetVotedOutWithClient)
                 {
-                    DeathHandlerModifier.UpdateDeathHandlerImmediate(lawyer.Player,
+                    ExtensionDeathInfo.UpdateDeathHandlerImmediate(lawyer.Player,
                         TouLocale.Get("ExtensionLawyerDiedWithClient"),
-                        DeathEventHandlers.CurrentRound,
+                        ExtensionDeathInfo.CurrentRound,
                         DeathHandlerOverride.SetFalse,
                         lockInfo: DeathHandlerOverride.SetTrue);
                     lawyer.Player.Exiled();

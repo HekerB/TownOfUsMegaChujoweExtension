@@ -163,7 +163,7 @@ public static class ClassicAssassinSystem
             if (IsExempt(voteArea, assassin))
                 continue;
 
-            GenSharedButton(voteArea, () => DoGuess(voteArea.TargetPlayerId, assassin));
+            GenSharedButton(voteArea, () => DoGuess(voteArea.PlayerId, assassin));
         }
     }
 
@@ -189,7 +189,7 @@ public static class ClassicAssassinSystem
             if (IsExempt(voteArea, vigilante))
                 continue;
 
-            GenSharedButton(voteArea, () => DoGuess(voteArea.TargetPlayerId, vigilante));
+            GenSharedButton(voteArea, () => DoGuess(voteArea.PlayerId, vigilante));
         }
     }
 
@@ -214,7 +214,7 @@ public static class ClassicAssassinSystem
             if (IsExempt(voteArea, doomsayer))
                 continue;
 
-            GenSharedButton(voteArea, () => DoGuess(voteArea.TargetPlayerId, doomsayer));
+            GenSharedButton(voteArea, () => DoGuess(voteArea.PlayerId, doomsayer));
         }
     }
 
@@ -223,7 +223,7 @@ public static class ClassicAssassinSystem
     // =========================
     private static void GenSharedButton(PlayerVoteArea voteArea, System.Action onGuess)
     {
-        var targetId = voteArea.TargetPlayerId;
+        var targetId = voteArea.PlayerId;
 
         var confirmButton = voteArea.Buttons.transform.GetChild(0).gameObject;
         var parent = confirmButton.transform.parent.parent;
@@ -295,7 +295,7 @@ public static class ClassicAssassinSystem
 
     private static void CycleGuess(byte targetId, TextMeshPro nameText, bool forward)
     {
-        if (MeetingHud.Instance.state == MeetingHud.VoteStates.Discussion) return;
+        if (MeetingHud.Instance.state == MeetingHud.MeetingStates.Discussion) return;
         if (_guessableEntries.Count == 0) return;
 
         if (!GuessIndices.TryGetValue(targetId, out var currentIndex))
@@ -728,9 +728,9 @@ public static class ClassicAssassinSystem
     // =========================
     private static bool IsExempt(PlayerVoteArea voteArea, AssassinModifier assassin)
     {
-        var player = MiscUtils.PlayerById(voteArea.TargetPlayerId);
+        var player = MiscUtils.PlayerById(voteArea.PlayerId);
         if (player == null) return true;
-        if (voteArea.TargetPlayerId == assassin.Player.PlayerId) return true;
+        if (voteArea.PlayerId == assassin.Player.PlayerId) return true;
         if (assassin.Player.Data.IsDead) return true;
         if (assassin.Player.HasModifier<TownOfUs.Modifiers.Crewmate.JailedModifier>()) return true;
         if (voteArea.AmDead) return true;
@@ -779,7 +779,7 @@ public static class ClassicAssassinSystem
     {
         var player = voteArea.GetPlayer();
 
-        return voteArea.TargetPlayerId == vigilante.Player.PlayerId ||
+        return voteArea.PlayerId == vigilante.Player.PlayerId ||
                vigilante.Player.Data.IsDead ||
                vigilante.Player.HasModifier<TownOfUs.Modifiers.Crewmate.JailedModifier>() ||
                voteArea.AmDead ||
@@ -797,7 +797,7 @@ public static class ClassicAssassinSystem
     {
         var player = voteArea.GetPlayer();
 
-        return voteArea.TargetPlayerId == doomsayer.Player.PlayerId ||
+        return voteArea.PlayerId == doomsayer.Player.PlayerId ||
                doomsayer.Player.Data.IsDead ||
                doomsayer.Player.HasModifier<TownOfUs.Modifiers.Crewmate.JailedModifier>() ||
                voteArea.AmDead ||
@@ -849,7 +849,7 @@ public static class ClassicAssassinSystem
 
     private static void DoGuess(byte targetId, AssassinModifier assassin)
     {
-        if (MeetingHud.Instance.state == MeetingHud.VoteStates.Discussion) return;
+        if (MeetingHud.Instance.state == MeetingHud.MeetingStates.Discussion) return;
         if (PlayerControl.LocalPlayer.Data.IsDead) return;
         if (PlayerControl.LocalPlayer.HasModifier<TownOfUs.Modifiers.Crewmate.JailedModifier>()) return;
         if (_guessedThisMeeting && !AllowsMultiKill(assassin)) return;
@@ -937,7 +937,7 @@ public static class ClassicAssassinSystem
 
     private static void DoGuess(byte targetId, VigilanteRole vigilante)
     {
-        if (MeetingHud.Instance.state == MeetingHud.VoteStates.Discussion) return;
+        if (MeetingHud.Instance.state == MeetingHud.MeetingStates.Discussion) return;
         if (PlayerControl.LocalPlayer.Data.IsDead) return;
         if (PlayerControl.LocalPlayer.HasModifier<TownOfUs.Modifiers.Crewmate.JailedModifier>()) return;
         if (_remainingKills <= 0) return;
@@ -1007,7 +1007,7 @@ public static class ClassicAssassinSystem
 
     private static void DoGuess(byte targetId, DoomsayerRole doomsayer)
     {
-        if (MeetingHud.Instance.state == MeetingHud.VoteStates.Discussion) return;
+        if (MeetingHud.Instance.state == MeetingHud.MeetingStates.Discussion) return;
         if (PlayerControl.LocalPlayer.Data.IsDead) return;
         if (PlayerControl.LocalPlayer.HasModifier<TownOfUs.Modifiers.Crewmate.JailedModifier>()) return;
         if (doomsayer.NumberOfGuesses >= OptionGroupSingleton<DoomsayerOptions>.Instance.DoomsayerGuessesToWin)
@@ -1120,7 +1120,7 @@ public static class ClassicAssassinSystem
 
             foreach (var targetId in Buttons.Keys.ToList())
             {
-                var voteArea = MeetingHud.Instance.playerStates?.FirstOrDefault(x => x.TargetPlayerId == targetId);
+                var voteArea = MeetingHud.Instance.playerStates?.FirstOrDefault(x => x.PlayerId == targetId);
                 if (voteArea == null)
                 {
                     HideSingle(targetId);
@@ -1238,7 +1238,7 @@ public static class ClassicAssassinSystem
                 if (menu == null) continue;
                 foreach (var targetId in menu.Buttons.Keys.ToList())
                 {
-                    var voteArea = TownOfUs.Modules.MeetingMenu.Instances.Count > 0 ? MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == targetId) : null;
+                    var voteArea = TownOfUs.Modules.MeetingMenu.Instances.Count > 0 ? MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.PlayerId == targetId) : null;
                     if (voteArea == null)
                     {
                         menu.HideSingle(targetId);
@@ -1291,7 +1291,7 @@ public static class ClassicAssassinSystem
         Buttons.Remove(targetId);
         GuessIndices.Remove(targetId);
 
-        var voteArea = MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == targetId);
+        var voteArea = MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.PlayerId == targetId);
         if (voteArea is not null)
         {
             voteArea.NameText.transform.localPosition = new Vector3(0.3384f, 0.0311f, -0.1f);

@@ -14,20 +14,20 @@ namespace TouMegaChujoweExtension.Modifiers.Game;
 
 public sealed class SpitefulModifier : UniversalGameModifier, IWikiDiscoverable
 {
-    public override string LocaleKey => "Spiteful";
-    public override string ModifierName => TouLocale.Get($"ExtensionModifier{LocaleKey}");
-    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{LocaleKey}IntroBlurb");
+    public override string IdPart => "Spiteful";
+    public override string ModifierName => TouLocale.Get($"ExtensionModifier{IdPart}");
+    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{IdPart}IntroBlurb");
     public override LoadableAsset<Sprite>? ModifierIcon => TouExtensionModifierIcons.SpitefulModifierIcon;
 
     public override string GetDescription()
     {
-        return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}TabDescription");
+        return TouLocale.GetParsed($"ExtensionModifier{IdPart}TabDescription");
     }
 
     public string GetAdvancedDescription()
     {
         var options = OptionGroupSingleton<SpitefulModifierOptions>.Instance;
-        var description = TouLocale.GetParsed($"ExtensionModifier{LocaleKey}WikiDescription");
+        var description = TouLocale.GetParsed($"ExtensionModifier{IdPart}WikiDescription");
 
         var effectTypeName = TouLocale.Get("ExtensionModifierSpitefulEffectType");
         var effectTypeValue = options.SpitefulEffectType.Value switch

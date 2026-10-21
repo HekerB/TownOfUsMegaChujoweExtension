@@ -23,7 +23,7 @@ public static class LawyerChatPatches
         var localPlayer = PlayerControl.LocalPlayer;
 
         var isClientOfThisLawyer = LawyerUtils.IsClientOfLawyer(localPlayer, player.PlayerId);
-        var isDeadAndKnows = DeathHandlerModifier.IsFullyDead(localPlayer) &&
+        var isDeadAndKnows = ExtensionDeathInfo.IsFullyDead(localPlayer) &&
                              OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance.TheDeadKnow;
 
         var shouldMarkUnread = false;
@@ -92,7 +92,7 @@ public static class LawyerChatPatches
         var localPlayer = PlayerControl.LocalPlayer;
 
         var isLawyerOfThisClient = LawyerUtils.HasLawyerClientRelationship(localPlayer, player);
-        var isDeadAndKnows = DeathHandlerModifier.IsFullyDead(localPlayer) &&
+        var isDeadAndKnows = ExtensionDeathInfo.IsFullyDead(localPlayer) &&
                              OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance.TheDeadKnow;
 
         var shouldMarkUnread = false;

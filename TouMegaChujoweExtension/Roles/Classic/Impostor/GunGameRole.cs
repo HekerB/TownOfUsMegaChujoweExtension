@@ -29,9 +29,10 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
 
-public sealed class GunGameRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class GunGameRole(IntPtr cppPtr) : ImpostorRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public string LocaleKey => "GunGame";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.SheriffRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Gun Game");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -357,7 +358,7 @@ public sealed class GunGameRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUs
 
     private static void ShowMutationNotification(ushort nextRoleId)
     {
-        var roleName = TouLocale.Get("RoleImpostor", "Impostor");
+        var roleName = TouLocale.Get("MiraApi.RoleTeam.Impostor", "Impostor");
         var role = RoleManager.Instance.GetRole((RoleTypes)nextRoleId);
         if (role is ITownOfUsRole touRole)
         {

@@ -118,10 +118,10 @@ public static class JackalMechanicsPatch
                 continue;
             }
 
-            DeathHandlerModifier.RpcUpdateDeathHandler(
+            ExtensionDeathInfo.RpcUpdateDeathHandler(
                 sk,
                 causeOfDeath: TouLocale.Get("ExtensionSidekickJackalEliminatedDeathReason"),
-                roundOfDeath: DeathEventHandlers.CurrentRound,
+                roundOfDeath: ExtensionDeathInfo.CurrentRound,
                 diedThisRound: wasExiled ? DeathHandlerOverride.SetFalse : DeathHandlerOverride.SetTrue,
                 killedBy: jackalRoleName,
                 lockInfo: DeathHandlerOverride.SetTrue);
@@ -178,7 +178,7 @@ public static class JackalMechanicsPatch
     private static bool IsShieldActive()
     {
         var options = OptionGroupSingleton<JackalOptions>.Instance;
-        return options != null && options.IsShieldActive(DeathEventHandlers.CurrentRound);
+        return options != null && options.IsShieldActive(ExtensionDeathInfo.CurrentRound);
     }
 
     private static bool IsMurderBlockedByJackalShield(PlayerControl killer, PlayerControl victim)
@@ -336,7 +336,7 @@ public static class JackalMechanicsPatch
             // one case the Infiltrator gets no other signal for.
             if (jackal != null && __instance.AmOwner && sidekicksAlive && !jackal.ShieldExpiredAlertShown &&
                 options != null && (int)options.ShieldRounds > 0 &&
-                DeathEventHandlers.CurrentRound > (int)options.ShieldRounds)
+                ExtensionDeathInfo.CurrentRound > (int)options.ShieldRounds)
             {
                 jackal.ShieldExpiredAlertShown = true;
                 try

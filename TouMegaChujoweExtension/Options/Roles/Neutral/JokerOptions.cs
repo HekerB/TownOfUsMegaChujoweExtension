@@ -12,7 +12,7 @@ public enum JokerWinOptions
     WinWithWinners
 }
 
-public sealed class JokerOptions : AbstractOptionGroup<JokerRole>
+public sealed class JokerOptions : AbstractRoleOptionGroup<JokerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleJoker", "Joker");
 

@@ -28,7 +28,7 @@ public static class ApocalypseChatPatches
             return;
         }
 
-        var isDeadAndKnows = DeathHandlerModifier.IsFullyDead(localPlayer) &&
+        var isDeadAndKnows = ExtensionDeathInfo.IsFullyDead(localPlayer) &&
                              OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance.TheDeadKnow;
         var canSee = player.AmOwner || ApocalypseUtils.IsApocalypsePlayer(localPlayer) || isDeadAndKnows;
         if (!canSee)

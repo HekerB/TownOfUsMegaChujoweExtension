@@ -182,14 +182,15 @@ public static class BurrowerPatches
 
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
     [HarmonyPostfix]
-    public static void CalculateLightRadiusPostfix(ref float __result)
+    public static void CalculateLightRadiusPostfix(NetworkedPlayerInfo player, ref float __result)
     {
-        if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data.IsDead)
+        // The radius asked for is the passed-in player's, not necessarily the local one.
+        if (player == null || player.IsDead || player.Object == null)
         {
             return;
         }
 
-        var role = PlayerControl.LocalPlayer.GetRole<BurrowerRole>();
+        var role = player.Object.GetRole<BurrowerRole>();
         if (role == null)
         {
             return;

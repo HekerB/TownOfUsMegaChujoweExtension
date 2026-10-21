@@ -26,7 +26,7 @@ public enum DoctorEffectType
     Regeneration
 }
 
-public sealed class DoctorOptions : AbstractOptionGroup<DoctorRole>, IWikiOptionsSummaryProvider
+public sealed class DoctorOptions : AbstractRoleOptionGroup<DoctorRole>, IWikiOptionsSummaryProvider
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleDoctor", "Doctor");
 

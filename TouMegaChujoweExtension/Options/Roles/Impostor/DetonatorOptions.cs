@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 
-public sealed class DetonatorOptions : AbstractOptionGroup<DetonatorRole>
+public sealed class DetonatorOptions : AbstractRoleOptionGroup<DetonatorRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleDetonator", "Detonator");
 

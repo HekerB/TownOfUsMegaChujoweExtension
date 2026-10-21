@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IUnguessable
+public sealed class MirageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, IUnguessable
 {
     public DoomableType DoomHintType => DoomableType.Insight;
     internal static readonly Dictionary<byte, List<string>> TriggeredRoles = [];

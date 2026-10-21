@@ -104,7 +104,7 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
             _stage = Stage.Preview;
             _previewCloneIndex = previewIndex;
             Timer = 0f;
-            OverrideName(TouLocale.Get("Confirm", "Confirm"));
+            OverrideName(TouLocale.Get("ExtensionConfirm", "Confirm"));
             return;
         }
 
@@ -119,7 +119,7 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
         {
             _stage = Stage.ActiveFull;
             Timer = 0f;
-            OverrideName(TouLocale.Get("Cancel", "Cancel"));
+            OverrideName(TouLocale.Get("ExtensionCancel", "Cancel"));
             return;
         }
 
@@ -207,7 +207,7 @@ public sealed class JokerPlaceCloneButton : TownOfUsRoleButton<JokerRole>
                         if (_previewCloneIndex >= 0)
                         {
                             _stage = Stage.Preview;
-                            OverrideName(TouLocale.Get("Confirm", "Confirm"));
+                            OverrideName(TouLocale.Get("ExtensionConfirm", "Confirm"));
                         }
                     }
                 });

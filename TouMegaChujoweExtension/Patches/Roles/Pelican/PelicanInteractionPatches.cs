@@ -100,10 +100,7 @@ public static class PelicanInteractionPatches
         }
         else if (_wasSwallowedLastFrame)
         {
-            if (HudManager.Instance != null && HudManager.Instance.ShadowQuad != null && !HudManager.Instance.ShadowQuad.gameObject.activeSelf)
-            {
-                HudManager.Instance.ShadowQuad.gameObject.SetActive(true);
-            }
+            ShadowQuadUtils.Restore();
 
             foreach (var button in CustomButtonManager.Buttons)
             {

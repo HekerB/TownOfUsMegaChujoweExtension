@@ -20,7 +20,7 @@ using UnityEngine;
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
 public sealed class FamineRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IUnguessable
+    : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IUnguessable, ICrewVariant
 {
     public const string StarvedDeathReason = "Starved";
 
@@ -41,6 +41,7 @@ public sealed class FamineRole(IntPtr cppPtr)
     public string YouAreText => TouLocale.Get("YouAre");
     public string YouWereText => TouLocale.Get("YouWere");
     public string LocaleKey => "Famine";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.VeteranRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Famine");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -153,8 +154,7 @@ public sealed class FamineRole(IntPtr cppPtr)
     {
         RoleBehaviourStubs.Initialize(this, player);
         CanStarveAnyone = false;
-        HadBreadTargets = PlayerControl.AllPlayerControls.ToArray()
-            .Any(x => x != null && !x.HasDied() && x != player && x.HasModifier<BakerBreadModifier>());
+        HadBreadTargets = BakerBreadModifier.CountFor(player.PlayerId) > 0;
         if (!HadBreadTargets)
         {
             CanStarveAnyone = true;
@@ -244,10 +244,7 @@ public sealed class FamineRole(IntPtr cppPtr)
             target.AddModifier<FamineStarveRevealModifier>();
         }
 
-        if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost || famine.AmOwner)
-        {
-            TouMegaChujoweExtension.Events.Neutral.BakerEvents.TryUnlockFamine();
-        }
+        // Removing the bread above already queues the host's recheck of this Famine.
     }
 
     [MethodRpc((uint)ExtensionRpc.FamineUnlock, LocalHandling = Reactor.Networking.Rpc.RpcLocalHandling.Before)]

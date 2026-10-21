@@ -92,10 +92,10 @@ public static class DoppelgangerEvents
 
         if (source.AmOwner)
         {
-            DeathHandlerModifier.UpdateDeathHandlerImmediate(
+            ExtensionDeathInfo.UpdateDeathHandlerImmediate(
                 target,
                 TouLocale.Get("DiedToDoppelganger"),
-                DeathEventHandlers.CurrentRound,
+                ExtensionDeathInfo.CurrentRound,
                 (!MeetingHud.Instance && !ExileController.Instance)
                     ? DeathHandlerOverride.SetTrue
                     : DeathHandlerOverride.SetFalse,

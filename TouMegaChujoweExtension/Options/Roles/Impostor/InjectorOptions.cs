@@ -34,7 +34,7 @@ public enum InjectorEffectType
     Regeneration
 }
 
-public sealed class InjectorOptions : AbstractOptionGroup<InjectorRole>, IWikiOptionsSummaryProvider
+public sealed class InjectorOptions : AbstractRoleOptionGroup<InjectorRole>, IWikiOptionsSummaryProvider
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleInjector", "Injector");
 

@@ -1,7 +1,6 @@
 using BepInEx.Configuration;
 using MiraAPI.LocalSettings;
-using TownOfUs.LocalSettings.Attributes;
-using TownOfUs.LocalSettings.SettingTypes;
+using MiraAPI.LocalSettings.Attributes;
 
 namespace TouMegaChujoweExtension;
 
@@ -25,51 +24,33 @@ public class TouExtensionLocalSettings : LocalSettingsTab
     public override string TabName => TouMegaChujoweExtensionPlugin.CensorVisibleText("ToU: Chujowe");
     protected override bool ShouldCreateLabels => true;
 
-    public override void Open()
-    {
-        base.Open();
-
-        foreach (var entry in TownOfUs.Modules.Localization.TouLocale.LocalizedToggles)
-        {
-            var toggleObject = entry.Key;
-            LocalizedLocalToggleSetting.UpdateToggleText(toggleObject.Text, entry.Value, toggleObject.onState);
-        }
-
-        foreach (var entry in TownOfUs.Modules.Localization.TouLocale.LocalizedSliders)
-        {
-            var sliderObject = entry.Key;
-            sliderObject.SliderObject.Title.text =
-                LocalizedLocalSliderSetting.GetLocalizedValueText(sliderObject, sliderObject.LocaleKey);
-        }
-    }
-
     public override LocalSettingTabAppearance TabAppearance => new()
     {
         TabIcon = TouExtensionAssets.ExtensionLogo
     };
 
-    [LocalizedLocalToggleSetting("ExtensionLocalSettingEnableNauseaCameraShake")]
+    [LocalToggleSetting("ExtensionLocalSettingEnableNauseaCameraShake")]
     public ConfigEntry<bool> EnableNauseaCameraShake { get; private set; }
 
-    [LocalizedLocalToggleSetting("ExtensionLocalSettingUseLegacyGuessDeathAnimation")]
+    [LocalToggleSetting("ExtensionLocalSettingUseLegacyGuessDeathAnimation")]
     public ConfigEntry<bool> UseLegacyGuessDeathAnimation { get; private set; }
 
-    [LocalizedLocalToggleSetting("ExtensionLocalSettingUseClassicAssassinGuessing")]
+    [LocalToggleSetting("ExtensionLocalSettingUseClassicAssassinGuessing")]
     public ConfigEntry<bool> UseClassicAssassinGuessing { get; private set; }
 
-    [LocalizedLocalEnumSetting("ExtensionLocalSettingMapColor", names: ["MapColorOff", "MapColorRole", "MapColorPlayer"])]
+    [LocalEnumSetting("ExtensionLocalSettingMapColor", names: ["MapColorOff", "MapColorRole", "MapColorPlayer"])]
     public ConfigEntry<MapColorType> MapColor { get; private set; }
 
-    [LocalizedLocalToggleSetting("ExtensionLocalSettingCensorModName")]
+    [LocalToggleSetting("ExtensionLocalSettingCensorModName")]
     public ConfigEntry<bool> CensorModName { get; private set; }
 
-    [LocalizedLocalToggleSetting("ExtensionLocalSettingUsePolishLanguage")]
+    [LocalToggleSetting("ExtensionLocalSettingUsePolishLanguage")]
     public ConfigEntry<bool> UsePolishLanguage { get; private set; }
 
-    [LocalizedLocalToggleSetting("ExtensionLocalSettingTranslateRoleNames")]
+    [LocalToggleSetting("ExtensionLocalSettingTranslateRoleNames")]
     public ConfigEntry<bool> TranslateRoleNames { get; private set; }
 
-    [LocalizedLocalToggleSetting("ExtensionLocalSettingPCMuteAliveWhenGhost")]
+    [LocalToggleSetting("ExtensionLocalSettingPCMuteAliveWhenGhost")]
     public ConfigEntry<bool> MuteAliveWhenGhost { get; private set; }
 }
 

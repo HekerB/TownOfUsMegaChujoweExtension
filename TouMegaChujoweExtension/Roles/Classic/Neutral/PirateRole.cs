@@ -31,11 +31,12 @@ using MiraAPI.GameEnd;
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
 public sealed class PirateRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IContinuesGame
+    : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, IContinuesGame, ICrewVariant
 {
 
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "Pirate";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.VigilanteRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -142,11 +143,11 @@ public sealed class PirateRole(IntPtr cppPtr)
 
             if (pirate.AmOwner)
             {
-                DeathHandlerModifier.RpcUpdateLocalDeathHandler(
+                ExtensionDeathInfo.RpcUpdateLocalDeathHandler(
                     PlayerControl.LocalPlayer,
                     PlayerControl.LocalPlayer,
                     "DiedToWinning",
-                    DeathEventHandlers.CurrentRound,
+                    ExtensionDeathInfo.CurrentRound,
                     DeathHandlerOverride.SetFalse,
                     "null",
                     DeathHandlerOverride.SetTrue);
@@ -371,10 +372,10 @@ public sealed class PirateRole(IntPtr cppPtr)
             {
                 target.Exiled();
 
-                DeathHandlerModifier.UpdateDeathHandlerImmediate(
+                ExtensionDeathInfo.UpdateDeathHandlerImmediate(
                     target,
                     causeOfDeath: TouLocale.Get("ExtensionDiedToPirate", "Lost Duel"),
-                    roundOfDeath: DeathEventHandlers.CurrentRound,
+                    roundOfDeath: ExtensionDeathInfo.CurrentRound,
                     diedThisRound: DeathHandlerOverride.SetTrue,
                     killedBy: TouLocale.GetParsed("ExtensionDiedByPirateDuel", "Dueled by <player>").Replace("<player>", pirate.Data.PlayerName),
                     lockInfo: DeathHandlerOverride.SetTrue);

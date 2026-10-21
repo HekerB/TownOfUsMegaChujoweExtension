@@ -78,8 +78,7 @@ public sealed class BakerGiveButton : TownOfUsRoleButton<BakerRole, PlayerContro
         base.FixedUpdate(playerControl);
         if (playerControl.AmOwner)
         {
-            var breadGivenCount = PlayerControl.AllPlayerControls.ToArray()
-                .Count(x => x != null && !x.HasDied() && x.HasModifier<BakerBreadModifier>());
+            var breadGivenCount = BakerBreadModifier.CountFor(playerControl.PlayerId);
             var effectiveBreadNeeded = BakerRole.GetEffectiveBreadNeeded(playerControl);
             var newUses = Math.Clamp(effectiveBreadNeeded - breadGivenCount, 0, MaxUses);
             SetUses(newUses);

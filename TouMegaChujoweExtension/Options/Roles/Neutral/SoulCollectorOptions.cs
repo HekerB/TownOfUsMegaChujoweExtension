@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class SoulCollectorOptions : AbstractOptionGroup<SoulCollectorRole>
+public sealed class SoulCollectorOptions : AbstractRoleOptionGroup<SoulCollectorRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleSoulCollector", "Soul Collector");
 

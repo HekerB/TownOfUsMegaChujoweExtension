@@ -32,7 +32,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
 
-public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ITraitorIgnore
+public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ITraitorIgnore, ICrewVariant
 {
     private static readonly HashSet<byte> RecruitedLoners = [];
     private static readonly HashSet<byte> MutatedLoners = [];
@@ -81,6 +81,7 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
     public DoomableType DoomHintType => DoomableType.Trickster;
     public bool IsIgnored => true;
     public string LocaleKey => "Loner";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.VigilanteRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Loner");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -431,7 +432,7 @@ public sealed class LonerRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRo
 
     private static void ShowMutationNotification(ushort nextRoleId)
     {
-        var roleName = TouLocale.Get("RoleImpostor", "Impostor");
+        var roleName = TouLocale.Get("MiraApi.RoleTeam.Impostor", "Impostor");
         var role = RoleManager.Instance.GetRole((RoleTypes)nextRoleId);
         if (role is ITownOfUsRole touRole)
         {

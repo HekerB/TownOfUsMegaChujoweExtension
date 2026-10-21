@@ -8,7 +8,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 
-public sealed class GunGameOptions : AbstractOptionGroup<GunGameRole>
+public sealed class GunGameOptions : AbstractRoleOptionGroup<GunGameRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleGunGame", "Gun Game");
     public ModdedEnumOption GunGameGuess { get; } = new(

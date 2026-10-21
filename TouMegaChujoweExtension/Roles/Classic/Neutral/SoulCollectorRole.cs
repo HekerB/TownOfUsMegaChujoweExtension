@@ -32,13 +32,14 @@ using UnityEngine;
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
 public sealed class SoulCollectorRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+    : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public static bool PendingDeathAnnouncement { get; set; }
     public static bool DeathAnnounced { get; set; }
 
     public DoomableType DoomHintType => DoomableType.Death;
     public string LocaleKey => "SoulCollector";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.MediumRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Soul Collector");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -218,7 +219,7 @@ public sealed class SoulCollectorRole(IntPtr cppPtr)
 
         target.AddModifier<SoulReapedModifier>(
             soulCollector.PlayerId,
-            DeathEventHandlers.CurrentRound,
+            ExtensionDeathInfo.CurrentRound,
             (int)options.ReapDurationRounds);
     }
 

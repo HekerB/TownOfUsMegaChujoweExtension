@@ -24,10 +24,11 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class PopeRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class PopeRole(IntPtr cppPtr) : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "Pope";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.ClericRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -105,7 +106,7 @@ public sealed class PopeRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
         var alivePlayers = PlayerControl.AllPlayerControls.ToArray()
-            .Where(x => !DeathHandlerModifier.IsFullyDead(x)).ToList();
+            .Where(x => !ExtensionDeathInfo.IsFullyDead(x)).ToList();
 
         var canonized = alivePlayers
             .Where(p => p.HasModifier<PopeCanonizedModifier>())

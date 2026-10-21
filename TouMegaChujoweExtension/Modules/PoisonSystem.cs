@@ -369,11 +369,10 @@ public static class PoisonSystem
         var falconBtn = CustomButtonSingleton<FalconZoomButton>.Instance;
         bool isFalconZoomed = falconBtn != null && falconBtn.IsZoomed;
 
-        bool isCameraZoomed = Camera.main != null && Camera.main.orthographicSize > 3.1f;
-        bool isDead = localPlayer.Data != null && localPlayer.Data.IsDead;
-
-        bool shouldDisableShadows = isDead || IsSeeking || IsVineActive
-            || SniperSystem.IsAiming || isFalconZoomed || isCameraZoomed;
+        // Only the extension's own camera effects. Guessing from the camera size (the old "> 3.1" check) also
+        // fired whenever anything else - TOU's zoom, a different game build's default size - widened the view,
+        // and then the shadows stayed off for a living player.
+        bool shouldDisableShadows = IsSeeking || IsVineActive || SniperSystem.IsAiming || isFalconZoomed;
 
         if (shouldDisableShadows)
         {
@@ -385,13 +384,7 @@ public static class PoisonSystem
         }
         else if (_shadowDisabledByUs)
         {
-            if (!PelicanSystem.IsSwallowed(localPlayer.PlayerId))
-            {
-                if (HudManager.Instance != null && HudManager.Instance.ShadowQuad != null && !HudManager.Instance.ShadowQuad.gameObject.activeSelf)
-                {
-                    HudManager.Instance.ShadowQuad.gameObject.SetActive(true);
-                }
-            }
+            ShadowQuadUtils.Restore();
             _shadowDisabledByUs = false;
         }
     }

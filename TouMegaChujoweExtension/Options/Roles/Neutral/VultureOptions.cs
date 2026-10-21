@@ -7,7 +7,7 @@ using TownOfUs.Options.Roles.Neutral;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class VultureOptions : AbstractOptionGroup<VultureRole>
+public sealed class VultureOptions : AbstractRoleOptionGroup<VultureRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleVulture", "Vulture");
 
@@ -38,5 +38,5 @@ public sealed class VultureOptions : AbstractOptionGroup<VultureRole>
 
     public ModdedEnumOption OnLoseBecomes { get; } =
         new("ExtensionOptionVultureOnLoseBecomes", (int)BecomeOptions.Crew, typeof(BecomeOptions),
-            ["CrewmateKeyword", "TouRoleAmnesiac", "TouRoleSurvivor", "TouRoleMercenary", "TouRoleJester"]);
+            ["MiraApi.RoleTeam.Crewmate", "TownOfUsMira.Role.Amnesiac", "TownOfUsMira.Role.Survivor", "TownOfUsMira.Role.Mercenary", "TownOfUsMira.Role.Jester"]);
 }

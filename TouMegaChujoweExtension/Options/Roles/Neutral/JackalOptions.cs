@@ -8,7 +8,7 @@ using System;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class JackalOptions : AbstractOptionGroup<JackalRole>
+public sealed class JackalOptions : AbstractRoleOptionGroup<JackalRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleJackal");
 

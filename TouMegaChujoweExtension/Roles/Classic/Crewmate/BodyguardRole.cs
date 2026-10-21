@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class BodyguardRole(IntPtr cppPtr) : CrewmateRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Protective;
     public string LocaleKey => "Bodyguard";

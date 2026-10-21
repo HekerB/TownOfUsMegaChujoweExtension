@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
 
-public sealed class SageOptions : AbstractOptionGroup<SageRole>
+public sealed class SageOptions : AbstractRoleOptionGroup<SageRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleSage", "Sage");
 

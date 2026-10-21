@@ -20,7 +20,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-public sealed class VampireHunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IWikiDiscoverable, ISpawnChange, IDoomable, IGuessable
+public sealed class VampireHunterRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITouCrewRole, IExtensionRole, IWikiDiscoverable, ISpawnChange, IDoomable, IGuessable
 {
     public int FailedStakes { get; set; }
     public int SuccessfulStakes { get; set; }

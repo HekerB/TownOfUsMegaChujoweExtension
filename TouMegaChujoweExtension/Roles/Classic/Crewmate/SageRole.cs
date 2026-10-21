@@ -18,7 +18,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-public sealed class SageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class SageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable
 {
     public override bool IsAffectedByComms => false;
     public DoomableType DoomHintType => DoomableType.Fearmonger;
@@ -135,7 +135,7 @@ public sealed class SageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRol
             ShowNotification(
                 $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}You sense that {players[0]} and {players[1]} are enemies!</color></b>");
             ComparisonList.Add(
-                $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}[R{DeathEventHandlers.CurrentRound}] {players[0]} & {players[1]} - Enemies</color></b>");
+                $"<b>{TownOfUsColors.ImpSoft.ToTextColor()}[R{ExtensionDeathInfo.CurrentRound}] {players[0]} & {players[1]} - Enemies</color></b>");
         }
         else
         {
@@ -143,7 +143,7 @@ public sealed class SageRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRol
             ShowNotification(
                 $"<b>{Palette.CrewmateBlue.ToTextColor()}You sense that {players[0]} and {players[1]} are friends!</color></b>");
             ComparisonList.Add(
-                $"<b>{Palette.CrewmateBlue.ToTextColor()}[R{DeathEventHandlers.CurrentRound}] {players[0]} & {players[1]} - Friends</color></b>");
+                $"<b>{Palette.CrewmateBlue.ToTextColor()}[R{ExtensionDeathInfo.CurrentRound}] {players[0]} & {players[1]} - Friends</color></b>");
         }
 
         IntuitTarget = null;

@@ -11,10 +11,11 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
 
-public sealed class OutlawRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class OutlawRole(IntPtr cppPtr) : ImpostorRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public DoomableType DoomHintType => DoomableType.Death;
     public string LocaleKey => "Outlaw";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.HunterRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Outlaw");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb", "Double the trouble");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription", "Kill two players in quick succession");

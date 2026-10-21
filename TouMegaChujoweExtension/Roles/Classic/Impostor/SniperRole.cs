@@ -20,10 +20,11 @@ using TouMegaChujoweExtension.Networking;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
 
-public sealed class SniperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class SniperRole(IntPtr cppPtr) : ImpostorRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public DoomableType DoomHintType => DoomableType.Death;
     public string LocaleKey => "Sniper";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.SheriffRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Sniper");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");

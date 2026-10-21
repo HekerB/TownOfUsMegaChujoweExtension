@@ -5,7 +5,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
 
-public sealed class VanisherOptions : AbstractOptionGroup<VanisherRole>
+public sealed class VanisherOptions : AbstractRoleOptionGroup<VanisherRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleVanisher", "Vanisher");
 

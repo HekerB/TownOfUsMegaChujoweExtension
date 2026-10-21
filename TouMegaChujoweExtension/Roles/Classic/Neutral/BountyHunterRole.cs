@@ -20,10 +20,11 @@ using UnityEngine;
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
 public sealed class BountyHunterRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IContinuesGame
+    : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, IContinuesGame, ICrewVariant
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "BountyHunter";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.HunterRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -293,11 +294,11 @@ public sealed class BountyHunterRole(IntPtr cppPtr)
 
                 if (player.AmOwner)
                 {
-                    DeathHandlerModifier.RpcUpdateLocalDeathHandler(
+                    ExtensionDeathInfo.RpcUpdateLocalDeathHandler(
                         player,
                         player,
                         "DiedToWinning",
-                        TownOfUs.Events.DeathEventHandlers.CurrentRound,
+                        ExtensionDeathInfo.CurrentRound,
                         DeathHandlerOverride.SetFalse,
                         "null",
                         DeathHandlerOverride.SetTrue);
@@ -336,10 +337,10 @@ public sealed class BountyHunterRole(IntPtr cppPtr)
     {
         if (victim != null)
         {
-            DeathHandlerModifier.UpdateDeathHandlerImmediate(
+            ExtensionDeathInfo.UpdateDeathHandlerImmediate(
                 victim,
                 TouLocale.Get("BountyHunterWrongVictim", "Wrong Victim"),
-                TownOfUs.Events.DeathEventHandlers.CurrentRound,
+                ExtensionDeathInfo.CurrentRound,
                 DeathHandlerOverride.SetTrue,
                 "null",
                 DeathHandlerOverride.SetTrue);
@@ -347,10 +348,10 @@ public sealed class BountyHunterRole(IntPtr cppPtr)
 
         if (bh != null)
         {
-            DeathHandlerModifier.UpdateDeathHandlerImmediate(
+            ExtensionDeathInfo.UpdateDeathHandlerImmediate(
                 bh,
                 TouLocale.Get("DiedToSuicideBountyHunter", "Guild Execution"),
-                TownOfUs.Events.DeathEventHandlers.CurrentRound,
+                ExtensionDeathInfo.CurrentRound,
                 DeathHandlerOverride.SetTrue,
                 "null",
                 DeathHandlerOverride.SetTrue);

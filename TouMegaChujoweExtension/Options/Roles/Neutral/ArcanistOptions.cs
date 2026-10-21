@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class ArcanistOptions : AbstractOptionGroup<ArcanistRole>
+public sealed class ArcanistOptions : AbstractRoleOptionGroup<ArcanistRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleArcanist", "Arcanist");
 

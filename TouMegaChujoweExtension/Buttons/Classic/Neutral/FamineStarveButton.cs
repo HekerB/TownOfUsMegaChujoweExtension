@@ -66,7 +66,9 @@ public sealed class FamineStarveButton : TownOfUsRoleButton<FamineRole, PlayerCo
             return false;
         }
 
-        if (!Role.CanStarveAnyone && !target.HasModifier<BakerBreadModifier>())
+        if (!Role.CanStarveAnyone &&
+            !(BakerBreadModifier.HasBreadFrom(target, PlayerControl.LocalPlayer.PlayerId) &&
+              BakerBreadModifier.IsEligibleHolder(PlayerControl.LocalPlayer.PlayerId, target)))
         {
             return false;
         }

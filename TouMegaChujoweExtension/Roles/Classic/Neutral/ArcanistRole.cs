@@ -28,10 +28,11 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public DoomableType DoomHintType => DoomableType.Insight;
     public string LocaleKey => "Arcanist";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.MysticRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Arcanist");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -333,7 +334,7 @@ public sealed class ArcanistRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
                     player.RpcAddModifier<KnightedModifier>();
                     break;
                 case TarotCard.TheEmperor:
-                    player.RpcAddModifier<TouMegaChujoweExtension.Modifiers.Game.DrunkModifier>();
+                    player.RpcAddModifier<TouMegaChujoweExtension.Modifiers.Game.WastedModifier>();
                     break;
                 case TarotCard.TheHierophant:
                     if (subRole != 0)

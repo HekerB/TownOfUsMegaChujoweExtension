@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
 
-public sealed class PresidentOptions : AbstractOptionGroup<PresidentRole>
+public sealed class PresidentOptions : AbstractRoleOptionGroup<PresidentRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRolePresident", "President");
 

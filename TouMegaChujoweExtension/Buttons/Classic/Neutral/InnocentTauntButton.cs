@@ -79,7 +79,7 @@ public sealed class InnocentTauntButton : TownOfUsRoleButton<InnocentRole>
             return false;
         }
 
-        if (!OptionGroupSingleton<InnocentOptions>.Instance.CanTauntFirstRound && DeathEventHandlers.CurrentRound <= 1)
+        if (!OptionGroupSingleton<InnocentOptions>.Instance.CanTauntFirstRound && ExtensionDeathInfo.CurrentRound <= 1)
         {
             return false;
         }

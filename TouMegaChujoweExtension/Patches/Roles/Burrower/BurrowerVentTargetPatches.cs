@@ -8,9 +8,11 @@ namespace TouMegaChujoweExtension.Patches.Roles.Burrower;
 [HarmonyPatch]
 public static class BurrowerVentTargetPatches
 {
-    [HarmonyPatch(typeof(MiraAPI.Hud.CustomActionButton<Vent>), nameof(MiraAPI.Hud.CustomActionButton<Vent>.GetTarget))]
+    // CustomActionButton<Vent>.GetTarget is abstract (Harmony cannot patch it); the Plumber's button inherits the
+    // concrete one from TownOfUsVentRoleButton<TRole>, whose code every vent role button shares.
+    [HarmonyPatch(typeof(TownOfUs.Buttons.TownOfUsVentRoleButton<PlumberRole>), nameof(TownOfUs.Buttons.TownOfUsVentRoleButton<PlumberRole>.GetTarget))]
     [HarmonyPostfix]
-    public static void PlumberBlockButtonGetTargetPostfix(MiraAPI.Hud.CustomActionButton<Vent> __instance, ref Vent? __result)
+    public static void PlumberBlockButtonGetTargetPostfix(object __instance, ref Vent? __result)
     {
         if (__instance is not PlumberBlockButton plumberButton)
         {

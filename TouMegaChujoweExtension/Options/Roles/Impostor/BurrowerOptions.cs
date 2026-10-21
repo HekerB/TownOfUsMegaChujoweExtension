@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 
-public sealed class BurrowerOptions : AbstractOptionGroup<BurrowerRole>
+public sealed class BurrowerOptions : AbstractRoleOptionGroup<BurrowerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleBurrower", "Burrower");
 

@@ -167,7 +167,7 @@ public sealed class WitchSpellButton : TownOfUsKillRoleButton<WitchRole, PlayerC
     public override bool CanUse()
     {
         var options = OptionGroupSingleton<WitchOptions>.Instance;
-        if (!options.CanSpellFirstRound && TownOfUs.Events.DeathEventHandlers.CurrentRound <= 1)
+        if (!options.CanSpellFirstRound && ExtensionDeathInfo.CurrentRound <= 1)
         {
             return false;
         }

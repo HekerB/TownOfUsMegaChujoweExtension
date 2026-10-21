@@ -12,9 +12,9 @@ namespace TouMegaChujoweExtension.Modifiers.Impostor;
 
 public sealed class LuckyModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string LocaleKey => "Lucky";
-    public override string ModifierName => TouLocale.Get($"ExtensionModifier{LocaleKey}");
-    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{LocaleKey}IntroBlurb");
+    public override string IdPart => "Lucky";
+    public override string ModifierName => TouLocale.Get($"ExtensionModifier{IdPart}");
+    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{IdPart}IntroBlurb");
     public override LoadableAsset<Sprite>? ModifierIcon => TouExtensionModifierIcons.LuckyModifierIcon;
     public override Color FreeplayFileColor => new Color32(255, 200, 0, 255);
     public override ModifierFaction FactionType => ModifierFaction.ImpostorPassive;
@@ -23,12 +23,12 @@ public sealed class LuckyModifier : TouGameModifier, IWikiDiscoverable
 
     public override string GetDescription()
     {
-        return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}TabDescription");
+        return TouLocale.GetParsed($"ExtensionModifier{IdPart}TabDescription");
     }
 
     public string GetAdvancedDescription()
     {
-        var description = TouLocale.GetParsed($"ExtensionModifier{LocaleKey}WikiDescription");
+        var description = TouLocale.GetParsed($"ExtensionModifier{IdPart}WikiDescription");
         description += MiscUtils.AppendOptionsText(GetType());
         return description;
     }

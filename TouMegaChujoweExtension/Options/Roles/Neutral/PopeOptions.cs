@@ -5,7 +5,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class PopeOptions : AbstractOptionGroup<PopeRole>
+public sealed class PopeOptions : AbstractRoleOptionGroup<PopeRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRolePope", "Pope");
 

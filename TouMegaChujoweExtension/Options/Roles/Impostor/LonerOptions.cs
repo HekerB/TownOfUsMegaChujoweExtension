@@ -7,7 +7,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 
-public sealed class LonerOptions : AbstractOptionGroup<LonerRole>
+public sealed class LonerOptions : AbstractRoleOptionGroup<LonerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleLoner", "Loner");
 

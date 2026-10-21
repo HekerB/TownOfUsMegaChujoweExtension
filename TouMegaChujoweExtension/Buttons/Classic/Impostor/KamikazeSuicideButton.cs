@@ -16,7 +16,7 @@ public sealed class KamikazeSuicideButton : TownOfUsKillRoleButton<KamikazeRole>
     private GameObject? _radiusSphere;
 
     public bool Usable => OptionGroupSingleton<KamikazeOptions>.Instance.CanSuicideFirstRound ||
-                          TownOfUs.Events.DeathEventHandlers.CurrentRound > 1 ||
+                          ExtensionDeathInfo.CurrentRound > 1 ||
                           TutorialManager.InstanceExists;
 
     public override string Name => TouLocale.GetParsed("ExtensionRoleKamikazeSuicide", "Suicide");

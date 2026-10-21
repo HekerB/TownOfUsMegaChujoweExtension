@@ -57,7 +57,7 @@ public sealed class JackalShieldModifier : BaseModifier
             return 0;
         }
 
-        var remaining = maxRounds - DeathEventHandlers.CurrentRound + 1;
+        var remaining = maxRounds - ExtensionDeathInfo.CurrentRound + 1;
         return remaining > 0 ? remaining : 0;
     }
 }

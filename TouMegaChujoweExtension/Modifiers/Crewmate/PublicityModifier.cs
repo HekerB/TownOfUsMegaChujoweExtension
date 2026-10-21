@@ -15,9 +15,9 @@ namespace TouMegaChujoweExtension.Modifiers.Crewmate;
 
 public sealed class PublicityModifier : TouGameModifier, IWikiDiscoverable, IColoredModifier, IGuessable
 {
-    public override string LocaleKey => "Publicity";
-    public override string ModifierName => TouLocale.Get($"ExtensionModifier{LocaleKey}");
-    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{LocaleKey}IntroBlurb");
+    public override string IdPart => "Publicity";
+    public override string ModifierName => TouLocale.Get($"ExtensionModifier{IdPart}");
+    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{IdPart}IntroBlurb");
     public override LoadableAsset<Sprite>? ModifierIcon => TouExtensionModifierIcons.PublicityVoteModifierIcon;
 
     public override ModifierFaction FactionType => ModifierFaction.CrewmatePassive;
@@ -29,10 +29,10 @@ public sealed class PublicityModifier : TouGameModifier, IWikiDiscoverable, ICol
     public bool CanBeGuessed => GetAmountPerGame() > 0;
 
     public override string GetDescription()
-        => TouLocale.GetParsed($"ExtensionModifier{LocaleKey}TabDescription");
+        => TouLocale.GetParsed($"ExtensionModifier{IdPart}TabDescription");
 
     public string GetAdvancedDescription()
-        => TouLocale.GetParsed($"ExtensionModifier{LocaleKey}WikiDescription");
+        => TouLocale.GetParsed($"ExtensionModifier{IdPart}WikiDescription");
 
     public List<CustomButtonWikiDescription> Abilities { get; } = [];
 

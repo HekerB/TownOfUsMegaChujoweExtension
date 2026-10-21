@@ -28,7 +28,7 @@ public sealed class SoulReapedModifier(byte soulCollectorId, int markedRound, in
             return false;
         }
 
-        var roundsElapsed = DeathEventHandlers.CurrentRound - MarkedRound + 1;
+        var roundsElapsed = ExtensionDeathInfo.CurrentRound - MarkedRound + 1;
         return roundsElapsed > DurationRounds;
     }
 

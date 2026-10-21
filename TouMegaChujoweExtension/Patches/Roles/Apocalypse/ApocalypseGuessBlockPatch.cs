@@ -26,7 +26,7 @@ public static class ApocalypseGuessBlockPatch
     public static bool Prefix(object __instance, PlayerVoteArea voteArea)
     {
         var guesser = GetGuesser(__instance);
-        var target = voteArea == null ? null : MiscUtils.PlayerById(voteArea.TargetPlayerId);
+        var target = voteArea == null ? null : MiscUtils.PlayerById(voteArea.PlayerId);
 
         return !ApocalypseUtils.AreAllied(guesser, target);
     }

@@ -26,7 +26,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class ShroudRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class ShroudRole(IntPtr cppPtr) : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public override void SpawnTaskHeader(PlayerControl playerControl)
     {
@@ -37,6 +37,7 @@ public sealed class ShroudRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public DoomableType DoomHintType => DoomableType.Relentless;
     public string LocaleKey => "Shroud";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.VeteranRole>();
     public string RoleName => TouLocale.GetParsed("ExtensionRoleShroud");
     public string RoleDescription => TouLocale.GetParsed("ExtensionRoleShroudIntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed("ExtensionRoleShroudTabDescription");

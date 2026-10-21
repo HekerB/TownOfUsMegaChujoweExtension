@@ -50,7 +50,8 @@ public static class CameraResetPatches
             // HUD.
             if (HudManager.InstanceExists && HudManager.Instance.ShadowQuad != null)
             {
-                HudManager.Instance.ShadowQuad.gameObject.SetActive(true);
+                // Not simply on: a ghost keeps seeing the whole map after a meeting.
+                ShadowQuadUtils.Restore();
             }
         }
         catch { }

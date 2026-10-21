@@ -24,7 +24,7 @@ using UnityEngine;
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
 public sealed class InnocentRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, ICrewVariant, IGuessable, IContinuesGame
+    : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant, IGuessable, IContinuesGame
 {
     public static Dictionary<byte, InnocentRole> ActiveInnocents { get; } = [];
     public byte? TauntedKillerId { get; set; }

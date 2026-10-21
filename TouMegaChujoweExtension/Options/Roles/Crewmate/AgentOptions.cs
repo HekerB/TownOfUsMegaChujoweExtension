@@ -14,7 +14,7 @@ namespace TouMegaChujoweExtension.Options.Roles.Crewmate
         Crewpostor
     }
 
-    public sealed class AgentOptions : AbstractOptionGroup<AgentRole>
+    public sealed class AgentOptions : AbstractRoleOptionGroup<AgentRole>
     {
         public override string GroupName => TouLocale.Get("ExtensionRoleAgent", "Agent");
 

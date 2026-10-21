@@ -37,7 +37,7 @@ public static class PresidentMeetingPatch
         {
             return;
         }
-        if (__instance.state is MeetingHud.VoteStates.NotVoted or MeetingHud.VoteStates.Voted)
+        if (__instance.state is MeetingHud.MeetingStates.NotVoted or MeetingHud.MeetingStates.Voted)
         {
             var tmp = presidentRole.AbstainButton.gameObject.GetComponentInChildren<TMPro.TextMeshPro>();
             if (tmp != null)

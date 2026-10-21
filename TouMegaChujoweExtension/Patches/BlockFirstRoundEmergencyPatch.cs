@@ -21,7 +21,7 @@ public static class BlockFirstRoundEmergencyPatch
     [RegisterEvent]
     public static void RoundStartEventHandler(RoundStartEvent @event)
     {
-        firstRoundStartedAt = DeathEventHandlers.CurrentRound <= 1 ? Time.time : -1f;
+        firstRoundStartedAt = ExtensionDeathInfo.CurrentRound <= 1 ? Time.time : -1f;
         appliedCooldown = false;
     }
 
@@ -33,7 +33,7 @@ public static class BlockFirstRoundEmergencyPatch
             return;
         }
 
-        if (DeathEventHandlers.CurrentRound != 1)
+        if (ExtensionDeathInfo.CurrentRound != 1)
         {
             Reset();
             return;

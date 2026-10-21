@@ -26,7 +26,7 @@ public static class WitchMeetingHighlightPatch
                 continue;
             }
 
-            var player = MiscUtils.PlayerById(voteArea.TargetPlayerId);
+            var player = MiscUtils.PlayerById(voteArea.PlayerId);
             if (player == null || !player.HasModifier<WitchSpellboundModifier>())
             {
                 continue;

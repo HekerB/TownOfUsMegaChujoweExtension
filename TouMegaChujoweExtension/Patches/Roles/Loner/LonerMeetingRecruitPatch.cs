@@ -124,12 +124,12 @@ public static class LonerMeetingRecruitPatch
 
         foreach (var voteArea in meetingHud.playerStates)
         {
-            if (voteArea == null || voteArea.AmDead || voteArea.TargetPlayerId == local.PlayerId)
+            if (voteArea == null || voteArea.AmDead || voteArea.PlayerId == local.PlayerId)
             {
                 continue;
             }
 
-            var target = MiscUtils.PlayerById(voteArea.TargetPlayerId);
+            var target = MiscUtils.PlayerById(voteArea.PlayerId);
             if (target == null || target.HasDied() || target.IsImpostor())
             {
                 continue;
@@ -156,7 +156,7 @@ public static class LonerMeetingRecruitPatch
             var button = recruitButton.GetComponent<PassiveButton>();
             if (button != null)
             {
-                var targetId = voteArea.TargetPlayerId;
+                var targetId = voteArea.PlayerId;
                 button.OverrideOnClickListeners(() => OnRecruitClicked(targetId));
                 button.OverrideOnMouseOverListeners(() =>
                 {
@@ -195,8 +195,8 @@ public static class LonerMeetingRecruitPatch
 
             recruitButton.SetActive(true);
             RecruitButtons.Add(recruitButton);
-            RecruitRenderers[voteArea.TargetPlayerId] = renderer!;
-            RecruitLabels[voteArea.TargetPlayerId] = label;
+            RecruitRenderers[voteArea.PlayerId] = renderer!;
+            RecruitLabels[voteArea.PlayerId] = label;
         }
     }
 

@@ -7,7 +7,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
 
-public sealed class GardenerOptions : AbstractOptionGroup<GardenerRole>
+public sealed class GardenerOptions : AbstractRoleOptionGroup<GardenerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleGardener", "Gardener");
 

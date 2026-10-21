@@ -4,7 +4,7 @@ using MiraAPI.Utilities;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class ShroudOptions : AbstractOptionGroup<ShroudRole>
+public sealed class ShroudOptions : AbstractRoleOptionGroup<ShroudRole>
 {
     public override string GroupName => "Shroud";
 

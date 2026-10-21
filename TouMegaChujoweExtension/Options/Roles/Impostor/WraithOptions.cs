@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 
-public sealed class WraithOptions : AbstractOptionGroup<WraithRole>
+public sealed class WraithOptions : AbstractRoleOptionGroup<WraithRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleWraith", "Wraith");
 

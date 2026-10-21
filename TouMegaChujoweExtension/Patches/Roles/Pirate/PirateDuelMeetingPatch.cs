@@ -179,7 +179,7 @@ public static class PirateDuelMeetingPatch
     {
         foreach (var area in meetingHud.playerStates)
         {
-            if (area == null || area.TargetPlayerId != targetId) continue;
+            if (area == null || area.PlayerId != targetId) continue;
             if (area.NameText == null) continue;
 
             var alreadyTracked = _modifiedNames.Any(x => x.Text == area.NameText);
@@ -251,7 +251,7 @@ public static class PirateDuelMeetingPatch
         PlayerVoteArea? myVoteArea = null;
         foreach (var pva in meetingHud.playerStates)
         {
-            if (pva.TargetPlayerId == localId)
+            if (pva.PlayerId == localId)
             {
                 myVoteArea = pva;
                 break;

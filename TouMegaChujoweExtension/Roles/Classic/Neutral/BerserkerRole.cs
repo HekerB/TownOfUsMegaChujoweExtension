@@ -26,7 +26,7 @@ using UnityEngine;
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
 public sealed class BerserkerRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IUnguessable
+    : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, IUnguessable, ICrewVariant
 {
     public static bool PendingWarAnnouncement { get; set; }
     public static bool WarAnnounced { get; set; }
@@ -42,6 +42,7 @@ public sealed class BerserkerRole(IntPtr cppPtr)
 
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => IsWar ? "War" : "Berserker";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.HunterRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", IsWar ? "War" : "Berserker");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");

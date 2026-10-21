@@ -7,7 +7,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 
-public sealed class VoodooMasterOptions : AbstractOptionGroup<VoodooMasterRole>
+public sealed class VoodooMasterOptions : AbstractRoleOptionGroup<VoodooMasterRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleVoodooMaster", "Voodoo Master");
 

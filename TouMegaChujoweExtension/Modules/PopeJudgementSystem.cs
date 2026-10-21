@@ -79,9 +79,9 @@ public sealed class PopeJudgementSystem(nint cppPtr) : Il2CppSystem.Object(cppPt
                                          .Where(x => !x.HasDied() && x.PlayerId != pope.PlayerId))
                             {
                                 player.Die(DeathReason.Kill, false);
-                                DeathHandlerModifier.UpdateDeathHandlerImmediate(player,
+                                ExtensionDeathInfo.UpdateDeathHandlerImmediate(player,
                                     TouLocale.Get("ExtensionDiedToPopeJudgement", "Sanctified"),
-                                    DeathEventHandlers.CurrentRound,
+                                    ExtensionDeathInfo.CurrentRound,
                                     DeathHandlerOverride.SetTrue,
                                     TouLocale.GetParsed("ExtensionDiedByStringBasic", "Killed by <player>")
                                         .Replace("<player>", pope.Data.PlayerName),

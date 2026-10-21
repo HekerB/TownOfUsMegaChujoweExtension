@@ -5,7 +5,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class DoppelgangerOptions : AbstractOptionGroup<DoppelgangerRole>
+public sealed class DoppelgangerOptions : AbstractRoleOptionGroup<DoppelgangerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleDoppelganger", "Doppelganger");
 

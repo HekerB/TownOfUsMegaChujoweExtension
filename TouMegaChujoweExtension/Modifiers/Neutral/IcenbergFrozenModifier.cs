@@ -1,12 +1,17 @@
-using MiraAPI.Modifiers;
 using MiraAPI.Utilities.Assets;
 using TouMegaChujoweExtension.Assets;
-using TownOfUs.Modules.Localization;
 using TownOfUs.Modifiers;
+using TownOfUs.Modules.Localization;
 using UnityEngine;
 
 namespace TouMegaChujoweExtension.Modifiers;
 
+/// <summary>
+/// Frozen by the Icenberg: cannot move, use abilities or consoles, open the map, report or vent.
+/// Movement is held by <c>IcenbergFreezeCanMovePatch</c> on <c>PlayerControl.CanMove</c> while this modifier exists,
+/// never by writing <c>PlayerControl.moveable</c>, which meetings, minigames and other effects also own - so the
+/// end of the freeze releases only the freeze.
+/// </summary>
 public sealed class IcenbergFrozenModifier(float duration) : DisabledModifier
 {
     public override string ModifierName => TouLocale.Get("ExtensionModifierIcenbergFrozen", "Frozen");
@@ -21,30 +26,38 @@ public sealed class IcenbergFrozenModifier(float duration) : DisabledModifier
     public override bool CanBeInteractedWith => true;
     public override bool IsConsideredAlive => true;
 
+    public override string GetDescription()
+    {
+        var seconds = Mathf.CeilToInt(Mathf.Max(0f, TimeRemaining));
+        return TouLocale.Get("ExtensionModifierIcenbergFrozenTabDescription", "Frozen by the Icenberg: <seconds>s")
+            .Replace("<seconds>", seconds.ToString(TownOfUs.TownOfUsPlugin.Culture));
+    }
+
     public override void OnActivate()
     {
+        base.OnActivate();
         if (Player != null && Player.AmOwner)
         {
             Player.NetTransform?.Halt();
-            Player.moveable = false;
+            IcenbergOverlay.SetFrozen(true);
         }
     }
 
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (Player != null && Player.AmOwner)
+        if (Player != null && Player.AmOwner && Player.MyPhysics != null && Player.MyPhysics.body != null)
         {
-            Player.NetTransform?.Halt();
-            Player.moveable = false;
+            Player.MyPhysics.body.velocity = Vector2.zero;
         }
     }
 
     public override void OnDeactivate()
     {
+        base.OnDeactivate();
         if (Player != null && Player.AmOwner)
         {
-            Player.moveable = true;
+            IcenbergOverlay.SetFrozen(false);
         }
     }
 

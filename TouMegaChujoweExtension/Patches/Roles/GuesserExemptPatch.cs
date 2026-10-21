@@ -41,7 +41,7 @@ public static class GuesserExemptPatch
         
         if (voteArea == null) return;
         
-        var targetId = voteArea.TargetPlayerId;
+        var targetId = voteArea.PlayerId;
         if (ForestallerSystem.IsForestallerRevealed(targetId))
         {
             __result = true;

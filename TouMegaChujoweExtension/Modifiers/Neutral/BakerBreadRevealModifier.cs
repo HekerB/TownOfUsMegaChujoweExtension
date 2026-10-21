@@ -21,8 +21,9 @@ public sealed class BakerBreadRevealModifier : BaseRevealModifier
 
         var localPlayer = PlayerControl.LocalPlayer;
         var hasBakerMark = Player != null &&
+                           localPlayer != null &&
                            !Player.HasDied() &&
-                           Player.HasModifier<BakerBreadModifier>();
+                           BakerBreadModifier.HasBreadFrom(Player, localPlayer.PlayerId);
 
         Visible = hasBakerMark &&
                   localPlayer != null &&

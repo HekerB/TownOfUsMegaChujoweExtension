@@ -68,7 +68,7 @@ public static class WitchEvents
                 continue;
             }
 
-            var voteArea = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.TargetPlayerId == player.PlayerId);
+            var voteArea = MeetingHud.Instance.playerStates.FirstOrDefault(x => x.PlayerId == player.PlayerId);
             if (voteArea != null)
             {
                 voteArea.NameText.color = TouExtensionColors.Witch;

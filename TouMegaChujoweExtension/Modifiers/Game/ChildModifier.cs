@@ -15,9 +15,9 @@ namespace TouMegaChujoweExtension.Modifiers.Game;
 
 public sealed class ChildModifier : UniversalGameModifier, IWikiDiscoverable
 {
-    public override string LocaleKey => "Child";
-    public override string ModifierName => TouLocale.Get($"ExtensionModifier{LocaleKey}");
-    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{LocaleKey}IntroBlurb");
+    public override string IdPart => "Child";
+    public override string ModifierName => TouLocale.Get($"ExtensionModifier{IdPart}");
+    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{IdPart}IntroBlurb");
     public override LoadableAsset<Sprite>? ModifierIcon => TouExtensionModifierIcons.ChildModifierIcon;
 
     public override ModifierFaction FactionType => ModifierFaction.UniversalPassive;
@@ -47,14 +47,14 @@ public sealed class ChildModifier : UniversalGameModifier, IWikiDiscoverable
 
     public override string GetDescription()
     {
-        return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}TabDescription")
+        return TouLocale.GetParsed($"ExtensionModifier{IdPart}TabDescription")
             .Replace("<age>", $"{CurrentAge:F0}")
             .Replace("<adultAge>", $"{(int)Options.AdultAge}");
     }
 
     public string GetAdvancedDescription()
     {
-        return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}WikiDescription")
+        return TouLocale.GetParsed($"ExtensionModifier{IdPart}WikiDescription")
             .Replace("<startAge>", $"{(int)Options.StartingAge}")
             .Replace("<adultAge>", $"{(int)Options.AdultAge}")
             .Replace("<growthInterval>", $"{(int)Options.GrowthInterval}")

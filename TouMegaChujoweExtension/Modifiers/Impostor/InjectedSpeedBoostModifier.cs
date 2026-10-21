@@ -26,8 +26,8 @@ public sealed class InjectedSpeedBoostModifier(float duration, InjectorEffectDur
     {
         if (isInjected) return "Injected (Speed Boost)";
         return durationType == InjectorEffectDurationType.AllGame
-            ? TouLocale.Get("ModifierNameSpeedBoost", "Speed boost")
-            : TouLocale.Get("ModifierNameTemporarySpeedBoost", "Temporary speed boost");
+            ? TouLocale.Get("ExtensionModifierNameSpeedBoost", "Speed boost")
+            : TouLocale.Get("ExtensionModifierNameTemporarySpeedBoost", "Temporary speed boost");
     }
 
     public Guid InjectionId { get; set; }

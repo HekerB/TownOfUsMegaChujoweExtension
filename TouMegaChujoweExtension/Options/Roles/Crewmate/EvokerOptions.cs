@@ -12,7 +12,7 @@ public enum EvokerBlindType
     ShowOnlySelf
 }
 
-public sealed class EvokerOptions : AbstractOptionGroup<EvokerRole>
+public sealed class EvokerOptions : AbstractRoleOptionGroup<EvokerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleEvoker", "Evoker");
 

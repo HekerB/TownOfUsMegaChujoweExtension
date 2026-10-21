@@ -21,8 +21,8 @@ public sealed class InjectedVisionBoostModifier(float duration, InjectorEffectDu
     {
         if (isInjected) return "Injected (Vision Boost)";
         return durationType == InjectorEffectDurationType.AllGame
-            ? TouLocale.Get("ModifierNameVisionBoost", "Vision boost")
-            : TouLocale.Get("ModifierNameTemporaryVisionBoost", "Temporary vision boost");
+            ? TouLocale.Get("ExtensionModifierNameVisionBoost", "Vision boost")
+            : TouLocale.Get("ExtensionModifierNameTemporaryVisionBoost", "Temporary vision boost");
     }
 
     public Guid InjectionId { get; set; }

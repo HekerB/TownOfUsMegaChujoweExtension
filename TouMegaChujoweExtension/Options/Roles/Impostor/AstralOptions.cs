@@ -7,7 +7,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 
-public sealed class AstralOptions : AbstractOptionGroup<AstralRole>
+public sealed class AstralOptions : AbstractRoleOptionGroup<AstralRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleAstral", "Astral");
     public override uint GroupPriority => 5;

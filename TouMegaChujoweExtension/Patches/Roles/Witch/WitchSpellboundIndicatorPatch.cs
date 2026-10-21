@@ -31,7 +31,7 @@ public static class WitchSpellboundIndicatorPatch
         {
             foreach (var playerVA in MeetingHud.Instance.playerStates)
             {
-                var player = MiscUtils.PlayerById(playerVA.TargetPlayerId);
+                var player = MiscUtils.PlayerById(playerVA.PlayerId);
                 if (player == null || player.Data == null)
                 {
                     continue;

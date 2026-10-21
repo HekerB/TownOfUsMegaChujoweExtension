@@ -21,7 +21,7 @@ public enum PortalUsageType
     Everyone
 }
 
-public sealed class PortalmakerOptions : AbstractOptionGroup<PortalmakerRole>
+public sealed class PortalmakerOptions : AbstractRoleOptionGroup<PortalmakerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRolePortalmaker", "Portalmaker");
 

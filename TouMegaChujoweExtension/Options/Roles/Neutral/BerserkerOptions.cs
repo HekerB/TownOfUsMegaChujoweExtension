@@ -5,7 +5,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class BerserkerOptions : AbstractOptionGroup<BerserkerRole>
+public sealed class BerserkerOptions : AbstractRoleOptionGroup<BerserkerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleBerserker", "Berserker");
 

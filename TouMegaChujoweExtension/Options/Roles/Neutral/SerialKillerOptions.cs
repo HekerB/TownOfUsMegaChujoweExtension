@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class SerialKillerOptions : AbstractOptionGroup<SerialKillerRole>
+public sealed class SerialKillerOptions : AbstractRoleOptionGroup<SerialKillerRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleSerialKiller", "Serial Killer");
 

@@ -20,13 +20,13 @@ public sealed class UniversalModifierOptions : AbstractOptionGroup
             Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.SpitefulAmount > 0
         };
 
-    [ModdedNumberOption("ExtensionModifierDrunkAmount", 0, 15)]
-    public float DrunkAmount { get; set; } = 0;
+    [ModdedNumberOption("ExtensionModifierWastedAmount", 0, 15)]
+    public float WastedAmount { get; set; } = 0;
 
-    public ModdedNumberOption DrunkChance { get; } =
-        new("ExtensionModifierDrunkChance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
+    public ModdedNumberOption WastedChance { get; } =
+        new("ExtensionModifierWastedChance", 50f, 0, 100f, 10f, MiraNumberSuffixes.Percent)
         {
-            Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.DrunkAmount > 0
+            Visible = () => OptionGroupSingleton<UniversalModifierOptions>.Instance.WastedAmount > 0
         };
 
     [ModdedNumberOption("ExtensionModifierChildAmount", 0, 15)]

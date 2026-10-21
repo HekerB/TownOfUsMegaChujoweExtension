@@ -40,7 +40,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable,
+public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable,
     IAssignableTargets, ICrewVariant, IDisposable
 {
     private const float NoObjectLastSeconds = 20f;
@@ -76,7 +76,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     public void AssignTargets()
     {
-        if (!OptionGroupSingleton<RoleOptions>.Instance.IsClassicRoleAssignment)
+        if (!RoleOptions.IsClassicRoleAssignment)
         {
             return;
         }
@@ -389,13 +389,13 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     private static bool IsExempt(PlayerVoteArea voteArea)
     {
-        var player = GameData.Instance.GetPlayerById(voteArea.TargetPlayerId)?.Object;
+        var player = GameData.Instance.GetPlayerById(voteArea.PlayerId)?.Object;
         return !player || !player?.Data || player!.Data.Disconnected || player.Data.IsDead;
     }
 
     private bool IsExemptForObjection(PlayerVoteArea voteArea)
     {
-        if (Client == null || Client.HasDied() || voteArea.TargetPlayerId != Client.PlayerId)
+        if (Client == null || Client.HasDied() || voteArea.PlayerId != Client.PlayerId)
         {
             return true;
         }
@@ -405,7 +405,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
     private void OnObjectClick(PlayerVoteArea voteArea, MeetingHud meeting)
     {
-        if (meeting.state != MeetingHud.VoteStates.Voted && meeting.state != MeetingHud.VoteStates.NotVoted)
+        if (meeting.state != MeetingHud.MeetingStates.Voted && meeting.state != MeetingHud.MeetingStates.NotVoted)
         {
             return;
         }
@@ -432,13 +432,13 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             return;
         }
 
-        if (voteArea.TargetPlayerId != Client.PlayerId)
+        if (voteArea.PlayerId != Client.PlayerId)
         {
             return;
         }
 
         var hasAnyVotes = meeting.playerStates.Any(pva =>
-    pva.VotedFor != 255 && !pva.AmDead);
+    pva.VotedForId != 255 && !pva.AmDead);
         if (!hasAnyVotes)
         {
             return;
@@ -459,7 +459,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
             return false;
         }
 
-        if (meeting.state is not (MeetingHud.VoteStates.Voted or MeetingHud.VoteStates.NotVoted))
+        if (meeting.state is not (MeetingHud.MeetingStates.Voted or MeetingHud.MeetingStates.NotVoted))
         {
             return false;
         }
@@ -580,15 +580,15 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
         foreach (var voteArea in meeting.playerStates)
         {
-            if (voteArea.VotedFor != 255 && !voteArea.AmDead)
+            if (voteArea.VotedForId != 255 && !voteArea.AmDead)
             {
-                var voter = MiscUtils.PlayerById(voteArea.TargetPlayerId);
+                var voter = MiscUtils.PlayerById(voteArea.PlayerId);
                 if (voter == null)
                 {
                     continue;
                 }
 
-                var originalVote = voteArea.VotedFor;
+                var originalVote = voteArea.VotedForId;
                 voteArea.UnsetVote();
 
                 if (!voter.TryGetVoteData(out var voteData))
@@ -600,9 +600,9 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                 voteData.Votes.Clear();
                 voteData.VotesRemaining += removedCount;
 
-                if (!lawyerRole.ObjectedVoters.Contains(voteArea.TargetPlayerId))
+                if (!lawyerRole.ObjectedVoters.Contains(voteArea.PlayerId))
                 {
-                    lawyerRole.ObjectedVoters.Add(voteArea.TargetPlayerId);
+                    lawyerRole.ObjectedVoters.Add(voteArea.PlayerId);
                 }
 
                 var options = OptionGroupSingleton<LawyerOptions>.Instance;
@@ -612,7 +612,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                     
                     if (voter.AmOwner)
                     {
-                        var trackedVote = LawyerVoteBlockPatch.GetCurrentVote(voteArea.TargetPlayerId);
+                        var trackedVote = LawyerVoteBlockPatch.GetCurrentVote(voteArea.PlayerId);
                         if (trackedVote.HasValue && trackedVote.Value != 255)
                         {
                             voteToStore = trackedVote.Value;
@@ -624,7 +624,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                     
                     if (voteToStore != 255)
                     {
-                        LawyerEvents.AddObjectedVoter(voteArea.TargetPlayerId, voteToStore);
+                        LawyerEvents.AddObjectedVoter(voteArea.PlayerId, voteToStore);
                     }
                     else
                     {
@@ -633,7 +633,7 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
 
                 if (voter.AmOwner)
                 {
-                    meeting.ClearVote();
+                    meeting.ClearVote(voter.PlayerId, true);
                 }
             }
         }
@@ -727,9 +727,9 @@ public sealed class LawyerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                 var showAnim = MeetingHud.Instance == null && ExileController.Instance == null;
                 var murderResultFlags = MurderResultFlags.Succeeded | MurderResultFlags.DecisionByHost;
 
-                DeathHandlerModifier.UpdateDeathHandlerImmediate(Player,
+                ExtensionDeathInfo.UpdateDeathHandlerImmediate(Player,
                     TouLocale.Get("ExtensionLawyerDiedClientDeath"),
-                    DeathEventHandlers.CurrentRound,
+                    ExtensionDeathInfo.CurrentRound,
                     (!MeetingHud.Instance && !ExileController.Instance)
                         ? DeathHandlerOverride.SetTrue
                         : DeathHandlerOverride.SetFalse,
@@ -866,7 +866,7 @@ public static class LawyerCoroutines
             yield break;
         }
 
-        var voteArea = meeting.playerStates.FirstOrDefault(pva => pva.TargetPlayerId == lawyer.Client.PlayerId);
+        var voteArea = meeting.playerStates.FirstOrDefault(pva => pva.PlayerId == lawyer.Client.PlayerId);
         if (voteArea == null || voteArea.NameText == null)
         {
             yield break;
@@ -926,7 +926,7 @@ public static class LawyerCoroutines
 
             var showButton = !objectionsExhausted &&
                              maxObjections > 0 &&
-                             (meeting.state == MeetingHud.VoteStates.Voted || meeting.state == MeetingHud.VoteStates.NotVoted) &&
+                             (meeting.state == MeetingHud.MeetingStates.Voted || meeting.state == MeetingHud.MeetingStates.NotVoted) &&
                              !LawyerRole.IsInLastSecondsOfVoting(meeting, 20f);
 
             if (buttonGo != null)
@@ -936,7 +936,7 @@ public static class LawyerCoroutines
 
             if (showButton && buttonGo != null)
             {
-                var voteArea = meeting.playerStates.FirstOrDefault(pva => pva.TargetPlayerId == lawyer.Client.PlayerId);
+                var voteArea = meeting.playerStates.FirstOrDefault(pva => pva.PlayerId == lawyer.Client.PlayerId);
                 if (voteArea != null && voteArea.NameText != null)
                 {
                     voteArea.NameText.ForceMeshUpdate();

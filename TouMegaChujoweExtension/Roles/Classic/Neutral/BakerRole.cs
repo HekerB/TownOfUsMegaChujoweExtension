@@ -30,13 +30,14 @@ using UnityEngine;
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
 public sealed class BakerRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+    : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public static bool PendingFamineAnnouncement { get; set; }
     public static bool FamineAnnounced { get; set; }
 
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "Baker";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.MedicRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Baker");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -103,11 +104,14 @@ public sealed class BakerRole(IntPtr cppPtr)
             return configuredBreadNeeded;
         }
 
+        // Players already holding another Baker's bread cannot take this one's.
         var possibleRecipients = PlayerControl.AllPlayerControls.ToArray()
             .Count(x => x != null &&
                         !x.HasDied() &&
                         x.PlayerId != baker.PlayerId &&
-                        !ApocalypseUtils.AreAllied(baker, x));
+                        !ApocalypseUtils.AreAllied(baker, x) &&
+                        !x.HasModifier<InvulnerabilityModifier>() &&
+                        (!x.HasModifier<BakerBreadModifier>() || BakerBreadModifier.HasBreadFrom(x, baker.PlayerId)));
 
         return Math.Min(configuredBreadNeeded, possibleRecipients);
     }
@@ -116,8 +120,7 @@ public sealed class BakerRole(IntPtr cppPtr)
     public StringBuilder SetTabText()
     {
         var stringB = ITownOfUsRole.SetNewTabText(this);
-        var breadGivenCount = PlayerControl.AllPlayerControls.ToArray()
-            .Count(x => x != null && !x.HasDied() && x.HasModifier<BakerBreadModifier>());
+        var breadGivenCount = BakerBreadModifier.CountFor(Player.PlayerId);
         var breadNeeded = GetEffectiveBreadNeeded(Player);
 
         stringB.AppendLine($"Bread Recipients: {breadGivenCount} / {breadNeeded}");
@@ -187,7 +190,7 @@ public sealed class BakerRole(IntPtr cppPtr)
 
         if (!target.HasModifier<BakerBreadModifier>())
         {
-            target.AddModifier<BakerBreadModifier>();
+            target.AddModifier<BakerBreadModifier>(baker.PlayerId);
         }
 
         if (!target.HasModifier<BakerBreadRevealModifier>())
@@ -207,6 +210,11 @@ public sealed class BakerRole(IntPtr cppPtr)
         if (baker.Data.Role is not FamineRole)
         {
             baker.ChangeRole(RoleId.Get<FamineRole>());
+        }
+
+        foreach (var bread in baker.GetModifiers<BakerBreadModifier>())
+        {
+            TouMegaChujoweExtension.Events.Neutral.BakerEvents.QueueBreadReevaluation(bread.BakerId);
         }
 
         if (OptionGroupSingleton<BakerOptions>.Instance.AnnounceFamine)

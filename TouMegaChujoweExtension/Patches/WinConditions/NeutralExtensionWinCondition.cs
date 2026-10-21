@@ -300,14 +300,14 @@ public sealed class NeutralExtensionWinCondition : IWinCondition, IWinConditionW
             }
 
             jokerRole.MetWinCon = true;
-            TownOfUs.Modifiers.DeathHandlerModifier.RpcUpdateLocalDeathHandler(
+            ExtensionDeathInfo.RpcUpdateLocalDeathHandler(
                 player,
                 player,
                 "DiedToWinning",
-                TownOfUs.Events.DeathEventHandlers.CurrentRound,
-                TownOfUs.Modifiers.DeathHandlerOverride.SetFalse,
+                ExtensionDeathInfo.CurrentRound,
+                DeathHandlerOverride.SetFalse,
                 "null",
-                TownOfUs.Modifiers.DeathHandlerOverride.SetTrue);
+                DeathHandlerOverride.SetTrue);
         }
     }
 

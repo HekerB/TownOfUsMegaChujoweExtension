@@ -73,7 +73,7 @@ public sealed class VoodooMutedModifier : BaseModifier
             return;
         }
 
-        if (meetingInstance.state != MeetingHud.VoteStates.Animating && !shookAlready)
+        if (meetingInstance.state != MeetingHud.MeetingStates.Animating && !shookAlready)
         {
             shookAlready = true;
             meetingInstance.StartCoroutine(Effects.SwayX(bmOverlay.transform));
@@ -151,7 +151,7 @@ public sealed class VoodooMutedModifier : BaseModifier
             return;
         }
 
-        voteArea = meetingInstance.playerStates.FirstOrDefault(x => x.TargetPlayerId == Player.PlayerId);
+        voteArea = meetingInstance.playerStates.FirstOrDefault(x => x.PlayerId == Player.PlayerId);
         if (voteArea == null || voteArea.XMark == null)
         {
             return;

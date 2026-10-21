@@ -51,7 +51,7 @@ public static class PirateDuelSystem
         if (MeetingHud.Instance == null) return;
 
         var voteArea = MeetingHud.Instance.playerStates
-            .FirstOrDefault(x => x.TargetPlayerId == targetId);
+            .FirstOrDefault(x => x.PlayerId == targetId);
 
         if (voteArea == null)
         {

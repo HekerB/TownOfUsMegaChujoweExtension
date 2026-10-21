@@ -13,7 +13,7 @@ public enum BodyguardShieldVisibility
     Everyone = 3
 }
 
-public sealed class BodyguardOptions : AbstractOptionGroup<BodyguardRole>
+public sealed class BodyguardOptions : AbstractRoleOptionGroup<BodyguardRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleBodyguard", "Bodyguard");
 

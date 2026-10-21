@@ -22,8 +22,8 @@ public sealed class InjectedVeryLowVisionModifier(float duration, InjectorEffect
     {
         if (isInjected) return "Injected (Very Low Vision)";
         return durationType == InjectorEffectDurationType.AllGame
-            ? TouLocale.Get("ModifierNameLowVision", "Low vision")
-            : TouLocale.Get("ModifierNameTemporaryLowVision", "Temporary low vision");
+            ? TouLocale.Get("ExtensionModifierNameLowVision", "Low vision")
+            : TouLocale.Get("ExtensionModifierNameTemporaryLowVision", "Temporary low vision");
     }
 
     public Guid InjectionId { get; set; }

@@ -22,7 +22,7 @@ using MiraAPI.Hud;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-public sealed class PortalmakerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class PortalmakerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Trickster;
 

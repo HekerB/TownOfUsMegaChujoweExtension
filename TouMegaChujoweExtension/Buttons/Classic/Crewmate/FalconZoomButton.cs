@@ -163,8 +163,7 @@ public sealed class FalconZoomButton : TownOfUsRoleButton<FalconRole>
         foreach (var cam in Camera.allCameras)
             cam.orthographicSize = 3f;
 
-        if (HudManager.Instance != null && HudManager.Instance.ShadowQuad != null)
-            HudManager.Instance.ShadowQuad.gameObject.SetActive(true);
+        ShadowQuadUtils.Restore();
 
         ResolutionManager.ResolutionChanged.Invoke(
             (float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
@@ -221,8 +220,7 @@ public sealed class FalconZoomButton : TownOfUsRoleButton<FalconRole>
         foreach (var cam in Camera.allCameras)
             cam.orthographicSize = endSize;
 
-        if (HudManager.Instance != null && HudManager.Instance.ShadowQuad != null)
-            HudManager.Instance.ShadowQuad.gameObject.SetActive(true);
+        ShadowQuadUtils.Restore();
             
         _activeCoroutine = null;
     }

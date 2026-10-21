@@ -7,7 +7,7 @@ using TouMegaChujoweExtension.Roles.Classic.Impostor;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 
-public sealed class SniperOptions : AbstractOptionGroup<SniperRole>
+public sealed class SniperOptions : AbstractRoleOptionGroup<SniperRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleSniper", "Sniper");
 

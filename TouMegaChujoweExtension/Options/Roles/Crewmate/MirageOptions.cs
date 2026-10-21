@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
 
-public sealed class MirageOptions : AbstractOptionGroup<MirageRole>
+public sealed class MirageOptions : AbstractRoleOptionGroup<MirageRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleMirage", "Mirage");
 

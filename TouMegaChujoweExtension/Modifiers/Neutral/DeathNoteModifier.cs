@@ -21,9 +21,9 @@ namespace TouMegaChujoweExtension.Modifiers.Neutral;
 public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IButtonModifier, IColoredModifier, IGuessable
 {
     public Color ModifierColor => TouExtensionColors.DeathNote;
-    public override string LocaleKey => "DeathNote";
-    public override string ModifierName => TouLocale.Get($"ExtensionModifier{LocaleKey}");
-    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{LocaleKey}IntroBlurb");
+    public override string IdPart => "DeathNote";
+    public override string ModifierName => TouLocale.Get($"ExtensionModifier{IdPart}");
+    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{IdPart}IntroBlurb");
     public override LoadableAsset<Sprite>? ModifierIcon => TouExtensionModifierIcons.DeathNoteModifierIcon;
     public override Color FreeplayFileColor => new Color32(42, 10, 42, 255);
     public override ModifierFaction FactionType => ModifierFaction.NeutralUtility;
@@ -68,7 +68,7 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
     {
         if (_timerActive && _cursedTarget != null && _cursedTarget.Data != null && !_cursedTarget.Data.IsDead)
         {
-            var usedDesc = TouLocale.GetParsed($"ExtensionModifier{LocaleKey}BaseDesc");
+            var usedDesc = TouLocale.GetParsed($"ExtensionModifier{IdPart}BaseDesc");
             var timeLeft = Mathf.CeilToInt(_killTimer);
             var targetName = _cursedTarget.Data.PlayerName;
 
@@ -79,15 +79,15 @@ public sealed class DeathNoteModifier : TouGameModifier, IWikiDiscoverable, IBut
 
         if (_used)
         {
-            return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}BaseDesc");
+            return TouLocale.GetParsed($"ExtensionModifier{IdPart}BaseDesc");
         }
 
-        return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}TabDescription");
+        return TouLocale.GetParsed($"ExtensionModifier{IdPart}TabDescription");
     }
 
     public string GetAdvancedDescription()
     {
-        var description = TouLocale.GetParsed($"ExtensionModifier{LocaleKey}WikiDescription");
+        var description = TouLocale.GetParsed($"ExtensionModifier{IdPart}WikiDescription");
         description += MiscUtils.AppendOptionsText(GetType());
         return description;
     }

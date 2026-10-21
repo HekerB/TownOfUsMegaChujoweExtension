@@ -103,7 +103,7 @@ public static class TimeLordFixesPatch
 
     [HarmonyPatch(typeof(TimeLordRewindSystem), nameof(TimeLordRewindSystem.ConfigureHostRevives))]
     [HarmonyPrefix]
-    public static void ConfigureHostRevivesPrefix(ref Il2CppSystem.Collections.Generic.List<(byte VictimId, float KillAgeSeconds)>? revives)
+    public static void ConfigureHostRevivesPrefix(ref System.Collections.Generic.List<(byte VictimId, float KillAgeSeconds)>? revives)
     {
         if (revives == null || revives.Count == 0) return;
 

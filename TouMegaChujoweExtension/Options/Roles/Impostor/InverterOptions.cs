@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 
-public sealed class InverterOptions : AbstractOptionGroup<InverterRole>
+public sealed class InverterOptions : AbstractRoleOptionGroup<InverterRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleInverter", "Inverter");
 

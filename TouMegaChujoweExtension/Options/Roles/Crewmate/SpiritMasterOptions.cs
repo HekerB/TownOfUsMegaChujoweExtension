@@ -7,7 +7,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
 
-public sealed class SpiritMasterOptions : AbstractOptionGroup<SpiritMasterRole>
+public sealed class SpiritMasterOptions : AbstractRoleOptionGroup<SpiritMasterRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleSpiritMaster", "Spirit Master");
 

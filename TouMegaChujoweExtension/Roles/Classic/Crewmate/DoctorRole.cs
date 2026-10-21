@@ -27,7 +27,7 @@ using Reactor.Utilities;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-public sealed class DoctorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class DoctorRole(IntPtr cppPtr) : CrewmateRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable
 {
     public DoomableType DoomHintType => DoomableType.Insight;
     public string LocaleKey => "Doctor";

@@ -10,7 +10,7 @@ namespace TouMegaChujoweExtension.Assets
         public static LoadableAsset<Sprite> VenomousModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Venomous_Modifier_Icon.png", 200f);
         public static LoadableAsset<Sprite> LuckyModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Lucky_Modifier_Icon.png", 200f);
         public static LoadableAsset<Sprite> ChildModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Child_Modifier_Icon.png", 200f);
-        public static LoadableAsset<Sprite> DrunkModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Drunk_Modifier_Icon.png", 200f);
+        public static LoadableAsset<Sprite> WastedModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Drunk_Modifier_Icon.png", 200f);
 
         public static LoadableAsset<Sprite> DeathNoteModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Death_Note_Icon.png", 500f);
         public static LoadableAsset<Sprite> PublicityVoteModifierIcon { get; } = new LoadableResourceAsset("TouMegaChujoweExtension.Resources.Modifiers.Publicity_Modifier_Icon.png", 200f);

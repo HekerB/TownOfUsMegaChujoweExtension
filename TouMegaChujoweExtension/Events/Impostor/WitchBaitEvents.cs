@@ -31,8 +31,8 @@ public static class WitchBaitEvents
                 return false;
             }
 
-            if (target.TryGetModifier<DeathHandlerModifier>(out var deathHandler) &&
-                deathHandler.CauseOfDeath == TouLocale.Get("DiedToWitch"))
+            if (ExtensionDeathInfo.TryGetDead(target, out var deathInfo) &&
+                deathInfo.DeathString == TouLocale.Get("DiedToWitch"))
             {
                 return false;
             }

@@ -3194,8 +3194,8 @@ public static class DraftLobbyPatch
         try
         {
             TownOfUs.Patches.HudManagerPatches.WikiButton?.SetActive(true);
-            TownOfUs.Patches.HudManagerPatches.UiTopRight?.SetActive(true);
-            TownOfUs.Patches.HudManagerPatches.ExtraUiTopRight?.SetActive(true);
+            MiraAPI.Hud.MiraHudHelper.UiTopRight?.SetActive(true);
+            MiraAPI.Hud.MiraHudHelper.ExtraUiTopRight?.SetActive(true);
         }
         catch { /* best effort */ }
 

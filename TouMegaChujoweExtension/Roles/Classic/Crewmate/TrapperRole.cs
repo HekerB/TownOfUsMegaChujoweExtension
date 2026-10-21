@@ -20,12 +20,15 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable
 {
     public override bool IsAffectedByComms => false;
 
     public DoomableType DoomHintType => DoomableType.Trickster;
     public string LocaleKey => "Trapper";
+
+    // TOU-Mira 1.7.3's own Trapper (shown as Revealer) already uses IdPart "Trapper".
+    string ICustomRole.IdPart => "ExtensionTrapper";
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -86,7 +89,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         if (trapper.AmOwner)
         {
             var vent = Helpers.GetVentById(ventId);
-            var room = vent != null ? MiscUtils.GetRoomName(vent.transform.position) : TouLocale.Get("Unknown", "Unknown");
+            var room = vent != null ? MiscUtils.GetRoomName(vent.transform.position) : TouLocale.Get("ExtensionUnknownRoom", "Unknown");
             var msg = TouLocale.GetParsed("ExtensionRoleTrapperPlaced", "Trapped a vent in <room>!", new()
             {
                 ["<room>"] = room
@@ -155,7 +158,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
                 }
             }
 
-            var room = vent != null ? MiscUtils.GetRoomName(vent.transform.position) : TouLocale.Get("Unknown", "Unknown");
+            var room = vent != null ? MiscUtils.GetRoomName(vent.transform.position) : TouLocale.Get("ExtensionUnknownRoom", "Unknown");
             var msg = TouLocale.GetParsed("ExtensionRoleTrapperTriggered", "Your trap was triggered in <room>!", new()
             {
                 ["<room>"] = room
@@ -186,7 +189,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
         Coroutines.Start(MiscUtils.CoFlash(TouExtensionColors.Trapper));
         TouAudio.PlaySound(TouAudio.DiscoveredSound);
 
-        var room = vent != null ? MiscUtils.GetRoomName(vent.transform.position) : TouLocale.Get("Unknown", "Unknown");
+        var room = vent != null ? MiscUtils.GetRoomName(vent.transform.position) : TouLocale.Get("ExtensionUnknownRoom", "Unknown");
         var msg = TouLocale.GetParsed("ExtensionRoleTrapperCaught", "You were caught in a trap in <room>!", new()
         {
             ["<room>"] = room
@@ -213,7 +216,7 @@ public sealed class TrapperRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUs
             foreach (var trap in myTraps)
             {
                 var vent = Helpers.GetVentById(trap.Key);
-                var room = vent != null ? MiscUtils.GetRoomName(vent.transform.position) : TouLocale.Get("Unknown", "Unknown");
+                var room = vent != null ? MiscUtils.GetRoomName(vent.transform.position) : TouLocale.Get("ExtensionUnknownRoom", "Unknown");
                 var ventLabel = TouLocale.GetParsed("ExtensionRoleTrapperVentLabelTabText", "<room> Vent")
                     .Replace("<room>", room);
                 var roundsText = roundsLast <= 0

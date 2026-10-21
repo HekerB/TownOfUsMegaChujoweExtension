@@ -38,7 +38,7 @@ using TownOfUs.Events;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, TownOfUs.Extensions.ISpawnChange, IContinuesGame, IUnlovable
+public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, TownOfUs.Extensions.ISpawnChange, IContinuesGame, IUnlovable, ICrewVariant
 {
     public bool IsUnlovable => true;
 
@@ -74,6 +74,8 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
         }
         return WinConditionMet();
     }
+    public string LocaleKey => "Jackal";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.DeputyRole>();
     public string RoleName => TouLocale.Get("ExtensionRoleJackal");
     public string RoleDescription => TouLocale.GetParsed("ExtensionRoleJackalIntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed("ExtensionRoleJackalTabDescription");
@@ -213,7 +215,7 @@ public sealed class JackalRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRo
                     if (shieldOptions != null)
                     {
                         string msg = TouLocale.Get("ExtensionJackalKillAbilityAlert");
-                        if (shieldOptions.IsShieldActive(DeathEventHandlers.CurrentRound))
+                        if (shieldOptions.IsShieldActive(ExtensionDeathInfo.CurrentRound))
                         {
                             msg += "\n" + TouLocale.Get("ExtensionJackalShieldLostAlert");
                         }

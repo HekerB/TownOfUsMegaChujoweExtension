@@ -46,7 +46,7 @@ public static class LawyerVoteBlockPatch
         }
 
         var localPlayerId = PlayerControl.LocalPlayer.PlayerId;
-        var targetPlayerId = __instance.TargetPlayerId;
+        var targetPlayerId = __instance.PlayerId;
 
         var isObjected = LawyerEvents.IsObjectedVoter(localPlayerId);
         

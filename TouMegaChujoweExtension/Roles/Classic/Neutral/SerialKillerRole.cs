@@ -20,11 +20,15 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class SerialKillerRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class SerialKillerRole(IntPtr cppPtr) : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public int KillCount { get; set; }
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "SerialKiller";
+
+    // TOU-Mira 1.7.3 has its own Serial Killer with IdPart "SerialKiller".
+    string ICustomRole.IdPart => "ExtensionSerialKiller";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.SheriffRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");

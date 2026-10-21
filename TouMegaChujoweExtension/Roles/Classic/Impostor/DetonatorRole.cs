@@ -28,10 +28,11 @@ using TouMegaChujoweExtension.Buttons.Impostor;
 
 namespace TouMegaChujoweExtension.Roles.Impostor;
 
-public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class DetonatorRole(IntPtr cppPtr) : ImpostorRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public DoomableType DoomHintType => DoomableType.Relentless;
     public string LocaleKey => "Detonator";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.TrapperRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Detonator");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");

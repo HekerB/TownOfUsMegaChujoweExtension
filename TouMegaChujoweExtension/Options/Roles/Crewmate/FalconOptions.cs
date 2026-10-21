@@ -5,7 +5,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
 
-public sealed class FalconOptions : AbstractOptionGroup<FalconRole>
+public sealed class FalconOptions : AbstractRoleOptionGroup<FalconRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleFalcon", "Falcon");
 

@@ -52,7 +52,7 @@ public sealed class IcenbergKillButton : TownOfUsKillRoleButton<IcenbergRole, Pl
         var local = PlayerControl.LocalPlayer;
         if (local != null && Target != null && IsTargetValid(Target))
         {
-            CustomTouMurderRpcs.RpcSpecialMurder(local, Target, causeOfDeath: "Frozen");
+            CustomTouMurderRpcs.RpcSpecialMurder(local, Target, causeOfDeath: "IcenbergFrozen");
         }
     }
 }

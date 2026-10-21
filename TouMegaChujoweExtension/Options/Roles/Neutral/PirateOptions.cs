@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class PirateOptions : AbstractOptionGroup<PirateRole>
+public sealed class PirateOptions : AbstractRoleOptionGroup<PirateRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRolePirate", "Pirate");
 

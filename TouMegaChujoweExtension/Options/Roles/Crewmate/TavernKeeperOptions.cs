@@ -7,7 +7,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Crewmate;
 
-public sealed class TavernKeeperOptions : AbstractOptionGroup<TavernKeeperRole>
+public sealed class TavernKeeperOptions : AbstractRoleOptionGroup<TavernKeeperRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleTavernKeeper", "Tavern Keeper");
 

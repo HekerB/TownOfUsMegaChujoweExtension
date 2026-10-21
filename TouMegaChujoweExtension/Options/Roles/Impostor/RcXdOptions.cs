@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 
-public sealed class RcXdOptions : AbstractOptionGroup<RcXdRole>
+public sealed class RcXdOptions : AbstractRoleOptionGroup<RcXdRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleRcXd", "RC-XD");
 

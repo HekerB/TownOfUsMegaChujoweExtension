@@ -344,21 +344,16 @@ public static class PelicanSystem
                 var localPlayer = PlayerControl.LocalPlayer;
                 bool isGhostOrPelican = localPlayer != null && (localPlayer.Data.IsDead || localPlayer.PlayerId == pelicanId);
 
-                if (!victim.HasModifier<DeathHandlerModifier>())
-                {
-                    try { victim.AddModifier<DeathHandlerModifier>(); } catch { /* ignore death handler addition failure */ }
-                }
-
                 try
                 {
                     string killerText = (isGhostOrPelican && pelican != null)
                         ? TouLocale.GetParsed("ExtensionDiedByPelican", "by <player>").Replace("<player>", pelican.Data.PlayerName)
                         : "";
 
-                    DeathHandlerModifier.UpdateDeathHandlerImmediate(
+                    ExtensionDeathInfo.UpdateDeathHandlerImmediate(
                         victim,
                         causeOfDeath: TouLocale.Get("ExtensionDiedToPelican", "Digested"),
-                        roundOfDeath: DeathEventHandlers.CurrentRound,
+                        roundOfDeath: ExtensionDeathInfo.CurrentRound,
                         diedThisRound: DeathHandlerOverride.SetTrue,
                         killedBy: killerText,
                         lockInfo: DeathHandlerOverride.SetTrue
@@ -490,8 +485,7 @@ public static class PelicanSystem
                 {
                     try
                     {
-                        if (victim.TryGetModifier<DeathHandlerModifier>(out var dhMod))
-                            victim.RemoveModifier(dhMod);
+                        ExtensionDeathInfo.ClearForRevive(victim);
                     }
                     catch { /* ignore death handler removal errors */ }
                 }
@@ -550,8 +544,7 @@ public static class PelicanSystem
             {
                 try
                 {
-                    if (victim.TryGetModifier<DeathHandlerModifier>(out var dhMod))
-                        victim.RemoveModifier(dhMod);
+                    ExtensionDeathInfo.ClearForRevive(victim);
                 }
                 catch { /* ignore death handler removal errors */ }
             }

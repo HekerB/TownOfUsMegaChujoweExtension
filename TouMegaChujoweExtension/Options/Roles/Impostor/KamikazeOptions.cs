@@ -6,7 +6,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Impostor;
 
-public class KamikazeOptions : AbstractOptionGroup<KamikazeRole>
+public class KamikazeOptions : AbstractRoleOptionGroup<KamikazeRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleKamikaze");
 

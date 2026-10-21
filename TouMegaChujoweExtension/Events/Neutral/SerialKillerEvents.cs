@@ -60,10 +60,10 @@ public static class SerialKillerEvents
 
         if (source.AmOwner)
         {
-            DeathHandlerModifier.UpdateDeathHandlerImmediate(
+            ExtensionDeathInfo.UpdateDeathHandlerImmediate(
                 target,
                 TouLocale.Get("DiedToSerialKiller"),
-                DeathEventHandlers.CurrentRound,
+                ExtensionDeathInfo.CurrentRound,
                 (!MeetingHud.Instance && !ExileController.Instance)
                     ? DeathHandlerOverride.SetTrue
                     : DeathHandlerOverride.SetFalse,

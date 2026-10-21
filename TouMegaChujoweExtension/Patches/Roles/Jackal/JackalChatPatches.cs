@@ -26,7 +26,7 @@ public static class JackalChatPatches
 
         var isJackal = localPlayer.GetRole<JackalRole>() != null;
         var isSidekick = localPlayer.TryGetModifier<SidekickModifier>(out _);
-        var isDeadAndKnows = DeathHandlerModifier.IsFullyDead(localPlayer) &&
+        var isDeadAndKnows = ExtensionDeathInfo.IsFullyDead(localPlayer) &&
                              OptionGroupSingleton<TownOfUs.Options.GeneralOptions>.Instance.TheDeadKnow;
 
         var shouldMarkUnread = false;

@@ -72,7 +72,7 @@ public static class AgentUtils
 
     public static string GetAnonymousImpostorAlias(PlayerControl? sender)
     {
-        var impostor = TouLocale.Get("ImpostorKeyword", "Impostor");
+        var impostor = TouLocale.Get("MiraApi.RoleTeam.Impostor", "Impostor");
         if (sender == null)
         {
             return impostor;
@@ -119,12 +119,12 @@ public static class AgentUtils
     {
         var fakeRole = GetFakeCrewRole(agent);
         var roleColor = fakeRole?.TeamColor ?? Palette.CrewmateBlue;
-        var roleName = fakeRole?.GetRoleName() ?? TouLocale.Get("RoleCrewmate", "Crewmate");
+        var roleName = fakeRole?.GetRoleName() ?? TouLocale.Get("MiraApi.RoleTeam.Crewmate", "Crewmate");
         var result = $"<size=80%>{roleColor.ToTextColor()}{roleName}</color></size>";
 
         if (AppearsAsCrewpostor)
         {
-            var crewpostorName = TouLocale.Get("TouModifierCrewpostorShortName", "Imp");
+            var crewpostorName = TouLocale.Get("TownOfUsMira.Modifier.CrewpostorShortName", "Imp");
             result += $"<size=80%><color=#FFFFFF> (<color=#D64042>{crewpostorName}</color>)</color></size>";
         }
 

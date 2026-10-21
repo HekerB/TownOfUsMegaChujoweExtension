@@ -16,19 +16,19 @@ namespace TouMegaChujoweExtension.Modifiers.Game;
 
 public sealed class CluelessModifier : TouGameModifier, IWikiDiscoverable
 {
-    public override string LocaleKey => "Clueless";
-    public override string ModifierName => TouLocale.Get($"ExtensionModifier{LocaleKey}");
-    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{LocaleKey}IntroBlurb");
+    public override string IdPart => "Clueless";
+    public override string ModifierName => TouLocale.Get($"ExtensionModifier{IdPart}");
+    public override string IntroInfo => TouLocale.GetParsed($"ExtensionModifier{IdPart}IntroBlurb");
     public override LoadableAsset<Sprite> ModifierIcon => TouExtensionModifierIcons.CluelessModifierIcon;
 
     public override string GetDescription()
     {
-        return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}TabDescription");
+        return TouLocale.GetParsed($"ExtensionModifier{IdPart}TabDescription");
     }
 
     public string GetAdvancedDescription()
     {
-        return TouLocale.GetParsed($"ExtensionModifier{LocaleKey}WikiDescription")
+        return TouLocale.GetParsed($"ExtensionModifier{IdPart}WikiDescription")
             + MiscUtils.AppendOptionsText(GetType());
     }
 

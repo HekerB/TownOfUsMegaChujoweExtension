@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Crewmate;
 
-public sealed class ForestallerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable, IGuessable, IUnguessable
+public sealed class ForestallerRole(IntPtr cppPtr) : CrewmateRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, IGuessable, IUnguessable
 {
     public bool CanBeGuessed => Player == null || !Modules.ForestallerSystem.IsForestallerRevealed(Player.PlayerId);
     public DoomableType DoomHintType => DoomableType.Insight;

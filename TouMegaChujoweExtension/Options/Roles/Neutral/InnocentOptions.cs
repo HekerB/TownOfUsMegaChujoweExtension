@@ -7,7 +7,7 @@ using TownOfUs.Modules.Localization;
 
 namespace TouMegaChujoweExtension.Options.Roles.Neutral;
 
-public sealed class InnocentOptions : AbstractOptionGroup<InnocentRole>
+public sealed class InnocentOptions : AbstractRoleOptionGroup<InnocentRole>
 {
     public override string GroupName => TouLocale.Get("ExtensionRoleInnocent", "Innocent");
 
@@ -22,10 +22,10 @@ public sealed class InnocentOptions : AbstractOptionGroup<InnocentRole>
 
     public ModdedEnumOption TransformAfterTauntsInto { get; } =
         new("ExtensionOptionInnocentTransformAfterTauntsInto", (int)InnocentTransformRole.Amnesiac, typeof(InnocentTransformRole),
-            ["TouRoleAmnesiac",
-             "TouRoleSurvivor",
-             "TouRoleMercenary",
-             "TouRoleJester"]);
+            ["TownOfUsMira.Role.Amnesiac",
+             "TownOfUsMira.Role.Survivor",
+             "TownOfUsMira.Role.Mercenary",
+             "TownOfUsMira.Role.Jester"]);
 
     [ModdedToggleOption("ExtensionOptionInnocentCanTauntFirstRound")]
     public bool CanTauntFirstRound { get; set; } = true;

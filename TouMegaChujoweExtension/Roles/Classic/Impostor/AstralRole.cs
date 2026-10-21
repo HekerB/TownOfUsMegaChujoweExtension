@@ -32,10 +32,11 @@ using TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Impostor;
 
-public sealed class AstralRole(IntPtr cppPtr) : ImpostorRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class AstralRole(IntPtr cppPtr) : ImpostorRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public DoomableType DoomHintType => DoomableType.Hunter;
     public string LocaleKey => "Astral";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.EngineerTouRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Astral");
     public string RoleDescription => TouLocale.Get($"ExtensionRole{LocaleKey}IntroBlurb", "Phase through walls and return to your start position.");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription", "Phase through walls and teleport back. You must kill someone to survive!");

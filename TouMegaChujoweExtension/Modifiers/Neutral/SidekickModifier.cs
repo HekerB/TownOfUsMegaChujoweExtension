@@ -55,7 +55,7 @@ public sealed class SidekickModifier : AllianceGameModifier, IWikiDiscoverable, 
         JackalId = jackalId;
     }
 
-    public override string LocaleKey => "Sidekick";
+    public override string IdPart => "Sidekick";
     public override string GetDescription() => TouLocale.GetParsed("SidekickTabDescription");
 
     public static string ShortName => TouLocale.Get("ExtensionModifierSidekickShortName");
@@ -214,7 +214,7 @@ public static class SidekickFriendlyFirePatch
             // swallow it, and force it over the network: a plain MurderPlayer here only ran on the
             // host, so the Infiltrator died there and stayed alive everywhere else.
             var shieldOptions = OptionGroupSingleton<JackalOptions>.Instance;
-            var shieldActive = shieldOptions != null && shieldOptions.IsShieldActive(DeathEventHandlers.CurrentRound);
+            var shieldActive = shieldOptions != null && shieldOptions.IsShieldActive(ExtensionDeathInfo.CurrentRound);
             if (!shieldActive && killerSidekick.JackalId == target.PlayerId && target.GetRole<JackalRole>() != null)
             {
                 CustomMurderRpc.RpcCustomMurder(__instance, target, MeetingCheck.OutsideMeeting);

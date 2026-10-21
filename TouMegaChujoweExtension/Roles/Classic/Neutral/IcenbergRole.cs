@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.Attributes;
 using MiraAPI.GameOptions;
 using MiraAPI.Modifiers;
@@ -25,10 +26,11 @@ using UnityEngine;
 
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
-public sealed class IcenbergRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IDoomable
+public sealed class IcenbergRole(IntPtr cppPtr) : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IDoomable, ICrewVariant
 {
     public DoomableType DoomHintType => DoomableType.Fearmonger;
     public string LocaleKey => "Icenberg";
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.WardenRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Icenberg");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");
@@ -52,7 +54,29 @@ public sealed class IcenbergRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
         UseVanillaKillButton = false,
         Icon = TouExtensionIcons.IcenbergRoleIcon,
         IntroSound = TouAudio.ChefSound,
+        GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
+        OptionsScreenshot = TouBanners.NeutralRoleBanner,
     };
+
+    /// <summary>
+    /// Solo neutral-killer win, the TOU-Mira 1.7.3 way (see GlitchRole): without it the interface default is
+    /// false and a lobby down to the Icenberg and its victims never ended.
+    /// </summary>
+    public bool WinConditionMet()
+    {
+        var icenbergs = CustomRoleUtils.GetActiveRolesOfType<IcenbergRole>().Count(x => !x.Player.HasDied());
+        if (icenbergs == 0 || MiscUtils.KillersAliveCount > icenbergs || MiscUtils.KillersAliveCount == 0)
+        {
+            return false;
+        }
+
+        return icenbergs >= MiscUtils.GetImpactfulLivingPlayers().Count - icenbergs;
+    }
+
+    public override bool DidWin(GameOverReason gameOverReason)
+    {
+        return WinConditionMet();
+    }
 
     public List<CustomButtonWikiDescription> Abilities =>
     [
@@ -93,7 +117,10 @@ public sealed class IcenbergRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     [MethodRpc((uint)ExtensionRpc.IcenbergFreeze)]
     public static void RpcFreeze(PlayerControl icenberg, PlayerControl target, float duration)
     {
-        if (target == null) return;
+        if (icenberg == null || target == null || target.HasDied() || target.HasModifier<IcenbergFrozenModifier>())
+        {
+            return;
+        }
 
         target.AddModifier<IcenbergFrozenModifier>(duration);
 
@@ -112,12 +139,27 @@ public sealed class IcenbergRole(IntPtr cppPtr) : NeutralRole(cppPtr), ITownOfUs
     [MethodRpc((uint)ExtensionRpc.IcenbergBlizzard)]
     public static void RpcBlizzard(PlayerControl icenberg, float duration)
     {
+        if (icenberg == null)
+        {
+            return;
+        }
+
         foreach (var pc in PlayerControl.AllPlayerControls)
         {
-            if (pc != null && !pc.HasDied() && pc.PlayerId != icenberg.PlayerId)
+            if (pc == null || pc.HasDied() || pc.PlayerId == icenberg.PlayerId)
             {
-                pc.AddModifier(new IcenbergBlizzardModifier(duration));
+                continue;
             }
+
+            // A second blizzard while the first still blows only restarts its clock.
+            if (pc.TryGetModifier<IcenbergBlizzardModifier>(out var current))
+            {
+                current.ResetTimer();
+                current.StartTimer();
+                continue;
+            }
+
+            pc.AddModifier(new IcenbergBlizzardModifier(duration));
         }
     }
 }

@@ -18,7 +18,7 @@ using UnityEngine;
 namespace TouMegaChujoweExtension.Roles.Classic.Neutral;
 
 public sealed class DeathRole(IntPtr cppPtr)
-    : NeutralRole(cppPtr), ITownOfUsRole, IWikiDiscoverable, IUnguessable
+    : NeutralRole(cppPtr), IExtensionRole, IWikiDiscoverable, IUnguessable, ICrewVariant
 {
     public const string DeathReason = "ExtensionDeathClaimed";
 
@@ -30,6 +30,8 @@ public sealed class DeathRole(IntPtr cppPtr)
     }
 
     public string LocaleKey => "Death";
+
+    public RoleBehaviour CrewVariant => CrewVariants.Of<TownOfUs.Roles.Crewmate.VeteranRole>();
     public string RoleName => TouLocale.Get($"ExtensionRole{LocaleKey}", "Death");
     public string RoleDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}IntroBlurb");
     public string RoleLongDescription => TouLocale.GetParsed($"ExtensionRole{LocaleKey}TabDescription");

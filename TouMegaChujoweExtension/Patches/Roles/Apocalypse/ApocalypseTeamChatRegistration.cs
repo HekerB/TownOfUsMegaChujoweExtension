@@ -45,7 +45,7 @@ public static class ApocalypseTeamChatRegistration
                 }
 
                 return deadPlayer != null &&
-                       (ApocalypseUtils.IsApocalypsePlayer(deadPlayer) || DeathHandlerModifier.IsFullyDead(deadPlayer));
+                       (ApocalypseUtils.IsApocalypsePlayer(deadPlayer) || ExtensionDeathInfo.IsFullyDead(deadPlayer));
             }
         };
 
