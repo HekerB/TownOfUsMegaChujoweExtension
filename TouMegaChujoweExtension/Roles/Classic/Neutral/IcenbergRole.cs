@@ -53,7 +53,7 @@ public sealed class IcenbergRole(IntPtr cppPtr) : NeutralRole(cppPtr), IExtensio
         CanUseVent = OptionGroupSingleton<IcenbergOptions>.Instance.CanVent,
         UseVanillaKillButton = false,
         Icon = TouExtensionIcons.IcenbergRoleIcon,
-        IntroSound = TouAudio.ChefSound,
+        IntroSound = TouExtensionAudio.IcenbergIntroSound,
         GhostRole = (RoleTypes)RoleId.Get<NeutralGhostRole>(),
         OptionsScreenshot = TouBanners.NeutralRoleBanner,
     };

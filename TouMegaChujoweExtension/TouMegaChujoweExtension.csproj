@@ -26,6 +26,7 @@
         <EmbeddedResource Remove="Resources/Audio/**/*.mp3" />
         <EmbeddedResource Remove="Resources/Audio/**/*.ogg" />
         <EmbeddedResource Remove="Resources/Audio/**/*.wav" />
+        <EmbeddedResource Include="Resources/Audio/icenberg_intro.wav" />
     </ItemGroup>
 
     <ItemGroup Condition="Exists('Resources/Sprites/toumega-sprites-win.bundle') Or Exists('Resources/Sprites/toumega-sprites-android.bundle')">

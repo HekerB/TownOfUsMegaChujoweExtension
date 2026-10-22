@@ -31,6 +31,7 @@ public static class TouExtensionAudio
     public static LoadableAsset<AudioClip> PopeAlarmSound { get; } = Audio("pope_alarm", "pope_alarm.wav");
     public static LoadableAsset<AudioClip> PopeIntroSound { get; } = Audio("pope_intro", "pope_intro.wav");
     public static LoadableAsset<AudioClip> BountyHunterIntroSound { get; } = Audio("bounty_hunter_intro", "bounty_hunter_intro.wav");
+    public static LoadableAsset<AudioClip> IcenbergIntroSound { get; } = new LoadableAudioResourceAsset($"{AudioPath}.icenberg_intro.wav");
     public static LoadableAsset<AudioClip> DraftStartAlert { get; } = Audio("DraftStartHexBombAlarm", "DraftStartHexBombAlarm.wav");   //  lol
     public static LoadableAsset<AudioClip> DeathNoteLaughSound { get; } = Audio("light_laughing", "light_laughing.wav");
     public static LoadableAsset<AudioClip> KamikazeExplodeSound { get; } = Audio("allahu_akbar", "allahu_akbar.wav");    // by radzik360
