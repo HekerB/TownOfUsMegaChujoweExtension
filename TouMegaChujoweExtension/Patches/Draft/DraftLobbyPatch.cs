@@ -1693,39 +1693,13 @@ public static class DraftLobbyPatch
             var player = PlayerControl.LocalPlayer;
             if (player == null) return;
 
-            var pooledBubble = chat.GetPooledBubble();
-            if (pooledBubble == null) return;
-
-            pooledBubble.transform.SetParent(chat.scroller.Inner);
-            pooledBubble.transform.localScale = Vector3.one;
-            pooledBubble.SetLeft();
-            pooledBubble.SetCosmetics(player.Data);
-
-            pooledBubble.NameText.text = $"<color=#FFD700>{Localize("ExtensionDraftModeSystem", "SYSTEM")}</color>";
-            pooledBubble.NameText.color = Color.white;
-            pooledBubble.votedMark.enabled = false;
-            pooledBubble.Xmark.enabled = false;
-
-            pooledBubble.TextArea.text = text;
-            pooledBubble.TextArea.ForceMeshUpdate(true, true);
-
-            float h = pooledBubble.NameText.GetNotDumbRenderedHeight() + pooledBubble.TextArea.GetNotDumbRenderedHeight() + 0.4f;
-            pooledBubble.Background.size = new Vector2(5.52f, h);
-            pooledBubble.MaskArea.size = new Vector2(5.52f, h - 0.05f);
-            pooledBubble.AlignChildren();
-            try
-            {
-                chat.AlignAllBubbles();
-            }
-            catch (System.Exception alignEx)
-            {
-
-                Reactor.Utilities.Logger<TouMegaChujoweExtensionPlugin>.Warning($"[Draft] Failed to align chat bubbles: {alignEx.Message}");
-
-            }
-
-            if (chat is { IsOpenOrOpening: false, notificationRoutine: null })
-                chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());
+            // TOU-Mira 1.7.3 keeps chat bubbles in its own team-chat containers and only positions the ones in its
+            // lists; a bubble parented to the scroller directly was never moved and sat on the newest message.
+            TownOfUs.Patches.Options.TeamChatPatches.CheckChatScrollers();
+            TownOfUs.Utilities.MiscUtils.AddSystemChat(
+                player.Data,
+                $"<color=#FFD700>{Localize("ExtensionDraftModeSystem", "SYSTEM")}</color>",
+                text);
         }
         catch (System.Exception ex)
         {

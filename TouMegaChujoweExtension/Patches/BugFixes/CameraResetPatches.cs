@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using MiraAPI.Hud;
+using MiraAPI.Modifiers;
 using TouMegaChujoweExtension.Buttons.Classic.Crewmate;
 using TouMegaChujoweExtension.Buttons.Classic.Impostor;
 
@@ -39,6 +40,17 @@ public static class CameraResetPatches
                 {
                     cam.orthographicSize = 3f;
                 }
+            }
+        }
+        catch { }
+
+        try
+        {
+            // Never leave a meeting, the end screen or the lobby upside down after an Inverter flip.
+            var local = PlayerControl.LocalPlayer;
+            if (local == null || !local.HasModifier<TouMegaChujoweExtension.Modifiers.Impostor.InverterDisorientedModifier>())
+            {
+                TouMegaChujoweExtension.Modules.InverterCameraBehaviour.ForceUpright(Camera.main);
             }
         }
         catch { }

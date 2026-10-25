@@ -1827,6 +1827,21 @@
   <string name="ExtensionOptionIcenbergBlizzardSpeed">Prędkość w śnieżycy</string>
   <string name="ExtensionOptionIcenbergBlizzardUses">Liczba śnieżyc</string>
 
+  <!-- Wrecker (rola testowa) -->
+  <string name="ExtensionRoleWrecker">Burzyciel</string>
+  <string name="ExtensionRoleWreckerIntroBlurb">Przebij się przez ściany</string>
+  <string name="ExtensionRoleWreckerTabDescription">Stań przy ścianie i wybij w niej dziurę.\%nl\%Ściany, za którymi nic nie ma, nie pękną.</string>
+  <string name="ExtensionRoleWreckerWikiDescription">Burzyciel to rola Impostor Power (rola testowa). Stojąc przy ścianie, może wybić w niej dziurę do pomieszczenia, korytarza albo terenu na zewnątrz. Pękają tylko ściany, za którymi da się chodzić: zewnętrzny kadłub z kosmosem, niebem albo krawędzią mapy za nim nigdy nie pęka, tak samo drzwi i ściany grubsze niż ustawiony limit. Nie pęka też ściana, którą łatwo obejść, na przykład filar albo skała.</string>
+  <string name="ExtensionRoleWreckerSmash">Rozwal</string>
+  <string name="ExtensionRoleWreckerSmashWikiDescription">Wybij dziurę w ścianie, przy której stoisz. Przycisk świeci się tylko przy ścianie, która gdzieś prowadzi.</string>
+  <string name="ExtensionOptionWreckerSmashCooldown">Czas odnowienia rozwalenia</string>
+  <string name="ExtensionOptionWreckerMaxSmashes">Maksymalna liczba rozwaleń</string>
+  <string name="ExtensionOptionWreckerMaxWallThickness">Maksymalna grubość ściany</string>
+  <string name="ExtensionOptionWreckerSmashIsLoud">Pobliscy gracze słyszą rozwalenie</string>
+
+  <!-- Lovers -->
+  <string name="ExtensionLoverFakeTasks">Jesteś zakochany w złym graczu. Twoje zadania się nie liczą.\%nl\%Fałszywe zadania:</string>
+
   <!-- Causes of death -->
   <string name="DiedToExtensionSerialKiller">Zamordowany</string>
   <string name="DiedToIcenbergFrozen">Zamarznięty</string>
@@ -1849,6 +1864,7 @@
   <string name="DiedToSpeedy">Staranowany</string>
   <string name="DiedToVoodooMaster">Zaklęty</string>
   <string name="DiedToWraith">Nawiedzony</string>
+  <string name="DiedToWrecker">Zmiażdżony</string>
   <string name="DiedToBaker">Zabity</string>
   <string name="DiedToDeath">Skoszony</string>
   <string name="DiedToFamine">Zagłodzony</string>

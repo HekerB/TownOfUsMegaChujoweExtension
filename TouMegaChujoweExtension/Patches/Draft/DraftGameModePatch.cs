@@ -49,16 +49,46 @@ public static class DraftGameModePatch
     [HarmonyPostfix]
     public static void HudUpdatePostfix(HudManager __instance)
     {
+        ApplyModeText(__instance);
+    }
+
+    // The lobby pane rewrites its own preset label (back to the preset name, e.g. "Classic") when it refreshes;
+    // applying right after it means its text never wins the frame.
+    [HarmonyPatch(typeof(LobbyInfoPane), nameof(LobbyInfoPane.Update))]
+    [HarmonyPostfix]
+    public static void LobbyInfoPaneUpdatePostfix()
+    {
+        if (HudManager.InstanceExists)
+        {
+            ApplyModeText(HudManager.Instance);
+        }
+    }
+
+    [HarmonyPatch(typeof(LobbyInfoPane), nameof(LobbyInfoPane.RefreshPane))]
+    [HarmonyPostfix]
+    public static void LobbyInfoPaneRefreshPostfix()
+    {
+        if (HudManager.InstanceExists)
+        {
+            ApplyModeText(HudManager.Instance);
+        }
+    }
+
+    private static void ApplyModeText(HudManager hud)
+    {
         if (_cachedModeText == null)
         {
-            var modeValue = __instance.transform.Find("LobbyInfoPane/AspectSize/ModeValue");
+            _cachedModeText = null;
+            var modeValue = hud.transform.Find("LobbyInfoPane/AspectSize/ModeValue");
             if (modeValue == null)
             {
                 return;
             }
 
+            TextMeshPro? fallback = null;
             foreach (var text in modeValue.GetComponentsInChildren<TextMeshPro>(true))
             {
+                fallback ??= text;
                 if (!IsModeText(text))
                 {
                     continue;
@@ -66,6 +96,13 @@ public static class DraftGameModePatch
 
                 _cachedModeText = text;
                 break;
+            }
+
+            // A pane rebuilt on returning to the lobby only says the preset's name ("Classic"); the value text is
+            // still the one under ModeValue.
+            if (_cachedModeText == null)
+            {
+                _cachedModeText = fallback;
             }
         }
 

@@ -12,6 +12,7 @@ using TMPro;
 using TownOfUs.Modules.Components;
 using TownOfUs.Modules.Wiki;
 using TownOfUs.Patches.Misc;
+using TownOfUs.Patches.Options;
 using TownOfUs.Roles;
 using TownOfUs.Utilities;
 using UnityEngine;
@@ -210,7 +211,9 @@ public static class MeCommandPatch
         var chat = HudManager.Instance.Chat;
         var pooledBubble = chat.GetPooledBubble();
 
-        pooledBubble.transform.SetParent(chat.scroller.Inner);
+        // TOU-Mira 1.7.3 only positions bubbles it tracks in its team-chat containers.
+        TeamChatPatches.CheckChatScrollers();
+        pooledBubble.transform.SetParent(TeamChatPatches.PublicChatItems);
         pooledBubble.transform.localScale = Vector3.one;
         pooledBubble.SetLeft();
         pooledBubble.SetCosmetics(basePlayer);
@@ -256,7 +259,29 @@ public static class MeCommandPatch
             pooledBubble.TextArea.GetNotDumbRenderedHeight());
         pooledBubble.MaskArea.size = pooledBubble.Background.size - new Vector2(0, 0.03f);
         pooledBubble.AlignChildren();
-        chat.AlignAllBubbles();
+
+        // The merged (public + team) view gets its own copy, as TOU does for every public message; the hyperlinks
+        // stay clickable in the public view.
+        var mergedBubble = chat.GetPooledBubble();
+        mergedBubble.gameObject.name = "Public_ChatBubble";
+        mergedBubble.transform.SetParent(TeamChatPatches.MergedChatItems);
+        mergedBubble.transform.localScale = Vector3.one;
+        mergedBubble.SetLeft();
+        mergedBubble.SetCosmetics(basePlayer);
+        mergedBubble.NameText.text = nameText;
+        mergedBubble.NameText.color = Color.white;
+        mergedBubble.NameText.ForceMeshUpdate(true, true);
+        mergedBubble.votedMark.enabled = false;
+        mergedBubble.Xmark.enabled = false;
+        mergedBubble.TextArea.text = processed;
+        mergedBubble.TextArea.ForceMeshUpdate(true, true);
+        mergedBubble.Background.size = pooledBubble.Background.size;
+        mergedBubble.MaskArea.size = pooledBubble.MaskArea.size;
+        mergedBubble.AlignChildren();
+
+        TeamChatPatches.PublicChatBubbles.Add(pooledBubble);
+        TeamChatPatches.MergedChatBubbles.Add(new TeamChatPatches.MergedBubble(mergedBubble, true));
+        TeamChatPatches.AlignAllChatBubbles(chat, ChatToCheck.Public);
 
         if (chat is { IsOpenOrOpening: false, notificationRoutine: null })
             chat.notificationRoutine = chat.StartCoroutine(chat.BounceDot());

@@ -28,6 +28,9 @@ public sealed class InverterDisorientedModifier : TimedModifier, IVisualAppearan
         Player.RawSetAppearance(this);
         if (Player.AmOwner)
         {
+            // A task, the cameras, vitals or the map open while the screen turns stayed upside down with it;
+            // the flipped player is taken out of whatever they had open first.
+            CloseOpenInterfaces();
             InverterCameraBehaviour.Apply();
         }
     }
@@ -38,6 +41,40 @@ public sealed class InverterDisorientedModifier : TimedModifier, IVisualAppearan
         if (Player != null && Player.AmOwner)
         {
             InverterCameraBehaviour.ResetCamera();
+
+            // A task opened during the flip was turned with it (InverterMinigameBeginPatch).
+            if (Minigame.Instance != null)
+            {
+                var euler = Minigame.Instance.transform.localEulerAngles;
+                Minigame.Instance.transform.localEulerAngles = new Vector3(euler.x, euler.y, 0f);
+            }
+        }
+    }
+
+    private static void CloseOpenInterfaces()
+    {
+        try
+        {
+            if (Minigame.Instance != null)
+            {
+                Minigame.Instance.Close();
+            }
+        }
+        catch
+        {
+            // Some minigames tear themselves down while closing; nothing to undo here.
+        }
+
+        try
+        {
+            if (MapBehaviour.Instance != null && MapBehaviour.Instance.IsOpen)
+            {
+                MapBehaviour.Instance.Close();
+            }
+        }
+        catch
+        {
+            // The map may already be closing.
         }
     }
 

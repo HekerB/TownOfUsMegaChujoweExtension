@@ -21,8 +21,11 @@ public sealed class InverterCameraBehaviour(IntPtr cppPtr) : MonoBehaviour(cppPt
             return;
         }
 
-        var behaviour = camera.GetComponent<InverterCameraBehaviour>()
-            ?? camera.gameObject.AddComponent<InverterCameraBehaviour>();
+        var behaviour = camera.GetComponent<InverterCameraBehaviour>();
+        if (behaviour == null)
+        {
+            behaviour = camera.gameObject.AddComponent<InverterCameraBehaviour>();
+        }
 
         active = behaviour;
         behaviour.targetZ = 180f;
@@ -31,22 +34,47 @@ public sealed class InverterCameraBehaviour(IntPtr cppPtr) : MonoBehaviour(cppPt
 
     public static void ResetCamera()
     {
-        var camera = Camera.main;
-        if (camera == null)
-        {
-            return;
-        }
-
-        active ??= camera.GetComponent<InverterCameraBehaviour>();
+        // The behaviour lives on the camera that was turned, which need not be Camera.main any more; resetting
+        // whatever Camera.main is at that moment left the turned one upside down for the rest of the game.
         if (active == null)
         {
-            var euler = camera.transform.localEulerAngles;
-            camera.transform.localEulerAngles = new Vector3(euler.x, euler.y, 0f);
+            active = null;
+            var camera = Camera.main;
+            if (camera != null)
+            {
+                active = camera.GetComponent<InverterCameraBehaviour>();
+            }
+        }
+
+        if (active == null)
+        {
+            active = null;
+            ForceUpright(Camera.main);
             return;
         }
 
         active.targetZ = 0f;
         active.resetting = true;
+    }
+
+    /// <summary>
+    /// Puts a camera back upright at once, dropping any rotation still in progress.
+    /// </summary>
+    public static void ForceUpright(Camera? camera)
+    {
+        if (camera == null)
+        {
+            return;
+        }
+
+        var behaviour = camera.GetComponent<InverterCameraBehaviour>();
+        if (behaviour != null)
+        {
+            Object.Destroy(behaviour);
+        }
+
+        var euler = camera.transform.localEulerAngles;
+        camera.transform.localEulerAngles = new Vector3(euler.x, euler.y, 0f);
     }
 
     private void Update()
@@ -72,13 +100,8 @@ public sealed class InverterCameraBehaviour(IntPtr cppPtr) : MonoBehaviour(cppPt
             active = null;
         }
 
-        var camera = Camera.main;
-        if (camera == null)
-        {
-            return;
-        }
-
-        var euler = camera.transform.localEulerAngles;
-        camera.transform.localEulerAngles = new Vector3(euler.x, euler.y, 0f);
+        // Upright the camera this sat on, not whichever camera is main now.
+        var euler = transform.localEulerAngles;
+        transform.localEulerAngles = new Vector3(euler.x, euler.y, 0f);
     }
 }

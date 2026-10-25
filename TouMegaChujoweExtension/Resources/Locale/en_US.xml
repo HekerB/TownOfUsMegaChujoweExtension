@@ -1868,6 +1868,21 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="ExtensionOptionIcenbergBlizzardSpeed">Speed During Blizzard</string>
   <string name="ExtensionOptionIcenbergBlizzardUses">Blizzard Uses</string>
 
+  <!-- Wrecker (test role) -->
+  <string name="ExtensionRoleWrecker">Wrecker</string>
+  <string name="ExtensionRoleWreckerIntroBlurb">Smash your way through the walls</string>
+  <string name="ExtensionRoleWreckerTabDescription">Stand at a wall and smash a hole through it.\%nl\%Walls with nothing behind them will not break.</string>
+  <string name="ExtensionRoleWreckerWikiDescription">The Wrecker is an Impostor Power role (a test role). Standing at a wall, it can smash a hole through it into the room, hallway or outdoor area behind. Only walls with walkable floor behind them break: the outer hull with space, sky or the map edge behind it never does, and neither do doors or walls thicker than the set limit. A wall that is quick to walk round, like a pillar or a rock, does not break either.</string>
+  <string name="ExtensionRoleWreckerSmash">Smash</string>
+  <string name="ExtensionRoleWreckerSmashWikiDescription">Break a hole through the wall you stand at. The button only lights up at a wall that leads somewhere.</string>
+  <string name="ExtensionOptionWreckerSmashCooldown">Smash Cooldown</string>
+  <string name="ExtensionOptionWreckerMaxSmashes">Max Number Of Smashes</string>
+  <string name="ExtensionOptionWreckerMaxWallThickness">Max Wall Thickness</string>
+  <string name="ExtensionOptionWreckerSmashIsLoud">Nearby Players Hear The Smash</string>
+
+  <!-- Lovers -->
+  <string name="ExtensionLoverFakeTasks">You are in love with an evil player. Your tasks do not count.\%nl\%Fake Tasks:</string>
+
   <!-- Causes of death -->
   <string name="DiedToExtensionSerialKiller">Murdered</string>
   <string name="DiedToIcenbergFrozen">Frozen Solid</string>
@@ -1890,6 +1905,7 @@ If <b>Neutrals Per Choice</b> is configured, the number of Neutral roles shown p
   <string name="DiedToSpeedy">Rushed</string>
   <string name="DiedToVoodooMaster">Hexed</string>
   <string name="DiedToWraith">Haunted</string>
+  <string name="DiedToWrecker">Crushed</string>
   <string name="DiedToBaker">Killed</string>
   <string name="DiedToDeath">Reaped</string>
   <string name="DiedToFamine">Starved</string>

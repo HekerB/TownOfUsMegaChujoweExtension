@@ -56,6 +56,7 @@ public static class TouExtensionColors
     public static Color Speedy => Palette.ImpostorRed;
     public static Color Detonator => Palette.ImpostorRed;
     public static Color Burrower => Palette.ImpostorRed;
+    public static Color Wrecker => TownOfUsColors.UseBasic ? Palette.ImpostorRed : new Color32(214, 120, 52, 255);
     // Modifiers
     public static Color Venomous => new Color32(0, 200, 90, 255);
     public static Color Publicity => new Color32(51, 179, 179, 255);

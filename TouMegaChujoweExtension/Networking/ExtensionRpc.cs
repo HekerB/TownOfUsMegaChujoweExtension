@@ -121,5 +121,6 @@ public enum ExtensionRpc : uint
     InverterDisorient = 136,
     TavernKeeperRoleblock = 137,
     IcenbergFreeze = 138,
-    IcenbergBlizzard = 139
+    IcenbergBlizzard = 139,
+    WreckerSmash = 140
 }

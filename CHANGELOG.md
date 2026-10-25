@@ -16,11 +16,22 @@
 - Frozen and blizzard screen overlays; freezing never takes away movement that something else is holding.
 - Wins alone like the other neutral killers; full English and Polish text; own cause of death.
 
+### Wrecker (new Impostor Power test role, PL "Burzyciel")
+- Smash: standing at a wall, opens a hole about one player wide through it into the room, hallway or outdoor area behind.
+- Only walls with walkable floor behind them break. The hull with space or sky behind it, the map edge, doors, walls thicker than the set limit and obstacles that are quick to walk round (pillars, rocks) never do; the button only lights up at a wall that can break.
+- Vision passes through the hole; the sides of the hole are sealed so nobody walks into the inside of a thick wall.
+- Placeholder looks: TOU-Mira's Miner icon and button, plain rubble over the hole.
+- Options: smash cooldown, number of smashes, max wall thickness, whether nearby players hear the smash.
+
 ### Fixes
 - Vision: the shadows were switched off for a living player whenever the camera was a little wider than usual; ghosts got the darkness back after every meeting.
 - Drunk: the extension's Drunk is now "Wasted" (PL "Nawalony") with its own icon and options, next to TOU's new Drunk, and never cancels TOU's control inversion out.
 - Baker: each Baker counts only its own bread and turns into Famine on its own; a Cleric or Doctor cleansing the last bread holder unlocks Famine at once; Famine only blocks attacks, not every targeted ability; the host unlocks Famine whoever it plays.
 - Foreteller hints and the Lawyer's team title read the TOU 1.7.3 strings again.
+- Draft: "draft cancelled by the host" and the other extension chat messages no longer overlap the newest chat message.
+- Lobby: the preset label keeps saying "DRAFT MODE" after returning to the lobby or cancelling a draft instead of falling back to "Classic".
+- Flipper: the flipped player is taken out of the task, cameras or map they had open, and their screen always turns upright again, after meetings and at the end of the game too.
+- Lovers: a Crewmate in love with an Impostor or killer now sees at the top of their task list that their tasks are fake (they never counted).
 
 ## 1.4.4 - Draft Visual Refinements & Lobby Fixes
 
